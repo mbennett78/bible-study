@@ -15,6 +15,7 @@ const defaults = {
   favorites: {},            // { "JHN.3": iso }
   modes: { drive: false, voiceCommands: true },
   voiceRate: 1,
+  voiceVolume: 1,
   activePath: "",           // "chronological" | "audience" | "themes"
   pathStarted: {},          // { chronological: iso }
   pathRead: {},

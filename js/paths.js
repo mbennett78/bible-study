@@ -1,4 +1,4 @@
-// Three journeys through the whole Bible. Each one covers all 66 books and
+// Four journeys through the whole Bible. Each one covers all 66 books and
 // all 1,189 chapters exactly once, in its own order. `checkPaths()` proves it.
 // Reading strings: "GEN" (whole book) or "GEN 1-11" / "PSA 90" (chapter range).
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
@@ -6,7 +6,8 @@ import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 export const PATHS = [
   {
     id: "chronological",
-    name: "Chronological",
+    name: "Chronological Study",
+    short: "Chronological",
     blurb: "Read the story in the order it happened, with prophets and psalms placed beside the events they speak to.",
     note: "Dates for some books (Job, Joel, Obadiah, parts of Isaiah) are debated. Placement follows widely used chronological reading plans.",
     stages: [
@@ -27,7 +28,8 @@ export const PATHS = [
   },
   {
     id: "audience",
-    name: "Audience",
+    name: "Study by Audience/Type",
+    short: "Audience",
     blurb: "Read the books grouped by who they were first written to, so you hear them the way the first readers did.",
     note: "Some audiences are debated (for example Hebrews, James and 1 Peter). Study notes will show the main views.",
     stages: [
@@ -49,7 +51,8 @@ export const PATHS = [
   },
   {
     id: "themes",
-    name: "Themes",
+    name: "Study by Theme",
+    short: "Themes",
     blurb: "Follow the big themes of the Bible, pairing Old and New Testament books that speak to each other.",
     note: "Every book belongs to many themes. Each one is placed where its theme is strongest, so the whole Bible is still covered once.",
     stages: [
@@ -69,8 +72,28 @@ export const PATHS = [
       { title: "Heaven, angels and the hope ahead", about: "God's throne room, the unseen world, and the promise of what is to come.", readings: ["DAN", "1TH", "2TH", "2PE", "JUD", "PSA 90-150", "REV"] },
     ],
   },
+  {
+    id: "general",
+    name: "General Bible Format",
+    short: "General",
+    blurb: "Read the Bible straight through in the order it's printed, Genesis to Revelation, one section at a time.",
+    note: "This is the order of the 66 books in Protestant Bibles. Catholic and Orthodox Bibles include a few more books, which aren't part of this plan.",
+    stages: [
+      { title: "The Law", about: "The five books of Moses: creation, the patriarchs, the exodus and the covenant at Sinai.", readings: ["GEN", "EXO", "LEV", "NUM", "DEU"] },
+      { title: "History", about: "Israel in the land, the kings, the exile and the return.", readings: ["JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST"] },
+      { title: "Poetry and Wisdom", about: "Job, the Psalms, Proverbs, Ecclesiastes and the Song of Songs.", readings: ["JOB", "PSA", "PRO", "ECC", "SNG"] },
+      { title: "Major Prophets", about: "The longer prophetic books: Isaiah, Jeremiah, Lamentations, Ezekiel and Daniel.", readings: ["ISA", "JER", "LAM", "EZK", "DAN"] },
+      { title: "Minor Prophets", about: "Twelve shorter prophets, from Hosea to Malachi.", readings: ["HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL"] },
+      { title: "The Gospels", about: "The life, death and resurrection of Jesus.", readings: ["MAT", "MRK", "LUK", "JHN"] },
+      { title: "The early church", about: "The Holy Spirit comes and the good news spreads.", readings: ["ACT"] },
+      { title: "Paul's letters", about: "Letters to churches and to Timothy, Titus and Philemon.", readings: ["ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM"] },
+      { title: "General letters", about: "Hebrews and the letters of James, Peter, John and Jude.", readings: ["HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD"] },
+      { title: "Revelation", about: "The vision of Christ's victory and all things made new.", readings: ["REV"] },
+    ],
+  },
 ];
 
+export const PATH_ORDER = ["chronological", "themes", "audience", "general"];
 export const PATH_BY_ID = Object.fromEntries(PATHS.map((p) => [p.id, p]));
 
 // "PSA 42-72" -> [{book:"PSA", chapter:42}, ...]

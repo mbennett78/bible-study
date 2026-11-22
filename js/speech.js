@@ -29,6 +29,7 @@ export class Reader {
     this.index = 0;
     this.playing = false;
     this.rate = 1;
+    this.volume = 1;
   }
   load(chunks, intro) {
     this.stop();
@@ -53,6 +54,7 @@ export class Reader {
     const voice = pickVoice();
     if (voice) u.voice = voice;
     u.rate = this.rate;
+    u.volume = this.volume;
     u.onend = () => { if (!this.playing) return; this.index += 1; this.#speakNext(); };
     u.onerror = (e) => { if (e.error !== "interrupted" && e.error !== "canceled") { this.index += 1; this.#speakNext(); } };
     speechSynthesis.speak(u);

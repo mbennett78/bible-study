@@ -1,10 +1,10 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl } from "./text.js";
-import { PATHS, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
+import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { scene, flourish, friend } from "./art.js";
+import { seaScene, fishFlourish, friend, edgeVines, cornerSprig } from "./art.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -29,6 +29,7 @@ function showView(name) {
     else b.removeAttribute("aria-current");
   });
   $(".topbar").hidden = name !== "read";
+  if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
   window.scrollTo(0, 0);
@@ -64,6 +65,9 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   mascotSay(mascotLineFor(book, chapter));
   reader.stop();
   $("#listenBtn").setAttribute("aria-pressed", "false");
+  syncPlayBtn(false);
+  $("#topPrev").disabled = !neighbors(book, chapter).prev;
+  $("#topNext").disabled = !neighbors(book, chapter).next;
 
   const { prev, next } = neighbors(book, chapter);
   $("#prevCh").disabled = !prev;
@@ -179,7 +183,7 @@ function pickerBooks() {
   $("#pickerBody").innerHTML = section("OT", "Old Testament") + section("NT", "New Testament");
   $("#pickerBody").querySelectorAll("[data-book]").forEach((btn) => btn.addEventListener("click", () => {
     const b = BOOK_BY_ID[btn.dataset.book];
-    if (b.chapters === 1) { picker.close(); openChapter(b.id, 1); } else pickerChapters(b.id);
+    if (b.chapters === 1) { picker.close(); showView("read"); openChapter(b.id, 1); } else pickerChapters(b.id);
   }));
 }
 function pickerChapters(bookId) {
@@ -188,7 +192,7 @@ function pickerChapters(bookId) {
   $("#pickerBack").hidden = false;
   $("#pickerBody").innerHTML = `<div class="chapter-grid">${chapterButtons(b)}</div>`;
   $("#pickerBody").querySelectorAll("[data-ch]").forEach((btn) => btn.addEventListener("click", () => {
-    picker.close(); openChapter(b.id, Number(btn.dataset.ch));
+    picker.close(); showView("read"); openChapter(b.id, Number(btn.dataset.ch));
   }));
 }
 function chapterButtons(b) {
@@ -198,8 +202,8 @@ function chapterButtons(b) {
     return `<button data-ch="${ch}" class="${cls}" aria-label="${esc(b.name)} ${ch}${store.isRead(b.id, ch) ? ", read" : ""}">${ch}</button>`;
   }).join("");
 }
-$("#refButton").addEventListener("click", () => { pickerBooks(); picker.showModal(); });
-$("#pickerBack").addEventListener("click", pickerBooks);
+$("#refButton").addEventListener("click", openPicker);
+$("#pickerBack").addEventListener("click", () => { $("#pickerSearch").value = ""; pickerBooks(); });
 $("#pickerClose").addEventListener("click", () => picker.close());
 picker.addEventListener("click", (e) => { if (e.target === picker) picker.close(); });
 
@@ -266,11 +270,11 @@ function updatePathBits() {
   const i = pathIndex(pathId, book, chapter);
   const p = PATH_BY_ID[pathId];
   banner.hidden = false;
-  banner.textContent = `${p.name} path · Stage ${list[i].stage + 1}: ${p.stages[list[i].stage].title} · ${store.pathReadCount(pathId)} of ${list.length} chapters`;
+  banner.textContent = `${p.name} · Stage ${list[i].stage + 1}: ${p.stages[list[i].stage].title} · ${store.pathReadCount(pathId)} of ${list.length} chapters`;
   const next = list[i + 1];
   btn.hidden = !next;
   if (next) {
-    btn.textContent = `Next in your ${p.name.toLowerCase()} path: ${BOOK_BY_ID[next.book].name} ${next.chapter} ›`;
+    btn.textContent = `Next on your ${p.short} path: ${BOOK_BY_ID[next.book].name} ${next.chapter} ›`;
     btn.onclick = () => openChapter(next.book, next.chapter);
   }
 }
@@ -278,14 +282,10 @@ function renderPath() {
   const view = $("#pathView");
   const active = store.get("activePath");
   if (!active) {
-    view.innerHTML = `${scene(store.get("style"))}<p class="greeting">${esc(greeting())}</p><h1>Choose your study path</h1>
+    view.innerHTML = `${seaScene(store.get("style"))}<p class="greeting">${esc(greeting())}</p><h1>Choose your study path</h1>
       <p class="muted">Each path takes you through the whole Bible, all 66 books and 1,189 chapters, in a different order. You can switch any time, and each path keeps its own progress.</p>
-      <div class="path-choice">${PATHS.map((p) => `<div class="card">
-        <h2>${esc(p.name)}</h2><p>${esc(p.blurb)}</p>
-        <details><summary>See the ${p.stages.length} stages</summary><ol>${p.stages.map((s) => `<li>${esc(s.title)}</li>`).join("")}</ol></details>
-        <button class="small" data-start="${p.id}">${store.pathReadCount(p.id) ? "Continue" : "Start"} this path</button></div>`).join("")}</div>`;
-    view.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => { store.startPath(b.dataset.start); renderPath(); updatePathBits(); }));
-    view.insertAdjacentHTML("beforeend", archiveHtml());
+      ${pathCardsHtml()}${archiveHtml()}`;
+    wirePathCards(view);
     wireArchive(view);
     return;
   }
@@ -298,7 +298,7 @@ function renderPath() {
   const yearPace = Math.floor((days / 365) * list.length);
   const paceText = done >= yearPace ? "You're on pace to finish within a year." : `${yearPace - done} chapters behind a one-year pace. No pressure: go at your own pace.`;
   const plan = store.get("yearPace") ? todayPlan(active) : null;
-  view.innerHTML = `${scene(store.get("style"))}<div class="path-head">
+  view.innerHTML = `${seaScene(store.get("style"))}<div class="path-head">
       <p class="greeting">${esc(greeting())}</p>
       <p class="muted small-print">Your study path</p>
       <h1>${esc(p.name)}</h1>
@@ -334,7 +334,7 @@ function renderPath() {
   });
   $("#continuePath")?.addEventListener("click", () => { showView("read"); openChapter(next.book, next.chapter); });
   view.querySelectorAll("[data-b]").forEach((b) => b.addEventListener("click", () => { showView("read"); openChapter(b.dataset.b, Number(b.dataset.c)); }));
-  $("#switchPath").addEventListener("click", () => { store.set("activePath", ""); renderPath(); updatePathBits(); });
+  $("#switchPath").addEventListener("click", () => showView("home"));
 }
 
 /* ---------- Read aloud & drive mode ---------- */
@@ -342,6 +342,7 @@ const driveOn = () => store.get("modes").drive;
 const reader = new Reader({
   onState(state) {
     $("#listenBtn").setAttribute("aria-pressed", String(state === "playing"));
+    syncPlayBtn(state === "playing");
     updateDrive(state);
   },
   onEnd() {
@@ -356,6 +357,7 @@ const reader = new Reader({
   },
 });
 reader.rate = store.get("voiceRate");
+reader.volume = store.get("voiceVolume") ?? 1;
 $("#listenBtn").hidden = !canSpeak;
 $("#listenBtn").addEventListener("click", () => { if (driveOn()) openDrive(); else reader.toggle(); });
 
@@ -409,7 +411,7 @@ $("#drivePlay").addEventListener("click", () => reader.toggle());
 $("#driveBack").addEventListener("click", () => reader.back());
 $("#driveNext").addEventListener("click", () => { const n = nextTarget(); if (n) { autoplayNext = true; openChapter(n.book, n.chapter); updateDrive(); } });
 $("#driveMark").addEventListener("click", toggleRead);
-$("#driveExit").addEventListener("click", () => { closeDrive(); store.setMode("drive", false); $("#modeDrive").checked = false; });
+$("#driveExit").addEventListener("click", () => setDrive(false));
 
 /* ---------- Archive of past walks ---------- */
 function archiveHtml() {
@@ -433,7 +435,7 @@ function showArchive(id) {
   const journals = store.allJournal().filter((j) => inRange(j.updated)).length;
   const rounds = store.get("trivia").sessions.filter((t) => inRange(t.at));
   const view = $("#pathView");
-  view.innerHTML = `${scene(store.get("style"))}
+  view.innerHTML = `${seaScene(store.get("style"))}
     <button class="quiet-link" id="archiveBack">‹ Back to my path</button>
     <h1>${esc(p.name)} path</h1>
     <p class="readonly-note">A past walk from ${fmtDate(a.started)} to ${fmtDate(a.ended)}: ${Object.keys(a.reads).length} of ${list.length} chapters read${journals ? `, ${journals} journal entr${journals === 1 ? "y" : "ies"} written` : ""}${rounds.length ? `, ${rounds.length} trivia round${rounds.length === 1 ? "" : "s"} played` : ""}. Tap any chapter to read it again.</p>
@@ -512,7 +514,7 @@ function renderMargin() {
   let html = "";
   if (active) {
     const p = PATH_BY_ID[active];
-    $("#marginTitle").textContent = `${p.name} path`;
+    $("#marginTitle").textContent = p.name;
     const plan = store.get("yearPace") ? todayPlan(active) : null;
     if (plan) html += `<div class="margin-today">${plan.left ? `Today: ${esc(plan.label)}` : "Today's reading is done ✓"}</div>`;
     const list = pathChapters(active);
@@ -697,8 +699,10 @@ let friendWhich = "lamb";
 function updateMascot() {
   $("#mascot").hidden = store.get("style") !== "animated";
   $("#friendSlot").innerHTML = friend(friendWhich);
-  $("#flourish").innerHTML = flourish(store.get("style"));
-  $("#studyScene").innerHTML = scene(store.get("style"));
+  $("#flourish").innerHTML = fishFlourish();
+  $("#studyScene").innerHTML = seaScene(store.get("style"));
+  $("#vines").innerHTML = edgeVines();
+  if (!$("#view-home").hidden) renderHome();
 }
 function mascotSay(text) {
   if (store.get("style") !== "animated" || !text) return;
@@ -747,12 +751,9 @@ function initSettings() {
   $("#modeVoice").checked = modes.voiceCommands;
   $("#modeVoice").disabled = !canListen;
   $("#voiceRate").value = store.get("voiceRate");
-  $("#modeDrive").addEventListener("change", (e) => {
-    store.setMode("drive", e.target.checked);
-    if (e.target.checked) { showView("read"); openDrive(); }
-  });
+  $("#modeDrive").addEventListener("change", (e) => setDrive(e.target.checked));
   $("#modeVoice").addEventListener("change", (e) => store.setMode("voiceCommands", e.target.checked));
-  $("#voiceRate").addEventListener("input", (e) => { store.set("voiceRate", Number(e.target.value)); reader.rate = Number(e.target.value); });
+  $("#voiceRate").addEventListener("input", (e) => setRate(Number(e.target.value)));
   apiKey.value = store.get("apiBibleKey");
   esvKey.value = store.get("esvKey");
   size.value = store.get("textSize");
@@ -802,16 +803,183 @@ function initSettings() {
   });
 }
 
+/* ---------- Home: the four study paths ---------- */
+const PATH_ICONS = {
+  chronological: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  themes: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C8 16 12 10 20 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="9" cy="12" rx="3.6" ry="1.5" transform="rotate(-50 9 12)" fill="currentColor"/><ellipse cx="13" cy="12.5" rx="3.6" ry="1.5" transform="rotate(20 13 12.5)" fill="currentColor"/><ellipse cx="14" cy="7.5" rx="3.6" ry="1.5" transform="rotate(-55 14 7.5)" fill="currentColor"/><circle cx="17.5" cy="9" r="1.4" fill="currentColor"/></svg>`,
+  audience: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 19c.8-3.5 3-5 5.5-5s4.7 1.5 5.5 5M13.5 14.5c.9-.6 1.9-.9 3-.9 2.2 0 4 1.3 4.8 4.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  general: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.7 4.5 9 4.5 12 6.3c3-1.8 6.3-1.8 9-.8v13c-2.7-1-6-1-9 .8-3-1.8-6.3-1.8-9-.8zM12 6.3v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+};
+function pathCardsHtml() {
+  const active = store.get("activePath");
+  return `<div class="path-cards">${PATH_ORDER.map((id) => {
+    const p = PATH_BY_ID[id];
+    const done = store.pathReadCount(id), total = pathChapters(id).length;
+    const isActive = id === active;
+    const label = isActive ? "Continue" : done ? "Pick up again" : "Start this path";
+    return `<div class="path-card${isActive ? " is-active" : ""}">
+      <div class="pc-top"><span class="pc-icon">${PATH_ICONS[id]}</span><div><h3>${esc(p.name)}</h3>${isActive ? `<span class="pc-badge">Your current path</span>` : ""}</div></div>
+      <p>${esc(p.blurb)}</p>
+      <div class="bar"><span style="width:${(done / total) * 100}%"></span></div>
+      <span class="pc-meta">${done} of ${total} chapters · ${p.stages.length} stages</span>
+      <div class="pc-actions"><button class="small" data-start="${id}">${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See stages</button>` : ""}</div>
+    </div>`;
+  }).join("")}</div>`;
+}
+function wirePathCards(root) {
+  root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
+    const id = b.dataset.start;
+    const wasActive = store.get("activePath") === id;
+    store.startPath(id);
+    updatePathBits(); renderMargin();
+    const next = nextUnread(id);
+    if (wasActive && next) { showView("read"); openChapter(next.book, next.chapter); }
+    else showView("path");
+  }));
+  root.querySelectorAll("[data-stages]").forEach((b) => b.addEventListener("click", () => showView("path")));
+}
+function renderHome() {
+  const view = $("#homeView");
+  const last = store.get("last");
+  const active = store.get("activePath");
+  const next = active ? nextUnread(active) : null;
+  const plan = active && store.get("yearPace") ? todayPlan(active) : null;
+  const resume = next
+    ? { title: `Continue ${PATH_BY_ID[active].name}`, sub: `${BOOK_BY_ID[next.book].name} ${next.chapter}${plan && plan.left ? ` · Today: ${plan.label}` : ""}`, go: next }
+    : { title: "Pick up where you left off", sub: `${BOOK_BY_ID[last.book].name} ${last.chapter}`, go: last };
+  view.innerHTML = `${seaScene(store.get("style"))}
+    <p class="home-hello">${esc(greeting())}</p>
+    <p class="home-sub">How would you like to walk through the Bible today?</p>
+    <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
+    <h2 class="home-h">Your study paths</h2>
+    ${pathCardsHtml()}
+    <div class="jump-card">
+      <h2>Go anywhere in the Bible</h2>
+      <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>
+      <div class="jump-results" id="homeJumpResults"><span class="hint">Reading outside your path is fine. Your path keeps its place.</span></div>
+    </div>
+    <label class="home-drive"><span><strong>Drive mode</strong><small>Big buttons and reading aloud, chapter after chapter</small></span><input type="checkbox" role="switch" id="homeDrive" aria-label="Drive mode"></label>
+    ${archiveHtml()}
+    <div class="home-end"></div>${cornerSprig()}${cornerSprig(true)}`;
+  $("#resumeBtn").addEventListener("click", () => { showView("read"); openChapter(resume.go.book, resume.go.chapter); });
+  wirePathCards(view);
+  wireArchive(view);
+  $("#homeBrowse").addEventListener("click", openPicker);
+  wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
+  $("#homeDrive").checked = driveOn();
+  $("#homeDrive").addEventListener("change", (e) => setDrive(e.target.checked));
+}
+
+/* ---------- Finding a passage by typing ---------- */
+const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]/g, "");
+const ALIASES = { psalm: "PSA", ps: "PSA", song: "SNG", songofsolomon: "SNG", canticles: "SNG", jn: "JHN", mt: "MAT", mk: "MRK", lk: "LUK", rev: "REV", revelations: "REV", phil: "PHP", philemon: "PHM" };
+// "rom 8", "1 john 3", "psalm 23", "gen" -> matching books, with the chapter if one was typed.
+function findRefs(text) {
+  const m = text.trim().match(/^(.*?)(?:\s+(\d+))?(?::\d+.*)?$/);
+  if (!m || !m[1].trim()) return [];
+  const q = norm(m[1]);
+  const ch = m[2] ? Number(m[2]) : null;
+  let books = BOOKS.filter((b) => norm(b.name).startsWith(q) || b.id.toLowerCase() === q);
+  if (ALIASES[q]) books = [BOOK_BY_ID[ALIASES[q]], ...books.filter((b) => b.id !== ALIASES[q])];
+  if (!books.length && q.length >= 3) books = BOOKS.filter((b) => norm(b.name).includes(q));
+  return books.slice(0, 6).map((b) => ({ book: b.id, chapter: ch ? Math.min(Math.max(ch, 1), b.chapters) : null, name: b.name }));
+}
+function wireJump(input, out, go) {
+  const hint = out.innerHTML;
+  const show = () => {
+    const refs = findRefs(input.value);
+    if (!input.value.trim()) { out.innerHTML = hint; return; }
+    if (!refs.length) { out.innerHTML = `<span class="hint">No book matches "${esc(input.value)}".</span>`; return; }
+    out.innerHTML = refs.map((r, i) => `<button data-i="${i}">${esc(r.name)}${r.chapter ? ` ${r.chapter}` : ""}</button>`).join("");
+    out.querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => {
+      const r = refs[Number(b.dataset.i)];
+      if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) go({ book: r.book, chapter: r.chapter || 1 });
+      else { openPicker(); pickerChapters(r.book); }
+    }));
+  };
+  input.addEventListener("input", show);
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const r = findRefs(input.value)[0];
+    if (r) { e.preventDefault(); input.blur(); go({ book: r.book, chapter: r.chapter || 1 }); }
+  });
+}
+function openPicker() {
+  $("#pickerSearch").value = "";
+  pickerBooks();
+  if (!picker.open) picker.showModal();
+}
+$("#pickerSearch").addEventListener("input", () => {
+  const v = $("#pickerSearch").value.trim();
+  if (!v) { pickerBooks(); return; }
+  const refs = findRefs(v);
+  $("#pickerTitle").textContent = "Find";
+  $("#pickerBack").hidden = false;
+  $("#pickerBody").innerHTML = refs.length
+    ? `<div class="picker-books">${refs.map((r, i) => `<button data-i="${i}">${esc(r.name)}${r.chapter ? ` ${r.chapter}` : ""}<small>${r.chapter ? "Open" : `${BOOK_BY_ID[r.book].chapters} chapters`}</small></button>`).join("")}</div>`
+    : `<p class="muted">No book matches that yet.</p>`;
+  $("#pickerBody").querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => {
+    const r = refs[Number(b.dataset.i)];
+    if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) { picker.close(); showView("read"); openChapter(r.book, r.chapter || 1); }
+    else pickerChapters(r.book);
+  }));
+});
+$("#pickerSearch").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const r = findRefs($("#pickerSearch").value)[0];
+  if (!r) return;
+  e.preventDefault();
+  if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) { picker.close(); showView("read"); openChapter(r.book, r.chapter || 1); }
+  else pickerChapters(r.book);
+});
+$("#topPrev").addEventListener("click", () => { const { book, chapter } = store.get("last"); const p = neighbors(book, chapter).prev; if (p) openChapter(p.book, p.chapter); });
+$("#topNext").addEventListener("click", () => { const { book, chapter } = store.get("last"); const n = neighbors(book, chapter).next; if (n) openChapter(n.book, n.chapter); });
+
+/* ---------- Listen bar: read aloud, volume, speed, drive mode ---------- */
+function syncPlayBtn(playing) {
+  const btn = $("#playBtn");
+  btn.setAttribute("aria-pressed", String(playing));
+  btn.querySelector("span").textContent = playing ? "Pause" : "Read aloud";
+  $("#playIcon").setAttribute("d", playing ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
+}
+function setRate(r) {
+  store.set("voiceRate", r);
+  reader.rate = r;
+  $("#voiceRate").value = r;
+  const opts = [...$("#quickRate").options].map((o) => Number(o.value));
+  $("#quickRate").value = String(opts.reduce((a, b) => (Math.abs(b - r) < Math.abs(a - r) ? b : a)));
+}
+// Drive mode is one setting with three switches (reading page, Home, Settings).
+function setDrive(on) {
+  store.setMode("drive", on);
+  for (const sel of ["#modeDrive", "#driveQuick", "#homeDrive"]) { const el = $(sel); if (el) el.checked = on; }
+  if (on) { showView("read"); openDrive(); } else if (!$("#drive").hidden) closeDrive();
+}
+$("#playBtn").hidden = !canSpeak;
+$("#playBtn").addEventListener("click", () => reader.toggle());
+$("#quickRate").addEventListener("change", (e) => setRate(Number(e.target.value)));
+$("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
+{
+  // iPhone and iPad ignore the volume a web page asks for, so point to the side buttons instead.
+  const apple = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  $("#volumeCtl").hidden = apple || !canSpeak;
+  $("#volumeNote").hidden = !apple || !canSpeak;
+  $("#volume").value = store.get("voiceVolume") ?? 1;
+  $("#volume").addEventListener("input", (e) => { reader.volume = Number(e.target.value); store.set("voiceVolume", reader.volume); });
+}
+
 /* ---------- Start ---------- */
 applyAppearance();
 syncVersionSwitch();
 initSettings();
+setRate(store.get("voiceRate"));
+$("#driveQuick").checked = driveOn();
 const start = store.get("last");
 openChapter(start.book, start.chapter);
 if (driveOn()) openDrive();
 updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
-if (!store.get("activePath") && !store.totalRead()) showView("path"); // first run: choose a path
+showView("home"); // the app always opens on Home, where the study paths are
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
