@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bible Study</title>
+  <meta name="description" content="A calm personal Bible study app.">
+  <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1b19" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Bible Study">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="ref-button" id="refButton" aria-label="Choose book and chapter">
+      <span id="refLabel">John 1</span>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="version-switch" role="group" aria-label="Bible version">
+      <button data-version="NASB" aria-pressed="true">NASB</button>
+      <button data-version="ESV" aria-pressed="false">ESV</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Read -->
+    <section id="view-read" class="view" aria-label="Read">
+      <article class="reader" id="reader" aria-live="polite"></article>
+      <div class="reader-actions">
+        <button class="mark-read" id="markRead" aria-pressed="false">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Mark chapter read</span>
+        </button>
+        <a class="quiet-link" id="gatewayLink" target="_blank" rel="noopener">Open on Bible Gateway</a>
+      </div>
+      <nav class="chapter-nav" aria-label="Chapter navigation">
+        <button id="prevCh" aria-label="Previous chapter">‹ <span></span></button>
+        <button id="nextCh" aria-label="Next chapter"><span></span> ›</button>
+      </nav>
+      <p class="copyright" id="copyright"></p>
+    </section>
+
+    <!-- Books / tracker -->
+    <section id="view-books" class="view" aria-label="Books" hidden>
+      <div class="overall">
+        <div class="overall-row"><h1>What I've read</h1><span id="overallCount"></span></div>
+        <div class="bar"><span id="overallBar"></span></div>
+      </div>
+      <div id="bookList"></div>
+    </section>
+
+    <!-- Study Path -->
+    <section id="view-path" class="view" aria-label="Study Path" hidden>
+      <h1>Study Path</h1>
+      <p class="muted">Three ways through the whole Bible, each with its own progress.</p>
+      <div class="path-cards">
+        <div class="card"><h2>Timeline</h2><p>Read the books in the order events happened.</p><span class="soon">Coming next</span></div>
+        <div class="card"><h2>Connections</h2><p>Read books that reference or explain each other side by side.</p><span class="soon">Coming next</span></div>
+        <div class="card"><h2>Audience</h2><p>Read grouped by who each book was first written to.</p><span class="soon">Coming next</span></div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="view-settings" class="view" aria-label="Settings" hidden>
+      <h1>Settings</h1>
+
+      <div class="card">
+        <h2>Bible text</h2>
+        <label class="field">API.Bible key <span class="muted">(for NASB)</span>
+          <input id="apiBibleKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+        </label>
+        <label class="field">NASB edition
+          <select id="nasbSelect"><option value="">Pick automatically</option></select>
+        </label>
+        <button class="small" id="loadVersions">Load versions on my plan</button>
+        <label class="field">ESV key
+          <input id="esvKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+        </label>
+        <p class="muted small-print">Keys are saved on this device only. Get them free at api.bible and api.esv.org.</p>
+      </div>
+
+      <div class="card">
+        <h2>Reading</h2>
+        <label class="field">Text size
+          <input id="textSize" type="range" min="15" max="28" step="1">
+        </label>
+        <label class="field">Appearance
+          <select id="theme">
+            <option value="auto">Match my device</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Backup</h2>
+        <p class="muted small-print">Save your progress to a file, then open it on your other device. Keys are not included.</p>
+        <div class="row">
+          <button class="small" id="exportBtn">Save backup file</button>
+          <label class="small button-like">Restore from file<input id="importFile" type="file" accept="application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Book & chapter picker -->
+  <dialog id="picker" aria-label="Choose a passage">
+    <div class="picker-head">
+      <button class="quiet-link" id="pickerBack" hidden>‹ Books</button>
+      <h2 id="pickerTitle">Books</h2>
+      <button class="quiet-link" id="pickerClose">Done</button>
+    </div>
+    <div id="pickerBody"></div>
+  </dialog>
+
+  <nav class="tabbar" aria-label="Sections">
+    <button data-view="read" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5v13c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z M12 6v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      <span>Read</span>
+    </button>
+    <button data-view="books">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M10 19V5M15 19v-7M20 19V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Progress</span>
+    </button>
+    <button data-view="path">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-6 11-2 14-14M5 19a1.5 1.5 0 1 0 0-.01M19 5a1.5 1.5 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Study Path</span>
+    </button>
+    <button data-view="settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
