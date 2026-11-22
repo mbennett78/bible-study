@@ -255,8 +255,14 @@
   <!-- Drive mode -->
   <div class="drive" id="drive" hidden>
     <div class="drive-top">
-      <button class="quiet-link" id="driveExit">Exit drive mode</button>
       <span id="driveListening" class="listening" hidden>Listening</span>
+    </div>
+    <div class="drive-nav">
+      <button id="driveHome" aria-label="Exit drive mode and go Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</button>
+      <button id="driveExit">Exit drive mode</button>
+      <button id="driveSettings" aria-label="Exit drive mode and open Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>Settings</button>
     </div>
     <p class="drive-ref" id="driveRef"></p>
     <p class="drive-status" id="driveStatus">Tap play to start</p>

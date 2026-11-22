@@ -412,6 +412,8 @@ $("#driveBack").addEventListener("click", () => reader.back());
 $("#driveNext").addEventListener("click", () => { const n = nextTarget(); if (n) { autoplayNext = true; openChapter(n.book, n.chapter); updateDrive(); } });
 $("#driveMark").addEventListener("click", toggleRead);
 $("#driveExit").addEventListener("click", () => setDrive(false));
+$("#driveHome").addEventListener("click", () => { setDrive(false); showView("home"); });
+$("#driveSettings").addEventListener("click", () => { setDrive(false); showView("settings"); });
 
 /* ---------- Archive of past walks ---------- */
 function archiveHtml() {
@@ -731,7 +733,7 @@ function initSettings() {
   $("#userName").value = store.get("name");
   $("#userName").addEventListener("change", (e) => { store.set("name", e.target.value.trim()); });
   $("#styleSelect").value = store.get("style");
-  $("#styleSelect").addEventListener("change", (e) => { store.set("style", e.target.value); applyAppearance(); mascotSay("Hello! I'm here to cheer you on."); });
+  $("#styleSelect").addEventListener("change", (e) => setStyle(e.target.value));
   $("#modePace").checked = store.get("yearPace");
   $("#modePace").addEventListener("change", (e) => { store.set("yearPace", e.target.checked); renderMargin(); });
   const lockStatus = () => { $("#lockStatus").textContent = store.get("journalLock") ? "Your journal is locked with a passcode." : "No passcode set."; };
@@ -850,6 +852,7 @@ function renderHome() {
   view.innerHTML = `${seaScene(store.get("style"))}
     <p class="home-hello">${esc(greeting())}</p>
     <p class="home-sub">How would you like to walk through the Bible today?</p>
+    <div class="look-chips" role="group" aria-label="Look">${[["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]].map(([v, l]) => `<button data-look="${v}" aria-pressed="${store.get("style") === v}">${l}</button>`).join("")}</div>
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     <h2 class="home-h">Your study paths</h2>
     ${pathCardsHtml()}
@@ -864,10 +867,18 @@ function renderHome() {
   $("#resumeBtn").addEventListener("click", () => { showView("read"); openChapter(resume.go.book, resume.go.chapter); });
   wirePathCards(view);
   wireArchive(view);
+  view.querySelectorAll("[data-look]").forEach((btn) => btn.addEventListener("click", () => setStyle(btn.dataset.look)));
   $("#homeBrowse").addEventListener("click", openPicker);
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
   $("#homeDrive").checked = driveOn();
   $("#homeDrive").addEventListener("change", (e) => setDrive(e.target.checked));
+}
+
+function setStyle(v) {
+  store.set("style", v);
+  $("#styleSelect").value = v;
+  applyAppearance();
+  mascotSay("Hello! I'm here to cheer you on.");
 }
 
 /* ---------- Finding a passage by typing ---------- */

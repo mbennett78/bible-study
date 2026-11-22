@@ -661,3 +661,12 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .mascot[hidden] { display: none; }
 .ref-button { white-space: nowrap; }
 @media (max-width: 430px) { .ref-button { font-size: 1.08rem; } .step-btn { padding: 4px 5px; } .topbar { gap: 6px; padding-left: 10px; padding-right: 10px; } }
+.drive-nav { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 10px; }
+.drive .drive-nav button { min-height: 64px; font-size: 1rem; font-weight: 600; background: var(--surface); color: var(--accent); border: 1.5px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px; }
+.drive .drive-nav #driveExit { background: var(--accent-soft); font-size: 1.05rem; }
+.drive-nav svg { width: 24px; height: 24px; }
+.drive-top:has(.listening[hidden]) { display: none; }
+.look-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: -6px 0 16px; }
+.look-chips button { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .85rem; }
+.look-chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+.path-card .pc-actions .quiet-link { padding: 8px 4px; }
