@@ -17,10 +17,15 @@
 </head>
 <body>
   <header class="topbar">
+    <div class="top-left">
+    <button class="icon-btn" id="marginBtn" aria-label="Show learning path" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </button>
     <button class="ref-button" id="refButton" aria-label="Choose book and chapter">
       <span id="refLabel">John 1</span>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
+    </div>
     <div class="top-actions">
     <button class="icon-btn" id="listenBtn" aria-label="Read aloud">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -31,6 +36,15 @@
     </div>
     </div>
   </header>
+
+  <aside class="margin" id="margin" aria-label="Learning path" hidden>
+    <div class="margin-head">
+      <strong id="marginTitle">Learning path</strong>
+      <button class="quiet-link" id="marginClose">Close</button>
+    </div>
+    <div class="margin-key"><span class="st done">✓</span> Done <span class="st part">◐</span> Started <span class="st none">○</span> Not yet</div>
+    <div id="marginBody"></div>
+  </aside>
 
   <main>
     <!-- Read -->
@@ -49,6 +63,17 @@
         <a class="quiet-link" id="gatewayLink" target="_blank" rel="noopener">Open on Bible Gateway</a>
       </div>
       <button class="next-in-path" id="nextInPath" hidden></button>
+
+      <div class="study-tools">
+        <button class="tool-card" id="triviaBtn">
+          <span class="tool-icon" aria-hidden="true">?</span>
+          <span><strong>Chapter trivia</strong><small id="triviaHint">Test what you remember</small></span>
+        </button>
+        <details class="tool-card journal" id="journalBox">
+          <summary><span class="tool-icon" aria-hidden="true">✎</span><span><strong>My journal</strong><small id="journalHint">Thoughts and feelings on this chapter</small></span></summary>
+          <div id="journalInner"></div>
+        </details>
+      </div>
       <nav class="chapter-nav" aria-label="Chapter navigation">
         <button id="prevCh" aria-label="Previous chapter">‹ <span></span></button>
         <button id="nextCh" aria-label="Next chapter"><span></span> ›</button>
@@ -63,8 +88,10 @@
         <button data-seg="progress" aria-selected="true">Progress</button>
         <button data-seg="history" aria-selected="false">History</button>
         <button data-seg="favorites" aria-selected="false">Favorites</button>
+        <button data-seg="journal" aria-selected="false">Journal</button>
       </div>
       <div data-seg-panel="progress">
+        <div class="knowledge" id="knowledge"></div>
         <div class="overall">
           <div class="overall-row"><h2>Whole Bible</h2><span id="overallCount"></span></div>
           <div class="bar"><span id="overallBar"></span></div>
@@ -73,6 +100,7 @@
       </div>
       <div data-seg-panel="history" hidden><div id="historyList"></div></div>
       <div data-seg-panel="favorites" hidden><div id="favList"></div></div>
+      <div data-seg-panel="journal" hidden><div id="journalList"></div></div>
     </section>
 
     <!-- Study Path -->
@@ -92,7 +120,36 @@
       </div>
 
       <div class="card">
+        <h2>You</h2>
+        <label class="field">Your name
+          <input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you">
+        </label>
+        <label class="field">Look and feel
+          <select id="styleSelect">
+            <option value="sage">Sage (calm green)</option>
+            <option value="feminine">Classic feminine</option>
+            <option value="masculine">Classic masculine</option>
+            <option value="animated">Animated (with friendly characters)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Journal passcode</h2>
+        <p class="muted small-print" id="lockStatus"></p>
+        <label class="field">New passcode
+          <input id="lockCode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4 to 8 digits">
+        </label>
+        <div class="row">
+          <button class="small" id="lockSet">Set passcode</button>
+          <button class="small" id="lockClear">Remove passcode</button>
+        </div>
+        <p class="muted small-print">The passcode hides your journal on screen. It isn't encryption: someone with your unlocked device and technical know-how could still reach the saved text.</p>
+      </div>
+
+      <div class="card">
         <h2>Modes</h2>
+        <label class="switch-row"><span>One-year pace<small>Suggest today's reading to finish your path in a year, and adjust if you fall behind</small></span><input type="checkbox" id="modePace" role="switch"></label>
         <label class="switch-row"><span>Drive mode<small>Big buttons, reads aloud chapter after chapter</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
         <label class="switch-row"><span>Voice commands<small>Say "next", "pause", "play", "repeat" or "mark read"</small></span><input type="checkbox" id="modeVoice" role="switch"></label>
         <label class="field">Reading speed
@@ -149,6 +206,30 @@
     </div>
     <div id="pickerBody"></div>
   </dialog>
+
+  <!-- Trivia -->
+  <dialog id="trivia" aria-label="Bible trivia">
+    <div class="picker-head">
+      <span></span>
+      <h2 id="triviaTitle">Bible trivia</h2>
+      <button class="quiet-link" id="triviaClose">Close</button>
+    </div>
+    <div id="triviaBody" class="trivia-body"></div>
+  </dialog>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="mascot" id="mascot" hidden aria-live="polite">
+    <div class="bubble" id="mascotSay"></div>
+    <svg viewBox="0 0 80 70" aria-hidden="true" class="lamb">
+      <ellipse cx="40" cy="44" rx="26" ry="18" class="wool"/>
+      <circle cx="22" cy="36" r="9" class="wool"/><circle cx="34" cy="30" r="10" class="wool"/><circle cx="48" cy="30" r="10" class="wool"/><circle cx="58" cy="38" r="9" class="wool"/>
+      <ellipse cx="62" cy="40" rx="10" ry="9" class="face"/>
+      <ellipse cx="55" cy="35" rx="4" ry="2.5" class="face" transform="rotate(-30 55 35)"/>
+      <circle cx="65" cy="38" r="1.6" class="eye"/>
+      <path d="M62 45q3 2 6 0" class="smile"/>
+      <rect x="26" y="58" width="5" height="10" rx="2" class="face"/><rect x="48" y="58" width="5" height="10" rx="2" class="face"/>
+    </svg>
+  </div>
 
   <!-- Drive mode -->
   <div class="drive" id="drive" hidden>

@@ -17,7 +17,14 @@ const defaults = {
   voiceRate: 1,
   activePath: "",           // "chronological" | "audience" | "themes"
   pathStarted: {},          // { chronological: iso }
-  pathRead: {},             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
+  pathRead: {},
+  name: "",                 // shown in greetings
+  style: "sage",            // "sage" | "feminine" | "masculine" | "animated"
+  margin: true,             // learning path margin open
+  yearPace: true,           // suggest a daily reading to finish a path in a year
+  journal: {},              // { "JHN.3": { text, updated } }
+  journalLock: "",          // SHA-256 of the passcode, or ""
+  trivia: { answered: 0, correct: 0, sessions: [], recent: [] },             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
 };
 
 const REVISIT_GAP_MS = 30 * 60 * 1000; // reopening within 30 minutes counts as the same visit
@@ -83,6 +90,26 @@ export const store = {
   startPath(pathId) {
     state.activePath = pathId;
     if (!state.pathStarted[pathId]) state.pathStarted = { ...state.pathStarted, [pathId]: new Date().toISOString() };
+    save();
+  },
+  journalFor: (book, ch) => state.journal[`${book}.${ch}`]?.text || "",
+  setJournal(book, ch, text) {
+    const k = `${book}.${ch}`;
+    const j = { ...state.journal };
+    if (text.trim()) j[k] = { text, updated: new Date().toISOString() }; else delete j[k];
+    state.journal = j;
+    save();
+  },
+  allJournal: () => Object.entries(state.journal).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.updated.localeCompare(a.updated)),
+  recordTrivia(results, label) {
+    const t = state.trivia;
+    const correct = results.filter((r) => r.right).length;
+    state.trivia = {
+      answered: t.answered + results.length,
+      correct: t.correct + correct,
+      sessions: [{ at: new Date().toISOString(), score: correct, total: results.length, label }, ...t.sessions].slice(0, 100),
+      recent: [...results.map((r) => r.id), ...t.recent].slice(0, 40),
+    };
     save();
   },
   setMode(name, on) { state.modes = { ...state.modes, [name]: on }; save(); },

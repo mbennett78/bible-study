@@ -1,6 +1,6 @@
 // Caches the app itself so it opens offline. Scripture text is not cached here.
-const VERSION = "bible-study-shell-v3";
-const SHELL = ["./", "index.html", "styles.css", "js/app.js", "js/books.js", "js/store.js", "js/text.js", "js/paths.js", "js/speech.js",
+const VERSION = "bible-study-shell-v4";
+const SHELL = ["./", "index.html", "styles.css", "js/app.js", "js/books.js", "js/store.js", "js/text.js", "js/paths.js", "js/speech.js", "js/trivia.js", "js/trivia-bank.js",
   "manifest.webmanifest", "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png"];
 
 self.addEventListener("install", (e) => {
