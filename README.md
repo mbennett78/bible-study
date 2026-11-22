@@ -1,6 +1,8 @@
 # Bible Study
 
-A calm personal Bible study app for iPhone and iPad. It is a web app: open it in Safari, tap Share, then **Add to Home Screen**, and it opens full screen like a normal app.
+A calm personal Bible study app for iPhone, iPad and Android. It is a web app that installs to the home screen and opens full screen like a normal app:
+- **iPhone/iPad:** open it in Safari, tap Share, then **Add to Home Screen**.
+- **Android:** open it in Chrome, then tap **Install app** in Settings (or ⋮ menu → Install app).
 
 ## What works now
 - Reader with NASB by default (API.Bible) and an ESV switch (api.esv.org)

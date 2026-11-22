@@ -1,7 +1,7 @@
 // Caches the app itself so it opens offline. Scripture text is not cached here.
-const VERSION = "bible-study-shell-v1";
+const VERSION = "bible-study-shell-v2";
 const SHELL = ["./", "index.html", "styles.css", "js/app.js", "js/books.js", "js/store.js", "js/text.js",
-  "manifest.webmanifest", "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png"];
+  "manifest.webmanifest", "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

@@ -224,6 +224,30 @@ initSettings();
 const start = store.get("last");
 openChapter(start.book, start.chapter);
 
+/* ---------- Home-screen install ---------- */
+const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isApple = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/.test(navigator.userAgent);
+if (standalone) $("#installCard").hidden = true;
+else {
+  $("#installIos").hidden = isAndroid;
+  $("#installAndroid").hidden = isApple;
+}
+let installEvent = null;
+window.addEventListener("beforeinstallprompt", (e) => { // Chrome on Android offers this
+  e.preventDefault();
+  installEvent = e;
+  $("#installBtn").hidden = false;
+});
+$("#installBtn").addEventListener("click", async () => {
+  if (!installEvent) return;
+  installEvent.prompt();
+  await installEvent.userChoice;
+  installEvent = null;
+  $("#installBtn").hidden = true;
+});
+window.addEventListener("appinstalled", () => { $("#installCard").hidden = true; });
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
