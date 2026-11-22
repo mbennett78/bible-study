@@ -21,23 +21,34 @@
       <span id="refLabel">John 1</span>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
+    <div class="top-actions">
+    <button class="icon-btn" id="listenBtn" aria-label="Read aloud">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <div class="version-switch" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
       <button data-version="ESV" aria-pressed="false">ESV</button>
+    </div>
     </div>
   </header>
 
   <main>
     <!-- Read -->
     <section id="view-read" class="view" aria-label="Read">
+      <div class="path-banner" id="pathBanner" hidden></div>
+      <p class="visit-line" id="visitLine"></p>
       <article class="reader" id="reader" aria-live="polite"></article>
       <div class="reader-actions">
         <button class="mark-read" id="markRead" aria-pressed="false">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>Mark chapter read</span>
         </button>
+        <button class="fav-btn" id="favBtn" aria-pressed="false" aria-label="Favorite">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </button>
         <a class="quiet-link" id="gatewayLink" target="_blank" rel="noopener">Open on Bible Gateway</a>
       </div>
+      <button class="next-in-path" id="nextInPath" hidden></button>
       <nav class="chapter-nav" aria-label="Chapter navigation">
         <button id="prevCh" aria-label="Previous chapter">‹ <span></span></button>
         <button id="nextCh" aria-label="Next chapter"><span></span> ›</button>
@@ -47,22 +58,26 @@
 
     <!-- Books / tracker -->
     <section id="view-books" class="view" aria-label="Books" hidden>
-      <div class="overall">
-        <div class="overall-row"><h1>What I've read</h1><span id="overallCount"></span></div>
-        <div class="bar"><span id="overallBar"></span></div>
+      <h1>My study</h1>
+      <div class="segments" role="tablist">
+        <button data-seg="progress" aria-selected="true">Progress</button>
+        <button data-seg="history" aria-selected="false">History</button>
+        <button data-seg="favorites" aria-selected="false">Favorites</button>
       </div>
-      <div id="bookList"></div>
+      <div data-seg-panel="progress">
+        <div class="overall">
+          <div class="overall-row"><h2>Whole Bible</h2><span id="overallCount"></span></div>
+          <div class="bar"><span id="overallBar"></span></div>
+        </div>
+        <div id="bookList"></div>
+      </div>
+      <div data-seg-panel="history" hidden><div id="historyList"></div></div>
+      <div data-seg-panel="favorites" hidden><div id="favList"></div></div>
     </section>
 
     <!-- Study Path -->
     <section id="view-path" class="view" aria-label="Study Path" hidden>
-      <h1>Study Path</h1>
-      <p class="muted">Three ways through the whole Bible, each with its own progress.</p>
-      <div class="path-cards">
-        <div class="card"><h2>Timeline</h2><p>Read the books in the order events happened.</p><span class="soon">Coming next</span></div>
-        <div class="card"><h2>Connections</h2><p>Read books that reference or explain each other side by side.</p><span class="soon">Coming next</span></div>
-        <div class="card"><h2>Audience</h2><p>Read grouped by who each book was first written to.</p><span class="soon">Coming next</span></div>
-      </div>
+      <div id="pathView"></div>
     </section>
 
     <!-- Settings -->
@@ -74,6 +89,15 @@
         <button class="small" id="installBtn" hidden>Install app</button>
         <p class="muted small-print" id="installIos">On iPhone or iPad: open this page in Safari, tap the Share button, then <strong>Add to Home Screen</strong>.</p>
         <p class="muted small-print" id="installAndroid">On Android: open this page in Chrome, tap the ⋮ menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</p>
+      </div>
+
+      <div class="card">
+        <h2>Modes</h2>
+        <label class="switch-row"><span>Drive mode<small>Big buttons, reads aloud chapter after chapter</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
+        <label class="switch-row"><span>Voice commands<small>Say "next", "pause", "play", "repeat" or "mark read"</small></span><input type="checkbox" id="modeVoice" role="switch"></label>
+        <label class="field">Reading speed
+          <input id="voiceRate" type="range" min="0.7" max="1.4" step="0.05">
+        </label>
       </div>
 
       <div class="card">
@@ -126,6 +150,22 @@
     <div id="pickerBody"></div>
   </dialog>
 
+  <!-- Drive mode -->
+  <div class="drive" id="drive" hidden>
+    <div class="drive-top">
+      <button class="quiet-link" id="driveExit">Exit drive mode</button>
+      <span id="driveListening" class="listening" hidden>Listening</span>
+    </div>
+    <p class="drive-ref" id="driveRef"></p>
+    <p class="drive-status" id="driveStatus">Tap play to start</p>
+    <button class="drive-play" id="drivePlay" aria-label="Play">Play</button>
+    <div class="drive-row">
+      <button id="driveBack">Back</button>
+      <button id="driveNext">Next chapter</button>
+    </div>
+    <button class="drive-mark" id="driveMark">Mark read</button>
+  </div>
+
   <nav class="tabbar" aria-label="Sections">
     <button data-view="read" aria-current="page">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5v13c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z M12 6v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -133,7 +173,7 @@
     </button>
     <button data-view="books">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M10 19V5M15 19v-7M20 19V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <span>Progress</span>
+      <span>My study</span>
     </button>
     <button data-view="path">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-6 11-2 14-14M5 19a1.5 1.5 0 1 0 0-.01M19 5a1.5 1.5 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
