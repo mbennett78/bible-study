@@ -25,8 +25,8 @@
   --accent: #8e5f66; --accent-soft: #f5e8e8; --line: #eee2e0; --text: #33282a; --muted: #8a7a7b; --warm: #c46f7c;
 }
 :root[data-style="masculine"] {
-  --page: #2f3d4c; --page-deep: #263240; --on-page: #eef1f4; --on-page-muted: #b9c3cd;
-  --accent: #2f4d6a; --accent-soft: #e6ecf2; --line: #e1e5ea; --text: #1f2731; --muted: #6b7684; --warm: #b08d57; --gold: #b08d57;
+  --page: #3b2b20; --page-deep: #2e2119; --on-page: #f7f1e7; --on-page-muted: #d6c3a5;
+  --bg: #fffdf9; --accent: #5a3e2b; --accent-soft: #efe3d0; --line: #e7dccb; --text: #2a1f18; --muted: #7d6b5c; --warm: #b8875a; --gold: #c9a978;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -427,3 +427,86 @@ details.tool-card summary::-webkit-details-marker { display: none; }
 @media (min-width: 1000px) { body.margin-open .tabbar { margin-left: 300px; } }
 .st.part { background: linear-gradient(90deg, var(--accent) 50%, var(--accent-soft) 50%); color: transparent; }
 .mascot .bubble { flex: 0 1 auto; }
+
+/* Illustrations: same drawings, recolored per look */
+.scene { display: block; width: calc(100% + 36px); max-width: none; height: auto; margin: -22px -18px 16px; border-radius: 24px 24px 0 0; }
+.scene .sky { fill: #eef3ea; }
+.scene .hill { fill: #cfdcc8; }
+.scene .sun { fill: #f2dca4; }
+.leaf, .canopy { fill: #7f9a76; }
+.canopy { opacity: .92; }
+.olive { fill: #4d5a3a; }
+.stem { fill: none; stroke: #6c7f5d; stroke-width: 2; stroke-linecap: round; }
+.trunk { fill: #8a6d55; stroke: #8a6d55; stroke-linecap: round; }
+.fig-leaf { fill: #6f8f5e; }
+.fig { fill: #7a4a63; }
+.wool { fill: #fffaf2; stroke: #d9d2c4; stroke-width: 1.2; }
+.face { fill: #5b4a42; }
+.eye { fill: #fff; }
+.eye-dark { fill: #2b2420; }
+.donkey { fill: #a39486; }
+.muzzle { fill: #e6ddd2; }
+.ear { fill: #8f8174; }
+.mane, .tail { fill: none; stroke: #6d6157; stroke-width: 3; stroke-linecap: round; }
+.fish { fill: #6f8aa0; }
+.hull { fill: #6b4a33; }
+.mast, .line { fill: none; stroke: #4a3526; stroke-width: 2; }
+.line { stroke-width: 1; stroke-dasharray: 2 2; }
+.sail { fill: #f6efe2; stroke: #c9b79c; }
+.fisher { fill: #4a3526; }
+.wave { fill: none; stroke: #9fb6c4; stroke-width: 2; stroke-linecap: round; }
+.arch { fill: none; stroke: #d7b9a4; stroke-width: 6; }
+.bloom { fill: #e5a9b0; }
+.bloom-center { fill: #f3d88f; }
+.fruit { fill: #b5525c; }
+.flourish { display: block; width: 160px; height: 36px; margin: 18px auto 0; opacity: .9; }
+
+:root[data-style="feminine"] .scene .sky { fill: #f8eeec; }
+:root[data-style="feminine"] .scene .hill { fill: #e8d6cf; }
+:root[data-style="feminine"] .leaf, :root[data-style="feminine"] .canopy { fill: #8ea283; }
+
+:root[data-style="masculine"] .scene .sky { fill: #efe4d3; }
+:root[data-style="masculine"] .scene .sun { fill: #e3c999; }
+:root[data-style="masculine"] .fish { fill: #6b4a33; }
+:root[data-style="masculine"] .wave { stroke: #a88b6b; }
+:root[data-style="masculine"] .sail { fill: #ffffff; stroke: #b39c7d; }
+
+:root[data-style="animated"] .scene .sky { fill: #e9f4f6; }
+:root[data-style="animated"] .scene .hill { fill: #c6dcb8; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .scene .sky { fill: #2c3530; }
+  :root:not([data-theme="light"]) .scene .hill { fill: #3b4a40; }
+  :root:not([data-theme="light"]) .scene .sun { fill: #8f7f58; }
+}
+:root[data-theme="dark"] .scene .sky { fill: #2c3530; }
+:root[data-theme="dark"] .scene .hill { fill: #3b4a40; }
+:root[data-theme="dark"] .scene .sun { fill: #8f7f58; }
+
+/* Gentle motion: olive branches sway in Feminine, the boat rocks in Masculine, friends move in Animated */
+.sway, .bob, .swish, .swim, .rock { transform-box: fill-box; transform-origin: 50% 100%; }
+:root[data-style="feminine"] .sway { animation: sway 5s ease-in-out infinite; }
+:root[data-style="animated"] .sway { animation: sway 4s ease-in-out infinite; }
+:root[data-style="animated"] .bob { animation: bobSvg 2.6s ease-in-out infinite; }
+:root[data-style="animated"] .swish { animation: swish 1.6s ease-in-out infinite; transform-origin: 0 0; }
+:root[data-style="masculine"] .rock { animation: rock 6s ease-in-out infinite; }
+:root[data-style="masculine"] .swim, :root[data-style="animated"] .swim { animation: swim 5s ease-in-out infinite; }
+@keyframes sway { 50% { transform: rotate(2.5deg); } }
+@keyframes bobSvg { 50% { transform: translateY(-3px); } }
+@keyframes swish { 50% { transform: rotate(14deg); } }
+@keyframes rock { 50% { transform: rotate(-2deg); } }
+@keyframes swim { 50% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .sway, .bob, .swish, .swim, .rock { animation: none !important; } }
+
+.mascot .friend { width: 84px; height: 68px; pointer-events: auto; cursor: pointer; animation: bob 3s ease-in-out infinite; }
+
+/* Archive of past walks */
+.archive { margin-top: 24px; }
+.archive h2 { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; }
+.archive-row { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; }
+.archive-row small { color: var(--muted); font-size: .8rem; grid-column: 1 / -1; }
+.archive-row .tag { color: var(--accent); font-size: .8rem; }
+.walk-again { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.confirm-box { background: var(--accent-soft); border-radius: 14px; padding: 14px; margin-top: 10px; font-size: .9rem; }
+.confirm-box .row { margin-top: 10px; }
+.readonly-note { background: var(--accent-soft); color: var(--accent); border-radius: 12px; padding: 10px 12px; font-size: .85rem; margin-bottom: 12px; }

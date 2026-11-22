@@ -24,7 +24,8 @@ const defaults = {
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, updated } }
   journalLock: "",          // SHA-256 of the passcode, or ""
-  trivia: { answered: 0, correct: 0, sessions: [], recent: [] },             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
+  trivia: { answered: 0, correct: 0, sessions: [], recent: [] },
+  archives: [],             // past walks: { id, pathId, started, ended, reads, finished }             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
 };
 
 const REVISIT_GAP_MS = 30 * 60 * 1000; // reopening within 30 minutes counts as the same visit
@@ -111,6 +112,16 @@ export const store = {
       recent: [...results.map((r) => r.id), ...t.recent].slice(0, 40),
     };
     save();
+  },
+  // Saves the current walk through a path to the archive and starts it fresh.
+  archivePath(pathId) {
+    const reads = state.pathRead[pathId] || {};
+    const entry = { id: `${pathId}-${Date.now()}`, pathId, started: state.pathStarted[pathId] || new Date().toISOString(), ended: new Date().toISOString(), reads };
+    state.archives = [entry, ...state.archives];
+    state.pathRead = { ...state.pathRead, [pathId]: {} };
+    state.pathStarted = { ...state.pathStarted, [pathId]: new Date().toISOString() };
+    save();
+    return entry;
   },
   setMode(name, on) { state.modes = { ...state.modes, [name]: on }; save(); },
   exportJSON: () => JSON.stringify({ ...state, apiBibleKey: "", esvKey: "" }, null, 2),

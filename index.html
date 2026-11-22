@@ -52,6 +52,7 @@
       <div class="path-banner" id="pathBanner" hidden></div>
       <p class="visit-line" id="visitLine"></p>
       <article class="reader" id="reader" aria-live="polite"></article>
+      <div id="flourish"></div>
       <div class="reader-actions">
         <button class="mark-read" id="markRead" aria-pressed="false">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -83,6 +84,7 @@
 
     <!-- Books / tracker -->
     <section id="view-books" class="view" aria-label="Books" hidden>
+      <div id="studyScene"></div>
       <h1>My study</h1>
       <div class="segments" role="tablist">
         <button data-seg="progress" aria-selected="true">Progress</button>
@@ -220,15 +222,7 @@
   <canvas id="confetti" aria-hidden="true"></canvas>
   <div class="mascot" id="mascot" hidden aria-live="polite">
     <div class="bubble" id="mascotSay"></div>
-    <svg viewBox="0 0 80 70" aria-hidden="true" class="lamb">
-      <ellipse cx="40" cy="44" rx="26" ry="18" class="wool"/>
-      <circle cx="22" cy="36" r="9" class="wool"/><circle cx="34" cy="30" r="10" class="wool"/><circle cx="48" cy="30" r="10" class="wool"/><circle cx="58" cy="38" r="9" class="wool"/>
-      <ellipse cx="62" cy="40" rx="10" ry="9" class="face"/>
-      <ellipse cx="55" cy="35" rx="4" ry="2.5" class="face" transform="rotate(-30 55 35)"/>
-      <circle cx="65" cy="38" r="1.6" class="eye"/>
-      <path d="M62 45q3 2 6 0" class="smile"/>
-      <rect x="26" y="58" width="5" height="10" rx="2" class="face"/><rect x="48" y="58" width="5" height="10" rx="2" class="face"/>
-    </svg>
+    <div id="friendSlot"></div>
   </div>
 
   <!-- Drive mode -->

@@ -4,6 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl } from "./text.js";
 import { PATHS, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
+import { scene, flourish, friend } from "./art.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -58,6 +59,8 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   renderJournal();
   updateTriviaHint();
   renderMargin();
+  friendWhich = friendWhich === "lamb" ? "donkey" : "lamb";
+  if (store.get("style") === "animated") $("#friendSlot").innerHTML = friend(friendWhich);
   mascotSay(mascotLineFor(book, chapter));
   reader.stop();
   $("#listenBtn").setAttribute("aria-pressed", "false");
@@ -275,13 +278,15 @@ function renderPath() {
   const view = $("#pathView");
   const active = store.get("activePath");
   if (!active) {
-    view.innerHTML = `<h1>Choose your study path</h1>
+    view.innerHTML = `${scene(store.get("style"))}<p class="greeting">${esc(greeting())}</p><h1>Choose your study path</h1>
       <p class="muted">Each path takes you through the whole Bible, all 66 books and 1,189 chapters, in a different order. You can switch any time, and each path keeps its own progress.</p>
       <div class="path-choice">${PATHS.map((p) => `<div class="card">
         <h2>${esc(p.name)}</h2><p>${esc(p.blurb)}</p>
         <details><summary>See the ${p.stages.length} stages</summary><ol>${p.stages.map((s) => `<li>${esc(s.title)}</li>`).join("")}</ol></details>
         <button class="small" data-start="${p.id}">${store.pathReadCount(p.id) ? "Continue" : "Start"} this path</button></div>`).join("")}</div>`;
     view.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => { store.startPath(b.dataset.start); renderPath(); updatePathBits(); }));
+    view.insertAdjacentHTML("beforeend", archiveHtml());
+    wireArchive(view);
     return;
   }
   const p = PATH_BY_ID[active];
@@ -293,7 +298,7 @@ function renderPath() {
   const yearPace = Math.floor((days / 365) * list.length);
   const paceText = done >= yearPace ? "You're on pace to finish within a year." : `${yearPace - done} chapters behind a one-year pace. No pressure: go at your own pace.`;
   const plan = store.get("yearPace") ? todayPlan(active) : null;
-  view.innerHTML = `<div class="path-head">
+  view.innerHTML = `${scene(store.get("style"))}<div class="path-head">
       <p class="greeting">${esc(greeting())}</p>
       <p class="muted small-print">Your study path</p>
       <h1>${esc(p.name)}</h1>
@@ -314,7 +319,19 @@ function renderPath() {
       </details>`;
     }).join("")}</div>
     <p class="path-note">${esc(p.note)}</p>
-    <button class="quiet-link" id="switchPath">Switch to a different path</button>`;
+    <div class="walk-again">
+      <button class="small" id="walkAgain">Walk this path again</button>
+      <button class="quiet-link" id="switchPath">Switch to a different path</button>
+    </div>
+    <div id="walkConfirm"></div>
+    ${archiveHtml()}`;
+  wireArchive(view);
+  $("#walkAgain").addEventListener("click", () => {
+    $("#walkConfirm").innerHTML = `<div class="confirm-box">This saves your current walk (${done} of ${list.length} chapters, started ${fmtDate(started)}) to your archive and starts the ${esc(p.name)} path fresh. Your journal, favorites and history stay as they are.
+      <div class="row"><button class="small" id="walkYes">Archive and start again</button><button class="quiet-link" id="walkNo">Keep going instead</button></div></div>`;
+    $("#walkYes").addEventListener("click", () => { store.archivePath(active); renderPath(); updatePathBits(); confetti(); });
+    $("#walkNo").addEventListener("click", () => { $("#walkConfirm").innerHTML = ""; });
+  });
   $("#continuePath")?.addEventListener("click", () => { showView("read"); openChapter(next.book, next.chapter); });
   view.querySelectorAll("[data-b]").forEach((b) => b.addEventListener("click", () => { showView("read"); openChapter(b.dataset.b, Number(b.dataset.c)); }));
   $("#switchPath").addEventListener("click", () => { store.set("activePath", ""); renderPath(); updatePathBits(); });
@@ -393,6 +410,43 @@ $("#driveBack").addEventListener("click", () => reader.back());
 $("#driveNext").addEventListener("click", () => { const n = nextTarget(); if (n) { autoplayNext = true; openChapter(n.book, n.chapter); updateDrive(); } });
 $("#driveMark").addEventListener("click", toggleRead);
 $("#driveExit").addEventListener("click", () => { closeDrive(); store.setMode("drive", false); $("#modeDrive").checked = false; });
+
+/* ---------- Archive of past walks ---------- */
+function archiveHtml() {
+  const list = store.get("archives");
+  if (!list.length) return "";
+  return `<div class="archive"><h2>My past walks</h2>${list.map((a) => {
+    const total = pathChapters(a.pathId).length;
+    const n = Object.keys(a.reads).length;
+    return `<button class="archive-row" data-archive="${esc(a.id)}"><strong>${esc(PATH_BY_ID[a.pathId].name)} path</strong><span class="tag">${n === total ? "Finished ✓" : `${n} of ${total}`}</span><small>${fmtDate(a.started)} to ${fmtDate(a.ended)}</small></button>`;
+  }).join("")}</div>`;
+}
+function wireArchive(root) {
+  root.querySelectorAll("[data-archive]").forEach((b) => b.addEventListener("click", () => showArchive(b.dataset.archive)));
+}
+function showArchive(id) {
+  const a = store.get("archives").find((x) => x.id === id);
+  if (!a) return;
+  const p = PATH_BY_ID[a.pathId];
+  const list = pathChapters(a.pathId);
+  const inRange = (iso) => iso >= a.started && iso <= a.ended;
+  const journals = store.allJournal().filter((j) => inRange(j.updated)).length;
+  const rounds = store.get("trivia").sessions.filter((t) => inRange(t.at));
+  const view = $("#pathView");
+  view.innerHTML = `${scene(store.get("style"))}
+    <button class="quiet-link" id="archiveBack">‹ Back to my path</button>
+    <h1>${esc(p.name)} path</h1>
+    <p class="readonly-note">A past walk from ${fmtDate(a.started)} to ${fmtDate(a.ended)}: ${Object.keys(a.reads).length} of ${list.length} chapters read${journals ? `, ${journals} journal entr${journals === 1 ? "y" : "ies"} written` : ""}${rounds.length ? `, ${rounds.length} trivia round${rounds.length === 1 ? "" : "s"} played` : ""}. Tap any chapter to read it again.</p>
+    ${p.stages.map((s, si) => {
+      const chs = list.filter((c) => c.stage === si);
+      const n = chs.filter((c) => a.reads[`${c.book}.${c.chapter}`]).length;
+      return `<details class="stage${n === chs.length ? " is-done" : ""}"><summary><strong>${si + 1}. ${esc(s.title)}</strong><span class="count">${n}/${chs.length}</span><div class="bar"><span style="width:${(n / chs.length) * 100}%"></span></div></summary>
+        <div class="chapter-grid">${chs.map((c) => `<button class="${a.reads[`${c.book}.${c.chapter}`] ? "is-read" : ""}" data-b="${c.book}" data-c="${c.chapter}" aria-label="${esc(BOOK_BY_ID[c.book].name)} ${c.chapter}">${c.chapter}</button>`).join("")}</div></details>`;
+    }).join("")}`;
+  $("#archiveBack").addEventListener("click", renderPath);
+  view.querySelectorAll("[data-b]").forEach((b) => b.addEventListener("click", () => { showView("read"); openChapter(b.dataset.b, Number(b.dataset.c)); }));
+  window.scrollTo(0, 0);
+}
 
 /* ---------- Greeting & one-year pace ---------- */
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -639,7 +693,13 @@ function confetti() {
 
 /* ---------- Friendly lamb (Animated style) ---------- */
 let mascotTimer;
-function updateMascot() { $("#mascot").hidden = store.get("style") !== "animated"; }
+let friendWhich = "lamb";
+function updateMascot() {
+  $("#mascot").hidden = store.get("style") !== "animated";
+  $("#friendSlot").innerHTML = friend(friendWhich);
+  $("#flourish").innerHTML = flourish(store.get("style"));
+  $("#studyScene").innerHTML = scene(store.get("style"));
+}
 function mascotSay(text) {
   if (store.get("style") !== "animated" || !text) return;
   $("#mascotSay").textContent = text;
@@ -657,7 +717,9 @@ function mascotLineFor(book, chapter) {
     "Take your time. I'll be right here.",
   ]);
 }
-$("#mascot").addEventListener("click", () => mascotSay(pick(["Baa! You're doing great.", "Did you know sheep know their shepherd's voice? (John 10:4)", "Tap the trivia card when you finish a chapter!"])));
+$("#mascot").addEventListener("click", () => mascotSay(friendWhich === "donkey"
+  ? pick(["Hee-haw! Keep going!", "Jesus rode a donkey into Jerusalem (John 12:14).", "Slow and steady wins the race."])
+  : pick(["Baa! You're doing great.", "Sheep know their shepherd's voice (John 10:4).", "Tap the trivia card when you finish a chapter!"])));
 
 /* ---------- Settings ---------- */
 function initSettings() {
