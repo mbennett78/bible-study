@@ -23,9 +23,12 @@ const defaults = {
   style: "sage",            // "sage" | "feminine" | "masculine" | "animated"
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
-  journal: {},              // { "JHN.3": { text, updated } }
+  journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }
+  diary: {},                // daily life journal by date: { "2026-11-22": { text, prayer, gratitude, created, updated } }
   journalLock: "",          // SHA-256 of the passcode, or ""
   trivia: { answered: 0, correct: 0, sessions: [], recent: [] },
+  graphics: "full",         // "full" | "simple" (no cartoon faces or characters) | "none"
+  show: {},                 // features someone has switched off, e.g. { trivia: false }
   archives: [],             // past walks: { id, pathId, started, ended, reads, finished }             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
 };
 
@@ -95,13 +98,28 @@ export const store = {
     save();
   },
   journalFor: (book, ch) => state.journal[`${book}.${ch}`]?.text || "",
-  setJournal(book, ch, text) {
+  setJournal(book, ch, text) { this.setJournalField(book, ch, "text", text); },
+  // Each chapter's journal has three boxes: thoughts (text), prayers and gratitude.
+  journalEntry: (book, ch) => state.journal[`${book}.${ch}`] || null,
+  setJournalField(book, ch, field, value) {
     const k = `${book}.${ch}`;
+    const now = new Date().toISOString();
+    const e = { text: "", prayer: "", gratitude: "", created: now, ...(state.journal[k] || {}), [field]: value, updated: now };
     const j = { ...state.journal };
-    if (text.trim()) j[k] = { text, updated: new Date().toISOString() }; else delete j[k];
+    if ((e.text || "").trim() || (e.prayer || "").trim() || (e.gratitude || "").trim()) j[k] = e; else delete j[k];
     state.journal = j;
     save();
   },
+  diaryEntry: (day) => state.diary?.[day] || null,
+  setDiaryField(day, field, value) {
+    const now = new Date().toISOString();
+    const e = { text: "", prayer: "", gratitude: "", created: now, ...(state.diary?.[day] || {}), [field]: value, updated: now };
+    const d = { ...(state.diary || {}) };
+    if ((e.text || "").trim() || (e.prayer || "").trim() || (e.gratitude || "").trim()) d[day] = e; else delete d[day];
+    state.diary = d;
+    save();
+  },
+  allDiary: () => Object.entries(state.diary || {}).map(([day, v]) => ({ day, ...v })).sort((a, b) => b.day.localeCompare(a.day)),
   allJournal: () => Object.entries(state.journal).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.updated.localeCompare(a.updated)),
   recordTrivia(results, label) {
     const t = state.trivia;

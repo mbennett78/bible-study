@@ -775,3 +775,100 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .map-note { font-size: .9rem; background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; margin: 10px 0 6px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ev { filter: brightness(.85); } }
 .map-island { fill: #efe6d2; stroke: #7fa9b8; stroke-width: 1; }
+.staff { fill: none; stroke: #7a5638; stroke-width: 1.6; stroke-linecap: round; }
+.palm-leaf { fill: #6f8f5e; }
+.tent { fill: #8a6a4a; } .tent-door { fill: #4a3526; }
+.dune { fill: #e6cf9f; } .dune.near { fill: #d9bd86; }
+.cloud-pillar { fill: #fffaf0; opacity: .85; }
+.river { fill: none; stroke: #9cc7d4; stroke-width: 4; stroke-linecap: round; opacity: .9; }
+.hill.near { fill: color-mix(in srgb, var(--far-hill) 80%, #4d6b3e); }
+.passage-art .hill { fill: var(--far-hill); }
+.moon { fill: #f6efd2; } .sun-rise { fill: #f2c46d; opacity: .9; }
+.far-hill.night { fill: #2c3b5a; }
+.star { fill: #fff; animation: twinkle var(--tw, 3s) ease-in-out infinite; animation-delay: var(--td, 0s); }
+@keyframes twinkle { 50% { opacity: .3; } }
+.passage-caption { font: italic .78rem var(--serif); color: var(--muted); margin: -8px 0 12px; text-align: center; }
+
+/* ---------- Top bar on every page ---------- */
+.top-title { font-family: var(--serif); font-size: 1.2rem; padding: 6px 4px; display: none; }
+body:not([data-view="read"]) .top-title { display: inline; }
+body:not([data-view="read"]) .read-only { display: none !important; }
+.top-ref { display: inline-flex; align-items: center; }
+#listenBtn { display: none; }
+.menu-btn { color: var(--on-page); }
+
+/* Quick menu */
+#quickMenu { width: min(440px, calc(100vw - 24px)); max-height: 86vh; border: 0; border-radius: 22px; padding: 16px 18px 20px; background: var(--bg); color: var(--text); box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
+#quickMenu::backdrop { background: rgb(0 0 0 / .35); }
+.qm-h { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 16px 0 8px; }
+.qm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.qm-chips button, .qm-nav button { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 999px; padding: 8px 14px; font-size: .9rem; }
+.qm-chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+.qm-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
+.qm-nav button { padding: 10px 4px; border-radius: 12px; font-weight: 600; color: var(--accent); }
+
+/* Features someone switched off */
+body.hide-listen .listen-bar, body.hide-notes .notes-card, body.hide-trivia #triviaBtn,
+body.hide-journal #journalBox, body.hide-vines #vines, body.hide-pathmargin #marginBtn { display: none !important; }
+
+/* Pictures: Simple drops cartoon faces and characters and calms the motion; None removes pictures */
+:root[data-graphics="simple"] .blush, :root[data-graphics="simple"] .smile, :root[data-graphics="simple"] .fish-glint,
+:root[data-graphics="simple"] .eye-shine, :root[data-graphics="simple"] .nose, :root[data-graphics="simple"] .mascot { display: none !important; }
+:root[data-graphics="simple"] .blink:not(:has(.fish-eye)) { transform: scale(.6); transform-box: fill-box; transform-origin: center; }
+:root[data-graphics="simple"] .fish-eye { transform: scale(.55); transform-box: fill-box; transform-origin: center; }
+:root[data-graphics="simple"] .fish-pupil { transform: scale(.5); transform-box: fill-box; transform-origin: center; }
+:root[data-graphics="simple"] .blink, :root[data-graphics="simple"] .fish-wiggle, :root[data-graphics="simple"] .bubble-dot,
+:root[data-graphics="simple"] .nod, :root[data-graphics="simple"] .cast { animation: none !important; }
+:root[data-graphics="none"] .scene, :root[data-graphics="none"] .fish-strip, :root[data-graphics="none"] .flourish,
+:root[data-graphics="none"] #vines, :root[data-graphics="none"] .corner-sprig, :root[data-graphics="none"] .mascot,
+:root[data-graphics="none"] .passage-caption, :root[data-graphics="none"] .art-slot { display: none !important; }
+:root[data-graphics="none"] main { padding-left: 12px; padding-right: 12px; }
+/* Classic pictures: everything stays still */
+:root[data-graphics="simple"] svg *, :root[data-graphics="simple"] .mascot .friend { animation: none !important; }
+.quiet-check { position: fixed; left: 50%; top: 38%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; background: var(--surface); color: var(--gold); border: 2px solid var(--gold); display: grid; place-items: center; font-size: 2rem; z-index: 40; box-shadow: 0 8px 24px rgb(0 0 0 / .18); animation: fadeOut 1.4s ease forwards; pointer-events: none; }
+@keyframes fadeOut { 0% { opacity: 0; } 15%, 70% { opacity: 1; } 100% { opacity: 0; } }
+
+/* Journal boxes */
+.journal-box { display: block; margin-bottom: 12px; }
+.jb-label { display: block; font-weight: 600; font-size: .88rem; color: var(--accent); margin-bottom: 4px; }
+.journal-box textarea { width: 100%; }
+.jb-prayer textarea { background: color-mix(in srgb, var(--accent-soft) 45%, var(--surface)); }
+.jb-gratitude textarea { background: color-mix(in srgb, var(--gold) 10%, var(--surface)); }
+.answered { display: flex; align-items: center; gap: 6px; font-size: .85rem; margin-top: 4px; color: var(--muted); }
+.answered input { accent-color: var(--accent); width: 18px; height: 18px; }
+.journal-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.journal-filter button { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .85rem; }
+.journal-filter button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+.log-row em { font-style: normal; font-weight: 600; color: var(--accent); }
+.journal .journal-box textarea { margin-top: 0; }
+.journal .jb-prayer textarea, .journal .jb-gratitude textarea { min-height: 84px; }
+.journal-box:first-of-type { margin-top: 12px; }
+
+.passage-art .sun { fill: #f2d48a; }
+body.hide-diary #diaryToday, body.hide-diary .keepsake-row { display: none !important; }
+body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
+.diary-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+.diary-card h2 { font-family: var(--serif); font-weight: 500; font-size: 1.2rem; margin: 0 0 4px; }
+.diary-date { margin: 0; font-size: .8rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
+.diary-card textarea { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--text); font-family: var(--serif); font-size: 1rem; line-height: 1.6; resize: vertical; }
+.diary-card .saved { font-size: .75rem; color: var(--muted); }
+.diary-read { font-family: var(--serif); line-height: 1.6; margin: 0 0 12px; }
+.keepsake-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 16px; }
+.log-row.is-daily strong { color: var(--accent); }
+
+/* Keepsake journal book: only the book prints */
+.print-book[hidden] { display: none; }
+@media print {
+  body.printing > *:not(#printBook) { display: none !important; }
+  body.printing { background: #fff; padding: 0; color: #222; }
+  body.printing .print-book { display: block !important; font-family: var(--serif); color: #222; }
+  .pb-title { text-align: center; padding: 30vh 0 0; page-break-after: always; }
+  .pb-title h1 { font-size: 2.2rem; font-weight: 500; margin: 0 0 8px; }
+  .pb-orn { font-size: 2rem; color: #8a6d55; margin: 0; }
+  .pb-range { color: #666; font-size: .9rem; }
+  .pb-entry { page-break-inside: avoid; border-top: 1px solid #ddd; padding: 14px 0; }
+  .pb-date { font-family: var(--sans); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: #8a6d55; margin: 0; }
+  .pb-entry h3 { font-weight: 500; font-size: 1.15rem; margin: 2px 0 6px; }
+  .pb-entry h4 { font-family: var(--sans); font-size: .8rem; color: #555; margin: 10px 0 2px; }
+  .pb-entry p { margin: 0 0 8px; line-height: 1.55; }
+}

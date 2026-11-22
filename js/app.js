@@ -4,7 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { seaScene, fishFlourish, fishStrip, friend, edgeVines, cornerSprig } from "./art.js";
+import { seaScene, fishFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -16,6 +16,9 @@ function applyAppearance() {
   if (theme === "auto") delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = theme;
   document.documentElement.style.setProperty("--reading-size", `${store.get("textSize")}px`);
+  document.documentElement.dataset.graphics = store.get("graphics") || "full";
+  const shown = store.get("show") || {};
+  for (const f of FEATURES) document.body.classList.toggle(`hide-${f.id}`, shown[f.id] === false);
   const style = store.get("style");
   if (style === "sage") delete document.documentElement.dataset.style;
   else document.documentElement.dataset.style = style;
@@ -29,7 +32,8 @@ function showView(name) {
     if (b.dataset.view === name) b.setAttribute("aria-current", "page");
     else b.removeAttribute("aria-current");
   });
-  $(".topbar").hidden = name !== "read";
+  document.body.dataset.view = name;
+  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings" }[name] || "";
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
@@ -61,6 +65,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   renderJournal();
   updateTriviaHint();
   renderNotes(book, chapter);
+  renderPassageArt(book, chapter);
   renderMargin();
   friendWhich = friendWhich === "lamb" ? "donkey" : "lamb";
   if (store.get("style") === "animated") $("#friendSlot").innerHTML = friend(friendWhich);
@@ -140,6 +145,7 @@ function toggleRead() {
     $("#triviaBtn").classList.add("glow");
     mascotSay(`You finished ${BOOK_BY_ID[book].name}! Want to try some trivia?`);
   } else if (on) mascotSay(pick(["Well done today.", "Another chapter hidden in your heart.", "Keep going, you're doing great."]));
+  if (on) celebrate(store.readCount(book) === BOOK_BY_ID[book].chapters ? "big" : "small");
 }
 $("#markRead").addEventListener("click", toggleRead);
 
@@ -238,7 +244,7 @@ function renderMyStudy() {
   document.querySelectorAll(".segments button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.seg === segment)));
   document.querySelectorAll("[data-seg-panel]").forEach((p) => { p.hidden = p.dataset.segPanel !== segment; });
   if (segment === "progress") { renderProgress(); renderKnowledge(); }
-  if (segment === "journal") renderJournalList();
+  if (segment === "journal") { renderDiaryToday(); renderJournalList(); }
   if (segment === "history") renderLog("#historyList", store.allVisits(), (v) => `
     <strong>${esc(keyRef(v.key).name)}</strong><span class="tag">${store.isFavorite(keyRef(v.key).book, keyRef(v.key).chapter) ? "♥ " : ""}${store.isRead(keyRef(v.key).book, keyRef(v.key).chapter) ? "Read" : ""}</span>
     <small>Visited ${v.count} time${v.count === 1 ? "" : "s"} · last ${fmtDate(v.last)}</small><span></span>
@@ -331,7 +337,7 @@ function renderPath() {
   $("#walkAgain").addEventListener("click", () => {
     $("#walkConfirm").innerHTML = `<div class="confirm-box">This saves your current walk (${done} of ${list.length} chapters, started ${fmtDate(started)}) to your archive and starts the ${esc(p.name)} path fresh. Your journal, favorites and history stay as they are.
       <div class="row"><button class="small" id="walkYes">Archive and start again</button><button class="quiet-link" id="walkNo">Keep going instead</button></div></div>`;
-    $("#walkYes").addEventListener("click", () => { store.archivePath(active); renderPath(); updatePathBits(); confetti(); });
+    $("#walkYes").addEventListener("click", () => { store.archivePath(active); renderPath(); updatePathBits(); celebrate(); });
     $("#walkNo").addEventListener("click", () => { $("#walkConfirm").innerHTML = ""; });
   });
   $("#continuePath")?.addEventListener("click", () => { showView("read"); openChapter(next.book, next.chapter); });
@@ -569,33 +575,131 @@ function unlockForm(onDone) {
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") tryIt(); });
   return wrap;
 }
+const JOURNAL_BOXES = [
+  { field: "text", label: "Thoughts", icon: "✎", ph: (ref) => `What is ${ref} saying to you today? How does it make you feel?` },
+  { field: "prayer", label: "Prayers", icon: "🙏", ph: () => "Who and what are you praying for?" },
+  { field: "gratitude", label: "Gratitude", icon: "❀", ph: () => "What are you thankful for today?" },
+];
 function renderJournal() {
   const { book, chapter } = store.get("last");
   const inner = $("#journalInner");
-  const text = store.journalFor(book, chapter);
-  $("#journalHint").textContent = journalLocked() ? "Locked" : text ? "You've written here. Tap to read or add more." : "Thoughts and feelings on this chapter";
+  const entry = store.journalEntry(book, chapter);
+  const filled = entry ? JOURNAL_BOXES.filter((b) => (entry[b.field] || "").trim()).map((b) => b.label.toLowerCase()) : [];
+  $("#journalHint").textContent = journalLocked() ? "Locked" : filled.length ? `You've written ${filled.join(", ")}. Tap to read or add more.` : "Thoughts, prayers and gratitude for this chapter";
   inner.innerHTML = "";
   if (journalLocked()) { inner.append(unlockForm(renderJournal)); return; }
-  const ta = document.createElement("textarea");
-  ta.id = "journalText";
-  ta.placeholder = `What is ${BOOK_BY_ID[book].name} ${chapter} saying to you today? How does it make you feel?`;
-  ta.value = text;
+  const ref = `${BOOK_BY_ID[book].name} ${chapter}`;
   const saved = Object.assign(document.createElement("p"), { className: "saved" });
-  const entry = store.get("journal")[`${book}.${chapter}`];
   saved.textContent = entry ? `Saved ${fmtDate(entry.updated)}` : "Saves as you type";
-  let t;
-  ta.addEventListener("input", () => {
-    clearTimeout(t);
-    t = setTimeout(() => { store.setJournal(book, chapter, ta.value); saved.textContent = "Saved just now"; }, 500);
-  });
-  inner.append(ta, saved);
+  for (const box of JOURNAL_BOXES) {
+    const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
+    wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
+    const ta = document.createElement("textarea");
+    ta.id = box.field === "text" ? "journalText" : `journal-${box.field}`;
+    ta.rows = box.field === "text" ? 5 : 3;
+    ta.placeholder = box.ph(ref);
+    ta.value = entry?.[box.field] || "";
+    let t;
+    ta.addEventListener("input", () => {
+      clearTimeout(t);
+      t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = "Saved just now"; }, 500);
+    });
+    wrap.append(ta);
+    if (box.field === "prayer") {
+      const ans = Object.assign(document.createElement("label"), { className: "answered" });
+      ans.innerHTML = `<input type="checkbox" ${entry?.answered ? "checked" : ""}> Answered${entry?.answered ? ` <span class="muted">· ${fmtDate(entry.answered)}</span>` : ""}`;
+      ans.querySelector("input").addEventListener("change", (e) => {
+        store.setJournalField(book, chapter, "answered", e.target.checked ? new Date().toISOString() : "");
+        if (e.target.checked) { celebrate("small"); mascotSay("Praise God for answered prayer!"); }
+        renderJournal();
+      });
+      wrap.append(ans);
+    }
+    inner.append(wrap);
+  }
+  inner.append(saved);
 }
+/* ---------- Daily life journal ---------- */
+const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const dayLabel = (day) => new Date(`${day}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+const DIARY_BOXES = [
+  { field: "text", label: "My day", icon: "✎", ph: "What's going on in your life today? What would you want your family to know someday?" },
+  { field: "prayer", label: "Prayers", icon: "🙏", ph: "Who and what are you praying for?" },
+  { field: "gratitude", label: "Gratitude", icon: "❀", ph: "What are you thankful for today?" },
+];
+function renderDiaryToday() {
+  const el = $("#diaryToday");
+  if (!el) return;
+  el.innerHTML = "";
+  if (journalLocked()) return;
+  const day = todayKey();
+  const entry = store.diaryEntry(day);
+  const card = Object.assign(document.createElement("div"), { className: "diary-card" });
+  card.innerHTML = `<p class="diary-date">${esc(dayLabel(day))}</p><h2>Today's journal</h2><p class="muted small-print">Your daily life journal, separate from your chapter notes. Each day gets its own dated page.</p>`;
+  const saved = Object.assign(document.createElement("p"), { className: "saved", textContent: entry ? `Saved ${new Date(entry.updated).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}` : "Saves as you type" });
+  for (const box of DIARY_BOXES) {
+    const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
+    wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
+    const ta = Object.assign(document.createElement("textarea"), { rows: box.field === "text" ? 5 : 3, placeholder: box.ph, value: entry?.[box.field] || "" });
+    ta.id = `diary-${box.field}`;
+    let t;
+    ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setDiaryField(day, box.field, ta.value); saved.textContent = "Saved just now"; renderJournalList(); }, 600); });
+    wrap.append(ta);
+    card.append(wrap);
+  }
+  card.append(saved);
+  el.append(card);
+}
+
+/* ---------- Keepsake journal book (print or save as PDF) ---------- */
+function makeJournalBook() {
+  if (journalLocked()) { mascotSay("Unlock your journal first."); return; }
+  const name = store.get("name").trim();
+  const entries = [
+    ...store.allDiary().map((d) => ({ when: d.day, title: dayLabel(d.day), kind: "Daily journal", parts: d })),
+    ...store.allJournal().map((j) => { const d = new Date(j.created || j.updated); const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; return { when: day, title: dayLabel(day), kind: `Reflections on ${keyRef(j.key).name}`, parts: j }; }),
+  ].sort((a, b) => a.when.localeCompare(b.when));
+  const para = (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+  const sec = (label, t, extra = "") => (t || "").trim() ? `<h4>${label}${extra}</h4>${para(t)}` : "";
+  const book = $("#printBook");
+  book.innerHTML = `<section class="pb-title"><p class="pb-orn">❦</p><h1>${name ? `The Journal of ${esc(name)}` : "My Journal"}</h1><p>My walk through the Bible, my prayers, and my life</p>
+      <p class="pb-range">${entries.length ? `${esc(dayLabel(entries[0].when))} to ${esc(dayLabel(entries[entries.length - 1].when))}` : ""}</p></section>
+    ${entries.length ? entries.map((e) => `<article class="pb-entry"><p class="pb-date">${esc(e.title)}</p><h3>${esc(e.kind)}</h3>
+      ${sec(e.kind === "Daily journal" ? "My day" : "Thoughts", e.parts.text)}${sec("Prayers", e.parts.prayer, e.parts.answered ? ` · answered ${esc(fmtDate(e.parts.answered))}` : "")}${sec("Gratitude", e.parts.gratitude)}</article>`).join("")
+      : `<p>No entries yet.</p>`}`;
+  book.hidden = false;
+  document.body.classList.add("printing");
+  const done = () => { document.body.classList.remove("printing"); book.hidden = true; window.removeEventListener("afterprint", done); };
+  window.addEventListener("afterprint", done);
+  setTimeout(() => window.print(), 50);
+}
+$("#makeBook").addEventListener("click", makeJournalBook);
+
+function showDiaryDay(day) {
+  const d = store.diaryEntry(day);
+  if (!d) return;
+  const para = (t) => esc(t).replace(/\n/g, "<br>");
+  $("#diaryToday").innerHTML = `<div class="diary-card"><p class="diary-date">${esc(dayLabel(day))}</p><h2>Daily journal</h2>
+    ${DIARY_BOXES.filter((b) => (d[b.field] || "").trim()).map((b) => `<p class="jb-label">${b.icon} ${b.label}</p><p class="diary-read">${para(d[b.field])}</p>`).join("")}
+    <button class="small" id="backToday">Back to today</button></div>`;
+  $("#backToday").addEventListener("click", renderDiaryToday);
+  $("#diaryToday").scrollIntoView({ block: "start" });
+}
+let journalFilter = "all";
 function renderJournalList() {
   const el = $("#journalList");
   if (journalLocked()) { el.innerHTML = ""; el.append(unlockForm(renderJournalList)); return; }
-  const items = store.allJournal();
-  el.innerHTML = items.length ? items.map((j) => `<button class="log-row" data-key="${j.key}"><strong>${esc(keyRef(j.key).name)}</strong><small>${fmtDate(j.updated)}</small><span class="log-dates">${esc(j.text.slice(0, 140))}${j.text.length > 140 ? "…" : ""}</span></button>`).join("")
-    : `<p class="empty">Open "My journal" under any chapter to write your thoughts. They'll be collected here.</p>`;
+  const items = [
+    ...store.allDiary().map((d) => ({ ...d, key: null, sortAt: d.updated, title: dayLabel(d.day), daily: true })),
+    ...store.allJournal().map((j) => ({ ...j, sortAt: j.updated, title: keyRef(j.key).name })),
+  ].filter((j) => journalFilter === "all" || (j[journalFilter] || "").trim()).sort((a, b) => b.sortAt.localeCompare(a.sortAt));
+  const snip = (t) => `${esc(t.slice(0, 140))}${t.length > 140 ? "…" : ""}`;
+  const filters = [["all", "All"], ["text", "Thoughts"], ["prayer", "Prayers"], ["gratitude", "Gratitude"]];
+  el.innerHTML = `<div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${l}</button>`).join("")}</div>` + (items.length ? items.map((j) => `<button class="log-row${j.daily ? " is-daily" : ""}" ${j.daily ? `data-day="${j.day}"` : `data-key="${j.key}"`}><strong>${j.daily ? "Daily journal" : esc(j.title)}</strong><small>${j.daily ? esc(j.title) : `${fmtDate(j.created || j.updated)}${j.created && fmtDate(j.created) !== fmtDate(j.updated) ? ` · edited ${fmtDate(j.updated)}` : ""}`}</small>
+      ${JOURNAL_BOXES.filter((b) => (journalFilter === "all" || journalFilter === b.field) && (j[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${j.daily && b.field === "text" ? "My day" : b.label}${b.field === "prayer" && j.answered ? " · answered ✓" : ""}:</em> ${snip(j[b.field])}</span>`).join("")}</button>`).join("")
+    : `<p class="empty">${journalFilter === "all" ? `Open "My journal" under any chapter to write your thoughts, prayers and gratitude. They'll be collected here.` : "Nothing here yet."}</p>`);
+  el.querySelectorAll("[data-day]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.day === todayKey()) $("#diary-text")?.focus(); else showDiaryDay(b.dataset.day); }));
+  el.querySelectorAll("[data-jf]").forEach((b) => b.addEventListener("click", () => { journalFilter = b.dataset.jf; renderJournalList(); }));
   el.querySelectorAll("[data-key]").forEach((b) => b.addEventListener("click", () => {
     const r = keyRef(b.dataset.key); showView("read"); openChapter(r.book, r.chapter); $("#journalBox").open = true;
   }));
@@ -660,7 +764,7 @@ function startTrivia() {
       <p class="muted small-print">Your Bible knowledge: <strong>${esc(r.level)}</strong> · ${r.pct}% correct over ${r.answered} questions</p>
       <button class="trivia-next" id="playAgain">Play again with new questions</button></div>`;
     $("#playAgain").addEventListener("click", startTrivia);
-    if (great) confetti();
+    celebrate(great ? "big" : "small");
     mascotSay(great ? "Hooray! That was wonderful!" : "Nice try! Let's keep learning together.");
   }
   showQ();
@@ -682,13 +786,23 @@ function renderKnowledge() {
 }
 
 /* ---------- Celebrations ---------- */
-function confetti() {
+// Lively pictures get confetti. Classic gets a quiet gold check instead.
+function celebrate(size = "big") {
+  if ((store.get("graphics") || "full") !== "full" || matchMedia("(prefers-reduced-motion: reduce)").matches) { quietCheck(); return; }
+  confetti(size === "small" ? 50 : 120);
+}
+function quietCheck() {
+  const el = Object.assign(document.createElement("div"), { className: "quiet-check", textContent: "✓" });
+  document.body.append(el);
+  setTimeout(() => el.remove(), 1400);
+}
+function confetti(count = 120) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const c = $("#confetti"), ctx = c.getContext("2d");
   c.width = innerWidth * devicePixelRatio; c.height = innerHeight * devicePixelRatio;
   ctx.scale(devicePixelRatio, devicePixelRatio);
   const colors = ["#46604f", "#c8a55a", "#c9826b", "#9cc0a8", "#f4f1e8"];
-  const bits = Array.from({ length: 120 }, () => ({ x: innerWidth / 2, y: innerHeight / 3, vx: (Math.random() - .5) * 12, vy: Math.random() * -12 - 4, r: Math.random() * 6 + 3, a: Math.random() * 6, c: pick(colors) }));
+  const bits = Array.from({ length: count }, () => ({ x: innerWidth / 2, y: innerHeight / 3, vx: (Math.random() - .5) * 12, vy: Math.random() * -12 - 4, r: Math.random() * 6 + 3, a: Math.random() * 6, c: pick(colors) }));
   let frames = 0;
   (function tick() {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
@@ -701,7 +815,8 @@ function confetti() {
 let mascotTimer;
 let friendWhich = "lamb";
 function updateMascot() {
-  $("#mascot").hidden = store.get("style") !== "animated";
+  $("#mascot").hidden = store.get("style") !== "animated" || store.get("graphics") !== "full" || (store.get("show") || {}).mascot === false;
+  if (store.get("last")) renderPassageArt(store.get("last").book, store.get("last").chapter);
   $("#friendSlot").innerHTML = friend(friendWhich);
   $("#flourish").innerHTML = fishFlourish();
   $("#studyScene").innerHTML = seaScene(store.get("style"));
@@ -806,6 +921,47 @@ function initSettings() {
       e.target.parentElement.firstChild.textContent = "That file couldn't be read ";
     }
   });
+}
+
+/* ---------- Quick menu: look, pictures, and features each person can show or hide ---------- */
+const FEATURES = [
+  { id: "listen", label: "Read-aloud bar", hint: "Play, speed and drive mode at the top of each chapter" },
+  { id: "notes", label: "Study notes", hint: "Maps, history, science, Hebrew and Greek" },
+  { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
+  { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
+  { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
+  { id: "mascot", label: "Corner friend", hint: "The lamb or donkey in the Animated look" },
+  { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
+  { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
+];
+const LOOKS = [["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]];
+const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Classic", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
+function renderQuickMenu() {
+  const chips = (list, cur, attr) => list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("");
+  $("#qmLook").innerHTML = chips(LOOKS, store.get("style"), "data-qm-look");
+  $("#qmGraphics").innerHTML = chips(GRAPHICS, store.get("graphics") || "full", "data-qm-gfx");
+  $("#qmGraphicsNote").textContent = GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2];
+  const shown = store.get("show") || {};
+  $("#qmToggles").innerHTML = FEATURES.map((f) => `<label class="switch-row"><span>${esc(f.label)}<small>${esc(f.hint)}</small></span><input type="checkbox" role="switch" data-qm-feat="${f.id}" ${shown[f.id] === false ? "" : "checked"}></label>`).join("");
+  $("#qmLook").querySelectorAll("[data-qm-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.qmLook); renderQuickMenu(); }));
+  $("#qmGraphics").querySelectorAll("[data-qm-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.qmGfx); applyAppearance(); renderQuickMenu(); }));
+  $("#qmToggles").querySelectorAll("[data-qm-feat]").forEach((i) => i.addEventListener("change", () => {
+    store.set("show", { ...(store.get("show") || {}), [i.dataset.qmFeat]: i.checked });
+    applyAppearance();
+    if (i.dataset.qmFeat === "pathmargin" && !i.checked) setMargin(false);
+  }));
+}
+$("#menuBtn").addEventListener("click", () => { renderQuickMenu(); $("#quickMenu").showModal(); });
+$("#menuClose").addEventListener("click", () => $("#quickMenu").close());
+$("#quickMenu").addEventListener("click", (e) => { if (e.target.id === "quickMenu") $("#quickMenu").close(); });
+document.querySelectorAll("[data-go-view]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").close(); showView(b.dataset.goView); }));
+
+/* ---------- Art that fits the passage ---------- */
+function renderPassageArt(book, chapter) {
+  const el = $("#passageArt");
+  if (!el) return;
+  const { svg, caption } = passageStrip(book, chapter, store.get("style"));
+  el.innerHTML = `${svg}<p class="passage-caption">${esc(caption)}</p>`;
 }
 
 /* ---------- Study notes: map, history, science, words, views, sources ---------- */

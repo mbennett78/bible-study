@@ -22,21 +22,27 @@
     <button class="icon-btn" id="marginBtn" aria-label="Show learning path" aria-expanded="false">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     </button>
+    <span class="top-title" id="topTitle"></span>
+    <span class="read-only top-ref">
     <button class="step-btn" id="topPrev" aria-label="Previous chapter">‹</button>
     <button class="ref-button" id="refButton" aria-label="Choose book and chapter">
       <span id="refLabel">John 1</span>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <button class="step-btn" id="topNext" aria-label="Next chapter">›</button>
+    </span>
     </div>
     <div class="top-actions">
     <button class="icon-btn" id="listenBtn" aria-label="Read aloud">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <div class="version-switch" role="group" aria-label="Bible version">
+    <div class="version-switch read-only" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
       <button data-version="ESV" aria-pressed="false">ESV</button>
     </div>
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu: look, graphics and features">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.5" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor"/></svg>
+    </button>
     </div>
   </header>
 
@@ -57,7 +63,7 @@
 
     <!-- Read -->
     <section id="view-read" class="view" aria-label="Read">
-      <div class="art-slot" data-art="strip"></div>
+      <div id="passageArt"></div>
       <div class="path-banner" id="pathBanner" hidden></div>
       <div class="listen-bar" id="listenBar">
         <button class="listen-play" id="playBtn" aria-pressed="false">
@@ -130,7 +136,11 @@
       </div>
       <div data-seg-panel="history" hidden><div id="historyList"></div></div>
       <div data-seg-panel="favorites" hidden><div id="favList"></div></div>
-      <div data-seg-panel="journal" hidden><div id="journalList"></div></div>
+      <div data-seg-panel="journal" hidden>
+        <div id="diaryToday"></div>
+        <div class="row keepsake-row"><button class="small" id="makeBook">Make my journal book</button><span class="muted small-print">A dated keepsake of every entry, ready to print or save as a PDF.</span></div>
+        <div id="journalList"></div>
+      </div>
     </section>
 
     <!-- Study Path -->
@@ -239,6 +249,25 @@
     <div id="pickerBody"></div>
   </dialog>
 
+  <!-- Quick menu: look, graphics and which features to show -->
+  <dialog id="quickMenu" aria-label="Menu">
+    <div class="picker-head">
+      <span></span>
+      <h2>Menu</h2>
+      <button class="quiet-link" id="menuClose">Done</button>
+    </div>
+    <div class="qm-nav">
+      <button data-go-view="home">Home</button><button data-go-view="read">Read</button><button data-go-view="path">My path</button><button data-go-view="settings">Settings</button>
+    </div>
+    <h3 class="qm-h">Look</h3>
+    <div class="qm-chips" id="qmLook"></div>
+    <h3 class="qm-h">Pictures</h3>
+    <div class="qm-chips" id="qmGraphics"></div>
+    <p class="muted small-print" id="qmGraphicsNote"></p>
+    <h3 class="qm-h">Show on screen</h3>
+    <div id="qmToggles"></div>
+  </dialog>
+
   <!-- Trivia -->
   <dialog id="trivia" aria-label="Bible trivia">
     <div class="picker-head">
@@ -251,6 +280,7 @@
   </dialog>
 
   <canvas id="confetti" aria-hidden="true"></canvas>
+  <div id="printBook" class="print-book" hidden></div>
   <div class="mascot" id="mascot" hidden aria-live="polite">
     <div class="bubble" id="mascotSay"></div>
     <div id="friendSlot"></div>

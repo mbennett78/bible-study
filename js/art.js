@@ -180,7 +180,7 @@ export function seaScene(style, { height = 170 } = {}) {
   const id = ++uid;
   const waveLine = (y, cls) => `<path class="${cls}" d="M-60 ${y} ${Array.from({ length: 16 }, () => "q 7.5 -4 15 0 t 15 0").join(" ")}"/>`;
   const shore = style === "animated"
-    ? `<path class="shore" d="M0 ${surf + 2} C 50 ${surf - 8}, 100 ${surf - 6}, 150 ${surf + 2} Z"/>${oliveTree(26, surf - 1, .8)}${lamb(64, surf - 10, .5)}${donkey(112, surf - 11, .42)}${boat(285, surf - 2, .5)}`
+    ? `<path class="shore" d="M0 ${surf + 2} C 50 ${surf - 8}, 100 ${surf - 6}, 150 ${surf + 2} Z"/>${oliveTree(26, surf - 1, .8)}<g class="critter">${lamb(64, surf - 10, .5)}${donkey(112, surf - 11, .42)}</g>${boat(285, surf - 2, .5)}`
     : style === "feminine"
       ? `${boat(190, surf - 2, .5)}${figTree(326, surf, .85)}${flower(296, surf)}${flower(306, surf + 1)}${oliveBranch(0, 16, .8)}${oliveBranch(360, 16, .8, true)}`
       : `${boat(style === "masculine" ? 220 : 240, surf - 3, .78)}`;
@@ -253,4 +253,75 @@ export function fishStrip(style = "") {
       ${swimmer({ x: 160, y: 22, s: .3, dir: 1, dur: 26, delay: 18, kind: "c" })}
       ${style === "animated" ? swimmer({ x: 300, y: 18, s: .26, dir: -1, dur: 15, delay: 2, kind: "a" }) : ""}
     </g></svg>`;
+}
+
+/* ---------- Art that fits the passage ---------- */
+// Chapters (or whole books) matched to a setting. Anything not listed gets the sea.
+const SETTINGS = {
+  sky: ["GEN.1", "GEN.15", "JOB.38", "PSA.8", "PSA.19", "PSA.104", "PSA.147", "ISA.40", "MAT.2"],
+  garden: ["GEN.2", "GEN.3", "SNG", "PSA.1", "ISA.5", "JHN.15", "JHN.18", "JHN.20", "REV.22", "MAT.13", "MRK.4"],
+  pasture: ["PSA.23", "PSA.100", "JHN.10", "LUK.2", "LUK.15", "EZK.34", "ISA.53", "1SA.16", "1SA.17", "GEN.29", "GEN.30", "RUT"],
+  desert: ["EXO.13", "EXO.15", "EXO.16", "EXO.17", "EXO.19", "EXO.20", "NUM", "DEU", "MAT.4", "LUK.4"],
+  sea: ["MAT.8", "MAT.14", "MRK.1", "MRK.6", "LUK.5", "LUK.8", "JHN.6", "JHN.21", "JON", "ACT.27", "EXO.14", "GEN.6", "GEN.7", "GEN.8"],
+};
+const CAPTIONS = {
+  sky: "The heavens declare the glory of God",
+  garden: "A garden planted by God",
+  pasture: "Green pastures and a shepherd",
+  desert: "Through the wilderness",
+  sea: "The Sea of Galilee",
+};
+export function settingFor(book, chapter) {
+  const key = `${book}.${chapter}`;
+  for (const [name, list] of Object.entries(SETTINGS)) if (list.includes(key)) return name;
+  for (const [name, list] of Object.entries(SETTINGS)) if (list.includes(book)) return name;
+  return "sea";
+}
+
+const stripFrame = (id, inner, defs = "") => `<svg class="fish-strip passage-art" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>${defs}<clipPath id="pc${id}"><rect width="360" height="54" rx="16"/></clipPath></defs><g clip-path="url(#pc${id})">${inner}</g></svg>`;
+
+const shepherd = (x, y) => `<g transform="translate(${x} ${y})">
+  <path class="staff" d="M9 2 L 9 -26 C 9 -32, 15 -32, 15 -27"/>
+  <path class="robe-a" d="M-7 2 C -8 -12, 8 -12, 7 2 Z"/><circle class="skin" cx="0" cy="-15" r="4.6"/>
+  <path class="headcloth" d="M-5.2 -15.5 C -5 -22, 5 -22, 5.2 -15.5 L 6.4 -11.5 L 3.8 -13.5 C 2 -17, -2 -17, -3.8 -13.5 L -6.4 -11.5 Z"/>
+  <g class="face-bits">${eyes([[-1.5, -14.6], [1.8, -14.6]], .8)}</g><path class="arm" d="M3 -6 L 9 -10"/></g>`;
+const palm = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="trunk" d="M0 0 C 1 -10, -1 -20, 2 -30" stroke-width="3" fill="none"/>
+  <g class="sway">${[-60, -25, 15, 50, 85].map((r) => `<ellipse class="palm-leaf" cx="0" cy="0" rx="12" ry="3" transform="translate(2 -30) rotate(${r - 90}) translate(10 0)"/>`).join("")}</g></g>`;
+const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="tent" d="M-14 0 L 0 -14 L 14 0 Z"/><path class="tent-door" d="M-3 0 L 0 -6 L 3 0 Z"/></g>`;
+
+export function passageStrip(book, chapter, style = "") {
+  const kind = settingFor(book, chapter);
+  const id = ++uid;
+  let art;
+  if (kind === "sky") {
+    const stars = Array.from({ length: 26 }, (_, i) => `<circle class="star" cx="${(i * 53) % 350 + 5}" cy="${(i * 29) % 40 + 5}" r="${i % 4 ? .9 : 1.5}" style="--tw:${2 + (i % 5)}s;--td:${-i * .7}s"/>`).join("");
+    art = stripFrame(id, `<rect width="360" height="54" fill="url(#ns${id})"/>${stars}
+      <circle class="moon" cx="300" cy="18" r="9"/><circle cx="304" cy="15" r="8" fill="url(#ns${id})"/>
+      <circle class="sun-rise" cx="40" cy="58" r="16"/><path class="far-hill night" d="M0 54 C 80 40, 160 46, 220 50 C 280 44, 330 46, 360 50 L 360 54 Z"/>`,
+      `<linearGradient id="ns${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2b4a"/><stop offset="1" stop-color="#4a5f86"/></linearGradient>`);
+  } else if (kind === "garden") {
+    art = stripFrame(id, `<rect width="360" height="54" fill="url(#gs${id})"/><circle class="sun" cx="320" cy="14" r="8"/>
+      <path class="hill" d="M0 40 C 60 30, 130 34, 180 40 C 240 46, 300 32, 360 38 L 360 54 L 0 54 Z"/>
+      <path class="river" d="M0 50 C 60 44, 120 54, 180 48 S 300 46, 360 52"/>
+      ${oliveTree(60, 46, .55)}${figTree(250, 46, .55)}${oliveTree(150, 44, .42)}${flower(110, 48)}${flower(200, 47)}${flower(300, 49)}${flower(318, 48)}`,
+      `<linearGradient id="gs${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sky-top"/><stop offset="1" class="sky-low"/></linearGradient>`);
+  } else if (kind === "pasture") {
+    art = stripFrame(id, `<rect width="360" height="54" fill="url(#ps${id})"/><circle class="sun" cx="300" cy="14" r="8"/>
+      <path class="hill" d="M0 34 C 70 22, 150 28, 210 34 C 270 40, 320 26, 360 30 L 360 54 L 0 54 Z"/>
+      <path class="hill near" d="M0 46 C 80 38, 170 44, 240 46 C 300 48, 340 40, 360 44 L 360 54 L 0 54 Z"/>
+      <path class="river" d="M150 54 C 170 48, 210 50, 250 46 S 330 48, 360 46"/>
+      <g class="critter">${lamb(70, 40, .38)}${lamb(118, 44, .32)}${lamb(196, 38, .3)}</g>${shepherd(250, 44)}${oliveTree(330, 42, .4)}`,
+      `<linearGradient id="ps${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sky-top"/><stop offset="1" class="sky-low"/></linearGradient>`);
+  } else if (kind === "desert") {
+    art = stripFrame(id, `<rect width="360" height="54" fill="url(#ds${id})"/>
+      <path class="cloud-pillar" d="M300 54 C 292 40, 300 30, 294 18 C 290 8, 302 2, 308 8 C 316 2, 324 12, 318 20 C 314 30, 322 42, 316 54 Z"/>
+      <path class="dune" d="M0 36 C 60 26, 120 32, 180 38 C 240 30, 300 32, 360 36 L 360 54 L 0 54 Z"/>
+      <path class="dune near" d="M0 48 C 90 40, 170 46, 260 44 C 310 42, 340 46, 360 46 L 360 54 L 0 54 Z"/>
+      ${tent(70, 44, .9)}${tent(100, 46, .7)}${tent(126, 43, .8)}${tent(160, 46, .6)}${palm(30, 46, .7)}${palm(220, 44, .6)}`,
+      `<linearGradient id="ds${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e4c6"/><stop offset="1" stop-color="#f8efdc"/></linearGradient>`);
+  } else {
+    art = fishStrip(style).replace('class="fish-strip"', 'class="fish-strip passage-art"');
+  }
+  return { kind, caption: CAPTIONS[kind], svg: art };
 }
