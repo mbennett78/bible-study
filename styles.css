@@ -670,3 +670,108 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .look-chips button { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .85rem; }
 .look-chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
 .path-card .pc-actions .quiet-link { padding: 8px 4px; }
+
+/* ---------- Cute characters and the Galilee boat ---------- */
+.eye-ink { fill: #2a211c; }
+.eye-shine { fill: #fff; }
+.blush { fill: #f19a9a; opacity: .55; }
+.smile { fill: none; stroke: #4a3328; stroke-width: .9; stroke-linecap: round; }
+.nose { fill: #b97a72; }
+.lamb-face { fill: #f6e5d8; stroke: #e2cbb8; stroke-width: .6; }
+.lamb-ear { fill: #efd3c4; }
+.lamb-leg { fill: #6d5a50; }
+.wool { fill: #fffdf8; stroke: #e4dccd; stroke-width: 1; }
+.donkey { fill: #a9998a; }
+.muzzle { fill: #ece2d6; }
+.ear-in { fill: #e9c9c0; }
+.mane-fill { fill: #6d6157; }
+.hoof { fill: #5a4d44; }
+.tail { fill: none; stroke: #6d6157; stroke-width: 2.6; stroke-linecap: round; }
+.hull { fill: #8a5d3b; stroke: #5f3e26; stroke-width: 1.1; stroke-linejoin: round; }
+.hull-line { fill: none; stroke: #5f3e26; stroke-width: 2.4; stroke-linecap: round; }
+.plank { fill: none; stroke: rgb(40 20 10 / .35); stroke-width: .8; }
+.rim { stroke: #c49a6c; stroke-width: 2; stroke-linecap: round; }
+.mast { fill: none; stroke: #5f3e26; stroke-width: 2.6; stroke-linecap: round; }
+.mast.thin { stroke-width: 1.8; }
+.rope { fill: none; stroke: #6b5a45; stroke-width: .6; }
+.sail { fill: #f7f0e1; stroke: #c9b593; stroke-width: .9; }
+.sail-stripe { fill: #c98c5a; opacity: .7; }
+.oar { fill: none; stroke: #7a5638; stroke-width: 1.8; stroke-linecap: round; }
+.oar-blade { fill: #7a5638; }
+.robe-a { fill: #c9a77a; } .robe-b { fill: #7f9bab; }
+.arm { fill: none; stroke: #d6a07a; stroke-width: 2.2; stroke-linecap: round; }
+.skin { fill: #ddaa82; }
+.headcloth { fill: #f3ead9; stroke: #c9b593; stroke-width: .4; }
+.headcloth.b { fill: #e6d3a8; }
+.net { fill: none; stroke: #6b5a45; stroke-width: .8; stroke-linecap: round; }
+.net.mesh { stroke-width: .5; opacity: .75; }
+.float { fill: #e8c25e; stroke: #8a6a2e; stroke-width: .5; }
+.weight { fill: #555; }
+:root[data-style="masculine"] .sail-stripe { fill: #5a3e2b; }
+:root[data-style="feminine"] .sail-stripe { fill: #c4848f; }
+:root[data-style="animated"] .sail-stripe { fill: #e07a5f; }
+.blink { transform-box: fill-box; transform-origin: 50% 50%; animation: blink 5.5s infinite; }
+.nod { transform-box: fill-box; transform-origin: 30% 90%; animation: nod 4s ease-in-out infinite; }
+.ear-wiggle { transform-box: fill-box; transform-origin: 50% 100%; animation: earWiggle 3.4s ease-in-out infinite; }
+.cast { transform-box: fill-box; transform-origin: 0 0; animation: cast 4.5s ease-in-out infinite; }
+.bob { transform-box: fill-box; transform-origin: 50% 100%; animation: bobSvg 2.6s ease-in-out infinite; }
+.bob.slow { animation-duration: 3.4s; }
+.swish { transform-box: fill-box; transform-origin: 100% 0; animation: swish 1.8s ease-in-out infinite; }
+.rock { transform-box: fill-box; transform-origin: 50% 100%; animation: rock 5s ease-in-out infinite; }
+.sway { animation: sway 5s ease-in-out infinite; }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes nod { 50% { transform: rotate(-5deg); } }
+@keyframes earWiggle { 0%, 80%, 100% { transform: rotate(0); } 86% { transform: rotate(-12deg); } 92% { transform: rotate(6deg); } }
+@keyframes cast { 0%, 100% { transform: scale(.92); opacity: .85; } 50% { transform: scale(1.06); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .blink, .nod, .ear-wiggle, .cast, .bob, .swish, .rock, .sway { animation: none !important; } }
+.fish-strip { display: block; width: 100%; height: auto; aspect-ratio: 360 / 54; border-radius: 16px; margin: 0 0 14px; }
+.drive .fish-strip { margin: auto 0 0; }
+.trivia-body .fish-strip { margin-bottom: 12px; }
+
+/* ---------- Study notes ---------- */
+.notes-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin-top: 18px; }
+.notes-card.is-empty { background: var(--accent-soft); border-color: transparent; }
+.notes-card.is-empty .row { display: flex; gap: 8px; flex-wrap: wrap; }
+.notes-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.notes-head h2 { font-family: var(--serif); font-weight: 500; font-size: 1.25rem; margin: 0; }
+.notes-intro { font-size: .92rem; color: var(--muted); margin: 6px 0 12px; }
+.notes-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; scrollbar-width: none; }
+.notes-tabs button { flex: none; border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .85rem; }
+.notes-tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+.note-item { padding: 10px 0; border-top: 1px solid var(--line); }
+.note-item:first-child { border-top: 0; padding-top: 0; }
+.note-item p { margin: 4px 0 0; font-size: .93rem; line-height: 1.55; }
+.note-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.note-head strong { font-size: .98rem; }
+.who { font-size: .75rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 2px 8px; }
+.ev { font-size: .7rem; font-weight: 600; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.ev-strong { background: #dcebdc; color: #2f5a35; }
+.ev-good { background: #e3ecf4; color: #31506b; }
+.ev-debated { background: #f5e8cf; color: #7a5717; }
+.ev-faith { background: #efe3f0; color: #65406a; }
+.cite { border: 0; background: none; color: var(--accent); font-size: .75rem; font-weight: 600; padding: 2px 3px; line-height: 1; vertical-align: 2px; }
+.word-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.word-line .orig { font-family: "SBL Hebrew", "Times New Roman", var(--serif); font-size: 1.45rem; color: var(--text); }
+.word-line .say { font-style: italic; color: var(--accent); }
+.word-line .means { color: var(--muted); font-size: .9rem; }
+.sources { padding-left: 1.3em; font-size: .85rem; margin: 0 0 12px; }
+.sources li { margin-bottom: 6px; border-radius: 6px; }
+.sources li.hi { background: var(--accent-soft); }
+.ev-key p { font-size: .8rem; color: var(--muted); margin: 4px 0; }
+.map-toggle { display: inline-flex; background: var(--line); border-radius: 999px; padding: 3px; margin-bottom: 8px; }
+.map-toggle button { border: 0; background: none; border-radius: 999px; padding: 5px 16px; font-size: .85rem; color: var(--muted); }
+.map-toggle button[aria-pressed="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / .1); }
+.notes-map { display: block; width: 100%; max-height: 420px; height: auto; margin: 0 auto; }
+.map-land { fill: #efe6d2; }
+.map-water { fill: #a9cbd6; stroke: #7fa9b8; stroke-width: 1; stroke-linejoin: round; }
+.map-river { fill: none; stroke: #7fa9b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.map-river-label { font: italic 10px var(--sans); fill: #4f7d8d; }
+.map-water-label { font: italic 12px var(--serif); fill: #3f6f80; }
+.map-dot { fill: #9b3d2f; stroke: #fff; stroke-width: 1.5; }
+.map-dot-halo { fill: #9b3d2f; opacity: 0; }
+.map-place { cursor: pointer; outline: none; }
+.map-place.is-on .map-dot-halo, .map-place:focus-visible .map-dot-halo { opacity: .25; }
+.map-label { font: 600 10.5px var(--sans); fill: #3b2b20; paint-order: stroke; stroke: #f7f1e4; stroke-width: 3px; stroke-linejoin: round; }
+.map-note { font-size: .9rem; background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; margin: 10px 0 6px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ev { filter: brightness(.85); } }
+.map-island { fill: #efe6d2; stroke: #7fa9b8; stroke-width: 1; }

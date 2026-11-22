@@ -4,7 +4,8 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { seaScene, fishFlourish, friend, edgeVines, cornerSprig } from "./art.js";
+import { seaScene, fishFlourish, fishStrip, friend, edgeVines, cornerSprig } from "./art.js";
+import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -59,6 +60,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   updatePathBits();
   renderJournal();
   updateTriviaHint();
+  renderNotes(book, chapter);
   renderMargin();
   friendWhich = friendWhich === "lamb" ? "donkey" : "lamb";
   if (store.get("style") === "animated") $("#friendSlot").innerHTML = friend(friendWhich);
@@ -704,6 +706,7 @@ function updateMascot() {
   $("#flourish").innerHTML = fishFlourish();
   $("#studyScene").innerHTML = seaScene(store.get("style"));
   $("#vines").innerHTML = edgeVines();
+  document.querySelectorAll(".art-slot").forEach((el) => { el.innerHTML = el.dataset.art === "scene" ? seaScene(store.get("style")) : fishStrip(store.get("style")); });
   if (!$("#view-home").hidden) renderHome();
 }
 function mascotSay(text) {
@@ -802,6 +805,79 @@ function initSettings() {
     } catch {
       e.target.parentElement.firstChild.textContent = "That file couldn't be read ";
     }
+  });
+}
+
+/* ---------- Study notes: map, history, science, words, views, sources ---------- */
+let notesTab = "map";
+function mapSvg(map, mode) {
+  const { bounds, water, rivers, riverLabels, waterLabel, islands = [] } = map.outline;
+  const W = 340;
+  const mid = ((bounds.lat[0] + bounds.lat[1]) / 2) * Math.PI / 180;
+  const H = Math.round(W * (bounds.lat[1] - bounds.lat[0]) / ((bounds.lon[1] - bounds.lon[0]) * Math.cos(mid)));
+  const X = (lon) => ((lon - bounds.lon[0]) / (bounds.lon[1] - bounds.lon[0])) * W;
+  const Y = (lat) => ((bounds.lat[1] - lat) / (bounds.lat[1] - bounds.lat[0])) * H;
+  const line = (pts) => pts.map(([la, lo], i) => `${i ? "L" : "M"}${X(lo).toFixed(1)} ${Y(la).toFixed(1)}`).join(" ");
+  const places = map.places.map((p, i) => {
+    const x = X(p.lon), y = Y(p.lat), right = p.side ? p.side === "right" : x < W * 0.62;
+    return `<g class="map-place" data-place="${i}" tabindex="0" role="button" aria-label="${esc(p[mode])}">
+      <circle class="map-dot-halo" cx="${x}" cy="${y}" r="9"/><circle class="map-dot" cx="${x}" cy="${y}" r="4.2"/>
+      <text class="map-label" x="${right ? x + 8 : x - 8}" y="${y + 4 + (p.dy || 0)}" text-anchor="${right ? "start" : "end"}">${esc(p[mode])}</text></g>`;
+  }).join("");
+  return `<svg class="notes-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="Map: ${esc(map.caption)}">
+    <rect class="map-land" width="${W}" height="${H}" rx="14"/>
+    ${water.map((w) => `<path class="map-water" d="${line(w)} Z"/>`).join("")}
+    ${islands.map((w) => `<path class="map-island" d="${line(w)} Z"/>`).join("")}
+    ${rivers.map((r) => `<path class="map-river" d="${line(r)}"/>`).join("")}
+    ${riverLabels.map((l) => `<text class="map-river-label" x="${X(l.lon)}" y="${Y(l.lat)}">${esc(l.text)}</text>`).join("")}
+    <text class="map-water-label" x="${X(waterLabel.lon)}" y="${Y(waterLabel.lat)}" text-anchor="middle">${esc(waterLabel.text)}</text>
+    ${places}</svg>`;
+}
+function renderNotes(book, chapter) {
+  const el = $("#studyNotes");
+  const n = notesFor(book, chapter);
+  if (!n) {
+    el.className = "notes-card is-empty";
+    el.innerHTML = `<h2>Study notes</h2><p class="muted small-print">Maps, history, science, Hebrew and Greek words, and the main views for ${esc(refName({ book, chapter }))} are on the way. These chapters are finished so far:</p>
+      <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>`;
+    el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
+    return;
+  }
+  el.className = "notes-card";
+  const srcKeys = Object.keys(n.sources);
+  const cite = (ids) => ids?.length ? ` <button class="cite" data-cite="${ids[0]}">[${ids.map((k) => srcKeys.indexOf(k) + 1).join(", ")}]</button>` : "";
+  const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
+  const tabs = [["map", "Map"], ...n.sections.map((s) => [s.id, s.title.split(" ")[0] === "How" ? "Views" : s.lang ? `${s.lang} words` : s.title.split(" ")[0]]), ["sources", "Sources"]];
+  if (!tabs.some(([id]) => id === notesTab)) notesTab = "map";
+  let body = "";
+  if (notesTab === "map") {
+    const mode = el.dataset.mode || "then";
+    body = `<div class="map-toggle" role="group" aria-label="Map labels"><button data-mode="then" aria-pressed="${mode === "then"}">Then</button><button data-mode="now" aria-pressed="${mode === "now"}">Now</button></div>
+      ${mapSvg(n.map, mode)}<p class="map-note" id="mapNote">Tap a place to learn about it.</p><p class="muted small-print">${esc(n.map.caption)} The map is simplified, not drawn to survey scale.</p>`;
+  } else if (notesTab === "sources") {
+    body = `<ol class="sources">${srcKeys.map((k) => `<li id="src-${k}">${esc(n.sources[k])}</li>`).join("")}</ol>
+      <div class="ev-key">${Object.keys(EVIDENCE).map((k) => `<p>${ev(k)} ${esc(EVIDENCE[k].tip)}</p>`).join("")}</div>`;
+  } else {
+    const sec = n.sections.find((s) => s.id === notesTab);
+    body = sec.items.map((it) => it.word
+      ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${sec.lang === "Hebrew" ? "he" : "el"}" dir="${sec.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
+      : `<div class="note-item"><div class="note-head"><strong>${esc(it.head)}</strong>${it.who ? `<span class="who">${esc(it.who)}</span>` : ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`).join("");
+  }
+  el.innerHTML = `<div class="notes-head"><h2>Study notes</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
+    <p class="notes-intro">${esc(n.intro)}</p>
+    <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
+    <div class="notes-panel">${body}</div>`;
+  el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
+  el.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => { el.dataset.mode = b.dataset.mode; renderNotes(book, chapter); }));
+  el.querySelectorAll("[data-cite]").forEach((b) => b.addEventListener("click", () => { notesTab = "sources"; renderNotes(book, chapter); $(`#src-${b.dataset.cite}`)?.classList.add("hi"); }));
+  el.querySelectorAll("[data-place]").forEach((g) => {
+    const show = () => {
+      const p = n.map.places[Number(g.dataset.place)];
+      el.querySelectorAll(".map-place").forEach((x) => x.classList.toggle("is-on", x === g));
+      $("#mapNote").innerHTML = `<strong>${esc(p.then)}</strong>${p.now !== p.then ? ` <span class="muted">· today: ${esc(p.now)}</span>` : ""}<br>${esc(p.note)}`;
+    };
+    g.addEventListener("click", show);
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
   });
 }
 

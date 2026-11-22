@@ -32,84 +32,92 @@ export const figTree = (x, y, s = 1) => `
     </g>
   </g>`;
 
+// Friendly characters: round shapes, big shiny eyes, rosy cheeks, gentle motion.
+const eyes = (pts, r = 2.2) => `<g class="blink">${pts.map(([x, y]) => `<circle class="eye-ink" cx="${x}" cy="${y}" r="${r}"/><circle class="eye-shine" cx="${x + r * .35}" cy="${y - r * .4}" r="${r * .38}"/>`).join("")}</g>`;
+const cheeks = (pts) => pts.map(([x, y]) => `<ellipse class="blush" cx="${x}" cy="${y}" rx="2.2" ry="1.3"/>`).join("");
+
 export const lamb = (x, y, s = 1) => `
   <g transform="translate(${x} ${y}) scale(${s})"><g class="bob">
-    <ellipse class="wool" cx="0" cy="0" rx="22" ry="14"/>
-    <circle class="wool" cx="-14" cy="-6" r="8"/><circle class="wool" cx="-4" cy="-11" r="9"/><circle class="wool" cx="9" cy="-10" r="8"/>
-    <ellipse class="face" cx="22" cy="-6" rx="8" ry="7"/>
-    <ellipse class="face" cx="16" cy="-10" rx="4" ry="2" transform="rotate(-30 16 -10)"/>
-    <circle class="eye" cx="24" cy="-8" r="1.3"/>
-    <rect class="face" x="-12" y="10" width="4" height="9" rx="2"/><rect class="face" x="8" y="10" width="4" height="9" rx="2"/>
+    <rect class="lamb-leg" x="-13" y="6" width="5" height="13" rx="2.5"/><rect class="lamb-leg" x="-4" y="8" width="5" height="11" rx="2.5"/>
+    <rect class="lamb-leg" x="5" y="8" width="5" height="11" rx="2.5"/><rect class="lamb-leg" x="13" y="6" width="5" height="13" rx="2.5"/>
+    <ellipse class="wool" cx="0" cy="0" rx="20" ry="13"/>
+    ${[[-16, -2, 8], [-9, -9, 8], [0, -12, 8.5], [10, -10, 8], [17, -2, 7], [-14, 6, 7], [12, 6, 7], [0, 8, 8]].map(([cx, cy, r]) => `<circle class="wool" cx="${cx}" cy="${cy}" r="${r}"/>`).join("")}
+    <circle class="wool" cx="-22" cy="-4" r="3.5"/>
+    <g transform="translate(21 -10)"><g class="nod">
+      <ellipse class="lamb-ear" cx="-9" cy="-1" rx="6" ry="2.6" transform="rotate(20 -9 -1)"/><ellipse class="lamb-ear" cx="9" cy="-1" rx="6" ry="2.6" transform="rotate(-20 9 -1)"/>
+      <ellipse class="lamb-face" cx="0" cy="0" rx="8.5" ry="9.5"/>
+      <circle class="wool" cx="-3.5" cy="-8.5" r="3.6"/><circle class="wool" cx="1" cy="-10" r="4.2"/><circle class="wool" cx="5" cy="-8" r="3.2"/>
+      ${eyes([[-3.2, -0.5], [3.4, -0.5]])}${cheeks([[-5.4, 3.6], [5.6, 3.6]])}
+      <ellipse class="nose" cx=".1" cy="3.8" rx="1.3" ry=".9"/><path class="smile" d="M-1.6 5.4 q 1.7 1.5 3.4 0"/>
+    </g></g>
   </g></g>`;
 
 export const donkey = (x, y, s = 1) => `
-  <g transform="translate(${x} ${y}) scale(${s})">
-    <path class="tail swish" d="M-24 -6 C -32 0, -32 8, -30 14"/>
-    <ellipse class="donkey" cx="0" cy="0" rx="25" ry="13"/>
-    <path class="donkey" d="M18 -6 L 30 -26 L 40 -22 L 28 -2 Z"/>
-    <ellipse class="donkey" cx="38" cy="-24" rx="9" ry="7" transform="rotate(25 38 -24)"/>
-    <ellipse class="muzzle" cx="44" cy="-20" rx="4.5" ry="4" transform="rotate(25 44 -20)"/>
-    <ellipse class="donkey ear" cx="30" cy="-38" rx="3" ry="10" transform="rotate(-15 30 -38)"/>
-    <ellipse class="donkey ear" cx="36" cy="-38" rx="3" ry="10" transform="rotate(10 36 -38)"/>
-    <circle class="eye-dark" cx="38" cy="-27" r="1.4"/>
-    <path class="mane" d="M22 -10 L 31 -28"/>
-    <rect class="donkey" x="-17" y="8" width="5" height="15" rx="2"/><rect class="donkey" x="-7" y="8" width="5" height="15" rx="2"/>
-    <rect class="donkey" x="8" y="8" width="5" height="15" rx="2"/><rect class="donkey" x="16" y="8" width="5" height="15" rx="2"/>
-  </g>`;
-
-export const fish = (x, y, s = 1, flip = false) => `
-  <g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})"><g class="swim">
-    <path class="fish" d="M-16 0 C -6 -10, 10 -10, 16 0 C 10 10, -6 10, -16 0 Z M-16 0 L -24 -7 L -24 7 Z"/>
-    <circle class="eye-dark" cx="9" cy="-1.5" r="1.4"/>
+  <g transform="translate(${x} ${y}) scale(${s})"><g class="bob slow">
+    <g class="swish"><path class="tail" d="M-23 -4 C -31 0, -32 8, -30 13"/><ellipse class="mane-fill" cx="-30" cy="15" rx="2.6" ry="3.6"/></g>
+    <rect class="donkey" x="-17" y="5" width="7" height="17" rx="3.5"/><rect class="donkey" x="-7" y="7" width="7" height="15" rx="3.5"/>
+    <rect class="donkey" x="5" y="7" width="7" height="15" rx="3.5"/><rect class="donkey" x="14" y="5" width="7" height="17" rx="3.5"/>
+    <ellipse class="hoof" cx="-13.5" cy="21.5" rx="3.8" ry="1.8"/><ellipse class="hoof" cx="-3.5" cy="21.5" rx="3.8" ry="1.8"/><ellipse class="hoof" cx="8.5" cy="21.5" rx="3.8" ry="1.8"/><ellipse class="hoof" cx="17.5" cy="21.5" rx="3.8" ry="1.8"/>
+    <ellipse class="donkey" cx="0" cy="0" rx="25" ry="15"/>
+    <ellipse class="muzzle" cx="1" cy="7" rx="15" ry="6"/>
+    <path class="donkey" d="M13 -7 C 17 -17, 22 -23, 28 -25 L 36 -15 C 30 -11, 25 -4, 21 3 Z"/>
+    <g transform="translate(33 -27)"><g class="nod">
+      <g class="ear-wiggle"><ellipse class="donkey" cx="-6" cy="-13" rx="3.8" ry="11" transform="rotate(-18 -6 -13)"/><ellipse class="ear-in" cx="-6" cy="-12" rx="1.8" ry="7" transform="rotate(-18 -6 -12)"/></g>
+      <ellipse class="donkey" cx="5" cy="-14" rx="3.8" ry="11" transform="rotate(14 5 -14)"/><ellipse class="ear-in" cx="5" cy="-13" rx="1.8" ry="7" transform="rotate(14 5 -13)"/>
+      <circle class="mane-fill" cx="-1" cy="-9" r="3.2"/><circle class="mane-fill" cx="2.5" cy="-10" r="3"/>
+      <ellipse class="donkey" cx="0" cy="0" rx="11" ry="10"/>
+      <ellipse class="muzzle" cx="3" cy="5.5" rx="8.5" ry="6"/>
+      <circle class="eye-ink" cx="1.5" cy="4.5" r=".9"/><circle class="eye-ink" cx="6" cy="4.5" r=".9"/>
+      ${eyes([[-3.6, -2.6], [4.2, -2.6]], 2.3)}${cheeks([[-7, 1.8]])}
+      <path class="smile" d="M1.8 8.4 q 2 1.4 4 0"/>
+    </g></g>
   </g></g>`;
 
-export const boat = (x, y, s = 1) => `
+// A first-century fishing boat on the Sea of Galilee: a round-bellied wooden hull
+// with an upswept stern, one mast and a square sail, oars, and two fishermen with
+// nets (a cast net in the air and a dragnet with floats), the way the Gospels describe.
+export const boat = (x, y, s = 1) => {
+  const castPts = [[46, -6], [52, -3], [59, -2], [66, -3], [71, -6]];
+  return `
   <g transform="translate(${x} ${y}) scale(${s})"><g class="rock">
-    <path class="hull" d="M-40 0 L 40 0 L 30 14 L -30 14 Z"/>
-    <path class="mast" d="M-4 0 L -4 -48"/>
-    <path class="sail" d="M-2 -46 L 30 -8 L -2 -8 Z"/>
-    <circle class="fisher" cx="-22" cy="-12" r="4"/>
-    <path class="fisher" d="M-26 -8 L -18 -8 L -17 0 L -27 0 Z"/>
-    <path class="line" d="M-18 -10 L -52 -26 M-52 -26 L -54 16"/>
+    <path class="net" d="M-60 -1 C -74 2, -88 2, -104 -1"/>
+    <path class="net mesh" d="M-62 0 L -66 12 L -71 1 L -76 13 L -81 1 L -86 13 L -91 1 L -96 12 L -101 0 M-66 12 C -80 15, -88 15, -96 12"/>
+    ${[-68, -79, -90, -101].map((cx) => `<circle class="float" cx="${cx}" cy="0" r="2.2"/>`).join("")}
+    <path class="oar" d="M-44 -14 L -58 10"/><ellipse class="oar-blade" cx="-58" cy="9" rx="2.6" ry="6.5" transform="rotate(30 -58 9)"/>
+    <path class="oar" d="M-14 -6 L -22 12"/><ellipse class="oar-blade" cx="-22" cy="11" rx="2.2" ry="5" transform="rotate(25 -22 11)"/>
+    <path class="oar" d="M10 -6 L 4 12"/><ellipse class="oar-blade" cx="4" cy="11" rx="2.2" ry="5" transform="rotate(20 4 11)"/>
+    <path class="rope" d="M-30 -60 L -48 -18 M20 -60 L 44 -14"/>
+    <path class="mast" d="M-4 -8 L -4 -68"/>
+    <path class="mast thin" d="M-32 -60 C -10 -62, 6 -62, 24 -60"/>
+    <path class="sail" d="M-29 -59 L 21 -59 C 26 -46, 26 -34, 21 -22 L -29 -22 C -25 -34, -25 -46, -29 -59 Z"/>
+    <path class="sail-stripe" d="M-27.5 -50 L 23.5 -50 C 24.3 -47, 24.3 -45, 24 -43 L -26.5 -43 C -26.9 -45, -27.1 -47, -27.5 -50 Z"/>
+    <path class="hull" d="M-52 -24 C -50 -16, -44 -10, -36 -8 L 36 -8 C 42 -10, 47 -14, 50 -19 C 52 -10, 45 4, 30 7 L -32 7 C -46 4, -55 -10, -52 -24 Z"/>
+    <path class="hull-line" d="M-52 -24 C -55 -29, -50 -33, -46 -29"/>
+    <path class="plank" d="M-46 -3 C -20 1, 20 1, 46 -6 M-40 2.5 C -16 5, 16 5, 40 0.5"/>
+    <path class="rim" d="M-37 -8 L 37 -8"/>
+    <g transform="translate(-34 -8)">
+      <path class="robe-a" d="M-6.5 0 C -7 -11, 7 -11, 6.5 0 Z"/><path class="arm" d="M-3 -6 L -9 -7"/>
+      <circle class="skin" cx="0" cy="-13" r="5"/><path class="headcloth" d="M-5.6 -13.5 C -5.4 -21, 5.4 -21, 5.6 -13.5 L 7 -9 L 4.2 -11.5 C 2 -15.5, -2 -15.5, -4.2 -11.5 L -7 -9 Z"/>
+      ${eyes([[-1.6, -12.4], [1.9, -12.4]], .9)}${cheeks([[-3, -10.3], [3.3, -10.3]])}
+    </g>
+    <g transform="translate(26 -8)">
+      <path class="robe-b" d="M-6.5 0 C -7 -11, 7 -11, 6.5 0 Z"/><path class="arm" d="M2 -7 L 10 -19 M-2 -7 L 6 -21"/>
+      <circle class="skin" cx="0" cy="-13" r="5"/><path class="headcloth b" d="M-5.6 -13.5 C -5.4 -21, 5.4 -21, 5.6 -13.5 L 7 -9 L 4.2 -11.5 C 2 -15.5, -2 -15.5, -4.2 -11.5 L -7 -9 Z"/>
+      ${eyes([[-1.4, -12.4], [2.1, -12.4]], .9)}${cheeks([[-3, -10.3], [3.4, -10.3]])}
+    </g>
+    <g class="cast">
+      <path class="net mesh" d="${castPts.map(([px, py]) => `M34 -28 L ${px} ${py}`).join(" ")}"/>
+      <path class="net" d="M${castPts.map(([px, py]) => `${px} ${py}`).join(" L ")}"/>
+      <path class="net mesh" d="M38 -20 C 46 -18, 58 -18, 64 -17 M42 -12 C 50 -10, 60 -10, 68 -11"/>
+      ${castPts.map(([px, py]) => `<circle class="weight" cx="${px}" cy="${py}" r="1.3"/>`).join("")}
+    </g>
   </g></g>`;
+};
 
-const waves = (y, w = 360) => `<path class="wave" d="M0 ${y} ${Array.from({ length: Math.ceil(w / 30) }, (_, i) => `q 7.5 -6 15 0 t 15 0`).join(" ")}"/>`;
-const hills = `<path class="hill" d="M0 110 C 60 80, 120 86, 180 98 C 240 108, 300 84, 360 92 L 360 120 L 0 120 Z"/>`;
-const sun = (x, y) => `<circle class="sun" cx="${x}" cy="${y}" r="14"/>`;
-const arch = (x, y) => `<path class="arch" d="M${x - 26} ${y} L ${x - 26} ${y - 46} A 26 26 0 0 1 ${x + 26} ${y - 46} L ${x + 26} ${y}"/>`;
 const flower = (x, y) => `<g transform="translate(${x} ${y})"><path class="stem" d="M0 0 L 0 -14"/><circle class="bloom" cx="0" cy="-16" r="4"/><circle class="bloom-center" cx="0" cy="-16" r="1.6"/></g>`;
-const pomegranate = (x, y) => `<g transform="translate(${x} ${y})"><circle class="fruit" r="6"/><path class="fruit" d="M-2 -6 L 0 -10 L 2 -6 Z"/></g>`;
-
-// A wide scene for the top of pages, chosen by look.
-export function scene(style) {
-  const open = `<svg class="scene" viewBox="0 0 360 120" role="img" preserveAspectRatio="xMidYMax meet"`;
-  if (style === "masculine") {
-    return `${open} aria-label="A fishing boat on the Sea of Galilee"><rect class="sky" width="360" height="120"/>${sun(300, 30)}
-      ${boat(170, 78, 1)}${waves(92)}${waves(104)}${fish(70, 108, .7)}${fish(250, 112, .6, true)}${fish(310, 104, .5)}</svg>`;
-  }
-  if (style === "feminine") {
-    return `${open} aria-label="A garden with olive branches and a fig tree"><rect class="sky" width="360" height="120"/>${hills}
-      ${arch(180, 112)}${oliveTree(110, 112, .9)}${figTree(250, 112, 1)}${flower(150, 112)}${flower(212, 112)}${flower(300, 114)}${pomegranate(64, 104)}
-      ${oliveBranch(0, 22, .9)}${oliveBranch(360, 22, .9, true)}</svg>`;
-  }
-  if (style === "animated") {
-    return `${open} aria-label="A lamb and a donkey under olive and fig trees"><rect class="sky" width="360" height="120"/>${sun(320, 26)}${hills}
-      ${oliveTree(60, 104, 1)}${figTree(300, 102, 1)}${lamb(150, 96, .9)}${donkey(220, 88, .85)}</svg>`;
-  }
-  return `${open} aria-label="Olive and fig trees on a hillside"><rect class="sky" width="360" height="120"/>${hills}
-    ${oliveTree(80, 104, 1)}${oliveTree(130, 100, .7)}${figTree(270, 102, 1)}${oliveBranch(10, 30, .7)}</svg>`;
-}
-
-// A small flourish for the end of a chapter.
-export function flourish(style) {
-  const inner = style === "masculine" ? `${fish(60, 16, .8)}${fish(100, 16, .8, true)}`
-    : style === "animated" ? `${lamb(60, 18, .6)}${donkey(110, 22, .5)}`
-    : `${oliveBranch(80, 20, .75)}${oliveBranch(80, 20, .75, true)}`;
-  return `<svg class="flourish" viewBox="0 0 160 36" aria-hidden="true">${inner}</svg>`;
-}
 
 // The friend in the corner for the Animated look.
-export const friend = (which) => `<svg viewBox="-40 -50 100 80" aria-hidden="true" class="friend">${which === "donkey" ? donkey(0, 0, 1) : lamb(0, 0, 1.3)}</svg>`;
+export const friend = (which) => `<svg viewBox="-42 -58 100 84" aria-hidden="true" class="friend">${which === "donkey" ? donkey(0, 0, 1) : lamb(0, 0, 1.3)}</svg>`;
 
 /* ---------- The Sea of Galilee: swimming fish ---------- */
 // Each fish is drawn facing right, about 64 units long. The tail and fins move on
@@ -130,18 +138,18 @@ function fishBody(kind, id) {
       </linearGradient>
     </defs>
     <g class="fish-wiggle">
-      <g class="fish-tail"><path fill="url(#ff${id})" d="M-22 0 C -28 -3, -34 -12, -41 -16 C -38 -7, -38 7, -41 16 C -34 12, -28 3, -22 0 Z"/>
-        <path class="fin-ray" d="M-26 -1 L -38 -11 M-26 1 L -38 11 M-27 0 L -39 0"/></g>
-      <path class="fish-fin" fill="url(#ff${id})" d="M-12 -11 C -6 -23, 7 -22, 12 -11 C 4 -13, -4 -13, -12 -11 Z"/>
-      <path class="fish-fin" fill="url(#ff${id})" d="M-13 9 C -11 15, -5 16, -2 11 Z"/>
-      <path fill="url(#fg${id})" class="fish-skin" d="M-24 0 C -16 -15, 9 -17, 23 -6 C 28 -2, 28 2, 23 6 C 9 17, -16 15, -24 0 Z"/>
-      <path class="scales" d="M-14 -6 q 3 3 0 6 q 3 3 0 6 M-8 -9 q 3 3 0 6 q 3 3 0 6 q 3 3 0 6 M-2 -10 q 3 3 0 6 q 3 3 0 6 q 3 3 0 6 M4 -10 q 3 3 0 6 q 3 3 0 6 q 3 3 0 6 M10 -8 q 3 3 0 6 q 3 3 0 6"/>
-      <path class="lateral" d="M-20 -1 C -6 -4, 8 -4, 20 -2"/>
-      <ellipse class="sheen" cx="0" cy="-8" rx="12" ry="2.2"/>
-      <path class="gill" d="M13 -8 C 9 -3, 9 3, 13 8"/>
-      <g class="fish-pec"><path fill="url(#ff${id})" d="M8 3 C 3 8, -3 10, -6 9 C -2 6, 3 4, 8 3 Z"/></g>
-      <circle class="fish-eye" cx="17" cy="-2.5" r="3.3"/><circle class="fish-pupil" cx="17.7" cy="-2.5" r="1.9"/><circle class="fish-glint" cx="18.4" cy="-3.4" r=".75"/>
-      <path class="gill" d="M25 2.2 q -2 1.2 -3.6 .2"/>
+      <g class="fish-tail"><path fill="url(#ff${id})" d="M-17 0 C -24 -5, -31 -15, -36 -13 C -40 -11, -38 -4, -35 0 C -38 4, -40 11, -36 13 C -31 15, -24 5, -17 0 Z"/>
+        <path class="fin-ray" d="M-21 -1 L -32 -9 M-21 1 L -32 9 M-22 0 L -34 0"/></g>
+      <path class="fish-fin" fill="url(#ff${id})" d="M-10 -14 C -7 -24, 6 -25, 10 -13 C 2 -15, -4 -15, -10 -14 Z"/>
+      <path class="fish-fin" fill="url(#ff${id})" d="M-9 13 C -8 19, -2 20, 1 14 Z"/>
+      <path fill="url(#fg${id})" class="fish-skin" d="M-19 0 C -19 -15, 0 -19, 14 -13 C 24 -8, 26 6, 15 12 C 2 19, -19 15, -19 0 Z"/>
+      <path class="scales" d="M-11 -6 q 3 3 0 6 q 3 3 0 6 M-5 -9 q 3 3 0 6 q 3 3 0 6 q 3 3 0 6 M1 -10 q 3 3 0 6 q 3 3 0 6 q 3 3 0 6"/>
+      <ellipse class="sheen" cx="-1" cy="-10" rx="10" ry="2.6"/>
+      <path class="gill" d="M8 -9 C 4.5 -3, 4.5 3, 8 9"/>
+      <g class="fish-pec"><path fill="url(#ff${id})" d="M5 4 C 1 10, -5 12, -8 10 C -4 7, 1 5, 5 4 Z"/></g>
+      <g class="blink"><circle class="fish-eye" cx="13" cy="-4" r="5.4"/><circle class="fish-pupil" cx="14" cy="-3.6" r="3.5"/><circle class="fish-glint" cx="15.4" cy="-5.3" r="1.4"/><circle class="fish-glint" cx="12.9" cy="-2.2" r=".6"/></g>
+      <ellipse class="blush" cx="14" cy="4.6" rx="3" ry="1.7"/>
+      <path class="smile" d="M19.5 4.2 q 2 1.8 4 -.4"/>
     </g>`;
 }
 
@@ -172,10 +180,10 @@ export function seaScene(style, { height = 170 } = {}) {
   const id = ++uid;
   const waveLine = (y, cls) => `<path class="${cls}" d="M-60 ${y} ${Array.from({ length: 16 }, () => "q 7.5 -4 15 0 t 15 0").join(" ")}"/>`;
   const shore = style === "animated"
-    ? `<path class="shore" d="M0 ${surf + 2} C 50 ${surf - 8}, 100 ${surf - 6}, 150 ${surf + 2} Z"/>${oliveTree(26, surf - 1, .8)}${lamb(64, surf - 10, .5)}${donkey(112, surf - 11, .42)}`
+    ? `<path class="shore" d="M0 ${surf + 2} C 50 ${surf - 8}, 100 ${surf - 6}, 150 ${surf + 2} Z"/>${oliveTree(26, surf - 1, .8)}${lamb(64, surf - 10, .5)}${donkey(112, surf - 11, .42)}${boat(285, surf - 2, .5)}`
     : style === "feminine"
-      ? `${figTree(326, surf, .85)}${flower(296, surf)}${flower(306, surf + 1)}${oliveBranch(0, 16, .8)}${oliveBranch(360, 16, .8, true)}`
-      : `${boat(style === "masculine" ? 200 : 230, surf - 4, .8)}`;
+      ? `${boat(190, surf - 2, .5)}${figTree(326, surf, .85)}${flower(296, surf)}${flower(306, surf + 1)}${oliveBranch(0, 16, .8)}${oliveBranch(360, 16, .8, true)}`
+      : `${boat(style === "masculine" ? 220 : 240, surf - 3, .78)}`;
   return `<svg class="scene sea" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="Fish swimming in the Sea of Galilee">
     <defs>
       <linearGradient id="sky${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sky-top"/><stop offset="1" class="sky-low"/></linearGradient>
@@ -229,3 +237,20 @@ export function edgeVines() {
 
 // Small branch for a sheet corner.
 export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? " flip" : ""}" viewBox="0 0 100 40" aria-hidden="true">${oliveBranch(4, 34, .95)}</svg>`;
+
+// A slim strip of water with a few fish, for the top of pages that need only a touch.
+export function fishStrip(style = "") {
+  const id = ++uid, W = 360, H = 54;
+  return `<svg class="fish-strip" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="st${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sea-top"/><stop offset="1" class="sea-deep"/></linearGradient>
+    <clipPath id="sc${id}"><rect width="${W}" height="${H}" rx="16"/></clipPath></defs>
+    <g clip-path="url(#sc${id})">
+      <rect width="${W}" height="${H}" fill="url(#st${id})"/>
+      <g class="wave-move"><path class="wave" d="M-60 6 ${Array.from({ length: 16 }, () => "q 7.5 -4 15 0 t 15 0").join(" ")}"/></g>
+      ${bubbles(6, W, 8, H - 2)}
+      ${swimmer({ x: 70, y: 28, s: .42, dir: 1, dur: 18, delay: 4, kind: "a" })}
+      ${swimmer({ x: 250, y: 36, s: .36, dir: -1, dur: 22, delay: 12, kind: "b" })}
+      ${swimmer({ x: 160, y: 22, s: .3, dir: 1, dur: 26, delay: 18, kind: "c" })}
+      ${style === "animated" ? swimmer({ x: 300, y: 18, s: .26, dir: -1, dur: 15, delay: 2, kind: "a" }) : ""}
+    </g></svg>`;
+}
