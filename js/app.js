@@ -2,7 +2,8 @@ import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store, onSave } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
-import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto } from "./speech.js";
+import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
+import { createBuddy } from "./buddy.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
@@ -855,13 +856,16 @@ async function askBuiltIn(q) {
   chatTurns.push({ role: "user", content: q });
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", "Thinking", "typing");
+  buddy.thinking(true);
   const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "" });
   wait.remove();
+  buddy.thinking(false);
   chatBusy = false; $("#partnerGo").disabled = false;
   if (r && r.text) {
     const text = String(r.text).replace(/\*\*|__/g, "").replace(/^#+\s*/gm, "");
     chatTurns.push({ role: "assistant", content: text });
     chatBubble("them", text);
+    buddySpeak(text);
     if (r.warn) helperWarning(r);
     return;
   }
@@ -906,6 +910,7 @@ async function sendChat() {
   if (chatBusy) return;
   chatBubble("me", q);
   $("#partnerQ").value = "";
+  buddy.excite();
   if (builtIn(p)) { await askBuiltIn(q); return; }
   if (!p) { chatBubble("them", "Pick Claude, ChatGPT, Grok or Gemini above first, then send again."); $("#partnerQ").value = q; return; }
   const prompt = partnerPrompt(q);
@@ -916,10 +921,64 @@ async function sendChat() {
     ? `I opened Gemini for you. ${copied ? "Tap the message box there, paste, and send." : "Type your question there."} Come back here any time for the next question.`
     : `I opened ${p[1]} with your question about this chapter ready. Press send there to see my answer. Come back here any time for the next question.`);
 }
+/* ---------- Study buddy: the little stick figure who opens the chat ---------- */
+const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
+function openBuddyChat() {
+  if (!$("#view-read") || $("#view-read").hidden) showView("read");
+  const box = $("#partnerBox");
+  box.open = true;
+  setTimeout(() => box.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }), 60);
+}
+// When "read answers aloud" is on, the buddy says the answer (stopping the Bible reading first).
+function buddySpeak(text) {
+  if (!store.get("helperSpeak") || !canSpeak) return;
+  if (reader.playing) { reader.pause(); syncPlayBtn(false); }
+  buddy.talking(true);
+  sayAloud(text, { voiceName: store.get("voiceName") || "", rate: store.get("voiceRate") || 1, onDone: () => buddy.talking(false) });
+}
+// Before the device's own "allow the microphone?" question, say plainly why it's asking.
+const micSheet = document.createElement("dialog");
+micSheet.className = "welcome-back mic-sheet"; micSheet.setAttribute("aria-label", "Using the microphone");
+document.body.append(micSheet);
+function explainMic() {
+  if (store.get("micExplained")) return Promise.resolve(true);
+  return new Promise((done) => {
+    micSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">🎤</div>
+      <h2>Ask by talking</h2>
+      <p>Your ${/iPad/.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent)) ? "iPad" : /iPhone/.test(navigator.userAgent) ? "iPhone" : "device"} will ask if Bible Study may use the microphone. Tap <strong>Allow</strong> so I can hear your question and type it for you.</p>
+      <p class="muted small-print">I only listen while the 🎤 button is red. Tap it again to stop.</p>
+      <button type="button" class="big-btn" id="micOk">OK, let's talk</button>
+      <button type="button" class="wb-new" id="micNo">I'll type instead</button>`;
+    micSheet.showModal();
+    $("#micOk").onclick = () => { store.set("micExplained", true); micSheet.close(); done(true); };
+    $("#micNo").onclick = () => { micSheet.close(); done(false); };
+  });
+}
+function micTrouble(kind) {
+  if (kind === "denied") {
+    micSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">🎤</div>
+      <h2>The microphone is off for Bible Study</h2>
+      <p>No problem, you can still type. To talk instead:</p>
+      <ol><li>On an iPhone or iPad, open the <strong>Settings</strong> app, tap <strong>Apps</strong> (or scroll down), then <strong>Safari</strong>, then <strong>Microphone</strong>, and choose <strong>Ask</strong> or <strong>Allow</strong>.</li>
+      <li>Or, in Safari, tap the <strong>aA</strong> or page menu beside the address, then <strong>Website Settings</strong>, then <strong>Microphone: Allow</strong>.</li>
+      <li>Or tap the 🎤 on your keyboard. It types what you say without any setting.</li></ol>
+      <button type="button" class="big-btn" id="micOk">OK</button>`;
+    micSheet.showModal();
+    $("#micOk").onclick = () => micSheet.close();
+  } else if (kind === "nomic") chatBubble("them", "I couldn't find a microphone on this device. You can type your question instead.", "notice");
+  else chatBubble("them", "I couldn't hear that. Tap 🎤 and try again, or type your question.", "notice");
+}
+
 if ($("#partnerBox")) {
   renderPartnerPicks();
   resetChat();
-  if (canListen) { $("#partnerMic").hidden = false; dictateInto($("#partnerQ"), $("#partnerMic")); }
+  if (canListen) { $("#partnerMic").hidden = false; dictateInto($("#partnerQ"), $("#partnerMic"), { before: explainMic, onError: micTrouble }); }
+  if (canSpeak) {
+    const sp = $("#partnerSpeak");
+    const sync = () => { const on = Boolean(store.get("helperSpeak")); sp.setAttribute("aria-pressed", String(on)); sp.textContent = on ? "🔊" : "🔈"; sp.setAttribute("aria-label", on ? "Reading answers aloud: on" : "Read answers aloud"); };
+    sp.hidden = false; sync();
+    sp.addEventListener("click", () => { store.set("helperSpeak", !store.get("helperSpeak")); sync(); if (!store.get("helperSpeak")) { stopSaying(); buddy.talking(false); } });
+  }
   $("#partnerGo").addEventListener("click", sendChat);
   $("#partnerBox").addEventListener("toggle", () => { if ($("#partnerBox").open && builtIn(currentPartner())) checkHelperStanding(); });
   $("#partnerQ").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } });
@@ -1139,6 +1198,7 @@ let mascotTimer;
 let friendWhich = "lamb";
 function updateMascot() {
   $("#mascot").hidden = store.get("style") !== "animated" || store.get("graphics") !== "full" || (store.get("show") || {}).mascot === false;
+  buddy.place(); // keeps the study buddy away from the corner friend
   if (store.get("last")) renderPassageArt(store.get("last").book, store.get("last").chapter);
   $("#friendSlot").innerHTML = friend(friendWhich);
   $("#flourish").innerHTML = isStill() || THEME_LOOKS.includes(store.get("style")) ? classicFlourish() : fishFlourish();
@@ -1406,6 +1466,7 @@ const FEATURES = [
   { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
   { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
+  { id: "buddy", label: "Study buddy", hint: "The little stick figure who opens the chat. Drag him anywhere along the side" },
   { id: "mascot", label: "Corner friend", hint: "The lamb or donkey in the Animated look" },
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },

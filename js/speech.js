@@ -92,13 +92,18 @@ export class Reader {
 // Listens for a few short commands. Pauses itself while the app is speaking
 // so it doesn't hear its own voice.
 // Talk instead of type: fills a text box from the microphone until stopped.
-export function dictateInto(field, button) {
+// Talk instead of type: fills a text box from the microphone until stopped.
+//   before(): may show an explanation first; return false to cancel (runs before the
+//             device's own microphone question).
+//   onError(kind): "denied" (microphone not allowed), "nomic", or "other".
+export function dictateInto(field, button, { before, onError } = {}) {
   if (!canListen) return null;
   let rec = null;
   const stop = () => { try { rec?.stop(); } catch { /* stopped */ } rec = null; button.classList.remove("on"); button.setAttribute("aria-pressed", "false"); };
-  button.addEventListener("click", (e) => {
+  button.addEventListener("click", async (e) => {
     e.preventDefault();
     if (rec) { stop(); return; }
+    if (before && !(await before())) return;
     rec = new Recognition();
     rec.lang = "en-US"; rec.continuous = true; rec.interimResults = false;
     rec.onresult = (ev) => {
@@ -108,11 +113,29 @@ export function dictateInto(field, button) {
       field.dispatchEvent(new Event("input", { bubbles: true }));
     };
     rec.onend = () => stop();
-    rec.onerror = () => stop();
-    try { rec.start(); button.classList.add("on"); button.setAttribute("aria-pressed", "true"); } catch { stop(); }
+    rec.onerror = (ev) => {
+      stop();
+      if (ev.error === "not-allowed" || ev.error === "service-not-allowed") onError?.("denied");
+      else if (ev.error === "audio-capture") onError?.("nomic");
+      else if (ev.error !== "no-speech" && ev.error !== "aborted") onError?.("other");
+    };
+    try { rec.start(); button.classList.add("on"); button.setAttribute("aria-pressed", "true"); } catch { stop(); onError?.("other"); }
   });
   return stop;
 }
+
+// Says one short piece of text aloud (an answer from the study buddy), in the chosen voice.
+export function sayAloud(text, { voiceName = "", rate = 1, onDone } = {}) {
+  if (!canSpeak) { onDone?.(); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const voice = pickVoice(voiceName);
+  if (voice) u.voice = voice;
+  u.rate = rate;
+  u.onend = u.onerror = () => onDone?.();
+  speechSynthesis.speak(u);
+}
+export function stopSaying() { if (canSpeak) speechSynthesis.cancel(); }
 
 export class Commands {
   constructor(handlers) {

@@ -22,7 +22,7 @@ function bibleGatewayUrl(version, book, ch) {
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${version === "ESV" ? "ESV" : "NASB"}`;
 }
 '''
-files = ['js/books.js', 'js/store.js', None, 'js/paths.js', 'js/speech.js', 'js/trivia-bank.js', 'js/trivia.js', 'js/art.js', 'js/notes.js', 'js/glossary.js', 'js/intros.js', 'js/daily.js', 'js/app.js']
+files = ['js/books.js', 'js/store.js', None, 'js/paths.js', 'js/speech.js', 'js/trivia-bank.js', 'js/trivia.js', 'js/art.js', 'js/notes.js', 'js/glossary.js', 'js/intros.js', 'js/daily.js', 'js/buddy.js', 'js/app.js']
 parts = []
 for f in files:
     if f is None: parts.append(stub); continue

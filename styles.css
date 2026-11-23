@@ -1244,9 +1244,9 @@ body.hide-visits #visitLine { display: none; }
 .chat-idea { flex: none; border: 1px solid var(--line); background: var(--bg); color: var(--accent); border-radius: 999px; padding: 8px 12px; font-size: .9rem; }
 .chat-bar { display: flex; align-items: flex-end; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 24px; padding: 6px 6px 6px 14px; }
 .chat-bar textarea { flex: 1; border: 0; background: none; resize: none; font: inherit; font-size: 1.05rem; padding: 8px 0; outline: none; color: var(--text); min-height: 24px; max-height: 120px; }
-.chat-send, .chat-mic { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; font-size: 1.2rem; display: grid; place-items: center; }
+.chat-send, .chat-mic, .chat-speak { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; font-size: 1.2rem; display: grid; place-items: center; }
 .chat-send { background: var(--accent); color: var(--bg); }
-.chat-mic { background: var(--accent-soft); }
+.chat-mic, .chat-speak { background: var(--accent-soft); color: var(--text); }
 .chat-mic.on { background: #b3261e; color: #fff; }
 .chat { grid-template-columns: minmax(0, 1fr); width: 100%; min-width: 0; }
 .tool-card.partner { min-width: 0; }
@@ -1392,3 +1392,45 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .dy-custom { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
 .pw-sheet .field { display: grid; gap: 4px; margin: 10px 0; text-align: left; font-size: 1.05rem; }
 .pw-sheet input { font-size: 1.15rem; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line, #ccc); background: var(--bg); color: var(--text); }
+
+/* ---------- Study buddy: a little stick figure who opens the chat ---------- */
+.buddy { position: fixed; z-index: 6; width: 58px; height: 68px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; filter: drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 2px 3px rgb(0 0 0 / .2)); }
+.buddy[hidden] { display: none; }
+.buddy:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
+.buddy.dragging { cursor: grabbing; transition: none; }
+.buddy-svg { width: 100%; height: 100%; overflow: visible; }
+.buddy.on-right .buddy-svg { transform: scaleX(-1); } /* his talk bubble always points into the screen */
+.buddy .ti-front { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.buddy .ti-dot { fill: var(--accent); }
+.buddy-head { fill: var(--surface); stroke: var(--accent); stroke-width: 3; }
+.buddy-line, .buddy-smile { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.buddy-smile { stroke-width: 2; }
+.buddy-eye { fill: var(--accent); }
+.buddy-legs-sit { display: none; }
+.buddy.sitting .buddy-legs-stand { display: none; }
+.buddy.sitting .buddy-legs-sit { display: inline; }
+.buddy.sitting .buddy-body { transform: translateY(14px); } /* sits on the ground, legs out */
+.buddy-arm-r { transform-origin: 26px 38px; transform-box: view-box; }
+.buddy-body { transform-box: view-box; transform-origin: 26px 72px; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-graphics="simple"]) .buddy.waving .buddy-arm-r { animation: buddy-wave .4s ease-in-out 3 alternate; }
+  .buddy.excited .buddy-body { animation: buddy-hop .35s ease-out 3 alternate; }
+  .buddy.excited .buddy-arm-r, .buddy.cheering .buddy-arm-r { animation: buddy-wave .25s ease-in-out 6 alternate; }
+  .buddy.cheering .buddy-body { animation: buddy-hop .3s ease-out 8 alternate; }
+  .buddy.cheering .buddy-arm-l { animation: buddy-wave-l .25s ease-in-out 8 alternate; transform-origin: 26px 38px; transform-box: view-box; }
+  .buddy.thinking .ti-dot, .buddy.talking .ti-dot { animation: buddy-dot .9s ease-in-out infinite; }
+  .buddy.thinking .d2, .buddy.talking .d2 { animation-delay: .15s; }
+  .buddy.thinking .d3, .buddy.talking .d3 { animation-delay: .3s; }
+  .buddy.talking .buddy-smile { animation: buddy-talk .3s ease-in-out infinite alternate; transform-origin: 26px 26px; transform-box: view-box; }
+  .buddy { transition: top .25s ease, left .25s ease, right .25s ease; }
+}
+@keyframes buddy-wave { from { transform: rotate(0); } to { transform: rotate(-115deg); } }
+@keyframes buddy-wave-l { from { transform: rotate(0); } to { transform: rotate(115deg); } }
+@keyframes buddy-hop { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+@keyframes buddy-dot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes buddy-talk { from { transform: scaleY(1); } to { transform: scaleY(1.8); } }
+html.touring .buddy, body.hide-buddy .buddy, html[data-graphics="simple"] .buddy, html[data-graphics="none"] .buddy, html.auth-wait .buddy { display: none; }
+
+/* The read-aloud and microphone buttons beside the chat box */
+.chat-speak[aria-pressed="true"], .chat-mic[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.mic-sheet ol { text-align: left; font-size: 1.05rem; line-height: 1.5; padding-left: 1.3em; }

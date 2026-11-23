@@ -42,6 +42,8 @@ const defaults = {
   uiScale: 100,             // 100 | 112 | 125: bigger labels and buttons
   contrast: false,          // high contrast words
   wordTap: true,            // tap a word in the Bible text for its meaning
+  helperSpeak: false,       // the study buddy reads his answers aloud
+  micExplained: false,      // the "why the microphone?" note has been shown
   helperStyle: "",          // "" | "simple" | "deep": how the Bible helper answers
   daily: {},                // which parts of Today show on Home: { verse, readings, devotion } (all on by default)
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
