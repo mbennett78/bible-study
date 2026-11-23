@@ -38,7 +38,8 @@ function showView(name) {
     else b.removeAttribute("aria-current");
   });
   document.body.dataset.view = name;
-  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings" }[name] || "";
+  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings", shop: "Books and music" }[name] || "";
+  if (name === "shop") renderShop();
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
@@ -737,6 +738,21 @@ if ($("#partnerBox")) {
       ? (copied ? "Gemini is open. Tap the message box, paste, and send." : "Gemini is open. Type your question there.")
       : `${p[1]} is open with your question filled in. Check it and press send.${copied ? " It's also copied, in case you need to paste it." : ""}`;
   });
+}
+
+/* ---------- Books and music: Amazon searches, no store integration ---------- */
+const SHOP = [
+  ["Christian books", [["Bible study guides", "bible study guide book"], ["Christian living", "christian living books"], ["Apologetics: the case for Christ", "christian apologetics books"], ["C. S. Lewis", "C. S. Lewis books"], ["Max Lucado", "Max Lucado books"], ["Josh Ross", "Josh Ross books"], ["Devotionals", "daily christian devotional"], ["Bible commentaries", "bible commentary"]]],
+  ["Christian counseling and psychology", [["Christian psychology", "christian psychology books"], ["Christian counseling", "biblical counseling books"], ["Faith and anxiety", "christian books on anxiety and worry"], ["Grief and hope", "christian books on grief"], ["Marriage and family", "christian marriage and family books"]]],
+  ["Psychology", [["Popular psychology", "psychology books"], ["Habits and the mind", "habits psychology books"], ["Aging well and memory", "aging well memory books"]]],
+  ["For kids", [["Bible storybooks", "children's bible storybook"], ["Kids' devotionals", "devotional for kids"], ["Bible activity books", "bible activity book for kids"]]],
+  ["Christian music", [["Worship music", "worship music", "music"], ["Hymns", "hymns", "music"], ["Southern gospel", "southern gospel", "music"], ["A cappella hymns", "a cappella hymns", "music"], ["Kids' worship songs", "kids worship songs", "music"], ["Songbooks and hymnals", "hymnal songbook"]]],
+];
+function renderShop() {
+  const el = $("#shopList");
+  if (!el || el.childElementCount) return;
+  const url = (q, kind) => kind === "music" ? `https://music.amazon.com/search/${encodeURIComponent(q)}` : `https://www.amazon.com/s?k=${encodeURIComponent(q)}`;
+  el.innerHTML = SHOP.map(([title, items]) => `<div class="card shop-card"><h2>${esc(title)}</h2><div class="shop-links">${items.map(([label, q, kind]) => `<a class="btn-link" href="${url(q, kind)}" target="_blank" rel="noopener">${esc(label)}</a>`).join("")}</div></div>`).join("");
 }
 
 /* ---------- Daily life journal ---------- */
@@ -1466,6 +1482,7 @@ function renderHome() {
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     <h2 class="home-h">Your study paths</h2>
     ${pathCardsHtml()}
+    <button class="resume-card shop-link" id="homeShop"><span><strong>Books and music</strong><small>Christian books, counseling, psychology and worship music</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
       <h2>Go anywhere in the Bible</h2>
       <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>
@@ -1477,6 +1494,7 @@ function renderHome() {
   wirePathCards(view);
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
+  $("#homeShop").addEventListener("click", () => showView("shop"));
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
 }
 
