@@ -3,6 +3,18 @@
 // replaced by emailing a one-time sign-in link, then choosing a new password in Settings.
 const cfg = window.BIBLE_CONFIG || {};
 export const authEnabled = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey);
+const AUTH_KEY = "bible-study:auth";
+
+// Arriving from an emailed sign-in link? Read the address before the sign-in library tidies it
+// away: "signin" means the link worked, "expired" means it was old or already used.
+export const linkArrival = (() => {
+  try {
+    const h = new URLSearchParams(location.hash.slice(1));
+    if (h.get("error_code") || h.get("error")) return "expired";
+    if (h.get("access_token") && /magiclink|recovery|email/.test(h.get("type") || "")) return "signin";
+  } catch { /* no address to read */ }
+  return null;
+})();
 
 let client = null;
 async function sb() {
@@ -14,23 +26,37 @@ async function sb() {
     });
     const { createClient } = window.supabase;
     client = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "bible-study:auth" },
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: AUTH_KEY },
     });
   }
   return client;
 }
 
-// The saved sign-in, read from this device (works offline).
+function savedUser() {
+  try { return JSON.parse(localStorage.getItem(AUTH_KEY))?.user || null; } catch { return null; }
+}
+
+// The saved sign-in, read from this device (works offline). When the sign-in is more than an
+// hour old the library renews it; if that fails only because there's no internet, the saved
+// sign-in still counts. A sign-in that is truly over (revoked, or the person was removed) is
+// deleted by the library, so it can't be used.
 export async function currentUser() {
   if (!authEnabled) return null;
   try {
     const c = await sb();
-    const { data } = await c.auth.getSession();
-    return data.session?.user || null;
+    const { data, error } = await c.auth.getSession();
+    if (data.session) return data.session.user;
+    return error ? savedUser() : null;
   } catch {
-    // Offline and the sign-in library couldn't load: trust a sign-in saved on this device.
-    try { const s = JSON.parse(localStorage.getItem("bible-study:auth")); return s?.user || null; } catch { return null; }
+    return savedUser(); // offline and the sign-in library couldn't load
   }
+}
+
+// Told when the sign-in ends while the app is open (signed out on this device, or it couldn't
+// be renewed because it was revoked), so the app can ask the person to sign in again.
+export async function onSignedOut(fn) {
+  if (!authEnabled) return;
+  try { const c = await sb(); c.auth.onAuthStateChange((event) => { if (event === "SIGNED_OUT") fn(); }); } catch { /* offline */ }
 }
 
 function friendly(error) {
@@ -38,9 +64,12 @@ function friendly(error) {
   if (/invalid login|invalid credentials/i.test(m)) return "That email and password don't match. Check them and try again.";
   if (/email not confirmed/i.test(m)) return "This account isn't confirmed yet. Ask whoever set up the app to confirm it in Supabase.";
   if (/signups? not allowed|not found|user not/i.test(m)) return "That email isn't on the family list yet. Ask whoever set up the app to add it.";
-  if (/password.*(short|least|weak)/i.test(m)) return "Please use a longer password (at least 6 characters).";
-  if (/expired|invalid|token/i.test(m)) return "That code didn't work or has expired. Check the newest email, or send a new code.";
-  if (/rate|too many|seconds/i.test(m)) return "Too many codes were asked for just now. Please wait a few minutes and try again.";
+  if (/should be different|same.password/i.test(m)) return "That's the password you already have. Please choose a new one.";
+  if (/password.*(short|least|weak|character)/i.test(m)) return "Please use a longer password (at least 6 characters).";
+  if (/session.*missing|not authenticated|jwt|refresh token/i.test(m)) return "You've been signed out. Please sign in again, then try once more.";
+  if (/reauthenticat/i.test(m)) return "For safety, please sign out and sign in again, then change your password.";
+  if (/expired|invalid|token|otp/i.test(m)) return "That code didn't work or has expired. Check the newest email, or send a new one.";
+  if (/rate|too many|seconds|security purposes/i.test(m)) return "Too many tries just now. Please wait a minute and try again.";
   if (/fetch|network|load/i.test(m)) return "Couldn't connect. Check your internet and try again.";
   return m || "Something went wrong. Please try again.";
 }
@@ -59,15 +88,28 @@ export async function emailSignInLink(email) {
   if (error) throw new Error(friendly(error));
 }
 
+// The 6-digit code in the same email (for when the link opens in a different browser,
+// such as Safari instead of the app on the Home Screen).
+export async function verifyEmailCode(email, code) {
+  const c = await sb();
+  const { data, error } = await c.auth.verifyOtp({ email, token: code, type: "email" });
+  if (error) throw new Error(friendly(error));
+  return data.user;
+}
+
+// Saves a new password. Also notes on the account that the person has their own password,
+// so a second phone or tablet doesn't ask them to replace the starter one again.
 export async function changePassword(password) {
   const c = await sb();
-  const { error } = await c.auth.updateUser({ password });
+  const { error } = await c.auth.updateUser({ password, data: { own_password: true } });
   if (error) throw new Error(friendly(error));
 }
 
+// Signs out of this device only. (Supabase's default would sign the person out of every
+// phone and tablet they use.)
 export async function signOut() {
-  try { const c = await sb(); await c.auth.signOut(); } catch { /* offline: clear below */ }
-  try { localStorage.removeItem("bible-study:auth"); } catch {}
+  try { const c = await sb(); await c.auth.signOut({ scope: "local" }); } catch { /* offline: clear below */ }
+  try { localStorage.removeItem(AUTH_KEY); } catch { /* ignore */ }
 }
 
 // The family's shared Bible key, kept in the family's own Supabase (table family_settings,

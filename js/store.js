@@ -54,6 +54,7 @@ const defaults = {
   setup: { done: false, skipped: false }, // first-time setup
   graphics: "full",         // "full" | "simple" (no cartoon faces or characters) | "none"
   show: {},                 // features someone has switched off, e.g. { trivia: false }
+  owner: "",                // the signed-in account this saved data belongs to
   archives: [],             // past walks: { id, pathId, started, ended, reads, finished }             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress
 };
 
@@ -61,20 +62,25 @@ const REVISIT_GAP_MS = 30 * 60 * 1000; // reopening within 30 minutes counts as 
 
 let state = load();
 
+// Fills in any settings added since the data was saved (nested objects too), then upgrades
+// it. Data saved before versioning has no dataVersion, so it starts at 1.
+function fromSaved(saved, keep = {}) {
+  const merged = { ...structuredClone(defaults), ...saved, ...keep };
+  for (const [k, v] of Object.entries(defaults)) {
+    if (v && typeof v === "object" && !Array.isArray(v) && saved[k] && typeof saved[k] === "object") merged[k] = { ...v, ...saved[k] };
+  }
+  merged.dataVersion = saved.dataVersion || 1;
+  return migrate(merged);
+}
+
 // Updates to the app never touch this saved data: it lives under one fixed key, and
 // new settings are filled in from the defaults without overwriting anything saved.
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    if (!raw) return structuredClone(defaults);
-    const saved = JSON.parse(raw);
-    const merged = { ...structuredClone(defaults), ...saved };
-    for (const [k, v] of Object.entries(defaults)) {
-      if (v && typeof v === "object" && !Array.isArray(v) && saved[k] && typeof saved[k] === "object") merged[k] = { ...v, ...saved[k] };
-    }
-    return migrate(merged);
+    return raw ? fromSaved(JSON.parse(raw)) : structuredClone(defaults);
   } catch {
-    try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return migrate({ ...structuredClone(defaults), ...JSON.parse(safe) }); } catch { /* fall through */ }
+    try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return fromSaved(JSON.parse(safe)); } catch { /* fall through */ }
     return structuredClone(defaults);
   }
 }
@@ -93,6 +99,9 @@ function save() {
     if (localStorage.getItem(`${KEY}:safety-day`) !== day) { localStorage.setItem(`${KEY}:safety`, JSON.stringify(state)); localStorage.setItem(`${KEY}:safety-day`, day); }
   } catch { /* storage full or blocked */ }
 }
+
+// Settings that belong to the device, not the person: kept when someone else signs in.
+const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "voiceName", "theme"];
 
 export const store = {
   get: (k) => state[k],
@@ -191,12 +200,11 @@ export const store = {
   exportJSON: () => JSON.stringify({ ...state, apiBibleKey: "", esvKey: "" }, null, 2),
   // Account backup: everything except Bible keys.
   snapshot: () => ({ ...structuredClone(state), apiBibleKey: "", esvKey: "" }),
-  isEmpty: () => !Object.keys(state.read).length && !Object.keys(state.journal).length && !Object.keys(state.diary || {}).length
-    && !Object.keys(state.visits).length && !Object.keys(state.favorites).length && !Object.values(state.pathRead).some((m) => Object.keys(m || {}).length),
+  // No reading, notes or journal yet (in this device's data, or in a backup's).
+  isEmpty: (d = state) => !Object.keys(d.read || {}).length && !Object.keys(d.journal || {}).length && !Object.keys(d.diary || {}).length
+    && !Object.keys(d.visits || {}).length && !Object.keys(d.favorites || {}).length && !Object.values(d.pathRead || {}).some((m) => Object.keys(m || {}).length),
   restore(data) {
-    const merged = { ...structuredClone(defaults), ...data, apiBibleKey: state.apiBibleKey, esvKey: state.esvKey };
-    for (const [k, v] of Object.entries(defaults)) if (v && typeof v === "object" && !Array.isArray(v) && data[k] && typeof data[k] === "object") merged[k] = { ...v, ...data[k] };
-    state = migrate(merged); save();
+    state = fromSaved(data, { apiBibleKey: state.apiBibleKey, esvKey: state.esvKey, owner: state.owner }); save();
   },
   // Brings in progress from another device without losing anything here: read marks, favorites,
   // visits, path progress and archives are combined; for a journal entry the newer one is kept.
@@ -221,9 +229,24 @@ export const store = {
     if (!state.activePath && data.activePath) state.activePath = data.activePath;
     save();
   },
+  // A shared tablet: each person's reading, notes and journal are kept apart. When someone
+  // different signs in, the last person's data is set aside on this device (it is also in
+  // their account backup) and the new person's own comes back. Returns true if it switched.
+  switchPerson(userId) {
+    if (!userId || state.owner === userId) return false;
+    if (!state.owner) { state.owner = userId; save(); return false; } // saved before accounts were tracked
+    const device = Object.fromEntries(DEVICE_KEYS.map((k) => [k, state[k]]));
+    try { localStorage.setItem(`${KEY}:person:${state.owner}`, JSON.stringify(state)); } catch { /* full: their account backup still has it */ }
+    let theirs = null;
+    try { theirs = JSON.parse(localStorage.getItem(`${KEY}:person:${userId}`)); localStorage.removeItem(`${KEY}:person:${userId}`); } catch { /* none */ }
+    state = fromSaved(theirs || { dataVersion: DATA_VERSION }, { ...device, owner: userId });
+    save();
+    return true;
+  },
   importJSON(text) {
     const data = JSON.parse(text);
-    state = migrate({ ...defaults, ...data, apiBibleKey: state.apiBibleKey, esvKey: state.esvKey });
+    if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("not a backup");
+    state = fromSaved(data, { apiBibleKey: state.apiBibleKey, esvKey: state.esvKey, owner: state.owner });
     save();
   },
 };

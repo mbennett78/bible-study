@@ -443,10 +443,15 @@
       <p class="muted" id="gateMsg">Sign in with the email your family added. The first time, use the starter password you were given. You'll make your own right after.</p>
       <form id="gateForm" class="gate-form">
         <label class="field">Email<input id="gateEmail" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
-        <label class="field">Password<input id="gatePassword" type="password" autocomplete="current-password" required></label>
+        <label class="field">Password<span class="pw-wrap"><input id="gatePassword" type="password" autocomplete="current-password" required><button type="button" class="pw-show" data-show="gatePassword" aria-label="Show password" aria-pressed="false">Show</button></span></label>
         <label class="gate-keep"><input type="checkbox" id="gateKeep" checked> Keep me signed in on this device</label>
         <button class="primary" type="submit">Sign in</button>
         <button class="quiet-link" type="button" id="gateForgot">Forgot your password?</button>
+      </form>
+      <form id="gateCodeForm" class="gate-form" hidden>
+        <label class="field">6-digit code from the email<input id="gateCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456"></label>
+        <button class="primary" type="submit">Sign in with the code</button>
+        <button class="quiet-link" type="button" id="gateBack">Back to sign in with a password</button>
       </form>
       <p class="gate-err" id="gateErr" role="alert"></p>
     </div>

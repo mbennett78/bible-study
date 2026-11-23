@@ -5,6 +5,9 @@
 window.BIBLE_CONFIG = {
   supabaseUrl: "https://cyelhrnrfbtfpeyrcxkv.supabase.co",
   supabaseAnonKey: "sb_publishable_KxpSSotz-ak6XXOE92nSKQ_cypwLp7m",
+  // The first-time password you give each new family member. The app makes them replace it
+  // right after their first sign-in and never accepts it as a new password.
+  starterPassword: "biblestudy",
 };
 // With sign-in on, hide the app until someone is signed in (no flash of the app first).
 if (window.BIBLE_CONFIG.supabaseUrl && window.BIBLE_CONFIG.supabaseAnonKey) document.documentElement.classList.add("auth-wait");

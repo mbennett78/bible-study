@@ -1,7 +1,7 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store, onSave } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
-import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
+import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
@@ -9,7 +9,7 @@ import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -540,13 +540,6 @@ function nextTarget() {
   const path = store.get("activePath");
   if (path) return pathChapters(path)[pathIndex(path, book, chapter) + 1] || null;
   return neighbors(book, chapter).next;
-}
-function openDrive() {
-  $("#drive").hidden = false;
-  document.body.classList.add("drive-open");
-  keepAwake(true);
-  if (store.get("modes").voiceCommands && canListen) commands.start();
-  updateDrive();
 }
 function closeDrive() {
   $("#drive").hidden = true;
@@ -1352,12 +1345,10 @@ function renderSetup() {
       <p class="setup-key-status" id="setupPwMsg" role="status">${store.get("setup")?.password ? "Your own password is saved ✓" : ""}</p>
       <p class="muted small-print">You'll stay signed in on this device. You can change your password any time in Settings, under Account.</p>`;
     $("#setupPwSave").addEventListener("click", async () => {
-      const a = $("#setupPw").value, b = $("#setupPw2").value, msg = $("#setupPwMsg");
-      if (a.length < 6) { msg.textContent = "Please use at least 6 letters or numbers."; return; }
-      if (a !== b) { msg.textContent = "Those two don't match. Please type them again."; return; }
-      if (a.toLowerCase() === "biblestudy") { msg.textContent = "Please choose something different from the starter password."; return; }
+      const a = $("#setupPw").value, b = $("#setupPw2").value, msg = $("#setupPwMsg"), problem = passwordProblem(a, b);
+      if (problem) { msg.textContent = problem; return; }
       $("#setupPwSave").disabled = true; msg.textContent = "Saving…";
-      try { await changePassword(a); setupSet({ password: true }); msg.textContent = "Your own password is saved ✓ Tap Next."; $("#setupPw").value = $("#setupPw2").value = ""; renderSetupDots(); }
+      try { await changePassword(a); setupSet({ password: true }); flag(STARTER_KEY, false); flag(RESET_KEY, false); msg.textContent = "Your own password is saved ✓ Tap Next."; $("#setupPw").value = $("#setupPw2").value = ""; renderSetupDots(); }
       catch (x) { msg.textContent = x.message || "That didn't save. Check your internet and try again."; }
       $("#setupPwSave").disabled = false;
     });
@@ -2067,36 +2058,104 @@ function keepSignedIn() { try { return localStorage.getItem(KEEP_KEY) !== "1"; }
 function setKeepSignedIn(on) {
   try { if (on) localStorage.removeItem(KEEP_KEY); else localStorage.setItem(KEEP_KEY, "1"); sessionStorage.setItem("bible-study:open", "1"); } catch { /* ignore */ }
 }
-function showGate() {
+const STARTER_KEY = "bible-study:pw-starter", RESET_KEY = "bible-study:pw-reset";
+const STARTER_PASSWORD = String((window.BIBLE_CONFIG || {}).starterPassword || "biblestudy").toLowerCase(); // replaced after the first sign-in
+const flag = (k, on) => { try { if (on === undefined) return localStorage.getItem(k) === "1"; if (on) localStorage.setItem(k, "1"); else localStorage.removeItem(k); } catch { return false; } };
+// "Show" buttons beside password boxes, for anyone who finds the dots hard to check.
+document.addEventListener("click", (e) => {
+  const b = e.target.closest?.(".pw-show");
+  if (!b) return;
+  const input = document.getElementById(b.dataset.show), on = input.type === "password";
+  input.type = on ? "text" : "password"; b.textContent = on ? "Hide" : "Show"; b.setAttribute("aria-pressed", String(on));
+});
+function showGate(note = "") {
   return new Promise((resolve) => {
-    const gate = $("#gate"), form = $("#gateForm"), err = $("#gateErr"), msg = $("#gateMsg");
+    const gate = $("#gate"), form = $("#gateForm"), codeForm = $("#gateCodeForm"), err = $("#gateErr"), msg = $("#gateMsg");
     $("#gateArt").innerHTML = seaScene(store.get("style"));
+    if (note) err.textContent = note;
     gate.hidden = false;
+    const done = (user) => {
+      setKeepSignedIn($("#gateKeep").checked);
+      gate.hidden = true;
+      $("#gatePassword").value = $("#gateCode").value = "";
+      resolve(user);
+    };
+    const busy = (btn, on, label) => { btn.disabled = on; btn.textContent = label; };
     form.onsubmit = async (e) => {
       e.preventDefault();
       const email = $("#gateEmail").value.trim().toLowerCase(), password = $("#gatePassword").value;
       if (!email || !password) return;
-      err.textContent = ""; const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Signing in…";
+      err.textContent = ""; const btn = form.querySelector("button[type=submit]"); busy(btn, true, "Signing in…");
       try {
         const user = await signIn(email, password);
-        setKeepSignedIn($("#gateKeep").checked);
-        gate.hidden = true;
-        document.documentElement.classList.remove("auth-wait");
-        resolve(user);
+        // Signed in with the starter password: they'll be asked to choose their own.
+        flag(STARTER_KEY, password.trim().toLowerCase() === STARTER_PASSWORD);
+        done(user);
       } catch (x) { err.textContent = x.message; }
-      btn.disabled = false; btn.textContent = "Sign in";
+      busy(btn, false, "Sign in");
     };
     $("#gateForgot").onclick = async () => {
       const email = $("#gateEmail").value.trim().toLowerCase();
-      if (!email) { err.textContent = "Type your email first, then tap Forgot your password."; return; }
-      err.textContent = "";
+      if (!email || !$("#gateEmail").checkValidity()) { err.textContent = "Type your email first, then tap Forgot your password."; $("#gateEmail").focus(); return; }
+      err.textContent = ""; const btn = $("#gateForgot"); busy(btn, true, "Sending…");
       try {
         await emailSignInLink(email);
-        try { localStorage.setItem("bible-study:pw-reset", "1"); } catch { /* ignore */ }
-        msg.innerHTML = `We emailed a link to <strong>${esc(email)}</strong>. Open the email on this phone or tablet and tap the link. It signs you in, and the app will ask you to choose a new password.`;
+        flag(RESET_KEY, true);
+        msg.innerHTML = `We emailed <strong>${esc(email)}</strong>. Type the 6-digit code from the email below, or tap the link in the email. Either one signs you in, then you choose a new password. (It can take a minute to arrive. Check the junk folder too.)`;
+        form.hidden = true; codeForm.hidden = false; $("#gateCode").focus();
       } catch (x) { err.textContent = x.message; }
+      busy(btn, false, "Forgot your password?");
+    };
+    codeForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = $("#gateEmail").value.trim().toLowerCase(), code = $("#gateCode").value.replace(/\D/g, "");
+      if (code.length !== 6) { err.textContent = "The code is 6 numbers. Please check the email and type all six."; return; }
+      err.textContent = ""; const btn = codeForm.querySelector("button[type=submit]"); busy(btn, true, "Checking…");
+      try { const user = await verifyEmailCode(email, code); flag(RESET_KEY, true); done(user); }
+      catch (x) { err.textContent = x.message; }
+      busy(btn, false, "Sign in with the code");
+    };
+    $("#gateBack").onclick = () => {
+      codeForm.hidden = true; form.hidden = false; err.textContent = "";
+      msg.textContent = "Sign in with the email your family added. The first time, use the starter password you were given. You'll make your own right after.";
     };
   });
+}
+
+// Choosing a new password after "Forgot your password?", or replacing the starter password
+// when first-time setup is already done on this device.
+const pwSheet = document.createElement("dialog");
+pwSheet.className = "welcome-back pw-sheet"; pwSheet.setAttribute("aria-label", "Choose a new password");
+document.body.append(pwSheet);
+function askNewPassword(reason) {
+  pwSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">🔑</div>
+    <h2>Choose a new password</h2>
+    <p class="muted">${reason === "reset" ? "You're signed in from the email. Now choose a new password you'll remember." : "You signed in with the starter password. Please choose your own."}</p>
+    <label class="field">New password<span class="pw-wrap"><input id="pwNew" type="password" autocomplete="new-password" placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="pwNew" aria-label="Show password" aria-pressed="false">Show</button></span></label>
+    <label class="field">Type it again<input id="pwNew2" type="password" autocomplete="new-password"></label>
+    <button type="button" class="big-btn" id="pwSave">Save my password</button>
+    <p class="setup-key-status" id="pwSheetMsg" role="status"></p>
+    <button type="button" class="wb-new" id="pwLater">Not now</button>`;
+  pwSheet.showModal();
+  $("#pwLater").onclick = () => pwSheet.close();
+  $("#pwSave").onclick = async () => {
+    const out = $("#pwSheetMsg"), problem = passwordProblem($("#pwNew").value, $("#pwNew2").value);
+    if (problem) { out.textContent = problem; return; }
+    $("#pwSave").disabled = true; out.textContent = "Saving…";
+    try {
+      await changePassword($("#pwNew").value);
+      flag(STARTER_KEY, false); flag(RESET_KEY, false); setupSet({ password: true });
+      out.textContent = "Saved ✓ Use this password next time you sign in.";
+      setTimeout(() => pwSheet.close(), 1400);
+    } catch (x) { out.textContent = x.message; $("#pwSave").disabled = false; }
+  };
+}
+// The same rules everywhere a password is chosen.
+function passwordProblem(a, b) {
+  if (a.length < 6) return "Please use at least 6 letters or numbers.";
+  if (b !== undefined && a !== b) return "Those two don't match. Please type them again.";
+  if (a.trim().toLowerCase() === STARTER_PASSWORD) return "Please choose something different from the starter password.";
+  return "";
 }
 function renderAccount() {
   const el = $("#accountBody");
@@ -2108,7 +2167,8 @@ function renderAccount() {
        <p class="muted small-print">Your reading, notes and journal are saved on this device and backed up to your account, so an update or a new phone never loses your place. <span id="backupStatus"></span></p>
        <button class="small" id="mergeBackup">Bring in progress from my other devices</button><p class="small-print" id="mergeMsg"></p>
        <details class="share-key"><summary>Change my password</summary>
-         <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
+         <label class="field">New password<span class="pw-wrap"><input id="newPassword" type="password" autocomplete="new-password" minlength="6"><button type="button" class="pw-show" data-show="newPassword" aria-label="Show password" aria-pressed="false">Show</button></span></label>
+         <label class="field">Type it again<input id="newPassword2" type="password" autocomplete="new-password"></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
@@ -2123,10 +2183,12 @@ function renderAccount() {
     updatePathBits(); if (!$("#view-home").hidden) renderHome();
   });
   $("#savePassword")?.addEventListener("click", async () => {
-    const v = $("#newPassword").value, out = $("#pwMsg");
-    if (v.length < 6) { out.textContent = "Please use at least 6 characters."; return; }
-    try { await changePassword(v); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
+    const v = $("#newPassword").value, out = $("#pwMsg"), problem = passwordProblem(v, $("#newPassword2").value);
+    if (problem) { out.textContent = problem; return; }
+    $("#savePassword").disabled = true; out.textContent = "Saving…";
+    try { await changePassword(v); flag(STARTER_KEY, false); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = $("#newPassword2").value = ""; }
     catch (x) { out.textContent = x.message; }
+    $("#savePassword").disabled = false;
   });
   // Grown-up settings (Bible keys, invite links) live in a closed "Family organizer tools" box,
   // so everyone else just signs in and reads.
@@ -2147,6 +2209,8 @@ function renderAccount() {
   });
   $("#signOutBtn")?.addEventListener("click", async () => {
     if (!confirm("Sign out of Bible Study on this device?")) return;
+    $("#signOutBtn").disabled = true; $("#signOutBtn").textContent = "Saving and signing out…";
+    try { await backupNow(); } catch { /* still sign out */ }
     await signOut();
     location.reload();
   });
@@ -2255,10 +2319,25 @@ if (authEnabled) {
   signedInUser = await currentUser();
   // Chose not to stay signed in, and this is a fresh open (not just a reload)? Ask again.
   let fresh = false; try { fresh = !sessionStorage.getItem("bible-study:open"); } catch { /* ignore */ }
-  if (signedInUser && !keepSignedIn() && fresh) { await signOut(); signedInUser = null; }
-  if (!signedInUser) signedInUser = await showGate();
+  if (signedInUser && !keepSignedIn() && fresh && !linkArrival) { await signOut(); signedInUser = null; }
+  if (linkArrival === "signin" && signedInUser) flag(RESET_KEY, true); // came in from the "forgot password" email
+  if (!signedInUser) {
+    signedInUser = await showGate(linkArrival === "expired"
+      ? "That email link has expired or was already used. Type your email and tap Forgot your password? for a new one."
+      : "");
+  }
   try { sessionStorage.setItem("bible-study:open", "1"); } catch { /* ignore */ }
   document.documentElement.classList.remove("auth-wait");
+  // Signed out while the app is open (on this device, or the sign-in was ended): sign in again.
+  onSignedOut(() => { if ($("#gate").hidden) location.reload(); });
+  // A shared tablet: keep each person's reading and journal apart.
+  store.switchPerson(signedInUser.id);
+  // Already has their own password (set on another device, or signed in with it)? Don't ask again.
+  if (signedInUser.user_metadata?.own_password && !flag(RESET_KEY)) { flag(STARTER_KEY, false); setupSet({ password: true }); }
+  if (flag(STARTER_KEY) || flag(RESET_KEY)) setupSet({ password: false });
+  else if (!(store.get("setup") || {}).done) setupSet({ password: true });
+  // First-time setup only asks for a new password when they're still on the starter one.
+  if ((store.get("setup") || {}).password) SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "password");
   // No key on this device yet? Use the family's shared key.
   // Also picks up extra Bible versions the organizer shared.
   const fk = await getFamilyKey();
@@ -2273,7 +2352,11 @@ if (authEnabled) {
   // New device, or the browser cleared this one? Bring back this person's own saved progress.
   if (store.isEmpty()) {
     const b = await loadBackup();
-    if (b?.data) { store.restore(b.data); applyAppearance(); }
+    // Only a backup with real progress, or one made after first-time setup when this device
+    // hasn't done it, replaces what's here. So an early, nearly empty backup can't undo
+    // choices just made on this device, and a new device skips setup it doesn't need.
+    const finished = (d) => Boolean(d?.setup?.done || d?.setup?.skipped);
+    if (b?.data && (!store.isEmpty(b.data) || (finished(b.data) && !finished({ setup: store.get("setup") })))) { store.restore(b.data); applyAppearance(); }
   }
   // From here on, back up a few seconds after each change, and when the app is put away.
   let backupTimer = null;
@@ -2293,14 +2376,13 @@ updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
 { const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); else maybeStartTour(); } // first time on this device
-// Came in from a "Forgot your password?" email: ask for a new password straight away.
-try {
-  if (signedInUser && localStorage.getItem("bible-study:pw-reset")) {
-    localStorage.removeItem("bible-study:pw-reset");
-    const i = SETUP_STEPS.findIndex((st) => st.id === "password");
-    if (i >= 0) { setupSet({ password: false }); $("#setup").open && $("#setup").close(); openSetup(i); }
-  }
-} catch { /* ignore */ }
+// Came in from a "Forgot your password?" email, or still on the starter password: ask for a
+// new one. (During first-time setup the password step does this instead.)
+if (signedInUser && (flag(RESET_KEY) || flag(STARTER_KEY))) {
+  const i = SETUP_STEPS.findIndex((st) => st.id === "password");
+  if ($("#setup").open && i >= 0) { if (flag(RESET_KEY)) { setupAt = i; renderSetup(); } } // the setup steps include it
+  else askNewPassword(flag(RESET_KEY) ? "reset" : "starter");
+}
 setTimeout(cameBack, 900); // opened again after a while: offer to go back to where they were
 wireShareKey();
 setupAccountButton();

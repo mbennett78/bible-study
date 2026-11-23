@@ -1,0 +1,20 @@
+{
+  "name": "bible-study",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A family Bible study web app: reader, study paths, study notes, journal, read-aloud and an AI study partner.",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "lint": "eslint .",
+    "test": "node --test tests/unit/*.test.js",
+    "test:e2e": "node tests/e2e/auth.mjs",
+    "check": "npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  },
+  "engines": { "node": ">=20" }
+}
