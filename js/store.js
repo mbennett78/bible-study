@@ -2,7 +2,8 @@
 const KEY = "bible-study:v1";
 
 const defaults = {
-  version: "NASB",          // "NASB" | "ESV"
+  version: "NASB",          // "NASB" | "ESV" | "B:<API.Bible id>" for an extra version
+  extraBibles: [],          // more versions from the same API.Bible plan: [{ id, label }]
   apiBibleKey: "",
   esvKey: "",
   nasbBibleId: "",          // API.Bible id for the chosen NASB edition
@@ -20,7 +21,7 @@ const defaults = {
   pathStarted: {},          // { chronological: iso }
   pathRead: {},
   name: "",                 // shown in greetings
-  style: "sage",            // "sage" | "feminine" | "masculine" | "classic" | "animated"
+  style: "sage",            // classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }
@@ -48,6 +49,9 @@ function load() {
     for (const [k, v] of Object.entries(defaults)) {
       if (v && typeof v === "object" && !Array.isArray(v) && saved[k] && typeof saved[k] === "object") merged[k] = { ...v, ...saved[k] };
     }
+    // Looks that were retired: Feminine became Sage, the Wooden Cross photo became Classic.
+    if (merged.style === "feminine") merged.style = "sage";
+    if (merged.style === "wood") merged.style = "classic";
     return merged;
   } catch {
     try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return { ...structuredClone(defaults), ...JSON.parse(safe) }; } catch { /* fall through */ }

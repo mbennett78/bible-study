@@ -4,7 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./t
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
+import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey } from "./auth.js";
 
@@ -182,14 +182,31 @@ function updateVisitLine() {
     : `Visited ${v.count} times · previous visit ${fmtDate(prev)}`;
 }
 
-document.querySelectorAll(".version-switch button").forEach((b) => b.addEventListener("click", () => {
-  store.set("version", b.dataset.version);
-  syncVersionSwitch();
-  const { book, chapter } = store.get("last");
-  openChapter(book, chapter, { scroll: false });
-}));
+// The version switch at the top: NASB, any extra versions picked from the same API.Bible
+// plan (Settings, Bible text), and the ESV when an ESV key is saved.
+function versionList() {
+  const list = [["NASB", (store.get("nasbLabel") || "NASB").replace(/\s.*$/, "")]];
+  for (const b of store.get("extraBibles") || []) list.push([`B:${b.id}`, b.label]);
+  if (store.get("esvKey")) list.push(["ESV", "ESV"]);
+  return list;
+}
 function syncVersionSwitch() {
-  document.querySelectorAll(".version-switch button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.version === store.get("version"))));
+  const list = versionList();
+  if (!list.some(([v]) => v === store.get("version"))) store.set("version", "NASB");
+  const cur = store.get("version");
+  const el = document.querySelector(".version-switch");
+  el.hidden = list.length < 2;
+  el.innerHTML = list.length > 3
+    ? `<select aria-label="Bible version">${list.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`
+    : list.map(([v, l]) => `<button data-version="${esc(v)}" aria-pressed="${v === cur}">${esc(l)}</button>`).join("");
+  const pick = (v) => {
+    store.set("version", v);
+    syncVersionSwitch();
+    const { book, chapter } = store.get("last");
+    openChapter(book, chapter, { scroll: false });
+  };
+  el.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => pick(b.dataset.version)));
+  el.querySelector("select")?.addEventListener("change", (e) => pick(e.target.value));
 }
 
 /* ---------- Book & chapter picker ---------- */
@@ -404,12 +421,14 @@ function nextTarget() {
 }
 function openDrive() {
   $("#drive").hidden = false;
+  document.body.classList.add("drive-open");
   keepAwake(true);
   if (store.get("modes").voiceCommands && canListen) commands.start();
   updateDrive();
 }
 function closeDrive() {
   $("#drive").hidden = true;
+  document.body.classList.remove("drive-open");
   reader.pause();
   commands.stop();
   keepAwake(false);
@@ -830,7 +849,7 @@ function updateMascot() {
   $("#mascot").hidden = store.get("style") !== "animated" || store.get("graphics") !== "full" || (store.get("show") || {}).mascot === false;
   if (store.get("last")) renderPassageArt(store.get("last").book, store.get("last").chapter);
   $("#friendSlot").innerHTML = friend(friendWhich);
-  $("#flourish").innerHTML = isStill() ? classicFlourish() : fishFlourish();
+  $("#flourish").innerHTML = isStill() || THEME_LOOKS.includes(store.get("style")) ? classicFlourish() : fishFlourish();
   $("#studyScene").innerHTML = seaScene(store.get("style"));
   $("#vines").innerHTML = edgeVines();
   document.querySelectorAll(".art-slot").forEach((el) => { el.innerHTML = el.dataset.art === "scene" ? seaScene(store.get("style")) : fishStrip(store.get("style")); });
@@ -862,8 +881,7 @@ function initSettings() {
   const apiKey = $("#apiBibleKey"), esvKey = $("#esvKey"), size = $("#textSize"), theme = $("#theme"), sel = $("#nasbSelect");
   $("#userName").value = store.get("name");
   $("#userName").addEventListener("change", (e) => { store.set("name", e.target.value.trim()); });
-  $("#styleSelect").value = store.get("style");
-  $("#styleSelect").addEventListener("change", (e) => setStyle(e.target.value));
+  renderLookCard();
   $("#modePace").checked = store.get("yearPace");
   $("#modePace").addEventListener("change", (e) => { store.set("yearPace", e.target.checked); renderMargin(); });
   const lockStatus = () => { $("#lockStatus").textContent = store.get("journalLock") ? "Your journal is locked with a passcode." : "No passcode set."; };
@@ -898,7 +916,12 @@ function initSettings() {
     if (inv) { applyInvite(inv); applyAppearance(); return; }
     store.set("apiBibleKey", apiKey.value.trim());
   });
-  esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); });
+  esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); });
+  const extrasNow = () => {
+    const x = store.get("extraBibles") || [];
+    $("#extraVersionsNow").textContent = x.length ? `Also on the switch: ${x.map((b) => b.label).join(", ")}.` : "";
+  };
+  extrasNow();
   size.addEventListener("input", () => { store.set("textSize", Number(size.value)); applyAppearance(); });
   theme.addEventListener("change", () => { store.set("theme", theme.value); applyAppearance(); });
   sel.addEventListener("change", () => {
@@ -914,6 +937,18 @@ function initSettings() {
       const current = store.get("nasbBibleId");
       sel.innerHTML = `<option value="">Pick automatically</option>` + bibles.map((b) => `<option value="${esc(b.id)}"${b.id === current ? " selected" : ""}>${esc(b.abbr)} · ${esc(b.name)}</option>`).join("");
       btn.textContent = `${bibles.length} versions loaded`;
+      const chosen = new Set((store.get("extraBibles") || []).map((b) => b.id));
+      $("#extraVersionList").innerHTML = bibles.filter((b) => b.id !== store.get("nasbBibleId")).map((b) => `<label class="switch-row"><span>${esc(b.abbr)}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(b.abbr)}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
+      $("#extraVersions").hidden = false;
+      $("#extraVersionList").querySelectorAll("[data-extra]").forEach((i) => i.addEventListener("change", () => {
+        let x = (store.get("extraBibles") || []).filter((b) => b.id !== i.dataset.extra);
+        if (i.checked) {
+          if (x.length >= 3) { i.checked = false; return; }
+          x = [...x, { id: i.dataset.extra, label: i.dataset.label }];
+        }
+        store.set("extraBibles", x);
+        extrasNow(); syncVersionSwitch();
+      }));
     } catch (err) {
       btn.textContent = err.message || "Couldn't load versions";
     }
@@ -975,7 +1010,8 @@ function renderSetup() {
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
-      <p class="muted small-print">Look</p>${chips(LOOKS, store.get("style"), "data-s-look")}
+      <p class="muted small-print">Pick one. You can change it any time in Settings, under Look.</p>
+      <div class="look-grid">${lookGridHtml("data-s-look")}</div>
       <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
       <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>
       ${seaScene(store.get("style"))}`;
@@ -1035,19 +1071,39 @@ const FEATURES = [
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
 ];
-const LOOKS = [["classic", "Classic"], ["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"], ["wood", "Wooden Cross"]];
-// The two still looks: no motion, no cartoons, no confetti.
-function isStill(style = store.get("style")) { return style === "classic" || style === "wood"; }
+// [value, name, short description, swatch colors]. The saved values "masculine" and "animated"
+// are kept so nobody's choice changes; only their names did.
+const LOOKS = [
+  ["classic", "Classic", "Brown, gray and white, with olive branches and a cross. Still.", ["#3a3430", "#ffffff", "#7d8a6e"]],
+  ["sage", "Sage", "Calm green, with olive branches, doves and a cross. Still.", ["#46604f", "#fbfaf6", "#c8a55a"]],
+  ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
+  ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Still.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
+  ["fall", "Thanksgiving", "Harvest rust, gold and brown, with fall prayers. Still.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
+  ["christmas", "Christmas", "Evergreen, deep red and gold, with the stable and star.", ["#1f3a2e", "#8c2a2a", "#d4b062"]],
+  ["masculine", "Animated", "Warm browns, with boats and fish that move.", ["#3b2b20", "#efe3d0", "#b8875a"]],
+  ["animated", "For kids", "Bright colors and a friendly lamb that cheers you on.", ["#3f6f7a", "#e9f4f6", "#e07a5f"]],
+];
+// Still looks: no motion, no cartoons, no confetti. Nativity and Christmas follow the Pictures setting,
+// so their star twinkles with Lively pictures and stays put with Still pictures.
+function isStill(style = store.get("style")) { return ["classic", "sage", "easter", "fall"].includes(style); }
+function lookGridHtml(attr) {
+  const cur = store.get("style");
+  return LOOKS.map(([v, l, d, sw]) => `<button class="look-opt" ${attr}="${v}" aria-pressed="${cur === v}"><span class="look-sw">${sw.map((c) => `<i style="background:${c}"></i>`).join("")}</span><span><strong>${esc(l)}</strong><small>${esc(d)}</small></span></button>`).join("");
+}
+function renderLookCard() {
+  const grid = $("#lookGrid");
+  if (!grid) return;
+  grid.innerHTML = lookGridHtml("data-set-look");
+  grid.querySelectorAll("[data-set-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.setLook); renderLookCard(); }));
+  const g = store.get("graphics") || "full";
+  $("#lookGraphics").innerHTML = GRAPHICS.map(([v, l]) => `<button data-set-gfx="${v}" aria-pressed="${g === v}">${l}</button>`).join("");
+  $("#lookGraphicsNote").textContent = GRAPHICS.find(([v]) => v === g)[2];
+  $("#lookGraphics").querySelectorAll("[data-set-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.setGfx); applyAppearance(); renderLookCard(); }));
+}
 const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
 function renderQuickMenu() {
-  const chips = (list, cur, attr) => list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("");
-  $("#qmLook").innerHTML = chips(LOOKS, store.get("style"), "data-qm-look");
-  $("#qmGraphics").innerHTML = chips(GRAPHICS, store.get("graphics") || "full", "data-qm-gfx");
-  $("#qmGraphicsNote").textContent = GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2];
   const shown = store.get("show") || {};
   $("#qmToggles").innerHTML = FEATURES.map((f) => `<label class="switch-row"><span>${esc(f.label)}<small>${esc(f.hint)}</small></span><input type="checkbox" role="switch" data-qm-feat="${f.id}" ${shown[f.id] === false ? "" : "checked"}></label>`).join("");
-  $("#qmLook").querySelectorAll("[data-qm-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.qmLook); renderQuickMenu(); }));
-  $("#qmGraphics").querySelectorAll("[data-qm-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.qmGfx); applyAppearance(); renderQuickMenu(); }));
   $("#qmToggles").querySelectorAll("[data-qm-feat]").forEach((i) => i.addEventListener("change", () => {
     store.set("show", { ...(store.get("show") || {}), [i.dataset.qmFeat]: i.checked });
     applyAppearance();
@@ -1307,7 +1363,7 @@ function renderHome() {
   view.innerHTML = `${seaScene(store.get("style"))}
     <p class="home-hello">${esc(greeting())}</p>
     <p class="home-sub">How would you like to walk through the Bible today?</p>
-    <div class="look-chips" role="group" aria-label="Look">${LOOKS.map(([v, l]) => `<button data-look="${v}" aria-pressed="${store.get("style") === v}">${l}</button>`).join("")}</div>
+    ${seasonPrayerHtml()}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     <h2 class="home-h">Your study paths</h2>
     ${pathCardsHtml()}
@@ -1322,16 +1378,52 @@ function renderHome() {
   $("#resumeBtn").addEventListener("click", () => { showView("read"); openChapter(resume.go.book, resume.go.chapter); });
   wirePathCards(view);
   wireArchive(view);
-  view.querySelectorAll("[data-look]").forEach((btn) => btn.addEventListener("click", () => setStyle(btn.dataset.look)));
   $("#homeBrowse").addEventListener("click", openPicker);
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
   $("#homeDrive").checked = driveOn();
   $("#homeDrive").addEventListener("change", (e) => setDrive(e.target.checked));
 }
 
+/* ---------- Seasonal prayers for the Easter, Thanksgiving and Christmas looks ---------- */
+const SEASON_PRAYERS = {
+  easter: { title: "An Easter prayer", list: [
+    ["Risen Lord, the stone is rolled away and the grave is empty. Let that hope roll away my fears today. Amen.", "Matthew 28:6"],
+    ["Jesus, You carried the cross for me. Help me walk today in the new life You won. Amen.", "Romans 6:4"],
+    ["Lord, like the women at the tomb, let me run to tell others that You are alive. Amen.", "Luke 24:9"],
+    ["Father, thank You that because He lives, we will live also. Fill our home with that joy. Amen.", "John 14:19"],
+    ["Lamb of God, You took away the sin of the world. Wash me clean and make my heart new. Amen.", "John 1:29"],
+    ["Lord, when I doubt like Thomas, show me Your hands and help me say, my Lord and my God. Amen.", "John 20:28"],
+    ["Good Shepherd, You laid down Your life and took it up again. Keep my family safe in Your hands. Amen.", "John 10:11"],
+  ] },
+  fall: { title: "A prayer of thanks", list: [
+    ["Lord of the harvest, thank You for every good gift on our table and every face around it. Amen.", "James 1:17"],
+    ["Father, as the leaves fall, teach me to let go of worry and trust Your faithful care. Amen.", "Matthew 6:26"],
+    ["Give thanks to the Lord, for He is good. Help me count my blessings one by one today. Amen.", "Psalm 107:1"],
+    ["Lord, You crown the year with Your goodness. Make my heart as full as the fields. Amen.", "Psalm 65:11"],
+    ["Thank You, God, for my family, near and far. Bind us together in Your love this season. Amen.", "Colossians 3:14"],
+    ["In everything give thanks. Lord, even on hard days, help me find a reason to praise You. Amen.", "1 Thessalonians 5:18"],
+    ["Father, the seasons change but You never do. Thank You for Your steady love. Amen.", "Lamentations 3:22-23"],
+  ] },
+  christmas: { title: "A Christmas prayer", list: [
+    ["Jesus, You came as a baby in a manger. Make room in my heart for You this Christmas. Amen.", "Luke 2:7"],
+    ["Father, like the wise men, let me follow Your light and bring You my best gifts. Amen.", "Matthew 2:10-11"],
+    ["Prince of Peace, quiet the busy days of this season and fill our home with Your peace. Amen.", "Isaiah 9:6"],
+    ["Lord, the shepherds heard good news of great joy. Let that joy be heard in our family too. Amen.", "Luke 2:10"],
+    ["Immanuel, God with us, thank You that I am never alone. Amen.", "Matthew 1:23"],
+    ["Light of the world, shine through me to someone who needs kindness today. Amen.", "John 8:12"],
+    ["Father, thank You for the greatest gift of all, Your Son. Help me give love as freely. Amen.", "John 3:16"],
+  ] },
+};
+function seasonPrayerHtml() {
+  const s = SEASON_PRAYERS[store.get("style")];
+  if (!s) return "";
+  const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+  const [text, ref] = s.list[day % s.list.length];
+  return `<div class="season-prayer"><h2>${esc(s.title)}</h2><p>${esc(text)}</p><small>${esc(ref)}</small></div>`;
+}
+
 function setStyle(v) {
   store.set("style", v);
-  $("#styleSelect").value = v;
   applyAppearance();
   mascotSay("Hello! I'm here to cheer you on.");
 }
@@ -1501,7 +1593,7 @@ function renderAccount() {
   $("#shareFamilyKey")?.addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
-    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "" }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
+    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [] }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
     catch (x) { out.textContent = x.message; }
   });
   $("#signOutBtn")?.addEventListener("click", async () => {
@@ -1517,7 +1609,7 @@ function renderAccount() {
 const b64url = (str) => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64url = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0)));
 function makeInviteCode({ to = "", look = "" } = {}) {
-  const d = { v: 1, k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", e: store.get("esvKey") || "", from: store.get("name").trim(), to, look };
+  const d = { v: 1, k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", e: store.get("esvKey") || "", x: store.get("extraBibles") || [], from: store.get("name").trim(), to, look };
   return "BSI1" + b64url(JSON.stringify(d));
 }
 function readInviteCode(code) {
@@ -1529,10 +1621,11 @@ function applyInvite(d) {
   store.set("apiBibleKey", d.k);
   if (d.b) { store.set("nasbBibleId", d.b); store.set("nasbLabel", d.l || "NASB"); }
   if (d.e && !store.get("esvKey")) store.set("esvKey", d.e);
+  if (Array.isArray(d.x) && d.x.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", d.x.filter((b) => b && b.id && b.label).slice(0, 3));
   if (d.to && !store.get("name").trim()) store.set("name", d.to);
   if (d.look && !(store.get("setup") || {}).look) {
     store.set("style", d.look);
-    if (d.look === "classic" || d.look === "wood") store.set("graphics", "simple");
+    if (isStill(d.look)) store.set("graphics", "simple");
   }
   const ki = $("#apiBibleKey"); if (ki) ki.value = d.k;
 }
@@ -1584,7 +1677,10 @@ if (authEnabled) {
   if (!signedInUser) signedInUser = await showGate();
   document.documentElement.classList.remove("auth-wait");
   // No key on this device yet? Use the family's shared key.
-  if (!store.get("apiBibleKey")) { const fk = await getFamilyKey(); if (fk) applyInvite({ ...fk, look: "" }); }
+  // Also picks up extra Bible versions the organizer shared.
+  const fk = await getFamilyKey();
+  if (fk && !store.get("apiBibleKey")) applyInvite({ ...fk, look: "" });
+  else if (fk && fk.x?.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", fk.x.slice(0, 3));
   // Signed-in family members don't set up keys or accounts: the first-time steps are just
   // name, look and study path.
   SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key" && st.id !== "account");

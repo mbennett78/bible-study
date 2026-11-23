@@ -102,6 +102,14 @@ async function nasbChapter(book, ch) {
   };
 }
 
+// Another version on the same API.Bible plan, such as the NIV, if the plan includes it.
+async function otherChapter(bibleId, book, ch) {
+  const q = "content-type=html&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false";
+  const json = await apiBible(`/bibles/${bibleId}/chapters/${book}.${ch}?${q}`);
+  const label = ((store.get("extraBibles") || []).find((b) => b.id === bibleId) || {}).label || "";
+  return { html: json.data.content, copyright: json.data.copyright || "", label };
+}
+
 async function esvChapter(book, ch) {
   const key = store.get("esvKey");
   if (!key) throw new TextError("Add your ESV key in Settings to read the ESV.", "nokey");
@@ -134,7 +142,9 @@ export async function getChapter(version, book, ch) {
   const fresh = cacheGet(id);
   if (fresh && fresh.at && Date.now() - fresh.at < CACHE_FRESH_MS) return fresh;
   try {
-    const result = version === "ESV" ? await esvChapter(book, ch) : await nasbChapter(book, ch);
+    const result = version === "ESV" ? await esvChapter(book, ch)
+      : version.startsWith("B:") ? await otherChapter(version.slice(2), book, ch)
+      : await nasbChapter(book, ch);
     cachePut({ id, at: Date.now(), ...result });
     return result;
   } catch (e) {
@@ -145,6 +155,7 @@ export async function getChapter(version, book, ch) {
 }
 
 export function bibleGatewayUrl(version, book, ch) {
-  const v = version === "ESV" ? "ESV" : /95/.test(store.get("nasbLabel")) ? "NASB1995" : "NASB";
+  const extra = version.startsWith("B:") && (store.get("extraBibles") || []).find((b) => `B:${b.id}` === version);
+  const v = version === "ESV" ? "ESV" : extra ? extra.label.replace(/[^A-Za-z0-9]/g, "") : /95/.test(store.get("nasbLabel")) ? "NASB1995" : "NASB";
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${v}`;
 }

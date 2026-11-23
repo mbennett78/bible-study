@@ -40,7 +40,6 @@
     </button>
     <div class="version-switch read-only" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
-      <button data-version="ESV" aria-pressed="false">ESV</button>
     </div>
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu: look, graphics and features">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.5" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor"/></svg>
@@ -162,6 +161,15 @@
         <div id="accountBody"><p class="muted small-print">Family sign-in isn't switched on yet. Once it is, everyone signs in with their own email, and this is where you'll see who's signed in and sign out.</p></div>
       </div>
 
+      <div class="card" id="lookCard">
+        <h2>Look</h2>
+        <p class="muted small-print">Pick how the app looks. You can change it any time.</p>
+        <div class="look-grid" id="lookGrid"></div>
+        <h3 class="qm-h">Pictures</h3>
+        <div class="qm-chips" id="lookGraphics"></div>
+        <p class="muted small-print" id="lookGraphicsNote"></p>
+      </div>
+
       <div class="card" id="installCard">
         <h2>Put it on your home screen</h2>
         <button class="small" id="installBtn" hidden>Install app</button>
@@ -173,16 +181,6 @@
         <h2>You</h2>
         <label class="field">Your name
           <input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you">
-        </label>
-        <label class="field">Look and feel
-          <select id="styleSelect">
-            <option value="classic">Classic (brown, gray and white, still)</option>
-            <option value="sage">Sage (calm green)</option>
-            <option value="feminine">Feminine (soft rose)</option>
-            <option value="masculine">Masculine (warm brown)</option>
-            <option value="animated">Animated (with friendly characters)</option>
-            <option value="wood">Wooden Cross (warm wood browns, still)</option>
-          </select>
         </label>
       </div>
 
@@ -218,6 +216,11 @@
           <select id="nasbSelect"><option value="">Pick automatically</option></select>
         </label>
         <button class="small" id="loadVersions">Load versions on my plan</button>
+        <div id="extraVersions" class="extra-versions" hidden>
+          <p class="muted small-print">Tick up to 3 more versions to add to the switch at the top of the Read page. Only versions on your plan are listed.</p>
+          <div id="extraVersionList"></div>
+        </div>
+        <p class="muted small-print" id="extraVersionsNow"></p>
         <label class="field">ESV key
           <input id="esvKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
         </label>
@@ -227,7 +230,7 @@
           <p class="muted small-print">This makes a private invite link. When they open it on their phone or iPad, the app saves your key there so they can start reading right away. They use the same 5,000 reads a month as you, so send it only to someone you trust, by text or email.</p>
           <label class="field">Their name <span class="muted">(optional)</span><input id="shareName" type="text" autocomplete="off" placeholder="Their first name"></label>
           <label class="field">Start them in this look
-            <select id="shareLook"><option value="">Let them choose</option><option value="classic">Classic (brown, gray and white, still)</option><option value="sage">Sage</option><option value="feminine">Feminine</option><option value="masculine">Masculine</option><option value="animated">Animated</option><option value="wood">Wooden Cross</option></select>
+            <select id="shareLook"><option value="">Let them choose</option><option value="classic">Classic (brown, gray and white, still)</option><option value="sage">Sage</option><option value="nativity">Nativity</option><option value="easter">Easter</option><option value="fall">Thanksgiving</option><option value="christmas">Christmas</option><option value="masculine">Animated</option><option value="animated">For kids</option></select>
           </label>
           <button class="small" id="shareKeyBtn">Make invite link</button>
           <div id="shareKeyOut"></div>
@@ -306,11 +309,7 @@
     <div class="qm-nav">
       <button data-go-view="home">Home</button><button data-go-view="read">Read</button><button data-go-view="path">My path</button><button data-go-view="settings">Settings</button>
     </div>
-    <h3 class="qm-h">Look</h3>
-    <div class="qm-chips" id="qmLook"></div>
-    <h3 class="qm-h">Pictures</h3>
-    <div class="qm-chips" id="qmGraphics"></div>
-    <p class="muted small-print" id="qmGraphicsNote"></p>
+    <p class="muted small-print">To change the look or pictures, go to Settings, under Look.</p>
     <h3 class="qm-h">Show on screen</h3>
     <div id="qmToggles"></div>
   </dialog>

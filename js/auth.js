@@ -77,13 +77,16 @@ export async function getFamilyKey() {
   if (!authEnabled) return null;
   try {
     const c = await sb();
-    const { data, error } = await c.from("family_settings").select("api_bible_key, nasb_bible_id, nasb_label").eq("id", 1).maybeSingle();
+    const { data, error } = await c.from("family_settings").select("*").eq("id", 1).maybeSingle();
     if (error || !data?.api_bible_key) return null;
-    return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "" };
+    return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "", x: Array.isArray(data.extra_bibles) ? data.extra_bibles : [] };
   } catch { return null; }
 }
-export async function setFamilyKey({ k, b = "", l = "" }) {
+export async function setFamilyKey({ k, b = "", l = "", x = [] }) {
   const c = await sb();
-  const { error } = await c.from("family_settings").upsert({ id: 1, api_bible_key: k, nasb_bible_id: b, nasb_label: l, updated_at: new Date().toISOString() });
+  const row = { id: 1, api_bible_key: k, nasb_bible_id: b, nasb_label: l, updated_at: new Date().toISOString() };
+  let { error } = await c.from("family_settings").upsert({ ...row, extra_bibles: x });
+  // Before the extra_bibles column is added, share the key and NASB without the extra versions.
+  if (error && /extra_bibles/i.test(error.message || "")) ({ error } = await c.from("family_settings").upsert(row));
   if (error) throw new Error(/relation|does not exist|schema cache/i.test(error.message) ? "The family key table isn't set up in Supabase yet." : friendly(error));
 }
