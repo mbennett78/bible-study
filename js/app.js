@@ -2114,7 +2114,7 @@ function showGate(note = "") {
       try {
         await emailSignInLink(email);
         flag(RESET_KEY, true);
-        msg.innerHTML = `We emailed <strong>${esc(email)}</strong>. Type the 6-digit code from the email below, or tap the link in the email. Either one signs you in, then you choose a new password. (It can take a minute to arrive. Check the junk folder too.)`;
+        msg.innerHTML = `We emailed <strong>${esc(email)}</strong>. Tap <strong>Sign in</strong> in that email: it opens Bible Study and asks you for a new password. Then come back here and sign in with it. If the email shows a 6-digit code instead, type it below. (It can take a minute to arrive. Check the junk folder too.)`;
         form.hidden = true; codeForm.hidden = false; $("#gateCode").focus();
       } catch (x) { err.textContent = x.message; }
       busy(btn, false, "Forgot your password?");

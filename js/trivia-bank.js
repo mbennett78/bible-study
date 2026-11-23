@@ -70,7 +70,7 @@ export const TRIVIA = [
   { id: "jhn9a", refs: ["JHN.9"], kind: "fact", q: "Where did Jesus send the man born blind to wash?", choices: ["The pool of Siloam", "The Jordan River", "The pool of Bethesda", "The Sea of Galilee"], a: 0, why: "John 9:7" },
   { id: "jhn10a", refs: ["JHN.10"], kind: "fact", q: "What does the good shepherd do for the sheep?", choices: ["Lays down his life for them", "Sells them at market", "Leaves them at night", "Counts them once a year"], a: 0, why: "John 10:11" },
   { id: "jhn11a", refs: ["JHN.11"], kind: "fact", q: "Whom did Jesus raise from the dead after four days?", choices: ["Lazarus", "Jairus's daughter", "The widow's son", "Stephen"], a: 0, why: "John 11:39–44" },
-  { id: "jhn13a", refs: ["JHN.13"], kind: "fact", q: "What did Jesus do for His disciples before the Passover meal?", choices: ["Washed their feet", "Anointed their heads", "Gave them new robes", "Baptized them"], a: 0, why: "John 13:5" },
+  { id: "jhn13a", refs: ["JHN.13"], kind: "fact", q: "At supper with His disciples, just before the Passover feast, what did Jesus do for them?", choices: ["Washed their feet", "Anointed their heads", "Gave them new robes", "Baptized them"], a: 0, why: "John 13:5" },
   { id: "jhn14a", refs: ["JHN.14"], kind: "fact", q: "In John 14, Jesus says He goes to prepare...", choices: ["A place for you", "A feast", "A new temple", "An army"], a: 0, why: "John 14:2–3" },
   { id: "jhn14b", refs: ["JHN.14"], kind: "fact", q: "\"I am the way, and the truth, and the...\"", choices: ["Life", "Light", "Door", "Vine"], a: 0, why: "John 14:6" },
   { id: "jhn18a", refs: ["JHN.18"], kind: "fact", q: "Who cut off the ear of the high priest's servant?", choices: ["Simon Peter", "John", "Judas", "Thomas"], a: 0, why: "John 18:10" },
