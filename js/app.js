@@ -104,8 +104,8 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     autoplayNext = false;
     if (driveOn()) $("#driveStatus").textContent = e.message || "Couldn't load this chapter.";
     readerEl.innerHTML = `<div class="message"><strong>Can't show this chapter yet</strong>${esc(e.message || "Something went wrong.")}
-      ${needsSettings ? `<br><button class="small" id="goSettings">Open Settings</button>` : `<br><button class="small" id="retry">Try again</button>`}</div>`;
-    $("#goSettings")?.addEventListener("click", () => showView("settings"));
+      ${needsSettings ? `<br><button class="small" id="goSettings">${e.kind === "nokey" ? "How to get your free key" : "Open Settings"}</button>` : `<br><button class="small" id="retry">Try again</button>`}</div>`;
+    $("#goSettings")?.addEventListener("click", () => { showView("settings"); if (e.kind === "nokey") { $("#keyHelp").open = true; $("#keyHelp").scrollIntoView({ block: "center" }); } });
     $("#retry")?.addEventListener("click", () => openChapter(book, chapter));
   }
 }

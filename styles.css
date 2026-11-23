@@ -872,3 +872,7 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
   .pb-entry h4 { font-family: var(--sans); font-size: .8rem; color: #555; margin: 10px 0 2px; }
   .pb-entry p { margin: 0 0 8px; line-height: 1.55; }
 }
+.key-help { background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; margin-top: 10px; }
+.key-help summary { font-weight: 600; color: var(--accent); cursor: pointer; }
+.key-help ol { padding-left: 1.2em; margin: 10px 0; font-size: .92rem; }
+.key-help li { margin-bottom: 6px; }
