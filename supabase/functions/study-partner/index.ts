@@ -12,10 +12,9 @@
 //      can keep asking only while what's left still covers everyone else's unused share.
 //      The rest is first come, first served (rules in tools/supabase-setup.sql, ai_month).
 //   4. The whole family stops at MONTHLY_LIMIT questions or MONTHLY_CENTS of estimated
-//      cost each calendar month (defaults 5000 questions, 400 cents = $4.00).
-//   5. The real backstop: the Anthropic account holds prepaid credits with auto-reload
-//      turned off. When the credits are used up, Anthropic stops answering. Nothing is
-//      ever charged beyond what was prepaid.
+//      cost each calendar month (defaults 12000 questions, 900 cents = $9.00).
+//   5. The backstop: the Anthropic Console has a $10 monthly spend limit, so even if
+//      something here went wrong, Anthropic stops answering at $10 for the month.
 // The limits can be changed in Supabase secrets without touching this code.
 
 import Anthropic from "npm:@anthropic-ai/sdk";
@@ -26,8 +25,8 @@ const num = (name: string, fallback: number) => {
   const v = Number(Deno.env.get(name));
   return Number.isFinite(v) && v > 0 ? Math.floor(v) : fallback;
 };
-const MONTHLY_LIMIT = num("MONTHLY_LIMIT", 5000);
-const MONTHLY_CENTS = num("MONTHLY_CENTS", 400);
+const MONTHLY_LIMIT = num("MONTHLY_LIMIT", 12000);
+const MONTHLY_CENTS = num("MONTHLY_CENTS", 900);
 const PER_PERSON = num("PER_PERSON", 100);
 const WARN_PCT = Math.min(num("WARN_PCT", 70), 100);
 
