@@ -6,10 +6,13 @@ import { BOOK_BY_ID } from "./books.js";
 // API.Bible moved hosts in 2025; try the current one first, then the older one.
 const API_BIBLE_HOSTS = ["https://rest.api.bible/v1", "https://api.scripture.api.bible/v1"];
 
-// A small recent-chapters cache so recently read chapters open offline.
-// Kept small on purpose: both publishers limit how much text an app may store.
+// A small recent-chapters cache. Rereading a recent chapter (or flipping back to it)
+// opens from here without using another request from the monthly allowance, and it
+// still opens offline. Kept small and fresh on purpose: API.Bible asks apps to cache
+// fewer than 500 consecutive verses and refresh within 14 days.
 const CACHE_KEY = "bible-study:recent";
 const CACHE_MAX = 10;
+const CACHE_FRESH_MS = 14 * 24 * 60 * 60 * 1000;
 
 function cacheGet(id) {
   try { return (JSON.parse(localStorage.getItem(CACHE_KEY)) || []).find((c) => c.id === id) || null; }
@@ -103,9 +106,11 @@ async function esvChapter(book, ch) {
 
 export async function getChapter(version, book, ch) {
   const id = `${version}:${book}.${ch}`;
+  const fresh = cacheGet(id);
+  if (fresh && fresh.at && Date.now() - fresh.at < CACHE_FRESH_MS) return fresh;
   try {
     const result = version === "ESV" ? await esvChapter(book, ch) : await nasbChapter(book, ch);
-    cachePut({ id, ...result });
+    cachePut({ id, at: Date.now(), ...result });
     return result;
   } catch (e) {
     const cached = cacheGet(id);
