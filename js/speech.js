@@ -7,12 +7,17 @@ export const canListen = Boolean(Recognition);
 
 // Turn the reader's HTML into speakable chunks (one per verse or heading).
 export function chunksFrom(readerEl) {
+  const pick = (root) => [...root.querySelectorAll("p, h2, h3, .s, .s1, .q1, .q2, .line")].filter((el) => !el.querySelector("p"));
   const clone = readerEl.cloneNode(true);
   clone.querySelectorAll(".offline-note, .v, sup, .verse-num, .chapter-num, .footnotes").forEach((n) => n.remove());
-  const blocks = [...clone.querySelectorAll("p, h2, h3, .s, .s1, .q1, .q2, .line")].filter((el) => !el.querySelector("p"));
-  const text = (blocks.length ? blocks.map((b) => b.textContent) : [clone.textContent]).map((t) => t.replace(/\s+/g, " ").trim()).filter(Boolean);
+  const blocks = pick(clone), live = pick(readerEl);
+  const parts = (blocks.length ? blocks.map((b, i) => [b.textContent, i]) : [[clone.textContent, -1]])
+    .map(([t, i]) => [t.replace(/\s+/g, " ").trim(), i]).filter(([t]) => t);
   // Split long paragraphs at sentence ends so iOS doesn't cut a long utterance short.
-  return text.flatMap((t) => t.length < 280 ? [t] : t.match(/[^.!?;:]+[.!?;:"”’)]*\s*/g) || [t]);
+  const chunks = [], where = [];
+  for (const [t, i] of parts) for (const piece of t.length < 280 ? [t] : t.match(/[^.!?;:]+[.!?;:"”’)]*\s*/g) || [t]) { chunks.push(piece); where.push(live[i] || null); }
+  chunks.blocks = where; // the paragraph on screen for each chunk, to highlight while it's read
+  return chunks;
 }
 
 // English voices on this device, for the "Reader voice" choice.
@@ -28,8 +33,9 @@ function pickVoice(name) {
 }
 
 export class Reader {
-  constructor({ onState, onEnd }) {
+  constructor({ onState, onEnd, onChunk }) {
     this.onState = onState;
+    this.onChunk = onChunk;
     this.onEnd = onEnd;
     this.chunks = [];
     this.index = 0;
@@ -40,6 +46,7 @@ export class Reader {
   }
   load(chunks, intro) {
     this.stop();
+    this.blocks = intro ? [null, ...(chunks.blocks || [])] : (chunks.blocks || []);
     this.chunks = intro ? [intro, ...chunks] : chunks;
     this.index = 0;
   }
@@ -57,6 +64,7 @@ export class Reader {
       this.onEnd?.();
       return;
     }
+    this.onChunk?.(this.index);
     const u = new SpeechSynthesisUtterance(this.chunks[this.index]);
     const voice = pickVoice(this.voiceName);
     if (voice) u.voice = voice;
@@ -76,6 +84,7 @@ export class Reader {
   back() { const was = this.playing; this.stop(); this.index = Math.max(0, this.index - 1); if (was) this.play(); }
   stop() {
     this.playing = false;
+    this.onChunk?.(-1);
     if (canSpeak) speechSynthesis.cancel();
   }
 }

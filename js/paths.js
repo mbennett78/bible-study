@@ -74,9 +74,9 @@ export const PATHS = [
   },
   {
     id: "general",
-    name: "Traditional",
-    short: "Traditional",
-    blurb: "Read the Bible straight through in the order it's printed, Genesis to Revelation, one section at a time.",
+    name: "My Bible",
+    short: "My Bible",
+    blurb: "Your Bible, straight through in the order it's printed, Genesis to Revelation, one section at a time.",
     note: "This is the order of the 66 books in Protestant Bibles. Catholic and Orthodox Bibles include a few more books, which aren't part of this plan.",
     stages: [
       { title: "The Law", about: "The five books of Moses: creation, the patriarchs, the exodus and the covenant at Sinai.", readings: ["GEN", "EXO", "LEV", "NUM", "DEU"] },
@@ -93,7 +93,7 @@ export const PATHS = [
   },
 ];
 
-export const PATH_ORDER = ["general", "chronological", "themes", "audience"]; // Traditional (id "general") first
+export const PATH_ORDER = ["general", "chronological", "themes", "audience"]; // My Bible (id "general") first, then the three self-guided studies
 export const PATH_BY_ID = Object.fromEntries(PATHS.map((p) => [p.id, p]));
 
 // "PSA 42-72" -> [{book:"PSA", chapter:42}, ...]

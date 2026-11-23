@@ -117,13 +117,13 @@ export async function setFamilyKey({ k, b = "", l = "", x = [], e = "" }) {
 
 // The built-in Bible helper (Supabase Edge Function "study-partner"). The AI key stays
 // in Supabase; the app only sends the chat and gets back an answer or a reason it can't.
-export async function askHelper({ messages, ref, version, name, status }) {
+export async function askHelper({ messages, ref, version, name, style, status }) {
   if (!authEnabled) return { error: "signin" };
   try {
     const c = await sb();
     const { data: s } = await c.auth.getSession();
     if (!s.session) return { error: "signin" };
-    const { data, error } = await c.functions.invoke("study-partner", { body: status ? { status: true } : { messages, ref, version, name } });
+    const { data, error } = await c.functions.invoke("study-partner", { body: status ? { status: true } : { messages, ref, version, name, style } });
     if (!error) return data || { error: "busy" };
     const res = error.context;
     if (res && typeof res.json === "function") {

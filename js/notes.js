@@ -84,7 +84,8 @@ export const NOTES = {
       ] },
       { id: "views", title: "How Christians read it", items: [
         { head: "Six ordinary days, recently", who: "Young earth", src: ["morris"], text: "The days are 24-hour days, marked by \"evening and morning,\" and the earth is thousands of years old. This view is widely held in Churches of Christ and Baptist churches." },
-        { head: "Long ages", who: "Day-age, old earth", src: ["ross"], text: "Each day is a long period. The order of creation fits what science finds." },
+        { head: "Real days, a mature creation", who: "Young earth, created mature", src: ["morris"], text: "The days are real days, but God made a working world that looked older from the start, as Adam was made a grown man and trees were made already bearing fruit (1:11-12, 2:7). Some add that floods, earthquakes and other forces can make things look older than they are." },
+        { head: "Long ages", who: "Day-age, old earth", src: ["ross"], text: "Each day is a long period. Some note that the sun, moon and seasons that mark our days aren't set in place until day 4 (1:14-19), so the first days may not be 24-hour days. The order of creation fits what science finds." },
         { head: "God's workdays", who: "Analogical days", src: ["collins"], text: "The days are God's workdays, told in a way that's like a human work week, and they give the pattern for our own week and Sabbath. They aren't meant to give the age of the earth." },
         { head: "A framework", who: "Literary framework", src: ["blocher"], text: "The six days are a frame that arranges creation by topic (forming and filling) to teach who made all things and why." },
         { head: "A cosmic temple", who: "Functional view", src: ["walton"], text: "Genesis 1 tells how God set up the world as His temple, giving each part its role, and then took up His rest in it." },

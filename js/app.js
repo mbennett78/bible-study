@@ -6,17 +6,33 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateI
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
+import { glossFor, stem } from "./glossary.js";
+import { INTROS } from "./intros.js";
 import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 /* ---------- Appearance ---------- */
+// High contrast: black (or white, in dark mode) words and stronger lines, whatever the look.
+const CONTRAST_VARS = ["--text", "--muted", "--line", "--verse"];
+function applyContrast() {
+  const root = document.documentElement;
+  CONTRAST_VARS.forEach((v) => root.style.removeProperty(v));
+  root.toggleAttribute("data-contrast", Boolean(store.get("contrast")));
+  if (!store.get("contrast")) return;
+  const bg = getComputedStyle(root).getPropertyValue("--bg").trim();
+  const m = bg.match(/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i);
+  const dark = m ? (parseInt(m[1], 16) * 0.3 + parseInt(m[2], 16) * 0.59 + parseInt(m[3], 16) * 0.11) < 128 : false;
+  const [t, mu, li] = dark ? ["#ffffff", "#e6e6e6", "#9a9a9a"] : ["#000000", "#1f1f1f", "#6b6b6b"];
+  root.style.setProperty("--text", t); root.style.setProperty("--muted", mu); root.style.setProperty("--line", li); root.style.setProperty("--verse", mu);
+}
 function applyAppearance() {
   const theme = store.get("theme");
   if (theme === "auto") delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = theme;
   document.documentElement.style.setProperty("--reading-size", `${store.get("textSize")}px`);
+  document.documentElement.style.fontSize = store.get("uiScale") > 100 ? `${store.get("uiScale")}%` : "";
   document.documentElement.dataset.graphics = store.get("graphics") || "full";
   const shown = store.get("show") || {};
   for (const f of FEATURES) document.body.classList.toggle(`hide-${f.id}`, shown[f.id] === false);
@@ -27,6 +43,7 @@ function applyAppearance() {
   // Match the phone's status bar and Safari's edges to this look's page color.
   const page = getComputedStyle(document.documentElement).getPropertyValue("--page").trim();
   if (page) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = page; });
+  applyContrast();
   if (typeof updateMascot === "function") updateMascot();
 }
 
@@ -105,6 +122,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   $("#nextCh").onclick = () => next && openChapter(next.book, next.chapter);
 
   if (scroll) window.scrollTo(0, 0);
+  renderBookIntro(book, chapter);
   const token = ++loadToken;
   const readerEl = $("#reader");
   readerEl.innerHTML = `<p class="muted">Loading…</p>`;
@@ -397,6 +415,17 @@ function renderPath() {
 /* ---------- Read aloud & drive mode ---------- */
 const driveOn = () => store.get("modes").drive;
 const reader = new Reader({
+  // Follow along: the paragraph being read is highlighted, so people who can't hear well can keep their place.
+  onChunk(i) {
+    document.querySelectorAll("#reader .speaking").forEach((el) => el.classList.remove("speaking"));
+    const el = i >= 0 ? reader.blocks?.[i] : null;
+    if (!el || !el.isConnected) return;
+    el.classList.add("speaking");
+    if (!$("#view-read").hidden) {
+      const r = el.getBoundingClientRect();
+      if (r.top < 90 || r.bottom > window.innerHeight - 140) el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }
+  },
   onState(state) {
     $("#listenBtn").setAttribute("aria-pressed", String(state === "playing"));
     syncPlayBtn(state === "playing");
@@ -633,6 +662,12 @@ async function hashCode(code) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 const journalLocked = () => Boolean(store.get("journalLock")) && !journalUnlocked;
+// The journal stays open until the person chooses to lock it again.
+function lockNowButton(rerender) {
+  const b = Object.assign(document.createElement("button"), { type: "button", className: "small lock-now", textContent: "🔒 Lock my journal" });
+  b.addEventListener("click", () => { journalUnlocked = false; rerender(); if (rerender !== renderJournal) renderJournal(); });
+  return b;
+}
 function unlockForm(onDone) {
   const wrap = document.createElement("div");
   wrap.innerHTML = `<p class="muted small-print">Your journal is locked.</p><div class="unlock"><input type="password" inputmode="numeric" placeholder="Passcode" aria-label="Journal passcode"><button class="small">Unlock</button></div><p class="muted small-print" role="alert"></p>`;
@@ -658,6 +693,7 @@ function renderJournal() {
   $("#journalHint").textContent = journalLocked() ? "Locked" : filled.length ? `You've written ${filled.join(", ")}. Tap to read or add more.` : "Thoughts, prayers and gratitude for this chapter";
   inner.innerHTML = "";
   if (journalLocked()) { inner.append(unlockForm(renderJournal)); return; }
+  if (store.get("journalLock")) inner.append(lockNowButton(renderJournal));
   const ref = `${BOOK_BY_ID[book].name} ${chapter}`;
   const saved = Object.assign(document.createElement("p"), { className: "saved" });
   saved.textContent = entry ? `Saved ${fmtDate(entry.updated)}` : "Saves as you type";
@@ -718,7 +754,7 @@ function partnerPrompt(question) {
 
 ${question.trim() || "Help me understand this chapter: what it says, the background, and how it connects to the rest of the Bible."}
 
-Please keep Scripture first. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. When views differ, show the main ones fairly, and name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). Keep it warm and easy to follow.`;
+Please keep Scripture first and quote it exactly. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. Where the Bible is clear, say so clearly. Where faithful Christians differ, stay neutral: show the main views fairly, say who holds each and whether its support comes from the Bible or elsewhere, don't pick a winner, and end on the common ground. Name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). No politics. I'm Baptist / Church of Christ, so mention other religions only briefly if they help. Keep it warm and easy to follow.`;
 }
 const currentPartner = () => PARTNERS.find(([v]) => v === (store.get("aiPartner") || ""));
 const builtIn = (p) => p && p[0] === "";
@@ -759,7 +795,7 @@ async function askBuiltIn(q) {
   chatTurns.push({ role: "user", content: q });
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", "Thinking", "typing");
-  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "" });
+  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "" });
   wait.remove();
   chatBusy = false; $("#partnerGo").disabled = false;
   if (r && r.text) {
@@ -915,6 +951,7 @@ let journalFilter = "all";
 function renderJournalList() {
   const el = $("#journalList");
   if (journalLocked()) { el.innerHTML = ""; el.append(unlockForm(renderJournalList)); return; }
+  const lockRow = store.get("journalLock") ? lockNowButton(renderJournalList) : null;
   const items = [
     ...store.allDiary().map((d) => ({ ...d, key: null, sortAt: d.updated, title: dayLabel(d.day), daily: true })),
     ...store.allJournal().map((j) => ({ ...j, sortAt: j.updated, title: keyRef(j.key).name })),
@@ -928,7 +965,7 @@ function renderJournalList() {
   el.querySelectorAll("[data-jf]").forEach((b) => b.addEventListener("click", () => { journalFilter = b.dataset.jf; renderJournalList(); }));
   el.querySelectorAll("[data-key]").forEach((b) => b.addEventListener("click", () => {
     const r = keyRef(b.dataset.key); showView("read"); openChapter(r.book, r.chapter); $("#journalBox").open = true;
-  }));
+  }));  if (lockRow) el.prepend(lockRow);
 }
 
 /* ---------- Trivia ---------- */
@@ -1119,6 +1156,14 @@ function initSettings() {
   extrasNow();
   size.addEventListener("input", () => { store.set("textSize", Number(size.value)); applyAppearance(); });
   theme.addEventListener("change", () => { store.set("theme", theme.value); applyAppearance(); });
+  $("#uiScale").value = String(store.get("uiScale") || 100);
+  $("#uiScale").addEventListener("change", () => { store.set("uiScale", Number($("#uiScale").value)); applyAppearance(); });
+  $("#contrastHigh").checked = Boolean(store.get("contrast"));
+  $("#contrastHigh").addEventListener("change", () => { store.set("contrast", $("#contrastHigh").checked); applyAppearance(); });
+  $("#wordTap").checked = store.get("wordTap") !== false;
+  $("#wordTap").addEventListener("change", () => store.set("wordTap", $("#wordTap").checked));
+  $("#helperStyle").value = store.get("helperStyle") || "";
+  $("#helperStyle").addEventListener("change", () => store.set("helperStyle", $("#helperStyle").value));
   sel.addEventListener("change", () => {
     store.set("nasbBibleId", sel.value);
     store.set("nasbLabel", sel.value ? sel.selectedOptions[0].textContent.split(" · ")[0] : "");
@@ -1399,6 +1444,121 @@ async function fillStrongs(el, book, chapter) {
   }));
 }
 
+
+
+/* ---------- Setting the stage: book introduction (and this chapter, where written) ---------- */
+// Open on a book's first chapter; a tap away on every other chapter.
+function renderBookIntro(book, chapter) {
+  const box = $("#bookIntro");
+  if (!box) return;
+  const b = INTROS[book], ch = notesFor(book, chapter)?.intro;
+  if (!b && !ch) { box.hidden = true; return; }
+  const name = BOOK_BY_ID[book].name;
+  const row = (label, text) => (text ? `<div class="bi-row"><dt>${label}</dt><dd>${esc(text)}</dd></div>` : "");
+  box.innerHTML = `<summary><span class="bi-icon" aria-hidden="true">📜</span><span><strong>Setting the stage</strong><small>About ${esc(name)}${ch ? ` and chapter ${chapter}` : ""}</small></span></summary>
+    <div class="bi-body">
+      ${ch ? `<p class="bi-chapter"><strong>In chapter ${chapter}:</strong> ${esc(ch)}</p>` : ""}
+      ${b ? `<p class="bi-about">${esc(b.about)}</p>
+      <dl class="bi-facts">${row("Written by", b.who)}${row("When", b.when)}${row("First readers", b.to)}${row("Setting", b.setting)}${row("Key verse", b.key)}</dl>
+      ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}` : ""}
+      <p class="muted small-print">Introductions give the traditional view first and say where scholars differ. Scripture itself is the guide.</p>
+    </div>`;
+  box.open = chapter === 1;
+  box.hidden = false;
+}
+
+/* ---------- Tap a word in the Bible text: plain meaning, then the Hebrew or Greek ---------- */
+// Only on a tap (never on hover), and only when "Tap a word for its meaning" is on in Settings.
+const wordSheet = document.createElement("dialog");
+wordSheet.className = "word-sheet"; wordSheet.setAttribute("aria-label", "Word meaning");
+document.body.append(wordSheet);
+wordSheet.addEventListener("click", (e) => { if (e.target === wordSheet) wordSheet.close(); });
+function wordAt(x, y) {
+  let node, offset;
+  if (document.caretPositionFromPoint) { const p = document.caretPositionFromPoint(x, y); if (p) { node = p.offsetNode; offset = p.offset; } }
+  else if (document.caretRangeFromPoint) { const r = document.caretRangeFromPoint(x, y); if (r) { node = r.startContainer; offset = r.startOffset; } }
+  if (!node || node.nodeType !== 3) return null;
+  const t = node.textContent, isW = (c) => /[A-Za-z’'-]/.test(c);
+  let a = offset, b = offset;
+  while (a > 0 && isW(t[a - 1])) a--;
+  while (b < t.length && isW(t[b])) b++;
+  const word = t.slice(a, b).replace(/^[’'-]+|[’'-]+$/g, "");
+  return word.length > 1 ? { word, node } : null;
+}
+function verseOf(node) {
+  // Walk backwards through the text to the nearest verse number.
+  const marks = [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")];
+  let verse = 1;
+  for (const m of marks) {
+    if (m.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING || m.contains(node)) {
+      const n = m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10);
+      if (n) verse = n;
+    } else break;
+  }
+  return verse;
+}
+function originalMatches(rows, word, verse) {
+  const inVerse = rows.filter((r) => r[5].includes(verse));
+  const w = stem(word);
+  const score = (r) => {
+    const toks = String(r[3]).toLowerCase().split(/[^a-z]+/).filter(Boolean).map(stem);
+    if (toks.includes(w)) return 3;
+    if (w.length >= 4 && toks.some((t) => t.length >= 4 && (t.startsWith(w.slice(0, 4)) || w.startsWith(t.slice(0, 4))))) return 2;
+    return 0;
+  };
+  const ranked = inVerse.map((r) => [score(r), r]).filter(([n, r]) => n && !(r[6] && n < 3)).sort((a, b) => b[0] - a[0]).map(([, r]) => r);
+  return { best: ranked.slice(0, 2), others: inVerse.filter((r) => !ranked.includes(r) && !r[6]) };
+}
+function origCard(r, open = false) {
+  const heb = r[0][0] === "H";
+  return `<details class="ws-orig"${open ? " open" : ""} data-n="${r[0]}"><summary>
+    <span class="orig" lang="${heb ? "he" : "el"}" dir="${heb ? "rtl" : "ltr"}">${esc(r[1])}</span>
+    <span class="ws-say">${esc(r[2])}</span><span class="ws-means">“${esc(r[3])}”</span>
+    <span class="ws-meta">${heb ? "Hebrew" : "Greek"} · Strong's ${r[0]} · used ${r[4].toLocaleString()} time${r[4] === 1 ? "" : "s"}</span></summary>
+    <div class="ws-def">Loading…</div></details>`;
+}
+function wireOrig(root) {
+  root.querySelectorAll(".ws-orig").forEach((d) => {
+    const fill = async () => {
+      if (!d.open || d.dataset.loaded) return;
+      const e = await loadLex(d.dataset.n);
+      const box = d.querySelector(".ws-def");
+      if (!e) { box.textContent = "This word's dictionary entry couldn't load. Check your connection."; return; }
+      d.dataset.loaded = "1";
+      box.innerHTML = `${e.def ? `<p><strong>Meaning (Strong's):</strong> ${esc(e.def)}</p>` : ""}${e.kjv ? `<p><strong>Also translated:</strong> ${esc(e.kjv)}</p>` : ""}${e.pron ? `<p class="muted small-print">Say it: ${esc(e.pron)}</p>` : ""}`;
+    };
+    d.addEventListener("toggle", fill); fill();
+  });
+}
+async function openWordSheet(word, verse) {
+  const { book, chapter } = store.get("last");
+  const g = glossFor(word);
+  const lang = BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek";
+  wordSheet.innerHTML = `<div class="ws-head"><h2>${esc(word)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
+    <p class="ws-ref">${esc(BOOK_BY_ID[book].name)} ${chapter}:${verse}</p>
+    ${g ? `<div class="ws-plain"><strong>What it means</strong><p>${esc(g.text)}</p></div>` : ""}
+    <div class="ws-lang"><p class="muted small-print">Looking up the ${lang}…</p></div>
+    <button type="button" class="big-btn ws-done">Close</button>`;
+  wordSheet.querySelectorAll(".ws-close, .ws-done").forEach((b) => b.addEventListener("click", () => wordSheet.close()));
+  if (!wordSheet.open) wordSheet.showModal();
+  const rows = await loadStrongs(book, chapter);
+  const box = wordSheet.querySelector(".ws-lang");
+  if (!box || !box.isConnected) return;
+  if (!rows) { box.innerHTML = `<p class="muted small-print">The ${lang} couldn't load. Check your connection and try again.</p>`; return; }
+  const { best, others } = originalMatches(rows, word, verse);
+  box.innerHTML = `${best.length ? `<strong>In the ${lang}</strong>${best.map((r, i) => origCard(r, i === 0 && !g)).join("")}` : `<p class="muted small-print">${g ? "" : `This English word doesn't line up with one ${lang} word here. `}See every ${lang} word in verse ${verse} below.</p>`}
+    ${others.length ? `<details class="ws-more"><summary>Other ${lang} words in verse ${verse} (${others.length})</summary>${others.map((r) => origCard(r)).join("")}</details>` : ""}
+    <p class="muted small-print ws-credit">Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong (1890).</p>`;
+  wireOrig(box);
+}
+$("#reader").addEventListener("click", (e) => {
+  if (store.get("wordTap") === false || !window.getSelection().isCollapsed) return;
+  if (e.target.closest(".v, .verse-num, .chapter-num, .message, button, a")) return;
+  const hit = wordAt(e.clientX, e.clientY);
+  if (!hit) return;
+  openWordSheet(hit.word, verseOf(hit.node));
+});
+
 /* ---------- Open the same chapter in Olive Tree or Logos ---------- */
 function openInHtml(book, chapter) {
   const i = BOOKS.findIndex((b) => b.id === book) + 1;
@@ -1533,16 +1693,21 @@ function pathCardsHtml() {
     const done = store.pathReadCount(id), total = pathChapters(id).length;
     const isActive = id === active;
     const label = featured ? (done ? "Keep reading" : "Open my Bible") : isActive ? "Continue" : done ? "Pick up again" : "Start this path";
-    return `<div class="path-card${isActive ? " is-active" : ""}">
-      <div class="pc-top"><span class="pc-icon">${PATH_ICONS[id]}</span><div><h3>${esc(p.name)}</h3>${isActive ? `<span class="pc-badge">Your current path</span>` : ""}</div></div>
+    return `<div class="path-card${isActive ? " is-active" : ""}${featured ? " my-bible" : ""}">
+      <div class="pc-top"><span class="pc-icon">${PATH_ICONS[id]}</span><div><h3>${esc(p.name)}</h3>${featured ? "" : `<span class="pc-kind">Self-guided study</span>`}${isActive ? `<span class="pc-badge">Your current path</span>` : ""}</div></div>
       <p>${esc(p.blurb)}</p>
       <div class="bar"><span style="width:${(done / total) * 100}%"></span></div>
       <span class="pc-meta">${done} of ${total} chapters · ${p.stages.length} sections</span>
       <div class="pc-actions"><button class="small" data-start="${id}"${featured ? ` data-read-now="1"` : ""}>${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See ${featured ? "sections" : "stages"}</button>` : ""}</div>
     </div>`;
   };
-  // Four equal cards, Traditional first: a 2×2 grid on iPad, stacked on iPhone.
-  return `<div class="path-cards four">${PATH_ORDER.map((id, i) => card(id, i === 0)).join("")}</div>`;
+  // My Bible on its own, then the three self-guided studies. Every one has the same study
+  // section, questions, journal and read-aloud under each chapter.
+  const [mine, ...studies] = PATH_ORDER;
+  return `<div class="path-cards one">${card(mine, true)}</div>
+    <h2 class="home-h">Self-guided studies</h2>
+    <p class="home-sub small">Each one walks through the whole Bible a different way. The study notes, Bible helper, journal and read-aloud are with you in all of them.</p>
+    <div class="path-cards four">${studies.map((id) => card(id)).join("")}</div>`;
 }
 function wirePathCards(root) {
   root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
@@ -1570,7 +1735,6 @@ function renderHome() {
     <p class="home-sub">How would you like to walk through the Bible today?</p>
     ${seasonPrayerHtml()}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
-    <h2 class="home-h">Your study paths</h2>
     ${pathCardsHtml()}
     <button class="resume-card shop-link" id="homeShop"><span><strong>Books and music</strong><small>Christian books, counseling, psychology and worship music</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
@@ -1837,6 +2001,36 @@ function renderAccount() {
   });
 }
 
+
+/* ---------- Account button in the top corner: who's signed in, sign out ---------- */
+const acctSheet = document.createElement("dialog");
+acctSheet.className = "welcome-back acct-sheet"; acctSheet.setAttribute("aria-label", "My account");
+document.body.append(acctSheet);
+function setupAccountButton() {
+  const btn = $("#acctBtn");
+  if (!authEnabled || !signedInUser) { btn.hidden = true; return; }
+  const who = store.get("name") || signedInUser.email || "";
+  $("#acctInitial").textContent = (who.trim()[0] || "👤").toUpperCase();
+  btn.hidden = false;
+  btn.onclick = () => {
+    acctSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">👤</div>
+      <h2>${esc(store.get("name") || "My account")}</h2>
+      <p class="muted">Signed in as ${esc(signedInUser.email || "")}</p>
+      ${store.get("journalLock") && !journalLocked() ? `<button type="button" class="wb-new" id="acctLock">🔒 Lock my journal</button>` : ""}
+      <button type="button" class="big-btn" id="acctOut">Sign out</button>
+      <button type="button" class="wb-new" id="acctStay">Stay signed in</button>
+      <p class="muted small-print">Your reading, notes and journal are saved to your account and come back when you sign in again.</p>`;
+    acctSheet.showModal();
+    $("#acctStay").addEventListener("click", () => acctSheet.close());
+    $("#acctLock")?.addEventListener("click", () => { journalUnlocked = false; renderJournal(); acctSheet.close(); });
+    $("#acctOut").addEventListener("click", async () => {
+      $("#acctOut").disabled = true; $("#acctOut").textContent = "Saving and signing out…";
+      try { await backupNow(); } catch { /* still sign out */ }
+      await signOut(); location.reload();
+    });
+  };
+}
+
 /* ---------- Invite: share this device's Bible key with someone at home ---------- */
 // The invite carries the key in the part of the link after "#", which browsers never send
 // to the website, so the key goes only from one phone to the other.
@@ -1948,7 +2142,9 @@ updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
 { const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); else maybeStartTour(); } // first time on this device
+setTimeout(cameBack, 900); // opened again after a while: offer to go back to where they were
 wireShareKey();
+setupAccountButton();
 inviteWelcome();
 
 
@@ -2057,6 +2253,43 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("resize", placeTour);
 window.addEventListener("scroll", placeTour, { passive: true });
 document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").open && $("#quickMenu").close(); startTour(); }));
+
+
+/* ---------- Coming back after a break: Home, with "pick up where you left off" ---------- */
+// After 15 minutes away (or with the app closed), people land on Home and are asked
+// whether to go back to where they were or start something new. Never while reading aloud.
+const AWAY_MS = 15 * 60 * 1000, ACTIVE_KEY = "bible-study:last-active";
+let lastActive = Number(localStorage.getItem(ACTIVE_KEY)) || 0;
+function markActive() {
+  const now = Date.now();
+  if (now - lastActive < 15000) return;
+  lastActive = now;
+  try { localStorage.setItem(ACTIVE_KEY, String(now)); } catch { /* private mode */ }
+}
+["pointerdown", "keydown", "touchstart", "wheel"].forEach((t) => window.addEventListener(t, markActive, { passive: true }));
+const welcomeBack = document.createElement("dialog");
+welcomeBack.className = "welcome-back"; welcomeBack.setAttribute("aria-label", "Welcome back");
+document.body.append(welcomeBack);
+function cameBack() {
+  const away = Date.now() - lastActive;
+  if (!lastActive || away < AWAY_MS || reader.playing || tourAt >= 0 || !$("#gate").hidden || document.querySelector("dialog[open]")) { markActive(); return; }
+  lastActive = 0; markActive();
+  const last = store.get("last");
+  const where = `${BOOK_BY_ID[last.book].name} ${last.chapter}`;
+  showView("home");
+  welcomeBack.innerHTML = `<div class="wb-icon" aria-hidden="true">👋</div>
+    <h2>Welcome back${store.get("name") ? `, ${esc(store.get("name"))}` : ""}!</h2>
+    <p>You were reading <strong>${esc(where)}</strong>.</p>
+    <button type="button" class="big-btn" id="wbResume">Go back to ${esc(where)}</button>
+    <button type="button" class="wb-new" id="wbNew">Start something new</button>`;
+  welcomeBack.showModal();
+  $("#wbResume").addEventListener("click", () => { welcomeBack.close(); showView("read"); openChapter(last.book, last.chapter); });
+  $("#wbNew").addEventListener("click", () => welcomeBack.close());
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") cameBack(); else if (!reader.playing) { lastActive = Date.now(); try { localStorage.setItem(ACTIVE_KEY, String(lastActive)); } catch { /* */ } } });
+window.addEventListener("pageshow", (e) => { if (e.persisted) cameBack(); });
+// While the app sits open and untouched for 15 minutes, go Home quietly; the question waits for their return.
+setInterval(() => { if (document.visibilityState === "visible" && lastActive && Date.now() - lastActive >= AWAY_MS && !reader.playing && !welcomeBack.open) cameBack(); }, 60000);
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;

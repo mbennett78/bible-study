@@ -1286,3 +1286,61 @@ body.hide-visits #visitLine { display: none; }
 html.touring, html.touring body { overflow: hidden; }
 .big-btn { width: 100%; min-height: 56px; border-radius: 16px; border: 0; background: var(--accent); color: var(--bg); font-size: 1.15rem; font-weight: 700; margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .tour-ring { transition: none; } }
+.path-cards.one { grid-template-columns: 1fr; }
+.pc-kind { display: block; font-size: .85rem; color: var(--muted); }
+.home-sub.small { font-size: 1rem; margin-top: -4px; }
+/* Welcome back after a break */
+.welcome-back { border: 0; border-radius: 24px; padding: 24px 22px 18px; width: min(440px, calc(100vw - 32px)); text-align: center; background: var(--surface); color: var(--text); }
+.welcome-back::backdrop { background: rgb(0 0 0 / .45); }
+.welcome-back .wb-icon { font-size: 2.6rem; }
+.welcome-back h2 { margin: 6px 0; font-size: 1.6rem; }
+.welcome-back p { font-size: 1.2rem; margin: 0 0 8px; }
+.wb-new { width: 100%; min-height: 52px; margin-top: 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg); color: var(--accent); font-size: 1.1rem; font-weight: 600; }
+/* Following along while the app reads aloud */
+.reader .speaking { background: var(--accent-soft); box-shadow: -10px 0 0 var(--accent-soft), 10px 0 0 var(--accent-soft); border-radius: 6px; outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 4px; }
+/* High contrast: bolder Bible text and labels */
+html[data-contrast] .reader { font-weight: 500; }
+html[data-contrast] .muted, html[data-contrast] small { opacity: 1; }
+html[data-contrast] .chat-bubble, html[data-contrast] .tool-card small { font-weight: 500; }
+/* Tap a word: a large, simple sheet with the plain meaning and the Hebrew or Greek */
+html:not([data-wordtap="off"]) #reader { cursor: pointer; }
+.word-sheet { border: 0; border-radius: 24px 24px 0 0; margin: auto auto 0; width: min(640px, 100vw); max-width: 100vw; max-height: 85vh; padding: 18px 20px calc(18px + env(safe-area-inset-bottom)); background: var(--surface); color: var(--text); overflow-y: auto; }
+@media (min-width: 700px) { .word-sheet { border-radius: 24px; margin: auto; } }
+.word-sheet::backdrop { background: rgb(0 0 0 / .45); }
+.ws-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ws-head h2 { margin: 0; font-size: 1.9rem; font-family: var(--serif); }
+.ws-close { width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--accent-soft); color: var(--accent); font-size: 1.3rem; }
+.ws-ref { color: var(--muted); margin: 2px 0 12px; font-size: 1rem; }
+.ws-plain { background: var(--accent-soft); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; }
+.ws-plain p { margin: 4px 0 0; font-size: 1.2rem; line-height: 1.5; }
+.ws-lang > strong { display: block; margin-bottom: 6px; }
+.ws-orig { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; }
+.ws-orig summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; cursor: pointer; }
+.ws-orig .orig { font-size: 1.6rem; }
+.ws-say { font-style: italic; font-size: 1.1rem; }
+.ws-means { font-size: 1.1rem; font-weight: 600; }
+.ws-meta { flex-basis: 100%; color: var(--muted); font-size: .9rem; }
+.ws-def { margin-top: 8px; font-size: 1.05rem; line-height: 1.5; }
+.ws-def p { margin: 4px 0; }
+.ws-more { margin: 6px 0 10px; }
+.ws-more > summary { padding: 8px 0; color: var(--accent); font-weight: 600; cursor: pointer; }
+.ws-credit { margin-top: 8px; }
+/* Setting the stage: book introductions */
+.book-intro { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; margin: 10px 0 14px; }
+.book-intro > summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer; list-style: none; }
+.book-intro > summary::-webkit-details-marker { display: none; }
+.book-intro > summary small { display: block; color: var(--muted); font-size: .9rem; }
+.bi-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); font-size: 1.3rem; flex: none; }
+.bi-body { padding: 0 16px 14px; font-size: 1.08rem; line-height: 1.55; }
+.bi-about { margin: 0 0 10px; }
+.bi-chapter { margin: 0 0 10px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); }
+.bi-facts { margin: 0; display: grid; gap: 6px; }
+.bi-row { display: grid; grid-template-columns: 8.5em 1fr; gap: 8px; }
+.bi-row dt { font-weight: 700; color: var(--accent); }
+.bi-row dd { margin: 0; }
+@media (max-width: 420px) { .bi-row { grid-template-columns: 1fr; gap: 0; } }
+.bi-views { margin: 10px 0 6px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--bg); border-radius: 0 10px 10px 0; }
+/* Account button in the top corner */
+.acct-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid currentColor; background: transparent; color: inherit; font-weight: 700; font-size: 1.05rem; display: grid; place-items: center; flex: none; }
+.acct-btn[hidden] { display: none; }
+.lock-now { margin: 4px 0 10px; }

@@ -41,6 +41,7 @@
     <div class="version-switch read-only" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
     </div>
+    <button class="acct-btn" id="acctBtn" aria-label="My account: sign in or out" hidden><span id="acctInitial">👤</span></button>
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu: look, graphics and features">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.5" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor"/></svg>
     </button>
@@ -85,6 +86,7 @@
         <label class="drive-switch">Keep reading <input type="checkbox" role="switch" id="driveQuick" aria-label="Keep reading into the next chapter"></label>
       </div>
       <p class="visit-line" id="visitLine"></p>
+      <details class="book-intro" id="bookIntro" hidden></details>
       <article class="reader" id="reader" aria-live="polite"></article>
       <div id="flourish"></div>
       <section class="notes-card" id="studyNotes" aria-label="Study notes"></section>
@@ -288,8 +290,25 @@
       <div class="card">
         <h2>Reading</h2>
         <label class="field">Text size
-          <input id="textSize" type="range" min="15" max="28" step="1">
+          <input id="textSize" type="range" min="15" max="36" step="1">
         </label>
+        <label class="field">Bigger labels and buttons
+          <select id="uiScale">
+            <option value="100">Normal</option>
+            <option value="112">Larger</option>
+            <option value="125">Largest</option>
+          </select>
+        </label>
+        <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
+        <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
+        <label class="field">Bible helper answers
+          <select id="helperStyle">
+            <option value="">Regular</option>
+            <option value="simple">Simple words, short answers</option>
+            <option value="deep">More depth for serious study</option>
+          </select>
+        </label>
+        <p class="muted small-print">While the app reads aloud, the part being read is highlighted so you can follow along.</p>
         <label class="field">Appearance
           <select id="theme">
             <option value="auto">Match my device</option>
