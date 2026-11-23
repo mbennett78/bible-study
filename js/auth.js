@@ -1,5 +1,6 @@
-// Family sign-in with Supabase: email + a 6-digit code. Only people added in the
-// Supabase dashboard can sign in (new sign-ups are turned off there).
+// Family sign-in with Supabase: email + password. Only people added in the Supabase
+// dashboard can sign in (new sign-ups are turned off there). A forgotten password can be
+// replaced by emailing a one-time sign-in link, then choosing a new password in Settings.
 const cfg = window.BIBLE_CONFIG || {};
 export const authEnabled = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey);
 
@@ -13,7 +14,7 @@ async function sb() {
     });
     const { createClient } = window.supabase;
     client = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: "bible-study:auth" },
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "bible-study:auth" },
     });
   }
   return client;
@@ -34,24 +35,34 @@ export async function currentUser() {
 
 function friendly(error) {
   const m = String(error?.message || error || "");
+  if (/invalid login|invalid credentials/i.test(m)) return "That email and password don't match. Check them and try again.";
+  if (/email not confirmed/i.test(m)) return "This account isn't confirmed yet. Ask whoever set up the app to confirm it in Supabase.";
   if (/signups? not allowed|not found|user not/i.test(m)) return "That email isn't on the family list yet. Ask whoever set up the app to add it.";
+  if (/password.*(short|least|weak)/i.test(m)) return "Please use a longer password (at least 6 characters).";
   if (/expired|invalid|token/i.test(m)) return "That code didn't work or has expired. Check the newest email, or send a new code.";
   if (/rate|too many|seconds/i.test(m)) return "Too many codes were asked for just now. Please wait a few minutes and try again.";
   if (/fetch|network|load/i.test(m)) return "Couldn't connect. Check your internet and try again.";
   return m || "Something went wrong. Please try again.";
 }
 
-export async function sendCode(email) {
+export async function signIn(email, password) {
   const c = await sb();
-  const { error } = await c.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
+  const { data, error } = await c.auth.signInWithPassword({ email, password });
+  if (error) throw new Error(friendly(error));
+  return data.user;
+}
+
+// Forgotten password: email a one-time sign-in link back to this app's address.
+export async function emailSignInLink(email) {
+  const c = await sb();
+  const { error } = await c.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname } });
   if (error) throw new Error(friendly(error));
 }
 
-export async function verifyCode(email, token) {
+export async function changePassword(password) {
   const c = await sb();
-  const { data, error } = await c.auth.verifyOtp({ email, token, type: "email" });
+  const { error } = await c.auth.updateUser({ password });
   if (error) throw new Error(friendly(error));
-  return data.user;
 }
 
 export async function signOut() {

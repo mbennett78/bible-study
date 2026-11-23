@@ -6,7 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
-import { authEnabled, currentUser, sendCode, verifyCode, signOut } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -1436,38 +1436,31 @@ $("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
 let signedInUser = null;
 function showGate() {
   return new Promise((resolve) => {
-    const gate = $("#gate");
+    const gate = $("#gate"), form = $("#gateForm"), err = $("#gateErr"), msg = $("#gateMsg");
     $("#gateArt").innerHTML = seaScene(store.get("style"));
     gate.hidden = false;
-    const emailForm = $("#gateEmailForm"), codeForm = $("#gateCodeForm"), err = $("#gateErr"), msg = $("#gateMsg");
-    let email = "";
-    emailForm.onsubmit = async (e) => {
+    form.onsubmit = async (e) => {
       e.preventDefault();
-      email = $("#gateEmail").value.trim().toLowerCase();
-      if (!email) return;
-      err.textContent = ""; const btn = emailForm.querySelector("button"); btn.disabled = true; btn.textContent = "Sending…";
+      const email = $("#gateEmail").value.trim().toLowerCase(), password = $("#gatePassword").value;
+      if (!email || !password) return;
+      err.textContent = ""; const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Signing in…";
       try {
-        await sendCode(email);
-        emailForm.hidden = true; codeForm.hidden = false;
-        msg.textContent = `We emailed a code to ${email}. It can take a minute to arrive. Check spam if you don't see it.`;
-        $("#gateCode").value = ""; $("#gateCode").focus();
-      } catch (x) { err.textContent = x.message; }
-      btn.disabled = false; btn.textContent = "Send my code";
-    };
-    codeForm.onsubmit = async (e) => {
-      e.preventDefault();
-      const code = $("#gateCode").value.replace(/\D/g, "");
-      if (code.length < 6) { err.textContent = "Type the code from your email."; return; }
-      err.textContent = ""; const btn = codeForm.querySelector("button"); btn.disabled = true; btn.textContent = "Signing in…";
-      try {
-        const user = await verifyCode(email, code);
+        const user = await signIn(email, password);
         gate.hidden = true;
         document.documentElement.classList.remove("auth-wait");
         resolve(user);
       } catch (x) { err.textContent = x.message; }
       btn.disabled = false; btn.textContent = "Sign in";
     };
-    $("#gateBack").onclick = () => { codeForm.hidden = true; emailForm.hidden = false; err.textContent = ""; msg.textContent = "Sign in with the email your family added."; };
+    $("#gateForgot").onclick = async () => {
+      const email = $("#gateEmail").value.trim().toLowerCase();
+      if (!email) { err.textContent = "Type your email first, then tap Forgot your password."; return; }
+      err.textContent = "";
+      try {
+        await emailSignInLink(email);
+        msg.innerHTML = `We emailed a sign-in link to <strong>${esc(email)}</strong>. Open it on this device. It signs you in, and then you can choose a new password in Settings, under Account.`;
+      } catch (x) { err.textContent = x.message; }
+    };
   });
 }
 function renderAccount() {
@@ -1477,8 +1470,17 @@ function renderAccount() {
   el.innerHTML = signedInUser
     ? `<p class="account-line">Signed in as <strong>${esc(signedInUser.email || "")}</strong></p>
        <p class="muted small-print">This device stays signed in until you sign out. Your reading, notes and journal are saved on this device.</p>
+       <details class="share-key"><summary>Change my password</summary>
+         <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
+         <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
+  $("#savePassword")?.addEventListener("click", async () => {
+    const v = $("#newPassword").value, out = $("#pwMsg");
+    if (v.length < 6) { out.textContent = "Please use at least 6 characters."; return; }
+    try { await changePassword(v); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
+    catch (x) { out.textContent = x.message; }
+  });
   $("#signOutBtn")?.addEventListener("click", async () => {
     if (!confirm("Sign out of Bible Study on this device?")) return;
     await signOut();

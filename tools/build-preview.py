@@ -16,7 +16,7 @@ async function getChapter(version, book, ch) {
 async function searchBible() { throw new TextError("Word search works once the app is on its own web address with your key.", "preview"); }
 const authEnabled = false; // family sign-in is off in the preview
 async function currentUser() { return null; }
-async function sendCode() {} async function verifyCode() {} async function signOut() {}
+async function signIn() {} async function emailSignInLink() {} async function changePassword() {} async function signOut() {}
 function bibleGatewayUrl(version, book, ch) {
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${version === "ESV" ? "ESV" : "NASB"}`;
 }

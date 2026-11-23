@@ -378,14 +378,11 @@
       <div class="gate-art" id="gateArt"></div>
       <h1>Bible Study</h1>
       <p class="muted" id="gateMsg">Sign in with the email your family added.</p>
-      <form id="gateEmailForm" class="gate-form">
-        <label class="field">Email<input id="gateEmail" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" required></label>
-        <button class="primary" type="submit">Send my code</button>
-      </form>
-      <form id="gateCodeForm" class="gate-form" hidden>
-        <label class="field">Code from your email<input id="gateCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" required></label>
+      <form id="gateForm" class="gate-form">
+        <label class="field">Email<input id="gateEmail" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
+        <label class="field">Password<input id="gatePassword" type="password" autocomplete="current-password" required></label>
         <button class="primary" type="submit">Sign in</button>
-        <button class="quiet-link" type="button" id="gateBack">Use a different email or send a new code</button>
+        <button class="quiet-link" type="button" id="gateForgot">Forgot your password?</button>
       </form>
       <p class="gate-err" id="gateErr" role="alert"></p>
     </div>
