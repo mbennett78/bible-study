@@ -1261,3 +1261,4 @@ body.hide-visits #visitLine { display: none; }
 .talk-icon .ti-back { fill: var(--surface); }
 .talk-icon .ti-front { fill: var(--accent-soft); }
 .talk-icon .ti-dot { fill: var(--accent); }
+.chat-row.notice .chat-bubble { background: var(--bg); border: 1px dashed var(--accent); font-size: .98rem; }

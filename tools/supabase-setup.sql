@@ -38,8 +38,8 @@ create policy "own backup add" on public.user_backups for insert to authenticate
 create policy "own backup change" on public.user_backups for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 -- Added later: the built-in Bible helper (safe to run again).
--- One row per question asked, so the helper can keep to each person's daily limit and the
--- family's monthly budget. People can see their own rows; only the helper adds them.
+-- One row per question asked, so the helper can keep to the family's monthly budget.
+-- People can see their own rows; only the helper adds them.
 create table if not exists public.ai_usage (
   id bigint generated always as identity primary key,
   user_id uuid not null references auth.users (id) on delete cascade,
@@ -52,24 +52,43 @@ alter table public.ai_usage enable row level security;
 drop policy if exists "own ai usage read" on public.ai_usage;
 create policy "own ai usage read" on public.ai_usage for select to authenticated using (user_id = auth.uid());
 
--- Checks the limits and saves a place for one question, all at once so two people asking
--- at the same moment can't slip past the budget. Prices are Claude Haiku 5.5's
--- ($0.10 per million tokens read, $0.50 per million written; a token is about ¾ of a word).
-create or replace function public.ai_take_turn(daily_limit int, monthly_limit int, monthly_cents int)
+-- The family's monthly rules, checked all at once so two people asking together can't slip past:
+--   * Nobody is slowed down while there's plenty left. At warn_pct (70%) of the month's
+--     questions or dollars, everyone is told.
+--   * Every family member is guaranteed per_person (100) questions a month. Once someone has
+--     had their 100, they can keep asking only while what's left still covers everyone else's
+--     unused share of 100. Everything beyond that is first come, first served.
+--   * Hard stop at monthly_limit questions or monthly_cents of estimated cost.
+-- Cost uses Claude Haiku 5.5's prices: $0.10 per million tokens read, $0.50 per million
+-- written (a token is about 3/4 of a word). take = false only checks; take = true saves a place.
+drop function if exists public.ai_take_turn(int, int, int);
+create or replace function public.ai_month(monthly_limit int, monthly_cents int, per_person int, warn_pct int, take boolean)
 returns json language plpgsql security definer set search_path = public as $$
 declare
   uid uuid := auth.uid();
-  n_day int; n_month int; spent numeric; turn bigint;
+  month_start timestamptz := date_trunc('month', now());
+  mine int; n_month int; spent numeric; per_q numeric; owed int; pct numeric; turn bigint;
 begin
   if uid is null then return json_build_object('ok', false, 'why', 'signin'); end if;
-  perform pg_advisory_xact_lock(7316);
-  select count(*) into n_day from ai_usage where user_id = uid and created_at > now() - interval '24 hours';
+  if take then perform pg_advisory_xact_lock(7316); end if;
   select count(*), coalesce(sum(input_tokens * 0.10 + output_tokens * 0.50), 0) / 10000.0
-    into n_month, spent from ai_usage where created_at >= date_trunc('month', now());
-  if n_day >= daily_limit then return json_build_object('ok', false, 'why', 'daily', 'limit', daily_limit); end if;
-  if n_month >= monthly_limit or spent >= monthly_cents then return json_build_object('ok', false, 'why', 'monthly'); end if;
-  insert into ai_usage (user_id) values (uid) returning id into turn;
-  return json_build_object('ok', true, 'turn', turn, 'left_today', daily_limit - n_day - 1);
+    into n_month, spent from ai_usage where created_at >= month_start;
+  select count(*) into mine from ai_usage where user_id = uid and created_at >= month_start;
+  -- Questions still owed to everyone else who hasn't had their guaranteed share this month.
+  select coalesce(sum(greatest(per_person - coalesce(a.n, 0), 0)), 0) into owed
+    from auth.users u
+    left join (select user_id, count(*) as n from ai_usage where created_at >= month_start group by user_id) a on a.user_id = u.id
+    where u.id <> uid;
+  per_q := case when n_month > 0 and spent > 0 then spent / n_month else 0.1 end;  -- cents per question
+  pct := greatest(n_month * 100.0 / monthly_limit, spent * 100.0 / monthly_cents);
+  if n_month >= monthly_limit or spent >= monthly_cents then
+    return json_build_object('ok', false, 'why', 'monthly', 'warn', true, 'mine', mine, 'per_person', per_person);
+  end if;
+  if mine >= per_person and (n_month + 1 + owed > monthly_limit or spent + per_q * (1 + owed) > monthly_cents) then
+    return json_build_object('ok', false, 'why', 'shared', 'warn', true, 'mine', mine, 'per_person', per_person);
+  end if;
+  if take then insert into ai_usage (user_id) values (uid) returning id into turn; mine := mine + 1; end if;
+  return json_build_object('ok', true, 'turn', turn, 'warn', pct >= warn_pct, 'pct', round(pct), 'mine', mine, 'per_person', per_person);
 end $$;
 
 -- Records what one answer used, for the monthly budget.
@@ -78,7 +97,7 @@ returns void language sql security definer set search_path = public as $$
   update ai_usage set input_tokens = greatest(used_in, 0), output_tokens = greatest(used_out, 0)
   where id = turn and user_id = auth.uid() and input_tokens = 0 and output_tokens = 0;
 $$;
-revoke all on function public.ai_take_turn(int, int, int) from public, anon;
+revoke all on function public.ai_month(int, int, int, int, boolean) from public, anon;
 revoke all on function public.ai_record_turn(bigint, int, int) from public, anon;
-grant execute on function public.ai_take_turn(int, int, int) to authenticated;
+grant execute on function public.ai_month(int, int, int, int, boolean) to authenticated;
 grant execute on function public.ai_record_turn(bigint, int, int) to authenticated;

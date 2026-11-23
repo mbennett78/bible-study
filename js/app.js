@@ -6,7 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateI
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -747,7 +747,7 @@ let chatBusy = false;
 const HELPER_SAYS = {
   signin: "Please sign in first (Settings, then Account) so I can answer you here.",
   setup: "The built-in helper isn't turned on yet. Whoever set up the app can switch it on. For now you can tap Claude, ChatGPT, Grok or Gemini above.",
-  monthly: "The family has used this month's questions, so I'm resting until next month. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  monthly: "The family has used all of this month's questions, so I'm resting until the 1st. You can still tap Claude, ChatGPT, Grok or Gemini above.",
   credits: "The family's helper has used up its prepaid credits, so I'm resting for now. You can still tap Claude, ChatGPT, Grok or Gemini above.",
   offline: "I couldn't connect. Check your internet and try again.",
   refused: "I'm not able to help with that one. Try asking another way, or talk it over with someone you trust.",
@@ -765,16 +765,29 @@ async function askBuiltIn(q) {
   if (r && r.text) {
     const text = String(r.text).replace(/\*\*|__/g, "").replace(/^#+\s*/gm, "");
     chatTurns.push({ role: "assistant", content: text });
-    chatBubble("them", typeof r.left === "number" && r.left <= 3
-      ? `${text}\n\n(${r.left === 0 ? "That was your last question for today." : `${r.left} question${r.left === 1 ? "" : "s"} left today.`})`
-      : text);
+    chatBubble("them", text);
+    if (r.warn) helperWarning(r);
     return;
   }
   chatTurns.pop();
   const why = r?.error || "busy";
-  chatBubble("them", why === "daily"
-    ? `You've asked ${r.limit || "all your"} questions today, which is the daily limit. Let's pick it up tomorrow! You can also tap Claude, ChatGPT, Grok or Gemini above.`
+  chatBubble("them", why === "shared"
+    ? `You've had your ${r.per_person || 100} questions this month and some extras. What's left is saved so everyone else in the family gets their ${r.per_person || 100} too. Your questions come back on the 1st. You can still tap Claude, ChatGPT, Grok or Gemini above.`
     : HELPER_SAYS[why] || HELPER_SAYS.busy);
+}
+// Once a session, when the family has used 70% of the month's helper budget.
+let helperWarned = false;
+function helperWarning(s) {
+  if (helperWarned || !s || !s.warn) return;
+  helperWarned = true;
+  const each = s.per_person || 100;
+  chatBubble("them", `Heads up: the family has used most of this month's Bible helper questions. Everyone is still guaranteed ${each} a month${typeof s.mine === "number" ? ` (you've asked ${s.mine})` : ""}. Extra questions past that are first come, first served, and everything resets on the 1st.`, "notice");
+}
+let helperChecked = false;
+async function checkHelperStanding() {
+  if (helperChecked || helperWarned) return;
+  helperChecked = true;
+  helperWarning(await helperStatus().catch(() => null));
 }
 function resetChat() {
   if (!$("#chatLog")) return;
@@ -812,6 +825,7 @@ if ($("#partnerBox")) {
   resetChat();
   if (canListen) { $("#partnerMic").hidden = false; dictateInto($("#partnerQ"), $("#partnerMic")); }
   $("#partnerGo").addEventListener("click", sendChat);
+  $("#partnerBox").addEventListener("toggle", () => { if ($("#partnerBox").open && builtIn(currentPartner())) checkHelperStanding(); });
   $("#partnerQ").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } });
 }
 

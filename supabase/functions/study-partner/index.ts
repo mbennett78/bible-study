@@ -6,10 +6,14 @@
 //
 // Spending can't run away:
 //   1. Only signed-in family members can ask.
-//   2. Each person gets DAILY_LIMIT questions in any 24 hours (default 25).
-//   3. The whole family stops at MONTHLY_LIMIT questions or MONTHLY_CENTS of estimated
-//      cost each calendar month (defaults 2000 questions, 400 cents = $4.00).
-//   4. The real backstop: the Anthropic account holds prepaid credits with auto-reload
+//   2. Nobody is slowed down while there's plenty left. At WARN_PCT (70%) of the month's
+//      budget, everyone is told.
+//   3. Everyone is guaranteed PER_PERSON (100) questions a month. Past their 100, a person
+//      can keep asking only while what's left still covers everyone else's unused share.
+//      The rest is first come, first served (rules in tools/supabase-setup.sql, ai_month).
+//   4. The whole family stops at MONTHLY_LIMIT questions or MONTHLY_CENTS of estimated
+//      cost each calendar month (defaults 5000 questions, 400 cents = $4.00).
+//   5. The real backstop: the Anthropic account holds prepaid credits with auto-reload
 //      turned off. When the credits are used up, Anthropic stops answering. Nothing is
 //      ever charged beyond what was prepaid.
 // The limits can be changed in Supabase secrets without touching this code.
@@ -22,9 +26,10 @@ const num = (name: string, fallback: number) => {
   const v = Number(Deno.env.get(name));
   return Number.isFinite(v) && v > 0 ? Math.floor(v) : fallback;
 };
-const DAILY_LIMIT = num("DAILY_LIMIT", 25);
-const MONTHLY_LIMIT = num("MONTHLY_LIMIT", 2000);
+const MONTHLY_LIMIT = num("MONTHLY_LIMIT", 5000);
 const MONTHLY_CENTS = num("MONTHLY_CENTS", 400);
+const PER_PERSON = num("PER_PERSON", 100);
+const WARN_PCT = Math.min(num("WARN_PCT", 70), 100);
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -79,19 +84,26 @@ Deno.serve(async (req) => {
   const { data: who } = await db.auth.getUser(auth.replace(/^Bearer\s+/i, ""));
   if (!who?.user) return reply(401, { error: "signin" });
 
-  let body: { messages?: unknown; ref?: unknown; version?: unknown; name?: unknown };
+  let body: { messages?: unknown; ref?: unknown; version?: unknown; name?: unknown; status?: unknown };
   try { body = await req.json(); } catch { return reply(400, { error: "bad" }); }
+  const rules = { monthly_limit: MONTHLY_LIMIT, monthly_cents: MONTHLY_CENTS, per_person: PER_PERSON, warn_pct: WARN_PCT };
+
+  // Just checking where the family stands this month (when the chat opens).
+  if (body.status === true) {
+    const { data, error } = await db.rpc("ai_month", { ...rules, take: false });
+    if (error) return reply(503, { error: "setup" });
+    return reply(200, { status: data });
+  }
   const messages = cleanMessages(body.messages);
   if (!messages) return reply(400, { error: "bad" });
   const ref = typeof body.ref === "string" ? body.ref.slice(0, 60) : "";
   const version = typeof body.version === "string" ? body.version.slice(0, 20) : "";
   const name = typeof body.name === "string" ? body.name.slice(0, 40) : "";
 
-  const { data: turn, error: limitError } = await db.rpc("ai_take_turn", {
-    daily_limit: DAILY_LIMIT, monthly_limit: MONTHLY_LIMIT, monthly_cents: MONTHLY_CENTS,
-  });
+  const { data: turn, error: limitError } = await db.rpc("ai_month", { ...rules, take: true });
   if (limitError) return reply(503, { error: "setup" });
-  if (!turn?.ok) return reply(429, { error: turn?.why || "monthly", limit: turn?.limit });
+  if (!turn?.ok) return reply(429, { error: turn?.why || "monthly", mine: turn?.mine, per_person: turn?.per_person });
+  const standing = { warn: turn.warn, mine: turn.mine, per_person: turn.per_person };
 
   const context = [
     ref && `They are reading ${ref}${version ? ` (${version})` : ""}.`,
@@ -110,11 +122,11 @@ Deno.serve(async (req) => {
     await db.rpc("ai_record_turn", {
       turn: turn.turn, used_in: answer.usage.input_tokens, used_out: answer.usage.output_tokens,
     });
-    if (answer.stop_reason === "refusal") return reply(200, { error: "refused" });
+    if (answer.stop_reason === "refusal") return reply(200, { error: "refused", ...standing });
     let text = answer.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("\n").trim();
     if (!text) return reply(502, { error: "busy" });
     if (answer.stop_reason === "max_tokens") text += " …";
-    return reply(200, { text, left: turn.left_today });
+    return reply(200, { text, ...standing });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) return reply(503, { error: "busy" });
     if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) return reply(503, { error: "setup" });
