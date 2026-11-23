@@ -1344,3 +1344,31 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .acct-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid currentColor; background: transparent; color: inherit; font-weight: 700; font-size: 1.05rem; display: grid; place-items: center; flex: none; }
 .acct-btn[hidden] { display: none; }
 .lock-now { margin: 4px 0 10px; }
+/* The ⋮ menu shown during the tour, under the spotlight */
+#quickMenu.tour-shown { position: fixed; top: 64px; left: 50%; transform: translateX(-50%); margin: 0; z-index: 1500; max-height: 50vh; overflow: auto; }
+/* ❓ help button */
+.help-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid currentColor; background: transparent; color: inherit; font-weight: 800; font-size: 1.2rem; display: grid; place-items: center; flex: none; }
+.help-tips { text-align: left; font-size: 1.1rem; line-height: 1.5; padding-left: 1.2em; margin: 8px 0 14px; }
+.help-tips li { margin-bottom: 8px; }
+/* Book tiles, like a study Bible app: colored by section, Old then New Testament */
+.book-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; margin-bottom: 8px; }
+@media (min-width: 700px) { .book-tiles { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); } }
+.book-tile { aspect-ratio: 1; border: 0; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px; text-align: center; color: var(--text); background: color-mix(in srgb, var(--tile) 24%, var(--surface)); box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--tile) 55%, transparent); hyphens: manual; }
+.book-tile .bt-name { font-weight: 700; font-size: .95rem; line-height: 1.15; overflow-wrap: anywhere; }
+.book-tile small { font-size: .75rem; color: var(--muted); }
+.book-tile.is-here { outline: 3px solid var(--accent); outline-offset: 1px; }
+.g-law { --tile: #c98b3a; } .g-hist { --tile: #6b9e5b; } .g-poet { --tile: #b0679a; } .g-major { --tile: #4f7fb8; } .g-minor { --tile: #3f9a9a; }
+.g-gosp { --tile: #c0503e; } .g-acts { --tile: #8a6bbf; } .g-paul { --tile: #3a6ea5; } .g-gen { --tile: #8c8c3a; } .g-rev { --tile: #9a4a6a; }
+.book-key { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+.bk-key { font-size: .8rem; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--tile) 24%, var(--surface)); }
+.picker-intro { background: var(--accent-soft); border-radius: 14px; padding: 10px 14px; margin: 6px 0 12px; font-size: 1.05rem; line-height: 1.5; }
+.picker-intro summary { font-weight: 700; cursor: pointer; }
+.picker-intro p { margin: 6px 0; }
+#verseGrid .muted { grid-column: 1 / -1; }
+.verse-flash { background: var(--accent); color: var(--bg) !important; border-radius: 6px; padding: 0 4px; transition: background .6s; }
+/* All my studies, with progress, at the top of My path */
+.path-switch { display: grid; gap: 6px; margin: 8px 0 14px; }
+.ps-row { display: grid; grid-template-columns: minmax(0, 1.3fr) 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--text); text-align: left; font-size: 1rem; }
+.ps-row.is-active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 700; }
+.ps-row .bar { margin: 0; }
+.ps-pct { color: var(--muted); font-size: .9rem; min-width: 3ch; text-align: right; }

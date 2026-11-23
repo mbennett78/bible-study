@@ -249,26 +249,76 @@ function syncVersionSwitch() {
 
 /* ---------- Book & chapter picker ---------- */
 const picker = $("#picker");
+// The book picker works like a study Bible app: square tiles for every book, colored by
+// section, Old Testament then New. Tap a book for its introduction and chapters, then a
+// chapter for its verses. Typing is optional.
+const BOOK_GROUPS = [
+  ["law", "Law", "GEN", "DEU"], ["hist", "History", "JOS", "EST"], ["poet", "Poetry and Wisdom", "JOB", "SNG"],
+  ["major", "Major Prophets", "ISA", "DAN"], ["minor", "Minor Prophets", "HOS", "MAL"],
+  ["gosp", "Gospels", "MAT", "JHN"], ["acts", "Acts", "ACT", "ACT"], ["paul", "Paul's Letters", "ROM", "PHM"],
+  ["gen", "General Letters", "HEB", "JUD"], ["rev", "Revelation", "REV", "REV"],
+];
+const bookIndex = (id) => BOOKS.findIndex((b) => b.id === id);
+const groupOf = (id) => BOOK_GROUPS.find(([, , a, z]) => bookIndex(id) >= bookIndex(a) && bookIndex(id) <= bookIndex(z));
+const SHORT_NAMES = { "Song of Songs": "Song", Lamentations: "Lament&shy;ations", Ecclesiastes: "Eccle&shy;siastes", Deuteronomy: "Deuter&shy;onomy", Thessalonians: "Thess" };
+function tileName(name) {
+  const m = name.match(/^(\d) (.+)$/);
+  if (m) return `${m[1]} ${SHORT_NAMES[m[2]] || esc(m[2])}`;
+  return SHORT_NAMES[name] || esc(name);
+}
+let pickerBookOpen = null; // the book whose chapters are showing, so Back from verses returns there
 function pickerBooks() {
+  pickerBookOpen = null;
   $("#pickerTitle").textContent = "Books";
   $("#pickerBack").hidden = true;
-  const section = (t, label) => `<p class="testament-title">${label}</p><div class="picker-books">${
-    BOOKS.filter((b) => b.testament === t).map((b) => `<button data-book="${b.id}">${esc(b.name)}<small>${store.readCount(b.id) ? `${store.readCount(b.id)}/${b.chapters}` : ""}</small></button>`).join("")
+  const here = store.get("last").book;
+  const section = (t, label) => `<p class="testament-title">${label}</p><div class="book-tiles">${
+    BOOKS.filter((b) => b.testament === t).map((b) => { const g = groupOf(b.id); const read = store.readCount(b.id);
+      return `<button class="book-tile g-${g[0]}${b.id === here ? " is-here" : ""}" data-book="${b.id}" aria-label="${esc(b.name)}"><span class="bt-name">${tileName(b.name)}</span>${read ? `<small>${read}/${b.chapters}</small>` : ""}</button>`; }).join("")
   }</div>`;
-  $("#pickerBody").innerHTML = section("OT", "Old Testament") + section("NT", "New Testament");
-  $("#pickerBody").querySelectorAll("[data-book]").forEach((btn) => btn.addEventListener("click", () => {
-    const b = BOOK_BY_ID[btn.dataset.book];
-    if (b.chapters === 1) { picker.close(); showView("read"); openChapter(b.id, 1); } else pickerChapters(b.id);
-  }));
+  const key = BOOK_GROUPS.map(([g, label]) => `<span class="bk-key g-${g}">${esc(label)}</span>`).join("");
+  $("#pickerBody").innerHTML = section("OT", "Old Testament") + section("NT", "New Testament") + `<div class="book-key">${key}</div>`;
+  $("#pickerBody").querySelectorAll("[data-book]").forEach((btn) => btn.addEventListener("click", () => pickerChapters(btn.dataset.book)));
+  $("#pickerBody").scrollTop = 0;
 }
 function pickerChapters(bookId) {
-  const b = BOOK_BY_ID[bookId];
+  const b = BOOK_BY_ID[bookId], intro = INTROS[bookId];
   $("#pickerTitle").textContent = b.name;
   $("#pickerBack").hidden = false;
-  $("#pickerBody").innerHTML = `<div class="chapter-grid">${chapterButtons(b)}</div>`;
-  $("#pickerBody").querySelectorAll("[data-ch]").forEach((btn) => btn.addEventListener("click", () => {
-    picker.close(); showView("read"); openChapter(b.id, Number(btn.dataset.ch));
-  }));
+  $("#pickerBody").innerHTML = `${intro ? `<details class="picker-intro" open><summary>About ${esc(b.name)}</summary>
+      <p>${esc(intro.about)}</p><p class="muted small-print"><strong>Written by:</strong> ${esc(intro.who)} <strong>When:</strong> ${esc(intro.when)}</p></details>` : ""}
+    <button type="button" class="big-btn" id="pickStart">Start reading ${esc(b.name)} 1</button>
+    <p class="testament-title">Choose a chapter</p>
+    <div class="chapter-grid">${chapterButtons(b)}</div>`;
+  $("#pickStart").addEventListener("click", () => { picker.close(); showView("read"); openChapter(b.id, 1); });
+  $("#pickerBody").querySelectorAll("[data-ch]").forEach((btn) => btn.addEventListener("click", () => pickerVerses(b.id, Number(btn.dataset.ch))));
+  $("#pickerBody").scrollTop = 0;
+}
+async function pickerVerses(bookId, chapter) {
+  const b = BOOK_BY_ID[bookId];
+  pickerBookOpen = bookId;
+  $("#pickerTitle").textContent = `${b.name} ${chapter}`;
+  $("#pickerBack").hidden = false;
+  $("#pickerBody").innerHTML = `<button type="button" class="big-btn" id="pickWhole">Read all of chapter ${chapter}</button>
+    <p class="testament-title">Or go to a verse</p><div class="chapter-grid" id="verseGrid"><p class="muted small-print">Loading verses…</p></div>`;
+  const go = (v) => { picker.close(); showView("read"); openChapter(b.id, chapter).then(() => v && goToVerse(v)); };
+  $("#pickWhole").addEventListener("click", () => go(0));
+  // Verse count from the word list for this chapter (every verse has words).
+  const rows = await loadStrongs(bookId, chapter);
+  const grid = $("#verseGrid");
+  if (!grid || !grid.isConnected) return;
+  const n = rows ? Math.max(0, ...rows.flatMap((r) => r[5])) : 0;
+  if (!n) { grid.innerHTML = `<p class="muted small-print">Verse numbers couldn't load. Tap "Read all of chapter ${chapter}".</p>`; return; }
+  grid.innerHTML = Array.from({ length: n }, (_, i) => `<button data-v="${i + 1}" aria-label="Verse ${i + 1}">${i + 1}</button>`).join("");
+  grid.querySelectorAll("[data-v]").forEach((btn) => btn.addEventListener("click", () => go(Number(btn.dataset.v))));
+}
+// Scroll to a verse in the open chapter and flash it so it's easy to spot.
+function goToVerse(v) {
+  const mark = [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")].find((m) => (m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10)) === v);
+  if (!mark) return;
+  mark.scrollIntoView({ block: "center" });
+  mark.classList.add("verse-flash");
+  setTimeout(() => mark.classList.remove("verse-flash"), 2600);
 }
 function chapterButtons(b) {
   const here = store.get("last");
@@ -278,7 +328,7 @@ function chapterButtons(b) {
   }).join("");
 }
 $("#refButton").addEventListener("click", openPicker);
-$("#pickerBack").addEventListener("click", () => { $("#pickerSearch").value = ""; pickerBooks(); });
+$("#pickerBack").addEventListener("click", () => { $("#pickerSearch").value = ""; if (pickerBookOpen) { const b = pickerBookOpen; pickerChapters(b); pickerBookOpen = null; } else pickerBooks(); });
 $("#pickerClose").addEventListener("click", () => picker.close());
 picker.addEventListener("click", (e) => { if (e.target === picker) picker.close(); });
 
@@ -373,7 +423,11 @@ function renderPath() {
   const yearPace = Math.floor((days / 365) * list.length);
   const paceText = done >= yearPace ? "You're on pace to finish within a year." : `${yearPace - done} chapters behind a one-year pace. No pressure: go at your own pace.`;
   const plan = store.get("yearPace") ? todayPlan(active) : null;
-  view.innerHTML = `${seaScene(store.get("style"))}<div class="path-head">
+  const switcher = `<div class="path-switch" aria-label="All my studies">${PATH_ORDER.map((id) => {
+    const d = store.pathReadCount(id), t = pathChapters(id).length;
+    return `<button class="ps-row${id === active ? " is-active" : ""}" data-switch="${id}" aria-pressed="${id === active}"><span class="ps-name">${esc(PATH_BY_ID[id].name)}</span><span class="bar"><span style="width:${(d / t) * 100}%"></span></span><span class="ps-pct">${Math.round((d / t) * 100)}%</span></button>`;
+  }).join("")}</div>`;
+  view.innerHTML = `${seaScene(store.get("style"))}${switcher}<div class="path-head">
       <p class="greeting">${esc(greeting())}</p>
       <p class="muted small-print">Your study path</p>
       <h1>${esc(p.name)}</h1>
@@ -409,6 +463,7 @@ function renderPath() {
   });
   $("#continuePath")?.addEventListener("click", () => { showView("read"); openChapter(next.book, next.chapter); });
   view.querySelectorAll("[data-b]").forEach((b) => b.addEventListener("click", () => { showView("read"); openChapter(b.dataset.b, Number(b.dataset.c)); }));
+  view.querySelectorAll("[data-switch]").forEach((b) => b.addEventListener("click", () => { store.startPath(b.dataset.switch); updatePathBits(); renderMargin(); renderPath(); }));
   $("#switchPath").addEventListener("click", () => showView("home"));
 }
 
@@ -783,8 +838,8 @@ let chatBusy = false;
 const HELPER_SAYS = {
   signin: "Please sign in first (Settings, then Account) so I can answer you here.",
   setup: "The built-in helper isn't turned on yet. Whoever set up the app can switch it on. For now you can tap Claude, ChatGPT, Grok or Gemini above.",
-  monthly: "The family has used all of this month's questions, so I'm resting until the 1st. You can still tap Claude, ChatGPT, Grok or Gemini above.",
-  credits: "The family's helper has used up its prepaid credits, so I'm resting for now. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  monthly: "The family has used all of this month's questions, so I'm resting until the 1st. These questions are a gift provided by the app developer. For more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  credits: "The family's question credits are used up for now. These questions are a gift provided by the app developer. For more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.",
   offline: "I couldn't connect. Check your internet and try again.",
   refused: "I'm not able to help with that one. Try asking another way, or talk it over with someone you trust.",
   busy: "I'm a little busy right now. Please try again in a minute.",
@@ -808,7 +863,7 @@ async function askBuiltIn(q) {
   chatTurns.pop();
   const why = r?.error || "busy";
   chatBubble("them", why === "shared"
-    ? `You've had your ${r.per_person || 100} questions this month and some extras. What's left is saved so everyone else in the family gets their ${r.per_person || 100} too. Your questions come back on the 1st. You can still tap Claude, ChatGPT, Grok or Gemini above.`
+    ? `You've had your ${r.per_person || 100} questions this month and some extras. What's left is saved so everyone else in the family gets their ${r.per_person || 100} too. Your questions come back on the 1st. These questions are provided by the app developer; for more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.`
     : HELPER_SAYS[why] || HELPER_SAYS.busy);
 }
 // Once a session, when the family has used 70% of the month's helper budget.
@@ -817,7 +872,7 @@ function helperWarning(s) {
   if (helperWarned || !s || !s.warn) return;
   helperWarned = true;
   const each = s.per_person || 100;
-  chatBubble("them", `Heads up: the family has used most of this month's Bible helper questions. Everyone is still guaranteed ${each} a month${typeof s.mine === "number" ? ` (you've asked ${s.mine})` : ""}. Extra questions past that are first come, first served, and everything resets on the 1st.`, "notice");
+  chatBubble("them", `Heads up: the family has used most of this month's Bible helper questions. Everyone is still guaranteed ${each} a month${typeof s.mine === "number" ? ` (you've asked ${s.mine})` : ""}. Extra questions past that are first come, first served, and everything resets on the 1st. These questions are provided by the app developer; for more, please contact the app developer.`, "notice");
 }
 let helperChecked = false;
 async function checkHelperStanding() {
@@ -1223,13 +1278,17 @@ function initSettings() {
 }
 
 /* ---------- First-time setup (and "Set up app" in Settings) ---------- */
+// Shown once, the first time someone opens the app: name, their own password (in place of
+// the starter one), the look, then the tour or "maybe later". After that it all lives in
+// Settings and the ⋮ menu and never asks again.
 let SETUP_STEPS = [
   { id: "welcome", title: "Welcome", done: () => Boolean(store.get("name").trim()) },
+  { id: "password", title: "Your own password", done: () => Boolean(store.get("setup")?.password) },
   { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
   { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
-  { id: "path", title: "Your study path", done: () => Boolean(store.get("activePath")) },
-  { id: "account", title: "Your account", done: () => Boolean(signedInUser), soon: !authEnabled },
+  { id: "tour", title: "A quick tour", done: () => Boolean(store.get("tourSeen")) },
 ];
+if (!authEnabled) SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "password");
 let setupAt = 0;
 function setupSet(patch) { store.set("setup", { ...(store.get("setup") || {}), ...patch }); }
 function openSetup(at = 0) {
@@ -1242,24 +1301,26 @@ function closeSetup(finished) {
   $("#setup").close();
   renderSetupCard();
   showView("home");
-  maybeStartTour();
+  store.set("tourSeen", true); // the tour was offered in setup; it stays in the menu and ❓
+  setupAccountButton();
 }
+function renderSetupDots() { $("#setupDots").innerHTML = SETUP_STEPS.map((s, i) => `<span class="${i === setupAt ? "on" : s.done() ? "done" : ""}"></span>`).join(""); }
 function renderSetup() {
   const step = SETUP_STEPS[setupAt];
   $("#setupStepLabel").textContent = `Step ${setupAt + 1} of ${SETUP_STEPS.length}`;
-  $("#setupDots").innerHTML = SETUP_STEPS.map((s, i) => `<span class="${i === setupAt ? "on" : s.done() ? "done" : ""}"></span>`).join("");
+  renderSetupDots();
   $("#setupBack").style.visibility = setupAt ? "visible" : "hidden";
-  $("#setupNext").textContent = setupAt === SETUP_STEPS.length - 1 ? "Finish" : "Next";
+  $("#setupNext").textContent = setupAt === SETUP_STEPS.length - 1 ? (step.id === "tour" ? "Skip the tour for now" : "Finish") : "Next";
   const body = $("#setupBody");
   const chips = (list, cur, attr) => `<div class="qm-chips">${list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("")}</div>`;
   if (step.id === "welcome") {
     body.innerHTML = `${seaScene(store.get("style"))}<h2 class="setup-h">Welcome to your Bible study</h2>
-      <p class="muted">A few quick steps make the app yours. You can skip any of them and finish later from Settings, under "Set up app".</p>
+      <p class="muted">A few quick steps make the app yours. This only happens the first time. You can change any of it later in Settings.</p>
       <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
-      <p class="muted small-print">Pick one. You can change it any time in Settings, under Look.</p>
+      <p class="muted small-print">Classic is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
       <div class="look-grid">${lookGridHtml("data-s-look")}</div>
       <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
       <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>
@@ -1281,6 +1342,30 @@ function renderSetup() {
       $("#setupKeyStatus").textContent = v ? "Key saved ✓" : "";
       const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false });
     });
+  } else if (step.id === "password") {
+    body.innerHTML = `<h2 class="setup-h">Make your own password</h2>
+      <p class="muted">You signed in with the starter password. Choose your own now, something you'll remember. If you ever forget it, tap "Forgot password?" on the sign-in screen and we'll email you a link.</p>
+      <label class="field">New password<input id="setupPw" type="password" autocomplete="new-password" placeholder="At least 6 letters or numbers"></label>
+      <label class="field">Type it again<input id="setupPw2" type="password" autocomplete="new-password"></label>
+      <button type="button" class="big-btn" id="setupPwSave">Save my password</button>
+      <p class="setup-key-status" id="setupPwMsg" role="status">${store.get("setup")?.password ? "Your own password is saved ✓" : ""}</p>
+      <p class="muted small-print">You'll stay signed in on this device. You can change your password any time in Settings, under Account.</p>`;
+    $("#setupPwSave").addEventListener("click", async () => {
+      const a = $("#setupPw").value, b = $("#setupPw2").value, msg = $("#setupPwMsg");
+      if (a.length < 6) { msg.textContent = "Please use at least 6 letters or numbers."; return; }
+      if (a !== b) { msg.textContent = "Those two don't match. Please type them again."; return; }
+      if (a.toLowerCase() === "biblestudy") { msg.textContent = "Please choose something different from the starter password."; return; }
+      $("#setupPwSave").disabled = true; msg.textContent = "Saving…";
+      try { await changePassword(a); setupSet({ password: true }); msg.textContent = "Your own password is saved ✓ Tap Next."; $("#setupPw").value = $("#setupPw2").value = ""; renderSetupDots(); }
+      catch (x) { msg.textContent = x.message || "That didn't save. Check your internet and try again."; }
+      $("#setupPwSave").disabled = false;
+    });
+  } else if (step.id === "tour") {
+    body.innerHTML = `<h2 class="setup-h">You're all set${store.get("name") ? `, ${esc(store.get("name"))}` : ""}!</h2>
+      <p>Would you like a quick tour? It shows you where everything is: reading, versions, read-aloud, the study section, asking questions, your journal, signing in and out, and Settings.</p>
+      <button type="button" class="big-btn" id="setupTour">🧭 Take the tour</button>
+      <p class="muted small-print">Not now? You can take it any time: tap ❓ at the top, or open the ⋮ menu, or go to Settings.</p>`;
+    $("#setupTour").addEventListener("click", () => { closeSetup(true); startTour(); });
   } else if (step.id === "path") {
     const active = store.get("activePath");
     body.innerHTML = `<h2 class="setup-h">Choose your study path</h2>
@@ -1942,7 +2027,8 @@ function showGate() {
       err.textContent = "";
       try {
         await emailSignInLink(email);
-        msg.innerHTML = `We emailed a sign-in link to <strong>${esc(email)}</strong>. Open it on this device. It signs you in, and then you can choose a new password in Settings, under Account.`;
+        try { localStorage.setItem("bible-study:pw-reset", "1"); } catch { /* ignore */ }
+        msg.innerHTML = `We emailed a link to <strong>${esc(email)}</strong>. Open the email on this phone or tablet and tap the link. It signs you in, and the app will ask you to choose a new password.`;
       } catch (x) { err.textContent = x.message; }
     };
   });
@@ -2118,7 +2204,7 @@ if (authEnabled) {
   }
   // Signed-in family members don't set up keys or accounts: the first-time steps are just
   // name, look and study path.
-  SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key" && st.id !== "account");
+  SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key");
   // New device, or the browser cleared this one? Bring back this person's own saved progress.
   if (store.isEmpty()) {
     const b = await loadBackup();
@@ -2142,6 +2228,14 @@ updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
 { const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); else maybeStartTour(); } // first time on this device
+// Came in from a "Forgot your password?" email: ask for a new password straight away.
+try {
+  if (signedInUser && localStorage.getItem("bible-study:pw-reset")) {
+    localStorage.removeItem("bible-study:pw-reset");
+    const i = SETUP_STEPS.findIndex((st) => st.id === "password");
+    if (i >= 0) { setupSet({ password: false }); $("#setup").open && $("#setup").close(); openSetup(i); }
+  }
+} catch { /* ignore */ }
 setTimeout(cameBack, 900); // opened again after a while: offer to go back to where they were
 wireShareKey();
 setupAccountButton();
@@ -2151,21 +2245,31 @@ inviteWelcome();
 /* ---------- Welcome tour: big, simple steps that point at each feature ---------- */
 // Shown once, the first time someone opens the app (after setup). "Skip" ends it any time,
 // and it can always be taken again from Settings or the ⋮ menu.
+const qmTour = () => { const d = $("#quickMenu"); renderQuickMenu(); if (!d.open) d.show(); d.classList.add("tour-shown"); };
 const TOUR = [
-  { icon: "👋", title: "Welcome!", text: "This short tour shows you around the app. Tap Next to go on, or Skip tour any time. You can take it again later from Settings or the ⋮ menu." },
+  { icon: "👋", title: "Welcome!", text: "This tour shows you around, one thing at a time. The part we're talking about is circled. Tap Next to go on, or Skip tour any time. You can take it again later: tap ❓ at the top or open the ⋮ menu." },
   { view: "home", at: ".tabbar", icon: "🧭", title: "Getting around", text: "These big buttons at the bottom take you anywhere: Home, Read, My study, My path and Settings. Tap Home to get back to the start." },
-  { view: "read", at: "#refButton", icon: "📖", title: "Pick a chapter", text: "Tap the book name at the top to choose any book and chapter. You can type to search, like \"Romans 8\". The arrows go to the next or last chapter." },
-  { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions show up there once the family's Bible key is set up.)" },
-  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap the play button above the chapter and the app reads it out loud. Turn on Keep reading to go straight into the next chapter." },
-  { view: "read", at: "#studyNotes", icon: "🔎", title: "Study section", text: "Under each chapter: history, maps, word meanings and what different churches teach. Scripture always comes first." },
+  { view: "home", at: "#helpBtn", icon: "❓", title: "Help is always here", text: "Not sure what something does? Tap ❓ at the top of any screen for help with that screen, or to take this tour again." },
+  { view: "home", at: "#acctBtn", icon: "👤", title: "Signing in and out", text: "Your first initial is in the top corner. Tap it to see who's signed in or to sign out. You stay signed in on this device until you sign out, so you won't need your password every time." },
+  { view: "home", at: "#quickMenu", before: qmTour, icon: "⋮", title: "The ⋮ menu", text: "Tap ⋮ at the top right for this menu. Jump to any page, take this tour again, and turn features on or off, like the read-aloud bar, trivia or the study section." },
+  { view: "home", at: ".path-card.my-bible", icon: "📖", title: "My Bible", text: "Read the whole Bible in order, Genesis to Revelation. The bar shows how far you've come." },
+  { view: "home", at: ".path-cards.four", icon: "🛤️", title: "Self-guided studies", text: "Three more ways through the whole Bible: in the order things happened, by theme, or by who it was written to. Each shows your progress and keeps its own place, so you can switch any time." },
+  { view: "home", at: ".jump-card", icon: "🔎", title: "Go anywhere", text: "Jump to any book or chapter, even in the middle of a study. Your study keeps its place for when you come back." },
+  { view: "read", at: "#refButton", icon: "📚", title: "Pick a book", text: "Tap the book name at the top. Big squares show every book, Old Testament then New. Tap a book to see what it's about, then a chapter, then a verse. No spelling needed, but you can type if you like." },
+  { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions appear there once the family's Bible is set up.)" },
+  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap Read aloud and the app reads the chapter to you, highlighting each part as it goes. Turn on Keep reading to go on into the next chapter." },
+  { view: "read", at: "#bookIntro", icon: "📜", title: "Setting the stage", text: "Like a study Bible: who wrote the book, when, to whom, the setting, and where scholars' views differ. It opens by itself on chapter 1." },
+  { view: "read", at: "#reader", icon: "👆", title: "Tap a word", text: "Tap any word in the Bible text to see what it means in plain words, and the Hebrew or Greek behind it. Nothing pops up unless you tap." },
+  { view: "read", at: "#studyNotes", icon: "🔎", title: "The study section", text: "Below every chapter: Strong's concordance with every Hebrew or Greek word, word search, history, maps then and now, science, scholars' views from different churches, cross-references, and the sources for all of it. Scripture comes first." },
   { view: "read", at: "#partnerBox", icon: TALK_ICON, title: "Ask questions", text: "Open Chat with my study partner and ask anything about the chapter. The Bible helper answers right here. Tap 🎤 to talk instead of type." },
-  { view: "read", at: "#journalBox", icon: "✎", title: "My journal", text: "Write your thoughts and prayers on each chapter. Tap 🎤 to speak instead of typing." },
-  { view: "books", at: "#view-books .segments", icon: "📊", title: "My study", text: "See your progress, the chapters you've visited, your favorites, and all your journal entries in one place." },
-  { view: "path", at: '.tabbar [data-view="path"]', icon: "🛤️", title: "My path", text: "Follow a reading plan step by step. The app remembers where you are, so you can always pick up where you left off." },
-  { view: "settings", at: "#textSize", wrap: ".card", icon: "🔠", title: "Bigger words", text: "Slide Text size to make the words bigger or smaller. You can also pinch the screen to zoom in." },
-  { view: "settings", at: "#lookCard", icon: "🎨", title: "Change the look", text: "Pick a look you love: spring garden, Christmas, Easter, Thanksgiving, pictures for kids, and more." },
-  { view: "shop", at: "#view-shop h1", wrap: "section", icon: "🎵", title: "Books and music", text: "Find Christian books, kids' books and worship music to buy on Amazon." },
-  { view: "home", at: "#menuBtn", icon: "🎉", title: "You're all set!", text: "Take this tour again any time: tap ⋮ at the top, or go to Settings. Enjoy your study!" },
+  { view: "read", at: "#journalBox", icon: "✎", title: "My journal", text: "Write your thoughts, prayers and thanks for each chapter. Tap 🎤 to speak instead of typing. It saves by itself." },
+  { view: "books", at: "#view-books .segments", icon: "📊", title: "My study", text: "Your progress, the chapters you've visited, your favorites, your daily journal and all your journal entries in one place." },
+  { view: "settings", at: "#accountCard", icon: "🔑", title: "Your account", text: "Change your password here, and choose whether to stay signed in on this device." },
+  { view: "settings", at: "#lockCard", icon: "🔒", title: "Lock your journal (if you want)", text: "Your journal is open unless you choose to lock it. To lock it, type a passcode here and save. Then tap 🔒 Lock my journal whenever you like. To leave it open, do nothing." },
+  { view: "settings", at: "#textSize", wrap: ".card", icon: "🔠", title: "Easier to see and use", text: "Make the words bigger, make buttons bigger, turn on high contrast, turn tap-a-word on or off, and choose simple or deeper answers from the Bible helper. You can also pinch to zoom." },
+  { view: "settings", at: "#lookCard", icon: "🎨", title: "Change the look", text: "Classic, a spring garden, Christmas, Easter, Thanksgiving, pictures for kids, and more." },
+  { view: "shop", at: "#view-shop h1", wrap: "section", icon: "🎵", title: "Books and music", text: "Christian books, kids' books and worship music to buy on Amazon." },
+  { view: "home", at: "#helpBtn", icon: "🎉", title: "You're all set!", text: "Take this tour again any time: tap ❓ at the top or open the ⋮ menu. Enjoy your study!" },
 ];
 let tourAt = -1;
 const tourEl = document.createElement("div");
@@ -2197,13 +2301,15 @@ function placeTour() {
   const top = Math.max(r.top - pad, 4), bottom = Math.min(r.bottom + pad, vh - 4);
   Object.assign(ring.style, { top: `${top}px`, left: `${Math.max(r.left - pad, 4)}px`, width: `${Math.min(r.width + pad * 2, window.innerWidth - 8)}px`, height: `${Math.max(bottom - top, 24)}px` });
   // Put the card on whichever side of the highlighted spot has more room.
-  if ((top + bottom) / 2 > vh / 2) { card.style.top = "max(12px, env(safe-area-inset-top))"; card.style.bottom = "auto"; }
+  if (top > vh * 0.45) { card.style.top = "max(12px, env(safe-area-inset-top))"; card.style.bottom = "auto"; }
   else { card.style.top = "auto"; card.style.bottom = "calc(12px + env(safe-area-inset-bottom))"; }
 }
 function showTourStep(i) {
   tourAt = Math.max(0, Math.min(i, TOUR.length - 1));
   const step = TOUR[tourAt];
+  if ($("#quickMenu").classList.contains("tour-shown") && !step.before) { $("#quickMenu").classList.remove("tour-shown"); $("#quickMenu").close(); }
   if (step.view && document.body.dataset.view !== step.view) showView(step.view);
+  step.before?.();
   $("#tourIcon").innerHTML = step.icon;
   $("#tourTitle").textContent = step.title;
   $("#tourText").textContent = step.text;
@@ -2215,7 +2321,9 @@ function showTourStep(i) {
   const el = tourTarget(step);
   if (el) {
     const r = el.getBoundingClientRect();
-    if (r.top < 70 || r.bottom > window.innerHeight - 120) el.scrollIntoView({ block: "center" });
+    // Tall things: bring their top into view under the top bar, with the tour card below.
+    if (r.height > window.innerHeight * 0.4) { if (r.top < 70 || r.top > window.innerHeight * 0.3) { el.scrollIntoView({ block: "start" }); window.scrollBy(0, -80); } }
+    else if (r.top < 70 || r.bottom > window.innerHeight - 120) el.scrollIntoView({ block: "center" });
   }
   placeTour();
   requestAnimationFrame(placeTour); setTimeout(placeTour, 350);
@@ -2229,6 +2337,7 @@ function startTour() {
 }
 function endTour() {
   tourAt = -1;
+  if ($("#quickMenu").classList.contains("tour-shown")) { $("#quickMenu").classList.remove("tour-shown"); $("#quickMenu").close(); }
   tourEl.hidden = true;
   document.documentElement.classList.remove("touring");
   store.set("tourSeen", true);
@@ -2254,6 +2363,33 @@ window.addEventListener("resize", placeTour);
 window.addEventListener("scroll", placeTour, { passive: true });
 document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").open && $("#quickMenu").close(); startTour(); }));
 
+
+
+/* ---------- ❓ Help: tips for the screen you're on, and the tour ---------- */
+const HELP = {
+  home: ["Home", ["Tap the top card to pick up where you left off.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
+  read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
+  books: ["My study", ["Progress shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
+  path: ["My path", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
+  settings: ["Settings", ["Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
+  shop: ["Books and music", ["Each button searches Amazon for that kind of book or music. Nothing is bought unless you buy it on Amazon."]],
+};
+const helpSheet = document.createElement("dialog");
+helpSheet.className = "welcome-back help-sheet"; helpSheet.setAttribute("aria-label", "Help");
+document.body.append(helpSheet);
+function openHelp() {
+  const view = document.body.dataset.view || "home";
+  const [title, tips] = HELP[view] || HELP.home;
+  helpSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">❓</div><h2>Help: ${esc(title)}</h2>
+    <ul class="help-tips">${tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+    <button type="button" class="big-btn" id="helpTour">🧭 Take the tour</button>
+    <button type="button" class="wb-new" id="helpClose">Close</button>
+    <p class="muted small-print">Still stuck? Ask the person who gave you the app, or ask the Bible helper under any chapter.</p>`;
+  helpSheet.showModal();
+  $("#helpClose").addEventListener("click", () => helpSheet.close());
+  $("#helpTour").addEventListener("click", () => { helpSheet.close(); startTour(); });
+}
+$("#helpBtn").addEventListener("click", openHelp);
 
 /* ---------- Coming back after a break: Home, with "pick up where you left off" ---------- */
 // After 15 minutes away (or with the app closed), people land on Home and are asked

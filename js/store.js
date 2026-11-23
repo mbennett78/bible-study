@@ -43,7 +43,7 @@ const defaults = {
   wordTap: true,            // tap a word in the Bible text for its meaning
   helperStyle: "",          // "" | "simple" | "deep": how the Bible helper answers
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
-  style: "sage",            // classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
+  style: "classic",         // the default look for new people. classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }

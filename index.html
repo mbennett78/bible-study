@@ -41,6 +41,7 @@
     <div class="version-switch read-only" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
     </div>
+    <button class="help-btn" id="helpBtn" aria-label="Help with this screen">?</button>
     <button class="acct-btn" id="acctBtn" aria-label="My account: sign in or out" hidden><span id="acctInitial">👤</span></button>
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu: look, graphics and features">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.5" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor"/></svg>
@@ -219,7 +220,7 @@
         <div class="qm-chips partner-pick" id="partnerPickSettings"></div>
       </div>
 
-      <div class="card">
+      <div class="card" id="lockCard">
         <h2>Journal passcode</h2>
         <p class="muted small-print" id="lockStatus"></p>
         <label class="field">New passcode
@@ -439,7 +440,7 @@
     <div class="gate-card">
       <div class="gate-art" id="gateArt"></div>
       <h1>Bible Study</h1>
-      <p class="muted" id="gateMsg">Sign in with the email your family added.</p>
+      <p class="muted" id="gateMsg">Sign in with the email your family added. The first time, use the starter password you were given. You'll make your own right after.</p>
       <form id="gateForm" class="gate-form">
         <label class="field">Email<input id="gateEmail" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
         <label class="field">Password<input id="gatePassword" type="password" autocomplete="current-password" required></label>
