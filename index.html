@@ -209,7 +209,7 @@
         </label>
       </div>
 
-      <div class="card">
+      <div class="card" id="bibleTextCard">
         <h2>Bible text</h2>
         <label class="field">API.Bible key <span class="muted">(for NASB)</span>
           <input id="apiBibleKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
@@ -268,6 +268,12 @@
           <label class="small button-like">Restore from file<input id="importFile" type="file" accept="application/json" hidden></label>
         </div>
       </div>
+
+      <details class="card organizer" id="organizerBox" hidden>
+        <summary><h2>Family organizer tools</h2></summary>
+        <p class="muted small-print">For the person who set up the app. Everyone else can leave this closed.</p>
+        <div id="organizerBody"></div>
+      </details>
     </section>
   </main>
 

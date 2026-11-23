@@ -109,6 +109,12 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     const needsSettings = e.kind === "nokey" || e.kind === "auth" || e.kind === "noversion";
     autoplayNext = false;
     if (driveOn()) $("#driveStatus").textContent = e.message || "Couldn't load this chapter.";
+    if (authEnabled && signedInUser && needsSettings) {
+      // Family members never see key setup: point them to the organizer instead.
+      readerEl.innerHTML = `<div class="message"><strong>The Bible text isn't ready yet</strong>Please ask the person who set up the app to share the Bible text with the family, then tap Try again.<br><button class="small" id="retryFamily">Try again</button></div>`;
+      $("#retryFamily").addEventListener("click", async () => { const fk = await getFamilyKey(); if (fk) { store.set("apiBibleKey", ""); applyInvite({ ...fk, look: "" }); } openChapter(book, chapter); });
+      return;
+    }
     readerEl.innerHTML = `<div class="message"><strong>Can't show this chapter yet</strong>${esc(e.message || "Something went wrong.")}
       ${needsSettings ? `<br><button class="small" id="goSettings">${e.kind === "nokey" ? "How to get your free key" : "Open Settings"}</button>` : `<br><button class="small" id="retry">Try again</button>`}</div>`;
     $("#goSettings")?.addEventListener("click", () => { showView("settings"); if (e.kind === "nokey") { $("#keyHelp").open = true; $("#keyHelp").scrollIntoView({ block: "center" }); } });
@@ -934,7 +940,7 @@ function initSettings() {
 }
 
 /* ---------- First-time setup (and "Set up app" in Settings) ---------- */
-const SETUP_STEPS = [
+let SETUP_STEPS = [
   { id: "welcome", title: "Welcome", done: () => Boolean(store.get("name").trim()) },
   { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
   { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
@@ -1473,9 +1479,6 @@ function renderAccount() {
        <details class="share-key"><summary>Change my password</summary>
          <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
-       <details class="share-key"><summary>Share my Bible key with the family</summary>
-         <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in on a device without a key. Everyone's reading then counts toward your 5,000 a month.</p>
-         <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
   $("#savePassword")?.addEventListener("click", async () => {
@@ -1484,6 +1487,17 @@ function renderAccount() {
     try { await changePassword(v); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
     catch (x) { out.textContent = x.message; }
   });
+  // Grown-up settings (Bible keys, invite links) live in a closed "Family organizer tools" box,
+  // so everyone else just signs in and reads.
+  const org = $("#organizerBody");
+  if (org && !org.dataset.ready) {
+    org.dataset.ready = "1";
+    org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>Share the Bible key with the family</h2>
+      <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in, without seeing it. Everyone's reading counts toward your 5,000 a month.</p>
+      <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
+    org.append($("#bibleTextCard"));
+    $("#organizerBox").hidden = false;
+  }
   $("#shareFamilyKey")?.addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
@@ -1571,6 +1585,9 @@ if (authEnabled) {
   document.documentElement.classList.remove("auth-wait");
   // No key on this device yet? Use the family's shared key.
   if (!store.get("apiBibleKey")) { const fk = await getFamilyKey(); if (fk) applyInvite({ ...fk, look: "" }); }
+  // Signed-in family members don't set up keys or accounts: the first-time steps are just
+  // name, look and study path.
+  SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key" && st.id !== "account");
 }
 renderAccount();
 syncVersionSwitch();

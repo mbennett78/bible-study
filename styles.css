@@ -1028,3 +1028,10 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 .gate-err { color: #a33a2a; min-height: 1.2em; margin: 10px 0 0; font-size: .92rem; }
 .account-line { margin: 4px 0 10px; }
 .gate-form[hidden] { display: none; }
+.organizer > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+.organizer > summary::-webkit-details-marker { display: none; }
+.organizer > summary::after { content: "›"; font-size: 1.3rem; color: var(--muted); transition: transform .2s; }
+.organizer[open] > summary::after { transform: rotate(90deg); }
+.organizer > summary h2 { margin: 0; }
+.organizer .card { box-shadow: none; border: 1px solid var(--line); margin-top: 12px; }
+.organizer[hidden] { display: none; }
