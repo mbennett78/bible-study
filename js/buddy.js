@@ -4,7 +4,7 @@
 // and he remembers where he was put. He never covers the bottom buttons, and he stays still
 // for anyone who has asked their device for less motion.
 
-const SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden="true">
+export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden="true">
   <g class="buddy-bubble">
     <path class="ti-front" d="M47 2h19a6 6 0 0 1 6 6v11a6 6 0 0 1-6 6h-9l-6 5v-5h-4a6 6 0 0 1-6-6V8a6 6 0 0 1 6-6z"/>
     <circle class="ti-dot d1" cx="49" cy="13.5" r="2"/><circle class="ti-dot d2" cx="56.5" cy="13.5" r="2"/><circle class="ti-dot d3" cx="64" cy="13.5" r="2"/>
@@ -30,7 +30,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.type = "button";
   el.className = "buddy";
   el.setAttribute("aria-label", label);
-  el.innerHTML = SVG;
+  el.innerHTML = BUDDY_SVG;
   document.body.append(el);
 
   // Where he stands: which edge, and how far down (0 = top of the free space, 1 = bottom).

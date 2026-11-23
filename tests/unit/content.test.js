@@ -84,3 +84,18 @@ test("every one-chapter book is asked for by its whole verse range in the ESV", 
   assert.equal(esvQuery("JHN", 3), "John 3");
   assert.equal(esvQuery("SNG", 2), "Song of Solomon 2");
 });
+
+test("every trivia question points at real chapters and has four different choices", async () => {
+  const { TRIVIA } = await import("../../js/trivia-bank.js");
+  const { BOOK_BY_ID } = await import("../../js/books.js");
+  const ids = new Set();
+  for (const q of TRIVIA) {
+    assert.ok(!ids.has(q.id), `duplicate id ${q.id}`); ids.add(q.id);
+    for (const r of q.refs) {
+      const [b, c] = r.split(".");
+      assert.ok(BOOK_BY_ID[b] && Number(c) >= 1 && Number(c) <= BOOK_BY_ID[b].chapters, `${q.id}: ${r}`);
+    }
+    assert.equal(new Set(q.choices).size, q.choices.length, `${q.id}: repeated choice`);
+    assert.ok(q.a >= 0 && q.a < q.choices.length && q.why, q.id);
+  }
+});

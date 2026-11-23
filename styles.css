@@ -1434,3 +1434,51 @@ html.touring .buddy, body.hide-buddy .buddy, html[data-graphics="simple"] .buddy
 /* The read-aloud and microphone buttons beside the chat box */
 .chat-speak[aria-pressed="true"], .chat-mic[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
 .mic-sheet ol { text-align: left; font-size: 1.05rem; line-height: 1.5; padding-left: 1.3em; }
+
+/* ---------- Bible games ---------- */
+.game { border: 0; border-radius: 24px; padding: 0; width: min(560px, calc(100vw - 20px)); max-height: calc(100dvh - 20px); background: var(--surface); color: var(--text); overflow: hidden; display: flex; flex-direction: column; }
+.game:not([open]) { display: none; }
+.game::backdrop { background: rgb(0 0 0 / .5); }
+.g-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px 8px 12px; border-bottom: 1px solid var(--line); }
+.g-head h2 { flex: 1; margin: 0; font-size: 1.35rem; }
+.g-x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--accent-soft); color: var(--text); font-size: 1.1rem; flex: none; }
+.g-body { overflow-y: auto; overflow-x: hidden; padding: 14px 16px 20px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.g-seg button { min-width: 0; }
+.g-add .small { flex: none; }
+.g-sec h3 { margin: 4px 0 8px; font-size: 1.05rem; }
+.g-sec h3 small { font-weight: normal; color: var(--muted); }
+.g-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.g-seg button, .g-chip { min-height: 44px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; padding: 8px 12px; }
+.g-seg button[aria-pressed="true"], .g-chip[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.g-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.g-add { display: flex; gap: 8px; }
+.g-add input { flex: 1; min-width: 0; font-size: 1.05rem; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.g-players { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.g-player { display: inline-flex; align-items: center; gap: 4px; padding: 4px 4px 4px 12px; border-radius: 999px; background: var(--accent-soft); }
+.g-player button { width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; color: var(--text); }
+.g-err { color: #b3261e; min-height: 0; margin: 0; }
+.g-board ol { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; }
+.g-board li span { display: block; color: var(--muted); font-size: .92rem; }
+.g-timer { height: 10px; border-radius: 6px; background: var(--accent-soft); overflow: hidden; }
+.g-timer i { display: block; height: 100%; width: 100%; background: var(--accent); transition: width .1s linear; }
+.g-timer.low i { background: #c0392b; }
+.g-q { font-size: 1.35rem; line-height: 1.35; margin: 4px 0; font-weight: 600; }
+.g-choices { display: grid; gap: 10px; }
+.g-choices button { min-height: 56px; text-align: left; padding: 12px 16px; border-radius: 16px; border: 2px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: 1.12rem; }
+.g-choices button.right { border-color: #2e7d32; background: color-mix(in srgb, #2e7d32 16%, var(--bg)); }
+.g-choices button.right::before { content: "✓ "; color: #2e7d32; font-weight: 700; }
+.g-choices button.wrong { border-color: #c0392b; background: color-mix(in srgb, #c0392b 12%, var(--bg)); }
+.g-choices button.wrong::before { content: "✗ "; color: #c0392b; font-weight: 700; }
+.g-why { margin: 0; font-size: 1.08rem; min-height: 1.4em; }
+.g-why span { color: var(--muted); }
+.g-score { color: var(--muted); font-size: .95rem; margin: 0; }
+.g-big { font-size: 3rem; font-weight: 700; text-align: center; margin: 6px 0 0; }
+.g-pct { text-align: center; font-size: 1.2rem; margin: 0; color: var(--muted); }
+.g-results { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.g-results li { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line); }
+.g-results li.top { border-color: var(--accent); background: var(--accent-soft); }
+.g-place { font-weight: 700; font-size: 1.2rem; text-align: center; }
+.g-confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 2; }
+.buddy.buddy-inline { position: static; display: inline-block; width: 40px; height: 48px; flex: none; cursor: default; touch-action: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body.hide-games .games-entry { display: none !important; }

@@ -4,6 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./t
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy } from "./buddy.js";
+import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
@@ -922,6 +923,17 @@ async function sendChat() {
     : `I opened ${p[1]} with your question about this chapter ready. Press send there to see my answer. Come back here any time for the next question.`);
 }
 /* ---------- Study buddy: the little stick figure who opens the chat ---------- */
+const game = createGame({
+  store, esc,
+  myName: () => store.get("name")?.trim() || "Me",
+  lively: () => (store.get("graphics") || "full") === "full",
+  // Confetti in the look's own colors (its swatches plus the accent color in use).
+  lookColors: () => {
+    const sw = (LOOKS.find(([v]) => v === store.get("style")) || LOOKS[0])[3];
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    return [...sw, accent, "#f4d35e"].filter(Boolean);
+  },
+});
 const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
 function openBuddyChat() {
   if (!$("#view-read") || $("#view-read").hidden) showView("read");
@@ -1464,6 +1476,7 @@ const FEATURES = [
   { id: "listen", label: "Read-aloud bar", hint: "Play, speed and drive mode at the top of each chapter" },
   { id: "notes", label: "Study section", hint: "Strong's concordance, word search, maps, history and scholars under each chapter" },
   { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
+  { id: "games", label: "Bible games", hint: "Quiz yourself or play together, on Home and in this menu" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
   { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
   { id: "buddy", label: "Study buddy", hint: "The little stick figure who opens the chat. Drag him anywhere along the side" },
@@ -1513,6 +1526,7 @@ function renderQuickMenu() {
 }
 $("#menuBtn").addEventListener("click", () => { renderQuickMenu(); $("#quickMenu").showModal(); });
 $("#menuClose").addEventListener("click", () => $("#quickMenu").close());
+$("#qmGames").addEventListener("click", () => { $("#quickMenu").close(); game.open(); });
 $("#quickMenu").addEventListener("click", (e) => { if (e.target.id === "quickMenu") $("#quickMenu").close(); });
 document.querySelectorAll("[data-go-view]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").close(); showView(b.dataset.goView); }));
 
@@ -1887,6 +1901,7 @@ function renderHome() {
     ${seasonPrayerHtml()}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     ${pathCardsHtml()}
+    <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible games</strong><small>Quiz yourself, or play with up to ${20} players or teams</small></span><span class="go" aria-hidden="true">›</span></button>
     <button class="resume-card shop-link" id="homeShop"><span><strong>Books and music</strong><small>Christian books, counseling, psychology and worship music</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
       <h2>Go anywhere in the Bible</h2>
@@ -1902,6 +1917,7 @@ function renderHome() {
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
   $("#homeShop").addEventListener("click", () => showView("shop"));
+  $("#homeGames").addEventListener("click", () => game.open());
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
 }
 
