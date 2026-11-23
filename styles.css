@@ -1256,3 +1256,8 @@ body.hide-visits #visitLine { display: none; }
 .chat-row.typing .chat-bubble::after { content: "…"; animation: chat-dots 1.2s steps(4) infinite; display: inline-block; width: 1.2em; overflow: hidden; vertical-align: bottom; }
 @keyframes chat-dots { from { width: 0 } to { width: 1.2em } }
 .chat-send:disabled { opacity: .5; }
+/* The talk icon takes its colors from the current look */
+.talk-icon path { stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.talk-icon .ti-back { fill: var(--surface); }
+.talk-icon .ti-front { fill: var(--accent-soft); }
+.talk-icon .ti-dot { fill: var(--accent); }

@@ -702,7 +702,7 @@ function addMic(wrap, ta) {
 /* ---------- Study partner: the built-in Bible helper, or the person's own AI ---------- */
 // "" is the built-in helper: it answers right here in the chat, paid for by the family's
 // prepaid AI credits with daily and monthly limits (supabase/functions/study-partner).
-const TALK_ICON = `<svg class="talk-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 20c10 1 18 8 18 17 0 4-1.5 7.5-4 10.5l2 7-8-3c-2.5 1-5 1.5-8 1.5-8 0-15-4-17.5-10" fill="#fff" stroke="#4a7ba6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 8C15 8 6 16 6 26c0 4.5 2 8.5 5 11.5L8 46l10-4c3 1.3 6 2 9 2 12 0 21-8 21-18S39 8 27 8z" fill="#b3d6ee" stroke="#4a7ba6" stroke-width="3.5" stroke-linejoin="round"/><circle cx="17" cy="26" r="3" fill="#fff"/><circle cx="27" cy="26" r="3" fill="#fff"/><circle cx="37" cy="26" r="3" fill="#fff"/></svg>`;
+const TALK_ICON = `<svg class="talk-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 20c10 1 18 8 18 17 0 4-1.5 7.5-4 10.5l2 7-8-3c-2.5 1-5 1.5-8 1.5-8 0-15-4-17.5-10" class="ti-back"/><path d="M27 8C15 8 6 16 6 26c0 4.5 2 8.5 5 11.5L8 46l10-4c3 1.3 6 2 9 2 12 0 21-8 21-18S39 8 27 8z" class="ti-front"/><circle cx="17" cy="26" r="3" class="ti-dot"/><circle cx="27" cy="26" r="3" class="ti-dot"/><circle cx="37" cy="26" r="3" class="ti-dot"/></svg>`;
 const PARTNERS = [
   ...(authEnabled ? [["", "Bible helper", TALK_ICON, null]] : []),
   ["claude", "Claude", "🧡", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
