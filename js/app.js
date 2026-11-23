@@ -92,6 +92,7 @@ const refName = (r) => `${BOOK_BY_ID[r.book].name} ${r.chapter}`;
 
 let loadToken = 0;
 let autoplayNext = false;
+let readArmed = false; // "Read to me" is reading in this visit (never starts by itself when the app opens)
 async function openChapter(book, chapter, { scroll = true } = {}) {
   store.set("last", { book, chapter });
   const version = store.get("version");
@@ -140,7 +141,8 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     updateVisitLine();
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
-    if (autoplayNext) { autoplayNext = false; reader.play(); }
+    // Read to me: once it's on and started, every chapter opened is read aloud.
+    if (autoplayNext || (readArmed && driveOn() && !$("#view-read").hidden)) { autoplayNext = false; reader.play(); }
   } catch (e) {
     if (token !== loadToken) return;
     const needsSettings = e.kind === "nokey" || e.kind === "auth" || e.kind === "noversion";
@@ -2114,9 +2116,14 @@ function setDrive(on) {
   if (!$("#drive").hidden) closeDrive();
 }
 $("#playBtn").hidden = !canSpeak;
-$("#playBtn").addEventListener("click", () => reader.toggle());
+$("#playBtn").addEventListener("click", () => { reader.toggle(); readArmed = reader.playing; });
 $("#quickRate").addEventListener("change", (e) => setRate(Number(e.target.value)));
-$("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
+$("#driveQuick").addEventListener("change", (e) => {
+  setDrive(e.target.checked);
+  // Turning Read to me on starts reading this chapter now; off stops it.
+  if (e.target.checked && canSpeak) { readArmed = true; if (!reader.playing) reader.play(); }
+  else { readArmed = false; reader.stop(); }
+});
 {
   // iPhone and iPad ignore the volume a web page asks for, so point to the side buttons instead.
   const apple = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -2500,7 +2507,7 @@ const TOUR = [
   { view: "home", at: ".jump-card", icon: "🔎", title: "Go anywhere", text: "Jump to any book or chapter, even in the middle of a study. Your study keeps its place for when you come back." },
   { view: "read", at: "#refButton", icon: "📚", title: "Pick a book", text: "Tap the book name at the top. Big squares show every book, Old Testament then New. Tap a book to see what it's about, then a chapter, then a verse. No spelling needed, but you can type if you like." },
   { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions appear there once the family's Bible is set up.)" },
-  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap Read aloud and the app reads the chapter to you, highlighting each part as it goes. Turn on Keep reading to go on into the next chapter." },
+  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap Read aloud and the app reads the chapter to you, highlighting each part as it goes. Turn on Read to me and it keeps reading every chapter you open, until you turn it off." },
   { view: "read", at: "#bookIntro", icon: "📜", title: "Setting the stage", text: "Like a study Bible: who wrote the book, when, to whom, the setting, and where scholars' views differ. It opens by itself on chapter 1." },
   { view: "read", at: "#reader", icon: "👆", title: "Tap a word", text: "Tap any word in the Bible text to see what it means in plain words, and the Hebrew or Greek behind it. Nothing pops up unless you tap." },
   { view: "read", at: "#studyNotes", icon: "🔎", title: "The study section", text: "Below every chapter: Strong's concordance with every Hebrew or Greek word, word search, history, maps then and now, science, scholars' views from different churches, cross-references, and the sources for all of it. Scripture comes first." },

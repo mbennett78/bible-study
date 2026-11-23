@@ -16,7 +16,7 @@ try {
       if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", aiPartner: "claude" }));
       // Pretend speech so read-aloud can be checked.
       window.__said = [];
-      window.speechSynthesis = { speak: (u) => { window.__said.push(u.text); setTimeout(() => u.onend && u.onend(), 50); }, cancel() {}, getVoices: () => [], addEventListener() {} };
+      Object.defineProperty(window, "speechSynthesis", { configurable: true, value: { speak: (u) => { window.__said.push(u.text); setTimeout(() => u.onend && u.onend(), 50); }, cancel() {}, getVoices: () => [], addEventListener() {} } });
       window.SpeechSynthesisUtterance = function (t) { this.text = t; };
     });
     const page = await ctx.newPage();
