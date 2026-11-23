@@ -20,7 +20,7 @@ const defaults = {
   pathStarted: {},          // { chronological: iso }
   pathRead: {},
   name: "",                 // shown in greetings
-  style: "sage",            // "sage" | "feminine" | "masculine" | "animated"
+  style: "sage",            // "sage" | "feminine" | "masculine" | "classic" | "animated"
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }
@@ -37,17 +37,33 @@ const REVISIT_GAP_MS = 30 * 60 * 1000; // reopening within 30 minutes counts as 
 
 let state = load();
 
+// Updates to the app never touch this saved data: it lives under one fixed key, and
+// new settings are filled in from the defaults without overwriting anything saved.
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? { ...defaults, ...JSON.parse(raw) } : { ...defaults };
+    if (!raw) return structuredClone(defaults);
+    const saved = JSON.parse(raw);
+    const merged = { ...structuredClone(defaults), ...saved };
+    for (const [k, v] of Object.entries(defaults)) {
+      if (v && typeof v === "object" && !Array.isArray(v) && saved[k] && typeof saved[k] === "object") merged[k] = { ...v, ...saved[k] };
+    }
+    return merged;
   } catch {
-    return { ...defaults };
+    try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return { ...structuredClone(defaults), ...JSON.parse(safe) }; } catch { /* fall through */ }
+    return structuredClone(defaults);
   }
 }
+// Ask the browser not to clear this app's storage when the device is low on space.
+try { navigator.storage?.persist?.(); } catch { /* not supported */ }
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* storage full or blocked */ }
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    // A second copy, refreshed at most once a day, as a safety net.
+    const day = new Date().toDateString();
+    if (localStorage.getItem(`${KEY}:safety-day`) !== day) { localStorage.setItem(`${KEY}:safety`, JSON.stringify(state)); localStorage.setItem(`${KEY}:safety-day`, day); }
+  } catch { /* storage full or blocked */ }
 }
 
 export const store = {

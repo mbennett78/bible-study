@@ -36,6 +36,17 @@ const NEAR_EAST = {
 
 export const NOTES = {
   "GEN.1": {
+    crossRefs: [
+      ["JHN.1", "John 1:1-3", "In the beginning was the Word; all things came into being through Him"],
+      ["HEB.11", "Hebrews 11:3", "The world was made by the word of God"],
+      ["COL.1", "Colossians 1:16", "All things were created through Him and for Him"],
+      ["PSA.33", "Psalm 33:6-9", "By the word of the Lord the heavens were made"],
+      ["PSA.104", "Psalm 104", "A song about creation"],
+      ["ISA.45", "Isaiah 45:18", "He did not create it a waste place"],
+      ["EXO.20", "Exodus 20:11", "In six days the Lord made the heavens and the earth"],
+      ["GEN.9", "Genesis 9:6", "Made in the image of God"],
+      ["REV.21", "Revelation 21:1", "A new heaven and a new earth"],
+    ],
     intro: "Genesis 1 tells how God made the heavens and the earth in six days and filled them with life, with people made in His image as the high point.",
     map: {
       outline: NEAR_EAST,
@@ -61,12 +72,13 @@ export const NOTES = {
         { head: "Light before the sun", ev: "debated", src: ["collins", "ross", "morris"], text: "Light appears on day 1 (1:3), but the sun, moon and stars on day 4 (1:14-19). Some say God Himself was the first light source. Some say the sun already existed and became visible from the earth's surface on day 4. Others say the days are arranged by topic, not in time order." },
       ] },
       { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
-        { word: "בְּרֵאשִׁית", say: "bereshit", means: "in the beginning", ev: "debated", src: ["wenham", "halot"], text: "Most translations read it as a full statement: \"In the beginning God created.\" Some Jewish translations read it as \"When God began to create.\" The first reading points more clearly to creation from nothing." },
-        { word: "בָּרָא", say: "bara", means: "create", ev: "strong", src: ["halot", "wenham"], text: "In this form of the verb, only God is ever the one who creates. People make (asah) and form (yatsar), but only God creates (bara). It appears three times in verse 27." },
-        { word: "אֱלֹהִים", say: "Elohim", means: "God", ev: "faith", src: ["mathews", "wenham"], text: "A plural form that takes singular verbs, often explained as a plural of majesty. Many Christians also see room here, and in \"Let Us make\" (1:26), for the Trinity revealed later in Scripture." },
-        { word: "תֹהוּ וָבֹהוּ", say: "tohu va-vohu", means: "formless and void", ev: "strong", src: ["wenham"], text: "A rhyming pair meaning empty and unshaped. Jeremiah uses the same words to describe a land undone by judgment (Jeremiah 4:23)." },
-        { word: "רָקִיעַ", say: "raqia", means: "expanse, firmament", ev: "debated", src: ["halot", "walton", "collins"], text: "It comes from a verb meaning to beat or spread out, used for hammering gold thin (Exodus 39:3). Some think it pictures the sky as a solid dome, as neighboring peoples did. Others read it as the open sky or air we see." },
-        { word: "יוֹם", say: "yom", means: "day", ev: "debated", src: ["collins", "morris", "ross"], text: "It can mean a 24-hour day, the daylight hours, or a longer time (\"in the day that the Lord God made earth and heaven,\" Genesis 2:4). How to take it in Genesis 1 is the heart of the debate about the days." },
+        { word: "בְּרֵאשִׁית", say: "bereshit", strongs: "H7225", count: "about 50 times in the Old Testament (as reshit, \"beginning, first\")", means: "in the beginning", ev: "debated", src: ["wenham", "halot"], text: "Most translations read it as a full statement: \"In the beginning God created.\" Some Jewish translations read it as \"When God began to create.\" The first reading points more clearly to creation from nothing." },
+        { word: "בָּרָא", say: "bara", strongs: "H1254", count: "about 50 times, with God as the one creating", means: "create", ev: "strong", src: ["halot", "wenham"], text: "In this form of the verb, only God is ever the one who creates. People make (asah) and form (yatsar), but only God creates (bara). It appears three times in verse 27." },
+        { word: "אֱלֹהִים", say: "Elohim", strongs: "H430", count: "about 2,600 times", means: "God", ev: "faith", src: ["mathews", "wenham"], text: "A plural form that takes singular verbs, often explained as a plural of majesty. Many Christians also see room here, and in \"Let Us make\" (1:26), for the Trinity revealed later in Scripture." },
+        { word: "תֹהוּ וָבֹהוּ", say: "tohu va-vohu", strongs: "H8414 + H922", count: "tohu about 20 times; bohu only 3 times (Genesis 1:2, Isaiah 34:11, Jeremiah 4:23)", means: "formless and void", ev: "strong", src: ["wenham"], text: "A rhyming pair meaning empty and unshaped. Jeremiah uses the same words to describe a land undone by judgment (Jeremiah 4:23)." },
+        { word: "רָקִיעַ", say: "raqia", strongs: "H7549", count: "17 times, 9 of them in Genesis 1", means: "expanse, firmament", ev: "debated", src: ["halot", "walton", "collins"], text: "It comes from a verb meaning to beat or spread out, used for hammering gold thin (Exodus 39:3). Some think it pictures the sky as a solid dome, as neighboring peoples did. Others read it as the open sky or air we see." },
+        { word: "צֶלֶם", say: "tselem", strongs: "H6754", count: "17 times", means: "image", ev: "strong", src: ["halot", "wenham"], text: "A carved or cast likeness, the word used for statues of gods and kings. Genesis uses it for people: \"God created man in His own image\" (1:27). It returns in Genesis 9:6, where the image is the reason human life is precious." },
+        { word: "יוֹם", say: "yom", strongs: "H3117", count: "about 2,300 times", means: "day", ev: "debated", src: ["collins", "morris", "ross"], text: "It can mean a 24-hour day, the daylight hours, or a longer time (\"in the day that the Lord God made earth and heaven,\" Genesis 2:4). How to take it in Genesis 1 is the heart of the debate about the days." },
       ] },
       { id: "views", title: "How Christians read it", items: [
         { head: "Six ordinary days, recently", who: "Young earth", src: ["morris"], text: "The days are 24-hour days, marked by \"evening and morning,\" and the earth is thousands of years old. This view is widely held in Churches of Christ and Baptist churches." },
@@ -93,6 +105,16 @@ export const NOTES = {
   },
 
   "LUK.5": {
+    crossRefs: [
+      ["MAT.4", "Matthew 4:18-22", "Jesus calls Peter, Andrew, James and John"],
+      ["MRK.1", "Mark 1:16-20", "\"I will make you fishers of men\""],
+      ["JHN.21", "John 21:1-14", "Another great catch, after the resurrection"],
+      ["JER.16", "Jeremiah 16:16", "\"I am going to send for many fishermen\""],
+      ["ISA.6", "Isaiah 6:5", "\"Woe is me\": a sinner before a holy God"],
+      ["LEV.14", "Leviticus 14", "The law for a cleansed leper (5:14)"],
+      ["MRK.2", "Mark 2:1-22", "The paralyzed man, Levi, and the question about fasting"],
+      ["MAT.9", "Matthew 9:9-13", "Matthew the tax collector follows Jesus"],
+    ],
     intro: "Jesus teaches from Simon's boat, fills the nets with fish, and calls fishermen to follow Him. Then He heals a leper and a paralyzed man and calls Levi the tax collector.",
     map: {
       outline: GALILEE,
@@ -124,10 +146,10 @@ export const NOTES = {
         { head: "A miracle, or good timing?", ev: "faith", src: ["bock"], text: "Some try to explain the catch as a school of fish that Jesus happened to spot. Luke tells it as a sign of who Jesus is. Simon's response is not \"good fishing\" but \"I am a sinful man, Lord\" (5:8)." },
       ] },
       { id: "words", title: "Greek words", lang: "Greek", items: [
-        { word: "Ἐπιστάτα", say: "epistata", means: "Master", ev: "strong", src: ["bdag", "bock"], text: "A title for someone in charge, like a foreman or overseer. Only Luke uses it in the New Testament. Simon starts with \"Master\" (5:5) and ends with \"Lord\" (5:8)." },
-        { word: "δίκτυα", say: "diktya", means: "nets", ev: "good", src: ["nun", "bdag"], text: "The general word for fishing nets. Here they are the heavy night nets the men were washing (5:2)." },
-        { word: "ζωγρῶν", say: "zōgrōn", means: "catching alive", ev: "strong", src: ["bdag", "green"], text: "Jesus says \"from now on you will be catching people\" (5:10). The word means to take alive, used elsewhere for capturing people alive in war. Fish caught in nets die. People caught by the gospel are brought to life." },
-        { word: "ἁμαρτωλός", say: "hamartōlos", means: "sinner", ev: "strong", src: ["bdag"], text: "Simon calls himself this (5:8), and the Pharisees use it for Levi's friends (5:30). Jesus answers that He came to call sinners to repentance (5:32)." },
+        { word: "Ἐπιστάτα", say: "epistata", strongs: "G1988", count: "7 times, all in Luke", means: "Master", ev: "strong", src: ["bdag", "bock"], text: "A title for someone in charge, like a foreman or overseer. Only Luke uses it in the New Testament. Simon starts with \"Master\" (5:5) and ends with \"Lord\" (5:8)." },
+        { word: "δίκτυα", say: "diktya", strongs: "G1350", count: "12 times, all in the fishing stories of the Gospels", means: "nets", ev: "good", src: ["nun", "bdag"], text: "The general word for fishing nets. Here they are the heavy night nets the men were washing (5:2)." },
+        { word: "ζωγρῶν", say: "zōgrōn", strongs: "G2221", count: "2 times (Luke 5:10 and 2 Timothy 2:26)", means: "catching alive", ev: "strong", src: ["bdag", "green"], text: "Jesus says \"from now on you will be catching people\" (5:10). The word means to take alive, used elsewhere for capturing people alive in war. Fish caught in nets die. People caught by the gospel are brought to life." },
+        { word: "ἁμαρτωλός", say: "hamartōlos", strongs: "G268", count: "about 47 times", means: "sinner", ev: "strong", src: ["bdag"], text: "Simon calls himself this (5:8), and the Pharisees use it for Levi's friends (5:30). Jesus answers that He came to call sinners to repentance (5:32)." },
       ] },
       { id: "views", title: "How Christians read it", items: [
         { head: "Two separate catches", who: "Most readers", src: ["bock"], text: "Luke 5 at the start of Jesus' ministry and John 21 after the resurrection are two different events. The second deliberately echoes the first as Jesus restores Peter." },

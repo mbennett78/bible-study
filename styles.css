@@ -901,3 +901,11 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .setup-list li:first-child .setup-row { border-top: 0; }
 .setup-row small { color: var(--muted); font-size: .75rem; }
 .setup-row .go { margin-left: auto; color: var(--muted); }
+.strongs { margin: 4px 0 0 !important; font-size: .85rem !important; color: var(--muted); }
+.strongs-num { display: inline-block; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 7px; margin-right: 4px; font-size: .78rem; }
+.xrefs { display: grid; gap: 8px; }
+.xref, .ws-verse { display: flex; flex-direction: column; gap: 2px; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: .9rem; }
+.xref span, .ws-verse span { color: var(--muted); font-size: .85rem; }
+.ws-total { margin: 12px 0 8px; }
+.ws-list { display: grid; gap: 6px; }
+.notes-card { margin-bottom: 18px; }

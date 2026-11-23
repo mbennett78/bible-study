@@ -58,6 +58,31 @@ export async function listEnglishBibles() {
     .sort((a, b) => a.abbr.localeCompare(b.abbr));
 }
 
+async function nasbBibleId() {
+  let bibleId = store.get("nasbBibleId");
+  if (!bibleId) {
+    const bibles = await listEnglishBibles();
+    const nasb = bibles.find((b) => /NASB/i.test(b.abbr) || /New American Standard/i.test(b.name));
+    if (!nasb) throw new TextError("No NASB edition is enabled on your API.Bible plan. Pick a version in Settings.", "noversion");
+    bibleId = nasb.id;
+    store.set("nasbBibleId", nasb.id);
+    store.set("nasbLabel", nasb.abbr);
+  }
+  return bibleId;
+}
+
+// Counts how many verses in the whole Bible contain a word or phrase, using the
+// person's own NASB on API.Bible. Each search uses one request from their allowance.
+export async function searchBible(query, limit = 20) {
+  const bibleId = await nasbBibleId();
+  const json = await apiBible(`/bibles/${bibleId}/search?query=${encodeURIComponent(query)}&limit=${limit}&sort=canonical`);
+  const d = json.data || {};
+  return {
+    total: d.total ?? (d.verses || []).length,
+    verses: (d.verses || []).map((v) => ({ id: v.id, ref: v.reference, text: (v.text || "").replace(/\s+/g, " ").trim(), chapter: (v.chapterId || "").split(".") })),
+  };
+}
+
 async function nasbChapter(book, ch) {
   let bibleId = store.get("nasbBibleId");
   if (!bibleId) {

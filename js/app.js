@@ -1,6 +1,6 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store } from "./store.js";
-import { getChapter, listEnglishBibles, bibleGatewayUrl } from "./text.js";
+import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
@@ -1075,36 +1075,49 @@ function renderNotes(book, chapter) {
   const n = notesFor(book, chapter);
   if (!n) {
     el.className = "notes-card is-empty";
-    el.innerHTML = `<h2>Study notes</h2><p class="muted small-print">Maps, history, science, Hebrew and Greek words, and the main views for ${esc(refName({ book, chapter }))} are on the way. These chapters are finished so far:</p>
+    el.innerHTML = `<div class="notes-head"><h2>Study</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
+      ${wordSearchHtml()}
+      <p class="muted small-print" style="margin-top:14px">Full study notes (Strong's concordance, background, cross-references, scholars, and a map then and now) for ${esc(refName({ book, chapter }))} are on the way. These chapters are finished so far:</p>
       <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>`;
     el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
+    wireWordSearch(el);
     return;
   }
   el.className = "notes-card";
   const srcKeys = Object.keys(n.sources);
   const cite = (ids) => ids?.length ? ` <button class="cite" data-cite="${ids[0]}">[${ids.map((k) => srcKeys.indexOf(k) + 1).join(", ")}]</button>` : "";
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
-  const tabs = [["map", "Map"], ...n.sections.map((s) => [s.id, s.title.split(" ")[0] === "How" ? "Views" : s.lang ? `${s.lang} words` : s.title.split(" ")[0]]), ["sources", "Sources"]];
+  const label = (sec) => sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Strong's and words" : sec.title.split(" ")[0];
+  const tabs = [["map", "Map then and now"], ...n.sections.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
   if (!tabs.some(([id]) => id === notesTab)) notesTab = "map";
   let body = "";
   if (notesTab === "map") {
     const mode = el.dataset.mode || "then";
     body = `<div class="map-toggle" role="group" aria-label="Map labels"><button data-mode="then" aria-pressed="${mode === "then"}">Then</button><button data-mode="now" aria-pressed="${mode === "now"}">Now</button></div>
       ${mapSvg(n.map, mode)}<p class="map-note" id="mapNote">Tap a place to learn about it.</p><p class="muted small-print">${esc(n.map.caption)} The map is simplified, not drawn to survey scale.</p>`;
+  } else if (notesTab === "xref") {
+    body = `<div class="xrefs">${n.crossRefs.map(([k, ref, why]) => `<button class="xref" data-go="${k}"><strong>${esc(ref)}</strong><span>${esc(why)}</span></button>`).join("")}</div>`;
+  } else if (notesTab === "search") {
+    body = wordSearchHtml();
   } else if (notesTab === "sources") {
     body = `<ol class="sources">${srcKeys.map((k) => `<li id="src-${k}">${esc(n.sources[k])}</li>`).join("")}</ol>
       <div class="ev-key">${Object.keys(EVIDENCE).map((k) => `<p>${ev(k)} ${esc(EVIDENCE[k].tip)}</p>`).join("")}</div>`;
   } else {
     const sec = n.sections.find((s) => s.id === notesTab);
     body = sec.items.map((it) => it.word
-      ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${sec.lang === "Hebrew" ? "he" : "el"}" dir="${sec.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
+      ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${sec.lang === "Hebrew" ? "he" : "el"}" dir="${sec.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div>
+        ${it.strongs ? `<p class="strongs"><span class="strongs-num">Strong's ${esc(it.strongs)}</span>${it.count ? ` Used ${esc(it.count)} in the ${sec.lang === "Hebrew" ? "Hebrew Old Testament" : "Greek New Testament"}.` : ""}</p>` : ""}
+        <p>${esc(it.text)}${cite(it.src)}</p></div>`
       : `<div class="note-item"><div class="note-head"><strong>${esc(it.head)}</strong>${it.who ? `<span class="who">${esc(it.who)}</span>` : ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`).join("");
   }
+  if (n.sections.find((x) => x.id === notesTab)?.lang) body += `<p class="muted small-print">Strong's numbers follow James Strong's Exhaustive Concordance (1890). Counts are approximate and vary a little by edition and by how word forms are grouped.</p>`;
   el.innerHTML = `<div class="notes-head"><h2>Study notes</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
     <p class="notes-intro">${esc(n.intro)}</p>
     <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
     <div class="notes-panel">${body}</div>`;
   el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
+  el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
+  wireWordSearch(el);
   el.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => { el.dataset.mode = b.dataset.mode; renderNotes(book, chapter); }));
   el.querySelectorAll("[data-cite]").forEach((b) => b.addEventListener("click", () => { notesTab = "sources"; renderNotes(book, chapter); $(`#src-${b.dataset.cite}`)?.classList.add("hi"); }));
   el.querySelectorAll("[data-place]").forEach((g) => {
@@ -1115,6 +1128,35 @@ function renderNotes(book, chapter) {
     };
     g.addEventListener("click", show);
     g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
+}
+
+/* ---------- Word search: how many times a word appears in the Bible ---------- */
+let lastSearch = null;
+function wordSearchHtml() {
+  return `<div class="word-search"><p class="muted small-print">How many times does a word appear in the Bible? Type a word or phrase, like <em>shepherd</em> or <em>fishermen</em>.</p>
+    <form class="jump-row" id="wsForm"><input id="wsInput" type="search" placeholder="A word or phrase" autocomplete="off" value="${esc(lastSearch?.q || "")}"><button class="small" type="submit">Count</button></form>
+    <div id="wsOut">${lastSearch ? lastSearch.html : ""}</div></div>`;
+}
+function wireWordSearch(root) {
+  const form = root.querySelector("#wsForm");
+  if (!form) return;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = root.querySelector("#wsInput").value.trim();
+    if (!q) return;
+    const out = root.querySelector("#wsOut");
+    out.innerHTML = `<p class="muted small-print">Searching…</p>`;
+    try {
+      const r = await searchBible(q, 20);
+      const html = `<p class="ws-total"><strong>${r.total.toLocaleString()}</strong> verse${r.total === 1 ? "" : "s"} in the ${esc(store.get("nasbLabel") || "NASB")} contain “${esc(q)}”.</p>
+        ${r.verses.length ? `<div class="ws-list">${r.verses.map((v) => `<button class="ws-verse" data-ch="${esc(v.chapter.slice(0, 2).join("."))}"><strong>${esc(v.ref)}</strong><span>${esc(v.text.slice(0, 160))}${v.text.length > 160 ? "…" : ""}</span></button>`).join("")}</div>${r.total > r.verses.length ? `<p class="muted small-print">Showing the first ${r.verses.length}, in Bible order.</p>` : ""}` : ""}`;
+      lastSearch = { q, html };
+      out.innerHTML = html;
+      out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (BOOK_BY_ID[bk] && c) openChapter(bk, Number(c)); }));
+    } catch (err) {
+      out.innerHTML = `<p class="muted small-print">${esc(err.message || "The search didn't work.")}${err.kind === "nokey" ? " Add your key in Settings, under Bible text." : ""}</p>`;
+    }
   });
 }
 

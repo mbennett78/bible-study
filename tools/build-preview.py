@@ -13,6 +13,7 @@ async function getChapter(version, book, ch) {
   const name = BOOK_BY_ID[book].name;
   return { html: `<div class="message"><strong>Preview</strong>The ${version} text of ${name} ${ch} will appear here once the app is on its own web address and your free key is in Settings. Everything else works here: paths, progress, trivia, journal, history, favorites and drive mode.</div>`, copyright: "", label: version };
 }
+async function searchBible() { throw new TextError("Word search works once the app is on its own web address with your key.", "preview"); }
 function bibleGatewayUrl(version, book, ch) {
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${version === "ESV" ? "ESV" : "NASB"}`;
 }
