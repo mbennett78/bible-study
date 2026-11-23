@@ -1228,6 +1228,9 @@ body.hide-visits #visitLine { display: none; }
 .bread { fill: #c98f4e; stroke: #9a6532; stroke-width: .8; } .bread-inside { stroke: #f1d9b0; } .bread-score { stroke: #9a6532; }
 .cup { fill: #b8913f; stroke: #8a6a2a; stroke-width: .8; } .wine { fill: #6e1f2a; } .cup-shine { stroke: #f1dc9e; }
 .grape { fill: #5b3a5e; } .grape-stem { stroke: #6b4a30; } .grape-leaf { fill: #6f8a4e; }
+.bowl { fill: #b8743f; } .bowl-rim { stroke: #8e5428; fill: none; }
+.olive-fruit.a { fill: #6f7a32; } .olive-fruit.b { fill: #4b3a45; }
+.glass { fill: rgba(255, 255, 255, .55); stroke: #c9b68f; stroke-width: .8; } .glass-shine { stroke: #fff; opacity: .8; }
 .candle-body { fill: #fbf6ea; stroke: #e2d6bd; stroke-width: .6; } .flame { fill: #f4b33f; } .candle-dish { fill: #b8913f; }
 .theme-strip .bread-inside { stroke-width: 1.6; }
 /* Christmas: the nativity */

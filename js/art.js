@@ -487,6 +487,11 @@ const bread = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
 const chalice = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="cup" d="M-11 -34 L 11 -34 C 11 -22, 6 -16, 1.6 -15 L 1.6 -5 C 5 -4, 8 -2, 8 0 L -8 0 C -8 -2, -5 -4, -1.6 -5 L -1.6 -15 C -6 -16, -11 -22, -11 -34 Z"/>
   <ellipse class="wine" cx="0" cy="-33" rx="10" ry="2.2"/><path class="cup-shine" d="M-7 -30 C -7 -24, -4 -20, -2 -18" stroke-width="1.2" fill="none"/></g>`;
 const grapes = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[[0, -4], [-4, -8], [4, -8], [-6, -13], [0, -12], [6, -13], [-3, -17], [3, -17], [0, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M0 -23 C 1 -27, 4 -28, 6 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M2 -25 C 8 -32, 16 -28, 14 -22 C 10 -22, 6 -22, 2 -25 Z"/></g>`;
+// A shallow pottery bowl, filled with grapes or olives.
+const bowl = (x, y, s, fill) => `<g transform="translate(${x} ${y}) scale(${s})">${fill}<path class="bowl" d="M-14 -9 L 14 -9 C 13 -3, 8 0, 0 0 C -8 0, -13 -3, -14 -9 Z"/><path class="bowl-rim" d="M-14 -9 L 14 -9" stroke-width="1.4"/></g>`;
+const grapeBowl = (x, y, s = 1) => bowl(x, y, s, `${[[-7, -11], [-2, -12], [3, -11], [8, -10], [-4, -16], [1, -17], [6, -15], [-1, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M-1 -23 C 0 -27, 3 -28, 5 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M1 -25 C 7 -32, 15 -28, 13 -22 C 9 -22, 5 -22, 1 -25 Z"/>`);
+const oliveBowl = (x, y, s = 1) => bowl(x, y, s, [[-8, -10, "a"], [-3, -11, "b"], [2, -10, "a"], [7, -10, "b"], [-5, -14, "b"], [0, -15, "a"], [5, -14, "a"], [-1, -18, "b"]].map(([a, b, k]) => `<ellipse class="olive-fruit ${k}" cx="${a}" cy="${b}" rx="2.6" ry="2" transform="rotate(${a * 4} ${a} ${b})"/>`).join(""));
+const wineGlass = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="glass" d="M-6 -24 L 6 -24 C 7 -16, 4 -12, .8 -11.5 L .8 -2 C 3 -1.5, 5 -.8, 5 0 L -5 0 C -5 -.8, -3 -1.5, -.8 -2 L -.8 -11.5 C -4 -12, -7 -16, -6 -24 Z"/><path class="wine" d="M-6.3 -19 L 6.3 -19 C 6 -14.5, 3.5 -12.6, 0 -12.4 C -3.5 -12.6, -6 -14.5, -6.3 -19 Z"/><path class="glass-shine" d="M-3.8 -22 C -4 -18, -3 -15.5, -1.8 -14.5" stroke-width=".9" fill="none"/></g>`;
 const candle = (x, y, s = 1) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})"><defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs>
   <circle class="candle-glow" r="22" cy="-30" fill="url(#${gid})"/><rect class="candle-body" x="-3.5" y="-24" width="7" height="24" rx="1"/><path class="flame" style="animation-delay:-${(uid % 4) * .35}s" d="M0 -36 C 3 -31, 3 -27, 0 -25 C -3 -27, -3 -31, 0 -36 Z"/><rect class="candle-dish" x="-8" y="-1.5" width="16" height="3" rx="1.5"/></g>`; };
 // Bigger nativity pieces for Christmas
@@ -581,13 +586,13 @@ export function themeScene(theme, { height = 170 } = {}) {
         <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/></g>
         <path class="window-frame" d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z M 180 12 L 180 ${top - 4} M 134 ${top - 46} L 226 ${top - 46}" fill="none" stroke-width="4"/>
         <rect class="window-sill" x="126" y="${top - 6}" width="108" height="6" rx="2"/></g>
-      ${breeze(wheat(64, top - 6, 1.25), 0)}${breeze(wheat(300, top - 6, 1.15), 3)}
+      ${breeze(wheat(80, top - 6, 1.2), 0)}${breeze(wheat(326, top - 6, 1.1), 3)}
       <rect class="table-top" x="0" y="${top}" width="360" height="10"/>
       <path class="cloth" d="M0 ${top + 8} H 360 V ${H} H 0 Z"/>
       <path class="runner" d="M150 ${top + 8} H 210 V ${H - 8} L 180 ${H - 2} L 150 ${H - 8} Z"/>
       <path class="cloth-fold" d="M60 ${top + 12} L 56 ${H} M 120 ${top + 12} L 118 ${H} M 240 ${top + 12} L 242 ${H} M 300 ${top + 12} L 304 ${H}" stroke-width="1" fill="none"/>
-      ${bread(140, top + 4, 1.05)}${chalice(206, top + 4, 1.05)}${grapes(248, top + 4, 1)}${candle(108, top + 4, 1)}${candle(290, top + 4, 1)}
-      ${pumpkin(30, top + 4, .9)}${pumpkin(336, top + 4, .8)}
+      ${oliveBowl(48, top + 4, 1)}${candle(102, top + 4, 1)}${bread(140, top + 4, 1.05)}${wineGlass(172, top + 4, 1)}${chalice(206, top + 4, 1.05)}${grapeBowl(244, top + 4, 1)}${wineGlass(276, top + 4, 1)}${candle(302, top + 4, 1)}
+      ${pumpkin(16, top + 4, .8)}${pumpkin(348, top + 4, .75)}
       <g class="leaf-drift">${[[86, top + 3, 20], [236, top + 3, -30], [320, top + 2, 50]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>
       ${drift([[60, top - 40, 10, 0], [306, top - 36, 12, 5]], "fall-leaf b")}`;
   }
