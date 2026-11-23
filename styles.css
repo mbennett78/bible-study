@@ -960,7 +960,9 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .pc-featured { grid-column: 1 / -1; border: 2px solid var(--accent); }
 .pc-featured h3 { font-size: 1.3rem; }
 .paths-sub { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; margin: 6px 0 0; }
-@media (min-width: 560px) { .path-cards { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); } }
+.path-cards.four { grid-auto-rows: 1fr; }
+.path-cards.four .path-card { display: flex; flex-direction: column; }
+.path-cards.four .path-card .pc-actions { margin-top: auto; padding-top: 10px; }
 .share-key { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
 .share-key > summary { cursor: pointer; font-weight: 600; color: var(--accent); }
 .share-url { word-break: break-all; background: var(--accent-soft); padding: 8px; border-radius: 8px; }

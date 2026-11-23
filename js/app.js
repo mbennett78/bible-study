@@ -1262,7 +1262,7 @@ function pathCardsHtml() {
     const done = store.pathReadCount(id), total = pathChapters(id).length;
     const isActive = id === active;
     const label = featured ? (done ? "Keep reading" : "Open my Bible") : isActive ? "Continue" : done ? "Pick up again" : "Start this path";
-    return `<div class="path-card${isActive ? " is-active" : ""}${featured ? " pc-featured" : ""}">
+    return `<div class="path-card${isActive ? " is-active" : ""}">
       <div class="pc-top"><span class="pc-icon">${PATH_ICONS[id]}</span><div><h3>${esc(p.name)}</h3>${isActive ? `<span class="pc-badge">Your current path</span>` : ""}</div></div>
       <p>${esc(p.blurb)}</p>
       <div class="bar"><span style="width:${(done / total) * 100}%"></span></div>
@@ -1270,10 +1270,8 @@ function pathCardsHtml() {
       <div class="pc-actions"><button class="small" data-start="${id}"${featured ? ` data-read-now="1"` : ""}>${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See ${featured ? "sections" : "stages"}</button>` : ""}</div>
     </div>`;
   };
-  const [first, ...rest] = PATH_ORDER;
-  return `<div class="path-cards">${card(first, true)}</div>
-    <h2 class="paths-sub">Bible studies</h2><p class="muted small-print">Three more ways through the whole Bible.</p>
-    <div class="path-cards">${rest.map((id) => card(id)).join("")}</div>`;
+  // Four equal cards, Traditional first: a 2×2 grid on iPad, stacked on iPhone.
+  return `<div class="path-cards four">${PATH_ORDER.map((id, i) => card(id, i === 0)).join("")}</div>`;
 }
 function wirePathCards(root) {
   root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
