@@ -876,3 +876,28 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .key-help summary { font-weight: 600; color: var(--accent); cursor: pointer; }
 .key-help ol { padding-left: 1.2em; margin: 10px 0; font-size: .92rem; }
 .key-help li { margin-bottom: 6px; }
+
+/* ---------- First-time setup ---------- */
+#setup { width: min(480px, calc(100vw - 20px)); max-height: 92vh; border: 0; border-radius: 24px; padding: 16px 18px 18px; background: var(--bg); color: var(--text); box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
+#setup::backdrop { background: color-mix(in srgb, var(--page) 85%, #000); }
+#setup .scene { width: 100%; margin: 6px 0 12px; border-radius: 16px; }
+.setup-top { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; color: var(--muted); }
+.setup-dots { display: flex; gap: 6px; margin: 8px 0 10px; }
+.setup-dots span { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.setup-dots span.done { background: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.setup-dots span.on { background: var(--accent); }
+.setup-h { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin: 6px 0 6px; }
+.setup-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+.setup-next { min-width: 120px; padding: 12px 20px; font-size: 1rem; }
+.setup-key-status { color: var(--accent); font-weight: 600; font-size: .85rem; min-height: 1.2em; margin: 0; }
+.setup-paths { display: grid; gap: 8px; }
+.setup-path { display: flex; gap: 12px; align-items: flex-start; text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 16px; padding: 12px; }
+.setup-path[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.setup-path .pc-icon { width: 38px; height: 38px; flex: none; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.setup-path .pc-icon svg { width: 24px; height: 24px; }
+.setup-path small { display: block; color: var(--muted); font-size: .82rem; margin-top: 2px; }
+.setup-list { list-style: none; padding: 0; margin: 0 0 6px; }
+.setup-row { display: flex; align-items: center; gap: 10px; width: 100%; background: none; border: 0; border-top: 1px solid var(--line); padding: 11px 2px; text-align: left; font-size: .95rem; }
+.setup-list li:first-child .setup-row { border-top: 0; }
+.setup-row small { color: var(--muted); font-size: .75rem; }
+.setup-row .go { margin-left: auto; color: var(--muted); }

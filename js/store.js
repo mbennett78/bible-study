@@ -27,6 +27,7 @@ const defaults = {
   diary: {},                // daily life journal by date: { "2026-11-22": { text, prayer, gratitude, created, updated } }
   journalLock: "",          // SHA-256 of the passcode, or ""
   trivia: { answered: 0, correct: 0, sessions: [], recent: [] },
+  setup: { done: false, skipped: false }, // first-time setup
   graphics: "full",         // "full" | "simple" (no cartoon faces or characters) | "none"
   show: {},                 // features someone has switched off, e.g. { trivia: false }
   archives: [],             // past walks: { id, pathId, started, ended, reads, finished }             // { chronological: { "GEN.1": iso } } kept per path, so each journey has its own progress

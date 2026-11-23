@@ -153,6 +153,14 @@
       <div class="art-slot" data-art="scene"></div>
       <h1>Settings</h1>
 
+      <div class="card setup-card" id="setupCard"></div>
+
+      <div class="card" id="accountCard">
+        <h2>Account</h2>
+        <p class="muted small-print">Family accounts are coming next. Once they're on, this is where you'll sign in, change your email or password, and sign out. Your progress, journal and key will then follow you to any device.</p>
+        <button class="small" disabled>Sign in (coming soon)</button>
+      </div>
+
       <div class="card" id="installCard">
         <h2>Put it on your home screen</h2>
         <button class="small" id="installBtn" hidden>Install app</button>
@@ -259,6 +267,14 @@
     </div>
     <input class="picker-search" id="pickerSearch" type="search" placeholder="Type a book, like Romans 8" autocomplete="off" aria-label="Find a book and chapter">
     <div id="pickerBody"></div>
+  </dialog>
+
+  <!-- First-time setup -->
+  <dialog id="setup" aria-label="Set up the app">
+    <div class="setup-top"><span id="setupStepLabel"></span><button class="quiet-link" id="setupLater">Finish later</button></div>
+    <div class="setup-dots" id="setupDots"></div>
+    <div id="setupBody"></div>
+    <div class="setup-nav"><button class="quiet-link" id="setupBack">Back</button><button class="small setup-next" id="setupNext">Next</button></div>
   </dialog>
 
   <!-- Quick menu: look, graphics and which features to show -->

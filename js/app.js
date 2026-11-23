@@ -37,6 +37,7 @@ function showView(name) {
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
+  if (name === "settings") renderSetupCard();
   window.scrollTo(0, 0);
 }
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
@@ -923,6 +924,86 @@ function initSettings() {
   });
 }
 
+/* ---------- First-time setup (and "Set up app" in Settings) ---------- */
+const SETUP_STEPS = [
+  { id: "welcome", title: "Welcome", done: () => Boolean(store.get("name").trim()) },
+  { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
+  { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
+  { id: "path", title: "Your study path", done: () => Boolean(store.get("activePath")) },
+  { id: "account", title: "Your account", done: () => false, soon: true },
+];
+let setupAt = 0;
+function setupSet(patch) { store.set("setup", { ...(store.get("setup") || {}), ...patch }); }
+function openSetup(at = 0) {
+  setupAt = at;
+  renderSetup();
+  if (!$("#setup").open) $("#setup").showModal();
+}
+function closeSetup(finished) {
+  if (finished) setupSet({ done: true }); else setupSet({ skipped: true });
+  $("#setup").close();
+  renderSetupCard();
+  showView("home");
+}
+function renderSetup() {
+  const step = SETUP_STEPS[setupAt];
+  $("#setupStepLabel").textContent = `Step ${setupAt + 1} of ${SETUP_STEPS.length}`;
+  $("#setupDots").innerHTML = SETUP_STEPS.map((s, i) => `<span class="${i === setupAt ? "on" : s.done() ? "done" : ""}"></span>`).join("");
+  $("#setupBack").style.visibility = setupAt ? "visible" : "hidden";
+  $("#setupNext").textContent = setupAt === SETUP_STEPS.length - 1 ? "Finish" : "Next";
+  const body = $("#setupBody");
+  const chips = (list, cur, attr) => `<div class="qm-chips">${list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("")}</div>`;
+  if (step.id === "welcome") {
+    body.innerHTML = `${seaScene(store.get("style"))}<h2 class="setup-h">Welcome to your Bible study</h2>
+      <p class="muted">A few quick steps make the app yours. You can skip any of them and finish later from Settings, under "Set up app".</p>
+      <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>`;
+    $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
+  } else if (step.id === "look") {
+    body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
+      <p class="muted small-print">Look</p>${chips(LOOKS, store.get("style"), "data-s-look")}
+      <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
+      <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>
+      ${seaScene(store.get("style"))}`;
+    body.querySelectorAll("[data-s-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.sLook); setupSet({ look: true }); renderSetup(); }));
+    body.querySelectorAll("[data-s-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.sGfx); applyAppearance(); setupSet({ look: true }); renderSetup(); }));
+  } else if (step.id === "key") {
+    body.innerHTML = `<h2 class="setup-h">Your own Bible key</h2>
+      <p class="muted small-print">The Bible text comes from API.Bible. Everyone uses their own free key, which is saved on this device only.</p>
+      <label class="field">API.Bible key<input id="setupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" value="${esc(store.get("apiBibleKey"))}"></label>
+      <p class="setup-key-status" id="setupKeyStatus">${store.get("apiBibleKey") ? "Key saved ✓" : ""}</p>
+      <details class="key-help" ${store.get("apiBibleKey") ? "" : "open"}><summary>How to get your free key (about 5 minutes)</summary>${$("#keyHelp ol").outerHTML}</details>
+      <p class="muted small-print">Don't have it yet? Tap Next. You can add it later in Settings.</p>`;
+    $("#setupKey").addEventListener("change", (e) => {
+      const v = e.target.value.trim();
+      store.set("apiBibleKey", v); $("#apiBibleKey").value = v;
+      $("#setupKeyStatus").textContent = v ? "Key saved ✓" : "";
+      const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false });
+    });
+  } else if (step.id === "path") {
+    const active = store.get("activePath");
+    body.innerHTML = `<h2 class="setup-h">Choose your study path</h2>
+      <p class="muted small-print">Each path covers the whole Bible in a different order. You can switch any time.</p>
+      <div class="setup-paths">${PATH_ORDER.map((id) => `<button class="setup-path" data-s-path="${id}" aria-pressed="${active === id}"><span class="pc-icon">${PATH_ICONS[id]}</span><span><strong>${esc(PATH_BY_ID[id].name)}</strong><small>${esc(PATH_BY_ID[id].blurb)}</small></span></button>`).join("")}</div>`;
+    body.querySelectorAll("[data-s-path]").forEach((b) => b.addEventListener("click", () => { store.startPath(b.dataset.sPath); updatePathBits(); renderSetup(); }));
+  } else {
+    body.innerHTML = `<h2 class="setup-h">Your account</h2>
+      <p class="muted">Family accounts are being set up next. When they're ready, you'll sign in here with your email so your progress, journal and key follow you to any device, and you can change your login any time in Settings.</p>
+      <p class="muted small-print">For now everything is saved on this device. Tap Finish to start reading.</p>`;
+  }
+}
+$("#setupNext").addEventListener("click", () => { if (setupAt < SETUP_STEPS.length - 1) { setupAt += 1; renderSetup(); } else closeSetup(true); });
+$("#setupBack").addEventListener("click", () => { if (setupAt) { setupAt -= 1; renderSetup(); } });
+$("#setupLater").addEventListener("click", () => closeSetup(false));
+$("#setup").addEventListener("cancel", (e) => { e.preventDefault(); closeSetup(false); });
+function renderSetupCard() {
+  const el = $("#setupCard");
+  const left = SETUP_STEPS.filter((s) => !s.soon && !s.done());
+  el.innerHTML = `<h2>Set up app</h2>
+    <ul class="setup-list">${SETUP_STEPS.map((s, i) => `<li><button class="setup-row" data-s-open="${i}"><span class="st ${s.done() ? "done" : "none"}">${s.done() ? "✓" : "○"}</span>${esc(s.title)}${s.soon ? ` <small>coming soon</small>` : ""}<span class="go">›</span></button></li>`).join("")}</ul>
+    <p class="muted small-print">${left.length ? `${left.length} step${left.length === 1 ? "" : "s"} left. Tap any step to finish or change it.` : "All set. Tap any step to change it."}</p>`;
+  el.querySelectorAll("[data-s-open]").forEach((b) => b.addEventListener("click", () => openSetup(Number(b.dataset.sOpen))));
+}
+
 /* ---------- Quick menu: look, pictures, and features each person can show or hide ---------- */
 const FEATURES = [
   { id: "listen", label: "Read-aloud bar", hint: "Play, speed and drive mode at the top of each chapter" },
@@ -1223,6 +1304,7 @@ if (driveOn()) openDrive();
 updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
+{ const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); } // first time on this device
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
