@@ -398,7 +398,7 @@ export function woodScene() {
       <rect x="168" y="26" width="24" height="134" rx="2" fill="url(#ww${id})"/>
       <rect x="134" y="50" width="92" height="22" rx="2" fill="url(#ww${id})"/>${grain}
     </svg>
-    <img src="img/wooden-cross.jpg" alt="" onerror="this.remove()">
+    <img src="img/wooden-cross.jpg" alt="">
   </figure>`;
 }
 

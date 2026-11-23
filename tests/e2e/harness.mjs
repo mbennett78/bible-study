@@ -35,7 +35,7 @@ export function finish(error) {
 }
 
 // A pretend Supabase that keeps a list of family members and records what the app asked for.
-export const SUPA = "https://family.supabase.test";
+export const SUPA = "https://family-test.supabase.co"; // matches the app's content security policy
 export function fakeSupabase(people) {
   const calls = [];
   const backups = {};
