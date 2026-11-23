@@ -121,7 +121,7 @@ export async function getFamilyKey() {
     const c = await sb();
     const { data, error } = await c.from("family_settings").select("*").eq("id", 1).maybeSingle();
     if (error || !data?.api_bible_key) return null;
-    return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "", x: Array.isArray(data.extra_bibles) ? data.extra_bibles : [], e: data.esv_key || "" };
+    return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "", x: Array.isArray(data.extra_bibles) ? data.extra_bibles : [], e: data.esv_key || "", u: data.updated_at || "" };
   } catch { return null; }
 }
 // Each person's own backup of their reading, notes and journal (table user_backups,

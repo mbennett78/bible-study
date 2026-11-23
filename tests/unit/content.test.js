@@ -75,3 +75,12 @@ test("study notes use known evidence labels and sources", () => {
     for (const m of json.matchAll(/"ev":"(\w+)"/g)) assert.ok(EVIDENCE[m[1]], `${key}: unknown evidence label ${m[1]}`);
   }
 });
+
+test("every one-chapter book is asked for by its whole verse range in the ESV", async () => {
+  globalThis.localStorage ??= { getItem: () => null, setItem() {}, removeItem() {} };
+  const { esvQuery } = await import("../../js/text.js");
+  const { BOOKS } = await import("../../js/books.js");
+  for (const b of BOOKS.filter((x) => x.chapters === 1)) assert.match(esvQuery(b.id, 1), /1:1-\d+$/, b.id);
+  assert.equal(esvQuery("JHN", 3), "John 3");
+  assert.equal(esvQuery("SNG", 2), "Song of Solomon 2");
+});

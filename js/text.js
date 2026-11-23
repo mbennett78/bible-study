@@ -83,18 +83,10 @@ export async function searchBible(query, limit = 20) {
   };
 }
 
+const CHAPTER_QUERY = "content-type=html&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false";
+
 async function nasbChapter(book, ch) {
-  let bibleId = store.get("nasbBibleId");
-  if (!bibleId) {
-    const bibles = await listEnglishBibles();
-    const nasb = bibles.find((b) => /NASB/i.test(b.abbr) || /New American Standard/i.test(b.name));
-    if (!nasb) throw new TextError("No NASB edition is enabled on your API.Bible plan. Pick a version in Settings.", "noversion");
-    bibleId = nasb.id;
-    store.set("nasbBibleId", nasb.id);
-    store.set("nasbLabel", nasb.abbr);
-  }
-  const q = "content-type=html&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false";
-  const json = await apiBible(`/bibles/${bibleId}/chapters/${book}.${ch}?${q}`);
+  const json = await apiBible(`/bibles/${await nasbBibleId()}/chapters/${book}.${ch}?${CHAPTER_QUERY}`);
   return {
     html: json.data.content,
     copyright: json.data.copyright || "Scripture taken from the NASB®, © The Lockman Foundation. Used by permission.",
@@ -104,17 +96,25 @@ async function nasbChapter(book, ch) {
 
 // Another version on the same API.Bible plan, such as the NIV, if the plan includes it.
 async function otherChapter(bibleId, book, ch) {
-  const q = "content-type=html&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false";
-  const json = await apiBible(`/bibles/${bibleId}/chapters/${book}.${ch}?${q}`);
+  const json = await apiBible(`/bibles/${bibleId}/chapters/${book}.${ch}?${CHAPTER_QUERY}`);
   const label = ((store.get("extraBibles") || []).find((b) => b.id === bibleId) || {}).label || "";
   return { html: json.data.content, copyright: json.data.copyright || "", label };
+}
+
+// How the ESV API is asked for a chapter. A one-chapter book is asked for with its full verse
+// range ("Jude 1:1-25"), because "Jude 1" could be read as verse 1 instead of chapter 1.
+const ESV_NAMES = { SNG: "Song of Solomon" };
+const ESV_ONE_CHAPTER = { OBA: 21, PHM: 25, "2JN": 13, "3JN": 15, JUD: 25 }; // verses in the ESV
+export function esvQuery(book, ch) {
+  const name = ESV_NAMES[book] || BOOK_BY_ID[book].name;
+  return ESV_ONE_CHAPTER[book] ? `${name} 1:1-${ESV_ONE_CHAPTER[book]}` : `${name} ${ch}`;
 }
 
 async function esvChapter(book, ch) {
   const key = store.get("esvKey");
   if (!key) throw new TextError("Add your ESV key in Settings to read the ESV.", "nokey");
   const q = new URLSearchParams({
-    q: `${BOOK_BY_ID[book].name} ${ch}`,
+    q: esvQuery(book, ch),
     "include-footnotes": "false",
     "include-audio-link": "false",
     "include-passage-references": "false",
@@ -138,7 +138,9 @@ async function esvChapter(book, ch) {
 }
 
 export async function getChapter(version, book, ch) {
-  const id = `${version}:${book}.${ch}`;
+  // The NASB's saved copy is tied to the edition (1995 or 2020), so changing editions never
+  // shows the other one's words.
+  const id = `${version === "NASB" ? `NASB-${store.get("nasbBibleId") || "auto"}` : version}:${book}.${ch}`;
   const fresh = cacheGet(id);
   if (fresh && fresh.at && Date.now() - fresh.at < CACHE_FRESH_MS) return fresh;
   try {

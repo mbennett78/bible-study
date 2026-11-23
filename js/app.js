@@ -16,6 +16,7 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 
 /* ---------- Appearance ---------- */
 // High contrast: black (or white, in dark mode) words and stronger lines, whatever the look.
+const MAX_EXTRA_BIBLES = 6; // extra versions on the reader's switch, beside the NASB and ESV
 const CONTRAST_VARS = ["--text", "--muted", "--line", "--verse"];
 function applyContrast() {
   const root = document.documentElement;
@@ -238,11 +239,14 @@ function syncVersionSwitch() {
   el.innerHTML = list.length > 3
     ? `<select aria-label="Bible version">${list.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`
     : list.map(([v, l]) => `<button data-version="${esc(v)}" aria-pressed="${v === cur}">${esc(l)}</button>`).join("");
-  const pick = (v) => {
+  const pick = async (v) => {
+    // Switching versions mid-chapter keeps you on the verse you were reading.
+    const verse = $("#view-read").hidden ? 0 : verseInView();
     store.set("version", v);
     syncVersionSwitch();
     const { book, chapter } = store.get("last");
-    openChapter(book, chapter, { scroll: false });
+    await openChapter(book, chapter, { scroll: false });
+    if (verse > 1) goToVerse(verse);
   };
   el.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => pick(b.dataset.version)));
   el.querySelector("select")?.addEventListener("change", (e) => pick(e.target.value));
@@ -314,6 +318,13 @@ async function pickerVerses(bookId, chapter) {
   grid.querySelectorAll("[data-v]").forEach((btn) => btn.addEventListener("click", () => go(Number(btn.dataset.v))));
 }
 // Scroll to a verse in the open chapter and flash it so it's easy to spot.
+// The first verse number showing at the top of the screen (1 if none).
+function verseInView() {
+  const top = ($(".topbar")?.getBoundingClientRect().bottom || 0) + 8;
+  const marks = [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")];
+  const m = marks.find((x) => x.getBoundingClientRect().top >= top);
+  return m ? (m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10) || 1) : 1;
+}
 function goToVerse(v) {
   const mark = [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")].find((m) => (m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10)) === v);
   if (!mark) return;
@@ -1216,6 +1227,8 @@ function initSettings() {
   sel.addEventListener("change", () => {
     store.set("nasbBibleId", sel.value);
     store.set("nasbLabel", sel.value ? sel.selectedOptions[0].textContent.split(" · ")[0] : "");
+    syncVersionSwitch();
+    if (store.get("version") === "NASB") { const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); }
   });
   $("#loadVersions").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
@@ -1230,7 +1243,7 @@ function initSettings() {
       if (!(store.get("extraBibles") || []).length) {
         const want = [/^KJV$|King James/i, /NKJV|New King James/i];
         const picks = want.map((re) => bibles.find((b) => b.id !== store.get("nasbBibleId") && (re.test(b.abbr) || re.test(b.name)))).filter(Boolean);
-        if (picks.length) { store.set("extraBibles", [...new Map(picks.map((b) => [b.id, { id: b.id, label: b.abbr }])).values()].slice(0, 3)); extrasNow(); syncVersionSwitch(); }
+        if (picks.length) { store.set("extraBibles", [...new Map(picks.map((b) => [b.id, { id: b.id, label: b.abbr }])).values()].slice(0, MAX_EXTRA_BIBLES)); extrasNow(); syncVersionSwitch(); }
       }
       const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
       btn.textContent = `${bibles.length} versions loaded${hasNkjv ? "" : " · NKJV isn't on this plan"}`;
@@ -1240,7 +1253,7 @@ function initSettings() {
       $("#extraVersionList").querySelectorAll("[data-extra]").forEach((i) => i.addEventListener("change", () => {
         let x = (store.get("extraBibles") || []).filter((b) => b.id !== i.dataset.extra);
         if (i.checked) {
-          if (x.length >= 3) { i.checked = false; return; }
+          if (x.length >= MAX_EXTRA_BIBLES) { i.checked = false; $("#extraVersionsNow").textContent = `Up to ${MAX_EXTRA_BIBLES} extra versions fit on the switch. Turn one off first.`; return; }
           x = [...x, { id: i.dataset.extra, label: i.dataset.label }];
         }
         store.set("extraBibles", x);
@@ -2204,7 +2217,7 @@ function renderAccount() {
   $("#shareFamilyKey")?.addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
-    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
+    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Shared ✓ Family members will get it, and these versions, the next time they open the app."; }
     catch (x) { out.textContent = x.message; }
   });
   $("#signOutBtn")?.addEventListener("click", async () => {
@@ -2264,7 +2277,7 @@ function applyInvite(d) {
   store.set("apiBibleKey", d.k);
   if (d.b) { store.set("nasbBibleId", d.b); store.set("nasbLabel", d.l || "NASB"); }
   if (d.e && !store.get("esvKey")) store.set("esvKey", d.e);
-  if (Array.isArray(d.x) && d.x.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", d.x.filter((b) => b && b.id && b.label).slice(0, 3));
+  if (Array.isArray(d.x) && d.x.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", d.x.filter((b) => b && b.id && b.label).slice(0, MAX_EXTRA_BIBLES));
   if (d.to && !store.get("name").trim()) store.set("name", d.to);
   if (d.look && !(store.get("setup") || {}).look) {
     store.set("style", d.look);
@@ -2341,10 +2354,15 @@ if (authEnabled) {
   // No key on this device yet? Use the family's shared key.
   // Also picks up extra Bible versions the organizer shared.
   const fk = await getFamilyKey();
-  if (fk && !store.get("apiBibleKey")) applyInvite({ ...fk, look: "" });
+  if (fk && !store.get("apiBibleKey")) { applyInvite({ ...fk, look: "" }); store.set("familySyncedAt", fk.u || ""); }
   else if (fk) {
-    if (fk.x?.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", fk.x.slice(0, 3));
-    if (fk.e && !store.get("esvKey")) store.set("esvKey", fk.e);
+    // The organizer shared new versions since this device last looked? Bring them in, so
+    // the whole family's version switch stays the same without anyone touching Settings.
+    const newer = fk.u && fk.u > (store.get("familySyncedAt") || "") && fk.k === store.get("apiBibleKey");
+    if (fk.x?.length && (newer || !(store.get("extraBibles") || []).length)) store.set("extraBibles", fk.x.slice(0, MAX_EXTRA_BIBLES));
+    if (newer && fk.b) { store.set("nasbBibleId", fk.b); store.set("nasbLabel", fk.l || ""); }
+    if (fk.e && (newer || !store.get("esvKey"))) store.set("esvKey", fk.e);
+    if (newer) store.set("familySyncedAt", fk.u);
   }
   // Signed-in family members don't set up keys or accounts: the first-time steps are just
   // name, look and study path.

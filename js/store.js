@@ -25,6 +25,7 @@ const defaults = {
   esvKey: "",
   nasbBibleId: "",          // API.Bible id for the chosen NASB edition
   nasbLabel: "",
+  familySyncedAt: "",       // when this device last took the family's shared versions
   textSize: 19,
   theme: "auto",            // "auto" | "light" | "dark"
   last: { book: "JHN", chapter: 1 },
@@ -101,7 +102,7 @@ function save() {
 }
 
 // Settings that belong to the device, not the person: kept when someone else signs in.
-const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "voiceName", "theme"];
+const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "familySyncedAt", "voiceName", "theme"];
 
 export const store = {
   get: (k) => state[k],
