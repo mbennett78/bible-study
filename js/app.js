@@ -206,7 +206,7 @@ function toggleRead() {
 $("#markRead").addEventListener("click", toggleRead);
 
 /* ---------- Favorites & visit history ---------- */
-const fmtDate = (iso) => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+const fmtDate = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? "" : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }); };
 const keyRef = (k) => { const [book, ch] = k.split("."); return { book, chapter: Number(ch), name: `${BOOK_BY_ID[book].name} ${ch}` }; };
 function updateFavorite() {
   const { book, chapter } = store.get("last");
@@ -418,6 +418,16 @@ function updatePathBits() {
     btn.textContent = `Next on your ${p.short} path: ${BOOK_BY_ID[next.book].name} ${next.chapter} ›`;
     btn.onclick = () => openChapter(next.book, next.chapter);
   }
+  // Wandered off to read something else? One tap goes back to your place on the path.
+  let back = $("#backToPlace");
+  if (!back) { back = Object.assign(document.createElement("button"), { id: "backToPlace", className: "next-in-path back-to-place" }); btn.after(back); }
+  const place = nextUnread(pathId);
+  const away = place && !(place.book === book && place.chapter === chapter) && !(next && place.book === next.book && place.chapter === next.chapter);
+  back.hidden = !away;
+  if (away) {
+    back.textContent = `↩ Back to my place: ${BOOK_BY_ID[place.book].name} ${place.chapter}`;
+    back.onclick = () => openChapter(place.book, place.chapter);
+  }
 }
 function renderPath() {
   const view = $("#pathView");
@@ -434,11 +444,12 @@ function renderPath() {
   const list = pathChapters(active);
   const done = store.pathReadCount(active);
   const next = nextUnread(active);
+  if (Number.isNaN(new Date((store.get("pathStarted") || {})[active]).getTime())) store.set("pathStarted", { ...(store.get("pathStarted") || {}), [active]: new Date().toISOString() }); // brought in without a start date
+  const plan = store.get("yearPace") ? todayPlan(active) : null;
   const started = store.get("pathStarted")[active];
   const days = Math.floor((Date.now() - new Date(started)) / 86400000); // whole days since starting
   const yearPace = Math.floor((days / 365) * list.length);
   const paceText = done >= yearPace ? "You're on pace to finish within a year." : `${yearPace - done} chapters behind a one-year pace. No pressure: go at your own pace.`;
-  const plan = store.get("yearPace") ? todayPlan(active) : null;
   const switcher = `<div class="path-switch" aria-label="All my studies">${PATH_ORDER.map((id) => {
     const d = store.pathReadCount(id), t = pathChapters(id).length;
     return `<button class="ps-row${id === active ? " is-active" : ""}" data-switch="${id}" aria-pressed="${id === active}"><span class="ps-name">${esc(PATH_BY_ID[id].name)}</span><span class="bar"><span style="width:${(d / t) * 100}%"></span></span><span class="ps-pct">${Math.round((d / t) * 100)}%</span></button>`;
@@ -638,7 +649,10 @@ const isToday = (iso) => iso && new Date(iso).toDateString() === new Date().toDa
 function todayPlan(pathId) {
   const list = pathChapters(pathId);
   const reads = store.get("pathRead")[pathId] || {};
-  const end = new Date(store.get("pathStarted")[pathId]).getTime() + 365 * DAY;
+  // A path brought in from another device may have no start date yet: count from today.
+  let started = new Date((store.get("pathStarted") || {})[pathId]).getTime();
+  if (!Number.isFinite(started)) { started = Date.now(); store.set("pathStarted", { ...(store.get("pathStarted") || {}), [pathId]: new Date().toISOString() }); }
+  const end = started + 365 * DAY;
   const daysLeft = Math.max(1, Math.ceil((end - Date.now()) / DAY));
   const readToday = Object.values(reads).filter(isToday).length;
   const unread = list.filter((c) => !reads[`${c.book}.${c.chapter}`]);
@@ -1622,7 +1636,9 @@ function renderBookIntro(book, chapter) {
   if (!b && !ch) { box.hidden = true; return; }
   const name = BOOK_BY_ID[book].name;
   const row = (label, text) => (text ? `<div class="bi-row"><dt>${label}</dt><dd>${esc(text)}</dd></div>` : "");
-  box.innerHTML = `<summary><span class="bi-icon" aria-hidden="true">📜</span><span><strong>Setting the stage</strong><small>About ${esc(name)}${ch ? ` and chapter ${chapter}` : ""}</small></span></summary>
+  // Closed by default so the Bible text comes first; a one-line taste shows what's inside.
+  const teaser = (ch || b.about || "").replace(/^(.{0,80}\S)\s.*$/s, (m, a) => (m.length > 82 ? `${a}…` : m));
+  box.innerHTML = `<summary><span class="bi-icon" aria-hidden="true">📜</span><span><strong>Setting the stage: ${esc(name)}${ch ? ` ${chapter}` : ""}</strong><small>${esc(teaser)}</small></span></summary>
     <div class="bi-body">
       ${ch ? `<p class="bi-chapter"><strong>In chapter ${chapter}:</strong> ${esc(ch)}</p>` : ""}
       ${b ? `<p class="bi-about">${esc(b.about)}</p>
@@ -1630,7 +1646,7 @@ function renderBookIntro(book, chapter) {
       ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}` : ""}
       <p class="muted small-print">Introductions give the traditional view first and say where scholars differ. Scripture itself is the guide.</p>
     </div>`;
-  box.open = chapter === 1;
+  box.open = false;
   box.hidden = false;
 }
 
@@ -2508,7 +2524,7 @@ const TOUR = [
   { view: "read", at: "#refButton", icon: "📚", title: "Pick a book", text: "Tap the book name at the top. Big squares show every book, Old Testament then New. Tap a book to see what it's about, then a chapter, then a verse. No spelling needed, but you can type if you like." },
   { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions appear there once the family's Bible is set up.)" },
   { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap Read aloud and the app reads the chapter to you, highlighting each part as it goes. Turn on Read to me and it keeps reading every chapter you open, until you turn it off." },
-  { view: "read", at: "#bookIntro", icon: "📜", title: "Setting the stage", text: "Like a study Bible: who wrote the book, when, to whom, the setting, and where scholars' views differ. It opens by itself on chapter 1." },
+  { view: "read", at: "#bookIntro", icon: "📜", title: "Setting the stage", text: "Like a study Bible: who wrote the book, when, to whom, the setting, and where scholars' views differ. Tap it to open; it stays folded so the Bible text comes first." },
   { view: "read", at: "#reader", icon: "👆", title: "Tap a word", text: "Tap any word in the Bible text to see what it means in plain words, and the Hebrew or Greek behind it. Nothing pops up unless you tap." },
   { view: "read", at: "#studyNotes", icon: "🔎", title: "The study section", text: "Below every chapter: Strong's concordance with every Hebrew or Greek word, word search, history, maps then and now, science, scholars' views from different churches, cross-references, and the sources for all of it. Scripture comes first." },
   { view: "read", at: "#partnerBox", icon: TALK_ICON, title: "Ask questions", text: "Open Chat with my study partner and ask anything about the chapter. The Bible helper answers right here. Tap 🎤 to talk instead of type." },

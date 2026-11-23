@@ -58,7 +58,9 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   // Sits down after a while with nothing happening; stands up again for any activity.
   let sitTimer = 0;
   const wake = () => { el.classList.remove("sitting"); clearTimeout(sitTimer); sitTimer = setTimeout(() => el.classList.add("sitting"), SIT_AFTER_MS); };
-  const play = (cls, ms) => { wake(); el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
+  let holdUntil = Date.now() + 3000; // stays out while he's greeting, celebrating or answering
+  const hold = (ms = 3000) => { holdUntil = Date.now() + ms; };
+  const play = (cls, ms) => { wake(); hold(Math.max(ms, 3000)); el.classList.remove("tucked"); el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
 
   // Drag him along the edges; a tap (no real movement) opens the chat.
   let drag = null;
@@ -93,7 +95,11 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.addEventListener("click", (e) => { if (e.detail === 0) { play("waving", 1200); onTap(); } });
 
   addEventListener("resize", place);
-  for (const ev of ["pointerdown", "keydown", "scroll"]) addEventListener(ev, wake, { passive: true });
+  // While someone scrolls through the reading, he tucks himself half off the edge so he
+  // never covers the words. Tapping him (or asking him something) brings him back out.
+  const tuck = (on) => el.classList.toggle("tucked", on);
+  addEventListener("scroll", () => { if (!drag && Date.now() > holdUntil) tuck(true); }, { passive: true });
+  for (const ev of ["pointerdown", "keydown"]) addEventListener(ev, wake, { passive: true });
   requestAnimationFrame(place);
   wake();
 
@@ -103,7 +109,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     show(on) { el.hidden = !on; if (on) place(); },
     excite() { play("excited", 1400); },     // someone asked him something
     cheer() { play("cheering", 2600); },     // a great quiz score
-    thinking(on) { wake(); el.classList.toggle("thinking", on); },
-    talking(on) { wake(); el.classList.toggle("talking", on); },
+    thinking(on) { wake(); hold(); if (on) el.classList.remove("tucked"); el.classList.toggle("thinking", on); },
+    talking(on) { wake(); if (on) { hold(60000); el.classList.remove("tucked"); } else hold(); el.classList.toggle("talking", on); },
   };
 }
