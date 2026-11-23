@@ -47,7 +47,7 @@ const defaults = {
   helperStyle: "",          // "" | "simple" | "deep": how the Bible helper answers
   daily: {},                // which parts of Today show on Home: { verse, readings, devotion } (all on by default)
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
-  style: "classic",         // the default look for new people. classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
+  style: "classic",         // the default look for new people. classic | classic2 | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }

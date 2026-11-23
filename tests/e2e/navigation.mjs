@@ -32,7 +32,7 @@ try {
   check("tapping him brings him back and opens the chat", !(await page.$eval(".buddy", (b) => b.classList.contains("tucked"))) && await page.$eval("#partnerBox", (d) => d.open));
   // Looks: a drop-down with a picture of the chosen look right under it.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(400);
-  check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 8);
+  check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 9);
   await page.selectOption("#lookSelect", "christmas"); await page.waitForTimeout(300);
   check("choosing a look applies it", await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).style === "christmas"));
   check("and shows its picture and description under the list", /red, green and gold/.test(await page.textContent("#lookGrid .look-preview")) && Boolean(await page.$("#lookGrid .look-preview svg")));

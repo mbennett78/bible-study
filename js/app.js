@@ -6,7 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateI
 import { createBuddy } from "./buddy.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
+import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
@@ -1415,7 +1415,7 @@ function renderSetup() {
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
-      <p class="muted small-print">Classic is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
+      <p class="muted small-print">Classic 1 is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
       <div class="look-grid">${lookPickerHtml("setupLook")}</div>
       <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
       <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>`;
@@ -1503,18 +1503,19 @@ const FEATURES = [
 // [value, name, short description, swatch colors]. The saved values "masculine" and "animated"
 // are kept so nobody's choice changes; only their names did.
 const LOOKS = [
-  ["classic", "Classic", "Brown, gray and white, with olive branches and three crosses on a hill. Still.", ["#3a3430", "#ffffff", "#7d8a6e"]],
-  ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Still.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
+  ["classic", "Classic 1", "Brown, gray and white, with olive branches, three crosses on a hill, soft sun and clouds. Clouds drift and birds glide in Lively pictures.", ["#3a3430", "#ffffff", "#7d8a6e"]],
+  ["classic2", "Classic 2", "Navy, blues and warm browns: olive branches and the five loaves and two fish, softly glowing (John 6). Clouds drift in Lively pictures.", ["#1f2b42", "#dfe7f1", "#7a5a40"]],
+  ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
-  ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Still.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
-  ["fall", "Thanksgiving", "The Lord's Supper at a harvest table, with prayers of thanks. Still.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
+  ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Birds fly at sunrise in Lively pictures.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
+  ["fall", "Thanksgiving", "The Lord's Supper at a harvest table, with prayers of thanks. Candles flicker in Lively pictures.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
   ["christmas", "Christmas", "A big nativity in red, green and gold, under the star.", ["#1f3a2e", "#8c2a2a", "#d4b062"]],
   ["masculine", "Animated", "Warm browns, with boats and fish that move.", ["#3b2b20", "#efe3d0", "#b8875a"]],
   ["animated", "For kids", "Bright colors, a friendly lamb, and pictures that change with the Bible story.", ["#3f6f7a", "#e9f4f6", "#e07a5f"]],
 ];
-// Still looks: no motion, no cartoons, no confetti. Nativity and Christmas follow the Pictures setting,
+// Calm looks: no cartoons and no confetti, and motion only with Lively pictures (birds, breeze, candles). Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
-function isStill(style = store.get("style")) { return ["classic", "sage", "easter", "fall"].includes(style); }
+function isStill(style = store.get("style")) { return ["classic", "classic2", "sage", "easter", "fall"].includes(style); }
 // A drop-down of looks with a live picture of the chosen one right beside it, so people can
 // see what they're picking (used in first-time setup and in Settings).
 function lookPickerHtml(id) {
@@ -1541,7 +1542,7 @@ function renderLookCard() {
   $("#lookGraphicsNote").textContent = GRAPHICS.find(([v]) => v === g)[2];
   $("#lookGraphics").querySelectorAll("[data-set-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.setGfx); applyAppearance(); renderLookCard(); }));
 }
-const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
+const GRAPHICS = [["full", "Lively", "Gentle motion in every look: birds and doves in flight, branches and flowers in the breeze, fish swimming, twinkling stars. Plus friendly characters and confetti in the playful looks."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
 function renderQuickMenu() {
   const shown = store.get("show") || {};
   $("#qmToggles").innerHTML = FEATURES.map((f) => `<label class="switch-row"><span>${esc(f.label)}<small>${esc(f.hint)}</small></span><input type="checkbox" role="switch" data-qm-feat="${f.id}" ${shown[f.id] === false ? "" : "checked"}></label>`).join("");
@@ -2392,7 +2393,6 @@ function applyInvite(d) {
   if (d.to && !store.get("name").trim()) store.set("name", d.to);
   if (d.look && !(store.get("setup") || {}).look) {
     store.set("style", d.look);
-    if (isStill(d.look)) store.set("graphics", "simple");
   }
   const ki = $("#apiBibleKey"); if (ki) ki.value = d.k;
 }
@@ -2708,6 +2708,18 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 window.addEventListener("pageshow", (e) => { if (e.persisted) cameBack(); });
 // While the app sits open and untouched for 15 minutes, go Home quietly; the question waits for their return.
 setInterval(() => { if (document.visibilityState === "visible" && lastActive && Date.now() - lastActive >= AWAY_MS && !reader.playing && !welcomeBack.open) cameBack(); }, 60000);
+
+/* ---------- Lively pictures: now and then, a little more ---------- */
+// Something small is always moving; every half minute or so a flock of birds passes over the
+// picture on screen, so the motion varies instead of running constantly at full strength.
+function passingFlock() {
+  if ((store.get("graphics") || "full") !== "full" || document.visibilityState !== "visible" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const sc = [...document.querySelectorAll("svg.scene")].find((el) => { const r = el.getBoundingClientRect(); return r.width && r.bottom > 0 && r.top < innerHeight; });
+  if (!sc || sc.querySelector(".m-flock")) return;
+  sc.insertAdjacentHTML("beforeend", flock(18 + Math.round(Math.random() * 20)));
+  setTimeout(() => sc.querySelector(".m-flock")?.remove(), 9500);
+}
+(function flockLater() { setTimeout(() => { passingFlock(); flockLater(); }, 25000 + Math.random() * 25000); })();
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;

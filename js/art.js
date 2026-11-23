@@ -179,7 +179,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
-  if (style === "classic") return classicScene({ height });
+  if (style === "classic" || style === "classic2") return classicScene({ height, style });
   if (THEME_LOOKS.includes(style)) return themeScene(style, { height });
   const W = 360, H = height, surf = 58, bottom = H - 8;
   const id = ++uid;
@@ -245,7 +245,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
-  if (style === "classic") return classicStrip("Olive branches and a cross");
+  if (style === "classic" || style === "classic2") return classicStrip("Olive branches and a cross");
   if (THEME_LOOKS.includes(style)) return themeStrip(style);
   const id = ++uid, W = 360, H = 54;
   return `<svg class="fish-strip" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -300,7 +300,7 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
-  if (style === "classic") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
+  if (style === "classic" || style === "classic2") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
   if (style === "animated") { const story = kidsStory(book, chapter); if (story) return story; }
   const id = ++uid;
   let art;
@@ -354,17 +354,52 @@ const clBranch = (x, y, s = 1, flip = false) => {
     <ellipse class="cl-olive" cx="34" cy="-6" rx="3.4" ry="2.6" transform="rotate(-20 34 -6)"/><ellipse class="cl-olive" cx="39" cy="-2" rx="3.4" ry="2.6"/>
     <ellipse class="cl-olive" cx="64" cy="-24" rx="3.2" ry="2.5" transform="rotate(-30 64 -24)"/></g>`;
 };
-export function classicScene({ height = 170 } = {}) {
+// Gentle motion for Lively pictures (styles.css, "Gentle motion"). With Still pictures or
+// "reduce motion" everything here simply stands still in its place.
+const breeze = (svg, delay = 0, cls = "m-sway") => `<g class="${cls}" style="--md:${-delay}s">${svg}</g>`;
+const bird = (s = 1) => `<g transform="scale(${s})"><path class="m-bird" d="M-7 0 Q -3.5 -4.5 0 0 Q 3.5 -4.5 7 0" fill="none" stroke-width="1.6" stroke-linecap="round"/></g>`;
+// Now and then a small flock passes over (app.js adds it to the picture for one flight).
+export function flock(y = 30) {
+  const v = [[0, 0, 1], [-12, 6, .85], [-12, -6, .85], [-23, 11, .7], [-23, -11, .7]];
+  return `<g class="m-flock" aria-hidden="true">${v.map(([x, dy, sc]) => `<g transform="translate(${x} ${y + dy})">${bird(sc)}</g>`).join("")}</g>`;
+}
+// Things that travel slowly across the sky, wrapping round: [x, y, scale, seconds, head start].
+function across(list, draw, width = 360) {
+  return list.map(([x, y, sc, dur, lead]) => `<g class="across" style="--from:${-50 - x}px;--to:${width + 50 - x}px;--dur:${dur}s;--delay:${-lead}s"><g transform="translate(${x} ${y})"><g class="m-glide" style="--md:${-lead}s">${draw(sc)}</g></g></g>`).join("");
+}
+const cloud = (sc = 1) => `<g class="cl-cloud" transform="scale(${sc})"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="-8" cy="-5" rx="10" ry="7"/><ellipse cx="6" cy="-7" rx="12" ry="9"/></g>`;
+const birds = (list, width) => across(list, bird, width);
+const doves = (list, width) => across(list, (sc) => dove(0, 0, sc), width);
+// Petals or leaves drifting down from a point: [x, y, seconds, head start].
+const drift = (list, cls) => list.map(([x, y, dur, lead]) => `<g class="m-drift" style="--dd:${dur}s;--md:${-lead}s"><ellipse class="${cls}" cx="${x}" cy="${y}" rx="2.4" ry="1.5"/></g>`).join("");
+// Classic 2's picture: five loaves and two fish in a basket, softly lit (John 6:9-13).
+function loavesAndFish(x, y, id) {
+  const loaf = (lx, ly, r = 0) => `<g transform="translate(${lx} ${ly}) rotate(${r})"><ellipse class="lf-loaf" cx="0" cy="0" rx="9" ry="5.5"/><path class="lf-score" d="M-4 -3 L -2 2 M 1 -4 L 3 1" fill="none"/></g>`;
+  const fish = (fx, fy, flip = 1) => `<g transform="translate(${fx} ${fy}) scale(${flip} 1)"><path class="lf-fish" d="M-12 0 C -6 -6, 6 -6, 10 0 C 6 6, -6 6, -12 0 Z M 10 0 L 17 -5 L 16 0 L 17 5 Z"/><circle class="lf-eye" cx="-7" cy="-1" r="1"/></g>`;
+  return `<g class="lf" transform="translate(${x} ${y}) scale(1.45)">
+    <ellipse class="lf-glow m-glow2" cx="0" cy="-18" rx="70" ry="44" fill="url(#lfg${id})"/>
+    ${loaf(-14, -26, -12)}${loaf(0, -30)}${loaf(14, -26, 12)}${loaf(-7, -21, -4)}${loaf(8, -21, 6)}
+    ${fish(-6, -36, 1)}${fish(8, -39, -1)}
+    <path class="lf-basket" d="M-34 -22 L 34 -22 L 26 4 C 10 8, -10 8, -26 4 Z"/>
+    <path class="lf-weave" d="M-31 -14 C -10 -10, 10 -10, 31 -14 M -29 -6 C -10 -2, 10 -2, 29 -6 M -18 -21 L -14 5 M 0 -21 L 0 6 M 18 -21 L 14 5" fill="none"/>
+    <path class="lf-rim" d="M-36 -24 C -12 -18, 12 -18, 36 -24" fill="none"/></g>`;
+}
+export function classicScene({ height = 170, style = "classic" } = {}) {
   const W = 360, H = height, id = ++uid, ground = H - 34;
   return `<svg class="scene classic-scene" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="Three crosses on a hill, framed by olive branches">
     <defs><linearGradient id="cls${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="cl-sky-top"/><stop offset="1" class="cl-sky-low"/></linearGradient>
       <radialGradient id="clg${id}" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
     <rect width="${W}" height="${H}" fill="url(#cls${id})"/>
-    <ellipse cx="180" cy="${ground - 40}" rx="120" ry="70" fill="url(#clg${id})"/>
+    <circle class="cl-sun m-glow" cx="292" cy="38" r="20"/>
+    ${across([[40, 30, 1, 120, 10], [210, 52, .8, 150, 70], [320, 22, .65, 130, 40]], cloud)}
+    <ellipse class="m-glow" cx="180" cy="${ground - 40}" rx="120" ry="70" fill="url(#clg${id})"/>
+    <g class="cl-birds">${birds([[70, 40, 1.3, 34, 12], [96, 30, 1.05, 34, 12.6], [250, 50, 1.15, 40, 26]], W)}</g>
     <path class="cl-hill far" d="M0 ${ground - 6} C 70 ${ground - 26}, 120 ${ground - 18}, 180 ${ground - 30} C 240 ${ground - 18}, 300 ${ground - 24}, 360 ${ground - 8} L 360 ${H} L 0 ${H} Z"/>
     <path class="cl-hill" d="M0 ${ground + 10} C 90 ${ground - 4}, 140 ${ground - 2}, 180 ${ground - 14} C 220 ${ground - 2}, 280 ${ground - 2}, 360 ${ground + 12} L 360 ${H} L 0 ${H} Z"/>
-    ${cross(136, ground - 6, 54)}${cross(224, ground - 6, 54)}${cross(180, ground - 12, 92)}
-    ${clBranch(0, H - 6, 1.25)}${clBranch(W, H - 6, 1.25, true)}
+    ${style === "classic2" ? `<radialGradient id="lfg${id}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></radialGradient>
+      ${loavesAndFish(180, ground + 10, id)}`
+    : `${cross(136, ground - 6, 54)}${cross(224, ground - 6, 54)}${cross(180, ground - 12, 92)}`}
+    ${breeze(clBranch(0, H - 6, 1.25), 0, "m-sway m-branch")}${breeze(clBranch(W, H - 6, 1.25, true), 2.5, "m-sway m-branch")}
     <path class="cl-rule" d="M0 ${H - .5} H ${W}"/>
   </svg>`;
 }
@@ -495,10 +530,11 @@ export function themeScene(theme, { height = 170 } = {}) {
       <path class="th-hill far" d="M0 ${g - 14} C 70 ${g - 30}, 130 ${g - 34}, 180 ${g - 50} C 230 ${g - 34}, 300 ${g - 28}, 360 ${g - 16} L 360 ${H} L 0 ${H} Z"/>
       ${cross(160, g - 42, 26)}${cross(200, g - 42, 26)}${cross(180, g - 48, 40)}
       <path class="th-hill" d="M0 ${g + 4} C 80 ${g - 10}, 150 ${g - 6}, 200 ${g - 4} C 260 ${g - 12}, 320 ${g - 6}, 360 ${g} L 360 ${H} L 0 ${H} Z"/>
-      ${olive2(44, g + 2, 1.15)}${blossomTree(96, g - 2, .9)}${blossomTree(274, g, .95)}${olive2(322, g + 4, 1.05)}
+      ${breeze(olive2(44, g + 2, 1.15), 1)}${breeze(blossomTree(96, g - 2, .9), 2)}${breeze(blossomTree(274, g, .95), 3.5)}${breeze(olive2(322, g + 4, 1.05), 4.5)}
+      ${drift([[92, g - 36, 9, 0], [104, g - 40, 11, 4], [270, g - 34, 10, 2], [282, g - 38, 12, 7], [266, g - 30, 9, 5]], "m-petal")}
       <path class="stream" d="M120 ${H} C 140 ${H - 10}, 200 ${H - 6}, 230 ${H - 16} S 300 ${H - 20}, 340 ${H - 18}" fill="none" stroke-width="5" stroke-linecap="round"/>
       ${[[24, H - 8, "a"], [70, H - 6, "b"], [150, H - 22, "a"], [176, H - 18, "c"], [252, H - 26, "b"], [300, H - 10, "a"], [346, H - 6, "c"], [206, H - 30, "b"]].map(([a, b, c]) => bloom(a, b, c)).join("")}
-      ${dove(214, 44, .8)}${dove(128, 62, .62, true)}`;
+      ${doves([[214, 44, .8, 46, 18], [150, 60, .62, 52, 2]], W)}`;
   } else if (theme === "christmas") {
     defs = grad([[0, "#0e1a2c"], [.55, "#1b3340"], [1, "#2c4a3a"]]);
     art = `${sky(22)}
@@ -507,10 +543,10 @@ export function themeScene(theme, { height = 170 } = {}) {
       <path class="xmas-hill far" d="M0 ${g - 20} C 60 ${g - 36}, 120 ${g - 28}, 180 ${g - 24} C 240 ${g - 30}, 300 ${g - 36}, 360 ${g - 18} L 360 ${H} L 0 ${H} Z"/>
       <path class="xmas-hill" d="M0 ${g + 2} C 80 ${g - 8}, 280 ${g - 8}, 360 ${g + 2} L 360 ${H} L 0 ${H} Z"/>
       ${nativityBig(180, g + 6, 1.05)}
-      ${ox(110, g + 6, 1)}${donkey2(258, g + 6, 1)}${sheep(78, g + 8, 1.1)}${sheep(296, g + 10, 1, true)}${sheep(318, g + 6, .85, true)}
+      ${ox(110, g + 6, 1)}${donkey2(258, g + 6, 1)}${breeze(sheep(78, g + 8, 1.1), 0, "m-graze")}${breeze(sheep(296, g + 10, 1, true), 1.4, "m-graze")}${breeze(sheep(318, g + 6, .85, true), 2.6, "m-graze")}
       ${kneelShepherd(46, g + 8, 1.1)}
       ${holly(10, H - 6, 1.6)}${holly(W - 10, H - 6, 1.6, true)}
-      ${garland(W)}`;
+      ${breeze(garland(W), 0, "m-garland")}`;
   } else if (theme === "nativity") {
     defs = grad([[0, "#16213b"], [.45, "#2d3f66"], [.8, "#d8a94e"], [1, "#f4dd9c"]]);
     art = `${sky(22)}
@@ -518,19 +554,20 @@ export function themeScene(theme, { height = 170 } = {}) {
       ${star(262, 34, 8)}
       <path class="dune far" d="M0 ${g - 14} C 60 ${g - 30}, 120 ${g - 22}, 190 ${g - 18} C 250 ${g - 28}, 310 ${g - 22}, 360 ${g - 16} L 360 ${H} L 0 ${H} Z"/>
       <path class="dune" d="M0 ${g + 2} C 70 ${g - 14}, 150 ${g - 6}, 210 ${g - 2} C 270 ${g - 10}, 320 ${g - 6}, 360 ${g} L 360 ${H} L 0 ${H} Z"/>
-      ${camel(70, g - 6, .62)}${camel(104, g - 8, .58)}${camel(136, g - 9, .54)}${stable(282, g + 2, .95)}${palm2(330, g + 6, .9)}
+      ${breeze(camel(70, g - 6, .62), 0, "m-plod")}${breeze(camel(104, g - 8, .58), .6, "m-plod")}${breeze(camel(136, g - 9, .54), 1.2, "m-plod")}${stable(282, g + 2, .95)}${breeze(palm2(330, g + 6, .9), 1)}
       <path class="ground" d="M0 ${g + 10} C 100 ${g + 2}, 260 ${g + 4}, 360 ${g + 8} L 360 ${H} L 0 ${H} Z"/>
-      ${palm2(26, g + 12, 1.05)}`;
+      ${breeze(palm2(26, g + 12, 1.05), 3)}`;
   } else if (theme === "easter") {
     defs = grad([[0, "#d9d3ea"], [.55, "#f5d9c4"], [1, "#fbefc9"]]);
-    art = `<circle class="sunrise" cx="250" cy="${g - 22}" r="26"/>
+    art = `<circle class="sunrise m-glow" cx="250" cy="${g - 22}" r="26"/>
+      <g class="easter-birds">${birds([[150, 30, .8, 38, 10], [172, 22, .65, 38, 10.5], [40, 46, .7, 44, 30]], W)}</g>
       <path class="th-hill far" d="M0 ${g - 10} C 50 ${g - 34}, 100 ${g - 30}, 130 ${g - 18} C 200 ${g - 26}, 300 ${g - 22}, 360 ${g - 12} L 360 ${H} L 0 ${H} Z"/>
       <g class="far-crosses">${cross(62, g - 26, 26)}${cross(80, g - 30, 32)}${cross(98, g - 26, 26)}</g>
       <path class="tomb-rock" d="M196 ${g + 6} C 200 ${g - 40}, 260 ${g - 52}, 330 ${g - 30} C 352 ${g - 20}, 360 ${g - 6}, 360 ${g + 6} Z"/>
       <path class="tomb-door" d="M262 ${g + 4} L 262 ${g - 14} C 262 ${g - 26}, 284 ${g - 26}, 284 ${g - 14} L 284 ${g + 4} Z"/>
       <circle class="tomb-stone" cx="236" cy="${g - 10}" r="15"/>
       <path class="th-hill" d="M0 ${g + 10} C 100 ${g}, 220 ${g + 2}, 360 ${g + 8} L 360 ${H} L 0 ${H} Z"/>
-      ${lily(28, H - 6, 1)}${lily(44, H - 4, .85)}${lily(160, H - 4, .9)}${lily(330, H - 4, .95)}${lily(346, H - 6, .8)}`;
+      ${breeze(lily(28, H - 6, 1), 0)}${breeze(lily(44, H - 4, .85), 1.5)}${breeze(lily(160, H - 4, .9), 3)}${breeze(lily(330, H - 4, .95), .8)}${breeze(lily(346, H - 6, .8), 2.2)}`;
   } else if (theme === "fall") {
     const wid = `fw${id}`;
     defs = grad([[0, "#efe0c4"], [1, "#e4cfa9"]]) + `<linearGradient id="${wid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset=".7" stop-color="#e29a55"/><stop offset="1" stop-color="#b5652e"/></linearGradient>`;
@@ -539,17 +576,19 @@ export function themeScene(theme, { height = 170 } = {}) {
       <g class="supper-window"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z" fill="url(#${wid})"/>
         <path class="field far" d="M134 ${top - 30} C 160 ${top - 40}, 200 ${top - 38}, 226 ${top - 30} L 226 ${top - 4} L 134 ${top - 4} Z"/>
         ${cross(198, top - 34, 22)}
+        ${birds([[150, 40, .5, 30, 6], [164, 34, .4, 30, 6.4]], 226)}
         <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/>
         <path class="window-frame" d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z M 180 12 L 180 ${top - 4} M 134 ${top - 46} L 226 ${top - 46}" fill="none" stroke-width="4"/>
         <rect class="window-sill" x="126" y="${top - 6}" width="108" height="6" rx="2"/></g>
-      ${wheat(64, top - 6, 1.25)}${wheat(300, top - 6, 1.15)}
+      ${breeze(wheat(64, top - 6, 1.25), 0)}${breeze(wheat(300, top - 6, 1.15), 3)}
       <rect class="table-top" x="0" y="${top}" width="360" height="10"/>
       <path class="cloth" d="M0 ${top + 8} H 360 V ${H} H 0 Z"/>
       <path class="runner" d="M150 ${top + 8} H 210 V ${H - 8} L 180 ${H - 2} L 150 ${H - 8} Z"/>
       <path class="cloth-fold" d="M60 ${top + 12} L 56 ${H} M 120 ${top + 12} L 118 ${H} M 240 ${top + 12} L 242 ${H} M 300 ${top + 12} L 304 ${H}" stroke-width="1" fill="none"/>
       ${bread(140, top + 4, 1.05)}${chalice(206, top + 4, 1.05)}${grapes(248, top + 4, 1)}${candle(108, top + 4, 1)}${candle(290, top + 4, 1)}
       ${pumpkin(30, top + 4, .9)}${pumpkin(336, top + 4, .8)}
-      <g class="leaf-drift">${[[86, top + 3, 20], [236, top + 3, -30], [320, top + 2, 50]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>`;
+      <g class="leaf-drift">${[[86, top + 3, 20], [236, top + 3, -30], [320, top + 2, 50]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>
+      ${drift([[60, top - 40, 10, 0], [306, top - 36, 12, 5]], "fall-leaf b")}`;
   }
   return `<svg class="scene theme-scene theme-${theme}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="${SCENE_LABELS[theme] || ""}">
     <defs>${defs}</defs><rect width="${W}" height="${H}" fill="url(#tg${id})"/>${art}<path class="cl-rule" d="M0 ${H - .5} H ${W}"/></svg>`;
