@@ -1372,3 +1372,17 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .ps-row.is-active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 700; }
 .ps-row .bar { margin: 0; }
 .ps-pct { color: var(--muted); font-size: .9rem; min-width: 3ch; text-align: right; }
+/* Today: daily study on Home */
+.daily-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 14px 16px; margin: 12px 0 16px; }
+.dy-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.dy-head h2 { margin: 0; font-size: 1.35rem; }
+.dy-head .quiet-link { margin-left: auto; }
+.dy-label { display: block; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-top: 12px; }
+.dy-text { margin: 6px 0 4px; font-family: var(--serif); font-size: 1.25rem; line-height: 1.5; color: var(--text); }
+.dy-text:not(.has-words) { font-style: italic; }
+.dy-ref { background: none; border: 0; padding: 6px 0; color: var(--accent); font-weight: 600; font-size: 1rem; text-align: left; }
+.dy-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.dy-btn { min-height: 52px; border-radius: 14px; border: 1px solid var(--line); background: var(--accent-soft); color: var(--text); font-size: 1.05rem; font-weight: 600; }
+.dy-dev p { margin: 4px 0 6px; font-size: 1.1rem; line-height: 1.5; }
+.dy-prayer { font-style: italic; }
+.dy-custom { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }

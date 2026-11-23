@@ -8,6 +8,7 @@ import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
+import { dailyToday } from "./daily.js";
 import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -1830,11 +1831,75 @@ function renderHome() {
     ${archiveHtml()}
     <div class="home-end"></div>${cornerSprig()}${cornerSprig(true)}`;
   $("#resumeBtn").addEventListener("click", () => { showView("read"); openChapter(resume.go.book, resume.go.chapter); });
+  $("#resumeBtn").insertAdjacentHTML("afterend", dailyHtml());
+  wireDaily(view);
   wirePathCards(view);
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
   $("#homeShop").addEventListener("click", () => showView("shop"));
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
+}
+
+
+/* ---------- Today: verse of the day, psalm and proverb, a question and a prayer ---------- */
+const DAILY_PARTS = [["verse", "Verse of the day"], ["readings", "Psalm and Proverb of the day"], ["devotion", "Question and prayer"]];
+const dailyOn = (k) => (store.get("daily") || {})[k] !== false;
+function dailyHtml() {
+  const t = dailyToday();
+  const v = t.verse, name = BOOK_BY_ID[v.book].name;
+  const date = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+  const parts = [];
+  if (dailyOn("verse")) parts.push(`<div class="dy-verse"><span class="dy-label">Verse of the day</span>
+      <blockquote id="dailyVerseText" class="dy-text">${esc(v.theme)}</blockquote>
+      <button class="dy-ref" data-dgo="${v.book}.${v.chapter}.${v.verse}">${esc(name)} ${v.chapter}:${v.verse} · Read it in context ›</button></div>`);
+  if (dailyOn("readings")) parts.push(`<div class="dy-row"><button class="dy-btn" data-dgo="PSA.${t.psalm}"><span aria-hidden="true">🎵</span> Psalm ${t.psalm}</button><button class="dy-btn" data-dgo="PRO.${t.proverb}"><span aria-hidden="true">💡</span> Proverbs ${t.proverb}</button></div>`);
+  if (dailyOn("devotion")) parts.push(`<div class="dy-dev"><span class="dy-label">Think about</span><p>${esc(t.devotion[0])}</p>
+      <span class="dy-label">Pray</span><p class="dy-prayer">${esc(t.devotion[1])}</p>
+      <button class="small" id="dailyWrite">✎ Write in my daily journal</button></div>`);
+  return `<section class="daily-card" aria-label="Today">
+    <div class="dy-head"><h2>Today</h2><span class="muted small-print">${esc(date)}</span><button class="quiet-link" id="dailyCustom">Choose what shows</button></div>
+    ${parts.join("") || `<p class="muted small-print">Everything is turned off. Tap "Choose what shows" to turn things back on.</p>`}
+    <div class="dy-custom" id="dailyCustomBox" hidden>${DAILY_PARTS.map(([k, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-dpart="${k}" ${dailyOn(k) ? "checked" : ""}></label>`).join("")}</div>
+  </section>`;
+}
+// The words of one verse, taken from the chapter in the version this person reads.
+function verseFromHtml(html, v) {
+  const tpl = document.createElement("template");
+  tpl.innerHTML = sanitize(html);
+  const marks = [...tpl.content.querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")];
+  const num = (m) => (m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10));
+  const start = marks.find((m) => num(m) === v);
+  if (!start) return "";
+  const stop = marks.find((m) => num(m) > v && (start.compareDocumentPosition(m) & Node.DOCUMENT_POSITION_FOLLOWING));
+  const range = document.createRange();
+  range.setStartAfter(start);
+  if (stop) range.setEndBefore(stop); else range.setEndAfter(tpl.content.lastChild);
+  const frag = range.cloneContents();
+  frag.querySelectorAll("sup, .footnote, .crossref, h3, h2").forEach((n) => n.remove());
+  return frag.textContent.replace(/\s+/g, " ").trim();
+}
+function wireDaily(root) {
+  const t = dailyToday();
+  root.querySelectorAll("[data-dgo]").forEach((b) => b.addEventListener("click", () => {
+    const [book, ch, v] = b.dataset.dgo.split(".");
+    showView("read");
+    openChapter(book, Number(ch)).then(() => v && goToVerse(Number(v)));
+  }));
+  $("#dailyWrite")?.addEventListener("click", () => {
+    showView("books");
+    document.querySelector('[data-seg="journal"]')?.click();
+    setTimeout(() => { const ta = $("#diary-text"); if (ta) { ta.scrollIntoView({ block: "center" }); ta.focus(); } }, 150);
+  });
+  $("#dailyCustom").addEventListener("click", () => { $("#dailyCustomBox").hidden = !$("#dailyCustomBox").hidden; });
+  root.querySelectorAll("[data-dpart]").forEach((c) => c.addEventListener("change", () => {
+    store.set("daily", { ...(store.get("daily") || {}), [c.dataset.dpart]: c.checked });
+    renderHome(); $("#dailyCustomBox").hidden = false;
+  }));
+  const box = $("#dailyVerseText");
+  if (box) getChapter(store.get("version"), t.verse.book, t.verse.chapter).then((r) => {
+    const words = verseFromHtml(r.html, t.verse.verse);
+    if (words && box.isConnected) { box.textContent = words; box.classList.add("has-words"); }
+  }).catch(() => { /* the theme stays as a gentle stand-in */ });
 }
 
 /* ---------- Seasonal prayers for the Easter, Thanksgiving and Christmas looks ---------- */
@@ -2252,6 +2317,7 @@ const TOUR = [
   { view: "home", at: "#helpBtn", icon: "❓", title: "Help is always here", text: "Not sure what something does? Tap ❓ at the top of any screen for help with that screen, or to take this tour again." },
   { view: "home", at: "#acctBtn", icon: "👤", title: "Signing in and out", text: "Your first initial is in the top corner. Tap it to see who's signed in or to sign out. You stay signed in on this device until you sign out, so you won't need your password every time." },
   { view: "home", at: "#quickMenu", before: qmTour, icon: "⋮", title: "The ⋮ menu", text: "Tap ⋮ at the top right for this menu. Jump to any page, take this tour again, and turn features on or off, like the read-aloud bar, trivia or the study section." },
+  { view: "home", at: ".daily-card", icon: "☀️", title: "Today", text: "Each day: a verse, a psalm and a proverb, a question to think about and a prayer. The whole family gets the same ones, so you can talk about them together. Tap \"Choose what shows\" to pick what you see." },
   { view: "home", at: ".path-card.my-bible", icon: "📖", title: "My Bible", text: "Read the whole Bible in order, Genesis to Revelation. The bar shows how far you've come." },
   { view: "home", at: ".path-cards.four", icon: "🛤️", title: "Self-guided studies", text: "Three more ways through the whole Bible: in the order things happened, by theme, or by who it was written to. Each shows your progress and keeps its own place, so you can switch any time." },
   { view: "home", at: ".jump-card", icon: "🔎", title: "Go anywhere", text: "Jump to any book or chapter, even in the middle of a study. Your study keeps its place for when you come back." },
@@ -2367,7 +2433,7 @@ document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("clic
 
 /* ---------- ❓ Help: tips for the screen you're on, and the tour ---------- */
 const HELP = {
-  home: ["Home", ["Tap the top card to pick up where you left off.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
+  home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
   read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
   books: ["My study", ["Progress shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["My path", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],

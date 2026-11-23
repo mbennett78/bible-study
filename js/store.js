@@ -42,6 +42,7 @@ const defaults = {
   contrast: false,          // high contrast words
   wordTap: true,            // tap a word in the Bible text for its meaning
   helperStyle: "",          // "" | "simple" | "deep": how the Bible helper answers
+  daily: {},                // which parts of Today show on Home: { verse, readings, devotion } (all on by default)
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
   style: "classic",         // the default look for new people. classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
