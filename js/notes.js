@@ -4,10 +4,12 @@
 // Two full samples so far (Genesis 1 and Luke 5). More chapters get added book by book.
 
 export const EVIDENCE = {
+  scripture: { label: "Scripture says", tip: "The Bible states this directly. The verse is given." },
   strong: { label: "Strong evidence", tip: "Ancient texts, archaeology or measurement that scholars of all views accept." },
   good: { label: "Good evidence", tip: "Well supported, with some details still discussed." },
   debated: { label: "Debated", tip: "Careful scholars disagree. The main views are shown." },
   faith: { label: "Faith reading", tip: "A way believers read the text. It goes beyond what evidence can show." },
+  silent: { label: "Scripture is silent", tip: "The Bible doesn't say. Anything here is a suggestion, labeled as one." },
 };
 
 // Simplified outlines for the maps, as [latitude, longitude]. Not survey accurate.

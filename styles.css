@@ -18,6 +18,7 @@
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
   --tabbar-h: 58px;
+  --tabbar-total: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); /* measured by app.js */
   color-scheme: light;
 }
 :root[data-style="feminine"] {
@@ -51,7 +52,7 @@ body {
   color: var(--text);
   font-family: var(--sans);
   line-height: 1.5;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--tabbar-total) + 16px); /* the last lines never sit under the bottom menu */
 }
 button, select, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -200,8 +201,9 @@ dialog::backdrop { background: rgb(0 0 0 / .3); }
   position: fixed; inset: auto 0 0 0; z-index: 5;
   display: flex; justify-content: space-around;
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-  background: color-mix(in srgb, var(--page-deep) 96%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: var(--page); /* same color as the header and page edges */
+  border-top: 1px solid color-mix(in srgb, var(--on-page) 12%, transparent);
+  transform: translateZ(0); /* keeps it pinned to the bottom on iPhone while scrolling */
 }
 .tabbar button {
   flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -401,7 +403,7 @@ details.tool-card summary::-webkit-details-marker { display: none; }
 
 /* Mascot (Animated style) */
 .mascot {
-  position: fixed; z-index: 12; right: calc(14px + env(safe-area-inset-right)); bottom: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom));
+  position: fixed; z-index: 12; right: calc(14px + env(safe-area-inset-right)); bottom: calc(var(--tabbar-total) + 14px);
   display: flex; align-items: flex-end; gap: 6px; pointer-events: none;
 }
 .mascot .lamb { width: 70px; height: 62px; animation: bob 3s ease-in-out infinite; pointer-events: auto; cursor: pointer; }
@@ -753,6 +755,8 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .ev-good { background: #e3ecf4; color: #31506b; }
 .ev-debated { background: #f5e8cf; color: #7a5717; }
 .ev-faith { background: #efe3f0; color: #65406a; }
+.ev-scripture { background: #e9e1d2; color: #4a3a22; }
+.ev-silent { background: #ececec; color: #555; }
 .cite { border: 0; background: none; color: var(--accent); font-size: .75rem; font-weight: 600; padding: 2px 3px; line-height: 1; vertical-align: 2px; }
 .word-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .word-line .orig { font-family: "SBL Hebrew", "Times New Roman", var(--serif); font-size: 1.45rem; color: var(--text); }
@@ -970,7 +974,7 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .share-key { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
 .share-key > summary { cursor: pointer; font-weight: 600; color: var(--accent); }
 .share-url { word-break: break-all; background: var(--accent-soft); padding: 8px; border-radius: 8px; }
-.invite-toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + 20px + env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(92vw, 460px); background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; box-shadow: 0 12px 32px rgb(0 0 0 / .25); z-index: 60; }
+.invite-toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-total) + 20px); transform: translateX(-50%); width: min(92vw, 460px); background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; box-shadow: 0 12px 32px rgb(0 0 0 / .25); z-index: 60; }
 .invite-toast p { margin: 0 0 8px; }
 
 /* ---------- Fill the screen on every device ---------- */
@@ -985,7 +989,7 @@ main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc
   main { max-width: 1400px; }
   #view-read:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 38%); column-gap: 28px; align-items: start; }
   #view-read > * { grid-column: 1; min-width: 0; }
-  #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-h) - env(safe-area-inset-top)); overflow-y: auto; margin-top: 0; }
+  #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-total) - env(safe-area-inset-top)); padding-bottom: 24px; overflow-y: auto; margin-top: 0; }
   #view-read .reader { max-width: 46em; }
 }
 
@@ -1156,3 +1160,15 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 .version-switch[hidden] { display: none; }
 .version-switch select { border: 0; background: var(--surface); color: var(--text); border-radius: 999px; padding: 4px 10px; font-size: .8rem; font-weight: 600; }
 .extra-versions { margin: 10px 0; }
+
+/* Drive mode: reader voice and the words for a passenger */
+.drive-voice { display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; color: var(--muted); }
+.drive-voice[hidden] { display: none; }
+.drive-voice select { font-size: 1rem; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text); max-width: 60vw; }
+.drive-text { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 16px; }
+.drive-text > summary { cursor: pointer; font-weight: 600; font-size: 1.2rem; color: var(--accent); padding: 6px 0; }
+.drive-reader { font-size: calc(var(--reading-size) + 2px); line-height: 1.7; }
+body.hide-visits #visitLine { display: none; }
+.gate-keep { display: flex; align-items: center; gap: 10px; font-size: 1rem; margin: 4px 0; }
+.gate-keep input { width: 22px; height: 22px; }
+.message .why { display: block; margin-top: 6px; color: var(--muted); font-size: .9rem; }

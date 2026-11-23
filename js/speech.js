@@ -15,8 +15,14 @@ export function chunksFrom(readerEl) {
   return text.flatMap((t) => t.length < 280 ? [t] : t.match(/[^.!?;:]+[.!?;:"”’)]*\s*/g) || [t]);
 }
 
-function pickVoice() {
+// English voices on this device, for the "Reader voice" choice.
+export function listVoices() {
+  if (!canSpeak) return [];
+  return speechSynthesis.getVoices().filter((v) => v.lang.startsWith("en")).map((v) => ({ name: v.name, lang: v.lang }));
+}
+function pickVoice(name) {
   const voices = speechSynthesis.getVoices().filter((v) => v.lang.startsWith("en"));
+  if (name) { const chosen = voices.find((v) => v.name === name); if (chosen) return chosen; }
   const preferred = ["Samantha", "Karen", "Daniel", "Moira", "Google US English"];
   return preferred.map((n) => voices.find((v) => v.name.includes(n))).find(Boolean) || voices.find((v) => v.localService) || voices[0] || null;
 }
@@ -30,6 +36,7 @@ export class Reader {
     this.playing = false;
     this.rate = 1;
     this.volume = 1;
+    this.voiceName = "";
   }
   load(chunks, intro) {
     this.stop();
@@ -51,7 +58,7 @@ export class Reader {
       return;
     }
     const u = new SpeechSynthesisUtterance(this.chunks[this.index]);
-    const voice = pickVoice();
+    const voice = pickVoice(this.voiceName);
     if (voice) u.voice = voice;
     u.rate = this.rate;
     u.volume = this.volume;

@@ -202,6 +202,9 @@
         <label class="switch-row"><span>One-year pace<small>Suggest today's reading to finish your path in a year, and adjust if you fall behind</small></span><input type="checkbox" id="modePace" role="switch"></label>
         <label class="switch-row"><span>Drive mode<small>Big buttons, reads aloud chapter after chapter</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
         <label class="switch-row"><span>Voice commands<small>Say "next", "pause", "play", "repeat" or "mark read"</small></span><input type="checkbox" id="modeVoice" role="switch"></label>
+        <label class="field">Reader voice
+          <select class="voice-select"></select>
+        </label>
         <label class="field">Reading speed
           <input id="voiceRate" type="range" min="0.7" max="1.4" step="0.05">
         </label>
@@ -345,6 +348,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>Settings</button>
     </div>
     <p class="drive-ref" id="driveRef"></p>
+    <label class="drive-voice">Reader voice <select class="voice-select" aria-label="Reader voice"></select></label>
     <p class="drive-status" id="driveStatus">Tap play to start</p>
     <button class="drive-play" id="drivePlay" aria-label="Play">Play</button>
     <div class="drive-row">
@@ -352,6 +356,7 @@
       <button id="driveNext">Next chapter</button>
     </div>
     <button class="drive-mark" id="driveMark">Mark read</button>
+    <details class="drive-text" id="driveTextBox"><summary>Show the words</summary><div class="reader drive-reader" id="driveText"></div></details>
     <div class="art-slot" data-art="strip"></div>
   </div>
 
@@ -386,6 +391,7 @@
       <form id="gateForm" class="gate-form">
         <label class="field">Email<input id="gateEmail" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
         <label class="field">Password<input id="gatePassword" type="password" autocomplete="current-password" required></label>
+        <label class="gate-keep"><input type="checkbox" id="gateKeep" checked> Keep me signed in on this device</label>
         <button class="primary" type="submit">Sign in</button>
         <button class="quiet-link" type="button" id="gateForgot">Forgot your password?</button>
       </form>

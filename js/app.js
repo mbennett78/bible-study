@@ -2,7 +2,7 @@ import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
-import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
+import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
@@ -46,6 +46,8 @@ function showView(name) {
   window.scrollTo(0, 0);
 }
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
+// Keep page content clear of the bottom menu, whatever its real height on this device.
+if ("ResizeObserver" in window) new ResizeObserver(([e]) => document.documentElement.style.setProperty("--tabbar-total", `${Math.ceil(e.target.getBoundingClientRect().height)}px`)).observe(document.querySelector(".tabbar"));
 
 /* ---------- Reading ---------- */
 function neighbors(book, ch) {
@@ -102,6 +104,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     $("#copyright").textContent = result.copyright;
     store.recordVisit(book, chapter);
     updateVisitLine();
+    if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
     if (autoplayNext) { autoplayNext = false; reader.play(); }
   } catch (e) {
@@ -111,8 +114,13 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     if (driveOn()) $("#driveStatus").textContent = e.message || "Couldn't load this chapter.";
     if (authEnabled && signedInUser && needsSettings) {
       // Family members never see key setup: point them to the organizer instead.
-      readerEl.innerHTML = `<div class="message"><strong>The Bible text isn't ready yet</strong>Please ask the person who set up the app to share the Bible text with the family, then tap Try again.<br><button class="small" id="retryFamily">Try again</button></div>`;
+      const why = e.kind === "nokey" ? "No Bible key is saved on this device yet, and none has been shared with the family."
+        : e.kind === "auth" ? "API.Bible didn't accept the saved key, or this version isn't on the plan."
+        : "No NASB edition was found on the plan. Pick one under Load versions on my plan.";
+      readerEl.innerHTML = `<div class="message"><strong>The Bible text isn't ready yet</strong>Please ask the person who set up the app to share the Bible text with the family, then tap Try again.
+        <span class="why">${esc(why)}</span><br><button class="small" id="retryFamily">Try again</button> <button class="small" id="iSetUp">I set up the app</button></div>`;
       $("#retryFamily").addEventListener("click", async () => { const fk = await getFamilyKey(); if (fk) { store.set("apiBibleKey", ""); applyInvite({ ...fk, look: "" }); } openChapter(book, chapter); });
+      $("#iSetUp").addEventListener("click", () => { showView("settings"); const box = $("#organizerBox"); if (box) box.open = true; $("#bibleTextCard").scrollIntoView({ block: "start" }); });
       return;
     }
     readerEl.innerHTML = `<div class="message"><strong>Can't show this chapter yet</strong>${esc(e.message || "Something went wrong.")}
@@ -395,6 +403,23 @@ const reader = new Reader({
 });
 reader.rate = store.get("voiceRate");
 reader.volume = store.get("voiceVolume") ?? 1;
+reader.voiceName = store.get("voiceName") || "";
+// Reader voice choice, in Settings and on the Drive screen. Voices arrive a moment after load on some devices.
+function fillVoices() {
+  const voices = listVoices();
+  document.querySelectorAll(".voice-select").forEach((sel) => {
+    sel.innerHTML = `<option value="">Automatic</option>` + voices.map((v) => `<option value="${esc(v.name)}">${esc(v.name.replace(/\s*\(.*\)$/, ""))} (${esc(v.lang)})</option>`).join("");
+    sel.value = voices.some((v) => v.name === store.get("voiceName")) ? store.get("voiceName") : "";
+    sel.closest("label").hidden = !voices.length;
+  });
+}
+document.querySelectorAll(".voice-select").forEach((sel) => sel.addEventListener("change", () => {
+  store.set("voiceName", sel.value); reader.voiceName = sel.value;
+  document.querySelectorAll(".voice-select").forEach((o) => { o.value = sel.value; });
+  if (reader.playing) { reader.pause(); reader.play(); }
+}));
+fillVoices();
+if (canSpeak) speechSynthesis.addEventListener?.("voiceschanged", fillVoices);
 $("#listenBtn").hidden = !canSpeak;
 $("#listenBtn").addEventListener("click", () => { if (driveOn()) openDrive(); else reader.toggle(); });
 
@@ -445,6 +470,8 @@ function updateDrive(state) {
   $("#driveMark").setAttribute("aria-pressed", String(store.isRead(book, chapter)));
   $("#driveMark").textContent = store.isRead(book, chapter) ? "Read" : "Mark read";
   $("#driveListening").hidden = !(store.get("modes").voiceCommands && canListen);
+  // The words, for a passenger reading along. Copied from the reader so no extra request is used.
+  $("#driveText").innerHTML = $("#reader").innerHTML;
 }
 $("#drivePlay").addEventListener("click", () => reader.toggle());
 $("#driveBack").addEventListener("click", () => reader.back());
@@ -1070,6 +1097,7 @@ const FEATURES = [
   { id: "mascot", label: "Corner friend", hint: "The lamb or donkey in the Animated look" },
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
+  { id: "visits", label: "My visits to a chapter", hint: "How often and when you've opened each chapter, under the chapter title" },
 ];
 // [value, name, short description, swatch colors]. The saved values "masculine" and "animated"
 // are kept so nobody's choice changes; only their names did.
@@ -1532,6 +1560,12 @@ $("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
 // When sign-in is on (js/config.js has the Supabase details), nobody gets past this
 // screen until they sign in. A sign-in stays on the device until they sign out.
 let signedInUser = null;
+// "Keep me signed in": when off, the app asks for the password again each time it's opened fresh.
+const KEEP_KEY = "bible-study:sign-out-on-close";
+function keepSignedIn() { try { return localStorage.getItem(KEEP_KEY) !== "1"; } catch { return true; } }
+function setKeepSignedIn(on) {
+  try { if (on) localStorage.removeItem(KEEP_KEY); else localStorage.setItem(KEEP_KEY, "1"); sessionStorage.setItem("bible-study:open", "1"); } catch { /* ignore */ }
+}
 function showGate() {
   return new Promise((resolve) => {
     const gate = $("#gate"), form = $("#gateForm"), err = $("#gateErr"), msg = $("#gateMsg");
@@ -1544,6 +1578,7 @@ function showGate() {
       err.textContent = ""; const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Signing in…";
       try {
         const user = await signIn(email, password);
+        setKeepSignedIn($("#gateKeep").checked);
         gate.hidden = true;
         document.documentElement.classList.remove("auth-wait");
         resolve(user);
@@ -1567,12 +1602,14 @@ function renderAccount() {
   if (!authEnabled) return;
   el.innerHTML = signedInUser
     ? `<p class="account-line">Signed in as <strong>${esc(signedInUser.email || "")}</strong></p>
-       <p class="muted small-print">This device stays signed in until you sign out. Your reading, notes and journal are saved on this device.</p>
+       <label class="switch-row"><span>Stay signed in on this device<small>Off: the app asks for your password each time you open it.</small></span><input type="checkbox" role="switch" id="keepSignedIn" ${keepSignedIn() ? "checked" : ""}></label>
+       <p class="muted small-print">Your reading, notes and journal are saved on this device.</p>
        <details class="share-key"><summary>Change my password</summary>
          <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
+  $("#keepSignedIn")?.addEventListener("change", (e) => setKeepSignedIn(e.target.checked));
   $("#savePassword")?.addEventListener("click", async () => {
     const v = $("#newPassword").value, out = $("#pwMsg");
     if (v.length < 6) { out.textContent = "Please use at least 6 characters."; return; }
@@ -1674,7 +1711,11 @@ function wireShareKey() {
 applyAppearance();
 if (authEnabled) {
   signedInUser = await currentUser();
+  // Chose not to stay signed in, and this is a fresh open (not just a reload)? Ask again.
+  let fresh = false; try { fresh = !sessionStorage.getItem("bible-study:open"); } catch { /* ignore */ }
+  if (signedInUser && !keepSignedIn() && fresh) { await signOut(); signedInUser = null; }
   if (!signedInUser) signedInUser = await showGate();
+  try { sessionStorage.setItem("bible-study:open", "1"); } catch { /* ignore */ }
   document.documentElement.classList.remove("auth-wait");
   // No key on this device yet? Use the family's shared key.
   // Also picks up extra Bible versions the organizer shared.
