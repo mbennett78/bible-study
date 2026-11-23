@@ -6,7 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -1473,12 +1473,21 @@ function renderAccount() {
        <details class="share-key"><summary>Change my password</summary>
          <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
+       <details class="share-key"><summary>Share my Bible key with the family</summary>
+         <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in on a device without a key. Everyone's reading then counts toward your 5,000 a month.</p>
+         <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
   $("#savePassword")?.addEventListener("click", async () => {
     const v = $("#newPassword").value, out = $("#pwMsg");
     if (v.length < 6) { out.textContent = "Please use at least 6 characters."; return; }
     try { await changePassword(v); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
+    catch (x) { out.textContent = x.message; }
+  });
+  $("#shareFamilyKey")?.addEventListener("click", async () => {
+    const out = $("#familyKeyMsg");
+    if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
+    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "" }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
     catch (x) { out.textContent = x.message; }
   });
   $("#signOutBtn")?.addEventListener("click", async () => {
@@ -1560,6 +1569,8 @@ if (authEnabled) {
   signedInUser = await currentUser();
   if (!signedInUser) signedInUser = await showGate();
   document.documentElement.classList.remove("auth-wait");
+  // No key on this device yet? Use the family's shared key.
+  if (!store.get("apiBibleKey")) { const fk = await getFamilyKey(); if (fk) applyInvite({ ...fk, look: "" }); }
 }
 renderAccount();
 syncVersionSwitch();

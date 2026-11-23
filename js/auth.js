@@ -69,3 +69,21 @@ export async function signOut() {
   try { const c = await sb(); await c.auth.signOut(); } catch { /* offline: clear below */ }
   try { localStorage.removeItem("bible-study:auth"); } catch {}
 }
+
+// The family's shared Bible key, kept in the family's own Supabase (table family_settings,
+// readable and writable only by signed-in family members). Lets everyone read on one key
+// without invite links.
+export async function getFamilyKey() {
+  if (!authEnabled) return null;
+  try {
+    const c = await sb();
+    const { data, error } = await c.from("family_settings").select("api_bible_key, nasb_bible_id, nasb_label").eq("id", 1).maybeSingle();
+    if (error || !data?.api_bible_key) return null;
+    return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "" };
+  } catch { return null; }
+}
+export async function setFamilyKey({ k, b = "", l = "" }) {
+  const c = await sb();
+  const { error } = await c.from("family_settings").upsert({ id: 1, api_bible_key: k, nasb_bible_id: b, nasb_label: l, updated_at: new Date().toISOString() });
+  if (error) throw new Error(/relation|does not exist|schema cache/i.test(error.message) ? "The family key table isn't set up in Supabase yet." : friendly(error));
+}
