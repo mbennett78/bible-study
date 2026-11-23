@@ -467,7 +467,6 @@ const lily = (x, y, s = 1) => `<g class="lily" transform="translate(${x} ${y}) s
   <path class="lily-leaf" d="M0 -6 C -8 -10, -10 -16, -9 -20 C -5 -16, -2 -12, 0 -8 Z"/>
   <path class="lily-flower" d="M1 -24 C -6 -26, -9 -32, -8 -36 C -5 -33, -2 -31, 1 -31 C 4 -31, 7 -33, 10 -36 C 11 -32, 8 -26, 1 -24 Z"/>
   <path class="lily-center" d="M1 -25 L 1 -31" stroke-width="1" fill="none"/></g>`;
-const pumpkin = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse class="pumpkin" cx="-5" cy="-6" rx="7" ry="6"/><ellipse class="pumpkin" cx="5" cy="-6" rx="7" ry="6"/><ellipse class="pumpkin hi" cx="0" cy="-6" rx="6" ry="6.4"/><path class="pumpkin-stem" d="M0 -12 C 0 -15, 2 -17, 4 -17" fill="none" stroke-width="2"/></g>`;
 const wheat = (x, y, s = 1) => `<g class="wheat" transform="translate(${x} ${y}) scale(${s})">${[-14, -7, 0, 7, 14].map((r) => `<g transform="rotate(${r})"><path class="wheat-stalk" d="M0 0 L 0 -26" stroke-width="1.2" fill="none"/>${[0, 1, 2, 3].map((k) => `<ellipse class="wheat-grain" cx="${k % 2 ? 1.6 : -1.6}" cy="${-27 - k * 3}" rx="1.5" ry="2.6" transform="rotate(${k % 2 ? 20 : -20} ${k % 2 ? 1.6 : -1.6} ${-27 - k * 3})"/>`).join("")}</g>`).join("")}<path class="wheat-tie" d="M-4 -8 L 4 -8" stroke-width="2"/></g>`;
 const holly = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">
   <path class="holly-leaf" d="M0 0 C 4 -2, 6 -6, 10 -6 C 9 -3, 12 -1, 14 -2 C 13 1, 15 4, 18 4 C 14 6, 10 6, 8 8 C 7 5, 3 4, 0 0 Z"/>
