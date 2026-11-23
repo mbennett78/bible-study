@@ -1007,7 +1007,7 @@ function renderSetupCard() {
 /* ---------- Quick menu: look, pictures, and features each person can show or hide ---------- */
 const FEATURES = [
   { id: "listen", label: "Read-aloud bar", hint: "Play, speed and drive mode at the top of each chapter" },
-  { id: "notes", label: "Study notes", hint: "Maps, history, science, Hebrew and Greek" },
+  { id: "notes", label: "Study section", hint: "Strong's concordance, word search, maps, history and scholars under each chapter" },
   { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
   { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
@@ -1046,7 +1046,7 @@ function renderPassageArt(book, chapter) {
 }
 
 /* ---------- Study notes: map, history, science, words, views, sources ---------- */
-let notesTab = "map";
+let notesTab = "strongs";
 function mapSvg(map, mode) {
   const { bounds, water, rivers, riverLabels, waterLabel, islands = [] } = map.outline;
   const W = 340;
@@ -1070,28 +1070,102 @@ function mapSvg(map, mode) {
     <text class="map-water-label" x="${X(waterLabel.lon)}" y="${Y(waterLabel.lat)}" text-anchor="middle">${esc(waterLabel.text)}</text>
     ${places}</svg>`;
 }
+/* ---------- Strong's concordance for every chapter ---------- */
+const strongsCache = {}, lexCache = {};
+function loadStrongs(book, chapter) {
+  const k = `${book}.${chapter}`;
+  if (!strongsCache[k]) strongsCache[k] = fetch(`data/strongs/${k}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) delete strongsCache[k]; return d; });
+  return strongsCache[k];
+}
+function loadLex(n) {
+  const b = n[0] + Math.floor(Number(n.slice(1)) / 100);
+  if (!lexCache[b]) lexCache[b] = fetch(`data/lex/${b}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) delete lexCache[b]; return d || {}; });
+  return lexCache[b].then((d) => d[n]);
+}
+function strongsRow([n, lemma, xlit, gloss, count, verses]) {
+  const heb = n[0] === "H";
+  const vs = verses.length > 8 ? `${verses.length} verses` : `v. ${verses.join(", ")}`;
+  return `<details class="sc-word" data-n="${n}"><summary>
+    <span class="orig" lang="${heb ? "he" : "el"}" dir="${heb ? "rtl" : "ltr"}">${esc(lemma)}</span><span class="say">${esc(xlit)}</span><span class="means">“${esc(gloss)}”</span>
+    <span class="sc-meta"><span class="strongs-num">${n}</span> ${count.toLocaleString()} time${count === 1 ? "" : "s"} in the Bible · ${vs}</span></summary>
+    <div class="sc-def muted small-print">Loading Strong's entry…</div></details>`;
+}
+async function fillStrongs(el, book, chapter) {
+  const panel = el.querySelector("#strongsPanel");
+  if (!panel) return;
+  const rows = await loadStrongs(book, chapter);
+  if (!panel.isConnected) return;
+  if (!rows) { panel.innerHTML = `<p class="muted small-print">The concordance couldn't load. Check your connection and try again.</p>`; return; }
+  const big = rows.filter((r) => !r[6]), small = rows.filter((r) => r[6]);
+  const lang = BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek";
+  panel.innerHTML = `<p class="muted small-print">Every ${lang} word in ${esc(refName({ book, chapter }))}, in the order it first appears, with its Strong's number and how many times it's used in the whole Bible. Tap a word for James Strong's definition.</p>
+    <div class="sc-list">${big.map(strongsRow).join("")}</div>
+    ${small.length ? `<details class="sc-small"><summary>Small words like “and”, “the” and “in” (${small.length})</summary><div class="sc-list">${small.map(strongsRow).join("")}</div></details>` : ""}
+    <p class="muted small-print sc-credit">Counts are of the ${lang} words, so they can differ from the count of an English word in the NASB. Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong, <em>Exhaustive Concordance</em> (1890), via Open Scriptures.</p>`;
+  panel.querySelectorAll(".sc-word").forEach((d) => d.addEventListener("toggle", async () => {
+    if (!d.open || d.dataset.loaded) return;
+    const e = await loadLex(d.dataset.n);
+    const box = d.querySelector(".sc-def");
+    if (!e) { box.textContent = "No dictionary entry for this number. Check your connection and try again."; return; }
+    d.dataset.loaded = "1";
+    box.classList.remove("muted", "small-print");
+    box.innerHTML = `${e.pron ? `<p class="muted small-print">Say it: ${esc(e.pron)}</p>` : ""}
+      ${e.def ? `<p><strong>Strong's definition:</strong> ${esc(e.def)}</p>` : ""}
+      ${e.kjv ? `<p><strong>KJV translates it:</strong> ${esc(e.kjv)}</p>` : ""}
+      ${e.from ? `<p class="muted small-print">Word origin: ${esc(e.from)}</p>` : ""}`;
+  }));
+}
+
+/* ---------- Open the same chapter in Olive Tree or Logos ---------- */
+function openInHtml(book, chapter) {
+  const i = BOOKS.findIndex((b) => b.id === book) + 1;
+  const logosName = book === "SNG" ? "Song" : BOOK_BY_ID[book].name.replace(/\s+/g, "");
+  return `<div class="open-in"><span class="muted small-print">Open this chapter in</span>
+    <a class="small btn-link" id="openOlive" href="olivetree://bible/${i}.${chapter}.1">Olive Tree</a>
+    <a class="small btn-link" href="https://ref.ly/${encodeURIComponent(logosName)}${chapter}.1" target="_blank" rel="noopener">Logos</a>
+    <p class="muted small-print open-note" id="openNote" hidden></p></div>`;
+}
+function wireOpenIn(el) {
+  el.querySelector("#openOlive")?.addEventListener("click", () => {
+    const t = setTimeout(() => {
+      const n = el.querySelector("#openNote");
+      if (n && document.visibilityState === "visible") { n.hidden = false; n.innerHTML = `Olive Tree didn't open. If it isn't on this device, get it free from the <a href="https://apps.apple.com/app/id332615624" target="_blank" rel="noopener">App Store</a>. Your purchased books stay in Olive Tree.`; }
+    }, 1800);
+    document.addEventListener("visibilitychange", () => clearTimeout(t), { once: true });
+  });
+}
+
 function renderNotes(book, chapter) {
   const el = $("#studyNotes");
   const n = notesFor(book, chapter);
   if (!n) {
-    el.className = "notes-card is-empty";
+    el.className = "notes-card";
+    const tabs = [["strongs", "Strong's concordance"], ["search", "Word search"]];
+    if (!tabs.some(([id]) => id === notesTab)) notesTab = "strongs";
     el.innerHTML = `<div class="notes-head"><h2>Study</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
-      ${wordSearchHtml()}
-      <p class="muted small-print" style="margin-top:14px">Full study notes (Strong's concordance, background, cross-references, scholars, and a map then and now) for ${esc(refName({ book, chapter }))} are on the way. These chapters are finished so far:</p>
-      <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>`;
+      <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
+      <div class="notes-panel">${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : wordSearchHtml()}</div>
+      <p class="muted small-print" style="margin-top:14px">Background, maps then and now, scholars' views and cross-references are written for these chapters so far, with more on the way:</p>
+      <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>
+      ${openInHtml(book, chapter)}`;
+    el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
     el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
     wireWordSearch(el);
+    wireOpenIn(el);
+    fillStrongs(el, book, chapter);
     return;
   }
   el.className = "notes-card";
   const srcKeys = Object.keys(n.sources);
   const cite = (ids) => ids?.length ? ` <button class="cite" data-cite="${ids[0]}">[${ids.map((k) => srcKeys.indexOf(k) + 1).join(", ")}]</button>` : "";
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
-  const label = (sec) => sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Strong's and words" : sec.title.split(" ")[0];
-  const tabs = [["map", "Map then and now"], ...n.sections.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
-  if (!tabs.some(([id]) => id === notesTab)) notesTab = "map";
+  const label = (sec) => sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Key words" : sec.title.split(" ")[0];
+  const tabs = [["strongs", "Strong's concordance"], ["map", "Map then and now"], ...n.sections.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
+  if (!tabs.some(([id]) => id === notesTab)) notesTab = "strongs";
   let body = "";
-  if (notesTab === "map") {
+  if (notesTab === "strongs") {
+    body = `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>`;
+  } else if (notesTab === "map") {
     const mode = el.dataset.mode || "then";
     body = `<div class="map-toggle" role="group" aria-label="Map labels"><button data-mode="then" aria-pressed="${mode === "then"}">Then</button><button data-mode="now" aria-pressed="${mode === "now"}">Now</button></div>
       ${mapSvg(n.map, mode)}<p class="map-note" id="mapNote">Tap a place to learn about it.</p><p class="muted small-print">${esc(n.map.caption)} The map is simplified, not drawn to survey scale.</p>`;
@@ -1114,7 +1188,9 @@ function renderNotes(book, chapter) {
   el.innerHTML = `<div class="notes-head"><h2>Study notes</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
     <p class="notes-intro">${esc(n.intro)}</p>
     <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
-    <div class="notes-panel">${body}</div>`;
+    <div class="notes-panel">${body}</div>${openInHtml(book, chapter)}`;
+  wireOpenIn(el);
+  fillStrongs(el, book, chapter);
   el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
   el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
   wireWordSearch(el);

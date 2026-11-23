@@ -909,3 +909,21 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .ws-total { margin: 12px 0 8px; }
 .ws-list { display: grid; gap: 6px; }
 .notes-card { margin-bottom: 18px; }
+
+/* Strong's concordance list under every chapter */
+.sc-list { display: grid; gap: 6px; margin: 8px 0; }
+.sc-word { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.sc-word > summary { list-style: none; cursor: pointer; padding: 9px 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.sc-word > summary::-webkit-details-marker { display: none; }
+.sc-word .orig { font-family: "SBL Hebrew", "Times New Roman", var(--serif); font-size: 1.3rem; color: var(--text); }
+.sc-word .say { font-style: italic; color: var(--accent); }
+.sc-word .means { color: var(--text); font-size: .92rem; }
+.sc-meta { flex-basis: 100%; font-size: .78rem; color: var(--muted); }
+.sc-word[open] { border-color: var(--accent); }
+.sc-def { padding: 0 12px 10px; }
+.sc-def p { margin: 6px 0; font-size: .92rem; }
+.sc-small > summary { cursor: pointer; color: var(--muted); font-size: .88rem; padding: 6px 2px; }
+.sc-credit { margin-top: 10px; }
+.open-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+.btn-link { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--accent); background: var(--bg); text-decoration: none; font-size: .88rem; font-weight: 600; }
+.open-note { flex-basis: 100%; margin: 4px 0 0; }
