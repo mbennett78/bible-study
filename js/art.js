@@ -482,18 +482,38 @@ const olive2 = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"
   <ellipse class="olive-canopy" cx="-8" cy="-30" rx="13" ry="9"/><ellipse class="olive-canopy" cx="9" cy="-32" rx="12" ry="9"/><ellipse class="olive-canopy hi" cx="0" cy="-40" rx="11" ry="8"/></g>`;
 const bloom = (x, y, c = "a") => `<g transform="translate(${x} ${y})"><path class="lily-stem" d="M0 0 L 0 -8" stroke-width="1" fill="none"/><circle class="spring-bloom ${c}" cx="0" cy="-9" r="2.6"/></g>`;
 // Lord's Supper pieces for Thanksgiving
-const bread = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="bread" d="M-22 0 C -24 -10, -14 -16, -4 -15 L -2 0 Z"/><path class="bread" d="M2 0 L 4 -15 C 14 -16, 24 -10, 22 0 Z"/>
-  <path class="bread-inside" d="M-4 -15 L -2 0 M 4 -15 L 2 0" stroke-width="2.4"/><path class="bread-score" d="M-16 -9 L -10 -12 M 12 -12 L 18 -9" stroke-width="1.2" fill="none"/></g>`;
-const chalice = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="cup" d="M-11 -34 L 11 -34 C 11 -22, 6 -16, 1.6 -15 L 1.6 -5 C 5 -4, 8 -2, 8 0 L -8 0 C -8 -2, -5 -4, -1.6 -5 L -1.6 -15 C -6 -16, -11 -22, -11 -34 Z"/>
-  <ellipse class="wine" cx="0" cy="-33" rx="10" ry="2.2"/><path class="cup-shine" d="M-7 -30 C -7 -24, -4 -20, -2 -18" stroke-width="1.2" fill="none"/></g>`;
-const grapes = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[[0, -4], [-4, -8], [4, -8], [-6, -13], [0, -12], [6, -13], [-3, -17], [3, -17], [0, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M0 -23 C 1 -27, 4 -28, 6 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M2 -25 C 8 -32, 16 -28, 14 -22 C 10 -22, 6 -22, 2 -25 Z"/></g>`;
+// The upper room, as it might have looked in Jerusalem (Luke 22:12): plaster and stone,
+// small open windows with wooden shutters, clay oil lamps, flat bread, clay cups and bowls.
 // A shallow pottery bowl, filled with grapes or olives.
 const bowl = (x, y, s, fill) => `<g transform="translate(${x} ${y}) scale(${s})">${fill}<path class="bowl" d="M-14 -9 L 14 -9 C 13 -3, 8 0, 0 0 C -8 0, -13 -3, -14 -9 Z"/><path class="bowl-rim" d="M-14 -9 L 14 -9" stroke-width="1.4"/></g>`;
 const grapeBowl = (x, y, s = 1) => bowl(x, y, s, `${[[-7, -11], [-2, -12], [3, -11], [8, -10], [-4, -16], [1, -17], [6, -15], [-1, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M-1 -23 C 0 -27, 3 -28, 5 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M1 -25 C 7 -32, 15 -28, 13 -22 C 9 -22, 5 -22, 1 -25 Z"/>`);
 const oliveBowl = (x, y, s = 1) => bowl(x, y, s, [[-8, -10, "a"], [-3, -11, "b"], [2, -10, "a"], [7, -10, "b"], [-5, -14, "b"], [0, -15, "a"], [5, -14, "a"], [-1, -18, "b"]].map(([a, b, k]) => `<ellipse class="olive-fruit ${k}" cx="${a}" cy="${b}" rx="2.6" ry="2" transform="rotate(${a * 4} ${a} ${b})"/>`).join(""));
-const wineGlass = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="glass" d="M-6 -24 L 6 -24 C 7 -16, 4 -12, .8 -11.5 L .8 -2 C 3 -1.5, 5 -.8, 5 0 L -5 0 C -5 -.8, -3 -1.5, -.8 -2 L -.8 -11.5 C -4 -12, -7 -16, -6 -24 Z"/><path class="wine" d="M-6.3 -19 L 6.3 -19 C 6 -14.5, 3.5 -12.6, 0 -12.4 C -3.5 -12.6, -6 -14.5, -6.3 -19 Z"/><path class="glass-shine" d="M-3.8 -22 C -4 -18, -3 -15.5, -1.8 -14.5" stroke-width=".9" fill="none"/></g>`;
-const candle = (x, y, s = 1) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})"><defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs>
-  <circle class="candle-glow" r="22" cy="-30" fill="url(#${gid})"/><rect class="candle-body" x="-3.5" y="-24" width="7" height="24" rx="1"/><path class="flame" style="animation-delay:-${(uid % 4) * .35}s" d="M0 -36 C 3 -31, 3 -27, 0 -25 C -3 -27, -3 -31, 0 -36 Z"/><rect class="candle-dish" x="-8" y="-1.5" width="16" height="3" rx="1.5"/></g>`; };
+const flatbread = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse class="flatbread" cx="-2" cy="-2.6" rx="18" ry="3.6"/><ellipse class="flatbread top" cx="1" cy="-6" rx="16" ry="3.2"/>
+  ${[[-8, -6.4], [-2, -5.2], [5, -6.6], [10, -5.6], [-5, -7.6], [3, -7.8]].map(([a, b]) => `<circle class="flatbread-dot" cx="${a}" cy="${b}" r=".7"/>`).join("")}
+  <path class="flatbread top" d="M14 -2 C 20 -5, 26 -4, 26 -1 C 24 1, 18 1, 14 -2 Z"/></g>`;
+const clayCup = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="clay-cup" d="M-7 -14 L 7 -14 C 7 -7, 4.5 -3, 2 -2.4 L 3.4 0 L -3.4 0 L -2 -2.4 C -4.5 -3, -7 -7, -7 -14 Z"/><ellipse class="wine" cx="0" cy="-13.6" rx="6.4" ry="1.5"/><path class="clay-line" d="M-6.6 -10.5 C -2 -9.6, 2 -9.6, 6.6 -10.5" stroke-width=".8" fill="none"/></g>`;
+const pitcher = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="clay-handle" d="M6 -21 C 14 -21, 14 -10, 7 -8" stroke-width="2.4" fill="none"/><path class="clay-jar" d="M-4 -26 L 4 -26 L 3.5 -22 C 10 -18, 10 -4, 5 0 L -5 0 C -10 -4, -10 -18, -3.5 -22 Z"/><path class="clay-line" d="M-7.6 -14 C -3 -12.8, 3 -12.8, 7.6 -14" stroke-width=".8" fill="none"/></g>`;
+const pomegranate = (x, y, r = 6) => `<g transform="translate(${x} ${y})"><circle class="pomegranate" cy="${-r}" r="${r}"/><path class="pomegranate" d="M-2.2 ${-2 * r + 1} L -2.6 ${-2 * r - 3} L -.8 ${-2 * r - 1.4} L 0 ${-2 * r - 3.4} L .8 ${-2 * r - 1.4} L 2.6 ${-2 * r - 3} L 2.2 ${-2 * r + 1} Z"/><circle class="pomegranate-shine" cx="${-r * .35}" cy="${-r * 1.3}" r="${r * .25}"/></g>`;
+// A clay oil lamp. Its little flame flickers in Lively pictures.
+const oilLamp = (x, y, s = 1) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})"><defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".85"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs>
+  <circle class="candle-glow" cx="11" cy="-14" r="20" fill="url(#${gid})"/><path class="clay-lamp" d="M-11 -1 C -13 -6, -6 -9, 1 -8.6 L 12 -7.4 C 14 -6.4, 13.4 -4, 10.6 -4 C 7 -3, 4 -1, -1 -.4 C -5 0, -9 0, -11 -1 Z"/><path class="clay-handle" d="M-11 -4 C -15 -5, -15 -1, -11 -1.6" stroke-width="1.6" fill="none"/><circle class="clay-hole" cx="-1" cy="-7.8" r="1.4"/>
+  <path class="flame" style="animation-delay:-${(uid % 4) * .35}s" d="M12.4 -18 C 16 -13, 15.6 -9, 12.4 -6.8 C 9.2 -9, 8.8 -13, 12.4 -18 Z"/></g>`; };
+const hangingLamp = (x, top, drop) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${top})"><path class="lamp-chain" d="M0 0 L 0 ${drop - 7} M -10 ${drop - 3} L 0 ${drop - 7} L 10 ${drop - 3}" stroke-width="1" fill="none"/>
+  <defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs><circle class="candle-glow" cy="${drop - 6}" r="26" fill="url(#${gid})"/>
+  <path class="clay-lamp" d="M-12 ${drop - 3} C -12 ${drop + 4}, 12 ${drop + 4}, 12 ${drop - 3} Z"/>
+  <path class="flame" style="animation-delay:-${(uid % 4) * .35}s" d="M-9 ${drop - 11} C -6.6 ${drop - 7}, -7 ${drop - 4.4}, -9 ${drop - 3.2} C -11 ${drop - 4.4}, -11.4 ${drop - 7}, -9 ${drop - 11} Z"/>
+  <path class="flame" style="animation-delay:-${((uid + 2) % 4) * .35}s" d="M9 ${drop - 11} C 11.4 ${drop - 7}, 11 ${drop - 4.4}, 9 ${drop - 3.2} C 7 ${drop - 4.4}, 6.6 ${drop - 7}, 9 ${drop - 11} Z"/></g>`; };
+// A small, unglazed window in a thick wall, wooden shutters folded back; outside, the hills
+// and olive trees (Matthew 26:30). Birds fly only in the opening (it is the picture's sky).
+const openWindow = (c, y0, y1, sky, flip = false) => { const id = `ow${++uid}`, w = 17, open = `M${c - w} ${y1} L ${c - w} ${y0 + 14} C ${c - w} ${y0 - 4}, ${c + w} ${y0 - 4}, ${c + w} ${y0 + 14} L ${c + w} ${y1} Z`;
+  return `<clipPath id="${id}"><path d="${open}"/></clipPath>
+  ${[-1, 1].map((d) => `<g class="shutter"><path d="M${c + d * (w + 3)} ${y0 + 8} L ${c + d * (w + 15)} ${y0 + 12} L ${c + d * (w + 15)} ${y1 - 2} L ${c + d * (w + 3)} ${y1} Z"/><path class="shutter-line" d="M${c + d * (w + 7)} ${y0 + 9} L ${c + d * (w + 7)} ${y1 - .6} M ${c + d * (w + 11)} ${y0 + 10.4} L ${c + d * (w + 11)} ${y1 - 1.3}" stroke-width=".8"/></g>`).join("")}
+  <g class="scene-sky" clip-path="url(#${id})"><rect x="${c - w}" y="${y0 - 6}" width="${2 * w}" height="${y1 - y0 + 6}" fill="url(#${sky})"/>
+    <path class="field far" d="M${c - w} ${y1 - 14} C ${c - 6} ${y1 - 24}, ${c + 6} ${y1 - 22}, ${c + w} ${y1 - 16} L ${c + w} ${y1} L ${c - w} ${y1} Z"/>
+    ${[[flip ? 8 : -8, y1 - 19, 4.4], [flip ? -2 : 2, y1 - 21, 3.6], [flip ? -10 : 10, y1 - 15, 4]].map(([dx, yy, r]) => `<g class="olive-far"><rect x="${c + dx - .6}" y="${yy}" width="1.2" height="5"/><circle cx="${c + dx}" cy="${yy - 1}" r="${r}"/></g>`).join("")}
+    ${across([[c - 8, y0 + 12, .45, 9, flip ? 4 : 0], [c + 4, y0 + 8, .36, 9, flip ? 4.4 : .4]], bird, c + w + 30)}
+    <path class="field" d="M${c - w} ${y1 - 7} C ${c - 4} ${y1 - 11}, ${c + 6} ${y1 - 10}, ${c + w} ${y1 - 6} L ${c + w} ${y1} L ${c - w} ${y1} Z"/></g>
+  <path class="window-reveal" d="${open}" fill="none" stroke-width="3.4"/><rect class="window-sill" x="${c - w - 4}" y="${y1}" width="${2 * w + 8}" height="4" rx="1.2"/>`; };
 // Bigger nativity pieces for Christmas
 const sheep = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})"><g class="wool">${[[-6, -8], [0, -10], [6, -8], [-3, -5], [4, -5]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5"/>`).join("")}</g>
   <ellipse class="sheep-head" cx="11" cy="-10" rx="3.6" ry="2.8"/><path class="sheep-legs" d="M-5 -2 L -5 2 M 4 -2 L 4 2" stroke-width="1.6"/></g>`;
@@ -522,7 +542,7 @@ const SCENE_LABELS = {
   sage: "A spring garden with olive trees, doves and three crosses on a hill",
   nativity: "Wise men crossing the desert toward the star over Bethlehem",
   easter: "The empty tomb at sunrise, with lilies",
-  fall: "The Lord's Supper: bread and cup on a harvest table",
+  fall: "The Lord's Supper in the upper room: bread and cup by lamplight",
   christmas: "The nativity in Bethlehem under the star",
 };
 export function themeScene(theme, { height = 170 } = {}) {
@@ -575,26 +595,24 @@ export function themeScene(theme, { height = 170 } = {}) {
       ${breeze(lily(28, H - 6, 1), 0)}${breeze(lily(44, H - 4, .85), 1.5)}${breeze(lily(160, H - 4, .9), 3)}${breeze(lily(330, H - 4, .95), .8)}${breeze(lily(346, H - 6, .8), 2.2)}`;
   } else if (theme === "fall") {
     const wid = `fw${id}`;
-    defs = grad([[0, "#efe0c4"], [1, "#e4cfa9"]]) + `<linearGradient id="${wid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset=".7" stop-color="#e29a55"/><stop offset="1" stop-color="#b5652e"/></linearGradient>`;
+    defs = grad([[0, "#efe0c4"], [1, "#e2cca4"]]) + `<linearGradient id="${wid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset=".7" stop-color="#e29a55"/><stop offset="1" stop-color="#b5652e"/></linearGradient>`;
     const top = H - 52;
-    art = `<path class="wall-shade" d="M0 0 H 360 V ${top} H 0 Z" opacity=".0"/>
-      <clipPath id="${wid}c"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z"/></clipPath>
-      <g class="supper-window"><g class="scene-sky" clip-path="url(#${wid}c)"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z" fill="url(#${wid})"/>
-        <path class="field far" d="M134 ${top - 30} C 160 ${top - 40}, 200 ${top - 38}, 226 ${top - 30} L 226 ${top - 4} L 134 ${top - 4} Z"/>
-        ${cross(198, top - 34, 22)}
-        ${across([[150, 40, .5, 22, 6], [164, 34, .4, 22, 6.4]], bird, 226)}
-        <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/></g>
-        <path class="window-frame" d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z M 180 12 L 180 ${top - 4} M 134 ${top - 46} L 226 ${top - 46}" fill="none" stroke-width="4"/>
-        <rect class="window-sill" x="126" y="${top - 6}" width="108" height="6" rx="2"/></g>
-      ${breeze(wheat(80, top - 6, 1.2), 0)}${breeze(wheat(326, top - 6, 1.1), 3)}
+    const stones = [];
+    for (let row = 0, y = 22; y < top - 4; row++, y += 16) {
+      stones.push(`M0 ${y} H 360`);
+      for (let x = (row % 2) * 24 + 12; x < 360; x += 48) stones.push(`M${x} ${y} V ${Math.min(y + 16, top)}`);
+    }
+    art = `<path class="wall-stone" d="${stones.join(" ")}" fill="none" stroke-width=".8"/>
+      <rect class="beam" x="0" y="0" width="360" height="10"/>${[40, 120, 240, 320].map((x) => `<rect class="beam-end" x="${x - 5}" y="9" width="10" height="5" rx="1"/>`).join("")}
+      ${openWindow(96, 28, top - 26, wid)}${openWindow(264, 28, top - 26, wid, true)}
+      ${hangingLamp(180, 10, 36)}
       <rect class="table-top" x="0" y="${top}" width="360" height="10"/>
       <path class="cloth" d="M0 ${top + 8} H 360 V ${H} H 0 Z"/>
       <path class="runner" d="M150 ${top + 8} H 210 V ${H - 8} L 180 ${H - 2} L 150 ${H - 8} Z"/>
       <path class="cloth-fold" d="M60 ${top + 12} L 56 ${H} M 120 ${top + 12} L 118 ${H} M 240 ${top + 12} L 242 ${H} M 300 ${top + 12} L 304 ${H}" stroke-width="1" fill="none"/>
-      ${oliveBowl(48, top + 4, 1)}${candle(102, top + 4, 1)}${bread(140, top + 4, 1.05)}${wineGlass(172, top + 4, 1)}${chalice(206, top + 4, 1.05)}${grapeBowl(244, top + 4, 1)}${wineGlass(276, top + 4, 1)}${candle(302, top + 4, 1)}
-      ${pumpkin(16, top + 4, .8)}${pumpkin(348, top + 4, .75)}
-      <g class="leaf-drift">${[[86, top + 3, 20], [236, top + 3, -30], [320, top + 2, 50]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>
-      ${drift([[60, top - 40, 10, 0], [306, top - 36, 12, 5]], "fall-leaf b")}`;
+      ${breeze(wheat(17, top - 19, .95), 0)}${pitcher(16, top + 4, 1)}${oliveBowl(50, top + 4, 1)}${oilLamp(80, top + 4, 1)}${clayCup(112, top + 4, .95)}${flatbread(140, top + 4, 1.05)}${clayCup(186, top + 4, 1.45)}
+      ${grapeBowl(230, top + 4, 1)}${clayCup(260, top + 4, .95)}${oilLamp(284, top + 4, 1)}${pomegranate(310, top + 4, 5)}${pomegranate(322, top + 4, 6)}${breeze(wheat(345, top - 19, .95), 3)}${pitcher(344, top + 4, 1)}
+      ${drift([[22, top - 44, 10, 0], [340, top - 42, 12, 5]], "fall-leaf b")}`;
   }
   return `<svg class="scene theme-scene theme-${theme}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="${SCENE_LABELS[theme] || ""}">
     <defs>${defs}</defs><rect width="${W}" height="${H}" fill="url(#tg${id})"/>${art}<path class="cl-rule" d="M0 ${H - .5} H ${W}"/></svg>`;
@@ -605,7 +623,7 @@ export function themeStrip(theme) {
     : theme === "nativity" ? `${sky(10)}${star(180, 22, 6)}${camel(112, 50, .42)}${camel(136, 50, .4)}${stable(240, 52, .55, false)}`
     : theme === "christmas" ? `${sky(10)}${star(180, 14, 5)}${holly(96, 44, .9)}${holly(264, 44, .9, true)}${sheep(136, 52, .6)}${nativityBig(180, 54, .42)}${sheep(222, 52, .6, true)}`
     : theme === "easter" ? `${lily(120, 52, .8)}${lily(134, 52, .7)}${cross(180, 48, 34)}${lily(226, 52, .7)}${lily(240, 52, .8)}`
-    : `${wheat(112, 50, .7)}${bread(160, 46, .6)}${chalice(198, 48, .6)}${grapes(226, 48, .6)}${wheat(252, 50, .7)}`;
+    : `${wheat(112, 50, .7)}${flatbread(156, 46, .7)}${clayCup(198, 47, .8)}${grapeBowl(228, 48, .6)}${wheat(252, 50, .7)}`;
   const dark = theme === "nativity" || theme === "christmas";
   return `<svg class="fish-strip passage-art theme-strip theme-${theme}" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs><clipPath id="ts${id}"><rect width="360" height="54" rx="14"/></clipPath></defs>

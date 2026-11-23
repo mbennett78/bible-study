@@ -1514,7 +1514,7 @@ const LOOKS = [
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
   ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Birds fly at sunrise in Lively pictures.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
-  ["fall", "Thanksgiving", "The Lord's Supper at a harvest table, with prayers of thanks. Candles flicker in Lively pictures.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
+  ["fall", "Thanksgiving", "The Lord's Supper in the upper room, with harvest wheat and prayers of thanks. Oil lamps flicker and birds fly past the windows in Lively pictures.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
   ["christmas", "Christmas", "A big nativity in red, green and gold, under the star.", ["#1f3a2e", "#8c2a2a", "#d4b062"]],
   ["masculine", "Animated", "Warm browns, with boats and fish that move.", ["#3b2b20", "#efe3d0", "#b8875a"]],
   ["animated", "For kids", "Bright colors, a friendly lamb, and pictures that change with the Bible story.", ["#3f6f7a", "#e9f4f6", "#e07a5f"]],

@@ -1222,7 +1222,14 @@ body.hide-visits #visitLine { display: none; }
 .spring-bloom.a { fill: #ffffff; } .spring-bloom.b { fill: #f2c9cf; } .spring-bloom.c { fill: #f1d88a; }
 /* Thanksgiving: the Lord's Supper */
 .theme-fall .cl-cross rect { fill: #5a3a26; }
-.window-frame { stroke: #6b4a30; } .window-sill { fill: #6b4a30; }
+.window-reveal { stroke: #c4a97f; } .window-sill { fill: #c4a97f; }
+.wall-stone { stroke: #d8c19b; opacity: .7; } .beam { fill: #6b4a30; } .beam-end { fill: #5a3d27; }
+.shutter path:first-child { fill: #8a5a35; } .shutter-line { stroke: #6b4428; }
+.olive-far rect { fill: #6b4a30; } .olive-far circle { fill: #7d8a52; }
+.flatbread { fill: #e2b878; stroke: #c4955a; stroke-width: .6; } .flatbread.top { fill: #ecc78b; } .flatbread-dot { fill: #b07a3e; }
+.clay-cup, .clay-jar, .clay-lamp { fill: #b8743f; stroke: #8e5428; stroke-width: .7; } .clay-handle { stroke: #9a5d2f; } .clay-line { stroke: #8e5428; opacity: .7; } .clay-hole { fill: #5a3420; }
+.lamp-chain { stroke: #5a3d27; }
+.pomegranate { fill: #a8323a; } .pomegranate-shine { fill: #fff; opacity: .35; }
 .table-top { fill: #6b4a30; }
 .cloth { fill: #f7efe0; } .runner { fill: #a5532a; } .cloth-fold { stroke: #e4d6bd; }
 .bread { fill: #c98f4e; stroke: #9a6532; stroke-width: .8; } .bread-inside { stroke: #f1d9b0; } .bread-score { stroke: #9a6532; }
