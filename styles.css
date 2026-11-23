@@ -937,8 +937,8 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
 }
-:root[data-style="classic"] *, :root[data-style="classic"] *::before, :root[data-style="classic"] *::after { animation: none !important; transition: none !important; }
-:root[data-style="classic"] .mascot, :root[data-style="classic"] #confetti { display: none !important; }
+:root[data-still] *, :root[data-still] *::before, :root[data-still] *::after { animation: none !important; transition: none !important; }
+:root[data-still] .mascot, :root[data-still] #confetti { display: none !important; }
 .cl-sky-top { stop-color: #e6e3de; } .cl-sky-low { stop-color: #fbfaf8; }
 .cl-hill { fill: #8f8378; } .cl-hill.far { fill: #c4bcb2; }
 .cl-cross rect { fill: #4a3f36; }
@@ -951,9 +951,9 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .classic-flourish .cl-cross rect { fill: #8a7a6b; }
 :root[data-style="classic"] .vine { opacity: .5; }
 :root[data-style="classic"] .vine .leaf { fill: #8f8a80; }
-:root[data-style="classic"] .reader { font-family: var(--serif); }
-:root[data-style="classic"] .notes-card { border-top: 3px solid var(--accent); }
-:root[data-style="classic"] .notes-tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); }
+:root[data-still] .reader { font-family: var(--serif); }
+:root[data-still] .notes-card { border-top: 3px solid var(--accent); }
+:root[data-still] .notes-tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); }
 @media (prefers-color-scheme: dark) {
   :root[data-style="classic"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #6f6861; --line: #e3dfda; --accent: #4a413a; --accent-soft: #efece8; --page: #2c2724; --page-deep: #221e1b; color-scheme: light; }
 }
@@ -982,3 +982,24 @@ main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc
   #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-h) - env(safe-area-inset-top)); overflow-y: auto; margin-top: 0; }
   #view-read .reader { max-width: 46em; }
 }
+
+/* ---------- Wooden Cross look: warm wood browns with gray and white, matched to the wooden cross picture ---------- */
+:root[data-style="wood"] {
+  --page: #4b3628; --page-deep: #3b2a1f; --on-page: #f6f1ea; --on-page-muted: #d2c2b0;
+  --bg: #ffffff; --surface: #ffffff; --text: #2b211a; --muted: #75685c; --line: #e6ddd2;
+  --accent: #7a5234; --accent-soft: #f3ece4; --warm: #9a6b45; --gold: #b48d5e; --verse: #a39383;
+  --sky-top: #ebe7e2; --sky-low: #fbfaf8; --far-hill: #cfc6bb;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-style="wood"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #2b211a; --muted: #75685c; --line: #e6ddd2; --accent: #7a5234; --accent-soft: #f3ece4; --page: #3b2a1f; --page-deep: #2e2118; color-scheme: light; }
+}
+:root[data-style="wood"] .cl-cross rect { fill: #7a5234; }
+:root[data-style="wood"] .cl-band { fill: #f5f0ea; stroke: #e6ddd2; }
+:root[data-style="wood"] .cl-leaf { fill: #8a8f74; stroke: #6b705a; }
+:root[data-style="wood"] .vine { opacity: .45; }
+:root[data-style="wood"] .vine .leaf { fill: #9a8a78; }
+.photo-scene { position: relative; display: block; width: calc(100% + 36px); margin: -22px -18px 16px; border-radius: 24px 24px 0 0; overflow: hidden; aspect-ratio: 360 / 170; background: #e9e4de; }
+.photo-scene > svg, .photo-scene > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
+.wood-grain { stroke: #5b3c25; stroke-opacity: .35; stroke-width: .8; fill: none; }

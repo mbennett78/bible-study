@@ -22,6 +22,7 @@ function applyAppearance() {
   const style = store.get("style");
   if (style === "sage") delete document.documentElement.dataset.style;
   else document.documentElement.dataset.style = style;
+  if (isStill(style)) document.documentElement.dataset.still = "1"; else delete document.documentElement.dataset.still;
   // Match the phone's status bar and Safari's edges to this look's page color.
   const page = getComputedStyle(document.documentElement).getPropertyValue("--page").trim();
   if (page) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = page; });
@@ -792,7 +793,7 @@ function renderKnowledge() {
 /* ---------- Celebrations ---------- */
 // Lively pictures get confetti. Still pictures and the Classic look get a quiet gold check instead.
 function celebrate(size = "big") {
-  if ((store.get("graphics") || "full") !== "full" || store.get("style") === "classic" || matchMedia("(prefers-reduced-motion: reduce)").matches) { quietCheck(); return; }
+  if ((store.get("graphics") || "full") !== "full" || isStill() || matchMedia("(prefers-reduced-motion: reduce)").matches) { quietCheck(); return; }
   confetti(size === "small" ? 50 : 120);
 }
 function quietCheck() {
@@ -822,7 +823,7 @@ function updateMascot() {
   $("#mascot").hidden = store.get("style") !== "animated" || store.get("graphics") !== "full" || (store.get("show") || {}).mascot === false;
   if (store.get("last")) renderPassageArt(store.get("last").book, store.get("last").chapter);
   $("#friendSlot").innerHTML = friend(friendWhich);
-  $("#flourish").innerHTML = store.get("style") === "classic" ? classicFlourish() : fishFlourish();
+  $("#flourish").innerHTML = isStill() ? classicFlourish() : fishFlourish();
   $("#studyScene").innerHTML = seaScene(store.get("style"));
   $("#vines").innerHTML = edgeVines();
   document.querySelectorAll(".art-slot").forEach((el) => { el.innerHTML = el.dataset.art === "scene" ? seaScene(store.get("style")) : fishStrip(store.get("style")); });
@@ -1024,7 +1025,9 @@ const FEATURES = [
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
 ];
-const LOOKS = [["classic", "Classic"], ["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]];
+const LOOKS = [["classic", "Classic"], ["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"], ["wood", "Wooden Cross"]];
+// The two still looks: no motion, no cartoons, no confetti.
+function isStill(style = store.get("style")) { return style === "classic" || style === "wood"; }
 const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
 function renderQuickMenu() {
   const chips = (list, cur, attr) => list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("");
@@ -1445,7 +1448,7 @@ function applyInvite(d) {
   if (d.to && !store.get("name").trim()) store.set("name", d.to);
   if (d.look && !(store.get("setup") || {}).look) {
     store.set("style", d.look);
-    if (d.look === "classic") store.set("graphics", "simple");
+    if (d.look === "classic" || d.look === "wood") store.set("graphics", "simple");
   }
   const ki = $("#apiBibleKey"); if (ki) ki.value = d.k;
 }

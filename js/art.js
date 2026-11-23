@@ -177,6 +177,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
   if (style === "classic") return classicScene({ height });
+  if (style === "wood") return woodScene();
   const W = 360, H = height, surf = 58, bottom = H - 8;
   const id = ++uid;
   const waveLine = (y, cls) => `<path class="${cls}" d="M-60 ${y} ${Array.from({ length: 16 }, () => "q 7.5 -4 15 0 t 15 0").join(" ")}"/>`;
@@ -241,7 +242,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
-  if (style === "classic") return classicStrip("Olive branches and a cross");
+  if (style === "classic" || style === "wood") return classicStrip("Olive branches and a cross");
   const id = ++uid, W = 360, H = 54;
   return `<svg class="fish-strip" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs><linearGradient id="st${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sea-top"/><stop offset="1" class="sea-deep"/></linearGradient>
@@ -294,7 +295,7 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
-  if (style === "classic") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and a cross") };
+  if (style === "classic" || style === "wood") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and a cross") };
   const id = ++uid;
   let art;
   if (kind === "sky") {
@@ -373,4 +374,24 @@ export function classicFlourish() {
     ${clLeaf(30, 26, -24, .8)}${clLeaf(30, 26, 24, .8)}${clLeaf(48, 26, -24, .8)}${clLeaf(48, 26, 24, .8)}
     ${clLeaf(130, 26, 204, .8)}${clLeaf(130, 26, 156, .8)}${clLeaf(112, 26, 204, .8)}${clLeaf(112, 26, 156, .8)}
     ${cross(80, 40, 30)}</svg>`;
+}
+
+/* ---------- Wooden Cross look ---------- */
+// Shows the wooden cross picture (img/wooden-cross.jpg) when it's in the app,
+// over a still drawn wooden cross that shows until then (or if it can't load).
+export function woodScene() {
+  const id = ++uid;
+  const grain = Array.from({ length: 6 }, (_, i) => `<path class="wood-grain" d="M${176 + i * 1.6} 30 C ${174 + i * 2} 70, ${178 + i * 1.4} 110, ${175 + i * 1.8} 150"/>`).join("")
+    + Array.from({ length: 4 }, (_, i) => `<path class="wood-grain" d="M140 ${56 + i * 2} C 160 ${54 + i * 2.4}, 200 ${58 + i * 1.6}, 220 ${55 + i * 2.2}"/>`).join("");
+  return `<figure class="scene photo-scene" role="img" aria-label="A wooden cross">
+    <svg viewBox="0 0 360 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><linearGradient id="wb${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f1ec"/><stop offset="1" stop-color="#d9d2c9"/></linearGradient>
+      <linearGradient id="ww${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6b4429"/><stop offset=".5" stop-color="#946640"/><stop offset="1" stop-color="#6b4429"/></linearGradient></defs>
+      <rect width="360" height="170" fill="url(#wb${id})"/>
+      <ellipse cx="180" cy="162" rx="90" ry="6" fill="#000" opacity=".08"/>
+      <rect x="168" y="26" width="24" height="134" rx="2" fill="url(#ww${id})"/>
+      <rect x="134" y="50" width="92" height="22" rx="2" fill="url(#ww${id})"/>${grain}
+    </svg>
+    <img src="img/wooden-cross.jpg" alt="" loading="lazy" onerror="this.remove()">
+  </figure>`;
 }
