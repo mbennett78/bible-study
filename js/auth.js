@@ -7,7 +7,7 @@ export const authEnabled = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey);
 let client = null;
 async function sb() {
   if (!client) {
-    // supabase-js 2.45.4 (MIT), kept in the app so sign-in doesn't depend on another website.
+    // supabase-js 2.117.3 (MIT), kept in the app so sign-in doesn't depend on another website.
     if (!window.supabase) await new Promise((ok, fail) => {
       const tag = Object.assign(document.createElement("script"), { src: "js/vendor/supabase.js", onload: ok, onerror: fail });
       document.head.append(tag);

@@ -3,8 +3,8 @@
 // what each person can see is enforced by Supabase, not by keeping these secret.
 // Never put the service_role / secret key here.
 window.BIBLE_CONFIG = {
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://cyelhrnrfbtfpeyrcxkv.supabase.co",
+  supabaseAnonKey: "sb_publishable_KxpSSotz-ak6XXOE92nSKQ_cypwLp7m",
 };
 // With sign-in on, hide the app until someone is signed in (no flash of the app first).
 if (window.BIBLE_CONFIG.supabaseUrl && window.BIBLE_CONFIG.supabaseAnonKey) document.documentElement.classList.add("auth-wait");
