@@ -1531,6 +1531,17 @@ $("#installBtn").addEventListener("click", async () => {
 });
 window.addEventListener("appinstalled", () => { $("#installCard").hidden = true; });
 
+// Updates: check for a new version each time the app opens or comes back to the screen,
+// and reload once onto it. Saved reading, notes and keys are kept (they live on the device).
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((reg) => {
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") reg.update().catch(() => {}); });
+  }).catch(() => {});
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadController || reloaded) return; // first install: nothing to refresh
+    reloaded = true;
+    location.reload();
+  });
 }
