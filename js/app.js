@@ -86,6 +86,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   renderNotes(book, chapter);
   renderPassageArt(book, chapter);
   renderMargin();
+  resetChat();
   friendWhich = friendWhich === "lamb" ? "donkey" : "lamb";
   if (store.get("style") === "animated") $("#friendSlot").innerHTML = friend(friendWhich);
   mascotSay(mascotLineFor(book, chapter));
@@ -700,11 +701,12 @@ function addMic(wrap, ta) {
 
 /* ---------- Study partner: the person's own AI helper ---------- */
 const PARTNERS = [
-  ["claude", "Claude", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
-  ["chatgpt", "ChatGPT", (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`],
-  ["grok", "Grok", (q) => `https://grok.com/?q=${encodeURIComponent(q)}`],
-  ["gemini", "Gemini", () => "https://gemini.google.com/app"],
+  ["claude", "Claude", "🧡", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
+  ["chatgpt", "ChatGPT", "💬", (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`],
+  ["grok", "Grok", "⚡", (q) => `https://grok.com/?q=${encodeURIComponent(q)}`],
+  ["gemini", "Gemini", "✨", () => "https://gemini.google.com/app"],
 ];
+const CHAT_IDEAS = ["What's the main point of this chapter?", "What was happening when this was written?", "How does this point to Jesus?", "What does a key word mean in the original language?", "How can I live this out this week?", "How would I explain this to a friend who isn't a believer?"];
 function partnerPrompt(question) {
   const { book, chapter } = store.get("last");
   const ver = (versionList().find(([v]) => v === store.get("version")) || ["", "NASB"])[1];
@@ -714,30 +716,58 @@ ${question.trim() || "Help me understand this chapter: what it says, the backgro
 
 Please keep Scripture first. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. When views differ, show the main ones fairly, and name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). Keep it warm and easy to follow.`;
 }
+const currentPartner = () => PARTNERS.find(([v]) => v === store.get("aiPartner"));
 function renderPartnerPicks() {
   const cur = store.get("aiPartner") || "";
   document.querySelectorAll(".partner-pick").forEach((el) => {
-    el.innerHTML = PARTNERS.map(([v, l]) => `<button type="button" data-partner="${v}" aria-pressed="${cur === v}">${l}</button>`).join("") + `<button type="button" data-partner="" aria-pressed="${!cur}">None</button>`;
-    el.querySelectorAll("[data-partner]").forEach((b) => b.addEventListener("click", () => { store.set("aiPartner", b.dataset.partner); renderPartnerPicks(); }));
+    el.innerHTML = PARTNERS.map(([v, l, icon]) => `<button type="button" class="chat-avatar-btn" data-partner="${v}" aria-pressed="${cur === v}"><span class="chat-emoji" aria-hidden="true">${icon}</span>${l}</button>`).join("")
+      + (el.id === "partnerPick" ? "" : `<button type="button" class="chat-avatar-btn" data-partner="" aria-pressed="${!cur}">None</button>`);
+    el.querySelectorAll("[data-partner]").forEach((b) => b.addEventListener("click", () => { store.set("aiPartner", b.dataset.partner); renderPartnerPicks(); resetChat(); }));
   });
-  const p = PARTNERS.find(([v]) => v === cur);
-  if ($("#partnerGo")) $("#partnerGo").textContent = p ? `Ask ${p[1]}` : "Pick a helper above";
-  if ($("#partnerHint")) $("#partnerHint").textContent = p ? `Talk this chapter over with ${p[1]}` : "Talk this chapter over with your AI helper";
+  const p = currentPartner();
+  if ($("#partnerHint")) $("#partnerHint").textContent = p ? `Talk this chapter over with ${p[1]} ${p[2]}` : "Talk this chapter over with your AI helper";
+}
+function chatBubble(who, text) {
+  const p = currentPartner();
+  const row = Object.assign(document.createElement("div"), { className: `chat-row ${who}` });
+  row.innerHTML = who === "me"
+    ? `<div class="chat-bubble">${esc(text)}</div><span class="chat-face" aria-hidden="true">🙂</span>`
+    : `<span class="chat-face" aria-hidden="true">${p ? p[2] : "📖"}</span><div class="chat-bubble">${esc(text)}</div>`;
+  $("#chatLog").append(row);
+  row.scrollIntoView({ block: "nearest" });
+}
+function resetChat() {
+  if (!$("#chatLog")) return;
+  const p = currentPartner();
+  const { book, chapter } = store.get("last");
+  $("#chatLog").innerHTML = "";
+  chatBubble("them", p
+    ? `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm ${p[1]}, your study partner. What would you like to talk about in ${BOOK_BY_ID[book].name} ${chapter}?`
+    : "Hi! Pick your study partner above: Claude, ChatGPT, Grok or Gemini. Then ask me anything about this chapter.");
+  $("#chatSuggest").innerHTML = CHAT_IDEAS.map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
+  $("#chatSuggest").querySelectorAll(".chat-idea").forEach((b) => b.addEventListener("click", () => { $("#partnerQ").value = b.textContent; sendChat(); }));
+}
+async function sendChat() {
+  const p = currentPartner();
+  const q = $("#partnerQ").value.trim();
+  if (!q) { $("#partnerQ").focus(); return; }
+  chatBubble("me", q);
+  $("#partnerQ").value = "";
+  if (!p) { chatBubble("them", "Pick Claude, ChatGPT, Grok or Gemini above first, then send again."); $("#partnerQ").value = q; return; }
+  const prompt = partnerPrompt(q);
+  let copied = false;
+  try { await navigator.clipboard.writeText(prompt); copied = true; } catch { /* not allowed */ }
+  window.open(p[3](prompt), "_blank", "noopener");
+  chatBubble("them", p[0] === "gemini"
+    ? `I opened Gemini for you. ${copied ? "Tap the message box there, paste, and send." : "Type your question there."} Come back here any time for the next question.`
+    : `I opened ${p[1]} with your question about this chapter ready. Press send there to see my answer. Come back here any time for the next question.`);
 }
 if ($("#partnerBox")) {
   renderPartnerPicks();
-  addMic($("#partnerQ").closest("label"), $("#partnerQ"));
-  $("#partnerGo").addEventListener("click", async () => {
-    const p = PARTNERS.find(([v]) => v === store.get("aiPartner"));
-    if (!p) { $("#partnerNote").textContent = "Pick Claude, ChatGPT, Grok or Gemini first."; return; }
-    const prompt = partnerPrompt($("#partnerQ").value);
-    let copied = false;
-    try { await navigator.clipboard.writeText(prompt); copied = true; } catch { /* not allowed */ }
-    window.open(p[2](prompt), "_blank", "noopener");
-    $("#partnerNote").textContent = p[0] === "gemini"
-      ? (copied ? "Gemini is open. Tap the message box, paste, and send." : "Gemini is open. Type your question there.")
-      : `${p[1]} is open with your question filled in. Check it and press send.${copied ? " It's also copied, in case you need to paste it." : ""}`;
-  });
+  resetChat();
+  if (canListen) { $("#partnerMic").hidden = false; dictateInto($("#partnerQ"), $("#partnerMic")); }
+  $("#partnerGo").addEventListener("click", sendChat);
+  $("#partnerQ").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } });
 }
 
 /* ---------- Books and music: Amazon searches, no store integration ---------- */

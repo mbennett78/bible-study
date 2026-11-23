@@ -110,12 +110,16 @@
           <div id="journalInner"></div>
         </details>
         <details class="tool-card partner" id="partnerBox">
-          <summary><span class="tool-icon" aria-hidden="true">✦</span><span><strong>Ask my study partner</strong><small id="partnerHint">Talk this chapter over with your AI helper</small></span></summary>
-          <div class="partner-inner">
-            <div class="qm-chips partner-pick" id="partnerPick"></div>
-            <label class="journal-box"><span class="jb-label">My question</span><textarea id="partnerQ" rows="3" placeholder="What would you like to ask about this chapter?"></textarea></label>
-            <button class="primary" id="partnerGo">Ask</button>
-            <p class="muted small-print" id="partnerNote">Opens your helper in a new tab with the chapter and your question filled in. Nothing is sent until you press send there.</p>
+          <summary><span class="tool-icon" aria-hidden="true">💬</span><span><strong>Chat with my study partner</strong><small id="partnerHint">Talk this chapter over with your AI helper</small></span></summary>
+          <div class="chat">
+            <div class="chat-pick partner-pick" id="partnerPick"></div>
+            <div class="chat-log" id="chatLog" aria-live="polite"></div>
+            <div class="chat-suggest" id="chatSuggest"></div>
+            <div class="chat-bar">
+              <textarea id="partnerQ" rows="1" placeholder="Type or talk your question…" aria-label="Your question"></textarea>
+              <button type="button" class="chat-mic" id="partnerMic" aria-label="Talk instead of type" aria-pressed="false" hidden>🎤</button>
+              <button type="button" class="chat-send" id="partnerGo" aria-label="Send">➤</button>
+            </div>
           </div>
         </details>
       </div>
