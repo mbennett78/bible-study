@@ -1247,3 +1247,12 @@ body.hide-visits #visitLine { display: none; }
 .chat { grid-template-columns: minmax(0, 1fr); width: 100%; min-width: 0; }
 .tool-card.partner { min-width: 0; }
 .tool-card.partner > .chat { flex-basis: 100%; }
+/* Built-in Bible helper: talk icon, answers that keep their line breaks, a "thinking" bubble */
+.talk-icon { width: 100%; height: 100%; display: block; }
+.chat-emoji .talk-icon, .chat-face .talk-icon { width: 78%; height: 78%; }
+.tool-icon.talk { padding: 4px; }
+.chat-bubble { white-space: pre-line; overflow-wrap: anywhere; }
+.chat-row.typing .chat-bubble { color: var(--muted); font-style: italic; }
+.chat-row.typing .chat-bubble::after { content: "…"; animation: chat-dots 1.2s steps(4) infinite; display: inline-block; width: 1.2em; overflow: hidden; vertical-align: bottom; }
+@keyframes chat-dots { from { width: 0 } to { width: 1.2em } }
+.chat-send:disabled { opacity: .5; }

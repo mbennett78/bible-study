@@ -114,3 +114,22 @@ export async function setFamilyKey({ k, b = "", l = "", x = [], e = "" }) {
   if (error && /extra_bibles/i.test(error.message || "")) ({ error } = await c.from("family_settings").upsert(row));
   if (error) throw new Error(/relation|does not exist|schema cache/i.test(error.message) ? "The family key table isn't set up in Supabase yet." : friendly(error));
 }
+
+// The built-in Bible helper (Supabase Edge Function "study-partner"). The AI key stays
+// in Supabase; the app only sends the chat and gets back an answer or a reason it can't.
+export async function askHelper({ messages, ref, version, name }) {
+  if (!authEnabled) return { error: "signin" };
+  try {
+    const c = await sb();
+    const { data: s } = await c.auth.getSession();
+    if (!s.session) return { error: "signin" };
+    const { data, error } = await c.functions.invoke("study-partner", { body: { messages, ref, version, name } });
+    if (!error) return data || { error: "busy" };
+    const res = error.context;
+    if (res && typeof res.json === "function") {
+      if (res.status === 404) return { error: "setup" };
+      try { return await res.json(); } catch { return { error: res.status === 401 ? "signin" : "busy" }; }
+    }
+    return { error: /fetch|network|relay/i.test(String(error.message)) ? "offline" : "setup" };
+  } catch { return { error: "offline" }; }
+}

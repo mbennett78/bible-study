@@ -6,7 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateI
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -699,8 +699,12 @@ function addMic(wrap, ta) {
   dictateInto(ta, b);
 }
 
-/* ---------- Study partner: the person's own AI helper ---------- */
+/* ---------- Study partner: the built-in Bible helper, or the person's own AI ---------- */
+// "" is the built-in helper: it answers right here in the chat, paid for by the family's
+// prepaid AI credits with daily and monthly limits (supabase/functions/study-partner).
+const TALK_ICON = `<svg class="talk-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 20c10 1 18 8 18 17 0 4-1.5 7.5-4 10.5l2 7-8-3c-2.5 1-5 1.5-8 1.5-8 0-15-4-17.5-10" fill="#fff" stroke="#4a7ba6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 8C15 8 6 16 6 26c0 4.5 2 8.5 5 11.5L8 46l10-4c3 1.3 6 2 9 2 12 0 21-8 21-18S39 8 27 8z" fill="#b3d6ee" stroke="#4a7ba6" stroke-width="3.5" stroke-linejoin="round"/><circle cx="17" cy="26" r="3" fill="#fff"/><circle cx="27" cy="26" r="3" fill="#fff"/><circle cx="37" cy="26" r="3" fill="#fff"/></svg>`;
 const PARTNERS = [
+  ...(authEnabled ? [["", "Bible helper", TALK_ICON, null]] : []),
   ["claude", "Claude", "🧡", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
   ["chatgpt", "ChatGPT", "💬", (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`],
   ["grok", "Grok", "⚡", (q) => `https://grok.com/?q=${encodeURIComponent(q)}`],
@@ -716,32 +720,71 @@ ${question.trim() || "Help me understand this chapter: what it says, the backgro
 
 Please keep Scripture first. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. When views differ, show the main ones fairly, and name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). Keep it warm and easy to follow.`;
 }
-const currentPartner = () => PARTNERS.find(([v]) => v === store.get("aiPartner"));
+const currentPartner = () => PARTNERS.find(([v]) => v === (store.get("aiPartner") || ""));
+const builtIn = (p) => p && p[0] === "";
 function renderPartnerPicks() {
   const cur = store.get("aiPartner") || "";
   document.querySelectorAll(".partner-pick").forEach((el) => {
     el.innerHTML = PARTNERS.map(([v, l, icon]) => `<button type="button" class="chat-avatar-btn" data-partner="${v}" aria-pressed="${cur === v}"><span class="chat-emoji" aria-hidden="true">${icon}</span>${l}</button>`).join("")
-      + (el.id === "partnerPick" ? "" : `<button type="button" class="chat-avatar-btn" data-partner="" aria-pressed="${!cur}">None</button>`);
+      + (el.id === "partnerPick" || authEnabled ? "" : `<button type="button" class="chat-avatar-btn" data-partner="" aria-pressed="${!cur}">None</button>`);
     el.querySelectorAll("[data-partner]").forEach((b) => b.addEventListener("click", () => { store.set("aiPartner", b.dataset.partner); renderPartnerPicks(); resetChat(); }));
   });
   const p = currentPartner();
-  if ($("#partnerHint")) $("#partnerHint").textContent = p ? `Talk this chapter over with ${p[1]} ${p[2]}` : "Talk this chapter over with your AI helper";
+  if ($("#partnerHint")) $("#partnerHint").textContent = builtIn(p) ? "Ask questions and get answers right here" : p ? `Talk this chapter over with ${p[1]} ${p[2]}` : "Talk this chapter over with your AI helper";
 }
-function chatBubble(who, text) {
+function chatBubble(who, text, extra = "") {
   const p = currentPartner();
-  const row = Object.assign(document.createElement("div"), { className: `chat-row ${who}` });
+  const row = Object.assign(document.createElement("div"), { className: `chat-row ${who} ${extra}`.trim() });
   row.innerHTML = who === "me"
     ? `<div class="chat-bubble">${esc(text)}</div><span class="chat-face" aria-hidden="true">🙂</span>`
     : `<span class="chat-face" aria-hidden="true">${p ? p[2] : "📖"}</span><div class="chat-bubble">${esc(text)}</div>`;
   $("#chatLog").append(row);
   row.scrollIntoView({ block: "nearest" });
+  return row;
+}
+let chatTurns = [];   // this chapter's conversation with the built-in helper
+let chatBusy = false;
+const HELPER_SAYS = {
+  signin: "Please sign in first (Settings, then Account) so I can answer you here.",
+  setup: "The built-in helper isn't turned on yet. Whoever set up the app can switch it on. For now you can tap Claude, ChatGPT, Grok or Gemini above.",
+  monthly: "The family has used this month's questions, so I'm resting until next month. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  credits: "The family's helper has used up its prepaid credits, so I'm resting for now. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  offline: "I couldn't connect. Check your internet and try again.",
+  refused: "I'm not able to help with that one. Try asking another way, or talk it over with someone you trust.",
+  busy: "I'm a little busy right now. Please try again in a minute.",
+};
+async function askBuiltIn(q) {
+  const { book, chapter } = store.get("last");
+  const ver = (versionList().find(([v]) => v === store.get("version")) || ["", "NASB"])[1];
+  chatTurns.push({ role: "user", content: q });
+  chatBusy = true; $("#partnerGo").disabled = true;
+  const wait = chatBubble("them", "Thinking", "typing");
+  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "" });
+  wait.remove();
+  chatBusy = false; $("#partnerGo").disabled = false;
+  if (r && r.text) {
+    const text = String(r.text).replace(/\*\*|__/g, "").replace(/^#+\s*/gm, "");
+    chatTurns.push({ role: "assistant", content: text });
+    chatBubble("them", typeof r.left === "number" && r.left <= 3
+      ? `${text}\n\n(${r.left === 0 ? "That was your last question for today." : `${r.left} question${r.left === 1 ? "" : "s"} left today.`})`
+      : text);
+    return;
+  }
+  chatTurns.pop();
+  const why = r?.error || "busy";
+  chatBubble("them", why === "daily"
+    ? `You've asked ${r.limit || "all your"} questions today, which is the daily limit. Let's pick it up tomorrow! You can also tap Claude, ChatGPT, Grok or Gemini above.`
+    : HELPER_SAYS[why] || HELPER_SAYS.busy);
 }
 function resetChat() {
   if (!$("#chatLog")) return;
   const p = currentPartner();
   const { book, chapter } = store.get("last");
   $("#chatLog").innerHTML = "";
-  chatBubble("them", p
+  chatTurns = [];
+  chatBubble("them", builtIn(p)
+    ? `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm your Bible helper. Ask me anything about ${BOOK_BY_ID[book].name} ${chapter} and I'll answer right here.`
+    : p
     ? `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm ${p[1]}, your study partner. What would you like to talk about in ${BOOK_BY_ID[book].name} ${chapter}?`
     : "Hi! Pick your study partner above: Claude, ChatGPT, Grok or Gemini. Then ask me anything about this chapter.");
   $("#chatSuggest").innerHTML = CHAT_IDEAS.map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
@@ -751,8 +794,10 @@ async function sendChat() {
   const p = currentPartner();
   const q = $("#partnerQ").value.trim();
   if (!q) { $("#partnerQ").focus(); return; }
+  if (chatBusy) return;
   chatBubble("me", q);
   $("#partnerQ").value = "";
+  if (builtIn(p)) { await askBuiltIn(q); return; }
   if (!p) { chatBubble("them", "Pick Claude, ChatGPT, Grok or Gemini above first, then send again."); $("#partnerQ").value = q; return; }
   const prompt = partnerPrompt(q);
   let copied = false;
