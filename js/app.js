@@ -6,6 +6,7 @@ import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
+import { authEnabled, currentUser, sendCode, verifyCode, signOut } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -938,7 +939,7 @@ const SETUP_STEPS = [
   { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
   { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
   { id: "path", title: "Your study path", done: () => Boolean(store.get("activePath")) },
-  { id: "account", title: "Your account", done: () => false, soon: true },
+  { id: "account", title: "Your account", done: () => Boolean(signedInUser), soon: !authEnabled },
 ];
 let setupAt = 0;
 function setupSet(patch) { store.set("setup", { ...(store.get("setup") || {}), ...patch }); }
@@ -996,9 +997,12 @@ function renderSetup() {
       <div class="setup-paths">${PATH_ORDER.map((id) => `<button class="setup-path" data-s-path="${id}" aria-pressed="${active === id}"><span class="pc-icon">${PATH_ICONS[id]}</span><span><strong>${esc(PATH_BY_ID[id].name)}</strong><small>${esc(PATH_BY_ID[id].blurb)}</small></span></button>`).join("")}</div>`;
     body.querySelectorAll("[data-s-path]").forEach((b) => b.addEventListener("click", () => { store.startPath(b.dataset.sPath); updatePathBits(); renderSetup(); }));
   } else {
-    body.innerHTML = `<h2 class="setup-h">Your account</h2>
-      <p class="muted">Family accounts are being set up next. When they're ready, you'll sign in here with your email so your progress, journal and key follow you to any device, and you can change your login any time in Settings.</p>
-      <p class="muted small-print">For now everything is saved on this device. Tap Finish to start reading.</p>`;
+    body.innerHTML = signedInUser
+      ? `<h2 class="setup-h">Your account</h2><p>You're signed in as <strong>${esc(signedInUser.email || "")}</strong>.</p>
+        <p class="muted small-print">This device stays signed in. You can sign out any time in Settings, under Account. Tap Finish to start reading.</p>`
+      : `<h2 class="setup-h">Your account</h2>
+        <p class="muted">Family sign-in isn't switched on yet. Once it is, everyone signs in with their own email, and you'll see your account in Settings.</p>
+        <p class="muted small-print">For now everything is saved on this device. Tap Finish to start reading.</p>`;
   }
 }
 $("#setupNext").addEventListener("click", () => { if (setupAt < SETUP_STEPS.length - 1) { setupAt += 1; renderSetup(); } else closeSetup(true); });
@@ -1425,6 +1429,63 @@ $("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
 }
 
 
+
+/* ---------- Family sign-in ---------- */
+// When sign-in is on (js/config.js has the Supabase details), nobody gets past this
+// screen until they sign in. A sign-in stays on the device until they sign out.
+let signedInUser = null;
+function showGate() {
+  return new Promise((resolve) => {
+    const gate = $("#gate");
+    $("#gateArt").innerHTML = seaScene(store.get("style"));
+    gate.hidden = false;
+    const emailForm = $("#gateEmailForm"), codeForm = $("#gateCodeForm"), err = $("#gateErr"), msg = $("#gateMsg");
+    let email = "";
+    emailForm.onsubmit = async (e) => {
+      e.preventDefault();
+      email = $("#gateEmail").value.trim().toLowerCase();
+      if (!email) return;
+      err.textContent = ""; const btn = emailForm.querySelector("button"); btn.disabled = true; btn.textContent = "Sending…";
+      try {
+        await sendCode(email);
+        emailForm.hidden = true; codeForm.hidden = false;
+        msg.textContent = `We emailed a code to ${email}. It can take a minute to arrive. Check spam if you don't see it.`;
+        $("#gateCode").value = ""; $("#gateCode").focus();
+      } catch (x) { err.textContent = x.message; }
+      btn.disabled = false; btn.textContent = "Send my code";
+    };
+    codeForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const code = $("#gateCode").value.replace(/\D/g, "");
+      if (code.length < 6) { err.textContent = "Type the code from your email."; return; }
+      err.textContent = ""; const btn = codeForm.querySelector("button"); btn.disabled = true; btn.textContent = "Signing in…";
+      try {
+        const user = await verifyCode(email, code);
+        gate.hidden = true;
+        document.documentElement.classList.remove("auth-wait");
+        resolve(user);
+      } catch (x) { err.textContent = x.message; }
+      btn.disabled = false; btn.textContent = "Sign in";
+    };
+    $("#gateBack").onclick = () => { codeForm.hidden = true; emailForm.hidden = false; err.textContent = ""; msg.textContent = "Sign in with the email your family added."; };
+  });
+}
+function renderAccount() {
+  const el = $("#accountBody");
+  if (!el) return;
+  if (!authEnabled) return;
+  el.innerHTML = signedInUser
+    ? `<p class="account-line">Signed in as <strong>${esc(signedInUser.email || "")}</strong></p>
+       <p class="muted small-print">This device stays signed in until you sign out. Your reading, notes and journal are saved on this device.</p>
+       <button class="small" id="signOutBtn">Sign out</button>`
+    : `<p class="muted small-print">Not signed in.</p>`;
+  $("#signOutBtn")?.addEventListener("click", async () => {
+    if (!confirm("Sign out of Bible Study on this device?")) return;
+    await signOut();
+    location.reload();
+  });
+}
+
 /* ---------- Invite: share this device's Bible key with someone at home ---------- */
 // The invite carries the key in the part of the link after "#", which browsers never send
 // to the website, so the key goes only from one phone to the other.
@@ -1493,6 +1554,12 @@ function wireShareKey() {
 
 /* ---------- Start ---------- */
 applyAppearance();
+if (authEnabled) {
+  signedInUser = await currentUser();
+  if (!signedInUser) signedInUser = await showGate();
+  document.documentElement.classList.remove("auth-wait");
+}
+renderAccount();
 syncVersionSwitch();
 initSettings();
 setRate(store.get("voiceRate"));

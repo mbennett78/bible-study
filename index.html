@@ -15,6 +15,7 @@
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="js/config.js"></script>
 </head>
 <body>
   <div id="vines" aria-hidden="true"></div>
@@ -158,8 +159,7 @@
 
       <div class="card" id="accountCard">
         <h2>Account</h2>
-        <p class="muted small-print">Family accounts are coming next. Once they're on, this is where you'll sign in, change your email or password, and sign out. Your progress, journal and key will then follow you to any device.</p>
-        <button class="small" disabled>Sign in (coming soon)</button>
+        <div id="accountBody"><p class="muted small-print">Family sign-in isn't switched on yet. Once it is, everyone signs in with their own email, and this is where you'll see who's signed in and sign out.</p></div>
       </div>
 
       <div class="card" id="installCard">
@@ -373,6 +373,23 @@
     </button>
   </nav>
 
+  <div id="gate" class="gate" hidden>
+    <div class="gate-card">
+      <div class="gate-art" id="gateArt"></div>
+      <h1>Bible Study</h1>
+      <p class="muted" id="gateMsg">Sign in with the email your family added.</p>
+      <form id="gateEmailForm" class="gate-form">
+        <label class="field">Email<input id="gateEmail" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" required></label>
+        <button class="primary" type="submit">Send my code</button>
+      </form>
+      <form id="gateCodeForm" class="gate-form" hidden>
+        <label class="field">Code from your email<input id="gateCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" required></label>
+        <button class="primary" type="submit">Sign in</button>
+        <button class="quiet-link" type="button" id="gateBack">Use a different email or send a new code</button>
+      </form>
+      <p class="gate-err" id="gateErr" role="alert"></p>
+    </div>
+  </div>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

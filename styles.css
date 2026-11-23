@@ -164,7 +164,7 @@ main { max-width: 720px; margin: 0 auto; padding: 8px 12px 32px; }
 .path-cards { margin-top: 16px; }
 .soon { font-size: .75rem; color: var(--accent); font-weight: 600; }
 .field { display: block; font-size: .9rem; margin-bottom: 14px; }
-.field input[type="password"], .field input[type="text"], .field select {
+.field input[type="password"], .field input[type="text"], .field input[type="email"], .field select {
   display: block; width: 100%; margin-top: 6px; padding: 10px 12px;
   border: 1px solid var(--line); border-radius: 10px; background: var(--bg); font-size: 16px;
 }
@@ -1012,3 +1012,20 @@ main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc
 .photo-scene > img { object-position: 50% 30%; }
 @media (min-width: 760px) { .photo-scene { aspect-ratio: 16 / 10; } .photo-scene > img { object-position: 50% 17%; } }
 .wood-grain { stroke: #5b3c25; stroke-opacity: .35; stroke-width: .8; fill: none; }
+
+/* ---------- Family sign-in screen ---------- */
+html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
+.gate { position: fixed; inset: 0; z-index: 1000; background: var(--page); display: grid; place-items: center; padding: calc(20px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom)); overflow-y: auto; }
+.gate[hidden] { display: none; }
+.gate-card { width: min(100%, 440px); background: var(--bg); color: var(--text); border-radius: 24px; padding: 0 22px 24px; box-shadow: 0 16px 40px rgb(0 0 0 / .3); overflow: hidden; }
+.gate-art { margin: 0 -22px 14px; }
+.gate-art .scene, .gate-art .photo-scene { width: 100%; margin: 0; border-radius: 0; }
+.gate-art .photo-scene { aspect-ratio: 16 / 10; }
+.gate-card h1 { margin-top: 4px; }
+.gate-form { display: grid; gap: 10px; margin-top: 10px; }
+.gate-form input { font-size: 1.1rem; letter-spacing: .02em; }
+#gateCode { font-size: 1.5rem; letter-spacing: .3em; text-align: center; }
+.gate-form .primary { padding: 12px; border-radius: 12px; border: 0; background: var(--accent); color: var(--bg); font-weight: 600; font-size: 1rem; }
+.gate-err { color: #a33a2a; min-height: 1.2em; margin: 10px 0 0; font-size: .92rem; }
+.account-line { margin: 4px 0 10px; }
+.gate-form[hidden] { display: none; }

@@ -14,6 +14,9 @@ async function getChapter(version, book, ch) {
   return { html: `<div class="message"><strong>Preview</strong>The ${version} text of ${name} ${ch} will appear here once the app is on its own web address and your free key is in Settings. Everything else works here: paths, progress, trivia, journal, history, favorites and drive mode.</div>`, copyright: "", label: version };
 }
 async function searchBible() { throw new TextError("Word search works once the app is on its own web address with your key.", "preview"); }
+const authEnabled = false; // family sign-in is off in the preview
+async function currentUser() { return null; }
+async function sendCode() {} async function verifyCode() {} async function signOut() {}
 function bibleGatewayUrl(version, book, ch) {
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${version === "ESV" ? "ESV" : "NASB"}`;
 }
@@ -28,5 +31,5 @@ for f in files:
 js = '\n'.join(parts)
 js = re.sub(r'^import [\s\S]*?;\s*$', '', js, flags=re.M)
 js = re.sub(r'^export (const|function|class|async function)', r'\1', js, flags=re.M)
-js = js.replace('if ("serviceWorker" in navigator) {\n  navigator.serviceWorker.register("sw.js").catch(() => {});\n}', '')
-open(out, 'w').write(f'<title>Bible Study</title>\n<style>\n{css}\n</style>\n{body}\n<script>\n(() => {{\n{js}\n}})();\n</script>\n')
+js = re.sub(r'\nif \("serviceWorker" in navigator\) \{[\s\S]*?\n\}\n', '\n', js)
+open(out, 'w').write(f'<title>Bible Study</title>\n<style>\n{css}\n</style>\n{body}\n<script>\n(async () => {{\n{js}\n}})();\n</script>\n')
