@@ -4,7 +4,8 @@ const KEY = "bible-study:v1";
 const defaults = {
   version: "NASB",          // "NASB" | "ESV" | "B:<API.Bible id>" for an extra version
   extraBibles: [],
-  voiceName: "",            // the reader voice picked on this device ("" = automatic)          // more versions from the same API.Bible plan: [{ id, label }]
+  voiceName: "",
+  aiPartner: "",            // "claude" | "chatgpt" | "grok" | "gemini" | "" (none)            // the reader voice picked on this device ("" = automatic)          // more versions from the same API.Bible plan: [{ id, label }]
   apiBibleKey: "",
   esvKey: "",
   nasbBibleId: "",          // API.Bible id for the chosen NASB edition

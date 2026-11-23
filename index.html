@@ -82,7 +82,7 @@
             <option value="0.8">Slow</option><option value="1">Normal</option><option value="1.2">Brisk</option>
           </select>
         </label>
-        <label class="drive-switch">Drive mode <input type="checkbox" role="switch" id="driveQuick" aria-label="Drive mode"></label>
+        <label class="drive-switch">Keep reading <input type="checkbox" role="switch" id="driveQuick" aria-label="Keep reading into the next chapter"></label>
       </div>
       <p class="visit-line" id="visitLine"></p>
       <article class="reader" id="reader" aria-live="polite"></article>
@@ -108,6 +108,15 @@
         <details class="tool-card journal" id="journalBox">
           <summary><span class="tool-icon" aria-hidden="true">✎</span><span><strong>My journal</strong><small id="journalHint">Thoughts and feelings on this chapter</small></span></summary>
           <div id="journalInner"></div>
+        </details>
+        <details class="tool-card partner" id="partnerBox">
+          <summary><span class="tool-icon" aria-hidden="true">✦</span><span><strong>Ask my study partner</strong><small id="partnerHint">Talk this chapter over with your AI helper</small></span></summary>
+          <div class="partner-inner">
+            <div class="qm-chips partner-pick" id="partnerPick"></div>
+            <label class="journal-box"><span class="jb-label">My question</span><textarea id="partnerQ" rows="3" placeholder="What would you like to ask about this chapter?"></textarea></label>
+            <button class="primary" id="partnerGo">Ask</button>
+            <p class="muted small-print" id="partnerNote">Opens your helper in a new tab with the chapter and your question filled in. Nothing is sent until you press send there.</p>
+          </div>
         </details>
       </div>
       <nav class="chapter-nav" aria-label="Chapter navigation">
@@ -184,6 +193,12 @@
         </label>
       </div>
 
+      <div class="card" id="partnerCard">
+        <h2>Study partner (AI)</h2>
+        <p class="muted small-print">Pick the AI helper you already use. Under each chapter, "Ask my study partner" opens it with the chapter and your question ready to send. It uses your own account with that helper.</p>
+        <div class="qm-chips partner-pick" id="partnerPickSettings"></div>
+      </div>
+
       <div class="card">
         <h2>Journal passcode</h2>
         <p class="muted small-print" id="lockStatus"></p>
@@ -200,7 +215,7 @@
       <div class="card">
         <h2>Modes</h2>
         <label class="switch-row"><span>One-year pace<small>Suggest today's reading to finish your path in a year, and adjust if you fall behind</small></span><input type="checkbox" id="modePace" role="switch"></label>
-        <label class="switch-row"><span>Drive mode<small>Big buttons, reads aloud chapter after chapter</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
+        <label class="switch-row"><span>Keep reading<small>Read aloud goes on to the next chapter by itself</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
         <label class="switch-row"><span>Voice commands<small>Say "next", "pause", "play", "repeat" or "mark read"</small></span><input type="checkbox" id="modeVoice" role="switch"></label>
         <label class="field">Reader voice
           <select class="voice-select"></select>

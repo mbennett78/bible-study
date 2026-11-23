@@ -82,6 +82,29 @@ export class Reader {
 
 // Listens for a few short commands. Pauses itself while the app is speaking
 // so it doesn't hear its own voice.
+// Talk instead of type: fills a text box from the microphone until stopped.
+export function dictateInto(field, button) {
+  if (!canListen) return null;
+  let rec = null;
+  const stop = () => { try { rec?.stop(); } catch { /* stopped */ } rec = null; button.classList.remove("on"); button.setAttribute("aria-pressed", "false"); };
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (rec) { stop(); return; }
+    rec = new Recognition();
+    rec.lang = "en-US"; rec.continuous = true; rec.interimResults = false;
+    rec.onresult = (ev) => {
+      const said = ev.results[ev.results.length - 1][0].transcript.trim();
+      if (!said) return;
+      field.value = (field.value && !/\s$/.test(field.value) ? field.value + " " : field.value) + said;
+      field.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+    rec.onend = () => stop();
+    rec.onerror = () => stop();
+    try { rec.start(); button.classList.add("on"); button.setAttribute("aria-pressed", "true"); } catch { stop(); }
+  });
+  return stop;
+}
+
 export class Commands {
   constructor(handlers) {
     this.handlers = handlers;

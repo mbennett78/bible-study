@@ -2,7 +2,7 @@ import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
-import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices } from "./speech.js";
+import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
@@ -431,7 +431,7 @@ document.querySelectorAll(".voice-select").forEach((sel) => sel.addEventListener
 fillVoices();
 if (canSpeak) speechSynthesis.addEventListener?.("voiceschanged", fillVoices);
 $("#listenBtn").hidden = !canSpeak;
-$("#listenBtn").addEventListener("click", () => { if (driveOn()) openDrive(); else reader.toggle(); });
+$("#listenBtn").addEventListener("click", () => reader.toggle());
 
 let wakeLock = null;
 async function keepAwake(on) {
@@ -673,6 +673,7 @@ function renderJournal() {
       t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = "Saved just now"; }, 500);
     });
     wrap.append(ta);
+    addMic(wrap, ta);
     if (box.field === "prayer") {
       const ans = Object.assign(document.createElement("label"), { className: "answered" });
       ans.innerHTML = `<input type="checkbox" ${entry?.answered ? "checked" : ""}> Answered${entry?.answered ? ` <span class="muted">· ${fmtDate(entry.answered)}</span>` : ""}`;
@@ -687,6 +688,57 @@ function renderJournal() {
   }
   inner.append(saved);
 }
+// A microphone button beside a text box: talk instead of type (where the browser allows it).
+function addMic(wrap, ta) {
+  if (!canListen) return;
+  const b = Object.assign(document.createElement("button"), { type: "button", className: "mic-btn", textContent: "🎤 Talk" });
+  b.setAttribute("aria-label", "Talk instead of type"); b.setAttribute("aria-pressed", "false");
+  wrap.append(b);
+  dictateInto(ta, b);
+}
+
+/* ---------- Study partner: the person's own AI helper ---------- */
+const PARTNERS = [
+  ["claude", "Claude", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
+  ["chatgpt", "ChatGPT", (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`],
+  ["grok", "Grok", (q) => `https://grok.com/?q=${encodeURIComponent(q)}`],
+  ["gemini", "Gemini", () => "https://gemini.google.com/app"],
+];
+function partnerPrompt(question) {
+  const { book, chapter } = store.get("last");
+  const ver = (versionList().find(([v]) => v === store.get("version")) || ["", "NASB"])[1];
+  return `I'm studying ${BOOK_BY_ID[book].name} ${chapter} (${ver}) and I'd like you to be my Bible study partner.
+
+${question.trim() || "Help me understand this chapter: what it says, the background, and how it connects to the rest of the Bible."}
+
+Please keep Scripture first. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. When views differ, show the main ones fairly, and name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). Keep it warm and easy to follow.`;
+}
+function renderPartnerPicks() {
+  const cur = store.get("aiPartner") || "";
+  document.querySelectorAll(".partner-pick").forEach((el) => {
+    el.innerHTML = PARTNERS.map(([v, l]) => `<button type="button" data-partner="${v}" aria-pressed="${cur === v}">${l}</button>`).join("") + `<button type="button" data-partner="" aria-pressed="${!cur}">None</button>`;
+    el.querySelectorAll("[data-partner]").forEach((b) => b.addEventListener("click", () => { store.set("aiPartner", b.dataset.partner); renderPartnerPicks(); }));
+  });
+  const p = PARTNERS.find(([v]) => v === cur);
+  if ($("#partnerGo")) $("#partnerGo").textContent = p ? `Ask ${p[1]}` : "Pick a helper above";
+  if ($("#partnerHint")) $("#partnerHint").textContent = p ? `Talk this chapter over with ${p[1]}` : "Talk this chapter over with your AI helper";
+}
+if ($("#partnerBox")) {
+  renderPartnerPicks();
+  addMic($("#partnerQ").closest("label"), $("#partnerQ"));
+  $("#partnerGo").addEventListener("click", async () => {
+    const p = PARTNERS.find(([v]) => v === store.get("aiPartner"));
+    if (!p) { $("#partnerNote").textContent = "Pick Claude, ChatGPT, Grok or Gemini first."; return; }
+    const prompt = partnerPrompt($("#partnerQ").value);
+    let copied = false;
+    try { await navigator.clipboard.writeText(prompt); copied = true; } catch { /* not allowed */ }
+    window.open(p[2](prompt), "_blank", "noopener");
+    $("#partnerNote").textContent = p[0] === "gemini"
+      ? (copied ? "Gemini is open. Tap the message box, paste, and send." : "Gemini is open. Type your question there.")
+      : `${p[1]} is open with your question filled in. Check it and press send.${copied ? " It's also copied, in case you need to paste it." : ""}`;
+  });
+}
+
 /* ---------- Daily life journal ---------- */
 const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
 const dayLabel = (day) => new Date(`${day}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
@@ -713,6 +765,7 @@ function renderDiaryToday() {
     let t;
     ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setDiaryField(day, box.field, ta.value); saved.textContent = "Saved just now"; renderJournalList(); }, 600); });
     wrap.append(ta);
+    addMic(wrap, ta);
     card.append(wrap);
   }
   card.append(saved);
@@ -1418,7 +1471,6 @@ function renderHome() {
       <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>
       <div class="jump-results" id="homeJumpResults"><span class="hint">Reading outside your path is fine. Your path keeps its place.</span></div>
     </div>
-    <label class="home-drive"><span><strong>Drive mode</strong><small>Big buttons and reading aloud, chapter after chapter</small></span><input type="checkbox" role="switch" id="homeDrive" aria-label="Drive mode"></label>
     ${archiveHtml()}
     <div class="home-end"></div>${cornerSprig()}${cornerSprig(true)}`;
   $("#resumeBtn").addEventListener("click", () => { showView("read"); openChapter(resume.go.book, resume.go.chapter); });
@@ -1426,8 +1478,6 @@ function renderHome() {
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
-  $("#homeDrive").checked = driveOn();
-  $("#homeDrive").addEventListener("change", (e) => setDrive(e.target.checked));
 }
 
 /* ---------- Seasonal prayers for the Easter, Thanksgiving and Christmas looks ---------- */
@@ -1557,7 +1607,8 @@ function setRate(r) {
 function setDrive(on) {
   store.setMode("drive", on);
   for (const sel of ["#modeDrive", "#driveQuick", "#homeDrive"]) { const el = $(sel); if (el) el.checked = on; }
-  if (on) { showView("read"); openDrive(); } else if (!$("#drive").hidden) closeDrive();
+  // "Keep reading": read aloud carries on into the next chapter. The old big-button Drive screen is retired.
+  if (!$("#drive").hidden) closeDrive();
 }
 $("#playBtn").hidden = !canSpeak;
 $("#playBtn").addEventListener("click", () => reader.toggle());
@@ -1754,7 +1805,7 @@ setRate(store.get("voiceRate"));
 $("#driveQuick").checked = driveOn();
 const start = store.get("last");
 openChapter(start.book, start.chapter);
-if (driveOn()) openDrive();
+
 updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
