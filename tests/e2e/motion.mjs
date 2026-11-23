@@ -28,6 +28,20 @@ try {
     check(`${style}: Still pictures stay still`, still.n === 0, String(still.n));
     check(`${style}: no page errors`, !lively.errors.length && !still.errors.length, [...lively.errors, ...still.errors].join(" | "));
   }
+  // Indoors (Thanksgiving): birds fly only in the window, never over the walls, and candles flicker.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    await ctx.addInitScript(() => localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, style: "fall", graphics: "full" })));
+    const page = await ctx.newPage();
+    await page.goto(site.url); await page.waitForTimeout(700);
+    const birdsOut = await page.evaluate(() => [...document.querySelectorAll("#homeView .theme-fall .m-bird")].filter((b) => !b.closest(".scene-sky[clip-path]")).length);
+    const birdsIn = await page.$$eval("#homeView .theme-fall .scene-sky .m-bird", (l) => l.length);
+    check("Thanksgiving: birds stay inside the window", birdsIn > 0 && birdsOut === 0, `${birdsIn} in, ${birdsOut} out`);
+    const flames = await page.evaluate(() => [...document.querySelectorAll("#homeView .theme-fall .flame, #homeView .theme-fall .candle-glow")].filter((f) => f.getAnimations().some((a) => a.playState === "running")).length);
+    check("Thanksgiving: candles flicker", flames >= 4, String(flames));
+    await ctx.close();
+  }
   for (const style of ["classic", "sage", "animated"]) {
     const calm = await moving({ style, graphics: "full", reduce: true });
     check(`${style}: a device set to reduce motion stays still`, calm.n === 0, String(calm.n));

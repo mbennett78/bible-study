@@ -488,7 +488,7 @@ const chalice = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})
   <ellipse class="wine" cx="0" cy="-33" rx="10" ry="2.2"/><path class="cup-shine" d="M-7 -30 C -7 -24, -4 -20, -2 -18" stroke-width="1.2" fill="none"/></g>`;
 const grapes = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[[0, -4], [-4, -8], [4, -8], [-6, -13], [0, -12], [6, -13], [-3, -17], [3, -17], [0, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M0 -23 C 1 -27, 4 -28, 6 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M2 -25 C 8 -32, 16 -28, 14 -22 C 10 -22, 6 -22, 2 -25 Z"/></g>`;
 const candle = (x, y, s = 1) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})"><defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs>
-  <circle r="22" cy="-30" fill="url(#${gid})"/><rect class="candle-body" x="-3.5" y="-24" width="7" height="24" rx="1"/><path class="flame" d="M0 -36 C 3 -31, 3 -27, 0 -25 C -3 -27, -3 -31, 0 -36 Z"/><rect class="candle-dish" x="-8" y="-1.5" width="16" height="3" rx="1.5"/></g>`; };
+  <circle class="candle-glow" r="22" cy="-30" fill="url(#${gid})"/><rect class="candle-body" x="-3.5" y="-24" width="7" height="24" rx="1"/><path class="flame" style="animation-delay:-${(uid % 4) * .35}s" d="M0 -36 C 3 -31, 3 -27, 0 -25 C -3 -27, -3 -31, 0 -36 Z"/><rect class="candle-dish" x="-8" y="-1.5" width="16" height="3" rx="1.5"/></g>`; };
 // Bigger nativity pieces for Christmas
 const sheep = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})"><g class="wool">${[[-6, -8], [0, -10], [6, -8], [-3, -5], [4, -5]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5"/>`).join("")}</g>
   <ellipse class="sheep-head" cx="11" cy="-10" rx="3.6" ry="2.8"/><path class="sheep-legs" d="M-5 -2 L -5 2 M 4 -2 L 4 2" stroke-width="1.6"/></g>`;
@@ -573,11 +573,12 @@ export function themeScene(theme, { height = 170 } = {}) {
     defs = grad([[0, "#efe0c4"], [1, "#e4cfa9"]]) + `<linearGradient id="${wid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset=".7" stop-color="#e29a55"/><stop offset="1" stop-color="#b5652e"/></linearGradient>`;
     const top = H - 52;
     art = `<path class="wall-shade" d="M0 0 H 360 V ${top} H 0 Z" opacity=".0"/>
-      <g class="supper-window"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z" fill="url(#${wid})"/>
+      <clipPath id="${wid}c"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z"/></clipPath>
+      <g class="supper-window"><g class="scene-sky" clip-path="url(#${wid}c)"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z" fill="url(#${wid})"/>
         <path class="field far" d="M134 ${top - 30} C 160 ${top - 40}, 200 ${top - 38}, 226 ${top - 30} L 226 ${top - 4} L 134 ${top - 4} Z"/>
         ${cross(198, top - 34, 22)}
-        ${birds([[150, 40, .5, 30, 6], [164, 34, .4, 30, 6.4]], 226)}
-        <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/>
+        ${across([[150, 40, .5, 22, 6], [164, 34, .4, 22, 6.4]], bird, 226)}
+        <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/></g>
         <path class="window-frame" d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z M 180 12 L 180 ${top - 4} M 134 ${top - 46} L 226 ${top - 46}" fill="none" stroke-width="4"/>
         <rect class="window-sill" x="126" y="${top - 6}" width="108" height="6" rx="2"/></g>
       ${breeze(wheat(64, top - 6, 1.25), 0)}${breeze(wheat(300, top - 6, 1.15), 3)}

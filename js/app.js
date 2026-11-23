@@ -1385,6 +1385,12 @@ let SETUP_STEPS = [
 ];
 if (!authEnabled) SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "password");
 let setupAt = 0;
+// "new": nothing chosen yet on this device. "started": begun but not finished. "done": finished or put off.
+function setupState() {
+  const su = store.get("setup") || {};
+  if (su.done || su.skipped) return "done";
+  return store.get("name").trim() || su.look || su.password ? "started" : "new";
+}
 function setupSet(patch) { store.set("setup", { ...(store.get("setup") || {}), ...patch }); }
 function openSetup(at = 0) {
   setupAt = at;
@@ -1929,6 +1935,9 @@ function renderHome() {
     <p class="home-hello">${esc(greeting())}</p>
     <p class="home-sub">How would you like to walk through the Bible today?</p>
     ${seasonPrayerHtml()}
+    ${setupState() === "started" ? `<div class="card setup-resume" id="homeSetup"><h2>Welcome back${store.get("name").trim() ? `, ${esc(store.get("name").trim())}` : ""}!</h2>
+      <p class="muted">Setup isn't finished yet: ${SETUP_STEPS.filter((st) => !st.done()).length || 1} quick step${SETUP_STEPS.filter((st) => !st.done()).length === 1 ? "" : "s"} left.</p>
+      <div class="setup-resume-btns"><button class="big-btn" id="homeSetupGo">Continue to setup</button><button class="wb-new" id="homeSetupLater">Not now, keep reading</button></div></div>` : ""}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     ${pathCardsHtml()}
     <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible games</strong><small>Quiz yourself, or play with up to ${20} players or teams</small></span><span class="go" aria-hidden="true">›</span></button>
@@ -1948,6 +1957,9 @@ function renderHome() {
   $("#homeBrowse").addEventListener("click", openPicker);
   $("#homeShop").addEventListener("click", () => showView("shop"));
   $("#homeGames").addEventListener("click", () => game.open());
+  $("#homeSetupGo")?.addEventListener("click", () => openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => !st.done()))));
+  // Continue: put setup away for now (it stays in Settings, under Set up app) and go back to reading.
+  $("#homeSetupLater")?.addEventListener("click", () => { setupSet({ skipped: true }); const l = store.get("last"); showView("read"); openChapter(l.book, l.chapter); });
   wireJump($("#homeJump"), $("#homeJumpResults"), (r) => { showView("read"); openChapter(r.book, r.chapter); });
 }
 
@@ -2504,7 +2516,9 @@ openChapter(start.book, start.chapter);
 updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
-{ const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); else maybeStartTour(); } // first time on this device
+// The very first open goes straight into setup. Once someone has started it, the app never
+// jumps into it again by itself: Home shows a "Finish setting up" card they can tap when ready.
+if (setupState() === "new") openSetup(0); else if (setupState() === "done") maybeStartTour();
 // Came in from a "Forgot your password?" email, or still on the starter password: ask for a
 // new one. (During first-time setup the password step does this instead.)
 if (signedInUser && (flag(RESET_KEY) || flag(STARTER_KEY))) {
@@ -2716,7 +2730,8 @@ function passingFlock() {
   if ((store.get("graphics") || "full") !== "full" || document.visibilityState !== "visible" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const sc = [...document.querySelectorAll("svg.scene")].find((el) => { const r = el.getBoundingClientRect(); return r.width && r.bottom > 0 && r.top < innerHeight; });
   if (!sc || sc.querySelector(".m-flock")) return;
-  sc.insertAdjacentHTML("beforeend", flock(18 + Math.round(Math.random() * 20)));
+  // Indoor pictures mark their window as the sky, so birds fly past outside, never over the walls.
+  (sc.querySelector(".scene-sky") || sc).insertAdjacentHTML("beforeend", flock(18 + Math.round(Math.random() * 20)));
   setTimeout(() => sc.querySelector(".m-flock")?.remove(), 9500);
 }
 (function flockLater() { setTimeout(() => { passingFlock(); flockLater(); }, 25000 + Math.random() * 25000); })();
