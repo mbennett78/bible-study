@@ -54,7 +54,7 @@ async function apiBible(path) {
 export async function listEnglishBibles() {
   const json = await apiBible("/bibles?language=eng");
   return json.data
-    .map((b) => ({ id: b.id, abbr: b.abbreviationLocal || b.abbreviation, name: b.nameLocal || b.name }))
+    .map((b) => ({ id: b.id, abbr: String(b.abbreviationLocal || b.abbreviation || "").replace(/^eng(?=[A-Z])/, ""), name: b.nameLocal || b.name }))
     .sort((a, b) => a.abbr.localeCompare(b.abbr));
 }
 

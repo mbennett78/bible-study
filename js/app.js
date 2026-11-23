@@ -974,6 +974,14 @@ function initSettings() {
       const current = store.get("nasbBibleId");
       sel.innerHTML = `<option value="">Pick automatically</option>` + bibles.map((b) => `<option value="${esc(b.id)}"${b.id === current ? " selected" : ""}>${esc(b.abbr)} · ${esc(b.name)}</option>`).join("");
       btn.textContent = `${bibles.length} versions loaded`;
+      // First time: turn on the King James and New King James for the family if the plan has them.
+      if (!(store.get("extraBibles") || []).length) {
+        const want = [/^KJV$|King James/i, /NKJV|New King James/i];
+        const picks = want.map((re) => bibles.find((b) => b.id !== store.get("nasbBibleId") && (re.test(b.abbr) || re.test(b.name)))).filter(Boolean);
+        if (picks.length) { store.set("extraBibles", [...new Map(picks.map((b) => [b.id, { id: b.id, label: b.abbr }])).values()].slice(0, 3)); extrasNow(); syncVersionSwitch(); }
+      }
+      const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
+      btn.textContent = `${bibles.length} versions loaded${hasNkjv ? "" : " · NKJV isn't on this plan"}`;
       const chosen = new Set((store.get("extraBibles") || []).map((b) => b.id));
       $("#extraVersionList").innerHTML = bibles.filter((b) => b.id !== store.get("nasbBibleId")).map((b) => `<label class="switch-row"><span>${esc(b.abbr)}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(b.abbr)}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
       $("#extraVersions").hidden = false;
@@ -1112,14 +1120,14 @@ const FEATURES = [
 // [value, name, short description, swatch colors]. The saved values "masculine" and "animated"
 // are kept so nobody's choice changes; only their names did.
 const LOOKS = [
-  ["classic", "Classic", "Brown, gray and white, with olive branches and a cross. Still.", ["#3a3430", "#ffffff", "#7d8a6e"]],
-  ["sage", "Sage", "Calm green, with olive branches, doves and a cross. Still.", ["#46604f", "#fbfaf6", "#c8a55a"]],
+  ["classic", "Classic", "Brown, gray and white, with olive branches and three crosses on a hill. Still.", ["#3a3430", "#ffffff", "#7d8a6e"]],
+  ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Still.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
   ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Still.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
-  ["fall", "Thanksgiving", "Harvest rust, gold and brown, with fall prayers. Still.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
-  ["christmas", "Christmas", "Evergreen, deep red and gold, with the stable and star.", ["#1f3a2e", "#8c2a2a", "#d4b062"]],
+  ["fall", "Thanksgiving", "The Lord's Supper at a harvest table, with prayers of thanks. Still.", ["#6e3b22", "#d9a441", "#f4ecdc"]],
+  ["christmas", "Christmas", "A big nativity in red, green and gold, under the star.", ["#1f3a2e", "#8c2a2a", "#d4b062"]],
   ["masculine", "Animated", "Warm browns, with boats and fish that move.", ["#3b2b20", "#efe3d0", "#b8875a"]],
-  ["animated", "For kids", "Bright colors and a friendly lamb that cheers you on.", ["#3f6f7a", "#e9f4f6", "#e07a5f"]],
+  ["animated", "For kids", "Bright colors, a friendly lamb, and pictures that change with the Bible story.", ["#3f6f7a", "#e9f4f6", "#e07a5f"]],
 ];
 // Still looks: no motion, no cartoons, no confetti. Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.

@@ -1171,3 +1171,40 @@ body.hide-visits #visitLine { display: none; }
 .gate-keep { display: flex; align-items: center; gap: 10px; font-size: 1rem; margin: 4px 0; }
 .gate-keep input { width: 22px; height: 22px; }
 .message .why { display: block; margin-top: 6px; color: var(--muted); font-size: .9rem; }
+
+/* Sage spring garden */
+.theme-sage .th-hill { fill: #a9c29a; } .theme-sage .th-hill.far { fill: #cddcc4; }
+.theme-sage .cl-cross rect { fill: #4d5d48; }
+.spring-sun { fill: #fbeec2; opacity: .9; }
+.blossom.a { fill: #f2c9cf; } .blossom.b { fill: #f7dde0; } .blossom.c { fill: #e9b3bd; }
+.petal-dot { fill: #ffffff; opacity: .8; }
+.olive-canopy { fill: #8fa27f; } .olive-canopy.hi { fill: #a3b493; }
+.theme-scene .trunk, .theme-strip .trunk { fill: #7a6250; stroke: #7a6250; }
+.stream { stroke: #b9d4dc; opacity: .9; }
+.spring-bloom.a { fill: #ffffff; } .spring-bloom.b { fill: #f2c9cf; } .spring-bloom.c { fill: #f1d88a; }
+/* Thanksgiving: the Lord's Supper */
+.theme-fall .cl-cross rect { fill: #5a3a26; }
+.window-frame { stroke: #6b4a30; } .window-sill { fill: #6b4a30; }
+.table-top { fill: #6b4a30; }
+.cloth { fill: #f7efe0; } .runner { fill: #a5532a; } .cloth-fold { stroke: #e4d6bd; }
+.bread { fill: #c98f4e; stroke: #9a6532; stroke-width: .8; } .bread-inside { stroke: #f1d9b0; } .bread-score { stroke: #9a6532; }
+.cup { fill: #b8913f; stroke: #8a6a2a; stroke-width: .8; } .wine { fill: #6e1f2a; } .cup-shine { stroke: #f1dc9e; }
+.grape { fill: #5b3a5e; } .grape-stem { stroke: #6b4a30; } .grape-leaf { fill: #6f8a4e; }
+.candle-body { fill: #fbf6ea; stroke: #e2d6bd; stroke-width: .6; } .flame { fill: #f4b33f; } .candle-dish { fill: #b8913f; }
+.theme-strip .bread-inside { stroke-width: 1.6; }
+/* Christmas: the nativity */
+.xmas-hill { fill: #1f3a2e; } .xmas-hill.far { fill: #24412f; opacity: .9; }
+.hay { fill: #d9b25a; }
+.mary-robe, .mary-veil { fill: #3e5f8a; } .joseph-robe { fill: #7a4f30; } .joseph-cloth { fill: #c9b48a; }
+.skin-soft { fill: #e9c9a8; } .staff-dark { stroke: #4a3526; }
+.halo { fill: #ffe6a6; opacity: .75; }
+.theme-christmas .manger, .theme-strip .manger { fill: #6b4a30; }
+.theme-christmas .baby, .theme-strip .baby { fill: #fffaf0; }
+.wool circle { fill: #f4efe4; } .sheep-head { fill: #3a302a; } .sheep-legs { stroke: #3a302a; }
+.ox { fill: #6b4f3a; } .horn { stroke: #e8dcc4; }
+.donkey { fill: #8c8278; } .donkey-legs { stroke: #6f665d; }
+.shep-robe { fill: #8a6a48; } .shep-cloth { fill: #b54a3a; }
+.garland { stroke: #2f5a3e; } .garland-hi { stroke: #5c8a64; }
+.bow { fill: #a32626; stroke: #a32626; }
+.theme-strip.theme-christmas .nativity-dim { opacity: 1; }
+.fish-strip.kids-story { aspect-ratio: 360 / 90; }

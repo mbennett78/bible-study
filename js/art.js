@@ -300,7 +300,8 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
-  if (style === "classic") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and a cross") };
+  if (style === "classic") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
+  if (style === "animated") { const story = kidsStory(book, chapter); if (story) return story; }
   const id = ++uid;
   let art;
   if (kind === "sky") {
@@ -355,14 +356,14 @@ const clBranch = (x, y, s = 1, flip = false) => {
 };
 export function classicScene({ height = 170 } = {}) {
   const W = 360, H = height, id = ++uid, ground = H - 34;
-  return `<svg class="scene classic-scene" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="A cross on a hill, framed by olive branches">
+  return `<svg class="scene classic-scene" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="Three crosses on a hill, framed by olive branches">
     <defs><linearGradient id="cls${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="cl-sky-top"/><stop offset="1" class="cl-sky-low"/></linearGradient>
       <radialGradient id="clg${id}" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
     <rect width="${W}" height="${H}" fill="url(#cls${id})"/>
     <ellipse cx="180" cy="${ground - 40}" rx="120" ry="70" fill="url(#clg${id})"/>
     <path class="cl-hill far" d="M0 ${ground - 6} C 70 ${ground - 26}, 120 ${ground - 18}, 180 ${ground - 30} C 240 ${ground - 18}, 300 ${ground - 24}, 360 ${ground - 8} L 360 ${H} L 0 ${H} Z"/>
     <path class="cl-hill" d="M0 ${ground + 10} C 90 ${ground - 4}, 140 ${ground - 2}, 180 ${ground - 14} C 220 ${ground - 2}, 280 ${ground - 2}, 360 ${ground + 12} L 360 ${H} L 0 ${H} Z"/>
-    ${cross(180, ground - 12, 92)}
+    ${cross(136, ground - 6, 54)}${cross(224, ground - 6, 54)}${cross(180, ground - 12, 92)}
     ${clBranch(0, H - 6, 1.25)}${clBranch(W, H - 6, 1.25, true)}
     <path class="cl-rule" d="M0 ${H - .5} H ${W}"/>
   </svg>`;
@@ -370,7 +371,7 @@ export function classicScene({ height = 170 } = {}) {
 export function classicStrip(caption = "") {
   return `<svg class="fish-strip passage-art classic-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">
     <rect width="360" height="54" rx="14" class="cl-band"/>
-    ${clBranch(110, 40, .48, true)}${cross(180, 46, 38)}${clBranch(250, 40, .48)}
+    ${clBranch(104, 40, .48, true)}${cross(156, 46, 26)}${cross(204, 46, 26)}${cross(180, 46, 38)}${clBranch(256, 40, .48)}
   </svg>`;
 }
 export function classicFlourish() {
@@ -440,35 +441,88 @@ const holly = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y})
   <path class="holly-leaf" d="M0 0 C 2 -4, 1 -8, 3 -12 C 5 -9, 8 -9, 9 -11 C 10 -8, 12 -6, 15 -6 C 12 -3, 9 -1, 8 2 C 5 0, 2 1, 0 0 Z" transform="rotate(-50)"/>
   <circle class="holly-berry" cx="2" cy="-2" r="2.4"/><circle class="holly-berry" cx="5" cy="1" r="2.2"/><circle class="holly-berry" cx="-1" cy="2" r="2"/></g>`;
 
+// Spring garden pieces for Sage
+const blossomTree = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="trunk" d="M-2.5 0 C -2 -10, -4 -18, 0 -28 C 3 -18, 2 -10, 2.5 0 Z"/>
+  <circle class="blossom a" cx="-11" cy="-32" r="11"/><circle class="blossom b" cx="9" cy="-35" r="12"/><circle class="blossom a" cx="-1" cy="-45" r="10"/><circle class="blossom c" cx="1" cy="-30" r="8"/>
+  ${[[-14, -38], [-4, -50], [8, -44], [14, -30], [-8, -26], [4, -36]].map(([a, b]) => `<circle class="petal-dot" cx="${a}" cy="${b}" r="1.6"/>`).join("")}</g>`;
+const olive2 = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="trunk" d="M-3 0 C -1 -8, -6 -14, -2 -24 M 3 0 C 2 -10, 6 -16, 2 -24" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse class="olive-canopy" cx="-8" cy="-30" rx="13" ry="9"/><ellipse class="olive-canopy" cx="9" cy="-32" rx="12" ry="9"/><ellipse class="olive-canopy hi" cx="0" cy="-40" rx="11" ry="8"/></g>`;
+const bloom = (x, y, c = "a") => `<g transform="translate(${x} ${y})"><path class="lily-stem" d="M0 0 L 0 -8" stroke-width="1" fill="none"/><circle class="spring-bloom ${c}" cx="0" cy="-9" r="2.6"/></g>`;
+// Lord's Supper pieces for Thanksgiving
+const bread = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="bread" d="M-22 0 C -24 -10, -14 -16, -4 -15 L -2 0 Z"/><path class="bread" d="M2 0 L 4 -15 C 14 -16, 24 -10, 22 0 Z"/>
+  <path class="bread-inside" d="M-4 -15 L -2 0 M 4 -15 L 2 0" stroke-width="2.4"/><path class="bread-score" d="M-16 -9 L -10 -12 M 12 -12 L 18 -9" stroke-width="1.2" fill="none"/></g>`;
+const chalice = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="cup" d="M-11 -34 L 11 -34 C 11 -22, 6 -16, 1.6 -15 L 1.6 -5 C 5 -4, 8 -2, 8 0 L -8 0 C -8 -2, -5 -4, -1.6 -5 L -1.6 -15 C -6 -16, -11 -22, -11 -34 Z"/>
+  <ellipse class="wine" cx="0" cy="-33" rx="10" ry="2.2"/><path class="cup-shine" d="M-7 -30 C -7 -24, -4 -20, -2 -18" stroke-width="1.2" fill="none"/></g>`;
+const grapes = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[[0, -4], [-4, -8], [4, -8], [-6, -13], [0, -12], [6, -13], [-3, -17], [3, -17], [0, -21]].map(([a, b]) => `<circle class="grape" cx="${a}" cy="${b}" r="3"/>`).join("")}<path class="grape-stem" d="M0 -23 C 1 -27, 4 -28, 6 -27" stroke-width="1.4" fill="none"/><path class="grape-leaf" d="M2 -25 C 8 -32, 16 -28, 14 -22 C 10 -22, 6 -22, 2 -25 Z"/></g>`;
+const candle = (x, y, s = 1) => { const gid = `cg${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})"><defs><radialGradient id="${gid}"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient></defs>
+  <circle r="22" cy="-30" fill="url(#${gid})"/><rect class="candle-body" x="-3.5" y="-24" width="7" height="24" rx="1"/><path class="flame" d="M0 -36 C 3 -31, 3 -27, 0 -25 C -3 -27, -3 -31, 0 -36 Z"/><rect class="candle-dish" x="-8" y="-1.5" width="16" height="3" rx="1.5"/></g>`; };
+// Bigger nativity pieces for Christmas
+const sheep = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})"><g class="wool">${[[-6, -8], [0, -10], [6, -8], [-3, -5], [4, -5]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5"/>`).join("")}</g>
+  <ellipse class="sheep-head" cx="11" cy="-10" rx="3.6" ry="2.8"/><path class="sheep-legs" d="M-5 -2 L -5 2 M 4 -2 L 4 2" stroke-width="1.6"/></g>`;
+const nativityBig = (x, y, s = 1) => { const gid = `ng${++uid}`; return `<g transform="translate(${x} ${y}) scale(${s})">
+  <defs><radialGradient id="${gid}" cx=".5" cy=".75" r=".7"><stop offset="0" stop-color="#ffe6a6"/><stop offset=".6" stop-color="#e3b25e"/><stop offset="1" stop-color="#8a5a2e"/></radialGradient></defs>
+  <path d="M-50 -58 L 0 -82 L 50 -58 L 50 0 L -50 0 Z" fill="url(#${gid})"/>
+  <path class="stable-wall" d="M-56 -60 L -49 -60 L -49 0 L -56 0 Z M 49 -60 L 56 -60 L 56 0 L 49 0 Z"/>
+  <path class="stable-roof" d="M-66 -58 L 0 -94 L 66 -58 L 60 -54 L 0 -86 L -60 -54 Z"/>
+  <path class="hay" d="M-50 0 C -30 -5, 30 -5, 50 0 Z"/>
+  <g class="nat-mary"><path class="mary-robe" d="M-38 0 C -40 -12, -34 -26, -25 -28 C -18 -26, -15 -14, -13 0 Z"/><path class="mary-veil" d="M-31 -27 C -33 -40, -17 -42, -17 -30 C -18 -24, -21 -20, -25 -21 C -29 -22, -31 -24, -31 -27 Z"/><circle class="skin-soft" cx="-24" cy="-31" r="3.8"/></g>
+  <g class="nat-joseph"><path class="joseph-robe" d="M18 0 C 17 -22, 21 -40, 28 -42 C 35 -40, 39 -22, 38 0 Z"/><path class="joseph-cloth" d="M22 -44 C 22 -54, 34 -54, 34 -44 L 35 -38 L 21 -38 Z"/><circle class="skin-soft" cx="28" cy="-46" r="4"/>
+    <path class="staff-dark" d="M43 0 L 41 -56 C 41 -61, 47 -61, 47 -56" stroke-width="2" fill="none"/></g>
+  <g class="nat-manger"><circle class="halo" cx="-2" cy="-17" r="7"/><path class="manger" d="M-14 -12 L 14 -12 L 10 0 L -10 0 Z"/><path class="hay" d="M-13 -12 C -6 -16, 6 -16, 13 -12 Z"/>
+    <ellipse class="baby" cx="2" cy="-15" rx="8" ry="3.6"/><circle class="skin-soft" cx="-5" cy="-16" r="3"/></g></g>`; };
+const ox = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse class="ox" cx="0" cy="-9" rx="17" ry="9"/><ellipse class="ox" cx="-17" cy="-14" rx="7" ry="5.5"/><path class="horn" d="M-20 -19 C -23 -23, -26 -23, -27 -21 M -14 -19 C -12 -23, -9 -23, -8 -21" stroke-width="1.6" fill="none"/></g>`;
+const donkey2 = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse class="donkey" cx="0" cy="-20" rx="15" ry="8"/><path class="donkey-legs" d="M-10 -14 L -10 0 M -5 -14 L -5 0 M 6 -14 L 6 0 M 11 -14 L 11 0" stroke-width="2.6"/>
+  <path class="donkey" d="M-12 -24 C -16 -30, -18 -34, -20 -36 L -14 -38 C -11 -34, -8 -30, -6 -26 Z"/><ellipse class="donkey" cx="-21" cy="-35" rx="7" ry="4" transform="rotate(25 -21 -35)"/><path class="donkey" d="M-17 -40 L -15 -50 L -13 -40 Z M -21 -40 L -21 -49 L -18 -40 Z"/></g>`;
+const kneelShepherd = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="shep-robe" d="M-10 0 C -12 -10, -6 -22, 2 -24 C 8 -22, 10 -12, 10 0 Z"/><path class="shep-cloth" d="M-4 -26 C -4 -35, 8 -35, 8 -26 L 9 -21 L -5 -21 Z"/><circle class="skin-soft" cx="2" cy="-28" r="3.6"/>
+  <path class="staff-dark" d="M-14 0 L -13 -40 C -13 -45, -7 -45, -7 -40" stroke-width="1.8" fill="none"/></g>`;
+const garland = (W) => `<path class="garland" d="M-4 4 Q 45 26, 90 6 Q 135 26, 180 6 Q 225 26, 270 6 Q 315 26, 364 4" fill="none" stroke-width="7" stroke-linecap="round"/>
+  <path class="garland-hi" d="M-4 4 Q 45 26, 90 6 Q 135 26, 180 6 Q 225 26, 270 6 Q 315 26, 364 4" fill="none" stroke-width="3" stroke-dasharray="2 4"/>
+  ${[90, 180, 270].map((x) => `<g transform="translate(${x} 7)"><path class="bow" d="M0 0 C -8 -6, -12 2, -2 2 Z M 0 0 C 8 -6, 12 2, 2 2 Z M -1 1 L -5 10 M 1 1 L 5 10" stroke-width="1.6"/><circle class="bow" r="2"/></g>`).join("")}
+  ${[30, 60, 120, 150, 210, 240, 300, 330].map((x, i) => `<circle class="holly-berry" cx="${x}" cy="${14 + (i % 2) * 2}" r="2.2"/>`).join("")}`;
+
 const SCENE_LABELS = {
-  sage: "A cross on a hill with olive branches and doves",
+  sage: "A spring garden with olive trees, doves and three crosses on a hill",
   nativity: "Wise men crossing the desert toward the star over Bethlehem",
   easter: "The empty tomb at sunrise, with lilies",
-  fall: "A harvest field in autumn",
-  christmas: "The stable in Bethlehem under the star",
+  fall: "The Lord's Supper: bread and cup on a harvest table",
+  christmas: "The nativity in Bethlehem under the star",
 };
 export function themeScene(theme, { height = 170 } = {}) {
   const W = 360, H = height, id = ++uid, g = H - 30;
   const grad = (stops) => `<linearGradient id="tg${id}" x1="0" y1="0" x2="0" y2="1">${stops.map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join("")}</linearGradient>`;
   let defs = "", art = "";
   if (theme === "sage") {
-    defs = grad([[0, "#e6ede6"], [1, "#fbfaf5"]]);
-    art = `<path class="th-hill far" d="M0 ${g - 8} C 80 ${g - 26}, 140 ${g - 20}, 180 ${g - 32} C 230 ${g - 20}, 300 ${g - 26}, 360 ${g - 10} L 360 ${H} L 0 ${H} Z"/>
-      <path class="th-hill" d="M0 ${g + 8} C 90 ${g - 4}, 140 ${g - 2}, 180 ${g - 14} C 220 ${g - 2}, 280 ${g}, 360 ${g + 10} L 360 ${H} L 0 ${H} Z"/>
-      ${cross(180, g - 12, 88)}${dove(206, 44, .9)}${dove(130, 60, .7, true)}
-      ${clBranch(0, H - 6, 1.25)}${clBranch(W, H - 6, 1.25, true)}`;
-  } else if (theme === "nativity" || theme === "christmas") {
-    const xmas = theme === "christmas";
-    defs = grad(xmas ? [[0, "#0f1d2e"], [.55, "#1f3550"], [.85, "#c99a45"], [1, "#efd9a0"]] : [[0, "#16213b"], [.45, "#2d3f66"], [.8, "#d8a94e"], [1, "#f4dd9c"]]);
+    defs = grad([[0, "#dcebe0"], [.7, "#f4f6ea"], [1, "#fbf8ef"]]);
+    art = `<circle class="spring-sun" cx="290" cy="34" r="16"/>
+      <path class="th-hill far" d="M0 ${g - 14} C 70 ${g - 30}, 130 ${g - 34}, 180 ${g - 50} C 230 ${g - 34}, 300 ${g - 28}, 360 ${g - 16} L 360 ${H} L 0 ${H} Z"/>
+      ${cross(160, g - 42, 26)}${cross(200, g - 42, 26)}${cross(180, g - 48, 40)}
+      <path class="th-hill" d="M0 ${g + 4} C 80 ${g - 10}, 150 ${g - 6}, 200 ${g - 4} C 260 ${g - 12}, 320 ${g - 6}, 360 ${g} L 360 ${H} L 0 ${H} Z"/>
+      ${olive2(44, g + 2, 1.15)}${blossomTree(96, g - 2, .9)}${blossomTree(274, g, .95)}${olive2(322, g + 4, 1.05)}
+      <path class="stream" d="M120 ${H} C 140 ${H - 10}, 200 ${H - 6}, 230 ${H - 16} S 300 ${H - 20}, 340 ${H - 18}" fill="none" stroke-width="5" stroke-linecap="round"/>
+      ${[[24, H - 8, "a"], [70, H - 6, "b"], [150, H - 22, "a"], [176, H - 18, "c"], [252, H - 26, "b"], [300, H - 10, "a"], [346, H - 6, "c"], [206, H - 30, "b"]].map(([a, b, c]) => bloom(a, b, c)).join("")}
+      ${dove(214, 44, .8)}${dove(128, 62, .62, true)}`;
+  } else if (theme === "christmas") {
+    defs = grad([[0, "#0e1a2c"], [.55, "#1b3340"], [1, "#2c4a3a"]]);
     art = `${sky(22)}
-      <path class="star-beam" d="M${xmas ? 180 : 262} 36 L ${xmas ? 166 : 250} ${g - 40} L ${xmas ? 194 : 286} ${g - 40} Z"/>
-      ${star(xmas ? 180 : 262, 34, xmas ? 9 : 8)}
+      <path class="star-beam" d="M180 30 L 160 ${g - 80} L 200 ${g - 80} Z"/>
+      ${star(180, 28, 10)}
+      <path class="xmas-hill far" d="M0 ${g - 20} C 60 ${g - 36}, 120 ${g - 28}, 180 ${g - 24} C 240 ${g - 30}, 300 ${g - 36}, 360 ${g - 18} L 360 ${H} L 0 ${H} Z"/>
+      <path class="xmas-hill" d="M0 ${g + 2} C 80 ${g - 8}, 280 ${g - 8}, 360 ${g + 2} L 360 ${H} L 0 ${H} Z"/>
+      ${nativityBig(180, g + 6, 1.05)}
+      ${ox(110, g + 6, 1)}${donkey2(258, g + 6, 1)}${sheep(78, g + 8, 1.1)}${sheep(296, g + 10, 1, true)}${sheep(318, g + 6, .85, true)}
+      ${kneelShepherd(46, g + 8, 1.1)}
+      ${holly(10, H - 6, 1.6)}${holly(W - 10, H - 6, 1.6, true)}
+      ${garland(W)}`;
+  } else if (theme === "nativity") {
+    defs = grad([[0, "#16213b"], [.45, "#2d3f66"], [.8, "#d8a94e"], [1, "#f4dd9c"]]);
+    art = `${sky(22)}
+      <path class="star-beam" d="M262 36 L 250 ${g - 40} L 286 ${g - 40} Z"/>
+      ${star(262, 34, 8)}
       <path class="dune far" d="M0 ${g - 14} C 60 ${g - 30}, 120 ${g - 22}, 190 ${g - 18} C 250 ${g - 28}, 310 ${g - 22}, 360 ${g - 16} L 360 ${H} L 0 ${H} Z"/>
-      ${xmas ? `<path class="town" d="M70 ${g - 18} L 70 ${g - 32} L 84 ${g - 32} L 84 ${g - 38} C 84 ${g - 46}, 98 ${g - 46}, 98 ${g - 38} L 98 ${g - 30} L 114 ${g - 30} L 114 ${g - 18} Z M 236 ${g - 18} L 236 ${g - 34} L 256 ${g - 34} L 256 ${g - 26} L 272 ${g - 26} L 272 ${g - 18} Z"/>` : ""}
       <path class="dune" d="M0 ${g + 2} C 70 ${g - 14}, 150 ${g - 6}, 210 ${g - 2} C 270 ${g - 10}, 320 ${g - 6}, 360 ${g} L 360 ${H} L 0 ${H} Z"/>
-      ${xmas ? stable(180, g + 2, 1.15) : `${camel(70, g - 6, .62)}${camel(104, g - 8, .58)}${camel(136, g - 9, .54)}${stable(282, g + 2, .95)}${palm2(330, g + 6, .9)}`}
+      ${camel(70, g - 6, .62)}${camel(104, g - 8, .58)}${camel(136, g - 9, .54)}${stable(282, g + 2, .95)}${palm2(330, g + 6, .9)}
       <path class="ground" d="M0 ${g + 10} C 100 ${g + 2}, 260 ${g + 4}, 360 ${g + 8} L 360 ${H} L 0 ${H} Z"/>
-      ${xmas ? `${holly(14, H - 10, 1.4)}${holly(W - 14, H - 10, 1.4, true)}` : palm2(26, g + 12, 1.05)}`;
+      ${palm2(26, g + 12, 1.05)}`;
   } else if (theme === "easter") {
     defs = grad([[0, "#d9d3ea"], [.55, "#f5d9c4"], [1, "#fbefc9"]]);
     art = `<circle class="sunrise" cx="250" cy="${g - 22}" r="26"/>
@@ -480,27 +534,159 @@ export function themeScene(theme, { height = 170 } = {}) {
       <path class="th-hill" d="M0 ${g + 10} C 100 ${g}, 220 ${g + 2}, 360 ${g + 8} L 360 ${H} L 0 ${H} Z"/>
       ${lily(28, H - 6, 1)}${lily(44, H - 4, .85)}${lily(160, H - 4, .9)}${lily(330, H - 4, .95)}${lily(346, H - 6, .8)}`;
   } else if (theme === "fall") {
-    defs = grad([[0, "#f1e4c8"], [1, "#fbf5e8"]]);
-    art = `<circle class="sun" cx="300" cy="34" r="14"/>
-      <path class="field far" d="M0 ${g - 10} C 80 ${g - 30}, 150 ${g - 24}, 220 ${g - 16} C 280 ${g - 26}, 330 ${g - 22}, 360 ${g - 14} L 360 ${H} L 0 ${H} Z"/>
-      ${cross(228, g - 20, 30)}
-      <path class="field" d="M0 ${g + 4} C 90 ${g - 12}, 180 ${g - 6}, 250 ${g - 2} C 300 ${g - 8}, 340 ${g - 4}, 360 ${g} L 360 ${H} L 0 ${H} Z"/>
-      ${[0, 1, 2, 3].map((k) => `<path class="furrow" d="M0 ${g + 10 + k * 6} C 120 ${g + 2 + k * 6}, 240 ${g + 4 + k * 6}, 360 ${g + 8 + k * 6}"/>`).join("")}
-      ${fallTree(60, g - 2, 1)}${fallTree(312, g - 4, .85)}${wheat(150, H - 10, 1.1)}${pumpkin(186, H - 8, 1)}${pumpkin(206, H - 6, .8)}
-      <g class="leaf-drift">${[[100, 30, 20], [140, 52, -40], [260, 60, 60], [330, 80, 10]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>`;
+    const wid = `fw${id}`;
+    defs = grad([[0, "#efe0c4"], [1, "#e4cfa9"]]) + `<linearGradient id="${wid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset=".7" stop-color="#e29a55"/><stop offset="1" stop-color="#b5652e"/></linearGradient>`;
+    const top = H - 52;
+    art = `<path class="wall-shade" d="M0 0 H 360 V ${top} H 0 Z" opacity=".0"/>
+      <g class="supper-window"><path d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z" fill="url(#${wid})"/>
+        <path class="field far" d="M134 ${top - 30} C 160 ${top - 40}, 200 ${top - 38}, 226 ${top - 30} L 226 ${top - 4} L 134 ${top - 4} Z"/>
+        ${cross(198, top - 34, 22)}
+        <path class="field" d="M134 ${top - 18} C 170 ${top - 24}, 200 ${top - 22}, 226 ${top - 16} L 226 ${top - 4} L 134 ${top - 4} Z"/>
+        <path class="window-frame" d="M134 ${top - 4} L 134 34 C 134 6, 226 6, 226 34 L 226 ${top - 4} Z M 180 12 L 180 ${top - 4} M 134 ${top - 46} L 226 ${top - 46}" fill="none" stroke-width="4"/>
+        <rect class="window-sill" x="126" y="${top - 6}" width="108" height="6" rx="2"/></g>
+      ${wheat(64, top - 6, 1.25)}${wheat(300, top - 6, 1.15)}
+      <rect class="table-top" x="0" y="${top}" width="360" height="10"/>
+      <path class="cloth" d="M0 ${top + 8} H 360 V ${H} H 0 Z"/>
+      <path class="runner" d="M150 ${top + 8} H 210 V ${H - 8} L 180 ${H - 2} L 150 ${H - 8} Z"/>
+      <path class="cloth-fold" d="M60 ${top + 12} L 56 ${H} M 120 ${top + 12} L 118 ${H} M 240 ${top + 12} L 242 ${H} M 300 ${top + 12} L 304 ${H}" stroke-width="1" fill="none"/>
+      ${bread(140, top + 4, 1.05)}${chalice(206, top + 4, 1.05)}${grapes(248, top + 4, 1)}${candle(108, top + 4, 1)}${candle(290, top + 4, 1)}
+      ${pumpkin(30, top + 4, .9)}${pumpkin(336, top + 4, .8)}
+      <g class="leaf-drift">${[[86, top + 3, 20], [236, top + 3, -30], [320, top + 2, 50]].map(([x, y, r]) => `<ellipse class="fall-leaf a" cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${r} ${x} ${y})"/>`).join("")}</g>`;
   }
   return `<svg class="scene theme-scene theme-${theme}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="${SCENE_LABELS[theme] || ""}">
     <defs>${defs}</defs><rect width="${W}" height="${H}" fill="url(#tg${id})"/>${art}<path class="cl-rule" d="M0 ${H - .5} H ${W}"/></svg>`;
 }
 export function themeStrip(theme) {
   const id = ++uid;
-  const inner = theme === "sage" ? `${clBranch(112, 40, .48, true)}${cross(180, 46, 36)}${dove(200, 18, .55)}${clBranch(248, 40, .48)}`
+  const inner = theme === "sage" ? `${blossomTree(110, 52, .5)}${cross(160, 46, 24)}${cross(200, 46, 24)}${cross(180, 46, 34)}${dove(212, 16, .5)}${olive2(250, 52, .6)}`
     : theme === "nativity" ? `${sky(10)}${star(180, 22, 6)}${camel(112, 50, .42)}${camel(136, 50, .4)}${stable(240, 52, .55, false)}`
-    : theme === "christmas" ? `${sky(10)}${star(180, 22, 6)}${holly(110, 44, .9)}${holly(250, 44, .9, true)}${stable(180, 54, .5, false)}`
+    : theme === "christmas" ? `${sky(10)}${star(180, 14, 5)}${holly(96, 44, .9)}${holly(264, 44, .9, true)}${sheep(136, 52, .6)}${nativityBig(180, 54, .42)}${sheep(222, 52, .6, true)}`
     : theme === "easter" ? `${lily(120, 52, .8)}${lily(134, 52, .7)}${cross(180, 48, 34)}${lily(226, 52, .7)}${lily(240, 52, .8)}`
-    : `${wheat(128, 50, .8)}${cross(180, 48, 32)}${pumpkin(226, 50, .8)}${pumpkin(242, 52, .6)}`;
+    : `${wheat(112, 50, .7)}${bread(160, 46, .6)}${chalice(198, 48, .6)}${grapes(226, 48, .6)}${wheat(252, 50, .7)}`;
   const dark = theme === "nativity" || theme === "christmas";
   return `<svg class="fish-strip passage-art theme-strip theme-${theme}" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs><clipPath id="ts${id}"><rect width="360" height="54" rx="14"/></clipPath></defs>
     <g clip-path="url(#ts${id})"><rect width="360" height="54" class="${dark ? "band-dark" : "cl-band"}"/>${inner}</g></svg>`;
+}
+
+/* ---------- For kids: a picture of the story you're reading ---------- */
+// Bright, friendly scenes for well-known stories. Chapters without one get the usual setting strip.
+const kid = (x, y, s = 1, robe = "#5b8fb9", cloth = "#f1c84b", skin = "#e8b98f") => `<g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M-8 0 C -9 -12, -6 -20, 0 -21 C 6 -20, 9 -12, 8 0 Z" fill="${robe}"/><circle cx="0" cy="-26" r="6" fill="${skin}"/>
+  <path d="M-6.5 -27 C -7 -35, 7 -35, 6.5 -27 L 7.5 -22 L 4.5 -25 C 2 -29, -2 -29, -4.5 -25 L -7.5 -22 Z" fill="${cloth}"/>
+  ${eyes([[-2.2, -25.6], [2.2, -25.6]], .9)}<path d="M-2 -22.6 Q 0 -21, 2 -22.6" stroke="#6b3d2a" stroke-width=".8" fill="none"/></g>`;
+const sun = (x, y, r = 10) => `<g transform="translate(${x} ${y})"><g class="sway">${Array.from({ length: 10 }, (_, i) => `<path d="M0 ${-r - 3} L 0 ${-r - 8}" stroke="#f5c542" stroke-width="2" stroke-linecap="round" transform="rotate(${i * 36})"/>`).join("")}</g><circle r="${r}" fill="#f7d35c"/></g>`;
+const waves = (y, c = "#4f9fc8", c2 = "#7fc3e0") => `<path d="M0 ${y} ${Array.from({ length: 13 }, () => "q 7 -5 14 0 t 14 0").join(" ")} L 360 90 L 0 90 Z" fill="${c}"/><g class="wave-move"><path d="M-30 ${y + 8} ${Array.from({ length: 15 }, () => "q 7 -4 14 0 t 14 0").join(" ")}" stroke="${c2}" stroke-width="2" fill="none"/></g>`;
+const skyG = (id, a, b) => `<defs><linearGradient id="kg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient><clipPath id="kc${id}"><rect width="360" height="90" rx="16"/></clipPath></defs>`;
+const bob = (inner, x = 0, y = 0) => `<g transform="translate(${x} ${y})"><g class="bob">${inner}</g></g>`;
+
+const STORY_ART = {
+  creation: ["God made everything, and it was good", () => `${sun(60, 26, 11)}<circle cx="300" cy="20" r="8" fill="#fdf3c4"/><circle cx="304" cy="17" r="7" fill="#9cc9e6"/>
+    ${[[250, 12], [270, 30], [330, 34], [345, 12], [225, 26]].map(([a, b]) => `<path d="M${a} ${b - 3} L ${a + 1} ${b} L ${a + 4} ${b} L ${a + 1.5} ${b + 2} L ${a + 2.5} ${b + 5} L ${a} ${b + 3} L ${a - 2.5} ${b + 5} L ${a - 1.5} ${b + 2} L ${a - 4} ${b} L ${a - 1} ${b} Z" fill="#fff6c8"/>`).join("")}
+    <path d="M0 64 C 80 50, 160 58, 220 62 C 280 54, 330 58, 360 62 L 360 90 L 0 90 Z" fill="#8cc56a"/><ellipse cx="170" cy="78" rx="34" ry="7" fill="#5fb0d8"/>
+    ${bob(`<path d="M-6 0 C -2 -4, 4 -4, 6 0 C 4 4, -2 4, -6 0 Z M 6 0 L 10 -3 L 10 3 Z" fill="#f08a4b"/>`, 165, 78)}
+    ${oliveTree(70, 72, .5)}${oliveTree(290, 70, .45)}${lamb(230, 70, .32)}
+    ${bob(`<path d="M0 0 q 5 -5 10 0 q 5 -5 10 0" stroke="#4a5a6a" stroke-width="1.6" fill="none"/>`, 120, 22)}${bob(`<path d="M0 0 q 4 -4 8 0 q 4 -4 8 0" stroke="#4a5a6a" stroke-width="1.4" fill="none"/>`, 150, 34)}`, ["#9cc9e6", "#e8f4fb"]],
+  ark: ["Noah's ark", () => `${sun(320, 18, 8)}${waves(62)}
+    ${bob(`<path d="M-60 0 L 60 0 L 48 18 L -48 18 Z" fill="#9a6a3f"/><path d="M-60 0 L 60 0" stroke="#6e4826" stroke-width="2"/><rect x="-34" y="-20" width="68" height="20" fill="#c08a55"/><path d="M-40 -20 L 0 -34 L 40 -20 Z" fill="#7a4f2e"/>
+      <rect x="-24" y="-14" width="10" height="9" rx="2" fill="#4b3320"/><rect x="14" y="-14" width="10" height="9" rx="2" fill="#4b3320"/>
+      <path d="M-2 -20 L -2 -44 M -6 -40 C -4 -46, 0 -46, 2 -40" stroke="#e3b46b" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="1" cy="-47" r="3.4" fill="#e3b46b"/>
+      <circle cx="-19" cy="-9" r="3" fill="#9aa0a8"/><path d="M-22 -10 C -28 -6, -28 0, -26 2" stroke="#9aa0a8" stroke-width="2" fill="none"/>`, 180, 50)}
+    ${bob(`<path d="M0 0 C 6 -3, 14 -2, 18 2 C 22 0, 26 0, 28 2 C 25 3, 23 5, 20 6 C 14 9, 5 8, 0 0 Z" fill="#fff"/><path d="M8 1 C 10 -9, 18 -15, 26 -14 C 21 -10, 17 -5, 15 2 Z" fill="#fff"/><path d="M28 2 L 34 0" stroke="#6f9a4e" stroke-width="2"/>`, 70, 22)}`, ["#bfe3f5", "#e8f6fb"]],
+  rainbow: ["God's promise: the rainbow", () => `${["#e85d5d", "#f39c4a", "#f5d04a", "#6cc26a", "#4f9fc8", "#7f6cc8"].map((c, i) => `<path d="M60 90 A 120 ${78 - i * 6} 0 0 1 300 90" stroke="${c}" stroke-width="6" fill="none" transform="translate(0 ${i * 6})"/>`).join("")}
+    <path d="M0 76 C 90 66, 270 66, 360 76 L 360 90 L 0 90 Z" fill="#8cc56a"/>${kid(150, 84, .9, "#7a5a3a", "#e9e2d0")}${kid(176, 84, .8, "#a65a6a", "#f1c84b")}${lamb(220, 80, .3)}`, ["#cfeefc", "#f2fbff"]],
+  basket: ["Baby Moses in a basket on the river", () => `${sun(316, 18, 8)}<path d="M0 50 C 100 44, 260 44, 360 50 L 360 90 L 0 90 Z" fill="#5fb0d8"/>
+    ${[[30, 50], [44, 52], [300, 50], [316, 52], [330, 49]].map(([a, b]) => `<g class="sway" style="transform-origin:${a}px ${b + 30}px"><path d="M${a} ${b + 30} L ${a} ${b - 14}" stroke="#5e8a3a" stroke-width="2.4"/><ellipse cx="${a}" cy="${b - 16}" rx="2.4" ry="6" fill="#8a6a3a"/></g>`).join("")}
+    ${bob(`<ellipse cx="0" cy="0" rx="26" ry="8" fill="#c99a52"/><path d="M-22 -2 L 22 -2" stroke="#a5793a" stroke-width="1.4"/><ellipse cx="0" cy="-5" rx="16" ry="5" fill="#f4ecd8"/><circle cx="-8" cy="-7" r="4" fill="#e8b98f"/>`, 180, 64)}`, ["#bfe3f5", "#eef8fb"]],
+  bush: ["The burning bush", () => `<path d="M0 64 C 80 56, 280 56, 360 64 L 360 90 L 0 90 Z" fill="#d9b77a"/><path d="M220 64 L 260 20 L 300 64 Z" fill="#b08a5a"/>
+    <g transform="translate(150 70)"><ellipse cx="0" cy="-8" rx="22" ry="12" fill="#6f8a3a"/><g class="sway">${[[-12, -16], [0, -24], [12, -16], [-4, -14], [6, -12]].map(([a, b]) => `<path d="M${a} ${b} C ${a - 6} ${b - 8}, ${a} ${b - 18}, ${a + 2} ${b - 22} C ${a + 4} ${b - 14}, ${a + 8} ${b - 8}, ${a} ${b} Z" fill="#f39c4a"/><path d="M${a} ${b} C ${a - 3} ${b - 5}, ${a} ${b - 11}, ${a + 1} ${b - 13} C ${a + 2} ${b - 8}, ${a + 4} ${b - 5}, ${a} ${b} Z" fill="#f7d35c"/>`).join("")}</g></g>
+    ${kid(90, 84, 1, "#8a6a48", "#c9b48a")}`, ["#f6e2b8", "#fbf2dd"]],
+  sea: ["Crossing the Red Sea on dry ground", () => `<path d="M0 10 C 30 6, 70 14, 120 10 L 130 90 L 0 90 Z" fill="#3f8ab8"/><path d="M360 10 C 330 6, 290 14, 240 10 L 230 90 L 360 90 Z" fill="#3f8ab8"/>
+    <path d="M118 14 C 124 40, 128 66, 132 90 M 242 14 C 236 40, 232 66, 228 90" stroke="#9fd3ec" stroke-width="3" fill="none"/>
+    <path d="M130 90 L 150 30 L 210 30 L 230 90 Z" fill="#e3c88f"/>
+    ${kid(170, 82, .8, "#a65a6a", "#f1c84b")}${kid(192, 76, .7, "#5b8fb9", "#e9e2d0")}${kid(160, 66, .55, "#7a5a3a", "#c9b48a")}${kid(204, 58, .45, "#6aa06a", "#f1c84b")}
+    <g class="sway" style="transform-origin:300px 60px"><path d="M296 60 C 292 40, 300 24, 296 6 C 304 14, 310 30, 304 60 Z" fill="#f39c4a" opacity=".9"/></g>`, ["#f2dca6", "#fbefd2"]],
+  tablets: ["The Ten Commandments", () => `<path d="M60 90 L 180 14 L 300 90 Z" fill="#a08566"/><path d="M180 14 L 150 34 L 168 32 L 180 40 L 196 30 L 210 34 Z" fill="#efe7da"/>
+    <g transform="translate(180 72)"><path d="M-30 0 L -30 -26 C -30 -36, -4 -36, -4 -26 L -4 0 Z M 4 0 L 4 -26 C 4 -36, 30 -36, 30 -26 L 30 0 Z" fill="#d9d2c4" stroke="#9a9184"/>
+      ${[0, 1, 2, 3, 4].map((i) => `<path d="M-25 ${-24 + i * 5} L -9 ${-24 + i * 5} M 9 ${-24 + i * 5} L 25 ${-24 + i * 5}" stroke="#8a8174" stroke-width="1.2"/>`).join("")}</g>
+    ${[[100, 22], [130, 12], [240, 14], [270, 26]].map(([a, b]) => bob(`<path d="M0 0 L 4 -6 L 8 0 L 4 6 Z" fill="#f7d35c"/>`, a, b)).join("")}`, ["#c9d8ea", "#eef3f9"]],
+  walls: ["The walls of Jericho", () => `<path d="M0 76 L 360 76 L 360 90 L 0 90 Z" fill="#d9b77a"/>
+    <path d="M200 76 L 200 40 L 214 40 L 214 34 L 226 34 L 226 40 L 240 40 L 240 34 L 252 34 L 252 40 L 270 40 L 270 76 Z" fill="#c4a073"/><path d="M276 76 L 290 52 L 306 60 L 330 50 L 350 76 Z" fill="#b08a5a"/>
+    ${[[296, 44], [318, 40], [338, 46]].map(([a, b]) => bob(`<rect x="-4" y="-4" width="8" height="6" fill="#c4a073"/>`, a, b)).join("")}
+    ${kid(60, 84, .9, "#5b8fb9", "#e9e2d0")}${kid(96, 84, .9, "#a65a6a", "#f1c84b")}${kid(132, 84, .9, "#6aa06a", "#e9e2d0")}
+    ${[60, 96, 132].map((a) => `<path d="M${a + 4} 60 L ${a + 20} 52 L ${a + 22} 56 L ${a + 6} 63 Z" fill="#e3b46b"/>`).join("")}`, ["#f6e2b8", "#fbf2dd"]],
+  giant: ["David and Goliath", () => `<path d="M0 74 C 90 66, 270 66, 360 74 L 360 90 L 0 90 Z" fill="#8cc56a"/>
+    <g transform="translate(260 84) scale(2.3)"><path d="M-8 0 C -9 -12, -6 -20, 0 -21 C 6 -20, 9 -12, 8 0 Z" fill="#8a8f96"/><circle cx="0" cy="-26" r="6" fill="#d9a77a"/><path d="M-6.5 -28 C -6 -36, 6 -36, 6.5 -28 Z" fill="#9aa0a8"/>${eyes([[-2.2, -25.6], [2.2, -25.6]], .8)}<path d="M10 0 L 10 -30" stroke="#7a5a3a" stroke-width="1.6"/></g>
+    ${kid(90, 84, 1, "#c9a35a", "#a65a6a")}
+    <g class="sway" style="transform-origin:96px 56px"><path d="M96 58 C 110 40, 122 40, 120 52" stroke="#7a5a3a" stroke-width="1.4" fill="none"/><circle cx="120" cy="52" r="2.6" fill="#7a7a7a"/></g>`, ["#cfeefc", "#f2fbff"]],
+  lions: ["Daniel in the lions' den", () => `<rect width="360" height="90" fill="#7a6250"/><path d="M0 0 H 360 V 20 C 300 30, 60 30, 0 20 Z" fill="#5a4636"/>
+    <path d="M150 0 L 210 0 L 230 90 L 130 90 Z" fill="#f7e6a8" opacity=".35"/>
+    ${kid(180, 84, 1.05, "#5b8fb9", "#e9e2d0")}
+    ${[[100, 82, 1], [262, 82, -1]].map(([a, b, f]) => `<g transform="translate(${a} ${b}) scale(${f} 1)"><ellipse cx="0" cy="-8" rx="20" ry="8" fill="#e3a44a"/><circle cx="18" cy="-14" r="10" fill="#b5652e"/><circle cx="18" cy="-14" r="6.5" fill="#e3a44a"/><path d="M14 -15 q 2 2 4 0 M 19 -15 q 2 2 4 0" stroke="#5a3a20" stroke-width=".9" fill="none"/></g>`).join("")}
+    ${bob(`<text x="0" y="0" font-size="9" fill="#fff6c8">z z</text>`, 124, 56)}`, ["#7a6250", "#7a6250"]],
+  furnace: ["Three friends safe in the fire", () => `<rect width="360" height="90" fill="#3f2e2a"/><path d="M90 90 L 90 30 C 90 12, 270 12, 270 30 L 270 90 Z" fill="#c4502e"/>
+    <g class="sway" style="transform-origin:180px 90px">${[110, 150, 190, 230, 250].map((a) => `<path d="M${a} 90 C ${a - 12} 60, ${a} 40, ${a + 4} 26 C ${a + 10} 44, ${a + 18} 60, ${a + 8} 90 Z" fill="#f39c4a" opacity=".85"/>`).join("")}</g>
+    ${kid(138, 86, .8, "#5b8fb9", "#f1c84b")}${kid(166, 86, .8, "#6aa06a", "#f1c84b")}${kid(194, 86, .8, "#a65a6a", "#f1c84b")}<g opacity=".85">${kid(222, 86, .82, "#fffdf0", "#fff6c8")}</g>`, ["#3f2e2a", "#3f2e2a"]],
+  jonah: ["Jonah and the big fish", () => `${waves(40, "#3f8ab8", "#7fc3e0")}
+    ${bob(`<path d="M-70 0 C -60 -26, 30 -30, 60 -6 L 84 -20 L 80 4 L 86 22 L 60 8 C 30 30, -60 26, -70 0 Z" fill="#5b6f8a"/><path d="M-70 2 C -40 14, 20 16, 58 8" stroke="#8fa3bf" stroke-width="2" fill="none"/><circle cx="-46" cy="-8" r="3.4" fill="#fff"/><circle cx="-45" cy="-8" r="1.8" fill="#222"/>
+      <path d="M-30 -26 C -30 -36, -26 -40, -22 -44 M -30 -26 C -34 -36, -38 -38, -42 -40" stroke="#bfe3f5" stroke-width="2" fill="none"/>`, 170, 62)}
+    ${bob(`<path d="M-18 0 L 18 0 L 12 8 L -12 8 Z" fill="#9a6a3f"/><path d="M0 0 L 0 -22 L 14 -4 Z" fill="#fff"/>`, 300, 34)}`, ["#9cc9e6", "#d8eef8"]],
+  manger: ["Jesus is born in Bethlehem", () => `${star(180, 16, 6)}<path d="M0 76 C 90 70, 270 70, 360 76 L 360 90 L 0 90 Z" fill="#6f8a5e"/>
+    <path d="M130 80 L 130 44 L 180 26 L 230 44 L 230 80 Z" fill="#c08a55"/><path d="M122 46 L 180 20 L 238 46 L 232 48 L 180 26 L 128 48 Z" fill="#7a4f2e"/>
+    <path d="M170 80 L 190 80 L 188 72 L 172 72 Z" fill="#7a4f2e"/><ellipse cx="180" cy="70" rx="10" ry="4" fill="#fffaf0"/><circle cx="173" cy="69" r="3" fill="#e8b98f"/><circle cx="173" cy="69" r="6" fill="#ffe6a6" opacity=".5"/>
+    ${kid(152, 82, .9, "#5b8fb9", "#5b8fb9")}${kid(208, 82, .95, "#8a6a48", "#c9b48a")}${lamb(96, 78, .32)}${lamb(262, 80, .3)}`, ["#1d2b4a", "#4a5f86"]],
+  storm: ["Jesus calms the storm", () => `${waves(54, "#3a6f96", "#8fc0dc")}
+    ${bob(`<path d="M-44 0 L 44 0 L 34 14 L -34 14 Z" fill="#9a6a3f"/><path d="M0 0 L 0 -40" stroke="#6e4826" stroke-width="2"/><path d="M2 -38 L 30 -6 L 2 -6 Z" fill="#f4ecd8"/>
+      ${kid(-22, 0, .7, "#fffdf0", "#c9b48a")}${kid(-6, 0, .62, "#5b8fb9", "#f1c84b")}${kid(20, 0, .62, "#a65a6a", "#e9e2d0")}`, 180, 56)}
+    <g class="sway" style="transform-origin:300px 20px"><path d="M280 20 C 290 10, 310 10, 320 20 C 330 18, 340 26, 332 32 L 282 32 C 274 30, 274 22, 280 20 Z" fill="#9aa8b8"/></g>`, ["#7d93ab", "#c6d3e0"]],
+  water: ["Jesus walks on the water", () => `${waves(56, "#3a6f96", "#8fc0dc")}
+    ${bob(`<path d="M-40 0 L 40 0 L 30 12 L -30 12 Z" fill="#9a6a3f"/><path d="M0 0 L 0 -34" stroke="#6e4826" stroke-width="2"/>${kid(-14, 0, .58, "#5b8fb9", "#f1c84b")}${kid(14, 0, .58, "#a65a6a", "#e9e2d0")}`, 110, 58)}
+    <circle cx="250" cy="34" r="16" fill="#fff6c8" opacity=".4"/>${kid(250, 58, 1, "#fffdf0", "#c9b48a")}${kid(214, 64, .8, "#6aa06a", "#e9e2d0")}`, ["#2c3f5e", "#6d86a6"]],
+  loaves: ["Five loaves and two fish feed everyone", () => `<path d="M0 60 C 90 50, 270 50, 360 60 L 360 90 L 0 90 Z" fill="#8cc56a"/>${sun(320, 18, 8)}
+    <g transform="translate(180 76)"><path d="M-22 0 L 22 0 L 18 -14 L -18 -14 Z" fill="#c99a52"/><path d="M-20 -10 L 20 -10 M -19 -5 L 19 -5" stroke="#a5793a"/>
+      ${bob(`<ellipse cx="-8" cy="-18" rx="7" ry="4.5" fill="#d9a35a"/><ellipse cx="6" cy="-19" rx="7" ry="4.5" fill="#d9a35a"/><path d="M-4 -24 C 0 -28, 6 -28, 10 -24 C 6 -20, 0 -20, -4 -24 Z M 10 -24 L 14 -27 L 14 -21 Z" fill="#8fb3c8"/>`)}</g>
+    ${kid(130, 84, .95, "#fffdf0", "#c9b48a")}${kid(226, 84, .7, "#f08a4b", "#f1c84b")}${[40, 66, 290, 318].map((a, i) => kid(a, 62, .5, ["#5b8fb9", "#a65a6a", "#6aa06a", "#c9a35a"][i], "#e9e2d0")).join("")}`, ["#cfeefc", "#f2fbff"]],
+  nets: ["Nets full of fish", () => `${waves(48, "#3f8ab8", "#7fc3e0")}${sun(40, 18, 8)}
+    ${bob(`<path d="M-46 0 L 46 0 L 36 14 L -36 14 Z" fill="#9a6a3f"/>${kid(-20, 0, .66, "#5b8fb9", "#f1c84b")}${kid(4, 0, .66, "#a65a6a", "#e9e2d0")}`, 150, 50)}
+    <path d="M196 52 C 220 60, 260 62, 290 52 C 290 72, 260 84, 220 78 Z" fill="none" stroke="#e9e2d0" stroke-width="1.2" stroke-dasharray="3 2"/>
+    ${[[220, 66], [236, 72], [252, 64], [268, 70], [244, 58]].map(([a, b]) => bob(`<path d="M-5 0 C -2 -3, 3 -3, 5 0 C 3 3, -2 3, -5 0 Z M 5 0 L 8 -2.5 L 8 2.5 Z" fill="#f5c542"/>`, a, b)).join("")}`, ["#bfe3f5", "#e8f6fb"]],
+  zacchaeus: ["Zacchaeus climbs a tree to see Jesus", () => `<path d="M0 76 C 90 70, 270 70, 360 76 L 360 90 L 0 90 Z" fill="#d9b77a"/>
+    <path d="M226 84 C 228 60, 222 40, 232 22" stroke="#7a5a3a" stroke-width="7" fill="none"/><path d="M228 46 L 252 34" stroke="#7a5a3a" stroke-width="4"/>
+    <g class="sway" style="transform-origin:236px 40px"><circle cx="220" cy="22" r="18" fill="#6f9a4e"/><circle cx="246" cy="18" r="16" fill="#86b061"/><circle cx="262" cy="34" r="12" fill="#6f9a4e"/></g>
+    ${kid(248, 36, .62, "#a65a6a", "#f1c84b")}${kid(150, 84, 1, "#fffdf0", "#c9b48a")}${kid(110, 84, .8, "#5b8fb9", "#e9e2d0")}`, ["#cfeefc", "#f2fbff"]],
+  sheep: ["The shepherd finds the lost sheep", () => `<path d="M0 60 C 80 48, 280 50, 360 60 L 360 90 L 0 90 Z" fill="#8cc56a"/>${sun(320, 18, 8)}
+    ${kid(170, 84, 1.05, "#8a6a48", "#c9b48a")}${bob(lamb(0, 0, .4), 204, 74)}${lamb(60, 76, .32)}${lamb(90, 80, .3)}${lamb(272, 78, .32)}`, ["#cfeefc", "#f2fbff"]],
+  tomb: ["He is risen!", () => `${sun(250, 54, 16)}<path d="M0 70 C 90 60, 270 60, 360 70 L 360 90 L 0 90 Z" fill="#8cc56a"/>
+    <path d="M150 74 C 152 34, 230 26, 280 50 C 296 58, 300 68, 300 74 Z" fill="#b5a693"/><path d="M212 74 L 212 56 C 212 46, 236 46, 236 56 L 236 74 Z" fill="#3b332c"/><circle cx="182" cy="62" r="13" fill="#cfc4b4" stroke="#9a8e7e"/>
+    ${[[40, 82], [64, 84], [100, 82], [320, 84], [340, 82]].map(([a, b]) => `<g transform="translate(${a} ${b})"><path d="M0 0 L 0 -10" stroke="#5e8a3a" stroke-width="1.4"/><circle cy="-12" r="3.4" fill="#fff"/><circle cy="-12" r="1.2" fill="#f5c542"/></g>`).join("")}
+    ${kid(120, 84, .85, "#a65a6a", "#e9e2d0")}`, ["#f9d9b6", "#fdf1df"]],
+  pentecost: ["The Holy Spirit comes at Pentecost", () => `<rect width="360" height="90" fill="#f4e3c4"/><path d="M0 70 H 360 V 90 H 0 Z" fill="#c9a875"/>
+    ${[70, 120, 170, 220, 270].map((a, i) => `${kid(a, 84, .9, ["#5b8fb9", "#a65a6a", "#6aa06a", "#c9a35a", "#7f6cc8"][i], "#e9e2d0")}<g class="sway" style="transform-origin:${a}px 54px"><path d="M${a} 54 C ${a - 4} 48, ${a} 42, ${a + 1} 38 C ${a + 3} 44, ${a + 5} 48, ${a} 54 Z" fill="#f39c4a"/></g>`).join("")}
+    <path d="M300 10 C 320 20, 330 10, 350 18" stroke="#c9b48a" stroke-width="2" fill="none"/>`, ["#f4e3c4", "#f4e3c4"]],
+  ship: ["Paul's shipwreck", () => `${waves(50, "#3a6f96", "#8fc0dc")}
+    ${bob(`<path d="M-56 0 L 56 0 L 44 16 L -44 16 Z" fill="#7a5a3a"/><path d="M-10 0 L -10 -44 M 20 0 L 20 -36" stroke="#5a3e2b" stroke-width="2.4"/><path d="M-8 -42 L 16 -12 L -8 -12 Z" fill="#e9e2d0"/>`, 160, 54)}
+    <path d="M280 90 C 290 70, 320 64, 360 70 L 360 90 Z" fill="#c9b48a"/>${kid(320, 74, .7, "#a65a6a", "#e9e2d0")}`, ["#7d93ab", "#c6d3e0"]],
+  samaritan: ["The good Samaritan helps", () => `<path d="M0 72 C 90 64, 270 64, 360 72 L 360 90 L 0 90 Z" fill="#d9b77a"/>${sun(40, 18, 8)}
+    <g transform="translate(150 84)">${donkey(0, 0, .5).replace("<g transform", "<g class=\"kid-donkey\" transform")}</g>
+    ${kid(196, 84, 1, "#6aa06a", "#f1c84b")}<g transform="translate(220 84) rotate(-8)">${kid(0, 0, .9, "#5b8fb9", "#e9e2d0")}</g><path d="M214 60 L 226 60" stroke="#fff" stroke-width="2"/>`, ["#cfeefc", "#f2fbff"]],
+  joseph: ["Joseph's coat of many colors", () => `<path d="M0 70 C 90 62, 270 62, 360 70 L 360 90 L 0 90 Z" fill="#d9b77a"/>${sun(320, 18, 8)}
+    <g transform="translate(180 84) scale(1.4)"><path d="M-8 0 C -9 -12, -6 -20, 0 -21 C 6 -20, 9 -12, 8 0 Z" fill="#e85d5d"/>${["#f39c4a", "#f5d04a", "#6cc26a", "#4f9fc8", "#7f6cc8"].map((c, i) => `<path d="M-8.5 ${-3 - i * 3.6} L 8.5 ${-3 - i * 3.6}" stroke="${c}" stroke-width="2.2"/>`).join("")}
+      <circle cx="0" cy="-26" r="6" fill="#e8b98f"/><path d="M-6 -28 C -6 -34, 6 -34, 6 -28 Z" fill="#5a3a20"/>${eyes([[-2.2, -25.6], [2.2, -25.6]], .9)}</g>
+    ${lamb(90, 78, .3)}${lamb(270, 80, .3)}${palm(40, 74, .7)}`, ["#cfeefc", "#f2fbff"]],
+};
+const STORIES = {
+  creation: ["GEN.1", "GEN.2"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], joseph: ["GEN.37"],
+  basket: ["EXO.2"], bush: ["EXO.3"], sea: ["EXO.14", "EXO.15"], tablets: ["EXO.19", "EXO.20", "EXO.31", "EXO.32", "EXO.34", "DEU.5"],
+  walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
+  manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
+  nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], sheep: ["LUK.15", "PSA.23", "JHN.10"], samaritan: ["LUK.10"],
+  tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20", "MAT.27", "MRK.15", "LUK.23", "JHN.19"], pentecost: ["ACT.2"], ship: ["ACT.27"],
+};
+export function kidsStory(book, chapter) {
+  const key = `${book}.${chapter}`;
+  const name = Object.keys(STORIES).find((k) => STORIES[k].includes(key));
+  if (!name) return null;
+  const [caption, draw, [a, b]] = STORY_ART[name];
+  const id = ++uid;
+  return { kind: name, caption, svg: `<svg class="fish-strip passage-art kids-story" viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/>${draw()}</g></svg>` };
 }
