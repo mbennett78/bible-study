@@ -4,7 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./t
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { seaScene, fishFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
+import { seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -22,6 +22,9 @@ function applyAppearance() {
   const style = store.get("style");
   if (style === "sage") delete document.documentElement.dataset.style;
   else document.documentElement.dataset.style = style;
+  // Match the phone's status bar and Safari's edges to this look's page color.
+  const page = getComputedStyle(document.documentElement).getPropertyValue("--page").trim();
+  if (page) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = page; });
   if (typeof updateMascot === "function") updateMascot();
 }
 
@@ -787,9 +790,9 @@ function renderKnowledge() {
 }
 
 /* ---------- Celebrations ---------- */
-// Lively pictures get confetti. Classic gets a quiet gold check instead.
+// Lively pictures get confetti. Still pictures and the Classic look get a quiet gold check instead.
 function celebrate(size = "big") {
-  if ((store.get("graphics") || "full") !== "full" || matchMedia("(prefers-reduced-motion: reduce)").matches) { quietCheck(); return; }
+  if ((store.get("graphics") || "full") !== "full" || store.get("style") === "classic" || matchMedia("(prefers-reduced-motion: reduce)").matches) { quietCheck(); return; }
   confetti(size === "small" ? 50 : 120);
 }
 function quietCheck() {
@@ -819,7 +822,7 @@ function updateMascot() {
   $("#mascot").hidden = store.get("style") !== "animated" || store.get("graphics") !== "full" || (store.get("show") || {}).mascot === false;
   if (store.get("last")) renderPassageArt(store.get("last").book, store.get("last").chapter);
   $("#friendSlot").innerHTML = friend(friendWhich);
-  $("#flourish").innerHTML = fishFlourish();
+  $("#flourish").innerHTML = store.get("style") === "classic" ? classicFlourish() : fishFlourish();
   $("#studyScene").innerHTML = seaScene(store.get("style"));
   $("#vines").innerHTML = edgeVines();
   document.querySelectorAll(".art-slot").forEach((el) => { el.innerHTML = el.dataset.art === "scene" ? seaScene(store.get("style")) : fishStrip(store.get("style")); });
@@ -882,7 +885,11 @@ function initSettings() {
   if (store.get("nasbBibleId")) {
     sel.add(new Option(store.get("nasbLabel") || "Saved edition", store.get("nasbBibleId"), true, true));
   }
-  apiKey.addEventListener("change", () => { store.set("apiBibleKey", apiKey.value.trim()); });
+  apiKey.addEventListener("change", () => {
+    const inv = readInviteCode(apiKey.value);
+    if (inv) { applyInvite(inv); applyAppearance(); return; }
+    store.set("apiBibleKey", apiKey.value.trim());
+  });
   esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); });
   size.addEventListener("input", () => { store.set("textSize", Number(size.value)); applyAppearance(); });
   theme.addEventListener("change", () => { store.set("theme", theme.value); applyAppearance(); });
@@ -968,12 +975,14 @@ function renderSetup() {
     body.querySelectorAll("[data-s-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.sGfx); applyAppearance(); setupSet({ look: true }); renderSetup(); }));
   } else if (step.id === "key") {
     body.innerHTML = `<h2 class="setup-h">Your own Bible key</h2>
-      <p class="muted small-print">The Bible text comes from API.Bible. Everyone uses their own free key, which is saved on this device only.</p>
+      <p class="muted small-print">The Bible text comes from API.Bible. Paste your free key, or an invite code someone in your family sent you. It's saved on this device only.</p>
       <label class="field">API.Bible key<input id="setupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" value="${esc(store.get("apiBibleKey"))}"></label>
       <p class="setup-key-status" id="setupKeyStatus">${store.get("apiBibleKey") ? "Key saved ✓" : ""}</p>
       <details class="key-help" ${store.get("apiBibleKey") ? "" : "open"}><summary>How to get your free key (about 5 minutes)</summary>${$("#keyHelp ol").outerHTML}</details>
       <p class="muted small-print">Don't have it yet? Tap Next. You can add it later in Settings.</p>`;
     $("#setupKey").addEventListener("change", (e) => {
+      const inv = readInviteCode(e.target.value);
+      if (inv) { applyInvite(inv); applyAppearance(); e.target.value = inv.k; }
       const v = e.target.value.trim();
       store.set("apiBibleKey", v); $("#apiBibleKey").value = v;
       $("#setupKeyStatus").textContent = v ? "Key saved ✓" : "";
@@ -1015,8 +1024,8 @@ const FEATURES = [
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
 ];
-const LOOKS = [["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]];
-const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Classic", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
+const LOOKS = [["classic", "Classic"], ["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]];
+const GRAPHICS = [["full", "Lively", "Friendly characters that move and blink, more pictures while you read, and confetti when you finish trivia or a chapter."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
 function renderQuickMenu() {
   const chips = (list, cur, attr) => list.map(([v, l]) => `<button ${attr}="${v}" aria-pressed="${cur === v}">${l}</button>`).join("");
   $("#qmLook").innerHTML = chips(LOOKS, store.get("style"), "data-qm-look");
@@ -1245,19 +1254,23 @@ const PATH_ICONS = {
 };
 function pathCardsHtml() {
   const active = store.get("activePath");
-  return `<div class="path-cards">${PATH_ORDER.map((id) => {
+  const card = (id, featured = false) => {
     const p = PATH_BY_ID[id];
     const done = store.pathReadCount(id), total = pathChapters(id).length;
     const isActive = id === active;
-    const label = isActive ? "Continue" : done ? "Pick up again" : "Start this path";
-    return `<div class="path-card${isActive ? " is-active" : ""}">
+    const label = featured ? (done ? "Keep reading" : "Open my Bible") : isActive ? "Continue" : done ? "Pick up again" : "Start this path";
+    return `<div class="path-card${isActive ? " is-active" : ""}${featured ? " pc-featured" : ""}">
       <div class="pc-top"><span class="pc-icon">${PATH_ICONS[id]}</span><div><h3>${esc(p.name)}</h3>${isActive ? `<span class="pc-badge">Your current path</span>` : ""}</div></div>
       <p>${esc(p.blurb)}</p>
       <div class="bar"><span style="width:${(done / total) * 100}%"></span></div>
-      <span class="pc-meta">${done} of ${total} chapters · ${p.stages.length} stages</span>
-      <div class="pc-actions"><button class="small" data-start="${id}">${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See stages</button>` : ""}</div>
+      <span class="pc-meta">${done} of ${total} chapters · ${p.stages.length} sections</span>
+      <div class="pc-actions"><button class="small" data-start="${id}"${featured ? ` data-read-now="1"` : ""}>${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See ${featured ? "sections" : "stages"}</button>` : ""}</div>
     </div>`;
-  }).join("")}</div>`;
+  };
+  const [first, ...rest] = PATH_ORDER;
+  return `<div class="path-cards">${card(first, true)}</div>
+    <h2 class="paths-sub">Bible studies</h2><p class="muted small-print">Three more ways through the whole Bible.</p>
+    <div class="path-cards">${rest.map((id) => card(id)).join("")}</div>`;
 }
 function wirePathCards(root) {
   root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
@@ -1266,7 +1279,7 @@ function wirePathCards(root) {
     store.startPath(id);
     updatePathBits(); renderMargin();
     const next = nextUnread(id);
-    if (wasActive && next) { showView("read"); openChapter(next.book, next.chapter); }
+    if ((wasActive || b.dataset.readNow) && next) { showView("read"); openChapter(next.book, next.chapter); }
     else showView("path");
   }));
   root.querySelectorAll("[data-stages]").forEach((b) => b.addEventListener("click", () => showView("path")));
@@ -1283,7 +1296,7 @@ function renderHome() {
   view.innerHTML = `${seaScene(store.get("style"))}
     <p class="home-hello">${esc(greeting())}</p>
     <p class="home-sub">How would you like to walk through the Bible today?</p>
-    <div class="look-chips" role="group" aria-label="Look">${[["sage", "Sage"], ["feminine", "Feminine"], ["masculine", "Masculine"], ["animated", "Animated"]].map(([v, l]) => `<button data-look="${v}" aria-pressed="${store.get("style") === v}">${l}</button>`).join("")}</div>
+    <div class="look-chips" role="group" aria-label="Look">${LOOKS.map(([v, l]) => `<button data-look="${v}" aria-pressed="${store.get("style") === v}">${l}</button>`).join("")}</div>
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     <h2 class="home-h">Your study paths</h2>
     ${pathCardsHtml()}
@@ -1410,6 +1423,73 @@ $("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
   $("#volume").addEventListener("input", (e) => { reader.volume = Number(e.target.value); store.set("voiceVolume", reader.volume); });
 }
 
+
+/* ---------- Invite: share this device's Bible key with someone at home ---------- */
+// The invite carries the key in the part of the link after "#", which browsers never send
+// to the website, so the key goes only from one phone to the other.
+const b64url = (str) => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const unb64url = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0)));
+function makeInviteCode({ to = "", look = "" } = {}) {
+  const d = { v: 1, k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", e: store.get("esvKey") || "", from: store.get("name").trim(), to, look };
+  return "BSI1" + b64url(JSON.stringify(d));
+}
+function readInviteCode(code) {
+  const m = String(code || "").trim().match(/BSI1([\w-]{20,})/);
+  if (!m) return null;
+  try { const d = JSON.parse(unb64url(m[1])); return d && d.k ? d : null; } catch { return null; }
+}
+function applyInvite(d) {
+  store.set("apiBibleKey", d.k);
+  if (d.b) { store.set("nasbBibleId", d.b); store.set("nasbLabel", d.l || "NASB"); }
+  if (d.e && !store.get("esvKey")) store.set("esvKey", d.e);
+  if (d.to && !store.get("name").trim()) store.set("name", d.to);
+  if (d.look && !(store.get("setup") || {}).look) {
+    store.set("style", d.look);
+    if (d.look === "classic") store.set("graphics", "simple");
+  }
+  const ki = $("#apiBibleKey"); if (ki) ki.value = d.k;
+}
+let joinedFrom = null;
+{ // Opened from an invite link?
+  const m = location.hash.match(/#join=(BSI1[\w-]+)/);
+  if (m) {
+    history.replaceState(null, "", location.pathname + location.search);
+    const d = readInviteCode(m[1]);
+    if (d && (!store.get("apiBibleKey") || store.get("apiBibleKey") === d.k || confirm("This invite has a different Bible key than the one on this device. Use the key from the invite?"))) {
+      applyInvite(d);
+      joinedFrom = { ...d, code: m[1] };
+    }
+  }
+}
+function inviteWelcome() {
+  if (!joinedFrom) return;
+  const standaloneNow = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const el = Object.assign(document.createElement("div"), { className: "invite-toast", role: "status" });
+  el.innerHTML = `<p><strong>You're all set${joinedFrom.to ? `, ${esc(joinedFrom.to)}` : ""}.</strong> ${joinedFrom.from ? esc(joinedFrom.from) + " shared" : "This invite shared"} a Bible key with you, so the Bible text is ready to read.</p>
+    ${standaloneNow ? "" : `<p class="small-print">To keep it as an app: tap the Share button, then <strong>Add to Home Screen</strong>. If the Home Screen app asks for a key, paste this invite code into the key box: <button class="small" id="copyInvite">Copy invite code</button></p>`}
+    <button class="small" id="inviteOk">OK</button>`;
+  ($("#setup").open ? $("#setup") : document.body).append(el);
+  el.querySelector("#inviteOk").addEventListener("click", () => el.remove());
+  el.querySelector("#copyInvite")?.addEventListener("click", async (e) => { try { await navigator.clipboard.writeText(joinedFrom.code); e.target.textContent = "Copied ✓"; } catch { e.target.textContent = joinedFrom.code; } });
+}
+function wireShareKey() {
+  $("#shareKeyBtn").addEventListener("click", async () => {
+    const out = $("#shareKeyOut");
+    if (!store.get("apiBibleKey")) { out.innerHTML = `<p class="muted small-print">Add your API.Bible key above first.</p>`; return; }
+    const to = $("#shareName").value.trim();
+    const code = makeInviteCode({ to, look: $("#shareLook").value });
+    const url = `${location.origin}${location.pathname}#join=${code}`;
+    const text = `${to ? `${to}, here` : "Here"} is our Bible study app. Open this link on your iPhone or iPad. It sets up the Bible text for you.`;
+    out.innerHTML = `<p class="small-print">Invite link ready. ${navigator.share ? "Pick Messages or Mail to send it." : "Copy it and send it by text or email."}</p>
+      <div class="row"><button class="small" id="shareSend">${navigator.share ? "Send invite" : "Copy link"}</button><button class="small quiet-link" id="shareCopy">Copy link</button></div>`;
+    const copy = async (btn) => { try { await navigator.clipboard.writeText(url); btn.textContent = "Copied ✓"; } catch { out.insertAdjacentHTML("beforeend", `<p class="small-print share-url">${esc(url)}</p>`); } };
+    $("#shareCopy").addEventListener("click", (e) => copy(e.target));
+    $("#shareSend").addEventListener("click", async (e) => {
+      if (navigator.share) { try { await navigator.share({ title: "Bible Study", text, url }); } catch { /* cancelled */ } } else copy(e.target);
+    });
+  });
+}
+
 /* ---------- Start ---------- */
 applyAppearance();
 syncVersionSwitch();
@@ -1423,6 +1503,8 @@ updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
 { const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); } // first time on this device
+wireShareKey();
+inviteWelcome();
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;

@@ -1,6 +1,6 @@
 // Hand-drawn style illustrations as inline SVG. Colors come from CSS classes
 // (styles.css, "Illustrations"), so each look (Sage, Feminine, Masculine, Animated)
-// recolors the same drawings. No image files are needed.
+// recolors the same drawings. The Classic look swaps in still olive-and-cross art. No image files are needed.
 
 const leaf = (x, y, r, s = 1) => `<ellipse class="leaf" cx="0" cy="0" rx="${9 * s}" ry="${3.6 * s}" transform="translate(${x} ${y}) rotate(${r})"/>`;
 
@@ -176,6 +176,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
+  if (style === "classic") return classicScene({ height });
   const W = 360, H = height, surf = 58, bottom = H - 8;
   const id = ++uid;
   const waveLine = (y, cls) => `<path class="${cls}" d="M-60 ${y} ${Array.from({ length: 16 }, () => "q 7.5 -4 15 0 t 15 0").join(" ")}"/>`;
@@ -240,6 +241,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
+  if (style === "classic") return classicStrip("Olive branches and a cross");
   const id = ++uid, W = 360, H = 54;
   return `<svg class="fish-strip" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs><linearGradient id="st${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sea-top"/><stop offset="1" class="sea-deep"/></linearGradient>
@@ -292,6 +294,7 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
+  if (style === "classic") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and a cross") };
   const id = ++uid;
   let art;
   if (kind === "sky") {
@@ -324,4 +327,50 @@ export function passageStrip(book, chapter, style = "") {
     art = fishStrip(style).replace('class="fish-strip"', 'class="fish-strip passage-art"');
   }
   return { kind, caption: CAPTIONS[kind], svg: art };
+}
+
+/* ---------- Classic look: an olive branch and a cross, drawn still ---------- */
+// Used in place of the sea scenes, strips and fish when the look is "classic".
+// Muted brown, gray and white. Nothing here moves or has a face.
+const cross = (x, y, h = 60) => {
+  const w = h * .11, arm = h * .52, armY = y - h * .72;
+  return `<g class="cl-cross"><rect x="${x - w / 2}" y="${y - h}" width="${w}" height="${h}" rx="${w * .2}"/>
+    <rect x="${x - arm / 2}" y="${armY - w / 2}" width="${arm}" height="${w}" rx="${w * .2}"/></g>`;
+};
+const clLeaf = (x, y, r, s = 1) => `<path class="cl-leaf" transform="translate(${x} ${y}) rotate(${r}) scale(${s})" d="M0 0 C 5 -3, 13 -3, 18 0 C 13 3, 5 3, 0 0 Z"/>`;
+// A long olive branch that curves up from a corner: leaves in pairs, a few olives.
+const clBranch = (x, y, s = 1, flip = false) => {
+  const pts = [[14, -4, -38, 22], [28, -10, -48, 18], [42, -18, -55, 12], [56, -27, -62, 6], [70, -37, -70, 0], [82, -49, -78, -6]];
+  const leaves = pts.map(([px, py, a, b], i) => `${clLeaf(px, py, a - 32, 1 - i * .05)}${clLeaf(px, py, b + 14, .95 - i * .05)}`).join("");
+  return `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">
+    <path class="cl-stem" d="M0 0 C 30 -8, 60 -24, 90 -60"/>${leaves}
+    <ellipse class="cl-olive" cx="34" cy="-6" rx="3.4" ry="2.6" transform="rotate(-20 34 -6)"/><ellipse class="cl-olive" cx="39" cy="-2" rx="3.4" ry="2.6"/>
+    <ellipse class="cl-olive" cx="64" cy="-24" rx="3.2" ry="2.5" transform="rotate(-30 64 -24)"/></g>`;
+};
+export function classicScene({ height = 170 } = {}) {
+  const W = 360, H = height, id = ++uid, ground = H - 34;
+  return `<svg class="scene classic-scene" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="A cross on a hill, framed by olive branches">
+    <defs><linearGradient id="cls${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="cl-sky-top"/><stop offset="1" class="cl-sky-low"/></linearGradient>
+      <radialGradient id="clg${id}" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+    <rect width="${W}" height="${H}" fill="url(#cls${id})"/>
+    <ellipse cx="180" cy="${ground - 40}" rx="120" ry="70" fill="url(#clg${id})"/>
+    <path class="cl-hill far" d="M0 ${ground - 6} C 70 ${ground - 26}, 120 ${ground - 18}, 180 ${ground - 30} C 240 ${ground - 18}, 300 ${ground - 24}, 360 ${ground - 8} L 360 ${H} L 0 ${H} Z"/>
+    <path class="cl-hill" d="M0 ${ground + 10} C 90 ${ground - 4}, 140 ${ground - 2}, 180 ${ground - 14} C 220 ${ground - 2}, 280 ${ground - 2}, 360 ${ground + 12} L 360 ${H} L 0 ${H} Z"/>
+    ${cross(180, ground - 12, 92)}
+    ${clBranch(0, H - 6, 1.25)}${clBranch(W, H - 6, 1.25, true)}
+    <path class="cl-rule" d="M0 ${H - .5} H ${W}"/>
+  </svg>`;
+}
+export function classicStrip(caption = "") {
+  return `<svg class="fish-strip passage-art classic-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">
+    <rect width="360" height="54" rx="14" class="cl-band"/>
+    ${clBranch(110, 40, .48, true)}${cross(180, 46, 38)}${clBranch(250, 40, .48)}
+  </svg>`;
+}
+export function classicFlourish() {
+  return `<svg class="flourish classic-flourish" viewBox="0 0 160 44" aria-hidden="true">
+    <path class="cl-stem" d="M14 26 H 66 M94 26 H 146"/>
+    ${clLeaf(30, 26, -24, .8)}${clLeaf(30, 26, 24, .8)}${clLeaf(48, 26, -24, .8)}${clLeaf(48, 26, 24, .8)}
+    ${clLeaf(130, 26, 204, .8)}${clLeaf(130, 26, 156, .8)}${clLeaf(112, 26, 204, .8)}${clLeaf(112, 26, 156, .8)}
+    ${cross(80, 40, 30)}</svg>`;
 }

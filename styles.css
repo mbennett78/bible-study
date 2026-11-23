@@ -927,3 +927,58 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .open-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
 .btn-link { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--accent); background: var(--bg); text-decoration: none; font-size: .88rem; font-weight: 600; }
 .open-note { flex-basis: 100%; margin: 4px 0 0; }
+
+/* ---------- Classic look: dark brown-gray desk, white pages, olive and cross, nothing moves ---------- */
+:root[data-style="classic"] {
+  --page: #3a3430; --page-deep: #2c2724; --on-page: #f3f1ed; --on-page-muted: #c2bab1;
+  --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #6f6861; --line: #e3dfda;
+  --accent: #4a413a; --accent-soft: #efece8; --warm: #8c6e54; --gold: #a8957a; --verse: #9b948d;
+  --sky-top: #e9e7e3; --sky-low: #fbfaf8; --far-hill: #c9c3bb;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+:root[data-style="classic"] *, :root[data-style="classic"] *::before, :root[data-style="classic"] *::after { animation: none !important; transition: none !important; }
+:root[data-style="classic"] .mascot, :root[data-style="classic"] #confetti { display: none !important; }
+.cl-sky-top { stop-color: #e6e3de; } .cl-sky-low { stop-color: #fbfaf8; }
+.cl-hill { fill: #8f8378; } .cl-hill.far { fill: #c4bcb2; }
+.cl-cross rect { fill: #4a3f36; }
+.cl-stem { fill: none; stroke: #6b5c4e; stroke-width: 2; stroke-linecap: round; }
+.cl-leaf { fill: #7d8a6e; stroke: #5f6b52; stroke-width: .5; }
+.cl-olive { fill: #4b4a3a; }
+.cl-rule { stroke: #d8d2ca; stroke-width: 1; }
+.cl-band { fill: #f3f1ee; stroke: #e1dcd5; }
+.classic-strip .cl-cross rect { fill: #5a4d42; }
+.classic-flourish .cl-cross rect { fill: #8a7a6b; }
+:root[data-style="classic"] .vine { opacity: .5; }
+:root[data-style="classic"] .vine .leaf { fill: #8f8a80; }
+:root[data-style="classic"] .reader { font-family: var(--serif); }
+:root[data-style="classic"] .notes-card { border-top: 3px solid var(--accent); }
+:root[data-style="classic"] .notes-tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="classic"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #6f6861; --line: #e3dfda; --accent: #4a413a; --accent-soft: #efece8; --page: #2c2724; --page-deep: #221e1b; color-scheme: light; }
+}
+.pc-featured { grid-column: 1 / -1; border: 2px solid var(--accent); }
+.pc-featured h3 { font-size: 1.3rem; }
+.paths-sub { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; margin: 6px 0 0; }
+@media (min-width: 900px) { .path-cards { grid-template-columns: repeat(3, 1fr); } }
+.share-key { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+.share-key > summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+.share-url { word-break: break-all; background: var(--accent-soft); padding: 8px; border-radius: 8px; }
+.invite-toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + 20px + env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(92vw, 460px); background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; box-shadow: 0 12px 32px rgb(0 0 0 / .25); z-index: 60; }
+.invite-toast p { margin: 0 0 8px; }
+
+/* ---------- Fill the screen on every device ---------- */
+html, body { min-height: 100%; }
+body { min-height: 100vh; min-height: 100dvh; }
+.topbar { padding-left: calc(16px + env(safe-area-inset-left)); padding-right: calc(16px + env(safe-area-inset-right)); }
+main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc(26px + env(safe-area-inset-right)); }
+@media (min-width: 760px) { main { max-width: none; padding-left: calc(78px + env(safe-area-inset-left)); padding-right: calc(78px + env(safe-area-inset-right)); } }
+@media (min-width: 760px) and (max-width: 1099px) { main { max-width: 900px; } }
+/* iPad landscape and bigger: Bible text on the left, the study section beside it */
+@media (min-width: 1100px) {
+  main { max-width: 1400px; }
+  #view-read:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 38%); column-gap: 28px; align-items: start; }
+  #view-read > * { grid-column: 1; min-width: 0; }
+  #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-h) - env(safe-area-inset-top)); overflow-y: auto; margin-top: 0; }
+  #view-read .reader { max-width: 46em; }
+}

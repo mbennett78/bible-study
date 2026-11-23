@@ -8,7 +8,8 @@
   <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1c1b19" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Bible Study">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -175,9 +176,10 @@
         </label>
         <label class="field">Look and feel
           <select id="styleSelect">
+            <option value="classic">Classic (brown, gray and white, still)</option>
             <option value="sage">Sage (calm green)</option>
-            <option value="feminine">Classic feminine</option>
-            <option value="masculine">Classic masculine</option>
+            <option value="feminine">Feminine (soft rose)</option>
+            <option value="masculine">Masculine (warm brown)</option>
             <option value="animated">Animated (with friendly characters)</option>
           </select>
         </label>
@@ -218,7 +220,17 @@
         <label class="field">ESV key
           <input id="esvKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
         </label>
-        <p class="muted small-print">Each person uses their own free key. It's saved on this device only and is never put in backups.</p>
+        <p class="muted small-print">Your key is saved on this device only and is never put in backups.</p>
+        <details class="share-key" id="shareKeyBox">
+          <summary>Share your key with someone in your home</summary>
+          <p class="muted small-print">This makes a private invite link. When they open it on their phone or iPad, the app saves your key there so they can start reading right away. They use the same 5,000 reads a month as you, so send it only to someone you trust, by text or email.</p>
+          <label class="field">Their name <span class="muted">(optional)</span><input id="shareName" type="text" autocomplete="off" placeholder="Their first name"></label>
+          <label class="field">Start them in this look
+            <select id="shareLook"><option value="">Let them choose</option><option value="classic">Classic (brown, gray and white, still)</option><option value="sage">Sage</option><option value="feminine">Feminine</option><option value="masculine">Masculine</option><option value="animated">Animated</option></select>
+          </label>
+          <button class="small" id="shareKeyBtn">Make invite link</button>
+          <div id="shareKeyOut"></div>
+        </details>
         <details class="key-help" id="keyHelp">
           <summary>How to get your free Bible key (about 5 minutes)</summary>
           <ol>
