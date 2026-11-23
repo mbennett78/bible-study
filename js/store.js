@@ -1,7 +1,22 @@
 // Everything personal (keys, progress, place) is kept on this device only.
 const KEY = "bible-study:v1";
 
+// Bump DATA_VERSION and add a step to MIGRATIONS whenever saved data changes shape.
+// Steps only ever add or rename; they never drop anyone's progress, journal or notes.
+const DATA_VERSION = 2;
+const MIGRATIONS = {
+  // 1 → 2: retired looks (Feminine became Sage, the Wooden Cross photo became Classic).
+  2: (s) => { if (s.style === "feminine") s.style = "sage"; if (s.style === "wood") s.style = "classic"; },
+};
+function migrate(s) {
+  for (let v = (s.dataVersion || 1) + 1; v <= DATA_VERSION; v++) { try { MIGRATIONS[v]?.(s); } catch { /* keep going */ } }
+  s.dataVersion = DATA_VERSION;
+  return s;
+}
+
 const defaults = {
+  dataVersion: DATA_VERSION,
+  savedAt: "",
   version: "NASB",          // "NASB" | "ESV" | "B:<API.Bible id>" for an extra version
   extraBibles: [],
   voiceName: "",
@@ -51,19 +66,20 @@ function load() {
     for (const [k, v] of Object.entries(defaults)) {
       if (v && typeof v === "object" && !Array.isArray(v) && saved[k] && typeof saved[k] === "object") merged[k] = { ...v, ...saved[k] };
     }
-    // Looks that were retired: Feminine became Sage, the Wooden Cross photo became Classic.
-    if (merged.style === "feminine") merged.style = "sage";
-    if (merged.style === "wood") merged.style = "classic";
-    return merged;
+    return migrate(merged);
   } catch {
-    try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return { ...structuredClone(defaults), ...JSON.parse(safe) }; } catch { /* fall through */ }
+    try { const safe = localStorage.getItem(`${KEY}:safety`); if (safe) return migrate({ ...structuredClone(defaults), ...JSON.parse(safe) }); } catch { /* fall through */ }
     return structuredClone(defaults);
   }
 }
 // Ask the browser not to clear this app's storage when the device is low on space.
 try { navigator.storage?.persist?.(); } catch { /* not supported */ }
 
+let saveListener = null;
+export function onSave(fn) { saveListener = fn; }
 function save() {
+  state.savedAt = new Date().toISOString();
+  try { saveListener?.(); } catch { /* backup is best effort */ }
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
     // A second copy, refreshed at most once a day, as a safety net.
@@ -167,9 +183,41 @@ export const store = {
   },
   setMode(name, on) { state.modes = { ...state.modes, [name]: on }; save(); },
   exportJSON: () => JSON.stringify({ ...state, apiBibleKey: "", esvKey: "" }, null, 2),
+  // Account backup: everything except Bible keys.
+  snapshot: () => ({ ...structuredClone(state), apiBibleKey: "", esvKey: "" }),
+  isEmpty: () => !Object.keys(state.read).length && !Object.keys(state.journal).length && !Object.keys(state.diary || {}).length
+    && !Object.keys(state.visits).length && !Object.keys(state.favorites).length && !Object.values(state.pathRead).some((m) => Object.keys(m || {}).length),
+  restore(data) {
+    const merged = { ...structuredClone(defaults), ...data, apiBibleKey: state.apiBibleKey, esvKey: state.esvKey };
+    for (const [k, v] of Object.entries(defaults)) if (v && typeof v === "object" && !Array.isArray(v) && data[k] && typeof data[k] === "object") merged[k] = { ...v, ...data[k] };
+    state = migrate(merged); save();
+  },
+  // Brings in progress from another device without losing anything here: read marks, favorites,
+  // visits, path progress and archives are combined; for a journal entry the newer one is kept.
+  mergeFrom(data) {
+    if (!data) return;
+    const newer = (a, b) => (!a ? b : !b ? a : (b.updated || "") > (a.updated || "") ? b : a);
+    const byNewer = (mine = {}, theirs = {}) => { const out = { ...mine }; for (const [k, v] of Object.entries(theirs)) out[k] = newer(out[k], v); return out; };
+    state.read = { ...(data.read || {}), ...state.read };
+    state.favorites = { ...(data.favorites || {}), ...state.favorites };
+    const visits = { ...state.visits };
+    for (const [k, v] of Object.entries(data.visits || {})) if (!visits[k] || (v.count || 0) > (visits[k].count || 0)) visits[k] = v;
+    state.visits = visits;
+    const pr = { ...state.pathRead };
+    for (const [p, m] of Object.entries(data.pathRead || {})) pr[p] = { ...(m || {}), ...(pr[p] || {}) };
+    state.pathRead = pr;
+    state.pathStarted = { ...(data.pathStarted || {}), ...state.pathStarted };
+    state.journal = byNewer(state.journal, data.journal);
+    state.diary = byNewer(state.diary, data.diary);
+    const ids = new Set(state.archives.map((a) => a.id));
+    state.archives = [...state.archives, ...(data.archives || []).filter((a) => !ids.has(a.id))];
+    if ((data.trivia?.answered || 0) > (state.trivia?.answered || 0)) state.trivia = data.trivia;
+    if (!state.activePath && data.activePath) state.activePath = data.activePath;
+    save();
+  },
   importJSON(text) {
     const data = JSON.parse(text);
-    state = { ...defaults, ...data, apiBibleKey: state.apiBibleKey, esvKey: state.esvKey };
+    state = migrate({ ...defaults, ...data, apiBibleKey: state.apiBibleKey, esvKey: state.esvKey });
     save();
   },
 };

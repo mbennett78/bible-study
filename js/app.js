@@ -1,12 +1,12 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
-import { store } from "./store.js";
+import { store, onSave } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATHS, PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto } from "./speech.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey } from "./auth.js";
+import { authEnabled, currentUser, signIn, emailSignInLink, changePassword, signOut, getFamilyKey, setFamilyKey, saveBackup, loadBackup } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -1647,6 +1647,16 @@ $("#driveQuick").addEventListener("change", (e) => setDrive(e.target.checked));
 // When sign-in is on (js/config.js has the Supabase details), nobody gets past this
 // screen until they sign in. A sign-in stays on the device until they sign out.
 let signedInUser = null;
+// Account backup of reading, notes and journal (never the Bible keys).
+let lastBackup = "";
+async function backupNow() {
+  if (!signedInUser) return;
+  try { if (await saveBackup(store.snapshot())) { lastBackup = new Date().toISOString(); showBackupStatus(); } } catch { /* offline: next change tries again */ }
+}
+function showBackupStatus() {
+  const el = $("#backupStatus");
+  if (el) el.textContent = lastBackup ? `Last backup ${new Date(lastBackup).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}.` : "";
+}
 // "Keep me signed in": when off, the app asks for the password again each time it's opened fresh.
 const KEEP_KEY = "bible-study:sign-out-on-close";
 function keepSignedIn() { try { return localStorage.getItem(KEEP_KEY) !== "1"; } catch { return true; } }
@@ -1690,13 +1700,23 @@ function renderAccount() {
   el.innerHTML = signedInUser
     ? `<p class="account-line">Signed in as <strong>${esc(signedInUser.email || "")}</strong></p>
        <label class="switch-row"><span>Stay signed in on this device<small>Off: the app asks for your password each time you open it.</small></span><input type="checkbox" role="switch" id="keepSignedIn" ${keepSignedIn() ? "checked" : ""}></label>
-       <p class="muted small-print">Your reading, notes and journal are saved on this device.</p>
+       <p class="muted small-print">Your reading, notes and journal are saved on this device and backed up to your account, so an update or a new phone never loses your place. <span id="backupStatus"></span></p>
+       <button class="small" id="mergeBackup">Bring in progress from my other devices</button><p class="small-print" id="mergeMsg"></p>
        <details class="share-key"><summary>Change my password</summary>
          <label class="field">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6"></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
   $("#keepSignedIn")?.addEventListener("change", (e) => setKeepSignedIn(e.target.checked));
+  showBackupStatus();
+  $("#mergeBackup")?.addEventListener("click", async () => {
+    const out = $("#mergeMsg"); out.textContent = "Checking…";
+    const b = await loadBackup();
+    if (!b?.data) { out.textContent = "No other saved progress yet."; return; }
+    store.mergeFrom(b.data); await backupNow();
+    out.textContent = "Done ✓ Progress from your other devices is here too. Nothing on this device was removed.";
+    updatePathBits(); if (!$("#view-home").hidden) renderHome();
+  });
   $("#savePassword")?.addEventListener("click", async () => {
     const v = $("#newPassword").value, out = $("#pwMsg");
     if (v.length < 6) { out.textContent = "Please use at least 6 characters."; return; }
@@ -1815,6 +1835,16 @@ if (authEnabled) {
   // Signed-in family members don't set up keys or accounts: the first-time steps are just
   // name, look and study path.
   SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key" && st.id !== "account");
+  // New device, or the browser cleared this one? Bring back this person's own saved progress.
+  if (store.isEmpty()) {
+    const b = await loadBackup();
+    if (b?.data) { store.restore(b.data); applyAppearance(); }
+  }
+  // From here on, back up a few seconds after each change, and when the app is put away.
+  let backupTimer = null;
+  onSave(() => { clearTimeout(backupTimer); backupTimer = setTimeout(backupNow, 8000); });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && backupTimer) { clearTimeout(backupTimer); backupNow(); } });
+  backupNow();
 }
 renderAccount();
 syncVersionSwitch();

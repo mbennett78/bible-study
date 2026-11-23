@@ -82,6 +82,29 @@ export async function getFamilyKey() {
     return { k: data.api_bible_key, b: data.nasb_bible_id || "", l: data.nasb_label || "", x: Array.isArray(data.extra_bibles) ? data.extra_bibles : [], e: data.esv_key || "" };
   } catch { return null; }
 }
+// Each person's own backup of their reading, notes and journal (table user_backups,
+// readable and writable only by that person). Bible keys are never included.
+export async function saveBackup(data) {
+  if (!authEnabled) return false;
+  const c = await sb();
+  const { data: s } = await c.auth.getSession();
+  const uid = s.session?.user?.id;
+  if (!uid) return false;
+  const { error } = await c.from("user_backups").upsert({ user_id: uid, data, updated_at: new Date().toISOString() });
+  return !error;
+}
+export async function loadBackup() {
+  if (!authEnabled) return null;
+  try {
+    const c = await sb();
+    const { data: s } = await c.auth.getSession();
+    const uid = s.session?.user?.id;
+    if (!uid) return null;
+    const { data, error } = await c.from("user_backups").select("data, updated_at").eq("user_id", uid).maybeSingle();
+    return error || !data ? null : data;
+  } catch { return null; }
+}
+
 export async function setFamilyKey({ k, b = "", l = "", x = [], e = "" }) {
   const c = await sb();
   const row = { id: 1, api_bible_key: k, nasb_bible_id: b, nasb_label: l, updated_at: new Date().toISOString() };

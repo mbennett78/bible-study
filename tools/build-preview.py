@@ -17,7 +17,7 @@ async function searchBible() { throw new TextError("Word search works once the a
 const authEnabled = false; // family sign-in is off in the preview
 async function currentUser() { return null; }
 async function signIn() {} async function emailSignInLink() {} async function changePassword() {} async function signOut() {}
-async function getFamilyKey() { return null; } async function setFamilyKey() {}
+async function getFamilyKey() { return null; } async function setFamilyKey() {} async function saveBackup() { return false; } async function loadBackup() { return null; }
 function bibleGatewayUrl(version, book, ch) {
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${version === "ESV" ? "ESV" : "NASB"}`;
 }
