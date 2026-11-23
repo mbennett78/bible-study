@@ -47,6 +47,16 @@ function showView(name) {
 }
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
 // Keep page content clear of the bottom menu, whatever its real height on this device.
+// Some iPad Safari windows place fixed bars off the true bottom edge. Line the bottom menu up
+// with what's actually on screen, including when someone has zoomed in.
+if (window.visualViewport) {
+  const bar = document.querySelector(".tabbar"), vv = window.visualViewport;
+  const pin = () => {
+    const gap = Math.round(window.innerHeight - (vv.height + vv.offsetTop));
+    bar.style.transform = Math.abs(gap) > 2 ? `translateY(${-gap}px)` : "";
+  };
+  vv.addEventListener("resize", pin); vv.addEventListener("scroll", pin); window.addEventListener("scroll", pin, { passive: true }); pin();
+}
 if ("ResizeObserver" in window) new ResizeObserver(([e]) => document.documentElement.style.setProperty("--tabbar-total", `${Math.ceil(e.target.getBoundingClientRect().height)}px`)).observe(document.querySelector(".tabbar"));
 
 /* ---------- Reading ---------- */

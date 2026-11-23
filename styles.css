@@ -203,7 +203,6 @@ dialog::backdrop { background: rgb(0 0 0 / .3); }
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
   background: var(--page); /* same color as the header and page edges */
   border-top: 1px solid color-mix(in srgb, var(--on-page) 12%, transparent);
-  transform: translateZ(0); /* keeps it pinned to the bottom on iPhone while scrolling */
 }
 .tabbar button {
   flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -601,7 +600,7 @@ details.tool-card summary::-webkit-details-marker { display: none; }
 .fish-flourish { width: 200px; height: 55px; }
 
 /* Olive branches framing the app on both sides */
-.vine { position: fixed; top: 0; bottom: 0; width: 34px; height: 100vh; z-index: 0; pointer-events: none; opacity: .85; }
+.vine { position: fixed; top: 0; bottom: 0; width: 34px; height: 100%; overflow: hidden; z-index: 0; pointer-events: none; opacity: .85; }
 .vine-left { left: 0; }
 .vine-right { right: 0; transform: scaleX(-1); }
 .vine .leaf { fill: color-mix(in srgb, var(--on-page) 55%, var(--page)); }
@@ -978,7 +977,7 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .invite-toast p { margin: 0 0 8px; }
 
 /* ---------- Fill the screen on every device ---------- */
-html, body { min-height: 100%; }
+html, body { min-height: 100%; overflow-x: clip; }
 body { min-height: 100vh; min-height: 100dvh; }
 .topbar { padding-left: calc(16px + env(safe-area-inset-left)); padding-right: calc(16px + env(safe-area-inset-right)); }
 main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc(26px + env(safe-area-inset-right)); }
