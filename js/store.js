@@ -38,6 +38,7 @@ const defaults = {
   pathStarted: {},          // { chronological: iso }
   pathRead: {},
   name: "",                 // shown in greetings
+  tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
   style: "sage",            // classic | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year

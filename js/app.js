@@ -1197,6 +1197,7 @@ function closeSetup(finished) {
   $("#setup").close();
   renderSetupCard();
   showView("home");
+  maybeStartTour();
 }
 function renderSetup() {
   const step = SETUP_STEPS[setupAt];
@@ -1946,9 +1947,116 @@ openChapter(start.book, start.chapter);
 updateMascot();
 setMargin(store.get("margin") && window.innerWidth >= 1000);
 showView("home"); // the app always opens on Home, where the study paths are
-{ const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); } // first time on this device
+{ const su = store.get("setup") || {}; if (!su.done && !su.skipped) openSetup(0); else maybeStartTour(); } // first time on this device
 wireShareKey();
 inviteWelcome();
+
+
+/* ---------- Welcome tour: big, simple steps that point at each feature ---------- */
+// Shown once, the first time someone opens the app (after setup). "Skip" ends it any time,
+// and it can always be taken again from Settings or the ⋮ menu.
+const TOUR = [
+  { icon: "👋", title: "Welcome!", text: "This short tour shows you around the app. Tap Next to go on, or Skip tour any time. You can take it again later from Settings or the ⋮ menu." },
+  { view: "home", at: ".tabbar", icon: "🧭", title: "Getting around", text: "These big buttons at the bottom take you anywhere: Home, Read, My study, My path and Settings. Tap Home to get back to the start." },
+  { view: "read", at: "#refButton", icon: "📖", title: "Pick a chapter", text: "Tap the book name at the top to choose any book and chapter. You can type to search, like \"Romans 8\". The arrows go to the next or last chapter." },
+  { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions show up there once the family's Bible key is set up.)" },
+  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap the play button above the chapter and the app reads it out loud. Turn on Keep reading to go straight into the next chapter." },
+  { view: "read", at: "#studyNotes", icon: "🔎", title: "Study section", text: "Under each chapter: history, maps, word meanings and what different churches teach. Scripture always comes first." },
+  { view: "read", at: "#partnerBox", icon: TALK_ICON, title: "Ask questions", text: "Open Chat with my study partner and ask anything about the chapter. The Bible helper answers right here. Tap 🎤 to talk instead of type." },
+  { view: "read", at: "#journalBox", icon: "✎", title: "My journal", text: "Write your thoughts and prayers on each chapter. Tap 🎤 to speak instead of typing." },
+  { view: "books", at: "#view-books .segments", icon: "📊", title: "My study", text: "See your progress, the chapters you've visited, your favorites, and all your journal entries in one place." },
+  { view: "path", at: '.tabbar [data-view="path"]', icon: "🛤️", title: "My path", text: "Follow a reading plan step by step. The app remembers where you are, so you can always pick up where you left off." },
+  { view: "settings", at: "#textSize", wrap: ".card", icon: "🔠", title: "Bigger words", text: "Slide Text size to make the words bigger or smaller. You can also pinch the screen to zoom in." },
+  { view: "settings", at: "#lookCard", icon: "🎨", title: "Change the look", text: "Pick a look you love: spring garden, Christmas, Easter, Thanksgiving, pictures for kids, and more." },
+  { view: "shop", at: "#view-shop h1", wrap: "section", icon: "🎵", title: "Books and music", text: "Find Christian books, kids' books and worship music to buy on Amazon." },
+  { view: "home", at: "#menuBtn", icon: "🎉", title: "You're all set!", text: "Take this tour again any time: tap ⋮ at the top, or go to Settings. Enjoy your study!" },
+];
+let tourAt = -1;
+const tourEl = document.createElement("div");
+tourEl.className = "tour"; tourEl.hidden = true;
+tourEl.innerHTML = `<div class="tour-ring" aria-hidden="true"></div>
+  <div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+    <div class="tour-top"><span class="tour-icon" id="tourIcon" aria-hidden="true"></span><span class="tour-count" id="tourCount"></span><button type="button" class="tour-skip" id="tourSkip">Skip tour</button></div>
+    <h2 id="tourTitle"></h2>
+    <p id="tourText"></p>
+    <div class="tour-dots" id="tourDots" aria-hidden="true"></div>
+    <div class="tour-btns"><button type="button" class="tour-back" id="tourBack">‹ Back</button><button type="button" class="tour-next" id="tourNext">Next ›</button></div>
+  </div>`;
+document.body.append(tourEl);
+function tourTarget(step) {
+  if (!step.at) return null;
+  let el = document.querySelector(step.at);
+  if (el && step.wrap) el = el.closest(step.wrap) || el;
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  return r.width && r.height && getComputedStyle(el).visibility !== "hidden" ? el : null;
+}
+function placeTour() {
+  if (tourAt < 0) return;
+  const el = tourTarget(TOUR[tourAt]);
+  const ring = tourEl.querySelector(".tour-ring"), card = tourEl.querySelector(".tour-card");
+  tourEl.classList.toggle("no-spot", !el);
+  if (!el) { card.style.top = ""; card.style.bottom = ""; return; }
+  const r = el.getBoundingClientRect(), pad = 6, vh = window.innerHeight;
+  const top = Math.max(r.top - pad, 4), bottom = Math.min(r.bottom + pad, vh - 4);
+  Object.assign(ring.style, { top: `${top}px`, left: `${Math.max(r.left - pad, 4)}px`, width: `${Math.min(r.width + pad * 2, window.innerWidth - 8)}px`, height: `${Math.max(bottom - top, 24)}px` });
+  // Put the card on whichever side of the highlighted spot has more room.
+  if ((top + bottom) / 2 > vh / 2) { card.style.top = "max(12px, env(safe-area-inset-top))"; card.style.bottom = "auto"; }
+  else { card.style.top = "auto"; card.style.bottom = "calc(12px + env(safe-area-inset-bottom))"; }
+}
+function showTourStep(i) {
+  tourAt = Math.max(0, Math.min(i, TOUR.length - 1));
+  const step = TOUR[tourAt];
+  if (step.view && document.body.dataset.view !== step.view) showView(step.view);
+  $("#tourIcon").innerHTML = step.icon;
+  $("#tourTitle").textContent = step.title;
+  $("#tourText").textContent = step.text;
+  $("#tourCount").textContent = `${tourAt + 1} of ${TOUR.length}`;
+  $("#tourDots").innerHTML = TOUR.map((_, n) => `<span class="${n === tourAt ? "on" : ""}"></span>`).join("");
+  $("#tourBack").hidden = tourAt === 0;
+  $("#tourNext").textContent = tourAt === TOUR.length - 1 ? "Done" : tourAt === 0 ? "Start the tour ›" : "Next ›";
+  $("#tourSkip").hidden = tourAt === TOUR.length - 1;
+  const el = tourTarget(step);
+  if (el) {
+    const r = el.getBoundingClientRect();
+    if (r.top < 70 || r.bottom > window.innerHeight - 120) el.scrollIntoView({ block: "center" });
+  }
+  placeTour();
+  requestAnimationFrame(placeTour); setTimeout(placeTour, 350);
+  $("#tourNext").focus({ preventScroll: true });
+}
+function startTour() {
+  document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+  tourEl.hidden = false;
+  document.documentElement.classList.add("touring");
+  showTourStep(0);
+}
+function endTour() {
+  tourAt = -1;
+  tourEl.hidden = true;
+  document.documentElement.classList.remove("touring");
+  store.set("tourSeen", true);
+  showView("home");
+}
+function maybeStartTour() {
+  if (store.get("tourSeen")) return;
+  setTimeout(() => {
+    if (store.get("tourSeen") || tourAt >= 0 || document.querySelector("dialog[open]") || !$("#gate").hidden) return;
+    startTour();
+  }, 700);
+}
+$("#tourNext").addEventListener("click", () => (tourAt >= TOUR.length - 1 ? endTour() : showTourStep(tourAt + 1)));
+$("#tourBack").addEventListener("click", () => showTourStep(tourAt - 1));
+$("#tourSkip").addEventListener("click", endTour);
+document.addEventListener("keydown", (e) => {
+  if (tourAt < 0) return;
+  if (e.key === "Escape") endTour();
+  if (e.key === "ArrowRight") $("#tourNext").click();
+  if (e.key === "ArrowLeft" && tourAt > 0) showTourStep(tourAt - 1);
+});
+window.addEventListener("resize", placeTour);
+window.addEventListener("scroll", placeTour, { passive: true });
+document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").open && $("#quickMenu").close(); startTour(); }));
 
 /* ---------- Home-screen install ---------- */
 const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
