@@ -1648,7 +1648,7 @@ function renderAccount() {
   $("#shareFamilyKey")?.addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
-    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [] }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
+    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); out.textContent = "Shared ✓ Family members will get it when they sign in."; }
     catch (x) { out.textContent = x.message; }
   });
   $("#signOutBtn")?.addEventListener("click", async () => {
@@ -1739,7 +1739,10 @@ if (authEnabled) {
   // Also picks up extra Bible versions the organizer shared.
   const fk = await getFamilyKey();
   if (fk && !store.get("apiBibleKey")) applyInvite({ ...fk, look: "" });
-  else if (fk && fk.x?.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", fk.x.slice(0, 3));
+  else if (fk) {
+    if (fk.x?.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", fk.x.slice(0, 3));
+    if (fk.e && !store.get("esvKey")) store.set("esvKey", fk.e);
+  }
   // Signed-in family members don't set up keys or accounts: the first-time steps are just
   // name, look and study path.
   SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "key" && st.id !== "account");

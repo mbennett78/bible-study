@@ -7,6 +7,7 @@ create table if not exists public.family_settings (
   nasb_bible_id text,
   nasb_label text,
   extra_bibles jsonb default '[]'::jsonb,
+  esv_key text,
   updated_at timestamptz default now()
 );
 alter table public.family_settings enable row level security;
@@ -19,3 +20,4 @@ create policy "family can change" on public.family_settings for update to authen
 
 -- Added later: extra Bible versions shared with the family (safe to run again).
 alter table public.family_settings add column if not exists extra_bibles jsonb default '[]'::jsonb;
+alter table public.family_settings add column if not exists esv_key text;
