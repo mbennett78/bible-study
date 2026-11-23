@@ -960,7 +960,7 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 .pc-featured { grid-column: 1 / -1; border: 2px solid var(--accent); }
 .pc-featured h3 { font-size: 1.3rem; }
 .paths-sub { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; margin: 6px 0 0; }
-@media (min-width: 900px) { .path-cards { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 560px) { .path-cards { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); } }
 .share-key { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
 .share-key > summary { cursor: pointer; font-weight: 600; color: var(--accent); }
 .share-url { word-break: break-all; background: var(--accent-soft); padding: 8px; border-radius: 8px; }
@@ -985,21 +985,27 @@ main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc
 
 /* ---------- Wooden Cross look: warm wood browns with gray and white, matched to the wooden cross picture ---------- */
 :root[data-style="wood"] {
-  --page: #4b3628; --page-deep: #3b2a1f; --on-page: #f6f1ea; --on-page-muted: #d2c2b0;
-  --bg: #ffffff; --surface: #ffffff; --text: #2b211a; --muted: #75685c; --line: #e6ddd2;
-  --accent: #7a5234; --accent-soft: #f3ece4; --warm: #9a6b45; --gold: #b48d5e; --verse: #a39383;
-  --sky-top: #ebe7e2; --sky-low: #fbfaf8; --far-hill: #cfc6bb;
+  /* matched to the photo: slate-blue sky, weathered gray-brown wood, golden horizon */
+  --page: #3d4659; --page-deep: #2f3747; --on-page: #f3f4f8; --on-page-muted: #c2c8d6;
+  --bg: #ffffff; --surface: #ffffff; --text: #23262e; --muted: #6b6f7c; --line: #e1e3ea;
+  --accent: #6b5243; --accent-soft: #eef0f5; --warm: #b9855a; --gold: #c9a25a; --verse: #9a9eab;
+  --sky-top: #e3e7f2; --sky-low: #f7f3ea; --far-hill: #c9ccd6;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root[data-style="wood"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #2b211a; --muted: #75685c; --line: #e6ddd2; --accent: #7a5234; --accent-soft: #f3ece4; --page: #3b2a1f; --page-deep: #2e2118; color-scheme: light; }
+  :root[data-style="wood"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #23262e; --muted: #6b6f7c; --line: #e1e3ea; --accent: #6b5243; --accent-soft: #eef0f5; --page: #2f3747; --page-deep: #252b38; color-scheme: light; }
 }
-:root[data-style="wood"] .cl-cross rect { fill: #7a5234; }
-:root[data-style="wood"] .cl-band { fill: #f5f0ea; stroke: #e6ddd2; }
-:root[data-style="wood"] .cl-leaf { fill: #8a8f74; stroke: #6b705a; }
-:root[data-style="wood"] .vine { opacity: .45; }
-:root[data-style="wood"] .vine .leaf { fill: #9a8a78; }
+:root[data-style="wood"] .cl-cross rect { fill: #6b5243; }
+:root[data-style="wood"] .cl-band { fill: #eef0f5; stroke: #e1e3ea; }
+:root[data-style="wood"] .cl-leaf { fill: #8d9180; stroke: #6c705f; }
+:root[data-style="wood"] .vine { opacity: .4; }
+:root[data-style="wood"] .vine .leaf { fill: #9aa2b6; }
+:root[data-style="wood"] .pc-featured, :root[data-style="wood"] .notes-card { border-color: var(--gold); }
+:root[data-style="wood"] .strongs-num { color: #6b5243; background: #f6efe2; }
 .photo-scene { position: relative; display: block; width: calc(100% + 36px); margin: -22px -18px 16px; border-radius: 24px 24px 0 0; overflow: hidden; aspect-ratio: 360 / 170; background: #e9e4de; }
 .photo-scene > svg, .photo-scene > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
+.photo-scene { aspect-ratio: 360 / 210; }
+.photo-scene > img { object-position: 50% 16%; }
+@media (min-width: 760px) { .photo-scene { aspect-ratio: 360 / 150; } .photo-scene > img { object-position: 50% 11%; } }
 .wood-grain { stroke: #5b3c25; stroke-opacity: .35; stroke-width: .8; fill: none; }
