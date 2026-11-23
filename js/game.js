@@ -27,15 +27,41 @@ const shuffle = (arr) => {
   return a;
 };
 
-// Questions in a part of the Bible (a question counts when every chapter it uses is in that part).
-export function questionsIn(scopeId) {
+// Kinds of questions, like the categories in a trivia app. New questions name their topic;
+// older ones are sorted by what they ask (who, where, how many...).
+export const TOPICS = [
+  ["any", "Any kind", "🎲"],
+  ["people", "Bible people", "👤"],
+  ["places", "Places", "🗺️"],
+  ["numbers", "Numbers and Bible math", "🔢"],
+  ["events", "Stories and sayings", "📖"],
+  ["books", "Books of the Bible", "📚"],
+  ["history", "History and the world", "🏛️"],
+  ["science", "Science and the Bible", "🔭"],
+  ["connections", "Old and New connections", "🔗"],
+];
+export function topicOf(q) {
+  if (q.topic) return q.topic;
+  if (q.kind === "connection") return "connections";
+  if (q.kind === "geography") return "places";
+  if (q.kind === "history") return "history";
+  const t = q.q;
+  if (/^How (many|long|old|much)\b/i.test(t) || q.choices.every((c) => /^\d/.test(c))) return "numbers";
+  if (/^Where\b|which (city|town|mountain|river|sea|land|country|place|village|region)\b|^To what (city|place)/i.test(t)) return "places";
+  if (/^(Who|Whose|Whom)\b|which (man|woman|king|queen|prophet|apostle|disciple|judge|person|son|brother|priest)\b|^What was the name of|new name|\bnamed\b/i.test(t)) return "people";
+  return "events";
+}
+
+// Questions in a part of the Bible (a question counts when every chapter it uses is in that part),
+// optionally of one kind.
+export function questionsIn(scopeId, topic = "any") {
   const inScope = (SCOPES.find(([id]) => id === scopeId) || SCOPES[0])[2];
-  return TRIVIA.filter((q) => q.refs.every((r) => inScope(r.split(".")[0])));
+  return TRIVIA.filter((q) => q.refs.every((r) => inScope(r.split(".")[0])) && (topic === "any" || topicOf(q) === topic));
 }
 
 // Picks `need` questions, unseen ones first, each with its choices shuffled.
-export function dealQuestions(scopeId, need, seen = []) {
-  const pool = questionsIn(scopeId);
+export function dealQuestions(scopeId, need, seen = [], topic = "any") {
+  const pool = questionsIn(scopeId, topic);
   const fresh = shuffle(pool.filter((q) => !seen.includes(q.id)));
   const reuse = shuffle(pool.filter((q) => seen.includes(q.id)));
   return [...fresh, ...reuse].slice(0, need).map((q) => {
@@ -56,12 +82,130 @@ export function recordGame(board, players) {
   const top = Math.max(...players.map((p) => p.right));
   for (const p of players) {
     const key = p.name.trim();
-    const was = out[key] || { games: 0, right: 0, asked: 0, wins: 0, best: 0 };
+    const was = { games: 0, right: 0, asked: 0, wins: 0, best: 0, stars: 0, ...out[key] };
     const pct = p.asked ? Math.round((p.right / p.asked) * 100) : 0;
-    out[key] = { games: was.games + 1, right: was.right + p.right, asked: was.asked + p.asked, wins: was.wins + (players.length > 1 && p.right === top ? 1 : 0), best: Math.max(was.best, pct) };
+    out[key] = { games: was.games + 1, right: was.right + p.right, asked: was.asked + p.asked, wins: was.wins + (players.length > 1 && p.right === top ? 1 : 0), best: Math.max(was.best, pct), stars: was.stars + (p.stars || 0) };
   }
   return out;
 }
+
+/* ---------- Stars, levels and badges ---------- */
+// Up to three stars for a right answer: quicker answers earn more. Without a timer the
+// windows are generous, so slower readers still earn stars.
+export function starsFor(right, ms, timerSecs = 0) {
+  if (!right) return 0;
+  if (timerSecs) { const left = 1 - ms / (timerSecs * 1000); return left >= 2 / 3 ? 3 : left >= 1 / 3 ? 2 : 1; }
+  return ms <= 8000 ? 3 : ms <= 16000 ? 2 : 1;
+}
+
+// Bible scholar levels, reached by collecting stars in Quiz myself.
+export const LEVELS = [
+  [0, "Seedling", "🌱"], [15, "Sprout", "🌿"], [40, "Lamp Lighter", "🪔"], [80, "Scroll Reader", "📜"],
+  [140, "Bible Explorer", "🧭"], [220, "Bible Scholar", "🎓"], [330, "Wise Teacher", "🦉"], [480, "Faithful Sage", "👑"],
+];
+export function levelFor(stars) {
+  let i = 0;
+  while (i + 1 < LEVELS.length && stars >= LEVELS[i + 1][0]) i++;
+  const [at, name, icon] = LEVELS[i], next = LEVELS[i + 1];
+  return { n: i + 1, name, icon, at, next: next ? { at: next[0], name: next[1], icon: next[2] } : null };
+}
+
+// Achievements. test(stats) decides each one; stats come from recordSolo.
+export const BADGES = [
+  ["first", "First game", "🎈", "Finish your first quiz", (s) => s.games >= 1],
+  ["perfect", "Perfect score", "💯", "Get every question right", (s) => s.perfect >= 1],
+  ["streak5", "On fire", "🔥", "5 right in a row", (s) => s.bestStreak >= 5],
+  ["streak10", "Unstoppable", "☄️", "10 right in a row", (s) => s.bestStreak >= 10],
+  ["swift", "Swift as Asahel", "⚡", "Three stars on every question of a game (2 Samuel 2:18)", (s) => s.swift >= 1],
+  ["q100", "Hundred club", "📚", "Answer 100 questions", (s) => s.answered >= 100],
+  ["q500", "Faithful student", "🏛️", "Answer 500 questions", (s) => s.answered >= 500],
+  ["goal", "Goal keeper", "🎯", "Reach your weekly goal", (s) => s.goals >= 1],
+  ["explorer", "Explorer", "🗺️", "Play every part of the Bible", (s) => SCOPES.every(([id]) => s.scopes.includes(id))],
+  ["topics", "Curious mind", "🧩", "Try every kind of question", (s) => TOPICS.every(([id]) => id === "any" || s.topics.includes(id))],
+  ["master", "Master of a part", "🏆", "Answer every question in one part of the Bible right", (s) => s.mastery >= 1],
+  ["scholar", "Bible Scholar", "🎓", "Reach the Bible Scholar level", (s) => s.stars >= LEVELS[5][0]],
+  ["sage", "Faithful Sage", "👑", "Reach the top level", (s) => s.stars >= LEVELS[LEVELS.length - 1][0]],
+];
+
+/* ---------- Quiz myself: personal progress ---------- */
+// Kept per person (it lives in their own saved data, so each person on a shared tablet has
+// their own). mastered: question ids answered right at least once. best: best % per part of
+// the Bible. goal: questions a week (0 = no goal). week: { start, n } for the current week.
+export const GOALS = [0, 10, 25, 50, 100];
+export const emptyProgress = () => ({ mastered: [], best: {}, goal: 0, week: { start: "", n: 0 }, games: 0, stars: 0, answered: 0, perfect: 0, swift: 0, goals: 0, bestStreak: 0, scopes: [], topics: [], badges: {} });
+const bestKey = (scopeId, topic = "any") => (topic === "any" ? scopeId : `${scopeId}+${topic}`);
+
+// Monday of this week, as YYYY-MM-DD in local time.
+export function weekStart(d = new Date()) {
+  const m = new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
+  return `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, "0")}-${String(m.getDate()).padStart(2, "0")}`;
+}
+
+// How far someone has got in one part of the Bible.
+export function scopeProgress(mine, scopeId, topic = "any") {
+  const pool = questionsIn(scopeId, topic);
+  const got = new Set(mine.mastered);
+  return { total: pool.length, mastered: pool.filter((q) => got.has(q.id)).length, best: mine.best[bestKey(scopeId, topic)] ?? null };
+}
+
+// Questions answered this week (a new week starts on Monday).
+export const thisWeek = (mine, now = new Date()) => (mine.week.start === weekStart(now) ? mine.week.n : 0);
+
+// Adds a finished solo game. results: [{ id, right, stars }]. game: { topic, longest }.
+// Returns the new progress and what changed (for the celebration).
+export function recordSolo(mine, scopeId, results, now = new Date(), game = {}) {
+  const topic = game.topic || "any";
+  const was = { ...emptyProgress(), ...mine };
+  const right = results.filter((r) => r.right).length;
+  const stars = results.reduce((n, r) => n + (r.stars || 0), 0);
+  const pct = results.length ? Math.round((right / results.length) * 100) : 0;
+  const before = scopeProgress(was, scopeId, topic);
+  const key = bestKey(scopeId, topic);
+  const weekBefore = thisWeek(was, now);
+  const goalReached = Boolean(was.goal) && weekBefore < was.goal && weekBefore + results.length >= was.goal;
+  const out = {
+    ...was,
+    mastered: [...new Set([...was.mastered, ...results.filter((r) => r.right).map((r) => r.id)])],
+    games: was.games + 1,
+    best: { ...was.best, [key]: Math.max(was.best[key] ?? 0, pct) },
+    week: { start: weekStart(now), n: weekBefore + results.length },
+    stars: was.stars + stars,
+    answered: was.answered + results.length,
+    perfect: was.perfect + (results.length && right === results.length ? 1 : 0),
+    swift: was.swift + (results.length >= 5 && results.every((r) => r.stars === 3) ? 1 : 0),
+    goals: was.goals + (goalReached ? 1 : 0),
+    bestStreak: Math.max(was.bestStreak, game.longest || 0),
+    scopes: [...new Set([...was.scopes, scopeId])],
+    topics: [...new Set([...was.topics, topic])],
+  };
+  const got = new Set(out.mastered);
+  const mastery = SCOPES.filter(([id]) => { const pool = questionsIn(id); return pool.length && pool.every((q) => got.has(q.id)); }).length;
+  const newBadges = BADGES.filter(([id, , , , test]) => !was.badges[id] && test({ ...out, mastery })).map(([id]) => id);
+  out.badges = { ...was.badges, ...Object.fromEntries(newBadges.map((id) => [id, now.toISOString()])) };
+  const after = scopeProgress(out, scopeId, topic);
+  const lvBefore = levelFor(was.stars), lvAfter = levelFor(out.stars);
+  return {
+    mine: out, pct, stars,
+    newBest: before.best !== null && pct > before.best,
+    firstGame: before.best === null,
+    newlyMastered: after.mastered - before.mastered,
+    goalReached,
+    newBadges,
+    levelUp: lvAfter.n > lvBefore.n ? lvAfter : null,
+  };
+}
+
+// Cheerful words for a right answer, kind words for a miss, and a shout for a run of right answers.
+export const CHEERS = ["Right!", "Yes!", "You got it!", "Well done!", "Spot on!", "Amen to that!", "Exactly!", "Nicely done!"];
+export const KIND = ["Not quite.", "Good try!", "Close one.", "Now you know!"];
+export function streakShout(n) {
+  if (n >= 10) return `🔥 ${n} in a row! Unstoppable!`;
+  if (n === 7) return "🔥 7 in a row! A perfect number!";
+  if (n === 5) return "🔥 5 in a row! On fire!";
+  if (n === 3) return "🔥 3 in a row!";
+  return "";
+}
+const pickOne = (list) => list[Math.floor(Math.random() * list.length)];
 
 /* ---------- Sound effects (Web Audio, no files to download) ---------- */
 // Quiet, short tones. They follow the device volume, and on iPhone and iPad the silent switch.
@@ -83,11 +227,11 @@ export const SOUNDS = {
   right: () => tone([784, 1047], { type: "triangle" }),
   wrong: () => tone([220, 196], { type: "sine", gap: 0.15, length: 0.25, volume: 0.12 }),
   tick: () => tone([880], { length: 0.05, volume: 0.05 }),
+  streak: () => tone([659, 784, 988, 1319], { type: "triangle", gap: 0.08, length: 0.2 }),
   cheer: () => tone([523, 659, 784, 1047, 784, 1047, 1319], { type: "triangle", gap: 0.11, length: 0.3 }),
   done: () => tone([523, 659, 784], { type: "triangle", gap: 0.14, length: 0.3, volume: 0.14 }),
 };
 
-/* ---------- The game screen ---------- */
 /* ---------- Confetti in the colors of the current look ---------- */
 // Drawn inside the game window (which sits above the rest of the app).
 function confetti(host, colors, count = 140) {
@@ -104,7 +248,39 @@ function confetti(host, colors, count = 140) {
     if (++frames < 170 && c.isConnected) requestAnimationFrame(tick); else c.remove();
   })();
 }
+/* ---------- Drawn pieces: medals, laurel emblems, stars ---------- */
+// Colors come from the look (CSS variables), so every badge matches the theme.
 const miniBuddy = (cls = "") => `<span class="buddy buddy-inline ${cls}" aria-hidden="true">${BUDDY_SVG}</span>`;
+const GRADIENTS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".45" stop-color="#f2c84b"/><stop offset="1" stop-color="#b9831a"/></linearGradient>
+  <radialGradient id="gFace" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f4ead2"/></radialGradient>
+</defs></svg>`;
+export function medal(icon, { locked = false, fresh = false, label = "" } = {}) {
+  return `<span class="medal${locked ? " locked" : ""}${fresh ? " fresh" : ""}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"'}>
+    <svg viewBox="0 0 64 80" aria-hidden="true" focusable="false">
+      <path class="m-rib" d="M18 44 L10 76 L19 70 L25 78 L32 50 Z"/><path class="m-rib m-rib2" d="M46 44 L54 76 L45 70 L39 78 L32 50 Z"/>
+      <circle cx="32" cy="32" r="27" fill="url(#gGold)"/><circle cx="32" cy="32" r="22.5" class="m-face" fill="url(#gFace)"/>
+      <circle cx="32" cy="32" r="25" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1" stroke-dasharray="1.5 3"/>
+      <ellipse cx="23" cy="17" rx="9" ry="4" fill="#fff" opacity=".45" transform="rotate(-30 23 17)"/>
+    </svg><span class="m-ico">${locked ? "🔒" : icon}</span></span>`;
+}
+function laurel(level) {
+  // Two olive branches curving up from the bottom around the medal.
+  const leaves = [];
+  for (let i = 0; i < 7; i++) {
+    const t = ((105 + i * 23) * Math.PI) / 180;
+    const x = 60 + Math.cos(t) * 47, y = 60 + Math.sin(t) * 47, rot = 105 + i * 23 + 90 - 25;
+    leaves.push(`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="10" ry="4.4" transform="rotate(${rot} ${x.toFixed(1)} ${y.toFixed(1)})"/>`);
+    leaves.push(`<ellipse cx="${(120 - x).toFixed(1)}" cy="${y.toFixed(1)}" rx="10" ry="4.4" transform="rotate(${180 - rot} ${(120 - x).toFixed(1)} ${y.toFixed(1)})"/>`);
+  }
+  return `<span class="laurel" aria-hidden="true"><svg viewBox="0 0 120 120" focusable="false"><g class="l-leaves">${leaves.join("")}</g>
+    <circle cx="60" cy="60" r="34" fill="url(#gGold)"/><circle cx="60" cy="60" r="28" fill="url(#gFace)"/>
+    <ellipse cx="49" cy="42" rx="11" ry="5" fill="#fff" opacity=".5" transform="rotate(-30 49 40)"/></svg>
+    <span class="l-ico">${level.icon}</span><span class="l-num">${level.n}</span></span>`;
+}
+const starRow = (n, of = 3, cls = "") => `<span class="g-stars ${cls}" aria-label="${n} star${n === 1 ? "" : "s"}">${Array.from({ length: of }, (_, i) => `<i class="${i < n ? "on" : ""}" style="--d:${i * 0.12}s">★</i>`).join("")}</span>`;
+const bar = (have, of) => `<span class="g-bar" aria-hidden="true"><i style="width:${of ? Math.min(100, Math.round((have / of) * 100)) : 0}%"></i></span>`;
+const nameOf = (list, id) => (list.find(([v]) => v === id) || list[0])[1];
 
 // deps: { store, esc, lively(), lookColors(), myName() }
 //   lively(): true when the person's Pictures setting allows confetti and animation.
@@ -115,26 +291,55 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
   document.body.append(dlg);
   dlg.addEventListener("close", stopTimer);
 
-  const saved = () => ({ players: [], board: {}, seen: [], sound: true, last: {}, ...(store.get("game") || {}) });
+  const saved = () => { const g = { players: [], board: {}, seen: [], sound: true, last: {}, ...(store.get("game") || {}) }; g.mine = { ...emptyProgress(), ...(g.mine || {}) }; return g; };
   const save = (patch) => store.set("game", { ...saved(), ...patch });
   const sound = (name) => { if (saved().sound) SOUNDS[name](); };
+  const paint = (html) => { dlg.classList.toggle("still", !lively()); dlg.innerHTML = GRADIENTS + html; };
 
-  let setup = null;   // { mode, players[], scope, count, timer }
-  let play = null;    // { players[{name,right,asked}], deck[], turn, q }
+  let setup = null;   // { mode, players[], scope, topic, count, timer }
+  let play = null;    // { players[{name,right,asked,stars,streak,longest}], deck[], turn, results[], shownAt }
   let timer = 0;
 
   function stopTimer() { clearInterval(timer); timer = 0; }
 
   function open() {
     const s = saved();
-    setup = { mode: "solo", players: [], scope: "all", count: 10, timer: 30, ...s.last };
+    setup = { mode: "solo", players: [], scope: "all", topic: "any", count: 10, timer: 30, ...s.last };
     setup.players = (setup.players || []).filter(Boolean).slice(0, MAX_PLAYERS);
+    if (!TOPICS.some(([id]) => id === setup.topic)) setup.topic = "any";
     renderSetup();
     if (!dlg.open) dlg.showModal();
   }
 
   function chips(list, current, attr) {
-    return list.map(([v, l]) => `<button type="button" class="g-chip" ${attr}="${esc(v)}" aria-pressed="${String(v) === String(current)}">${esc(l)}</button>`).join("");
+    return list.map(([v, l, icon]) => `<button type="button" class="g-chip" ${attr}="${esc(v)}" aria-pressed="${String(v) === String(current)}">${icon ? `<span aria-hidden="true">${icon}</span> ` : ""}${esc(l)}</button>`).join("");
+  }
+
+  // Quiz myself: level, this week's goal, progress in this part of the Bible, and badges.
+  function progressCard(mine) {
+    const n = thisWeek(mine), goal = mine.goal;
+    const lv = levelFor(mine.stars);
+    const here = scopeProgress(mine, setup.scope, setup.topic);
+    const label = nameOf(SCOPES, setup.scope) + (setup.topic === "any" ? "" : ` · ${nameOf(TOPICS, setup.topic)}`);
+    const earned = BADGES.filter(([id]) => mine.badges[id]).length;
+    const rows = SCOPES.map(([id, l]) => { const p = scopeProgress(mine, id); return `<li><span>${esc(l)}</span>${bar(p.mastered, p.total)}<small>${p.mastered} of ${p.total}${p.best !== null ? ` · best ${p.best}%` : ""}</small></li>`; }).join("");
+    return `<section class="g-sec g-mine">
+      <div class="g-level">${laurel(lv)}<div class="g-lv-text">
+        <p class="g-lv-name">Level ${lv.n} · ${esc(lv.name)}</p>
+        <p class="g-lv-stars"><span class="g-star-ico" aria-hidden="true">★</span> ${mine.stars} star${mine.stars === 1 ? "" : "s"}${lv.next ? ` · ${lv.next.at - mine.stars} more to ${esc(lv.next.name)} ${lv.next.icon}` : " · the top level!"}</p>
+        ${lv.next ? bar(mine.stars - lv.at, lv.next.at - lv.at) : bar(1, 1)}
+      </div></div>
+      ${goal ? `<p class="g-goal-line"><strong>This week:</strong> ${Math.min(n, goal)} of ${goal} questions${n >= goal ? " ✓ Goal reached!" : ""}</p>${bar(n, goal)}` : ""}
+      <p class="g-goal-line"><strong>${esc(label)}:</strong> ${here.mastered} of ${here.total} questions answered right${here.best !== null ? ` · best score ${here.best}%` : ""}</p>${bar(here.mastered, here.total)}
+      <details class="g-all g-badges-box"><summary>🏅 My badges (${earned} of ${BADGES.length})</summary>
+        <ul class="g-badges">${BADGES.map(([id, name, icon, how]) => `<li class="${mine.badges[id] ? "won" : ""}">${medal(icon, { locked: !mine.badges[id] })}<strong>${esc(name)}</strong><small>${esc(how)}</small></li>`).join("")}</ul></details>
+      <details class="g-all"><summary>📈 Every part of the Bible</summary><ul>${rows}</ul></details>
+      <details class="g-all g-goal-box"><summary>🎯 My weekly goal${goal ? `: ${goal} questions` : ""}</summary>
+        <div class="g-chips" role="group" aria-label="Weekly goal">${chips(GOALS.map((g) => [g, g ? `${g} a week` : "No goal"]), goal, "data-goal")}</div>
+        ${!goal && n ? `<p class="muted small-print">${n} question${n === 1 ? "" : "s"} answered this week.</p>` : ""}
+        <button type="button" class="quiet-link" id="gResetMine">Start my progress over</button>
+      </details>
+    </section>`;
   }
 
   function renderSetup() {
@@ -142,34 +347,40 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     const s = saved();
     const together = setup.mode === "group";
     const known = s.players.filter((n) => !setup.players.includes(n));
-    const avail = questionsIn(setup.scope).length;
-    const board = Object.entries(s.board).map(([name, b]) => ({ name, ...b })).sort((a, b) => b.right - a.right || b.best - a.best).slice(0, 10);
-    dlg.innerHTML = `<div class="g-head">${miniBuddy()}<h2>🎲 Bible games</h2><button type="button" class="g-x" data-close aria-label="Close">✕</button></div>
+    const avail = questionsIn(setup.scope, setup.topic).length;
+    const board = Object.entries(s.board).map(([name, b]) => ({ name, stars: 0, ...b })).sort((a, b) => b.right - a.right || b.best - a.best).slice(0, 10);
+    paint(`<div class="g-head">${miniBuddy()}<h2>🎲 Bible games</h2><button type="button" class="g-x" data-close aria-label="Close">✕</button></div>
       <div class="g-body">
         <div class="g-seg" role="group" aria-label="How to play">
           <button type="button" data-mode="solo" aria-pressed="${!together}">🙋 Quiz myself</button>
           <button type="button" data-mode="group" aria-pressed="${together}">👨‍👩‍👧‍👦 Play together</button>
         </div>
+        ${together ? "" : progressCard(s.mine)}
         ${together ? `<section class="g-sec"><h3>Players or teams <small>(up to ${MAX_PLAYERS})</small></h3>
           <div class="g-add"><input id="gName" maxlength="24" placeholder="Name, like Grandpa or Team Blue" aria-label="Player or team name" autocomplete="off"><button type="button" class="small" id="gAdd">Add</button></div>
           <div class="g-players">${setup.players.map((n, i) => `<span class="g-player">${i + 1}. ${esc(n)}<button type="button" data-drop="${i}" aria-label="Remove ${esc(n)}">✕</button></span>`).join("") || `<span class="muted small-print">Add at least two players or teams.</span>`}</div>
           ${known.length ? `<p class="muted small-print">Tap to add someone who played before:</p><div class="g-chips">${known.map((n) => `<button type="button" class="g-chip" data-known="${esc(n)}">+ ${esc(n)}</button>`).join("")}</div>` : ""}
         </section>` : ""}
-        <section class="g-sec"><h3>Which part of the Bible?</h3><div class="g-chips">${chips(SCOPES.map(([id, l]) => [id, l]), setup.scope, "data-scope")}</div>
-          <p class="muted small-print">${avail} questions here. ${avail < 30 ? "More are being added." : ""}</p></section>
+        <section class="g-sec"><h3>Which part of the Bible?</h3><div class="g-chips">${chips(SCOPES.map(([id, l]) => [id, l]), setup.scope, "data-scope")}</div></section>
+        <section class="g-sec"><h3>What kind of questions?</h3><div class="g-chips g-topics">${chips(TOPICS, setup.topic, "data-topic")}</div>
+          <p class="muted small-print" id="gAvail">${avail ? `${avail} question${avail === 1 ? "" : "s"} here.${avail < 30 ? " More are being added." : ""}` : "No questions of this kind in this part yet. Try the Whole Bible or Any kind."}</p></section>
         <section class="g-sec"><h3>${together ? "Questions for each player" : "How many questions?"}</h3><div class="g-chips">${chips((together ? [3, 5, 10] : [5, 10, 15, 20]).map((n) => [n, String(n)]), setup.count, "data-count")}</div></section>
-        <section class="g-sec"><h3>Timer for each question</h3><div class="g-chips">${chips([[0, "No timer"], [15, "15 seconds"], [30, "30 seconds"], [60, "1 minute"]], setup.timer, "data-timer")}</div></section>
+        <section class="g-sec"><h3>Timer for each question</h3><div class="g-chips">${chips([[0, "No timer"], [15, "15 seconds"], [30, "30 seconds"], [60, "1 minute"]], setup.timer, "data-timer")}</div>
+          <p class="muted small-print">★★★ Quick answers earn up to three stars${setup.timer ? "." : ", with plenty of time to read."}</p></section>
         <label class="switch-row"><span>Sound effects<small>Chimes for right answers and a fanfare for a great score</small></span><input type="checkbox" role="switch" id="gSound" ${s.sound ? "checked" : ""}></label>
         <p class="g-err" id="gErr" role="alert"></p>
         <button type="button" class="big-btn" id="gStart">Start the game</button>
-        ${board.length ? `<section class="g-sec g-board"><h3>🏆 Leaderboard</h3><ol>${board.map((b) => `<li><strong>${esc(b.name)}</strong><span>${b.right} right · best ${b.best}%${b.wins ? ` · ${b.wins} win${b.wins === 1 ? "" : "s"}` : ""} · ${b.games} game${b.games === 1 ? "" : "s"}</span></li>`).join("")}</ol>
+        ${board.length ? `<section class="g-sec g-board"><h3>🏆 Leaderboard</h3><ol>${board.map((b) => `<li><strong>${esc(b.name)}</strong><span>${b.right} right${b.stars ? ` · ★ ${b.stars}` : ""} · best ${b.best}%${b.wins ? ` · ${b.wins} win${b.wins === 1 ? "" : "s"}` : ""} · ${b.games} game${b.games === 1 ? "" : "s"}</span></li>`).join("")}</ol>
           <button type="button" class="quiet-link" id="gClear">Clear the leaderboard</button></section>` : ""}
-      </div>`;
+      </div>`);
     dlg.querySelector("[data-close]").onclick = () => dlg.close();
     dlg.querySelectorAll("[data-mode]").forEach((b) => (b.onclick = () => { setup.mode = b.dataset.mode; setup.count = setup.mode === "group" ? 5 : 10; renderSetup(); }));
     dlg.querySelectorAll("[data-scope]").forEach((b) => (b.onclick = () => { setup.scope = b.dataset.scope; renderSetup(); }));
+    dlg.querySelectorAll("[data-topic]").forEach((b) => (b.onclick = () => { setup.topic = b.dataset.topic; renderSetup(); }));
     dlg.querySelectorAll("[data-count]").forEach((b) => (b.onclick = () => { setup.count = Number(b.dataset.count); renderSetup(); }));
     dlg.querySelectorAll("[data-timer]").forEach((b) => (b.onclick = () => { setup.timer = Number(b.dataset.timer); renderSetup(); }));
+    dlg.querySelectorAll("[data-goal]").forEach((b) => (b.onclick = () => { save({ mine: { ...saved().mine, goal: Number(b.dataset.goal) } }); renderSetup(); dlg.querySelector(".g-goal-box").open = true; }));
+    dlg.querySelector("#gResetMine")?.addEventListener("click", () => { if (confirm("Start your quiz progress over? Your stars, level, badges and best scores will be cleared. The leaderboard stays.")) { save({ mine: { ...emptyProgress(), goal: saved().mine.goal } }); renderSetup(); } });
     dlg.querySelector("#gSound").onchange = (e) => save({ sound: e.target.checked });
     const err = dlg.querySelector("#gErr");
     const add = (name) => {
@@ -187,6 +398,7 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     dlg.querySelector("#gStart").onclick = () => {
       const names = together ? setup.players : [myName()];
       if (together && names.length < 2) { err.textContent = "Add at least two players or teams, or choose Quiz myself."; return; }
+      if (!avail) { err.textContent = "There are no questions of that kind in this part of the Bible yet. Pick another."; return; }
       start(names);
     };
   }
@@ -194,12 +406,12 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
   function start(names) {
     const s = saved();
     const need = setup.count * names.length;
-    const deck = dealQuestions(setup.scope, need, s.seen);
+    const deck = dealQuestions(setup.scope, need, s.seen, setup.topic);
     // Remember names (most recent first) and settings for next time.
     const players = [...new Set([...names, ...s.players])].slice(0, 60);
-    save({ players: setup.mode === "group" ? players : s.players, last: { mode: setup.mode, players: setup.mode === "group" ? names : [], scope: setup.scope, count: setup.count, timer: setup.timer } });
+    save({ players: setup.mode === "group" ? players : s.players, last: { mode: setup.mode, players: setup.mode === "group" ? names : [], scope: setup.scope, topic: setup.topic, count: setup.count, timer: setup.timer } });
     const perPlayer = Math.max(1, Math.floor(deck.length / names.length));
-    play = { players: names.map((name) => ({ name, right: 0, asked: 0 })), deck: deck.slice(0, perPlayer * names.length), turn: 0, short: deck.length < need };
+    play = { players: names.map((name) => ({ name, right: 0, asked: 0, stars: 0, streak: 0, longest: 0 })), deck: deck.slice(0, perPlayer * names.length), turn: 0, short: deck.length < need, results: [] };
     showQuestion();
   }
 
@@ -208,49 +420,62 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     const q = play.deck[play.turn];
     const who = play.players[play.turn % play.players.length];
     const solo = play.players.length === 1;
-    dlg.innerHTML = `<div class="g-head">${miniBuddy("sitting")}<h2>${solo ? `Question ${play.turn + 1} of ${play.deck.length}` : `${esc(who.name)}'s turn`}</h2><button type="button" class="g-x" data-close aria-label="Stop the game">✕</button></div>
-      <div class="g-body">
-        ${solo ? "" : `<p class="muted small-print">Question ${play.turn + 1} of ${play.deck.length}</p>`}
-        ${setup.timer ? `<div class="g-timer" aria-hidden="true"><i></i></div><p class="sr-only" id="gTimeLeft" aria-live="off"></p>` : ""}
-        <p class="g-q">${esc(q.q)}</p>
-        <div class="g-choices">${q.choices.map((c, i) => `<button type="button" data-pick="${i}">${esc(c)}</button>`).join("")}</div>
+    const topicIcon = (TOPICS.find(([id]) => id === topicOf(q)) || TOPICS[0])[2];
+    paint(`<div class="g-head">${miniBuddy("sitting")}<h2>${solo ? `Question ${play.turn + 1} of ${play.deck.length}` : `${esc(who.name)}'s turn`}</h2><button type="button" class="g-x" data-close aria-label="Stop the game">✕</button></div>
+      <div class="g-body g-play">
+        <div class="g-meta">${solo ? `<span class="g-dots" aria-hidden="true">${play.deck.map((_, i) => `<i class="${i < play.turn ? (play.results[i]?.right ? "r" : "w") : i === play.turn ? "now" : ""}"></i>`).join("")}</span>` : `<span class="muted small-print">Question ${play.turn + 1} of ${play.deck.length}</span>`}
+          <span class="g-speed" title="Answer quickly for more stars">${starRow(3)}</span></div>
+        ${setup.timer ? `<div class="g-timer" aria-hidden="true"><i></i></div>` : ""}
+        <div class="g-card"><span class="g-topic" aria-hidden="true">${topicIcon}</span><p class="g-q">${esc(q.q)}</p></div>
+        <div class="g-choices">${q.choices.map((c, i) => `<button type="button" data-pick="${i}" style="--i:${i}"><span class="g-letter" aria-hidden="true">${"ABCD"[i]}</span><span class="g-choice">${esc(c)}</span></button>`).join("")}</div>
         <p class="g-why" role="status"></p>
         <button type="button" class="big-btn" id="gNext" hidden></button>
-        ${solo ? "" : `<p class="g-score">${play.players.map((p) => `${esc(p.name)} ${p.right}`).join(" · ")}</p>`}
-      </div>`;
+        ${solo ? "" : `<p class="g-score">${play.players.map((p) => `${esc(p.name)} ${p.right}${p.stars ? ` <span class="g-star-ico" aria-label="stars">★</span>${p.stars}` : ""}`).join(" · ")}</p>`}
+      </div>`);
     dlg.querySelector("[data-close]").onclick = () => { if (play.turn === 0 || confirm("Stop this game? Scores so far won't be saved.")) { stopTimer(); renderSetup(); } };
     dlg.querySelectorAll("[data-pick]").forEach((b) => (b.onclick = () => answer(Number(b.dataset.pick))));
-    if (setup.timer) {
-      const bar = dlg.querySelector(".g-timer i"), end = Date.now() + setup.timer * 1000;
-      let lastTick = 99;
-      timer = setInterval(() => {
-        const left = Math.max(0, end - Date.now());
-        bar.style.width = `${(left / (setup.timer * 1000)) * 100}%`;
-        bar.parentElement.classList.toggle("low", left < 5000);
-        const secs = Math.ceil(left / 1000);
-        if (secs <= 5 && secs < lastTick && secs > 0) { lastTick = secs; sound("tick"); }
-        if (!left) answer(-1);
-      }, 100);
-    }
+    play.shownAt = Date.now();
+    const bar = dlg.querySelector(".g-timer i"), speed = dlg.querySelectorAll(".g-speed i");
+    const end = play.shownAt + setup.timer * 1000;
+    let lastTick = 99;
+    timer = setInterval(() => {
+      const ms = Date.now() - play.shownAt;
+      const can = starsFor(true, ms, setup.timer);
+      speed.forEach((s, i) => s.classList.toggle("on", i < can));
+      if (!setup.timer) return;
+      const left = Math.max(0, end - Date.now());
+      bar.style.width = `${(left / (setup.timer * 1000)) * 100}%`;
+      bar.parentElement.classList.toggle("low", left < 5000);
+      const secs = Math.ceil(left / 1000);
+      if (secs <= 5 && secs < lastTick && secs > 0) { lastTick = secs; sound("tick"); }
+      if (!left) answer(-1);
+    }, 100);
   }
 
   function answer(pick) {
+    if (dlg.querySelector("[data-pick][disabled]")) return;
     stopTimer();
     const q = play.deck[play.turn];
     const who = play.players[play.turn % play.players.length];
-    if (dlg.querySelector("[data-pick][disabled]")) return;
     const right = pick === q.a;
+    const stars = starsFor(right, Date.now() - play.shownAt, setup.timer);
     who.asked += 1; if (right) who.right += 1;
+    who.stars += stars;
+    who.streak = right ? who.streak + 1 : 0; who.longest = Math.max(who.longest, who.streak);
+    play.results.push({ id: q.id, right, stars });
+    const shout = right ? streakShout(who.streak) : "";
     dlg.querySelectorAll("[data-pick]").forEach((b) => {
       b.disabled = true;
       const i = Number(b.dataset.pick);
       if (i === q.a) b.classList.add("right");
       else if (i === pick) b.classList.add("wrong");
     });
-    sound(right ? "right" : "wrong");
+    sound(shout ? "streak" : right ? "right" : "wrong");
     const mini = dlg.querySelector(".buddy-inline");
-    if (right && mini) { mini.classList.remove("sitting"); mini.classList.add("excited"); }
-    dlg.querySelector(".g-why").innerHTML = `${pick === -1 ? "⏰ Time's up! " : right ? "✓ Right! " : "Not quite. "}<span>${esc(q.why)}</span>`;
+    if (mini) { mini.classList.remove("sitting"); mini.classList.add(shout ? "cheering" : right ? "excited" : "waving"); }
+    if (shout && who.streak >= 5 && lively()) confetti(dlg, lookColors(), 60);
+    dlg.querySelector(".g-speed").innerHTML = right ? starRow(stars, 3, "won") : "";
+    dlg.querySelector(".g-why").innerHTML = `${shout ? `<strong class="g-streak">${shout}</strong> ` : ""}${pick === -1 ? "⏰ Time's up! " : right ? `✓ ${pickOne(CHEERS)} ${stars === 3 ? "Speedy! " : ""}` : `${pickOne(KIND)} `}<span>${esc(q.why)}</span>`;
     const next = dlg.querySelector("#gNext");
     const last = play.turn + 1 >= play.deck.length;
     const nextWho = play.players[(play.turn + 1) % play.players.length];
@@ -262,28 +487,48 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
   function finish() {
     const s = saved();
     const asked = play.deck.map((q) => q.id);
-    const pool = questionsIn(setup.scope).map((q) => q.id);
+    const pool = questionsIn(setup.scope, setup.topic).map((q) => q.id);
     let seen = [...new Set([...s.seen, ...asked])];
     if (pool.every((id) => seen.includes(id))) seen = seen.filter((id) => !pool.includes(id)); // all used: start fresh
-    save({ seen, board: recordGame(s.board, play.players) });
+    const solo = play.players.length === 1;
+    const got = solo ? recordSolo(s.mine, setup.scope, play.results, new Date(), { topic: setup.topic, longest: play.players[0].longest }) : null;
+    save({ seen, board: recordGame(s.board, play.players), ...(got ? { mine: got.mine } : {}) });
     const table = standings(play.players);
     const best = table[0];
     const great = best.pct >= 80;
-    const solo = play.players.length === 1;
     const winners = table.filter((p) => p.right === best.right);
-    dlg.innerHTML = `<div class="g-head">${miniBuddy(great ? "cheering" : "waving")}<h2>${solo ? (great ? "🎉 Wonderful!" : "Well done!") : winners.length > 1 ? "🎉 It's a tie!" : `🎉 ${esc(best.name)} wins!`}</h2><button type="button" class="g-x" data-close aria-label="Close">✕</button></div>
-      <div class="g-body">
-        ${solo ? `<p class="g-big">${best.right} of ${best.asked}</p><p class="g-pct">${best.pct}% right</p>`
-          : `<ol class="g-results">${table.map((p) => `<li class="${p.right === best.right ? "top" : ""}"><span class="g-place">${p.place ? `${p.place}` : "="}</span><strong>${esc(p.name)}</strong><span>${p.right} of ${p.asked} · ${p.pct}%</span></li>`).join("")}</ol>`}
-        <p class="muted">${great ? "Your study buddy is cheering for you!" : "Every game helps God's Word take deeper root. Try again with new questions!"}</p>
+    const here = got && scopeProgress(got.mine, setup.scope, setup.topic);
+    const label = nameOf(SCOPES, setup.scope) + (setup.topic === "any" ? "" : ` · ${nameOf(TOPICS, setup.topic)}`);
+    const mineNotes = got ? [
+      best.longest >= 3 && `🔥 Longest run: ${best.longest} in a row.`,
+      got.newBest && `⭐ New personal best for ${esc(label)}!`,
+      got.goalReached && `🎯 You reached your goal of ${got.mine.goal} questions this week!`,
+      `${esc(label)}: ${here.mastered} of ${here.total} questions answered right${got.newlyMastered ? ` (${got.newlyMastered} new today)` : ""}.`,
+      got.mine.goal && !got.goalReached && `This week: ${Math.min(thisWeek(got.mine), got.mine.goal)} of ${got.mine.goal} questions${thisWeek(got.mine) >= got.mine.goal ? " ✓" : ""}.`,
+    ].filter(Boolean) : [];
+    const hot = !solo && [...play.players].sort((a, b) => b.longest - a.longest)[0];
+    const lv = got && levelFor(got.mine.stars);
+    const fresh = got ? BADGES.filter(([id]) => got.newBadges.includes(id)) : [];
+    const celebrate = great || (got && (got.newBest || got.goalReached || got.levelUp || fresh.length));
+    paint(`<div class="g-head">${miniBuddy(celebrate ? "cheering" : "waving")}<h2>${solo ? (great ? "🎉 Wonderful!" : got.levelUp ? "🎉 Level up!" : "Well done!") : winners.length > 1 ? "🎉 It's a tie!" : `🎉 ${esc(best.name)} wins!`}</h2><button type="button" class="g-x" data-close aria-label="Close">✕</button></div>
+      <div class="g-body g-done">
+        ${solo ? `<p class="g-big">${best.right} of ${best.asked}</p><p class="g-pct">${best.pct}% right</p>
+          <p class="g-won-stars"><span class="g-star-ico big" aria-hidden="true">★</span> <strong>${got.stars}</strong> star${got.stars === 1 ? "" : "s"} earned</p>
+          ${got.levelUp ? `<div class="g-levelup">${laurel(got.levelUp)}<p>You're now a <strong>${esc(got.levelUp.name)}</strong>!</p></div>`
+            : `<div class="g-level small">${laurel(lv)}<div class="g-lv-text"><p class="g-lv-name">Level ${lv.n} · ${esc(lv.name)}</p>${lv.next ? `<p class="g-lv-stars">${lv.next.at - got.mine.stars} more stars to ${esc(lv.next.name)} ${lv.next.icon}</p>${bar(got.mine.stars - lv.at, lv.next.at - lv.at)}` : ""}</div></div>`}
+          ${fresh.length ? `<div class="g-new-badges"><p><strong>New badge${fresh.length === 1 ? "" : "s"}!</strong></p><ul class="g-badges">${fresh.map(([, name, icon, how], i) => `<li class="won" style="--d:${0.3 + i * 0.25}s">${medal(icon, { fresh: true })}<strong>${esc(name)}</strong><small>${esc(how)}</small></li>`).join("")}</ul></div>` : ""}
+          ${mineNotes.length ? `<ul class="g-mine-notes">${mineNotes.map((t) => `<li>${t}</li>`).join("")}</ul>` : ""}`
+          : `<ol class="g-results">${table.map((p) => `<li class="${p.right === best.right ? "top" : ""}"><span class="g-place">${p.place ? `${p.place}` : "="}</span><strong>${esc(p.name)}</strong><span>${p.right} of ${p.asked} · ${p.pct}%${p.stars ? ` · <span class="g-star-ico" aria-hidden="true">★</span> ${p.stars}` : ""}</span></li>`).join("")}</ol>`}
+        ${hot && hot.longest >= 3 ? `<p class="g-hot">🔥 Hottest streak: ${esc(hot.name)}, ${hot.longest} in a row</p>` : ""}
+        <p class="muted">${celebrate ? "Your study buddy is cheering for you!" : "Every game helps God's Word take deeper root. Try again with new questions!"}</p>
         ${play.short ? `<p class="muted small-print">This part of the Bible ran out of new questions, so some were shared out evenly. More are being added.</p>` : ""}
         <button type="button" class="big-btn" id="gAgain">Play again with new questions</button>
         <button type="button" class="wb-new" id="gChange">Change players or settings</button>
-      </div>`;
+      </div>`);
     dlg.querySelector("[data-close]").onclick = () => dlg.close();
     dlg.querySelector("#gAgain").onclick = () => start(play.players.map((p) => p.name));
     dlg.querySelector("#gChange").onclick = renderSetup;
-    if (great) { sound("cheer"); if (lively()) confetti(dlg, lookColors()); } else sound("done");
+    if (celebrate) { sound("cheer"); if (lively()) confetti(dlg, lookColors()); } else sound("done");
   }
 
   return { open };

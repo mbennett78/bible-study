@@ -30,6 +30,17 @@ try {
   check("the buddy tucks aside while you read", await page.$eval(".buddy", (b) => b.classList.contains("tucked")));
   await page.click(".buddy", { position: { x: 12, y: 30 } }); await page.waitForTimeout(400);
   check("tapping him brings him back and opens the chat", !(await page.$eval(".buddy", (b) => b.classList.contains("tucked"))) && await page.$eval("#partnerBox", (d) => d.open));
+  // Looks: a drop-down with a picture of the chosen look right under it.
+  await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(400);
+  check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 8);
+  await page.selectOption("#lookSelect", "christmas"); await page.waitForTimeout(300);
+  check("choosing a look applies it", await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).style === "christmas"));
+  check("and shows its picture and description under the list", /red, green and gold/.test(await page.textContent("#lookGrid .look-preview")) && Boolean(await page.$("#lookGrid .look-preview svg")));
+  await page.evaluate(() => [...document.querySelectorAll("#setupCard [data-s-open]")].find((b) => /Look/.test(b.textContent)).click()); await page.waitForTimeout(400);
+  check("setup's look step can be opened again from Settings", await page.$eval("#setup", (d) => d.open) && Boolean(await page.$("#setupLook")));
+  check("the page behind setup is hidden, so nothing shows through", await page.$eval("main, #app, body > :not(dialog)", (el) => getComputedStyle(el).visibility === "hidden"));
+  await page.selectOption("#setupLook", "easter"); await page.waitForTimeout(300);
+  check("the setup drop-down shows the chosen look too", /empty tomb/.test(await page.textContent("#setup .look-preview")));
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
 } catch (e) { stopped = e; } finally {

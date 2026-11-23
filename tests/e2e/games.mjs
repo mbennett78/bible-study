@@ -21,7 +21,7 @@ try {
   await page.goto(site.url); await page.waitForTimeout(800);
   const g = (sel) => page.$(`dialog.game ${sel}`);
   const txt = (sel) => page.$eval(`dialog.game ${sel}`, (e) => e.textContent.trim()).catch(() => "");
-  const pickText = (text, right) => page.$$eval("dialog.game [data-pick]", (bs, [t, r]) => { const b = bs.find((x) => (x.textContent === t) === r); b.click(); }, [text, right]);
+  const pickText = (text, right) => page.$$eval("dialog.game [data-pick]", (bs, [t, r]) => { const b = bs.find((x) => (x.querySelector(".g-choice").textContent === t) === r); b.click(); }, [text, right]);
 
   // Solo: Gospels, 5 questions, every answer right.
   await page.click("#homeGames"); await page.waitForTimeout(200);
@@ -36,14 +36,49 @@ try {
     const ans = rightAnswer(q);
     check(`solo question ${i + 1} is a real Gospels question`, Boolean(ans), q);
     await pickText(ans, true);
-    check(`solo question ${i + 1} marked right`, /Right!/.test(await txt(".g-why")));
+    const why = await txt(".g-why");
+    check(`solo question ${i + 1} marked right`, /✓/.test(why));
+    if (i === 2) check("three right in a row gets a streak shout", /3 in a row/.test(why), why);
+    if (i === 4) check("five in a row is on fire", /5 in a row/.test(why), why);
     await page.click("#gNext");
   }
   check("no question repeats in a game", new Set(asked).size === 5);
   check("perfect score shown", /5 of 5/.test(await txt(".g-big")));
   check("buddy cheers at 80% or more", Boolean(await g(".buddy-inline.cheering")));
   check("confetti in the look's colors", Boolean(await g(".g-confetti")));
-  await page.click("#gAgain"); await page.waitForTimeout(100);
+  const notes = await txt(".g-mine-notes");
+  check("stars earned are shown", /15\s*stars earned/.test(await txt(".g-won-stars")), await txt(".g-won-stars"));
+  check("new badges are celebrated", /First game/.test(await txt(".g-new-badges")) && /Perfect score/.test(await txt(".g-new-badges")), await txt(".g-new-badges"));
+  check("the first level-up is celebrated", /now a Sprout/.test(await txt(".g-levelup")), await txt(".g-levelup"));
+  check("solo results show progress in that part of the Bible", /Gospels: 5 of \d+ questions answered right \(5 new today\)/.test(notes), notes);
+  check("and the longest run", /Longest run: 5 in a row/.test(notes), notes);
+
+  // My progress on the setup screen, and a weekly goal.
+  await page.click("#gChange"); await page.waitForTimeout(100);
+  const mine = await txt(".g-mine");
+  check("my progress shows when quizzing myself", /Gospels:.*5 of \d+.*best score 100%/.test(mine), mine);
+  check("quick answers earned stars and a level", /Level 2 · Sprout/.test(mine) && /15 stars/.test(mine), mine);
+  check("badges earned are shown, the rest locked", (await page.$$("dialog.game .g-badges li.won")).length >= 3 && (await page.$$("dialog.game .medal.locked")).length >= 5);
+  await page.click("dialog.game .g-mine details:last-of-type summary");
+  await page.click('dialog.game [data-goal="10"]'); await page.waitForTimeout(100);
+  check("a weekly goal can be set", /This week:.*5 of 10 questions/.test(await txt(".g-mine")), await txt(".g-mine"));
+  check("the goal is kept", await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).game.mine.goal === 10));
+  await page.click("#gStart");
+  for (let i = 0; i < 5; i++) { await pickText(rightAnswer(await txt(".g-q")), false); await page.click("#gNext"); }
+  check("reaching the weekly goal is celebrated", /reached your goal of 10/.test(await txt(".g-mine-notes")), await txt(".g-mine-notes"));
+  check("even a low score cheers when the goal is reached", Boolean(await g(".buddy-inline.cheering")));
+  await page.click("#gChange"); await page.waitForTimeout(100);
+  await page.click('dialog.game [data-scope="revelation"]'); await page.click('dialog.game [data-topic="science"]');
+  check("a part with no questions of a kind says so", /No questions of this kind/.test(await txt("#gAvail")));
+  await page.click("#gStart");
+  check("and won't start an empty game", /no questions of that kind/i.test(await txt("#gErr")));
+  await page.click('dialog.game [data-scope="all"]'); await page.click('dialog.game [data-topic="books"]'); await page.click('dialog.game [data-count="5"]');
+  await page.click("#gStart");
+  const bookText = await txt(".g-q"); const bookQ = TRIVIA.find((t) => t.q === bookText);
+  check("a kind of question deals only that kind", bookQ && bookQ.topic === "books", bookQ && bookQ.q);
+  await page.click("dialog.game [data-close]"); await page.waitForTimeout(100);
+  await page.click('dialog.game [data-topic="any"]'); await page.click('dialog.game [data-scope="gospels"]');
+  await page.click("#gStart");
   check("play again gives new questions", !asked.includes(await txt(".g-q")));
   await page.click("dialog.game [data-close]"); await page.waitForTimeout(100);
 

@@ -1416,11 +1416,10 @@ function renderSetup() {
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
       <p class="muted small-print">Classic is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
-      <div class="look-grid">${lookGridHtml("data-s-look")}</div>
+      <div class="look-grid">${lookPickerHtml("setupLook")}</div>
       <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
-      <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>
-      ${seaScene(store.get("style"))}`;
-    body.querySelectorAll("[data-s-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.sLook); setupSet({ look: true }); renderSetup(); }));
+      <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>`;
+    wireLookPicker(body, "setupLook", () => { setupSet({ look: true }); renderSetup(); });
     body.querySelectorAll("[data-s-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.sGfx); applyAppearance(); setupSet({ look: true }); renderSetup(); }));
   } else if (step.id === "key") {
     body.innerHTML = `<h2 class="setup-h">Your own Bible key</h2>
@@ -1516,15 +1515,27 @@ const LOOKS = [
 // Still looks: no motion, no cartoons, no confetti. Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
 function isStill(style = store.get("style")) { return ["classic", "sage", "easter", "fall"].includes(style); }
-function lookGridHtml(attr) {
+// A drop-down of looks with a live picture of the chosen one right beside it, so people can
+// see what they're picking (used in first-time setup and in Settings).
+function lookPickerHtml(id) {
   const cur = store.get("style");
-  return LOOKS.map(([v, l, d, sw]) => `<button class="look-opt" ${attr}="${v}" aria-pressed="${cur === v}"><span class="look-sw">${sw.map((c) => `<i style="background:${c}"></i>`).join("")}</span><span><strong>${esc(l)}</strong><small>${esc(d)}</small></span></button>`).join("");
+  const [, , d, sw] = LOOKS.find(([v]) => v === cur) || LOOKS[0];
+  return `<label class="field look-pick">Look<select id="${id}">${LOOKS.map(([v, l]) => `<option value="${v}" ${cur === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></label>
+    <div class="look-preview" aria-live="polite">${seaScene(cur)}<p><span class="look-sw" aria-hidden="true">${sw.map((c) => `<i style="background:${c}"></i>`).join("")}</span>${esc(d)}</p></div>`;
+}
+function wireLookPicker(host, id, after) {
+  host.querySelector(`#${id}`).addEventListener("change", (e) => {
+    setStyle(e.target.value);
+    const keep = document.activeElement === e.target;
+    after();
+    if (keep) document.getElementById(id)?.focus();
+  });
 }
 function renderLookCard() {
   const grid = $("#lookGrid");
   if (!grid) return;
-  grid.innerHTML = lookGridHtml("data-set-look");
-  grid.querySelectorAll("[data-set-look]").forEach((b) => b.addEventListener("click", () => { setStyle(b.dataset.setLook); renderLookCard(); }));
+  grid.innerHTML = lookPickerHtml("lookSelect");
+  wireLookPicker(grid, "lookSelect", renderLookCard);
   const g = store.get("graphics") || "full";
   $("#lookGraphics").innerHTML = GRAPHICS.map(([v, l]) => `<button data-set-gfx="${v}" aria-pressed="${g === v}">${l}</button>`).join("");
   $("#lookGraphicsNote").textContent = GRAPHICS.find(([v]) => v === g)[2];
@@ -2661,6 +2672,7 @@ $("#helpBtn").addEventListener("click", openHelp);
 // After 15 minutes away (or with the app closed), people land on Home and are asked
 // whether to go back to where they were or start something new. Never while reading aloud.
 const AWAY_MS = 15 * 60 * 1000, ACTIVE_KEY = "bible-study:last-active";
+let updateReady = false; // a new version is installed and waiting for a quiet moment (see Updates, below)
 let lastActive = Number(localStorage.getItem(ACTIVE_KEY)) || 0;
 function markActive() {
   const now = Date.now();
@@ -2674,7 +2686,11 @@ welcomeBack.className = "welcome-back"; welcomeBack.setAttribute("aria-label", "
 document.body.append(welcomeBack);
 function cameBack() {
   const away = Date.now() - lastActive;
-  if (!lastActive || away < AWAY_MS || reader.playing || tourAt >= 0 || !$("#gate").hidden || document.querySelector("dialog[open]")) { markActive(); return; }
+  const writing = document.activeElement?.matches?.("input, textarea, select, [contenteditable]");
+  if (!lastActive || away < AWAY_MS || reader.playing || tourAt >= 0 || !$("#gate").hidden || document.querySelector("dialog[open]") || writing) { markActive(); return; }
+  // A new version is waiting and nobody is in the middle of anything: switch to it now. The
+  // reloaded app opens on Home with "Pick up where you left off", just as a fresh open would.
+  if (updateReady) { updateReady = false; location.reload(); return; }
   lastActive = 0; markActive();
   const last = store.get("last");
   const where = `${BOOK_BY_ID[last.book].name} ${last.chapter}`;
@@ -2717,17 +2733,17 @@ $("#installBtn").addEventListener("click", async () => {
 });
 window.addEventListener("appinstalled", () => { $("#installCard").hidden = true; });
 
-// Updates: check for a new version each time the app opens or comes back to the screen,
-// and reload once onto it. Saved reading, notes and keys are kept (they live on the device).
+// Updates: check for a new version each time the app opens or comes back to the screen.
+// A new version never interrupts anyone: it waits until the app is next opened fresh, or
+// until they come back after 15 minutes away (when the app goes to Home anyway), and never
+// while reading aloud, playing a game, writing, or in the middle of any open window.
+// Saved reading, notes, journals and keys are kept (they live on the device, not in the update).
 if ("serviceWorker" in navigator) {
   const hadController = Boolean(navigator.serviceWorker.controller);
   navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((reg) => {
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") reg.update().catch(() => {}); });
   }).catch(() => {});
-  let reloaded = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (!hadController || reloaded) return; // first install: nothing to refresh
-    reloaded = true;
-    location.reload();
+    if (hadController) updateReady = true; // first install: nothing to refresh
   });
 }

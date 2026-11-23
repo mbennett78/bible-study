@@ -10,3 +10,11 @@ Every update to the app must keep each person's place, progress, journals, notes
 - A device with no progress (new phone, or the browser cleared it) restores from the account backup when the person signs in.
 - "Bring in progress from my other devices" (Settings, Account) combines progress from all devices and removes nothing.
 - The service worker only caches app files. It never touches saved data.
+
+## Updates never interrupt
+
+A new version installs quietly in the background, but the open app keeps running the version
+it started with. It switches over only on the next fresh open, or after 15 minutes with no
+taps (when the app goes to Home anyway). It never switches while reading aloud, during a
+game or any other open window, or while someone is typing. `tests/e2e/updates.mjs` checks
+each of these, and that the person's place and journal are still there afterwards.
