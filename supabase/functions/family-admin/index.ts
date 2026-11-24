@@ -125,6 +125,6 @@ Deno.serve(async (req) => {
     return reply(400, { error: "action" });
   } catch (e) {
     console.error("family-admin", action, e instanceof Error ? e.message : e);
-    return reply(500, { error: "busy" });
+    return reply(500, { error: "busy", detail: `${action}: ${e instanceof Error ? e.message : String(e)}`.slice(0, 200) });
   }
 });

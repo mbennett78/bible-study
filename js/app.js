@@ -2407,11 +2407,12 @@ async function organizerGate(org) {
   if (!(await isOrganizer())) { $("#organizerBox").hidden = true; $("#bibleTextCard").hidden = true; return; }
   {
     org.dataset.ready = "1";
-    org.innerHTML = `<div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>
-      <div class="card inner" id="familyKeyCard"><h2>Save the Bible key for the whole family</h2>
+    org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>Save the Bible key for the whole family</h2>
       <p class="muted small-print">Saves this device's API.Bible key to your family account, so the Bible text works for everyone. Nothing is sent to anyone: family members never see the key. Their app picks it up by itself when they sign in, and gets it back if a device ever forgets it. Everyone's reading counts toward your 5,000 a month.</p>
-      <button class="small" id="shareFamilyKey">Save key for the whole family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
-    org.append($("#bibleTextCard"));
+      <button class="small" id="shareFamilyKey">Save key for the whole family</button><p class="small-print" id="familyKeyMsg"></p></div>
+      <div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>`;
+    // 1. The keys, 2. save them for everyone, 3. the family list.
+    org.prepend($("#bibleTextCard"));
     $("#bibleTextCard").hidden = false;
     $("#organizerBox").hidden = false;
     $("#organizerBox").addEventListener("toggle", () => { if ($("#organizerBox").open) renderFamilyPanel(); });
@@ -2429,6 +2430,8 @@ const ADMIN_SAYS = {
   setup: "The family panel isn't switched on yet. In Supabase, add the Edge Function named family-admin (see docs/SETUP.md), then tap Try again.",
   not_allowed: "Only the family organizer's account can use this.",
   signin: "Please sign in again, then try once more.",
+  gate: "Supabase is stopping the family panel before it starts. In Supabase, open Edge Functions, then family-admin, then Details. Turn OFF \"Verify JWT with legacy secret\" (it may say \"Enforce JWT verification\"), tap Save changes, then tap Try again here. The panel still checks that it's you on every request.",
+  busy: "The family panel ran into a problem inside Supabase. Please tap Try again in a minute.",
   offline: "Couldn't connect. Check the internet and try again.",
   email: "That email doesn't look right.",
   password: "Temporary passwords need at least 6 characters.",
@@ -2441,7 +2444,7 @@ async function renderFamilyPanel() {
   const body = $("#familyPanelBody");
   if (!body) return;
   const r = await familyAdmin("list");
-  if (!r || r.error) { body.innerHTML = `<p class="muted small-print">${esc(adminSays(r))}</p><button class="small" id="famRetry">Try again</button>`; $("#famRetry").onclick = renderFamilyPanel; return; }
+  if (!r || r.error) { body.innerHTML = `<p class="small-print">${esc(adminSays(r))}</p>${r?.detail ? `<p class="muted small-print">Details: ${esc(r.detail)}</p>` : ""}<button class="small" id="famRetry">Try again</button>`; $("#famRetry").onclick = renderFamilyPanel; return; }
   const h = r.helper;
   body.innerHTML = `<div class="fam-helper"><h3>Bible helper this month</h3>
       <div class="bar"><span style="width:${h.pct}%"></span></div>
@@ -2896,6 +2899,11 @@ if ("serviceWorker" in navigator) {
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") reg.update().catch(() => {}); });
   }).catch(() => {});
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (hadController) updateReady = true; // first install: nothing to refresh
+    if (!hadController) return; // first install: nothing to refresh
+    updateReady = true;
+    if (document.querySelector(".update-bar")) return;
+    const bar = Object.assign(document.createElement("button"), { type: "button", className: "update-bar", textContent: "✨ A new version of the app is ready. Tap here to update." });
+    bar.addEventListener("click", () => location.reload());
+    document.body.append(bar);
   });
 }

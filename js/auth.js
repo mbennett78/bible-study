@@ -204,10 +204,17 @@ export async function familyAdmin(action, data = {}) {
     if (!error) return out || { error: "busy" };
     const res = error.context;
     if (res && typeof res.json === "function") {
-      if (res.status === 404) return { error: "setup" };
-      try { return await res.json(); } catch { return { error: "busy" }; }
+      if (res.status === 404) return { error: "setup", detail: "404 not found" };
+      let body = null;
+      try { body = await res.json(); } catch { /* not JSON */ }
+      if (body?.error) return { ...body, detail: body.detail || `${res.status} ${body.error}` };
+      // No "error" of ours: Supabase answered before the function ran (usually its sign-in
+      // check, "Verify JWT", which doesn't work with the newer sign-in keys).
+      const said = String(body?.message || body?.msg || "");
+      if (res.status === 401 || /jwt/i.test(said)) return { error: "gate", detail: `${res.status} ${said}`.trim() };
+      return { error: "busy", detail: `${res.status} ${said}`.trim() };
     }
-    return { error: /fetch|network|relay/i.test(String(error.message)) ? "offline" : "setup" };
+    return { error: /fetch|network|relay/i.test(String(error.message)) ? "offline" : "setup", detail: String(error.message || "") };
   } catch { return { error: "offline" }; }
 }
 // Where the family stands this month with the Bible helper: { warn, pct, mine, per_person }.

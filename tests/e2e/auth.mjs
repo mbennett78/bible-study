@@ -65,6 +65,13 @@ try {
     await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
     check("the organizer's panel lists the family and the Bible helper questions left", /11,960 of 12,000 questions left/.test(await text(page, "#familyPanel")) && (await page.$$("#familyPanel .fam-list li")).length === 2, await text(page, "#familyPanel"));
     check("the organizer can't remove their own account", (await page.$$("#familyPanel [data-fam-rm]")).length === 1);
+    check("the organizer's tools go key box, then save for the family, then the family list", await page.$eval("#organizerBox", (d) => [...d.querySelectorAll("#bibleTextCard, #familyKeyCard, #familyPanel")].map((x) => x.id).join() === "bibleTextCard,familyKeyCard,familyPanel"));
+    // If Supabase's own "Verify JWT" check stops the function, say exactly what to switch off.
+    const gate = /functions\/v1\/family-admin/;
+    await page.route(gate, (r) => r.fulfill({ status: 401, contentType: "application/json", headers: { "Access-Control-Allow-Origin": "*" }, body: JSON.stringify({ code: 401, message: "Invalid JWT" }) }));
+    await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.open = false; d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
+    check("a blocked family panel explains the Verify JWT switch", /Verify JWT/.test(await text(page, "#familyPanel")) && /401 Invalid JWT/.test(await text(page, "#familyPanel")), await text(page, "#familyPanel"));
+    await page.unroute(gate);
     // Sign out from the account button: this device only.
     await page.click("#acctBtn"); await page.waitForTimeout(200);
     await page.click("#acctOut"); await page.waitForTimeout(1200);
