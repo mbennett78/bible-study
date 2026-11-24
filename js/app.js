@@ -2439,9 +2439,9 @@ function pathCardsHtml() {
   // My Bible first, then the three self-guided studies, as four equal boxes. Every one has the same study
   // section, questions, journal and read-aloud under each chapter.
   const [mine, ...studies] = PATH_ORDER;
-  return `<h2 class="home-h">Studies</h2>
-    <p class="home-sub small">Four ways through the whole Bible. The study notes, Bible helper, journal and read-aloud are with you in every one.</p>
-    <div class="path-cards four">${card(mine, true)}${studies.map((id) => card(id)).join("")}</div>`;
+  return `<section class="studies-box" aria-label="Studies"><div class="sb-head"><span class="sb-icon" aria-hidden="true">📚</span><div><h2 class="home-h">Studies</h2>
+    <p class="home-sub small">Four ways through the whole Bible. The study notes, Bible helper, journal and read-aloud are with you in every one.</p></div></div>
+    <div class="path-cards four">${card(mine, true)}${studies.map((id) => card(id)).join("")}</div></section>`;
 }
 function wirePathCards(root) {
   root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
@@ -2512,7 +2512,7 @@ function dailyHtml() {
       ${dailyOn("prayer") ? `<span class="dy-label">Pray</span><p class="dy-prayer">${esc(t.devotion[1])}</p>` : ""}
       <button class="small" id="dailyWrite">✎ Write in my daily journal</button></div>`);
   return `<section class="daily-card" aria-label="Today">
-    <div class="dy-head"><h2>Today</h2><span class="muted small-print">${esc(date)}</span><button class="quiet-link" id="dailyCustom">Choose what shows</button></div>
+    <div class="dy-head"><h2><span aria-hidden="true">☀️</span> Today</h2><span class="muted small-print">${esc(date)}</span><button class="quiet-link" id="dailyCustom">Choose what shows</button></div>
     ${parts.join("") || `<p class="muted small-print">Everything is turned off. Tap "Choose what shows" to turn things back on.</p>`}
     <div class="dy-custom" id="dailyCustomBox" hidden>${DAILY_PARTS.map(([k, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-dpart="${k}" ${dailyOn(k) ? "checked" : ""}></label>`).join("")}</div>
   </section>`;
