@@ -126,6 +126,11 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     const result = await getChapter(version, book, chapter);
     if (token !== loadToken) return;
     readerEl.innerHTML = (result.offline ? `<p class="offline-note">Offline: showing a saved copy.</p>` : "") + sanitize(result.html);
+    // Until they've tried it once: let them know any word can be tapped.
+    if (!store.get("wordTipSeen") && store.get("wordTap") !== false) {
+      readerEl.insertAdjacentHTML("afterbegin", `<p class="word-tip">💡 Tap any word to see what it means and the ${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} behind it. <button type="button" class="quiet-link">Got it</button></p>`);
+      readerEl.querySelector(".word-tip button").addEventListener("click", () => { store.set("wordTipSeen", true); readerEl.querySelector(".word-tip")?.remove(); });
+    }
     $("#copyright").textContent = result.copyright;
     store.recordVisit(book, chapter);
     updateVisitLine();
@@ -1630,13 +1635,25 @@ function loadLex(n) {
   if (!lexCache[b]) lexCache[b] = fetch(`data/lex/${b}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) delete lexCache[b]; return d || {}; });
   return lexCache[b].then((d) => d[n]);
 }
+// The chapter's words, sorted the way a study Bible would: names of God first, then the
+// people and places, the key words worth studying, everyday words, and the small words.
+const GOD_WORDS = new Set(["H430", "H3068", "H3069", "H136", "H410", "H433", "H426", "H5945", "H7706", "H3050", "G2316", "G2962", "G2424", "G5547"]);
+const strongsGroup = (r) => r[6] ? "small" : GOD_WORDS.has(r[0]) ? "god" : /^[A-Z][a-z]/.test(r[3]) ? "names" : r[4] > 1500 ? "common" : "key";
+const STRONGS_GROUPS = [
+  ["god", "Names of God", "How this chapter names God, and Jesus in the New Testament.", true],
+  ["key", "Key words", "The words most worth studying here: tap one to see its full meaning.", true],
+  ["names", "People and places", "Names, and what many of them mean.", false],
+  ["common", "Everyday words", "Words used thousands of times, like “say”, “make” and “go”.", false],
+  ["small", "Small words", "Words like “and”, “the” and “in”.", false],
+];
 function strongsRow([n, lemma, xlit, gloss, count, verses]) {
   const heb = n[0] === "H";
-  const vs = verses.length > 8 ? `${verses.length} verses` : `v. ${verses.join(", ")}`;
-  return `<details class="sc-word" data-n="${n}"><summary>
+  const shown = verses.slice(0, 14);
+  return `<details class="sc-word" data-n="${n}" data-find="${esc(`${gloss} ${xlit} ${lemma} ${n}`.toLowerCase())}"><summary>
     <span class="orig" lang="${heb ? "he" : "el"}" dir="${heb ? "rtl" : "ltr"}">${esc(lemma)}</span><span class="say">${esc(xlit)}</span><span class="means">“${esc(gloss)}”</span>
-    <span class="sc-meta"><span class="strongs-num">${n}</span> ${count.toLocaleString()} time${count === 1 ? "" : "s"} in the Bible · ${vs}</span></summary>
-    <div class="sc-def muted small-print">Loading Strong's entry…</div></details>`;
+    <span class="sc-meta"><span class="strongs-num">${n}</span> ${count.toLocaleString()} time${count === 1 ? "" : "s"} in the Bible · in ${verses.length} verse${verses.length === 1 ? "" : "s"} here</span></summary>
+    <div class="sc-body"><div class="sc-verses"><span class="muted small-print">Go to verse</span> ${shown.map((v) => `<button type="button" class="sc-v" data-v="${v}">${v}</button>`).join("")}${verses.length > shown.length ? `<span class="muted small-print">and ${verses.length - shown.length} more</span>` : ""}</div>
+    <div class="sc-def muted small-print">Loading Strong's entry…</div></div></details>`;
 }
 async function fillStrongs(el, book, chapter) {
   const panel = el.querySelector("#strongsPanel");
@@ -1644,12 +1661,29 @@ async function fillStrongs(el, book, chapter) {
   const rows = await loadStrongs(book, chapter);
   if (!panel.isConnected) return;
   if (!rows) { panel.innerHTML = `<p class="muted small-print">The concordance couldn't load. Check your connection and try again.</p>`; return; }
-  const big = rows.filter((r) => !r[6]), small = rows.filter((r) => r[6]);
   const lang = BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek";
-  panel.innerHTML = `<p class="muted small-print">Every ${lang} word in ${esc(refName({ book, chapter }))}, in the order it first appears, with its Strong's number and how many times it's used in the whole Bible. Tap a word for James Strong's definition.</p>
-    <div class="sc-list">${big.map(strongsRow).join("")}</div>
-    ${small.length ? `<details class="sc-small"><summary>Small words like “and”, “the” and “in” (${small.length})</summary><div class="sc-list">${small.map(strongsRow).join("")}</div></details>` : ""}
-    <p class="muted small-print sc-credit">Counts are of the ${lang} words, so they can differ from the count of an English word in the NASB. Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong, <em>Exhaustive Concordance</em> (1890), via Open Scriptures.</p>`;
+  const groups = STRONGS_GROUPS.map(([id, title, about, open]) => [id, title, about, open, rows.filter((r) => strongsGroup(r) === id)]).filter((g) => g[4].length);
+  const tapOn = store.get("wordTap") !== false;
+  panel.innerHTML = `<p class="sc-tip">${tapOn ? `💡 While you read, <strong>tap any word</strong> in the Bible text to see the ${lang} word behind it.` : `💡 Turn on <strong>Tap a word for its meaning</strong> in Settings to look up any word right in the Bible text.`}</p>
+    <label class="sc-find"><span class="sr-only">Find a word in this chapter</span><input type="search" placeholder="Find a word in ${esc(refName({ book, chapter }))}" autocomplete="off"></label>
+    <p class="muted small-print sc-none" hidden>No word here matches that. Try a shorter word.</p>
+    ${groups.map(([id, title, about, open, list]) => `<details class="sc-group" data-group="${id}"${open ? " open" : ""}><summary><strong>${title}</strong> <span class="count">${list.length}</span><small>${about}</small></summary>
+      <div class="sc-list">${list.map(strongsRow).join("")}</div></details>`).join("")}
+    <p class="muted small-print sc-credit">Every ${lang} word in the chapter, in the order it first appears. Counts are of the ${lang} words, so they can differ from the count of an English word in the NASB. Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong, <em>Exhaustive Concordance</em> (1890), via Open Scriptures.</p>`;
+  const find = panel.querySelector(".sc-find input");
+  find.addEventListener("input", () => {
+    const q = find.value.trim().toLowerCase();
+    let any = false;
+    panel.querySelectorAll(".sc-group").forEach((g) => {
+      let hits = 0;
+      g.querySelectorAll(".sc-word").forEach((w) => { const on = !q || w.dataset.find.includes(q); w.hidden = !on; if (on) hits++; });
+      g.hidden = !hits;
+      if (q && hits) g.open = true;
+      any = any || hits > 0;
+    });
+    panel.querySelector(".sc-none").hidden = any;
+  });
+  panel.querySelectorAll(".sc-v").forEach((b) => b.addEventListener("click", () => goToVerse(Number(b.dataset.v))));
   panel.querySelectorAll(".sc-word").forEach((d) => d.addEventListener("toggle", async () => {
     if (!d.open || d.dataset.loaded) return;
     const e = await loadLex(d.dataset.n);
@@ -1731,6 +1765,21 @@ function originalMatches(rows, word, verse) {
   const ranked = inVerse.map((r) => [score(r), r]).filter(([n, r]) => n && !(r[6] && n < 3)).sort((a, b) => b[0] - a[0]).map(([, r]) => r);
   return { best: ranked.slice(0, 2), others: inVerse.filter((r) => !ranked.includes(r) && !r[6]) };
 }
+// When no short gloss matches (NASB "overcome" vs gloss "to grasp"), look through how the
+// King James translators rendered each word in the verse, which lists many more English words.
+async function deepMatches(rows, word, verse) {
+  const m = originalMatches(rows, word, verse);
+  if (m.best.length) return m;
+  const w = stem(word);
+  if (w.length < 3) return m;
+  const hits = [];
+  for (const r of m.others) {
+    const e = await loadLex(r[0]);
+    const toks = String(e?.kjv || "").toLowerCase().split(/[^a-z]+/).filter(Boolean).map(stem);
+    if (toks.includes(w)) hits.push(r);
+  }
+  return { best: hits.slice(0, 2), others: m.others.filter((r) => !hits.slice(0, 2).includes(r)) };
+}
 function origCard(r, open = false) {
   const heb = r[0][0] === "H";
   return `<details class="ws-orig"${open ? " open" : ""} data-n="${r[0]}"><summary>
@@ -1767,7 +1816,8 @@ async function openWordSheet(word, verse) {
   const box = wordSheet.querySelector(".ws-lang");
   if (!box || !box.isConnected) return;
   if (!rows) { box.innerHTML = `<p class="muted small-print">The ${lang} couldn't load. Check your connection and try again.</p>`; return; }
-  const { best, others } = originalMatches(rows, word, verse);
+  const { best, others } = await deepMatches(rows, word, verse);
+  if (!box.isConnected) return;
   box.innerHTML = `${best.length ? `<strong>In the ${lang}</strong>${best.map((r, i) => origCard(r, i === 0 && !g)).join("")}` : `<p class="muted small-print">${g ? "" : `This English word doesn't line up with one ${lang} word here. `}See every ${lang} word in verse ${verse} below.</p>`}
     ${others.length ? `<details class="ws-more"><summary>Other ${lang} words in verse ${verse} (${others.length})</summary>${others.map((r) => origCard(r)).join("")}</details>` : ""}
     <p class="muted small-print ws-credit">Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong (1890).</p>`;
@@ -1775,9 +1825,10 @@ async function openWordSheet(word, verse) {
 }
 $("#reader").addEventListener("click", (e) => {
   if (store.get("wordTap") === false || !window.getSelection().isCollapsed) return;
-  if (e.target.closest(".v, .verse-num, .chapter-num, .message, button, a")) return;
+  if (e.target.closest(".v, .verse-num, .chapter-num, .message, .word-tip, button, a")) return;
   const hit = wordAt(e.clientX, e.clientY);
   if (!hit) return;
+  if (!store.get("wordTipSeen")) { store.set("wordTipSeen", true); $("#reader .word-tip")?.remove(); }
   openWordSheet(hit.word, verseOf(hit.node));
 });
 

@@ -921,6 +921,18 @@ html:has(#setup[open]) body > :not(dialog) { visibility: hidden; }
 
 /* Strong's concordance list under every chapter */
 .sc-list { display: grid; gap: 6px; margin: 8px 0; }
+.sc-tip, .word-tip { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); font-size: .95rem; }
+.word-tip { font-family: var(--sans, inherit); }
+.word-tip .quiet-link { margin-left: 6px; }
+.sc-find input { width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--text); font: inherit; }
+.sc-group { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+.sc-group > summary { cursor: pointer; padding: 6px 2px; }
+.sc-group > summary .count { display: inline-block; min-width: 1.6em; padding: 0 6px; border-radius: 999px; background: var(--line); font-size: .8rem; text-align: center; }
+.sc-group > summary small { display: block; color: var(--muted); font-size: .85rem; }
+.sc-group[hidden], .sc-word[hidden] { display: none; }
+.sc-body { padding: 0 12px 10px; }
+.sc-verses { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; }
+.sc-v { min-width: 36px; min-height: 36px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 10px; background: var(--surface); color: var(--accent); font: inherit; font-weight: 700; cursor: pointer; }
 .sc-word { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
 .sc-word > summary { list-style: none; cursor: pointer; padding: 9px 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
 .sc-word > summary::-webkit-details-marker { display: none; }
