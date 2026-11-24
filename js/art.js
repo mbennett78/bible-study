@@ -857,6 +857,10 @@ const STORY_ART = {
     <path d="M150 74 C 152 34, 230 26, 280 50 C 296 58, 300 68, 300 74 Z" fill="#b5a693"/><path d="M212 74 L 212 56 C 212 46, 236 46, 236 56 L 236 74 Z" fill="#3b332c"/><circle cx="182" cy="62" r="13" fill="#cfc4b4" stroke="#9a8e7e"/>
     ${[[40, 82], [64, 84], [100, 82], [320, 84], [340, 82]].map(([a, b]) => `<g transform="translate(${a} ${b})"><path d="M0 0 L 0 -10" stroke="#5e8a3a" stroke-width="1.4"/><circle cy="-12" r="3.4" fill="#fff"/><circle cy="-12" r="1.2" fill="#f5c542"/></g>`).join("")}
     ${kid(120, 84, .85, "#a65a6a", "#e9e2d0")}`, ["#f9d9b6", "#fdf1df"]],
+  cross: ["Jesus loved us so much He gave His life", () => `<circle cx="300" cy="62" r="22" fill="#ffd9a0" opacity=".9"/>
+    <path d="M0 74 C 60 68, 110 44, 180 40 C 250 44, 300 68, 360 74 L 360 90 L 0 90 Z" fill="#7fae5c"/><path d="M0 80 C 100 74, 260 74, 360 80 L 360 90 L 0 90 Z" fill="#6c9a4c"/>
+    ${[[136, 50, .7], [180, 42, 1], [224, 50, .7]].map(([x, y, k]) => `<g transform="translate(${x} ${y}) scale(${k})"><rect x="-2.6" y="-38" width="5.2" height="40" rx="1" fill="#7a5638"/><rect x="-13" y="-30" width="26" height="5" rx="1" fill="#7a5638"/></g>`).join("")}
+    ${[[60, 84], [90, 86], [270, 86], [320, 84]].map(([a, b]) => `<g transform="translate(${a} ${b})"><path d="M0 0 L 0 -8" stroke="#4f7a32" stroke-width="1.3"/><circle cy="-10" r="3" fill="#f6c9d6"/><circle cy="-10" r="1.1" fill="#f5c542"/></g>`).join("")}`, ["#f6b98a", "#fde7cf"]],
   pentecost: ["The Holy Spirit comes at Pentecost", () => `<rect width="360" height="90" fill="#f4e3c4"/><path d="M0 70 H 360 V 90 H 0 Z" fill="#c9a875"/>
     ${[70, 120, 170, 220, 270].map((a, i) => `${kid(a, 84, .9, ["#5b8fb9", "#a65a6a", "#6aa06a", "#c9a35a", "#7f6cc8"][i], "#e9e2d0")}<g class="sway" style="transform-origin:${a}px 54px"><path d="M${a} 54 C ${a - 4} 48, ${a} 42, ${a + 1} 38 C ${a + 3} 44, ${a + 5} 48, ${a} 54 Z" fill="#f39c4a"/></g>`).join("")}
     <path d="M300 10 C 320 20, 330 10, 350 18" stroke="#c9b48a" stroke-width="2" fill="none"/>`, ["#f4e3c4", "#f4e3c4"]],
@@ -877,7 +881,7 @@ const STORIES = {
   walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
   manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
   nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], sheep: ["LUK.15", "PSA.23", "JHN.10"], samaritan: ["LUK.10"],
-  tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20", "MAT.27", "MRK.15", "LUK.23", "JHN.19"], pentecost: ["ACT.2"], ship: ["ACT.27"],
+  cross: ["MAT.27", "MRK.15", "LUK.23", "JHN.19"], tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20"], pentecost: ["ACT.2"], ship: ["ACT.27"],
 };
 
 /* ---------- Lovely little animations for the kids' pictures ---------- */
@@ -920,6 +924,7 @@ const KIDS_FX = {
   zacchaeus: () => fx.leaves(236, 30),
   sheep: () => `${fx.butterfly(130, 56, "#f5c542")}${fx.birds(16, 3)}`,
   tomb: () => `${fx.twinkles([[236, 30, 1.4], [268, 24, 1.8], [300, 34, 1.2]], "#fff")}${fx.butterfly(80, 60, "#f5c542", 2)}${fx.butterfly(300, 62, "#f08ab0")}`,
+  cross: () => `${fx.birds(22, 6, 34)}${fx.glow(300, 62, 28, "#fff1d6")}`,
   pentecost: () => fx.sparks(170, 40, 220, "#ffb347"),
   ship: () => fx.rain(),
   samaritan: () => fx.birds(16, 5),
