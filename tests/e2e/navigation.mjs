@@ -33,9 +33,10 @@ try {
   check("its title says what's inside", /Setting the stage: Genesis/.test(await page.textContent("#bookIntro summary")));
   await page.waitForTimeout(3100); // the buddy's hello
   await page.mouse.wheel(0, 600); await page.waitForTimeout(500);
-  check("the buddy tucks aside while you read", await page.$eval(".buddy", (b) => b.classList.contains("tucked")));
+  check("the buddy sits and fades a little while you read", await page.$eval(".buddy", (b) => b.classList.contains("tucked") && b.classList.contains("sitting")));
   await page.click(".buddy", { position: { x: 12, y: 30 } }); await page.waitForTimeout(400);
-  check("tapping him brings him back and opens the chat", !(await page.$eval(".buddy", (b) => b.classList.contains("tucked"))) && await page.$eval("#partnerBox", (d) => d.open));
+  check("tapping him brings him back and opens the chat", !(await page.$eval(".buddy", (b) => b.classList.contains("tucked"))) && await page.$eval("#chatSheet", (d) => d.open));
+  await page.click("#chatSheetClose"); await page.waitForTimeout(200);
   // Looks: a drop-down with a picture of the chosen look right under it.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(400);
   check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 9);

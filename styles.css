@@ -1444,8 +1444,16 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .buddy[hidden] { display: none; }
 .buddy:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
 .buddy.dragging { cursor: grabbing; transition: none; }
-.buddy.tucked { transform: translateX(58%); opacity: .9; }
-.buddy.tucked:not(.on-right) { transform: translateX(-58%); }
+.buddy.tucked { opacity: .55; }
+/* Visiting: he walks a few steps in from his edge, then back. */
+.buddy.visiting { transform: translateX(-64px); }
+.buddy.visiting:not(.on-right) { transform: translateX(64px); }
+.buddy.visiting { transition: transform .9s ease-in-out, top .25s ease; }
+.buddy-say { position: fixed; z-index: 7; max-width: min(250px, 70vw); padding: 10px 14px; border-radius: 16px 16px 16px 4px; background: var(--surface); color: var(--text); border: 2px solid var(--accent); font: inherit; font-size: 1rem; font-weight: 600; text-align: left; box-shadow: 0 6px 18px rgb(0 0 0 / .18); cursor: pointer; animation: buddy-say-in .35s ease-out; }
+.buddy-say.on-right { border-radius: 16px 16px 4px 16px; }
+.buddy-say[hidden] { display: none; }
+@keyframes buddy-say-in { from { opacity: 0; transform: translateY(6px) scale(.96); } }
+@media (prefers-reduced-motion: reduce) { .buddy.visiting, .buddy.visiting:not(.on-right) { transform: none; } .buddy-say { animation: none; } }
 .buddy-svg { width: 100%; height: 100%; overflow: visible; }
 .buddy.on-right .buddy-svg { transform: scaleX(-1); } /* his talk bubble always points into the screen */
 .buddy .ti-front { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
@@ -1477,7 +1485,20 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 @keyframes buddy-hop { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 @keyframes buddy-dot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes buddy-talk { from { transform: scaleY(1); } to { transform: scaleY(1.8); } }
-html.touring .buddy, body.hide-buddy .buddy, html[data-graphics="simple"] .buddy, html[data-graphics="none"] .buddy, html.auth-wait .buddy { display: none; }
+html.touring .buddy, body.hide-buddy .buddy, html[data-graphics="none"] .buddy, html.auth-wait .buddy,
+html.touring .buddy-say, body.hide-buddy .buddy-say, html[data-graphics="none"] .buddy-say, html.auth-wait .buddy-say { display: none; }
+/* Walking: little steps while he moves. */
+@media (prefers-reduced-motion: no-preference) {
+  .buddy.walking .buddy-legs-stand { animation: buddy-walk .3s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
+}
+@keyframes buddy-walk { from { transform: skewX(-12deg); } to { transform: skewX(12deg); } }
+/* The chat as a sheet, on any page */
+.chat-sheet { width: min(640px, 96vw); max-height: 86dvh; padding: 16px 16px 12px; border: 0; border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
+.chat-sheet::backdrop { background: rgb(0 0 0 / .35); }
+.chat-sheet-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.chat-sheet-head h2 { margin: 0; font-size: 1.15rem; flex: 1; }
+.chat-sheet-head small { display: block; color: var(--muted); font-weight: 400; font-size: .85rem; }
+.chat-sheet .chat-log { max-height: 48dvh; overflow-y: auto; }
 
 /* The read-aloud and microphone buttons beside the chat box */
 .chat-speak[aria-pressed="true"], .chat-mic[aria-pressed="true"] { background: var(--accent); color: var(--bg); }

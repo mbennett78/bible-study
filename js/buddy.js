@@ -1,8 +1,9 @@
-// The study buddy: a small stick figure with a talk bubble who opens the study partner chat.
-// He stands at the side of the screen, sits down when nothing is happening, and gets
-// excited when someone asks him something. He can be dragged anywhere along either edge,
-// and he remembers where he was put. He never covers the bottom buttons, and he stays still
-// for anyone who has asked their device for less motion.
+// The study buddy: a small stick figure with a talk bubble who opens the Bible helper chat.
+// He sits quietly at the side of the screen until someone taps him; then he stands up,
+// waves and opens the chat. Now and then (the app decides when) he walks in a few steps to
+// say hi or ask if they're wondering anything, then goes back and sits down. He can be
+// dragged anywhere along either edge, and remembers where he was put. He never covers the
+// bottom buttons, and he stays still for anyone who has asked their device for less motion.
 
 export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden="true">
   <g class="buddy-bubble">
@@ -22,7 +23,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
 </svg>`;
 
 const SPOT_KEY = "bible-study:buddy-spot";
-const SIT_AFTER_MS = 25000;
+const SIT_AFTER_MS = 12000;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
 export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right" }) {
@@ -31,7 +32,14 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.className = "buddy";
   el.setAttribute("aria-label", label);
   el.innerHTML = BUDDY_SVG;
+  el.classList.add("sitting");
   document.body.append(el);
+  // His little speech bubble for visits ("Hi! Wondering anything?").
+  const say = document.createElement("button");
+  say.type = "button";
+  say.className = "buddy-say";
+  say.hidden = true;
+  document.body.append(say);
 
   // Where he stands: which edge, and how far down (0 = top of the free space, 1 = bottom).
   // Until someone moves him, he takes the side the app suggests (away from the corner friend).
@@ -53,11 +61,21 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.style.left = spot.side === "left" ? "4px" : "";
     el.style.right = spot.side === "right" ? "4px" : "";
     el.classList.toggle("on-right", spot.side === "right");
+    placeSay();
+  }
+  function placeSay() {
+    if (say.hidden) return;
+    const r = el.getBoundingClientRect();
+    say.style.top = `${Math.max(8, r.top - say.offsetHeight + 10)}px`;
+    say.style.left = spot.side === "left" ? `${Math.max(6, r.right - 6)}px` : "";
+    say.style.right = spot.side === "right" ? `${Math.max(6, innerWidth - r.left - 6)}px` : "";
+    say.classList.toggle("on-right", spot.side === "right");
   }
 
-  // Sits down after a while with nothing happening; stands up again for any activity.
-  let sitTimer = 0;
-  const wake = () => { el.classList.remove("sitting"); clearTimeout(sitTimer); sitTimer = setTimeout(() => el.classList.add("sitting"), SIT_AFTER_MS); };
+  // He stands while he's busy (chatting, visiting, cheering), then sits back down.
+  let sitTimer = 0, keepStanding = false;
+  const sitSoon = (ms = SIT_AFTER_MS) => { clearTimeout(sitTimer); sitTimer = setTimeout(() => { if (!keepStanding) el.classList.add("sitting"); }, ms); };
+  const wake = () => { el.classList.remove("sitting"); sitSoon(); };
   let holdUntil = Date.now() + 3000; // stays out while he's greeting, celebrating or answering
   const hold = (ms = 3000) => { holdUntil = Date.now() + ms; };
   const play = (cls, ms) => { wake(); hold(Math.max(ms, 3000)); el.classList.remove("tucked"); el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
@@ -82,7 +100,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     if (!drag) return;
     const was = drag; drag = null;
     el.classList.remove("dragging");
-    if (!was.moved) { if (e.type === "pointerup") { play("waving", 1200); onTap(); } return; }
+    if (!was.moved) { if (e.type === "pointerup") tapped(); return; }
     const b = bounds(), r = el.getBoundingClientRect();
     spot = { side: r.left + r.width / 2 < innerWidth / 2 ? "left" : "right", y: clamp((r.top - b.top) / Math.max(1, b.bottom - b.top - r.height), 0, 1) };
     saved = spot;
@@ -92,21 +110,50 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.addEventListener("pointerup", drop);
   el.addEventListener("pointercancel", drop);
   // Keyboard and screen readers: Enter or Space opens the chat (the pointer handlers cover taps).
-  el.addEventListener("click", (e) => { if (e.detail === 0) { play("waving", 1200); onTap(); } });
+  el.addEventListener("click", (e) => { if (e.detail === 0) tapped(); });
+  say.addEventListener("click", () => tapped());
+  function tapped() { endVisit(); play("excited", 1400); onTap(); }
+
+  // A visit: he stands, walks a few steps into the screen, says something short, then
+  // walks back and sits. Tapping him or his bubble opens the chat.
+  let visitTimer = 0;
+  function endVisit() {
+    clearTimeout(visitTimer);
+    say.hidden = true;
+    el.classList.remove("visiting", "walking");
+    sitSoon(4000);
+  }
+  function visit(text, ms = 7000) {
+    if (el.hidden || drag || !say.hidden) return false;
+    el.classList.remove("tucked", "sitting");
+    el.classList.add("walking", "visiting");
+    hold(ms + 1500);
+    setTimeout(() => {
+      el.classList.remove("walking");
+      play("waving", 1200);
+      say.textContent = text;
+      say.hidden = false;
+      placeSay();
+    }, 900);
+    visitTimer = setTimeout(() => { say.hidden = true; el.classList.add("walking"); el.classList.remove("visiting"); setTimeout(endVisit, 900); }, ms);
+    return true;
+  }
 
   addEventListener("resize", place);
-  // While someone scrolls through the reading, he tucks himself half off the edge so he
-  // never covers the words. Tapping him (or asking him something) brings him back out.
-  const tuck = (on) => el.classList.toggle("tucked", on);
+  // While someone scrolls through the reading he sits and fades a little, so he never
+  // distracts from the words. He's still there to tap.
+  const tuck = (on) => { el.classList.toggle("tucked", on); if (on && !keepStanding) el.classList.add("sitting"); };
   addEventListener("scroll", () => { if (!drag && Date.now() > holdUntil) tuck(true); }, { passive: true });
-  for (const ev of ["pointerdown", "keydown"]) addEventListener(ev, wake, { passive: true });
   requestAnimationFrame(place);
-  wake();
 
   return {
     el,
     place,
-    show(on) { el.hidden = !on; if (on) place(); },
+    show(on) { el.hidden = !on; if (!on) endVisit(); else place(); },
+    visit,
+    visiting: () => !say.hidden || el.classList.contains("visiting"),
+    // Stands while the chat is open; sits again when it closes.
+    chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },
     excite() { play("excited", 1400); },     // someone asked him something
     cheer() { play("cheering", 2600); },     // a great quiz score
     thinking(on) { wake(); hold(); if (on) el.classList.remove("tucked"); el.classList.toggle("thinking", on); },

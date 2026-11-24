@@ -1,6 +1,7 @@
-// The study buddy: shows at the side, never covers the bottom buttons, opens the chat when
-// tapped, can be dragged to the other side and remembers it, gets excited when asked,
-// reads answers aloud when that's on, and explains the microphone before the device asks.
+// The study buddy: sits small at the side, never covers the bottom buttons, stands up and
+// opens the chat right where you are when tapped, can be dragged to the other side and
+// remembers it, gets excited when asked, walks over now and then to say hi (and that can be
+// turned off), reads answers aloud when that's on, and explains the microphone first.
 // Run: node tests/e2e/buddy.mjs
 import { chromium, serve, check, finish } from "./harness.mjs";
 
@@ -20,6 +21,7 @@ try {
       window.SpeechSynthesisUtterance = function (t) { this.text = t; };
     });
     const page = await ctx.newPage();
+    await page.clock.install();
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(site.url); await page.waitForTimeout(900);
@@ -29,9 +31,18 @@ try {
     check(`${tag}: buddy is showing`, b.shown);
     check(`${tag}: buddy sits above the bottom buttons`, b.b <= tabTop, `${b.b} vs ${tabTop}`);
     check(`${tag}: buddy is small`, b.r - b.l <= 64);
-    // Tap him: the chat opens on the Read page.
+    check(`${tag}: he sits quietly until someone talks to him`, await page.$eval(".buddy", (el) => el.classList.contains("sitting")));
+    // Now and then he walks over to say hi.
+    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check(`${tag}: now and then he walks over and asks if they're wondering anything`, await page.$eval(".buddy-say", (el) => !el.hidden && el.textContent.length > 5), await page.$eval(".buddy-say", (el) => el.textContent));
+    await page.clock.runFor(10000); await page.waitForTimeout(200);
+    check(`${tag}: then he goes back and the bubble goes away`, await page.$eval(".buddy-say", (el) => el.hidden));
+    // Tap him on Home: he stands up and the chat opens right here, without leaving the page.
     await page.tap(".buddy"); await page.waitForTimeout(600);
-    check(`${tag}: tapping him opens the chat`, await page.$eval("#partnerBox", (d) => d.open) && !(await page.$eval("#view-read", (v) => v.hidden)));
+    check(`${tag}: tapping him opens the chat right where you are`, await page.$eval("#chatSheet", (d) => d.open) && await page.$eval("#view-read", (v) => v.hidden) && Boolean(await page.$("#chatSheet #partnerQ")));
+    check(`${tag}: he stands up while chatting`, await page.$eval(".buddy", (el) => !el.classList.contains("sitting")));
+    await page.click("#chatSheetClose"); await page.waitForTimeout(300);
+    check(`${tag}: closing puts the chat back under the chapter`, Boolean(await page.$("#partnerBox #partnerQ")));
     // Drag him to the left side; he stays there after reopening.
     const s = await box();
     await page.mouse.move(s.l + 20, s.t + 30); await page.mouse.down();
@@ -43,6 +54,7 @@ try {
     b = await box();
     check(`${tag}: remembers where he was put`, b.l < 20 && Math.abs(b.t - (s.t - 150)) < 60, `left ${b.l} top ${b.t}`);
     // Ask something: he gets excited.
+    await page.clock.runFor(1000);
     await page.tap(".buddy"); await page.waitForTimeout(500);
     await page.fill("#partnerQ", "What does Word mean here?");
     await page.evaluate(() => { window.open = () => null; });
@@ -57,6 +69,8 @@ try {
     await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.show = { buddy: false }; localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
     await page.reload(); await page.waitForTimeout(800);
     check(`${tag}: can be turned off`, !(await box()).shown);
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
+    check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input")).length === 2);
     check(`${tag}: no page errors`, !errors.length, errors.join(" | "));
     await ctx.close();
   }

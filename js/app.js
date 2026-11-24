@@ -3,7 +3,7 @@ import { store, onSave } from "./store.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
-import { createBuddy } from "./buddy.js";
+import { createBuddy, BUDDY_SVG } from "./buddy.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
@@ -906,12 +906,56 @@ const game = createGame({
   },
 });
 const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
+// Tapping him opens the chat right where you are, on any page, in a sheet over the page.
+// It's the same chat as under each chapter (moved into the sheet while it's open).
+const chatSheet = document.createElement("dialog");
+chatSheet.className = "chat-sheet"; chatSheet.id = "chatSheet"; chatSheet.setAttribute("aria-label", "Ask my Bible helper");
+chatSheet.innerHTML = `<div class="chat-sheet-head"><span class="buddy buddy-inline" aria-hidden="true"></span><h2>Ask me anything!<small>Meaning, history, culture, people, places, words in Hebrew and Greek, or how to live it out. A gift for the family from the app's developer.</small></h2><button type="button" class="close-x" id="chatSheetClose" aria-label="Close">×</button></div>`;
+document.body.append(chatSheet);
+chatSheet.querySelector(".buddy-inline").innerHTML = BUDDY_SVG;
+$("#chatSheetClose").addEventListener("click", () => chatSheet.close());
+// A tap outside the sheet closes it (but not the tap that opened it).
+let chatSheetOpenedAt = 0;
+chatSheet.addEventListener("click", (e) => {
+  if (e.target !== chatSheet || Date.now() - chatSheetOpenedAt < 500) return;
+  const r = chatSheet.getBoundingClientRect();
+  if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) chatSheet.close();
+});
+chatSheet.addEventListener("close", () => { const chat = chatSheet.querySelector(".chat"); if (chat) $("#partnerBox").append(chat); buddy.chatting(false); });
 function openBuddyChat() {
-  if (!$("#view-read") || $("#view-read").hidden) showView("read");
-  const box = $("#partnerBox");
-  box.open = true;
-  setTimeout(() => box.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }), 60);
+  const chat = $("#partnerBox .chat");
+  if (chat) chatSheet.append(chat);
+  if (!chatSheet.open) { chatSheetOpenedAt = Date.now(); chatSheet.showModal(); }
+  buddy.chatting(true);
+  if (!$("#chatLog").childElementCount) resetChat();
+  checkHelperStanding();
+  setTimeout(() => $("#partnerQ").focus({ preventScroll: true }), 80);
 }
+// Now and then he walks over to say hi or ask if they're wondering anything. Gentle: only
+// after a few minutes of use, never while reading aloud, typing, or in another window, at
+// most three times a day, and never if turned off.
+const BUDDY_LINES = [
+  (n) => `Hi${n ? ` ${n}` : ""}! 👋 Wondering anything? Ask me!`,
+  () => "Curious what life was like back then? Tap me and ask!",
+  (n, ref) => `Any questions about ${ref}? I'd love to help.`,
+  () => "Want to know what a word means in Hebrew or Greek? Ask me!",
+  () => "I know lots about Bible people and places. Try me!",
+];
+let buddyVisitAt = Date.now() + 4 * 60e3 + Math.random() * 3 * 60e3;
+setInterval(() => {
+  if (Date.now() < buddyVisitAt || document.hidden || (store.get("show") || {}).buddy === false || (store.get("show") || {}).buddyvisits === false) return;
+  if (reader.playing || document.querySelector("dialog[open]") || document.documentElement.classList.contains("touring")) return;
+  const a = document.activeElement;
+  if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+  const today = new Date().toDateString(), log = store.get("buddyVisitLog") || {};
+  if (log.day === today && log.n >= 3) return;
+  const { book, chapter } = store.get("last");
+  const line = BUDDY_LINES[Math.floor(Math.random() * BUDDY_LINES.length)];
+  if (buddy.visit(line(store.get("name")?.trim() || "", `${BOOK_BY_ID[book].name} ${chapter}`))) {
+    store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+    buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+  }
+}, 20000);
 // When "read answers aloud" is on, the buddy says the answer (stopping the Bible reading first).
 function buddySpeak(text) {
   if (!store.get("helperSpeak") || !canSpeak) return;
@@ -1440,7 +1484,8 @@ const FEATURES = [
   { id: "games", label: "Bible games", hint: "Quiz yourself or play together, on Home and in this menu" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
   { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
-  { id: "buddy", label: "Study buddy", hint: "The little stick figure who opens the chat. Drag him anywhere along the side" },
+  { id: "buddy", label: "Study buddy", hint: "The little stick-figure friend at the side. Tap him to ask anything. Drag him anywhere along the edge" },
+  { id: "buddyvisits", label: "Study buddy says hi now and then", hint: "Once in a while he walks over to ask if you're wondering anything. A few times a day at most" },
   { id: "mascot", label: "Corner friend", hint: "The lamb or donkey in the Animated look" },
   { id: "vines", label: "Olive branches on the edges", hint: "The branches down both sides" },
   { id: "pathmargin", label: "Learning path button", hint: "The ☰ button for the path list" },
@@ -1498,6 +1543,16 @@ function renderQuickMenu() {
     if (i.dataset.qmFeat === "pathmargin" && !i.checked) setMargin(false);
   }));
 }
+// The same two buddy switches, in Settings.
+function renderBuddyToggles() {
+  const shown = store.get("show") || {};
+  $("#buddyToggles").innerHTML = [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"]].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${shown[id] === false ? "" : "checked"}></label>`).join("");
+  $("#buddyToggles").querySelectorAll("[data-buddy-feat]").forEach((i) => i.addEventListener("change", () => {
+    store.set("show", { ...(store.get("show") || {}), [i.dataset.buddyFeat]: i.checked });
+    applyAppearance();
+  }));
+}
+renderBuddyToggles();
 $("#menuBtn").addEventListener("click", () => { renderQuickMenu(); $("#quickMenu").showModal(); });
 $("#menuClose").addEventListener("click", () => $("#quickMenu").close());
 $("#qmGames").addEventListener("click", () => { $("#quickMenu").close(); game.open(); });
