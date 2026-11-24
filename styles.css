@@ -2364,6 +2364,16 @@ html { background: var(--page); }
 .storybook .sb-peek { animation: sbPeek 6s ease-in-out infinite; }
 .storybook .sb-swim { animation: sbSwim 7s ease-in-out var(--sdl, 0s) infinite; }
 .storybook .sb-glow { animation: sbGlow 4s ease-in-out infinite; }
+.storybook .sb-sway { animation: sbSway 3.6s ease-in-out var(--sdl, 0s) infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.storybook .sb-wing { animation: sbWing 1.8s ease-in-out infinite; }
+.storybook .sb-breathe { animation: sbBreathe 3.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.storybook .sb-flash { opacity: 0; animation: sbFlash 6s linear 1.5s infinite; }
+.storybook .sb-sunrise { animation: sbSunrise 8s ease-out infinite alternate; }
+.storybook .sb-bubble { animation: sbBubble 4s ease-in var(--sdl, 0s) infinite; }
+.storybook .sb-tear { animation: sbTear 3.2s ease-in infinite; }
+.storybook .sb-sling { animation: sbSling 1.6s ease-in-out infinite; }
+.storybook .sb-spout { animation: sbSpout 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.storybook .sb-rain { animation: sbRain 1s linear infinite; }
 .storybook .sb-mote { animation: sbMote 6s ease-in-out var(--sdl, 0s) infinite; }
 @keyframes sbBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
 @keyframes sbBob { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-4px) rotate(1deg); } }
@@ -2378,6 +2388,16 @@ html { background: var(--page); }
 @keyframes sbPeek { 0%, 40%, 100% { transform: translateY(6px); } 55%, 85% { transform: translateY(0); } }
 @keyframes sbSwim { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(10px, -5px); } }
 @keyframes sbGlow { 0%, 100% { opacity: .2; } 50% { opacity: .34; } }
+@keyframes sbSway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+@keyframes sbWing { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-10deg); } }
+@keyframes sbBreathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, 1.03); } }
+@keyframes sbFlash { 0%, 88%, 92%, 96%, 100% { opacity: 0; } 90%, 94% { opacity: 1; } }
+@keyframes sbSunrise { from { transform: translateY(22px); } to { transform: translateY(0); } }
+@keyframes sbBubble { from { transform: translateY(0); opacity: .9; } to { transform: translateY(-60px); opacity: 0; } }
+@keyframes sbTear { 0%, 30% { transform: translateY(0); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(6px); opacity: 0; } }
+@keyframes sbSling { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-40deg); } }
+@keyframes sbSpout { 0%, 100% { transform: scaleY(.7); opacity: .6; } 50% { transform: scaleY(1.1); opacity: 1; } }
+@keyframes sbRain { from { transform: translateY(-6px); opacity: .9; } to { transform: translateY(14px); opacity: .3; } }
 @keyframes sbMote { 0%, 100% { transform: translate(0, 0); opacity: .3; } 50% { transform: translate(6px, 14px); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .storybook [class*="sb-"] { animation: none !important; } }
 :root[data-still]:not([data-graphics="full"]) .storybook [class*="sb-"] { animation: none !important; }

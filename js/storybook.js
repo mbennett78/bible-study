@@ -45,28 +45,52 @@ function arm(pose, robe) {
   if (pose === "pray") return sl("M13 -61 C 18 -55, 14 -46, 4 -46 L 3 -52 C 8 -52, 10 -55, 9 -59 Z");
   return sl("M13 -62 C 20 -56, 23 -44, 22 -33 L 14 -32 C 14 -41, 12 -50, 9 -57 Z") + hand(18.5, -30);
 }
+// Faces that fit the story: brows and mouth for each mood. y0 is the mouth line.
+const BROWS = {
+  calm: "M-7 -84.6 Q -4.6 -86.6 -2.4 -85 M 2.4 -85 Q 4.6 -86.6 7 -84.6",
+  joy: "M-7 -85.4 Q -4.6 -87.8 -2.4 -86 M 2.4 -86 Q 4.6 -87.8 7 -85.4",
+  worried: "M-7.4 -84.4 Q -5 -85.6 -2.2 -87.4 M 2.2 -87.4 Q 5 -85.6 7.4 -84.4",
+  sad: "M-7.4 -84.2 Q -5 -85.2 -2.2 -87 M 2.2 -87 Q 5 -85.2 7.4 -84.2",
+  scared: "M-7.4 -84.8 Q -5 -86.4 -2.2 -88.2 M 2.2 -88.2 Q 5 -86.4 7.4 -84.8",
+  firm: "M-7.4 -85.6 L -2.2 -84.8 M 2.2 -84.8 L 7.4 -85.6",
+  angry: "M-7.6 -86.8 L -2.2 -84.4 M 2.2 -84.4 L 7.6 -86.8",
+};
+function mouth(mood, y0) {
+  const m = (d, w = 1.4) => `<path d="${d}" stroke="#7a3b2a" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+  if (mood === "worried") return m(`M-3 ${y0 + .6} Q -1.5 ${y0 - .8} 0 ${y0 + .4} Q 1.5 ${y0 + 1.4} 3 ${y0}`);
+  if (mood === "sad") return m(`M-3 ${y0 + 1.6} Q 0 ${y0 - .8} 3 ${y0 + 1.6}`) + `<path class="sb-tear" d="M-6.4 -75.4 C -7.4 -73.4, -7.6 -72, -6.4 -71.4 C -5.2 -72, -5.4 -73.4, -6.4 -75.4 Z" fill="#8fd0f2" stroke="#3a2a1f" stroke-width=".6"/>`;
+  if (mood === "scared") return `<ellipse cx="0" cy="${y0 + .6}" rx="1.9" ry="2.4" fill="#7a3b2a"/>`;
+  if (mood === "firm") return m(`M-3 ${y0 + .4} L 3 ${y0 + .4}`);
+  if (mood === "angry") return m(`M-3.4 ${y0 + 1.4} Q 0 ${y0 - 1} 3.4 ${y0 + 1.4}`);
+  if (mood === "joy") return `<path d="M-3.8 ${y0 - .4} Q 0 ${y0 + 4.4} 3.8 ${y0 - .4} Z" fill="#7a3b2a" ${L2}/>`;
+  return m(`M-3.4 ${y0} Q 0 ${y0 + 2.9} 3.4 ${y0}`);
+}
 function head(o) {
-  const browC = o.beard ? "#9a948c" : "#5a3a24";
+  const browC = o.brow || (/^#f/i.test(o.beard || "") ? "#9a948c" : "#5a3a24");
   const backCloth = o.veil ? `<path d="M-14 -88 C -20 -72, -21 -56, -22 -38 L 22 -38 C 21 -56, 20 -72, 14 -88 Z" fill="${o.veil}" ${L}/><path d="M8 -86 C 14 -70, 16 -56, 17 -39 L 22 -38 C 21 -56, 20 -72, 14 -88 Z" fill="#000" opacity=".12"/>`
-    : o.cloth ? `<path d="M-13 -86 C -16 -73, -17 -65, -18 -58 L 18 -58 C 17 -65, 16 -73, 13 -86 Z" fill="${o.cloth}" ${L}/>` : "";
-  const top = o.veil ? `<path d="M-13.8 -78 C -15 -96, 15 -96, 13.8 -78 C 9 -86, -9 -86, -13.8 -78 Z" fill="${o.veil}" ${L}/><path d="M-12 -84 Q 0 -90.5 12 -84" stroke="#fff" stroke-width="1.6" fill="none" opacity=".55"/>`
+    : o.cloth ? `<path d="M-13 -86 C -16 -73, -17 -65, -18 -58 L 18 -58 C 17 -65, 16 -73, 13 -86 Z" fill="${o.cloth}" ${L}/>`
+    : o.longHair ? `<path d="M-13 -86 C -16 -74, -16 -66, -15 -59 C -10 -61, 10 -61, 15 -59 C 16 -66, 16 -74, 13 -86 Z" fill="${o.hair || "#6b4528"}" ${L}/>` : "";
+  const top = o.helmet ? `<path d="M0 -96 C -7 -104, -3 -112, 7 -109 C 2 -105, 5 -100, 0 -96 Z" fill="#c4473a" ${L2}/><path d="M-13.8 -79 C -14.6 -99, 14.6 -99, 13.8 -79 Z" fill="#a9b2bb" ${L}/><path d="M4 -95 C 9 -92, 12 -86, 12.6 -80 L 13.8 -79 C 14 -88, 11 -94, 4 -95 Z" fill="#000" opacity=".14"/><path d="M-15 -80 L 15 -80" stroke="${INK}" stroke-width="4.2" stroke-linecap="round"/><path d="M-15 -80 L 15 -80" stroke="#d6b45a" stroke-width="2.4" stroke-linecap="round"/><path d="M-13.6 -79 L -14 -69 L -10 -71 Z M 13.6 -79 L 14 -69 L 10 -71 Z" fill="#a9b2bb" ${L2}/>`
+    : o.veil ? `<path d="M-13.8 -78 C -15 -96, 15 -96, 13.8 -78 C 9 -86, -9 -86, -13.8 -78 Z" fill="${o.veil}" ${L}/><path d="M-12 -84 Q 0 -90.5 12 -84" stroke="#fff" stroke-width="1.6" fill="none" opacity=".55"/>`
     : o.cloth ? `<path d="M-13.6 -80 C -14 -96, 14 -96, 13.6 -80 C 8 -85.5, -8 -85.5, -13.6 -80 Z" fill="${o.cloth}" ${L}/><path d="M-13.2 -83.6 Q 0 -89 13.2 -83.6" stroke="${o.band || "#c9853c"}" stroke-width="2.6" fill="none"/>`
     : `<path d="M-12.4 -79 C -15 -96, 15 -96, 12.4 -79 C 11 -86, 5 -89, 0 -87 C -5 -89, -11 -86, -12.4 -79 Z" fill="${o.hair || "#6b4528"}" ${L}/><path d="M-6 -90 C -3 -86, 2 -86, 4 -89" stroke="#fff" stroke-width="1.2" fill="none" opacity=".35"/>`;
   const beard = o.beard ? `<path d="M-11.8 -80 C -13 -68, -8 -57, 0 -53 C 8 -57, 13 -68, 11.8 -80 C 9 -73.5, 6 -71.5, 0 -71.5 C -6 -71.5, -9 -73.5, -11.8 -80 Z" fill="${o.beard}" ${L}/>
     <path d="M-6 -66 C -5 -62, -3 -59, -2 -57 M 0 -64 L 0 -56 M 6 -66 C 5 -62, 3 -59, 2 -57" stroke="${shade(o.beard, .78)}" stroke-width="1" fill="none" stroke-linecap="round"/>
     <path d="M-6.6 -71.4 C -4 -73.8, -1 -73, 0 -71.8 C 1 -73, 4 -73.8, 6.6 -71.4 C 4 -69.8, 1.5 -70, 0 -70.8 C -1.5 -70, -4 -69.8, -6.6 -71.4 Z" fill="${o.beard}" ${L2}/>
-    <path d="M-2.2 -67.6 Q 0 -66 2.2 -67.6" stroke="#7a3b2a" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
-    : `<path d="M-3.4 -71.5 Q 0 -68.6 3.4 -71.5" stroke="#7a3b2a" stroke-width="1.4" fill="none" stroke-linecap="round"/>`;
+    ${mouth(o.mood, -67.8)}`
+    : mouth(o.mood, -71.5);
   const eyes = o.sleep ? `<path d="M-7 -79 Q -4.6 -77 -2.4 -79 M 2.4 -79 Q 4.6 -77 7 -79" stroke="#2b1d14" stroke-width="1.4" fill="none" stroke-linecap="round"/>`
-    : blink([-4.6, 4.6].map((x) => `<ellipse cx="${x}" cy="-79" rx="1.9" ry="2.5" fill="#2b1d14"/><circle cx="${x + .7}" cy="-80" r=".8" fill="#fff"/>`).join(""));
+    : blink([-4.6, 4.6].map((x) => { const up = o.lookUp ? -1.2 : 0; return `<ellipse cx="${x}" cy="${-79 + up}" rx="1.9" ry="2.5" fill="#2b1d14"/><circle cx="${x + .7}" cy="${-80 + up}" r=".8" fill="#fff"/>`; }).join(""));
   return `${backCloth}<rect x="-3.5" y="-68" width="7" height="7" fill="${SKIN_D}"/>
     <ellipse cx="-11.6" cy="-77" rx="2.2" ry="3" fill="${SKIN}" ${L2}/><ellipse cx="11.6" cy="-77" rx="2.2" ry="3" fill="${SKIN}" ${L2}/>
     <ellipse cx="0" cy="-78" rx="11.6" ry="12.6" fill="${SKIN}" ${L}/><path d="M5 -89 C 11 -86, 12 -76, 9 -68 C 11 -72, 12 -80, 10 -86 Z" fill="${SKIN_D}" opacity=".5"/>
-    ${top}${eyes}<path d="M-7 -84.6 Q -4.6 -86.6 -2.4 -85 M 2.4 -85 Q 4.6 -86.6 7 -84.6" stroke="${browC}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    ${top}${eyes}<path d="${BROWS[o.mood] || BROWS.calm}" stroke="${browC}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
     <ellipse cx="-7.4" cy="-73.8" rx="2.5" ry="1.5" fill="#f08f7e" opacity=".5"/><ellipse cx="7.4" cy="-73.8" rx="2.5" ry="1.5" fill="#f08f7e" opacity=".5"/>
     <path d="M-.4 -77 Q 1.4 -75.4 -.2 -74.4" stroke="#b9785a" stroke-width="1.1" fill="none" stroke-linecap="round"/>${beard}`;
 }
+const wings = () => [1, -1].map((d) => `<g transform="scale(${d} 1)"><g class="sb-wing" style="transform-origin:8px -62px"><path d="M8 -62 C 26 -80, 46 -78, 50 -64 C 44 -62, 46 -54, 38 -52 C 36 -44, 26 -42, 20 -44 C 16 -50, 12 -56, 8 -62 Z" fill="#fffdf6" ${L}/><path d="M18 -64 C 28 -70, 38 -70, 44 -66 M 18 -56 C 26 -60, 34 -60, 38 -56" stroke="#d9d2c2" stroke-width="1.2" fill="none"/></g></g>`).join("");
 export function person(o) {
+  if (o.angel) return `${wings()}${person({ ...o, angel: false })}<ellipse cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="${INK}" stroke-width="3.6"/><ellipse class="sb-twinkle" cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="#f6cf55" stroke-width="2"/>`;
   const robe = o.robe || "#5b8fb9", dark = shade(robe, .75);
   const [la, ra] = o.arms || ["down", "down"];
   const staff = o.staff ? `<g transform="translate(${o.staff === "left" ? -23.5 : 23.5} 0)"><path d="M0 2 L 0 ${o.staffTop || -112} C 0 ${(o.staffTop || -112) - 9}, 10 ${(o.staffTop || -112) - 9}, 10 ${(o.staffTop || -112) - 1}" stroke="${INK}" stroke-width="5.4" fill="none" stroke-linecap="round"/><path d="M0 2 L 0 ${o.staffTop || -112} C 0 ${(o.staffTop || -112) - 9}, 10 ${(o.staffTop || -112) - 9}, 10 ${(o.staffTop || -112) - 1}" stroke="#a06c3e" stroke-width="3" fill="none" stroke-linecap="round"/></g>` : "";
@@ -96,7 +120,10 @@ export const sheep = (o = {}) => `<path d="M-12 4 L -12 15 M -3 6 L -3 16 M 8 5 
   <path d="${bumpy(24, 15, 14, 5.5)}" fill="#fbf6ec" ${L}/><path d="M-10 -6 C -4 -10, 6 -10, 12 -6" stroke="#e2d6bf" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="${bumpy(22, 13, 14, 5)}" fill="none" stroke="#e7dcc6" stroke-width="1" transform="translate(1 2) scale(.7)"/>
   <g transform="translate(-23 -6) rotate(${o.down ? 25 : 0})"><ellipse cx="-8" cy="-2" rx="5" ry="2.6" fill="#6b5a52" ${L2} transform="rotate(-25 -8 -2)"/><ellipse cx="0" cy="0" rx="8.5" ry="10" fill="#7a6860" ${L}/><path d="${bumpy(8, 4.5, 8, 2.5)}" fill="#fbf6ec" ${L2} transform="translate(1 -9)"/>
   ${blink(`<ellipse cx="-3" cy="-1" rx="1.4" ry="1.8" fill="#1f1612"/><ellipse cx="3.6" cy="-1" rx="1.4" ry="1.8" fill="#1f1612"/><circle cx="-2.5" cy="-1.6" r=".5" fill="#fff"/><circle cx="4.1" cy="-1.6" r=".5" fill="#fff"/>`)}<ellipse cx="-4.6" cy="2.4" rx="1.6" ry="1" fill="#f08f7e" opacity=".6"/><ellipse cx="5.4" cy="2.4" rx="1.6" ry="1" fill="#f08f7e" opacity=".6"/><path d="M-1 4.5 Q .5 5.8 2 4.5" stroke="#1f1612" stroke-width=".9" fill="none"/></g>`;
-export function lion({ sleep = false, id = 0 } = {}) {
+export function lion({ sleep = false, shut = false } = {}) {
+  return `<g class="sb-breathe">${lionBody({ sleep, shut })}</g>`;
+}
+function lionBody({ sleep, shut }) {
   const mane = Array.from({ length: 14 }, (_, i) => `<ellipse cx="0" cy="-17" rx="7" ry="10" fill="${i % 2 ? "#d9822f" : "#c4692a"}" ${L2} transform="rotate(${i * (360 / 14)})"/>`).join("");
   return `<g class="sb-tail" style="transform-origin:28px -8px"><path d="M28 -8 C 40 -12, 44 -24, 40 -32" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M28 -8 C 40 -12, 44 -24, 40 -32" stroke="#e8a64a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M40 -32 C 34 -36, 36 -44, 41 -42 C 46 -44, 48 -36, 40 -32 Z" fill="#c4692a" ${L2}/></g>
   <path d="M-30 0 C -32 -14, -14 -24, 8 -22 C 26 -21, 34 -12, 32 0 Z" fill="#f0b354" ${L}/><path d="M6 -21 C 22 -20, 32 -12, 31 0 L 18 0 C 22 -8, 18 -16, 6 -21 Z" fill="#000" opacity=".1"/>
@@ -104,8 +131,8 @@ export function lion({ sleep = false, id = 0 } = {}) {
   <g transform="translate(-18 -22)">${mane}<circle cx="-12" cy="-12" r="4.6" fill="#f0b354" ${L2}/><circle cx="12" cy="-12" r="4.6" fill="#f0b354" ${L2}/><circle cx="-12" cy="-12" r="2" fill="#e58a6a"/><circle cx="12" cy="-12" r="2" fill="#e58a6a"/>
     <circle r="14" fill="#f6c46a" ${L}/><ellipse cx="0" cy="5" rx="8" ry="6" fill="#fff4dc" ${L2}/><path d="M-2.6 1.6 L 2.6 1.6 L 0 4.4 Z" fill="#4a2a1a" ${L2}/>
     ${sleep ? `<path d="M-7.5 -3 Q -5 -1 -2.5 -3 M 2.5 -3 Q 5 -1 7.5 -3" stroke="#2b1d14" stroke-width="1.4" fill="none" stroke-linecap="round"/>`
-    : blink(`<ellipse cx="-5" cy="-3" rx="1.9" ry="2.4" fill="#2b1d14"/><ellipse cx="5" cy="-3" rx="1.9" ry="2.4" fill="#2b1d14"/><circle cx="-4.3" cy="-3.8" r=".8" fill="#fff"/><circle cx="5.7" cy="-3.8" r=".8" fill="#fff"/>`)}
-    <path d="M0 4.4 L 0 6.4 M -3.6 6 Q 0 9.4 3.6 6" stroke="#4a2a1a" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="-8.6" cy="3" rx="2.6" ry="1.5" fill="#f08f7e" opacity=".55"/><ellipse cx="8.6" cy="3" rx="2.6" ry="1.5" fill="#f08f7e" opacity=".55"/></g>
+    : blink(`<ellipse cx="-5" cy="-3" rx="1.9" ry="2.4" fill="#2b1d14"/><ellipse cx="5" cy="-3" rx="1.9" ry="2.4" fill="#2b1d14"/><circle cx="-4.3" cy="-3.8" r=".8" fill="#fff"/><circle cx="5.7" cy="-3.8" r=".8" fill="#fff"/>${shut ? `<path d="M-7.4 -5 L -2.6 -5 M 2.6 -5 L 7.4 -5" stroke="#4a2a1a" stroke-width="1.3" stroke-linecap="round"/>` : ""}`)}
+    ${shut ? `<path d="M0 4.4 L 0 7 M -4 8 Q -2 7 0 7 Q 2 7 4 8" stroke="#4a2a1a" stroke-width="1.3" fill="none" stroke-linecap="round"/>` : `<path d="M0 4.4 L 0 6.4 M -3.6 6 Q 0 9.4 3.6 6" stroke="#4a2a1a" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="-8.6" cy="3" rx="2.6" ry="1.5" fill="#f08f7e" opacity=".55"/><ellipse cx="8.6" cy="3" rx="2.6" ry="1.5" fill="#f08f7e" opacity=".55"/>`}</g>
   ${sleep ? `<g class="sb-zz" fill="#fff8e1" font-family="Georgia, serif" font-weight="700" stroke="${INK}" stroke-width=".6"><text x="-4" y="-46" font-size="9">z</text><text x="3" y="-55" font-size="11">z</text></g>` : ""}`;
 }
 const dove = (s = 1) => `<g transform="scale(${s})"><path d="M-16 0 C -8 -6, 6 -6, 12 -2 C 16 -4, 20 -4, 22 -2 C 19 0, 17 2, 14 3 C 6 8, -8 7, -16 0 Z" fill="#fff" ${L}/>
@@ -134,8 +161,26 @@ const manger = () => `<path d="M-30 0 L -20 -22 M 30 0 L 20 -22 M -24 0 L -30 -2
   <circle cx="17" cy="-39" r="7.4" fill="${SKIN}" ${L}/><path d="M11 -42 C 12 -48, 22 -48, 23 -42 C 20 -44, 14 -44, 11 -42 Z" fill="#7a4a2a"/><path d="M13.6 -38.6 Q 15 -37.4 16.4 -38.6 M 18.4 -38.6 Q 19.8 -37.4 21.2 -38.6" stroke="#2b1d14" stroke-width="1" fill="none" stroke-linecap="round"/><ellipse cx="13.6" cy="-35.6" rx="1.6" ry="1" fill="#f08f7e" opacity=".6"/><ellipse cx="21" cy="-35.6" rx="1.6" ry="1" fill="#f08f7e" opacity=".6"/><path d="M16 -35 Q 17.4 -34 18.6 -35" stroke="#7a3b2a" stroke-width=".9" fill="none"/>`;
 const starBig = (id) => `<circle r="28" fill="#fff3c4" opacity=".55" filter="url(#soft${id})"/><g class="sb-twinkle"><path d="M0 -24 C 2 -8, 4 -5, 18 -4 C 5 -2, 3 2, 0 20 C -3 2, -5 -2, -18 -4 C -4 -5, -2 -8, 0 -24 Z" fill="#ffe27a" ${L2}/><path d="M0 -24 C 2 -8, 4 -5, 18 -4 L 0 -4 Z" fill="#fff6c4"/></g>`;
 const smallStars = (list) => list.map(([x, y, r], i) => `<g class="sb-twinkle" style="--sd:${2 + (i % 4) * .7}s;--sdl:${-i * .6}s;transform-origin:${x}px ${y}px"><path d="M${x} ${y - r} L ${x + r * .3} ${y - r * .3} L ${x + r} ${y} L ${x + r * .3} ${y + r * .3} L ${x} ${y + r} L ${x - r * .3} ${y + r * .3} L ${x - r} ${y} L ${x - r * .3} ${y - r * .3} Z" fill="#fff3c4"/></g>`).join("");
-const flower = (x, y, c) => `<g transform="translate(${x} ${y})"><path d="M0 0 C 1 -5, -1 -9, 0 -12" stroke="#5e8a3a" stroke-width="1.6" fill="none"/>${[0, 72, 144, 216, 288].map((r) => `<ellipse cx="0" cy="-16" rx="2.6" ry="3.8" fill="${c}" ${L2} transform="rotate(${r} 0 -13)"/>`).join("")}<circle cy="-13" r="2" fill="#f6c14e" ${L2}/></g>`;
-const grassTuft = (x, y, s = 1) => g(x, y, s, `<path d="M-10 0 C -9 -8, -12 -14, -14 -18 C -8 -14, -5 -8, -4 0 C -4 -10, -2 -18, 0 -22 C 2 -16, 3 -8, 3 0 C 5 -8, 9 -14, 14 -17 C 10 -12, 8 -6, 9 0 Z" fill="#7cb85a" ${L2}/>`);
+const flower = (x, y, c) => `<g transform="translate(${x} ${y})"><g class="sb-sway" style="--sdl:${-(x % 7) * .4}s"><path d="M0 0 C 1 -5, -1 -9, 0 -12" stroke="#5e8a3a" stroke-width="1.6" fill="none"/>${[0, 72, 144, 216, 288].map((r) => `<ellipse cx="0" cy="-16" rx="2.6" ry="3.8" fill="${c}" ${L2} transform="rotate(${r} 0 -13)"/>`).join("")}<circle cy="-13" r="2" fill="#f6c14e" ${L2}/></g></g>`;
+const grassTuft = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:${-(x % 5) * .5}s"><path d="M-10 0 C -9 -8, -12 -14, -14 -18 C -8 -14, -5 -8, -4 0 C -4 -10, -2 -18, 0 -22 C 2 -16, 3 -8, 3 0 C 5 -8, 9 -14, 14 -17 C 10 -12, 8 -6, 9 0 Z" fill="#7cb85a" ${L2}/></g>`);
+
+const spear = (x, top) => `<path d="M${x} 2 L ${x} ${top}" stroke="${INK}" stroke-width="5.4" stroke-linecap="round"/><path d="M${x} 2 L ${x} ${top}" stroke="#9a6438" stroke-width="3" stroke-linecap="round"/><path d="M${x} ${top - 16} L ${x + 5} ${top - 2} L ${x} ${top + 2} L ${x - 5} ${top - 2} Z" fill="#c9d0d6" ${L2}/>`;
+const shield = () => `<ellipse cx="0" cy="0" rx="17" ry="21" fill="#c79a3e" ${L}/><ellipse cx="0" cy="0" rx="11" ry="14" fill="none" stroke="#a37a2a" stroke-width="2"/><circle r="4" fill="#e6c766" ${L2}/>`;
+const whale = (spout = true) => `<path d="M-70 -10 C -70 -44, -20 -58, 26 -50 C 62 -44, 80 -22, 76 2 C 72 18, 40 26, 0 24 C -40 22, -70 14, -70 -10 Z" fill="#5b8fcb" ${L}/>
+  <path d="M-62 4 C -40 18, 30 22, 70 6 C 66 18, 40 26, 0 24 C -40 22, -60 14, -62 4 Z" fill="#cfe3f5" ${L2}/>${[-40, -24, -8, 8, 24, 40].map((x) => `<path d="M${x} ${14 + Math.abs(x) * .05} L ${x + 3} ${22 - Math.abs(x) * .06}" stroke="#a9c6e2" stroke-width="1.2"/>`).join("")}
+  <path d="M74 -8 C 92 -24, 104 -22, 108 -30 C 110 -16, 102 -2, 88 2 C 100 6, 108 18, 106 28 C 98 18, 88 12, 74 6 Z" fill="#5b8fcb" ${L}/>
+  <path d="M-40 -36 C -30 -46, -10 -50, 4 -50" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".45"/>
+  ${blink(`<ellipse cx="-40" cy="-16" rx="3.4" ry="4.4" fill="#1f1612"/><circle cx="-38.8" cy="-17.6" r="1.3" fill="#fff"/>`)}<ellipse cx="-46" cy="-6" rx="5" ry="2.6" fill="#f08f7e" opacity=".55"/>
+  <path d="M-66 0 Q -56 8 -46 4" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  ${spout ? `<g class="sb-spout"><path d="M-18 -54 C -20 -64, -24 -70, -32 -74 M -18 -54 C -16 -66, -12 -72, -4 -76 M -18 -54 L -18 -78" stroke="#8fc6ea" stroke-width="3" fill="none" stroke-linecap="round"/>${[[-32, -76], [-4, -78], [-18, -81]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="2.4" fill="#bfe0f5"/>`).join("")}</g>` : ""}`;
+const boat = () => `<path d="M-78 -16 L 78 -16 C 72 0, 56 10, 36 12 L -36 12 C -56 10, -72 0, -78 -16 Z" fill="#b5793f" ${L}/>${plankLines(-72, 72, [-8, 1], "#7e4f27")}<path d="M-80 -17 L 80 -17" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M-80 -17 L 80 -17" stroke="#8a5530" stroke-width="2"/>
+  <path d="M-60 -10 C -30 6, 30 6, 66 -10 C 60 2, 46 10, 36 12 L -36 12 C -50 10, -58 2, -60 -10 Z" fill="#000" opacity=".12"/>`;
+const tomb = () => `<path d="M-80 0 C -86 -40, -60 -76, -10 -80 C 44 -84, 84 -50, 80 0 Z" fill="#b9ad9c" ${L}/><path d="M20 -80 C 56 -74, 84 -46, 80 0 L 50 0 C 60 -30, 48 -62, 20 -80 Z" fill="#000" opacity=".12"/>
+  <path d="M-34 0 C -36 -30, -20 -46, 0 -46 C 20 -46, 34 -30, 32 0 Z" fill="#2e2219" ${L}/><path d="M-24 0 C -24 -20, -14 -32, 0 -32 C 6 -32, 12 -30, 16 -26" stroke="#fff3c4" stroke-width="2" fill="none" opacity=".35"/>
+  <path d="M-60 -50 C -50 -56, -40 -58, -30 -58 M 30 -66 C 40 -62, 52 -56, 58 -48" stroke="#9c907e" stroke-width="1.4" fill="none"/>`;
+const stone = () => `<circle r="30" fill="#c9bfb0" ${L}/><circle r="30" fill="none" stroke="#a89c8a" stroke-width="2" transform="scale(.7)"/><path d="M10 -26 C 24 -18, 30 -2, 24 14" stroke="#000" stroke-width="5" fill="none" opacity=".08"/>`;
+const lily = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:${-(x % 6) * .5}s"><path d="M0 0 C 1 -10, -1 -20, 0 -28" stroke="#5e8a3a" stroke-width="2" fill="none"/><path d="M0 -6 C -8 -10, -12 -16, -12 -20 C -6 -18, -2 -12, 0 -6 Z" fill="#7cb85a" ${L2}/>
+  <path d="M0 -26 C -8 -30, -12 -38, -9 -44 C -6 -38, -3 -36, 0 -36 C 3 -36, 6 -38, 9 -44 C 12 -38, 8 -30, 0 -26 Z" fill="#fffdf6" ${L2}/><path d="M0 -28 C -2 -36, -1 -42, 0 -46 C 1 -42, 2 -36, 0 -28 Z" fill="#fffdf6" ${L2}/><circle cx="0" cy="-30" r="1.6" fill="#f6c14e"/></g>`);
 
 /* ---------- The scenes ---------- */
 export const STORYBOOK = {
@@ -152,7 +197,7 @@ export const STORYBOOK = {
       <path d="M370 200 L 370 30 C 330 20, 290 34, 260 28 C 240 24, 224 40, 220 60 C 210 100, 220 150, 264 200 Z" fill="#3f8fc0"/><path d="M370 200 L 370 50 C 320 44, 280 60, 250 56 C 236 90, 250 150, 290 200 Z" fill="#5fa8d4"/>`)}
     <g class="sb-wave">${[[100, 30, 1], [258, 30, -1]].map(([x, y, d]) => `<g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-30 4 C -20 -10, 6 -16, 18 -4 C 26 4, 22 16, 12 16 C 4 16, 2 8, 8 6" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-60 8 C -50 -2, -38 -4, -28 2" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8"/></g>`).join("")}</g>
     ${[[40, 100, 1], [60, 150, -1], [310, 110, -1], [300, 160, 1]].map(([x, y, d], i) => `<g class="sb-swim" style="--sdl:${-i * 1.3}s"><g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-8 0 C -4 -5, 4 -5, 8 0 C 4 5, -4 5, -8 0 Z M 8 0 L 13 -4 L 13 4 Z" fill="#f4a259" ${L2}/><circle cx="-4" cy="-1" r=".9" fill="${INK}"/></g></g>`).join("")}
-    ${stick(id, g(182, 198, .95, person({ robe: "#c99a62", mantle: "#a63f35", cloth: "#f4efe4", band: "#a63f35", beard: "#f4f1ea", sash: "#5b7fa6", arms: ["out", "up"], staff: "right", staffTop: -122 })))}` },
+    ${stick(id, g(182, 198, .95, person({ robe: "#c99a62", mantle: "#a63f35", cloth: "#f4efe4", band: "#a63f35", beard: "#f4f1ea", sash: "#5b7fa6", mood: "firm", arms: ["out", "up"], staff: "right", staffTop: -122 })))}` },
   manger: { caption: "Jesus is born in Bethlehem", draw: (id) => `${sky(id, "#24345e", "#55618c")}${smallStars([[30, 30, 3], [70, 60, 2], [110, 24, 2.6], [250, 26, 2.4], [300, 64, 2], [338, 30, 3], [200, 50, 1.8]])}
     <g transform="translate(180 30)">${starBig(id)}</g><path d="M180 44 L 120 150 L 240 150 Z" fill="#fff3c4" opacity=".12"/>
     ${wash(id, `<path d="M0 160 C 60 150, 120 156, 180 152 C 250 148, 310 156, 360 150 L 360 200 L 0 200 Z" fill="#6f8f5a"/>`)}
@@ -163,12 +208,40 @@ export const STORYBOOK = {
       ${g(180, 182, .95, manger())}
       ${g(250, 186, .8, person({ robe: "#8a6a48", mantle: "#c99a62", cloth: "#e9e2d0", band: "#8a6a48", beard: "#6b4528", sash: "#5b7fa6", arms: ["down", "down"], staff: "right" }))}
       ${g(318, 182, .78, flip(sheep()))}${g(40, 182, .7, sheep({ down: true }))}`)}` },
-  lions: { caption: "Daniel in the lions' den", draw: (id) => `${sky(id, "#a2795a", "#c79d74")}
-    ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#7d5a42"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#7d5a42"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#b48a62"/>
-      ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#8f6a4e"/>`).join("")}`)}
+  giant: { caption: "David and Goliath", draw: (id) => `${sky(id, "#bfe3f5", "#f4f6e6")}${cloud(id, 80, 34, .9)}${cloud(id, 280, 26, .7)}${sunW(id, 40, 36, 14)}
+    ${wash(id, `<path d="M0 120 C 60 100, 120 110, 180 104 C 250 98, 310 112, 360 104 L 360 200 L 0 200 Z" fill="#a9cf7a"/><path d="M0 160 C 90 150, 270 150, 360 160 L 360 200 L 0 200 Z" fill="#8dbf5e"/>`)}
+    ${stick(id, `${g(258, 190, 1.45, `${spear(26, -150)}${person({ robe: "#8a8f96", mantle: "#6f5a45", helmet: true, beard: "#3a2a1f", brow: "#2b1d14", mood: "angry", sash: "#c79a3e", arms: ["out", "down"] })}${g(-22, -40, 1, shield())}`)}
+      ${g(104, 192, .78, `${person({ robe: "#d9b77a", sash: "#6aa06a", hair: "#7a4a2a", mood: "firm", arms: ["down", "up"] })}<g class="sb-sling" style="transform-origin:23px -93px"><path d="M23.5 -93 C 30 -108, 44 -110, 46 -100 C 44 -92, 32 -92, 23.5 -93" stroke="#7a5230" stroke-width="1.6" fill="none"/><circle cx="45" cy="-101" r="3.4" fill="#9a948c" ${L2}/></g>`)}
+      ${g(40, 188, .55, sheep())}`)}
+    ${flower(150, 190, "#f6a5c0")}${flower(170, 194, "#f9d266")}${grassTuft(330, 198, .8)}` },
+  jonah: { caption: "Jonah prays inside the big fish", draw: (id) => `${sky(id, "#6fb4dc", "#1d5a86")}
+    ${[60, 130, 200, 270].map((x, i) => `<path d="M${x} 0 L ${x + 30} 0 L ${x + 60} 200 L ${x + 20} 200 Z" fill="#fff" opacity=".07" class="sb-glow" style="animation-delay:${-i}s"/>`).join("")}
+    ${[[30, 200, 60], [52, 200, 44], [318, 200, 66], [340, 200, 48]].map(([x, y, h], i) => `<g class="sb-sway" style="--sdl:${-i * .7}s"><path d="M${x} ${y} C ${x - 10} ${y - h * .3}, ${x + 10} ${y - h * .6}, ${x} ${y - h}" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M${x} ${y} C ${x - 10} ${y - h * .3}, ${x + 10} ${y - h * .6}, ${x} ${y - h}" stroke="#5e9a4a" stroke-width="4.6" fill="none" stroke-linecap="round"/></g>`).join("")}
+    ${wash(id, `<path d="M0 186 C 80 178, 280 178, 360 186 L 360 200 L 0 200 Z" fill="#d9c08a"/>`)}
+    ${[[96, 150], [104, 120], [262, 140], [274, 106], [180, 40]].map(([x, y], i) => `<circle class="sb-bubble" style="--sdl:${-i * .9}s" cx="${x}" cy="${y}" r="${2 + (i % 3)}" fill="none" stroke="#dff2fb" stroke-width="1.4"/>`).join("")}
+    <g class="sb-bob">${stick(id, g(184, 118, 1.45, `${whale(false)}<ellipse cx="6" cy="-6" rx="34" ry="21" fill="#8a3d4c" ${L}/><path d="M-22 -16 C -10 -24, 22 -24, 34 -14 M -26 2 C -10 10, 22 10, 36 0" stroke="#a85a68" stroke-width="2" fill="none"/><ellipse cx="6" cy="-6" rx="34" ry="21" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/>
+      ${g(6, 14, .34, `${person({ robe: "#c9853c", mantle: "#6aa06a", hair: "#5a3a24", beard: "#5a3a24", sash: "#5b8fcb", mood: "sad", lookUp: true, arms: ["pray", "pray"] })}<path d="M-14 -94 C -4 -100, 8 -98, 16 -90 C 20 -80, 26 -74, 30 -64" stroke="#5e9a4a" stroke-width="3.4" fill="none" stroke-linecap="round"/>`)}`))}</g>
+    ${[[40, 70, 1], [330, 60, -1]].map(([x, y, d], i) => `<g class="sb-swim" style="--sdl:${-i * 2}s"><g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-8 0 C -4 -5, 4 -5, 8 0 C 4 5, -4 5, -8 0 Z M 8 0 L 13 -4 L 13 4 Z" fill="#f4a259" ${L2}/><circle cx="-4" cy="-1" r=".9" fill="${INK}"/></g></g>`).join("")}` },
+  storm: { caption: "Jesus calms the storm", draw: (id) => `${sky(id, "#8fa3b8", "#e4ecf0")}<circle cx="300" cy="40" r="60" fill="#fff6d6" opacity=".7" filter="url(#soft${id})"/>
+    ${cloud(id, 60, 34, 1.6, "#6f7f92", .95)}${cloud(id, 150, 24, 1.2, "#7f8fa2", .9)}${cloud(id, 300, 30, 1, "#fff", .9)}
+    <path class="sb-flash" d="M118 20 L 108 44 L 116 44 L 104 70 L 126 38 L 117 38 L 126 20 Z" fill="#fff6c4" stroke="#f6cf55" stroke-width="1.2"/><g class="sb-rain">${Array.from({ length: 14 }, (_, i) => `<path d="M${20 + i * 12} ${40 + (i % 3) * 8} l -4 10" stroke="#c9d6e2" stroke-width="1.6" stroke-linecap="round"/>`).join("")}</g>
+    ${wash(id, `<path d="M0 128 C 50 116, 100 132, 150 122 C 210 112, 270 126, 360 118 L 360 200 L 0 200 Z" fill="#5f9cc4"/>`)}
+    <g class="sb-bob">${stick(id, g(180, 160, .95, `${g(-40, -16, .7, person({ robe: "#6aa06a", hair: "#3a2a1f", beard: "#3a2a1f", sash: "#e1b04a", mood: "scared", arms: ["down", "down"] }))}${g(44, -16, .7, person({ robe: "#c08a3e", cloth: "#efe6d2", beard: "#7a4a2a", sash: "#5b8fcb", mood: "worried", arms: ["down", "down"] }))}${boat()}${g(2, -16, .92, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "firm", arms: ["out", "up"] }))}`))}</g>
+    ${wash(id, `<g class="sb-wave"><path d="M-40 176 ${Array.from({ length: 12 }, () => "c 10 -12, 24 -12, 34 0").join(" ")} L 400 200 L -40 200 Z" fill="#3f86b4"/></g>`)}
+    <g class="sb-wave2">${Array.from({ length: 9 }, (_, i) => `<path d="M${i * 46 - 4} 178 c 6 -6, 14 -6, 18 -1 c -4 -2, -9 -1, -11 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".85"/>`).join("")}</g>` },
+  tomb: { caption: "He is risen!", draw: (id) => `${sky(id, "#f9c99b", "#fdf0dc")}<g class="sb-sunrise"><g transform="translate(250 116)"><circle r="70" fill="#ffe7a3" opacity=".7" filter="url(#soft${id})"/><g class="sb-spin">${Array.from({ length: 16 }, (_, i) => `<path d="M0 -40 L 4 -120 L -4 -120 Z" fill="#fff3c4" opacity=".35" transform="rotate(${i * 22.5})"/>`).join("")}</g></g></g>
+    ${cloud(id, 70, 36, .9)}${wash(id, `<path d="M0 130 C 70 116, 160 120, 220 126 C 280 132, 320 124, 360 128 L 360 200 L 0 200 Z" fill="#9fcf72"/><path d="M0 170 C 90 160, 270 160, 360 170 L 360 200 L 0 200 Z" fill="#86c25e"/>`)}
+    ${stick(id, `${g(150, 172, 1, tomb())}${g(246, 172, .9, stone())}${g(246, 146, .62, person({ robe: "#fffdf6", angel: true, hair: "#e2b04a", sash: "#f6cf55", mood: "joy", arms: ["out", "up"] }))}`)}
+    ${lily(40, 190, 1)}${lily(66, 194, .8)}${lily(316, 192, .9)}${flower(96, 192, "#f6a5c0")}${flower(290, 194, "#f9d266")}${flower(340, 196, "#b9a3e3")}
+    <g class="sb-fly">${g(60, 70, 1, `<g class="sb-flap" style="transform-origin:0 0"><path d="M0 0 C -6 -10, -14 -8, -12 0 C -14 8, -6 8, 0 0 Z M 0 0 C 6 -10, 14 -8, 12 0 C 14 8, 6 8, 0 0 Z" fill="#f6a5c0" ${L2}/></g>`)}</g>` },
+  lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
+    ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
+      ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}
     <path d="M140 0 L 220 0 L 262 160 L 98 160 Z" fill="#fff3c4" opacity=".28" class="sb-glow"/>${[150, 170, 190, 210].map((x, i) => `<circle class="sb-mote" style="--sdl:${-i * 1.6}s" cx="${x}" cy="${40 + i * 18}" r="1.4" fill="#fff6d6"/>`).join("")}
-    ${stick(id, `${g(78, 176, 1.05, lion({ sleep: true }))}${g(282, 176, 1.05, flip(lion()))}
-      ${g(180, 188, .98, person({ robe: "#5b7fa6", mantle: "#7a4a8a", hair: "#4a2f1d", sash: "#e1b04a", arms: ["pray", "pray"] }))}`)}
+    <circle cx="180" cy="44" r="34" fill="#fff6d6" opacity=".55" filter="url(#soft${id})"/>
+    ${stick(id, `${g(180, 92, .5, person({ robe: "#fffdf6", angel: true, hair: "#e2b04a", sash: "#f6cf55", mood: "calm", arms: ["out", "out"] }))}
+      ${g(76, 178, 1.05, lion({ shut: true }))}${g(284, 178, 1.05, flip(lion({ shut: true })))}
+      ${g(180, 190, .98, person({ robe: "#5b7fa6", mantle: "#7a4a8a", hair: "#4a2f1d", sash: "#e1b04a", mood: "worried", lookUp: true, arms: ["pray", "pray"] }))}`)}
     ${grassTuft(24, 196, .8)}${grassTuft(340, 196, .9)}` },
 };
 // Little flowers to brighten scenes that are outdoors in the day.

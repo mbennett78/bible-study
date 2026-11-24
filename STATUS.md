@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Tue Nov 24, 2026, 4:36 PM Central
-**Current version:** v178 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Tue Nov 24, 2026, 4:45 PM Central
+**Current version:** v180 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -78,7 +78,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Deeper notes on the most-read chapters (first to be trimmed if notes run late; the rest continues after release) | Done (Tue Nov 24): 43 thin chapters filled out; all 64 on the most-read list now have full notes | Tue Dec 1 |
 | Check every screen on phone, iPad and computer, including read-aloud, voice and printing. Keep menus short and clean: fold long lists into dropdowns or categories | Done (Tue Nov 24) | Wed Dec 2 |
 | Christmas gift packet: setup page and illustrated user guide (draft) | Done (Tue Nov 24) | Wed Dec 2 |
-| Kids' storybook pictures in the sticker style Melissa showed: big friendly characters, white sticker edges, watercolor skies, blinking eyes and gentle movement. Done: Noah, Moses at the sea, the manger, Daniel. Next: David and Goliath, Jonah, Jesus calms the storm, the empty tomb, Zacchaeus, the Good Shepherd, then the rest | In progress (4 done Tue Nov 24) | Ongoing |
+| Kids' storybook pictures in the sticker style Melissa showed: big friendly characters, white sticker edges, watercolor skies, blinking eyes and gentle movement. Done: Noah, Moses at the sea, the manger, Daniel, David and Goliath, Jonah, Jesus calms the storm, the empty tomb. Faces fit each story. Next: Zacchaeus, the Good Shepherd, then the rest | In progress (8 done Tue Nov 24) | Ongoing |
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
 | Gift packet and starter kit finished | Not started | Thu Dec 3 |
