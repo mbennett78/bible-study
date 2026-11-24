@@ -1,7 +1,7 @@
 // Study notes for each chapter: then-and-now map, history and culture, geography,
 // science, original-language words, the main Christian views, and sources.
 // Every note carries an evidence label so it's clear what is firm and what is debated.
-// Full notes so far: Genesis 1, Psalm 23, Luke 5 and John 1. More are added book by book.
+// Full notes so far: Genesis 1, Psalm 23, Luke 2, Luke 5, John 1 and John 3. More are added book by book.
 //
 // A source is a plain citation, or { text, url } when there's a page to open. Every source
 // gets a "Look it up" link either way (a library search when there's no page of its own).
@@ -58,6 +58,120 @@ const NEAR_EAST = {
 };
 
 export const NOTES = {
+  "LUK.2": {
+    crossRefs: [
+      ["MIC.5", "Micah 5:2", "Bethlehem, from you One will go forth to be ruler in Israel"],
+      ["ISA.9", "Isaiah 9:6-7", "\"For a child will be born to us\""],
+      ["MAT.2", "Matthew 2:1-12", "The magi come to Bethlehem"],
+      ["LEV.12", "Leviticus 12:1-8", "The offering after a birth: a lamb, or two birds for the poor"],
+      ["ISA.49", "Isaiah 49:6", "A light to the nations, as Simeon sings"],
+      ["ISA.40", "Isaiah 40:1", "\"Comfort, O comfort My people\": the consolation of Israel"],
+      ["GAL.4", "Galatians 4:4-5", "When the fullness of the time came, God sent forth His Son"],
+      ["EXO.13", "Exodus 13:2, 12", "Every firstborn son is set apart to the LORD"],
+    ],
+    intro: "Luke sets the birth of Jesus in real history, in the days of Caesar Augustus. Shepherds hear the angels' good news, Simeon and Anna welcome the baby at the temple, and at twelve Jesus is found in His Father's house.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "2:1", head: "A decree from Caesar Augustus", ev: "strong", src: ["resgestae", "bock"], text: "Augustus ruled the Roman world from 27 BC to AD 14. He counted his citizens and organized taxes across the provinces. Luke shows that God used an emperor's paperwork to bring Mary and Joseph to Bethlehem, where the Messiah was to be born (Micah 5:2)." },
+        { ref: "2:2", head: "While Quirinius was governor of Syria", ev: "debated", src: ["josephusant", "marshall", "bock"], text: "Josephus dates a census under Quirinius to AD 6, about ten years after King Herod died, and Jesus was born while Herod was still alive (Matthew 2:1). Scholars offer several answers: Luke's word \"first\" can also mean \"before,\" a census taken before Quirinius' famous one; Quirinius may have held an earlier post in the region; or the census may have been a long process that he completed. Luke's careful history elsewhere gives good reason to take him seriously here." },
+        { ref: "2:4", head: "Bethlehem, the city of David", ev: "strong", src: ["bock"], text: "A small town about six miles south of Jerusalem, David's hometown (1 Samuel 16:1). Joseph had to register there because he was from David's family line." },
+        { ref: "2:7", head: "No room for them in the inn", ev: "debated", src: ["bailey", "green"], text: "A manger is a feeding trough for animals. The word translated \"inn\" (katalyma) is the same word Luke uses for the \"guest room\" of the Last Supper (22:11). Many scholars think Joseph's family stayed in a relative's home whose guest room was full. In village homes, animals were often brought into a lower part of the house at night, so the baby was laid in a manger there. Others keep the traditional picture of a public inn and a stable or cave." },
+        { ref: "2:8", head: "Shepherds out in the fields", src: ["green", "bailey"], text: "Shepherds were ordinary working people, and some looked down on them. God's first announcement of the Savior went to them, near the town where the shepherd boy David had grown up." },
+        { ref: "2:11", head: "A Savior, who is Christ the Lord", ev: "strong", src: ["evans", "green"], text: "Three titles in one sentence. Savior: the One who rescues. Christ: the Messiah, God's anointed King. Lord: the title of God Himself. In Luke's day an inscription in Asia Minor (the Priene calendar inscription, 9 BC) called Augustus a savior and his birthday \"the beginning of good news.\" The angel announces the true Savior and the true good news." },
+        { ref: "2:14", head: "Peace among men with whom He is pleased", ev: "debated", src: ["metzger"], text: "The oldest manuscripts read \"peace among men of His good pleasure\" (NASB). Later manuscripts read \"good will toward men\" (KJV). The difference is one Greek letter. Either way, peace comes as God's gift." },
+        { ref: "2:24", head: "A pair of turtledoves or two young pigeons", ev: "scripture", src: ["green"], text: "Forty days after a son's birth, the law called for a lamb and a bird. A family that could not afford a lamb could bring two birds instead (Leviticus 12:8). Mary and Joseph brought the offering of the poor." },
+        { ref: "2:25", head: "Simeon, looking for the consolation of Israel", src: ["bock"], text: "\"Consolation\" echoes Isaiah 40:1, \"Comfort, O comfort My people.\" Simeon's song (2:29-32), often called the Nunc Dimittis from its first words in Latin, says the baby is God's salvation, \"a light of revelation to the Gentiles\" (Isaiah 49:6)." },
+        { ref: "2:37", head: "Anna, a widow to the age of eighty-four", ev: "debated", src: ["marshall"], text: "The Greek can mean that Anna was 84 years old, or that she had been a widow for 84 years, which would make her over 100. Either way, she had spent a lifetime in prayer at the temple." },
+        { ref: "2:49", head: "In My Father's house", src: ["bock", "green"], text: "These are Jesus' first recorded words, at twelve years old. Mary says \"Your father and I\" (2:48); Jesus speaks of His Father, God. He then goes home and is obedient to Mary and Joseph (2:51)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The Church of the Nativity", ev: "good", src: ["justin", "unescobeth"], text: "Around AD 155, Justin Martyr wrote that Jesus was born in a cave near Bethlehem. Emperor Constantine built a church over that cave in the 4th century, and the present church dates mainly from Justinian in the 6th century. It is one of the oldest churches still in use, and a UNESCO World Heritage Site since 2012." },
+        { head: "Traveling to Bethlehem", ev: "good", src: ["bock"], text: "Nazareth to Bethlehem is about 90 miles. On foot that is a journey of several days, likely down the Jordan valley and up through Jericho to avoid Samaria. Luke doesn't mention a donkey; that detail comes from later tradition." },
+        { head: "Going up for Passover", ev: "good", src: ["green"], text: "Jewish families traveled to Jerusalem for the great feasts, walking in large groups of relatives and neighbors. That is how Mary and Joseph could travel a whole day before noticing that twelve-year-old Jesus wasn't with them (2:44)." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "κατάλυμα", say: "katalyma", strongs: "G2646", count: "3 times (Mark 14:14, Luke 2:7, Luke 22:11)", means: "guest room, lodging", ev: "good", src: ["bdag", "bailey"], text: "A place to stay. Luke uses a different word (pandocheion) for the public inn in the parable of the Good Samaritan (10:34)." },
+        { word: "φάτνη", say: "phatnē", strongs: "G5336", count: "4 times, all in Luke", means: "manger, feeding trough", ev: "strong", src: ["bdag"], text: "Three times in Luke 2 (2:7, 2:12, 2:16), and once where Jesus asks whether anyone would not untie his ox from the manger on the Sabbath (13:15)." },
+        { word: "εὐαγγελίζομαι", say: "euangelizomai", strongs: "G2097", count: "about 54 times", means: "bring good news", ev: "strong", src: ["bdag"], text: "\"I bring you good news of great joy\" (2:10). Our word evangelism comes from it." },
+        { word: "σωτήρ", say: "sōtēr", strongs: "G4990", count: "24 times", means: "Savior", ev: "strong", src: ["bdag"], text: "Used of God (1:47) and of Jesus. Mary calls God \"my Savior\" in her song (1:47); the angel says the Savior has been born (2:11)." },
+      ] },
+      { id: "views", title: "How Christians read it", items: [
+        { head: "About 6 to 4 BC", who: "Most historians", src: ["marshall", "bock"], text: "Jesus was born shortly before King Herod died, which most date to 4 BC (Matthew 2:19). Our calendar's year 1 was worked out by a monk in the 500s and is a few years off." },
+        { head: "December 25", who: "Church tradition", src: ["marshall"], text: "Christians were celebrating the birth on December 25 in Rome by the 300s, and many churches still do. The Bible does not give the day." },
+        { head: "Spring or fall", who: "Some interpreters", src: ["bock"], text: "Some suggest a warmer season because the shepherds were out at night. Others answer that flocks near Bethlehem could be kept outdoors in winter too." },
+        { head: "What all of them agree on", who: "Common ground", src: ["green"], text: "The exact date is not given; the fact is. God's Son was born in Bethlehem, laid in a manger, and announced as Savior, Christ and Lord." },
+      ] },
+    ],
+    sources: {
+      bock: "Darrell L. Bock, Luke 1:1-9:50, Baker Exegetical Commentary (Baker, 1994).",
+      green: "Joel B. Green, The Gospel of Luke, New International Commentary (Eerdmans, 1997).",
+      marshall: "I. Howard Marshall, The Gospel of Luke, New International Greek Testament Commentary (Eerdmans, 1978).",
+      bailey: "Kenneth E. Bailey, Jesus Through Middle Eastern Eyes (IVP Academic, 2008), chapter 1.",
+      josephusant: { text: "Josephus, Antiquities of the Jews 18.1-2 (the census of Quirinius).", url: "https://www.gutenberg.org/ebooks/2848" },
+      resgestae: "Augustus, Res Gestae Divi Augusti 8 (his census of Roman citizens).",
+      evans: "Craig A. Evans, \"Mark's Incipit and the Priene Calendar Inscription,\" Journal of Greco-Roman Christianity and Judaism 1 (2000): 67-81.",
+      metzger: "Bruce M. Metzger, A Textual Commentary on the Greek New Testament, 2nd ed. (German Bible Society, 1994), on Luke 2:14.",
+      justin: "Justin Martyr, Dialogue with Trypho 78 (about AD 155).",
+      unescobeth: { text: "UNESCO World Heritage Centre, \"Birthplace of Jesus: Church of the Nativity and the Pilgrimage Route, Bethlehem,\" inscribed 2012.", url: "https://whc.unesco.org/en/list/1433" },
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "JHN.3": {
+    crossRefs: [
+      ["NUM.21", "Numbers 21:4-9", "Moses lifts up the bronze serpent"],
+      ["EZK.36", "Ezekiel 36:25-27", "Clean water, a new heart and a new spirit"],
+      ["TIT.3", "Titus 3:5", "The washing of regeneration and renewing by the Holy Spirit"],
+      ["ACT.2", "Acts 2:38", "Repent and be baptized, and you will receive the Holy Spirit"],
+      ["1PE.1", "1 Peter 1:23", "Born again of imperishable seed, the living word of God"],
+      ["ROM.5", "Romans 5:8", "God demonstrates His love: while we were still sinners, Christ died for us"],
+      ["1JN.4", "1 John 4:9-10", "God sent His only begotten Son so that we might live through Him"],
+      ["JHN.12", "John 12:32-33", "\"If I am lifted up from the earth, I will draw all men to Myself\""],
+    ],
+    intro: "Nicodemus, a respected teacher of Israel, comes to Jesus at night and hears that he must be born again. Here is the best-known verse in the Bible, John 3:16. Then John the Baptist rejoices that Jesus must increase.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "3:1", head: "Nicodemus, a ruler of the Jews", ev: "scripture", src: ["carson"], text: "A Pharisee and a member of the Jewish ruling council. John mentions him twice more: defending Jesus' right to a fair hearing (7:50-51), and bringing about 75 pounds of spices to bury Him (19:39). He seems to have moved from curiosity to faith." },
+        { ref: "3:2", head: "He came to Jesus by night", ev: "debated", src: ["carson", "keener"], text: "Maybe he wanted to avoid being seen, or wanted a quiet, unhurried talk. John may also mean more: in this Gospel, night often stands for spiritual darkness (13:30), and Nicodemus is coming out of the dark toward the Light (3:19-21)." },
+        { ref: "3:3", head: "Born again", ev: "strong", src: ["bdag", "carson"], text: "The Greek word anōthen means both \"again\" and \"from above\" (it means \"from above\" in 3:31). Nicodemus hears only \"again\" and pictures a second physical birth (3:4). Jesus means a new birth that comes from God above." },
+        { ref: "3:5", head: "Born of water and the Spirit", ev: "debated", src: ["carson", "cottrell", "schreiner"], text: "Christians understand \"water\" here in more than one way. See \"Scholars and views\" for each main view, fairly explained." },
+        { ref: "3:8", head: "The wind blows where it wishes", ev: "strong", src: ["bdag"], text: "In Greek, as in Hebrew, one word (pneuma) means both wind and spirit. You can't see the wind, but you see what it does. The Spirit's work in a person's life is like that." },
+        { ref: "3:14", head: "As Moses lifted up the serpent", ev: "scripture", src: ["kostenberger"], text: "When Israel was dying from snakebites, God told Moses to set a bronze serpent on a pole; anyone who looked at it lived (Numbers 21:8-9). \"Lifted up\" in John also points to the cross (12:32-33). Those who look to Jesus in faith live." },
+        { ref: "3:16", head: "For God so loved the world", ev: "good", src: ["carson", "kostenberger"], text: "\"So\" (houtōs) means \"in this way\" more than \"so much.\" The verse tells how God loved: He gave His only Son. \"The world\" in John means people in rebellion against God, which makes the love more amazing." },
+        { ref: "3:19", head: "Men loved the darkness rather than the Light", src: ["morris"], text: "Judgment is not that God refuses people, but that people refuse the Light when it comes. Those who practice the truth come to the Light (3:21)." },
+        { ref: "3:23", head: "Aenon near Salim, because there was much water there", ev: "debated", src: ["notley", "carson"], text: "John chose a place with plenty of water for baptizing. The site is uncertain. The early church historian Eusebius placed it about eight Roman miles south of Scythopolis (Beth Shean), an area with many springs; others look near Shechem in Samaria." },
+        { ref: "3:29", head: "The friend of the bridegroom", ev: "good", src: ["keener"], text: "Like a best man, the groom's friend helped arrange the wedding and rejoiced to hear the groom's voice. John the Baptist is glad to step aside: \"He must increase, but I must decrease\" (3:30)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The Pharisees and the council", ev: "good", src: ["danby", "keener"], text: "The Pharisees were a respected movement of teachers devoted to keeping God's law in everyday life. The ruling council in Jerusalem, the Sanhedrin, was later described as having 71 members (Mishnah, Sanhedrin 1:6). Nicodemus was \"the teacher of Israel\" (3:10), a well-known scholar." },
+        { head: "What happened to the bronze serpent", ev: "scripture", src: ["kostenberger"], text: "Israel kept the bronze serpent for centuries. By King Hezekiah's day, people were burning incense to it, so he broke it in pieces (2 Kings 18:4). The sign was meant to point to God, never to be worshiped." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "ἄνωθεν", say: "anōthen", strongs: "G509", count: "13 times", means: "again, from above", ev: "strong", src: ["bdag"], text: "Used for the curtain of the temple torn \"from top\" to bottom (Matthew 27:51) and for Jesus' seamless robe woven \"from the top\" (John 19:23). In John 3 both meanings are in play: a new birth, from God above." },
+        { word: "πνεῦμα", say: "pneuma", strongs: "G4151", count: "about 380 times", means: "spirit, wind, breath", ev: "strong", src: ["bdag"], text: "The word for the Holy Spirit, for the human spirit, and for the wind. Jesus plays on its meanings in 3:8." },
+        { word: "ἠγάπησεν", say: "ēgapēsen", strongs: "G25", count: "the verb agapaō about 143 times", means: "loved", ev: "strong", src: ["bdag"], text: "From agapaō, the love that gives itself for others. 1 John 4:10: \"In this is love, not that we loved God, but that He loved us and sent His Son.\"" },
+        { word: "ὑψόω", say: "hypsoō", strongs: "G5312", count: "20 times", means: "lift up, exalt", ev: "strong", src: ["bdag", "carson"], text: "John uses it for Jesus being lifted up on the cross (3:14, 8:28, 12:32-34). His death is also His exaltation." },
+      ] },
+      { id: "views", title: "How Christians read it", items: [
+        { head: "Water means baptism", who: "Churches of Christ, and many churches through history", src: ["cottrell"], text: "\"Born of water and the Spirit\" refers to baptism, when a believer is born again. They connect it with Acts 2:38 (\"repent, and each of you be baptized... and you will receive the gift of the Holy Spirit\") and Titus 3:5 (\"the washing of regeneration\"). Many early Christian writers read it this way too." },
+        { head: "Water means natural birth", who: "Some Baptist and evangelical interpreters", src: ["schreiner"], text: "\"Water\" is the first, physical birth, and \"Spirit\" is the second, spiritual birth, matching the next verse: \"That which is born of the flesh is flesh, and that which is born of the Spirit is spirit\" (3:6). Baptism follows the new birth as an act of obedience." },
+        { head: "God's promised cleansing", who: "Many commentators", src: ["carson"], text: "\"Water and Spirit\" together recall Ezekiel 36:25-27, where God promises to sprinkle clean water and put a new spirit within His people. It describes one new birth from two sides, cleansing and new life, which is why Jesus expected \"the teacher of Israel\" to understand it (3:10)." },
+        { head: "What all of them agree on", who: "Common ground", src: ["morris"], text: "New birth is God's work by His Spirit, and no one sees the kingdom of God without it. Jesus commands baptism (Matthew 28:19), and whoever believes in Him has eternal life (3:16)." },
+      ] },
+    ],
+    sources: {
+      carson: "D. A. Carson, The Gospel According to John, Pillar New Testament Commentary (Eerdmans, 1991).",
+      kostenberger: "Andreas J. Köstenberger, John, Baker Exegetical Commentary on the New Testament (Baker Academic, 2004).",
+      morris: "Leon Morris, The Gospel According to John, rev. ed., New International Commentary (Eerdmans, 1995).",
+      keener: "Craig S. Keener, The Gospel of John: A Commentary, 2 vols. (Hendrickson, 2003).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+      cottrell: "Jack Cottrell, Baptism: A Biblical Study (College Press, 1989). A Restoration Movement scholar.",
+      schreiner: "Thomas R. Schreiner and Shawn D. Wright, eds., Believer's Baptism (B&H Academic, 2006). Baptist scholars.",
+      danby: "Herbert Danby, trans., The Mishnah (Oxford University Press, 1933), Sanhedrin 1:6.",
+      notley: "R. Steven Notley and Ze'ev Safrai, Eusebius, Onomasticon (Brill, 2005).",
+    },
+  },
+
   "JHN.1": {
     crossRefs: [
       ["GEN.1", "Genesis 1:1-3", "\"In the beginning God created\": John's opening words echo it"],
@@ -305,4 +419,8 @@ export const NOTES = {
 };
 
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
-export const sampleChapters = () => Object.keys(NOTES);
+const ORDER = ["GEN", "PSA", "MAT", "MRK", "LUK", "JHN"];
+export const sampleChapters = () => Object.keys(NOTES).sort((a, b) => {
+  const [ba, ca] = a.split("."), [bb, cb] = b.split(".");
+  return (ORDER.indexOf(ba) - ORDER.indexOf(bb)) || (Number(ca) - Number(cb));
+});

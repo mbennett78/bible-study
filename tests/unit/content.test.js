@@ -73,6 +73,9 @@ test("study notes use known evidence labels and sources", () => {
     assert.ok(BOOK_BY_ID[book], key);
     const json = JSON.stringify(n);
     for (const m of json.matchAll(/"ev":"(\w+)"/g)) assert.ok(EVIDENCE[m[1]], `${key}: unknown evidence label ${m[1]}`);
+    // Every note cites sources that are listed, and every listed source can be looked up.
+    for (const sec of n.sections) for (const it of sec.items) for (const id of it.src || []) assert.ok(n.sources[id], `${key}: missing source ${id}`);
+    for (const s of Object.values(n.sources)) assert.ok((typeof s === "string" ? s : s.text).length > 10 && (typeof s === "string" || /^https:\/\//.test(s.url)), key);
   }
 });
 
