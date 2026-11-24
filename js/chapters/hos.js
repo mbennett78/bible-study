@@ -6,7 +6,6 @@ const sources = {
   smithB: "Billy K. Smith and Frank S. Page, Amos, Obadiah, Jonah, New American Commentary 19B (Broadman & Holman, 1995).",
   garrettH: "Duane A. Garrett, Hosea, Joel, New American Commentary 19A (Broadman & Holman, 1997).",
   hubbardD: "David A. Hubbard, Hosea and Joel and Amos, Tyndale Old Testament Commentaries (InterVarsity Press, 1989).",
-  baker: "Joyce Baldwin, David W. Baker and T. Desmond Alexander, Obadiah, Jonah, Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
   kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
   halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
 };

@@ -5,7 +5,7 @@ const sources = {
   longmanS: "Tremper Longman III, Song of Songs, New International Commentary on the Old Testament (Eerdmans, 2001).",
   carr: "G. Lloyd Carr, The Song of Solomon, Tyndale Old Testament Commentaries (InterVarsity Press, 1984).",
   garrett: "Duane A. Garrett, Proverbs, Ecclesiastes, Song of Songs, New American Commentary 14 (Broadman & Holman, 1993).",
-  duguid: "Iain M. Duguid, The Song of Songs, Tyndale Old Testament Commentaries, rev. ed. (InterVarsity Press, 2015).",
+  duguid: "Iain M. Duguid, The Song of Songs, Tyndale Old Testament Commentaries 19 (InterVarsity Press, 2015).",
   halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
 };
 

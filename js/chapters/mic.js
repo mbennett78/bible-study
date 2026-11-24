@@ -3,7 +3,7 @@ import { makeBook } from "./make.js";
 
 const sources = {
   waltke: "Bruce K. Waltke, A Commentary on Micah (Eerdmans, 2007).",
-  baker: "Joyce Baldwin, David W. Baker and T. Desmond Alexander, Obadiah, Jonah, Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
+  baker: "David W. Baker, T. Desmond Alexander and Bruce K. Waltke, Obadiah, Jonah and Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
   smithR: "Ralph L. Smith, Micah-Malachi, Word Biblical Commentary 32 (Word, 1984).",
   kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
   halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",

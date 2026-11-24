@@ -43,7 +43,7 @@ const sources = {
   morrisJ: "Leon Morris, The Gospel According to John, rev. ed., New International Commentary on the New Testament (Eerdmans, 1995).",
   mounceR: "Robert H. Mounce, The Book of Revelation, rev. ed., New International Commentary on the New Testament (Eerdmans, 1998).",
   murphy: "Jerome Murphy-O'Connor, St. Paul's Corinth: Texts and Archaeology, 3rd ed. (Liturgical Press, 2002).",
-  osborne: "Grant R. Osborne, Revelation, 2nd ed., Baker Exegetical Commentary on the New Testament (Baker Academic, 2023).",
+  osborne: "Grant R. Osborne, Revelation, Baker Exegetical Commentary on the New Testament (Baker Academic, 2002).",
   pao: "David W. Pao, Colossians and Philemon, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2012).",
   schreinerG: "Thomas R. Schreiner, Galatians, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2010).",
   schreinerR: "Thomas R. Schreiner, Romans, 2nd ed., Baker Exegetical Commentary on the New Testament (Baker Academic, 2018).",

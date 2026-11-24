@@ -33,7 +33,7 @@ const sources = {
   craigieD: "Peter C. Craigie, The Book of Deuteronomy, New International Commentary on the Old Testament (Eerdmans, 1976).",
   blockD: "Daniel I. Block, Deuteronomy, NIV Application Commentary (Zondervan, 2012).",
   waltkeM: "Bruce K. Waltke, A Commentary on Micah (Eerdmans, 2007).",
-  baker: "Joyce Baldwin, David W. Baker and T. Desmond Alexander, Obadiah, Jonah, Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
+  baker: "David W. Baker, T. Desmond Alexander and Bruce K. Waltke, Obadiah, Jonah and Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
   bergen: "Robert D. Bergen, 1, 2 Samuel, New American Commentary 7 (Broadman & Holman, 1996).",
   baldwin: "Joyce G. Baldwin, 1 and 2 Samuel, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
   tsumura: "David Toshio Tsumura, The First Book of Samuel, New International Commentary on the Old Testament (Eerdmans, 2007).",

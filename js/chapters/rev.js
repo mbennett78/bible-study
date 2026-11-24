@@ -4,7 +4,7 @@ import { makeBook } from "./make.js";
 const sources = {
   mounceR: "Robert H. Mounce, The Book of Revelation, rev. ed., New International Commentary on the New Testament (Eerdmans, 1998).",
   beale: "G. K. Beale, The Book of Revelation, New International Greek Testament Commentary (Eerdmans, 1999).",
-  osborne: "Grant R. Osborne, Revelation, 2nd ed., Baker Exegetical Commentary on the New Testament (Baker Academic, 2023).",
+  osborne: "Grant R. Osborne, Revelation, Baker Exegetical Commentary on the New Testament (Baker Academic, 2002).",
   keenerR: "Craig S. Keener, Revelation, NIV Application Commentary (Zondervan, 2000).",
   hemerR: "Colin J. Hemer, The Letters to the Seven Churches of Asia in Their Local Setting (Sheffield Academic Press, 1986).",
   thomasR: "Robert L. Thomas, Revelation 1-7 and Revelation 8-22, 2 vols., Wycliffe Exegetical Commentary (Moody, 1992-1995).",
