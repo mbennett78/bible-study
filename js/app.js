@@ -9,6 +9,7 @@ import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDI
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand } from "./buddy.js";
 import { guideAnswer, seasonNow, welcomeLine, sessionNudge, timeAnswer } from "./buddyguide.js";
+import { isScary, checkingOn, comfortLine, propFor, newProp, warmthLevel, learnFrom, remember, learnedLine, ASK_MEMORY, FORGET_LAST, FORGET_ALL, memoryLine, recallLine } from "./buddygrow.js";
 import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
@@ -1347,6 +1348,15 @@ function buddyAct(name) {
   }
   return did;
 }
+// Time together: each chat, game or thing they teach him. Now and then it unlocks a prop.
+let propNews = null;
+function buddyTogether() {
+  const n = (store.get("buddyTogether") || 0) + 1;
+  store.set("buddyTogether", n);
+  const p = newProp(n);
+  if (p) propNews = p;
+}
+let scaredOf = "", scaredAt = 0;
 async function sendChat() {
   const q = $("#partnerQ").value.trim();
   if (!q) { $("#partnerQ").focus(); return; }
@@ -1372,6 +1382,30 @@ async function sendChat() {
     if (did && !chatSheet.open) buddy.says(line, Math.max(4000, BUDDY_ACTIONS[did].ms + 1500));
     return;
   }
+  const who = store.get("name")?.trim() || "";
+  // Checking on him: "Are you okay?", "Don't be scared." He feels better, and says so.
+  if (checkingOn(q)) {
+    const of = Date.now() - scaredAt < 15 * 60e3 ? scaredOf : "";
+    scaredOf = ""; scaredAt = 0;
+    buddy.love(); buddyTogether();
+    const line = comfortLine({ scaredOf: of, name: who, warmth: warmthLevel(store.get("buddyTogether")) });
+    chatBubble("them", line); buddySpeak(line);
+    return;
+  }
+  // Teaching him: "Remember that I love horses", "My favorite verse is John 3:16".
+  if (ASK_MEMORY.test(q)) { const line = memoryLine(store.get("buddyMemory") || [], who); chatBubble("them", line); return; }
+  if (FORGET_ALL.test(q)) { store.set("buddyMemory", []); chatBubble("them", "Okay, I've forgotten everything you taught me. We can start fresh any time. 😊"); return; }
+  if (FORGET_LAST.test(q) && (store.get("buddyMemory") || []).length) { const [gone, ...rest] = store.get("buddyMemory"); store.set("buddyMemory", rest); chatBubble("them", `Okay, I forgot that ${gone.key ? `your ${gone.key} is ${gone.text}` : gone.text}. 👍`); return; }
+  const fact = learnFrom(q);
+  if (fact) {
+    store.set("buddyMemory", remember(store.get("buddyMemory") || [], fact));
+    buddy.love(); buddyTogether();
+    const line = learnedLine(fact, who);
+    chatBubble("them", line); buddySpeak(line);
+    buddyPropNews();
+    return;
+  }
+  buddyTogether();
   // "What day is it?", "How long have I been studying?": he just knows.
   const when = timeAnswer(q, { sessionMs: studyMs, season: seasonNow(new Date(), easterOf(new Date().getFullYear())) });
   if (when) { chatBubble("them", when); buddySpeak(when); return; }
@@ -1389,6 +1423,13 @@ async function sendChat() {
   }
   buddyFeels(q);
   await askBuiltIn(q);
+}
+// A new prop unlocked: he says so in the chat ("I found a little boat!").
+function buddyPropNews() {
+  const p = propNews;
+  if (!p) return;
+  propNews = null;
+  setTimeout(() => chatBubble("them", `Guess what? Spending time with you, I found ${p.name}! ${p.icon} I'll bring it out when we read that story.`), 900);
 }
 // Takes them to a place in the app and points it out with a soft glow (no tour, no popups).
 function buddyShowPlace(go) {
@@ -1429,6 +1470,7 @@ const quest = createQuest({
   buddyName: () => buddyName(),
   // A win at trivia: he can hardly contain himself (once the game window closes).
   onWin: (mode) => buddyAfterDialogs(() => {
+    if (mode === "buddy") buddyTogether();
     if (mode === "buddy") {
       // Beaten! A little pout... then a good sport.
       buddy.mood("mad", 2600);
@@ -1436,7 +1478,7 @@ const quest = createQuest({
     } else buddy.celebrate(pickOne([`You WON! 🏆 That was amazing, ${store.get("name")?.trim() || "friend"}!`, "Woohoo! You're a trivia champion! 🎉", "YES! I knew you could do it! 🏆"]), "trophy");
   }),
   // He won: a happy little victory dance, and then he's a good sport about it.
-  onBuddyWin: () => buddyAfterDialogs(() => buddy.celebrate(pickOne(["I WON! 🎉 *victory dance* ...good game though. You almost had me!", "Woohoo, I won! 🏆 You were awesome too. Rematch sometime?", "Yay me! 😄 Okay, okay, I'll stop cheering. Good game, friend!"]), "party")),
+  onBuddyWin: () => buddyTogether() || buddyAfterDialogs(() => buddy.celebrate(pickOne(["I WON! 🎉 *victory dance* ...good game though. You almost had me!", "Woohoo, I won! 🏆 You were awesome too. Rematch sometime?", "Yay me! 😄 Okay, okay, I'll stop cheering. Good game, friend!"]), "party")),
 });
 // He says his little lines out loud too, when the family turns that on (Settings, Study buddy).
 // Never over the Bible reading, and off by default so he's never a surprise in church.
@@ -1585,7 +1627,9 @@ function buddyFeelsPassage(text, ref) {
   lastMoodRef = ref;
   const counts = Object.fromEntries(Object.entries(MOOD_WORDS).map(([k, re]) => [k, (text.match(re) || []).length]));
   const [kind, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  if (n < 3) return;
+  const scary = isScary(ref, text);
+  if (scary) { pendingMood = { kind: "scared", ref, of: scary }; if (document.body.dataset.view === "read") showPassageMood(); return; }
+  if (n < 3) { const p = propFor(ref, store.get("buddyTogether") || 0); if (p) { pendingMood = { kind: p.icon, ref, prop: p }; if (document.body.dataset.view === "read") showPassageMood(); } return; }
   pendingMood = { kind, ref };
   if (document.body.dataset.view === "read") showPassageMood();
 }
@@ -1594,7 +1638,14 @@ function showPassageMood() {
   const m = pendingMood;
   if (!m) return;
   pendingMood = null;
-  setTimeout(() => { const l = store.get("last"); if (l && `${l.book}.${l.chapter}` === m.ref && document.body.dataset.view === "read") buddy.mood(m.kind, 7000); }, 2500);
+  const here = () => { const l = store.get("last"); return l && `${l.book}.${l.chapter}` === m.ref && document.body.dataset.view === "read"; };
+  setTimeout(() => {
+    if (!here()) return;
+    if (buddy.mood(m.kind, 7000) && m.kind === "scared") { scaredOf = m.of; scaredAt = Date.now(); }
+    // His story prop (a boat for the storm, a tree for Zacchaeus), once the mood has passed.
+    const p = m.prop ? null : propFor(m.ref, store.get("buddyTogether") || 0);
+    if (p) setTimeout(() => { if (here()) buddy.mood(p.icon, 6000); }, 8000);
+  }, 2500);
 }
 // Good morning, good evening, and "time for bed?" once each, at the right time of day.
 function timeOfDay(h = new Date().getHours()) { return h >= 5 && h < 11 ? "morning" : h >= 17 && h < 21 ? "evening" : h >= 21 || h < 5 ? "late" : ""; }
@@ -1633,7 +1684,8 @@ function buddyWelcome() {
   const place = visited && BOOK_BY_ID[book] ? `${BOOK_BY_ID[book].name} ${chapter}` : "";
   const season = seasonNow(new Date(), easterOf(new Date().getFullYear()));
   const hello = { morning: "Good morning", evening: "Good evening" }[timeOfDay()] || "";
-  const text = welcomeLine({ name: store.get("name")?.trim() || "", place, study, away: awayMs, season, hello });
+  const warm = ["", "", " I missed studying with you.", " You're my favorite study buddy. 💛", " Studying with you is the best part of my day. 💛"][warmthLevel(store.get("buddyTogether") || 0)];
+  const text = welcomeLine({ name: store.get("name")?.trim() || "", place, study, away: awayMs, season, hello }) + warm;
   const ok = place ? buddy.ask(text, { label: "Keep reading", go: () => { showView("read"); openChapter(book, chapter); } }, { label: "Not now", line: "Okie! It'll be right here when you're ready. 😊" }) : buddy.visit(text, 8000, false);
   if (ok) {
     store.set("buddyWelcomeDay", today);
@@ -1692,6 +1744,15 @@ setInterval(() => {
   if (Date.now() - (store.get("buddyLoveAt") || 0) > 3 * 864e5 && Math.random() > 0.88) {
     if (buddy.visit(pickOne(BUDDY_LOVE)(store.get("name")?.trim() || ""), 7000, false)) {
       store.set("buddyLoveAt", Date.now());
+      store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+      buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+    }
+    return;
+  }
+  // Now and then he brings up something they taught him.
+  const mem = store.get("buddyMemory") || [];
+  if (mem.length && Math.random() < 0.15) {
+    if (buddy.visit(recallLine(mem, store.get("name")?.trim() || ""), 8000, false)) {
       store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
       buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
     }

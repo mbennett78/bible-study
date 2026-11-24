@@ -370,11 +370,12 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }
   // A little picture over his head for a few seconds: a cloud for a sad passage, hearts
   // for a happy one, lightning for a dramatic one, a sun or moon for the time of day.
-  const MOODS = { sad: "☁️", happy: "💕", dramatic: "⚡", idea: "💡", morning: "☀️", night: "🌙", sleepy: "🥱", party: "🎉", trophy: "🏆", mad: "😤", cry: "😢", love: "💛" };
+  const MOODS = { sad: "☁️", happy: "💕", dramatic: "⚡", idea: "💡", morning: "☀️", night: "🌙", sleepy: "🥱", party: "🎉", trophy: "🏆", mad: "😤", cry: "😢", love: "💛", scared: "😨" };
   function mood(kind, ms = 6000) {
     if (el.hidden || el.classList.contains("sleeping") || pop.classList.contains("search")) return false;
     popUp(MOODS[kind] || kind, ms);
     if (kind === "sad") { el.classList.add("caring"); setTimeout(() => el.classList.remove("caring"), ms); }
+    if (kind === "scared") { el.classList.add("caring", "scared"); setTimeout(() => el.classList.remove("caring", "scared"), ms); }
     if (kind === "mad" || kind === "cry") { el.classList.remove("tucked"); el.classList.add(kind === "mad" ? "pouting" : "teary"); setTimeout(() => el.classList.remove("pouting", "teary"), Math.min(ms, 3500)); }
     return true;
   }

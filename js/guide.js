@@ -24,6 +24,8 @@ export const GUIDE = [
     "Ask him simple things too, like \"jump rope,\" \"dance\" or \"do a cartwheel.\"",
     "Ask him where things are, like \"Where is text size?\" or \"How do I lock my journal?\" He answers right away, even with no signal, and can show you the spot.",
     "He remembers where you left off and your study, knows the season (like Advent), and after a long study time he may suggest a stretch.",
+    "Teach him things, like \"My favorite verse is John 3:16\" or \"Remember that I love horses.\" Ask \"What do you remember about me?\" any time, or say \"forget that.\" Only you can see what you teach him.",
+    "In scary stories (like the lions' den) he gets a little scared. Ask \"Are you okay?\" and he feels better. The more time you spend with him, the more story props he finds, like Zacchaeus' tree.",
     "In the way? Drag him up or down either edge. In Settings, under My study buddy, you can rename him, make him quieter, or hide him.",
     "He tries hard to be accurate but can make mistakes. Check what he says against the Bible.",
   ] },

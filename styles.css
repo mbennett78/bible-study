@@ -2761,3 +2761,7 @@ details.set-group[open] > summary { padding-left: 6px; }
 .qm-group > summary::after { content: "›"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: var(--muted); transition: transform .2s; }
 .qm-group[open] > summary::after { transform: translateY(-50%) rotate(90deg); }
 .qm-group > summary small { display: block; font-weight: 400; color: var(--muted); font-size: .85rem; }
+/* A little shiver in a scary story (still the same size, never bigger). */
+.buddy.scared .buddy-body, .buddy.scared svg { animation: buddy-shiver .18s linear 12; }
+@keyframes buddy-shiver { 25% { transform: translateX(-1px); } 75% { transform: translateX(1px); } }
+@media (prefers-reduced-motion: reduce) { .buddy.scared .buddy-body, .buddy.scared svg { animation: none; } }
