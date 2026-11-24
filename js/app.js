@@ -3222,7 +3222,9 @@ let notesTab = "strongs";
 // Every name is shown twice when it changed: brown for its name in Bible times, blue for
 // today's. A key under the map says which is which.
 const shortNow = (t) => String(t || "").split(/[:(]/)[0].trim();
+let mapUid = 0;
 function mapSvg(map) {
+  const u = ++mapUid;
   const { bounds, water, rivers, dryRivers = [], islands = [] } = map.outline;
   const riverLabels = map.outline.riverLabels.map((l) => l.text ? { ...l, then: l.text, now: l.text } : l);
   const waterLabels = map.outline.waterLabels || [{ ...map.outline.waterLabel, then: map.outline.waterLabel.text, now: map.outline.waterLabel.text }];
@@ -3231,7 +3233,42 @@ function mapSvg(map) {
   const H = Math.round(W * (bounds.lat[1] - bounds.lat[0]) / ((bounds.lon[1] - bounds.lon[0]) * Math.cos(mid)));
   const X = (lon) => ((lon - bounds.lon[0]) / (bounds.lon[1] - bounds.lon[0])) * W;
   const Y = (lat) => ((bounds.lat[1] - lat) / (bounds.lat[1] - bounds.lat[0])) * H;
-  const line = (pts) => pts.map(([la, lo], i) => `${i ? "L" : "M"}${X(lo).toFixed(1)} ${Y(la).toFixed(1)}`).join(" ");
+  // Smooth curves through the traced points, so coasts and rivers look drawn, not ruled.
+  const f = (q) => `${q[0].toFixed(1)} ${q[1].toFixed(1)}`;
+  const curve = (pts, closed) => {
+    const P = pts.map(([la, lo]) => [X(lo), Y(la)]), n = P.length;
+    if (n < 3) return P.map((q, i) => `${i ? "L" : "M"}${f(q)}`).join(" ") + (closed ? " Z" : "");
+    const at = (i) => (closed ? P[(i + n) % n] : P[Math.max(0, Math.min(n - 1, i))]);
+    let d = `M${f(P[0])}`;
+    for (let i = 0; i < (closed ? n : n - 1); i++) {
+      const [a, b, c, e] = [at(i - 1), at(i), at(i + 1), at(i + 2)];
+      d += ` C${f([b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6])} ${f([c[0] - (e[0] - b[0]) / 6, c[1] - (e[1] - b[1]) / 6])} ${f(c)}`;
+    }
+    return d + (closed ? " Z" : "");
+  };
+  // Lakes and islands close smoothly; seas that run off the map close along its edge.
+  const shape = (pts) => { const [a, b] = [pts[0], pts[pts.length - 1]]; return Math.hypot(a[0] - b[0], a[1] - b[1]) < 0.6 ? curve(pts, true) : `${curve(pts, false)} Z`; };
+  const line = (pts) => curve(pts, false);
+  // Mountains: little peaks along each range, about 15 pixels apart, only where they fit.
+  const peaks = (MAP_OUTLINES.RANGES || []).map((r) => {
+    const P = r.map(([la, lo]) => [X(lo), Y(la)]);
+    const segs = P.slice(1).map((q, i) => Math.hypot(q[0] - P[i][0], q[1] - P[i][1]));
+    const len = segs.reduce((a, b) => a + b, 0);
+    if (len < 8 || len > 9000) return "";
+    const out = [];
+    for (let t = 6, k = 0; t < len; t += 15, k++) {
+      let s2 = t, i = 0;
+      while (i < segs.length - 1 && s2 > segs[i]) s2 -= segs[i++];
+      const a = P[i], b = P[i + 1], fr = segs[i] ? s2 / segs[i] : 0, nx = -(b[1] - a[1]) / (segs[i] || 1), ny = (b[0] - a[0]) / (segs[i] || 1), j = k % 2 ? 3.5 : -3.5;
+      const x = a[0] + (b[0] - a[0]) * fr + nx * j, y = a[1] + (b[1] - a[1]) * fr + ny * j;
+      if (x > 4 && x < W - 4 && y > 6 && y < H - 4) out.push(`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path class="map-peak" d="M-6 3 L -1.5 -4 L 0.5 -1.6 L 2.4 -4.6 L 7 3 Z"/><path class="map-peak-shade" d="M2.4 -4.6 L 7 3 L 3.2 3 Z"/></g>`);
+    }
+    return out.join("");
+  }).join("");
+  const deserts = (MAP_OUTLINES.DESERTS || []).map((d) => `<path d="${shape(d)}"/>`).join("");
+  const mpp = ((bounds.lon[1] - bounds.lon[0]) * Math.cos(mid) * 69.17) / W;
+  const miles = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500].reduce((b, m) => (Math.abs(m / mpp - 64) < Math.abs(b / mpp - 64) ? m : b), 1);
+  const barW = miles / mpp;
   const twoNames = (then, now, x, y, anchor, cls, angle = 0) => {
     const same = !then || !now || then === now;
     const rot = angle ? ` transform="rotate(${angle} ${x.toFixed(1)} ${y.toFixed(1)})"` : "";
@@ -3242,11 +3279,14 @@ function mapSvg(map) {
   const places = map.places.map((p, i) => {
     const x = X(p.lon), y = Y(p.lat);
     let right = p.side ? p.side === "right" : x < W * 0.62;
+    const wide = Math.max(String(p.then || "").length, shortNow(p.now).length) * 5.7;
+    const fits = (r2) => (r2 ? x + 8 + wide < W - 2 : x - 8 - wide > 2);
+    if (!fits(right) && fits(!right)) right = !right;
     if (map.auto) {
       // Close places: put the label on the other side, or move it down, so names don't overlap.
       const hit = (r2, yy) => used.some((u) => u.right === r2 && Math.abs(u.y - yy) < 26 && Math.abs(u.x - x) < 90);
       let dy = 0;
-      if (hit(right, y)) { if (!hit(!right, y)) right = !right; else while (hit(right, y + dy) && dy < 66) dy += 11; }
+      if (hit(right, y)) { if (!hit(!right, y) && fits(!right)) right = !right; else while (hit(right, y + dy) && dy < 66) dy += 11; }
       p = { ...p, dy };
       used.push({ x, y: y + dy, right });
     }
@@ -3259,17 +3299,30 @@ function mapSvg(map) {
   const KH = 22; // the key, in a band under the map
   const key = `<g class="map-key" transform="translate(0 ${H})"><rect class="map-key-band" width="${W}" height="${KH}"/>
     <text x="10" y="15"><tspan class="nm-then">Brown</tspan><tspan class="nm-key"> = Bible times</tspan><tspan class="nm-now" dx="10">Blue</tspan><tspan class="nm-key"> = today</tspan></text>
-    ${hasEden ? `<circle class="map-dot map-eden" cx="${W - 112}" cy="11" r="4"/><text class="nm-key" x="${W - 104}" y="15">${esc(map.maybe || "Possible site of Eden")}</text>` : ""}</g>`;
+    ${hasEden ? `<circle class="map-dot map-eden" cx="${W - 134}" cy="11" r="4"/><text class="nm-key" x="${W - 126}" y="15">${esc(map.maybe || "Possible site of Eden")}</text>` : ""}
+    <g class="map-compass" transform="translate(${W - 13} 11)"><path d="M0 -8 L 3 1 L 0 -1 L -3 1 Z"/><text y="9" text-anchor="middle">N</text></g></g>`;
   return `<svg class="notes-map" viewBox="0 0 ${W} ${H + KH}" role="img" aria-label="Map: ${esc(map.caption)}">
-    <defs><clipPath id="mapClip"><rect width="${W}" height="${H + KH}" rx="14"/></clipPath></defs>
-    <g clip-path="url(#mapClip)"><rect class="map-land" width="${W}" height="${H}"/>
-    ${water.map((w) => `<path class="map-water" d="${line(w)} Z"/>`).join("")}
-    ${islands.map((w) => `<path class="map-island" d="${line(w)} Z"/>`).join("")}
+    <defs><clipPath id="mapClip${u}"><rect width="${W}" height="${H + KH}" rx="14"/></clipPath>
+      <clipPath id="mapSea${u}">${water.map((w) => `<path d="${shape(w)}"/>`).join("")}</clipPath>
+      <radialGradient id="mapLand${u}" cx="50%" cy="42%" r="75%"><stop offset="0" stop-color="#f6efdd"/><stop offset=".7" stop-color="#ece0c4"/><stop offset="1" stop-color="#dfcda6"/></radialGradient>
+      <linearGradient id="mapSeaFill${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fc6d6"/><stop offset="1" stop-color="#86b3c6"/></linearGradient>
+      <pattern id="mapSand${u}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".75"/><circle cx="5" cy="4.8" r=".6"/></pattern>
+      <filter id="mapGrain${u}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .27  0 0 0 0 .16  0 0 0 .55 -.18"/></filter></defs>
+    <g clip-path="url(#mapClip${u})"><rect class="map-land" width="${W}" height="${H}" style="fill:url(#mapLand${u})"/>
+    <g class="map-desert" style="fill:url(#mapSand${u})">${deserts}</g>
+    ${rivers.map((r) => `<path class="map-valley" d="${line(r)}"/>`).join("")}
+    ${peaks}
+    ${water.map((w) => `<path class="map-water" d="${shape(w)}" style="fill:url(#mapSeaFill${u})"/>`).join("")}
+    <g clip-path="url(#mapSea${u})">${water.map((w) => `<path class="map-shallow" d="${shape(w)}"/>`).join("")}</g>
+    ${water.map((w) => `<path class="map-coast" d="${shape(w)}"/>`).join("")}
+    ${islands.map((w) => `<path class="map-island" d="${curve(w, true)}" style="fill:url(#mapLand${u})"/>`).join("")}
     ${rivers.map((r) => `<path class="map-river" d="${line(r)}"/>`).join("")}
     ${dryRivers.map((r) => `<path class="map-river dry" d="${line(r)}"/>`).join("")}
     ${waterLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-water-label", l.angle)).join("")}
     ${riverLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-river-label", l.angle)).join("")}
-    ${places}${key}</g></svg>`;
+    <rect class="map-grain" width="${W}" height="${H}" filter="url(#mapGrain${u})"/>
+    <g class="map-scale" transform="translate(10 ${H - 10})"><rect x="-4" y="-13" width="${(barW + 8).toFixed(1)}" height="17" rx="4"/><path d="M0 0 L ${barW.toFixed(1)} 0 M 0 -3 L 0 3 M ${barW.toFixed(1)} -3 L ${barW.toFixed(1)} 3 M ${(barW / 2).toFixed(1)} -2 L ${(barW / 2).toFixed(1)} 2"/><text x="${(barW / 2).toFixed(1)}" y="-4" text-anchor="middle">${miles} ${miles === 1 ? "mile" : "miles"}</text></g>
+    ${places}${key}<rect class="map-frame" x="1.5" y="1.5" width="${W - 3}" height="${H + KH - 3}" rx="13"/></g></svg>`;
 }
 /* ---------- When and where: the time period, regions, a places map and the tribes ---------- */
 let placesData = null;
@@ -3285,14 +3338,14 @@ const TRIBE_CHAPTERS = new Set(["GEN.29", "GEN.30", "GEN.35", "GEN.48", "GEN.49"
   ...[13, 14, 15, 16, 17, 18, 19, 21, 22].map((c) => `JOS.${c}`), "JDG.1", "JDG.5", "1CH.2", "1CH.6", "1CH.12", "1CH.27", "EZK.47", "EZK.48", "REV.7"]);
 let whereMap = null;
 function whereOutline(spots) {
-  const { NEAR_EAST: ne, GALILEE: gal } = MAP_OUTLINES;
+  const { NEAR_EAST: ne, GALILEE: gal, SINAI: sin } = MAP_OUTLINES;
   const inside = spots.filter((p) => p.lat >= ne.bounds.lat[0] && p.lat <= ne.bounds.lat[1] && p.lon >= ne.bounds.lon[0] && p.lon <= ne.bounds.lon[1]);
   if (!inside.length) return { inside };
   let la = [Math.min(...inside.map((p) => p.lat)), Math.max(...inside.map((p) => p.lat))];
   let lo = [Math.min(...inside.map((p) => p.lon)), Math.max(...inside.map((p) => p.lon))];
   const grow = (r, want) => { const m = (r[0] + r[1]) / 2, h = Math.max(r[1] - r[0], want) / 2; return [m - h, m + h]; };
   la = grow(la, (la[1] - la[0]) * 1.3 + 0.12); lo = grow(lo, (lo[1] - lo[0]) * 1.25 + 0.12);
-  la = grow(la, 0.8); lo = grow(lo, 0.7);
+  la = grow(la, 1.8); lo = grow(lo, 1.9);
   // Keep the map a comfortable shape, neither a ribbon nor a tower.
   const cos = Math.cos(((la[0] + la[1]) / 2) * Math.PI / 180);
   const tall = (la[1] - la[0]) / ((lo[1] - lo[0]) * cos);
@@ -3306,7 +3359,7 @@ function whereOutline(spots) {
   return {
     inside,
     outline: {
-      bounds, water: [...ne.water, ...gal.water], rivers: [...ne.rivers, ...(small ? gal.rivers : [])], dryRivers: ne.dryRivers, islands: ne.islands,
+      bounds, water: [...ne.water, ...gal.water, ...(small ? sin.water.slice(2, 4) : [])], rivers: [...ne.rivers, ...(small ? gal.rivers : [])], dryRivers: ne.dryRivers, islands: ne.islands,
       riverLabels: ne.riverLabels.filter(inB), waterLabels: [...ne.waterLabels, ...(small ? [galLabel] : [])].filter(inB),
     },
   };
