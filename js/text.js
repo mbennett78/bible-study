@@ -58,15 +58,31 @@ export async function listEnglishBibles() {
     .sort((a, b) => a.abbr.localeCompare(b.abbr));
 }
 
+// A clear name for a version: "NASB 2020" and "NASB 1995" instead of look-alike "NASB"s.
+export function versionName(b) {
+  const both = `${b.abbr} ${b.name}`;
+  if (/NASB|New American Standard/i.test(both)) {
+    const year = (both.match(/\b(1977|1995|2020)\b/) || both.match(/(1977|1995|2020)/) || [])[1];
+    return year ? `NASB ${year}` : "NASB";
+  }
+  return b.abbr;
+}
+const isNasb = (b) => /NASB/i.test(b.abbr) || /New American Standard/i.test(b.name);
+// The NASB to start with: the 2020 edition when the plan has it, otherwise any NASB.
+export function pickNasb(bibles) {
+  const all = bibles.filter(isNasb);
+  return all.find((b) => /2020/.test(`${b.abbr} ${b.name}`)) || all.find((b) => !/1977|1995/.test(`${b.abbr} ${b.name}`)) || all[0] || null;
+}
+
 async function nasbBibleId() {
   let bibleId = store.get("nasbBibleId");
   if (!bibleId) {
     const bibles = await listEnglishBibles();
-    const nasb = bibles.find((b) => /NASB/i.test(b.abbr) || /New American Standard/i.test(b.name));
+    const nasb = pickNasb(bibles);
     if (!nasb) throw new TextError("No NASB edition is enabled on your API.Bible plan. Pick a version in Settings.", "noversion");
     bibleId = nasb.id;
     store.set("nasbBibleId", nasb.id);
-    store.set("nasbLabel", nasb.abbr);
+    store.set("nasbLabel", versionName(nasb));
   }
   return bibleId;
 }
@@ -158,6 +174,7 @@ export async function getChapter(version, book, ch) {
 
 export function bibleGatewayUrl(version, book, ch) {
   const extra = version.startsWith("B:") && (store.get("extraBibles") || []).find((b) => `B:${b.id}` === version);
-  const v = version === "ESV" ? "ESV" : extra ? extra.label.replace(/[^A-Za-z0-9]/g, "") : /95/.test(store.get("nasbLabel")) ? "NASB1995" : "NASB";
+  // Bible Gateway calls the 2020 edition plain "NASB".
+  const v = version === "ESV" ? "ESV" : extra ? extra.label.replace(/[^A-Za-z0-9]/g, "").replace(/^NASB2020$/, "NASB") : /95/.test(store.get("nasbLabel")) ? "NASB1995" : "NASB";
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${v}`;
 }

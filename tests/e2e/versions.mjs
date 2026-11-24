@@ -88,6 +88,35 @@ try {
   check("dropdown switches the text", (await reader()).includes("BSB words"));
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
+
+  // Settings lists every version on the plan by itself: the NASB 2020 becomes the family's
+  // main version, the well-known others are turned on, and they all reach the switch on Read.
+  {
+    const c2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await c2.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    const plan = [["NASB1995", "New American Standard Bible 1995", "n95"], ["NASB", "New American Standard Bible 2020", "n20"], ["NIV", "New International Version", "niv"], ["KJV", "King James Version", "kjv"], ["BSB", "Berean Standard Bible", "bsb"]];
+    await c2.route(/api\.bible/, (r) => {
+      const u = new URL(r.request().url());
+      if (/\/bibles$/.test(u.pathname)) return r.fulfill({ json: { data: plan.map(([abbreviation, name, id]) => ({ id, abbreviation, name })) } });
+      r.fulfill({ json: { data: { content: verses(30, u.pathname.split("/")[3]), copyright: "c" } } });
+    });
+    await c2.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "n95", nasbLabel: "NASB", setup: { done: true }, tourSeen: true, name: "Mel", last: { book: "JHN", chapter: 3 } })); });
+    const p2 = await c2.newPage();
+    const errs = []; p2.on("pageerror", (e) => errs.push(e.message));
+    await p2.goto(site.url); await p2.waitForTimeout(900);
+    await p2.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await p2.waitForTimeout(900);
+    const main = await p2.$$eval("#nasbSelect option", (o) => o.map((x) => x.textContent.split(" · ")[0] + (x.selected ? "*" : "")));
+    check("plan versions: the main list fills in by itself, with clear names", ["NASB 1995", "NASB 2020*", "NIV", "KJV"].every((v) => main.includes(v)), JSON.stringify(main));
+    check("plan versions: no opinion in the label", !/is best/.test(await p2.textContent("#bibleTextCard")));
+    const on = await p2.$$eval("#extraVersionList input:checked", (a) => a.map((i) => i.dataset.label));
+    check("plan versions: the well-known ones are all turned on", ["NASB 1995", "NIV", "KJV"].every((v) => on.includes(v)), JSON.stringify(on));
+    await p2.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await p2.waitForTimeout(700);
+    const sw = await p2.$$eval(".version-switch select option", (a) => a.map((o) => o.textContent));
+    check("plan versions: the switch on Read lists them all", ["NASB 2020", "NASB 1995", "NIV", "KJV"].every((v) => sw.includes(v)), JSON.stringify(sw));
+    check("plan versions: reading the NASB 2020", (await p2.textContent("#reader")).includes("n20 words"));
+    check("plan versions: no page errors", !errs.length, errs.join(" | "));
+    await c2.close();
+  }
 } catch (e) { stopped = e; } finally {
   await browser.close();
   site.close();

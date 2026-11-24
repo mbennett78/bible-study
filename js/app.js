@@ -1,6 +1,6 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store, onSave } from "./store.js";
-import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./text.js";
+import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG } from "./buddy.js";
@@ -19,7 +19,9 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 
 /* ---------- Appearance ---------- */
 // High contrast: black (or white, in dark mode) words and stronger lines, whatever the look.
-const MAX_EXTRA_BIBLES = 6; // extra versions on the reader's switch, beside the NASB and ESV
+const MAX_EXTRA_BIBLES = 8; // extra versions on the reader's switch, beside the NASB and ESV
+// The versions turned on for the family the first time the plan's list is loaded, best known first.
+const FAVORITE_VERSIONS = [/NASB|New American Standard/i, /^NIV|New International/i, /^KJV$|^King James/i, /NKJV|New King James/i, /^NLT|New Living/i, /^CSB|Christian Standard/i, /^AMP|Amplified/i, /^ASV|American Standard Version/i, /^WEB|World English/i];
 const CONTRAST_VARS = ["--text", "--muted", "--line", "--verse"];
 function applyContrast() {
   const root = document.documentElement;
@@ -53,6 +55,16 @@ function applyAppearance() {
 }
 
 /* ---------- Navigation between tabs ---------- */
+// Whoever looks after the keys sees every version on the plan in Settings without tapping
+// anything: the list loads by itself, once per visit to the app.
+let planVersionsLoaded = false;
+function loadPlanVersionsOnce() {
+  const card = $("#bibleTextCard");
+  if (planVersionsLoaded || !card || card.hidden || !store.get("apiBibleKey")) return;
+  planVersionsLoaded = true;
+  $("#loadVersions").dataset.quiet = "1";
+  $("#loadVersions").click();
+}
 function showView(name) {
   document.querySelectorAll(".view").forEach((v) => { v.hidden = v.id !== `view-${name}`; });
   document.querySelectorAll(".tabbar button").forEach((b) => {
@@ -64,7 +76,7 @@ function showView(name) {
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
-  if (name === "settings") renderSetupCard();
+  if (name === "settings") { renderSetupCard(); loadPlanVersionsOnce(); }
   window.scrollTo(0, 0);
 }
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
@@ -225,7 +237,8 @@ function updateVisitLine() {
 // The version switch at the top: NASB, any extra versions picked from the same API.Bible
 // plan (Settings, Bible text), and the ESV when an ESV key is saved.
 function versionList() {
-  const list = [["NASB", (store.get("nasbLabel") || "NASB").replace(/\s.*$/, "")]];
+  const main = store.get("nasbLabel") || "NASB";
+  const list = [["NASB", /^NASB \d{4}$/.test(main) ? main : main.replace(/\s.*$/, "")]];
   for (const b of store.get("extraBibles") || []) list.push([`B:${b.id}`, b.label]);
   if (store.get("esvKey")) list.push(["ESV", "ESV"]);
   return list;
@@ -1372,7 +1385,7 @@ function initSettings() {
   if (authEnabled) $("#shareKeyBox").hidden = true;
   const extrasNow = () => {
     const x = store.get("extraBibles") || [];
-    $("#extraVersionsNow").textContent = x.length ? `Also on the switch: ${x.map((b) => b.label).join(", ")}.` : "";
+    $("#extraVersionsNow").textContent = x.length ? `On everyone's version switch: ${[(store.get("nasbLabel") || "NASB"), ...x.map((b) => b.label)].join(", ")}${store.get("esvKey") ? ", ESV" : ""}.` : "";
   };
   extrasNow();
   size.addEventListener("input", () => { store.set("textSize", Number(size.value)); applyAppearance(); });
@@ -1387,33 +1400,53 @@ function initSettings() {
   $("#helperStyle").addEventListener("change", () => store.set("helperStyle", $("#helperStyle").value));
   sel.addEventListener("change", () => {
     store.set("nasbBibleId", sel.value);
-    store.set("nasbLabel", sel.value ? sel.selectedOptions[0].textContent.split(" · ")[0] : "");
+    store.set("nasbLabel", sel.value ? sel.selectedOptions[0].dataset.label || sel.selectedOptions[0].textContent.split(" · ")[0] : "");
+    // The new main version can't also be an extra one.
+    store.set("extraBibles", (store.get("extraBibles") || []).filter((b) => b.id !== sel.value));
+    if (!$("#extraVersions").hidden) $("#loadVersions").click();
+    extrasNow();
     syncVersionSwitch();
     saveForFamily();
     if (store.get("version") === "NASB") { const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); }
   });
   $("#loadVersions").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
+    const quiet = btn.dataset.quiet === "1"; delete btn.dataset.quiet;
+    planVersionsLoaded = true;
     if (!apiKey.value.trim()) { keyStatus("Paste the API.Bible key into the box first, then tap Save."); return; }
     saveKey();
     btn.textContent = "Loading…";
     try {
       const bibles = await listEnglishBibles();
       const current = store.get("nasbBibleId");
-      sel.innerHTML = `<option value="">Pick automatically</option>` + bibles.map((b) => `<option value="${esc(b.id)}"${b.id === current ? " selected" : ""}>${esc(b.abbr)} · ${esc(b.name)}</option>`).join("");
-      btn.textContent = `${bibles.length} versions loaded`;
-      // First time: turn on the King James and New King James for the family if the plan has them.
-      if (!(store.get("extraBibles") || []).length) {
-        const want = [/^KJV$|King James/i, /NKJV|New King James/i];
-        const picks = want.map((re) => bibles.find((b) => b.id !== store.get("nasbBibleId") && (re.test(b.abbr) || re.test(b.name)))).filter(Boolean);
-        if (picks.length) { store.set("extraBibles", [...new Map(picks.map((b) => [b.id, { id: b.id, label: b.abbr }])).values()].slice(0, MAX_EXTRA_BIBLES)); extrasNow(); syncVersionSwitch(); }
+      // First time: the NASB 2020 is the family's main version when the plan has it, and the
+      // well-known versions are all turned on (each person can switch between them).
+      let defaulted = false;
+      if (!store.get("versionsDefaulted")) {
+        defaulted = true;
+        const n = pickNasb(bibles);
+        if (n && (!current || /2020/.test(versionName(n)))) { store.set("nasbBibleId", n.id); store.set("nasbLabel", versionName(n)); }
+        const main = store.get("nasbBibleId");
+        const picks = [];
+        for (const re of FAVORITE_VERSIONS) for (const b of bibles) if (b.id !== main && (re.test(b.abbr) || re.test(b.name)) && !picks.includes(b)) picks.push(b);
+        const had = (store.get("extraBibles") || []).filter((b) => b.id !== main);
+        const merged = [...new Map([...had, ...picks.map((b) => ({ id: b.id, label: versionName(b) }))].map((b) => [b.id, b])).values()].slice(0, MAX_EXTRA_BIBLES);
+        store.set("extraBibles", merged);
+        store.set("versionsDefaulted", true);
+        extrasNow(); syncVersionSwitch();
+        if (store.get("version") === "NASB") { const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); }
       }
+      const mainId = store.get("nasbBibleId");
+      sel.innerHTML = `<option value="">Pick automatically</option>` + bibles.map((b) => `<option value="${esc(b.id)}" data-label="${esc(versionName(b))}"${b.id === mainId ? " selected" : ""}>${esc(versionName(b))} · ${esc(b.name)}</option>`).join("");
       const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
-      btn.textContent = "Show the versions on my plan";
-      const fam = await saveForFamily();
-      keyStatus(`Saved ✓ Your key works and opens ${bibles.length} English version${bibles.length === 1 ? "" : "s"}${hasNkjv ? "" : " (the NKJV isn't on this plan)"}.${fam} Turn on the ones the family can pick from below.`);
+      btn.textContent = "Check my plan again";
+      const fam = quiet && !defaulted ? "" : await saveForFamily();
+      if (quiet) keyStatus(`Key saved ✓ ${bibles.length} English version${bibles.length === 1 ? "" : "s"} on your plan. Pick the family's main version, and turn the others on or off below.`);
+      else keyStatus(`Saved ✓ Your key works and opens ${bibles.length} English version${bibles.length === 1 ? "" : "s"}${hasNkjv ? "" : " (the NKJV isn't on this plan)"}.${fam} Turn on the ones the family can pick from below.`);
       const chosen = new Set((store.get("extraBibles") || []).map((b) => b.id));
-      $("#extraVersionList").innerHTML = bibles.filter((b) => b.id !== store.get("nasbBibleId")).map((b) => `<label class="switch-row"><span>${esc(b.abbr)}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(b.abbr)}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
+      // The ones that are on come first, so the family's choices are easy to see.
+      const others = bibles.filter((b) => b.id !== store.get("nasbBibleId")).sort((a, b) => Number(chosen.has(b.id)) - Number(chosen.has(a.id)));
+      $("#extraVersionList").innerHTML = others.map((b) => `<label class="switch-row"><span>${esc(versionName(b))}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(versionName(b))}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
       $("#extraVersions").hidden = false;
       $("#extraVersionList").querySelectorAll("[data-extra]").forEach((i) => i.addEventListener("change", () => {
         let x = (store.get("extraBibles") || []).filter((b) => b.id !== i.dataset.extra);
@@ -1426,7 +1459,7 @@ function initSettings() {
         saveForFamily().then((fam) => { if (fam) $("#extraVersionsNow").textContent += fam; });
       }));
     } catch (err) {
-      btn.textContent = "Show the versions on my plan";
+      btn.textContent = "Check my plan for versions";
       keyStatus(`That key didn't work: ${err.message || "couldn't load the versions"}. Check that the whole key was pasted, then tap Save again.`);
     }
   });
@@ -2517,7 +2550,8 @@ async function organizerGate(org) {
     org.prepend($("#bibleTextCard"));
     $("#bibleTextCard").hidden = false;
     $("#organizerBox").hidden = false;
-    $("#organizerBox").addEventListener("toggle", () => { if ($("#organizerBox").open) renderFamilyPanel(); });
+    $("#organizerBox").addEventListener("toggle", () => { if ($("#organizerBox").open) { renderFamilyPanel(); loadPlanVersionsOnce(); } });
+    if (!$("#view-settings").hidden) loadPlanVersionsOnce();
   }
   $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
@@ -2549,14 +2583,17 @@ async function renderFamilyPanel() {
   const r = await familyAdmin("list");
   if (!r || r.error) { body.innerHTML = `<p class="small-print">${esc(adminSays(r))}</p>${r?.detail ? `<p class="muted small-print">Details: ${esc(r.detail)}</p>` : ""}<button class="small" id="famRetry">Try again</button>`; $("#famRetry").onclick = renderFamilyPanel; return; }
   const h = r.helper;
-  body.innerHTML = `<div class="fam-helper"><h3>Bible helper this month</h3>
+  const people = Array.isArray(r.people) ? r.people : [];
+  // The family list still shows when the helper's usage can't be read.
+  body.innerHTML = `${h ? `<div class="fam-helper"><h3>Bible helper this month</h3>
       <div class="bar"><span style="width:${h.pct}%"></span></div>
       <p><strong>${h.left.toLocaleString()}</strong> of ${h.limit.toLocaleString()} questions left · about $${(h.cents / 100).toFixed(2)} of $${(h.centsLimit / 100).toFixed(2)} used</p>
-      <p class="muted small-print">Everyone is guaranteed ${h.perPerson} questions a month. It all starts fresh on ${esc(when(h.resets))}.</p></div>
-    <h3>Family members (${r.people.length})</h3>
-    <ul class="fam-list">${r.people.map((p) => `<li data-id="${p.id}">
-      <div class="fam-who"><strong>${esc(p.name || p.email.split("@")[0])}</strong>${p.organizer ? ` <span class="pc-badge">Organizer</span>` : ""}
-        <small>${esc(p.email)} · last signed in ${esc(when(p.lastSignIn))} · ${p.asked} helper question${p.asked === 1 ? "" : "s"} this month${p.tempPassword ? " · has a temporary password" : ""}</small></div>
+      <p class="muted small-print">Everyone is guaranteed ${h.perPerson} questions a month. It all starts fresh on ${esc(when(h.resets))}.</p></div>`
+    : `<p class="muted small-print">Bible helper use can't be counted yet${r.usageProblem ? ` (${esc(r.usageProblem)})` : ""}. The family list below still works.</p>`}
+    <h3>Family members (${people.length})</h3>
+    <ul class="fam-list">${people.map((p) => `<li data-id="${p.id}">
+      <div class="fam-who"><strong>${esc(p.name || String(p.email || "").split("@")[0])}</strong>${p.organizer ? ` <span class="pc-badge">Organizer</span>` : ""}
+        <small>${esc(p.email)} · last signed in ${esc(when(p.lastSignIn))}${typeof p.asked === "number" ? ` · ${p.asked} helper question${p.asked === 1 ? "" : "s"} this month` : ""}${p.tempPassword ? " · has a temporary password" : ""}</small></div>
       <div class="fam-acts"><button class="small" data-fam-pw>New password</button>${p.organizer ? "" : `<button class="small danger" data-fam-rm>Remove</button>`}</div>
       <div class="fam-form" hidden></div></li>`).join("")}</ul>
     <details class="fam-add"><summary>Add a family member</summary>

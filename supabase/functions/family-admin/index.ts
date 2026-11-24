@@ -34,6 +34,12 @@ const CORS = {
 const reply = (status: number, body: Record<string, unknown>) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
+// Supabase's errors are plain objects, not Error, so pull out whatever message they carry.
+const says = (e: unknown) => {
+  if (e instanceof Error) return e.message;
+  const o = e as Record<string, unknown> | null;
+  return String(o?.message || o?.msg || o?.error_description || o?.code || JSON.stringify(e));
+};
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const goodPassword = (p: unknown) => typeof p === "string" && p.length >= 6 && p.length <= 72;
 
@@ -57,8 +63,14 @@ Deno.serve(async (req) => {
       const { data: page, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
       if (error) throw error;
       const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-      const { data: usage, error: uErr } = await admin.from("ai_usage").select("user_id, input_tokens, output_tokens").gte("created_at", monthStart);
-      if (uErr) throw uErr;
+      // The helper's usage is a nice extra: if it can't be read (say the ai_usage table was never
+      // made), still list the family, with usage unknown.
+      let usage: { user_id: string; input_tokens: number; output_tokens: number }[] | null = null;
+      let usageProblem = "";
+      try {
+        const { data, error: uErr } = await admin.from("ai_usage").select("user_id, input_tokens, output_tokens").gte("created_at", monthStart);
+        if (uErr) usageProblem = uErr.message || "ai_usage"; else usage = data;
+      } catch (e) { usageProblem = says(e); }
       const asked: Record<string, number> = {};
       let cents = 0;
       for (const u of usage || []) {
@@ -72,13 +84,14 @@ Deno.serve(async (req) => {
         organizer: u.app_metadata?.role === "organizer",
         lastSignIn: u.last_sign_in_at || null,
         tempPassword: Boolean(u.user_metadata?.temp_password),
-        asked: asked[u.id] || 0,
+        asked: usage ? asked[u.id] || 0 : null,
       })).sort((a, b) => Number(b.organizer) - Number(a.organizer) || String(a.email).localeCompare(String(b.email)));
       const used = (usage || []).length;
       const resets = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString();
       return reply(200, {
         people,
-        helper: {
+        usageProblem: usageProblem || undefined,
+        helper: usage === null ? null : {
           used, limit: MONTHLY_LIMIT, left: Math.max(0, MONTHLY_LIMIT - used),
           cents: Math.round(cents), centsLimit: MONTHLY_CENTS,
           pct: Math.round(Math.min(100, Math.max(used / MONTHLY_LIMIT, cents / MONTHLY_CENTS) * 100)),
@@ -124,7 +137,7 @@ Deno.serve(async (req) => {
 
     return reply(400, { error: "action" });
   } catch (e) {
-    console.error("family-admin", action, e instanceof Error ? e.message : e);
-    return reply(500, { error: "busy", detail: `${action}: ${e instanceof Error ? e.message : String(e)}`.slice(0, 200) });
+    console.error("family-admin", action, says(e));
+    return reply(500, { error: "busy", detail: `${action}: ${says(e)}`.slice(0, 200) });
   }
 });

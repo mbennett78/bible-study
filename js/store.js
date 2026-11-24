@@ -104,7 +104,7 @@ function save() {
 }
 
 // Settings that belong to the device, not the person: kept when someone else signs in.
-const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "familySyncedAt", "voiceName", "theme"];
+const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "versionsDefaulted", "familySyncedAt", "voiceName", "theme"];
 
 export const store = {
   get: (k) => state[k],
