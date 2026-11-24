@@ -204,6 +204,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     buddyFeelsPassage(readerEl.textContent, `${book}.${chapter}`);
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
+    markStudyWords(readerEl, book, chapter, token);
     // Read to me: once it's on and started, every chapter opened is read aloud.
     if (autoplayNext || (readArmed && driveOn() && !$("#view-read").hidden)) { autoplayNext = false; reader.play(); }
   } catch (e) {
@@ -271,6 +272,8 @@ function toggleRead() {
 $("#markRead").addEventListener("click", toggleRead);
 // Two ways to read: "Just the Bible" (the words, read-aloud and Mark read, nothing else) or
 // "Study Bible" (study notes, the book introduction, pictures, trivia, journal and helper).
+function syncStudyWords() { document.body.classList.toggle("no-study-words", store.get("studyWords") === false || store.get("wordTap") === false); }
+syncStudyWords();
 function setReadMode(mode) {
   store.set("readMode", mode);
   document.body.classList.toggle("plain-reading", mode === "plain");
@@ -1731,7 +1734,9 @@ function initSettings() {
   $("#contrastHigh").checked = Boolean(store.get("contrast"));
   $("#contrastHigh").addEventListener("change", () => { store.set("contrast", $("#contrastHigh").checked); applyAppearance(); });
   $("#wordTap").checked = store.get("wordTap") !== false;
-  $("#wordTap").addEventListener("change", () => store.set("wordTap", $("#wordTap").checked));
+  $("#wordTap").addEventListener("change", () => { store.set("wordTap", $("#wordTap").checked); syncStudyWords(); });
+  $("#studyWords").checked = store.get("studyWords") !== false;
+  $("#studyWords").addEventListener("change", () => { store.set("studyWords", $("#studyWords").checked); syncStudyWords(); });
   $("#helperStyle").value = store.get("helperStyle") || "";
   $("#helperStyle").addEventListener("change", () => store.set("helperStyle", $("#helperStyle").value));
   sel.addEventListener("change", () => {
@@ -2120,7 +2125,7 @@ async function fillStrongs(el, book, chapter) {
   const lang = BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek";
   const groups = STRONGS_GROUPS.map(([id, title, about, open]) => [id, title, about, open, rows.filter((r) => strongsGroup(r) === id)]).filter((g) => g[4].length);
   const tapOn = store.get("wordTap") !== false;
-  panel.innerHTML = `<p class="sc-tip">${tapOn ? `💡 While you read, <strong>tap any word</strong> in the Bible text to see the ${lang} word behind it.` : `💡 Turn on <strong>Tap a word for its meaning</strong> in Settings to look up any word right in the Bible text.`}</p>
+  panel.innerHTML = `<p class="sc-tip">${tapOn ? `💡 While you read, <strong>tap any word</strong> in the Bible text to see the ${lang} word behind it. Words with a <span class="sw-demo">light dotted line</span> are the key ones worth looking up.` : `💡 Turn on <strong>Tap a word for its meaning</strong> in Settings to look up any word right in the Bible text.`}</p>
     <label class="sc-find"><span class="sr-only">Find a word in this chapter</span><input type="search" placeholder="Find a word in ${esc(refName({ book, chapter }))}" autocomplete="off"></label>
     <p class="muted small-print sc-none" hidden>No word here matches that. Try a shorter word.</p>
     ${groups.map(([id, title, about, open, list]) => `<details class="sc-group" data-group="${id}"${open ? " open" : ""}><summary><strong>${title}</strong> <span class="count">${list.length}</span><small>${about}</small></summary>
@@ -2197,6 +2202,58 @@ function wordAt(x, y) {
   const word = t.slice(a, b).replace(/^[’'-]+|[’'-]+$/g, "");
   return word.length > 1 ? { word, node } : null;
 }
+// A light dotted line under the words worth looking up (names of God and the chapter's key
+// words), so readers know they can tap them for the Hebrew or Greek in the concordance.
+// Only where the English word clearly matches the original word in that verse.
+async function markStudyWords(readerEl, book, chapter, token) {
+  const rows = await loadStrongs(book, chapter);
+  if (!rows || token !== loadToken || !readerEl.isConnected) return;
+  const byVerse = new Map();
+  for (const r of rows) {
+    const g = strongsGroup(r);
+    if (g !== "god" && g !== "key") continue;
+    const toks = String(r[3]).toLowerCase().split(/[^a-z]+/).filter((t) => t.length >= 3 && !SMALL_GLOSS.has(t)).map(stem);
+    for (const v of r[5]) {
+      if (!byVerse.has(v)) byVerse.set(v, new Map());
+      for (const t of toks) if (!byVerse.get(v).has(t)) byVerse.get(v).set(t, r[0]);
+    }
+  }
+  const walker = document.createTreeWalker(readerEl, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (n) => (n.nodeType === 1 && n.matches(".offline-note, .word-tip, .footnotes, sup") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+  });
+  let verse = 1;
+  const work = [];
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    if (n.nodeType === 1) {
+      if (n.matches(".v, .verse-num, [data-number]")) { const num = parseInt(n.dataset.number || n.textContent, 10); if (num) verse = num; }
+      else if (n.matches(".chapter-num")) verse = 1;
+      continue;
+    }
+    if (n.parentElement.closest(".v, .verse-num, .chapter-num")) continue;
+    const want = byVerse.get(verse);
+    if (want && /[A-Za-z]/.test(n.textContent)) work.push([n, want]);
+  }
+  // The same word, or the same word with a different ending ("created" for "to create").
+  const match = (want, word) => {
+    const w = stem(word);
+    if (want.has(w)) return want.get(w);
+    if (w.length < 5) return null;
+    for (const [t, n] of want) if (t.length >= 5 && t.slice(0, 5) === w.slice(0, 5)) return n;
+    return null;
+  };
+  for (const [node, want] of work) {
+    const parts = node.textContent.split(/([A-Za-z][A-Za-z’']*)/);
+    if (!parts.some((w, i) => i % 2 && match(want, w))) continue;
+    const frag = document.createDocumentFragment();
+    parts.forEach((w, i) => {
+      const n = i % 2 ? match(want, w) : null;
+      if (n) frag.append(Object.assign(document.createElement("span"), { className: "sw", textContent: w, title: `Tap to look up (${n})` }));
+      else if (w) frag.append(w);
+    });
+    node.replaceWith(frag);
+  }
+}
+const SMALL_GLOSS = new Set(["the", "and", "for", "with", "from", "that", "this", "who", "which", "not", "but", "obj", "one", "out", "upon", "into", "unto"]);
 function verseOf(node) {
   // Walk backwards through the text to the nearest verse number.
   const marks = [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")];

@@ -2093,3 +2093,8 @@ body[data-view="read"] .buddy.in-rail:not(.dragging) { width: 64px; height: 76px
 .studies-box .sb-icon { font-size: 1.5rem; }
 .studies-box .home-h { margin: 0; font-family: var(--sans); font-weight: 700; font-size: 1.25rem; }
 .studies-box .home-sub { margin: 2px 0 0; padding: 0; background: none; border: 0; }
+
+/* Study words: a light dotted line, nothing louder, so the page still reads like a Bible. */
+.reader .sw { text-decoration: underline dotted color-mix(in srgb, var(--accent) 55%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: pointer; }
+body.plain-reading .reader .sw, body.no-study-words .reader .sw { text-decoration: none; }
+.sw-demo { text-decoration: underline dotted; text-underline-offset: 3px; }
