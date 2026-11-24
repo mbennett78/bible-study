@@ -4,6 +4,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible } from "./t
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG } from "./buddy.js";
+import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
@@ -893,7 +894,7 @@ async function sendChat() {
   buddy.excite();
   await askBuiltIn(q);
 }
-/* ---------- Study buddy: the little stick figure who opens the chat ---------- */
+/* ---------- Games: Bible Quest, plus the older practice quiz ---------- */
 const game = createGame({
   store, esc,
   myName: () => store.get("name")?.trim() || "Me",
@@ -904,6 +905,14 @@ const game = createGame({
     const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
     return [...sw, accent, "#f4d35e"].filter(Boolean);
   },
+});
+// Bible Quest is the main game; the older quiz stays as "Practice one part of the Bible".
+const quest = createQuest({
+  store, esc,
+  myName: () => store.get("name")?.trim() || "Me",
+  lively: () => (store.get("graphics") || "full") === "full",
+  lookColors: () => ["#ffcf3f", "#ff7a59", "#5cc46b", "#3d8bb0", "#8e6bb5"],
+  practice: () => game.open(),
 });
 const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
 // Tapping him opens the chat right where you are, on any page, in a sheet over the page.
@@ -1555,7 +1564,7 @@ function renderBuddyToggles() {
 renderBuddyToggles();
 $("#menuBtn").addEventListener("click", () => { renderQuickMenu(); $("#quickMenu").showModal(); });
 $("#menuClose").addEventListener("click", () => $("#quickMenu").close());
-$("#qmGames").addEventListener("click", () => { $("#quickMenu").close(); game.open(); });
+$("#qmGames").addEventListener("click", () => { $("#quickMenu").close(); quest.open(); });
 $("#quickMenu").addEventListener("click", (e) => { if (e.target.id === "quickMenu") $("#quickMenu").close(); });
 document.querySelectorAll("[data-go-view]").forEach((b) => b.addEventListener("click", () => { $("#quickMenu").close(); showView(b.dataset.goView); }));
 
@@ -1934,7 +1943,7 @@ function renderHome() {
       <div class="setup-resume-btns"><button class="big-btn" id="homeSetupGo">Continue to setup</button><button class="wb-new" id="homeSetupLater">Not now, keep reading</button></div></div>` : ""}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     ${pathCardsHtml()}
-    <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible games</strong><small>Quiz yourself, or play with up to ${20} players or teams</small></span><span class="go" aria-hidden="true">›</span></button>
+    <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible Quest</strong><small>Spin, answer, win jewels: solo, with family, or against Buddy</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
       <h2>Go anywhere in the Bible</h2>
       <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>
@@ -1948,7 +1957,7 @@ function renderHome() {
   wirePathCards(view);
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
-  $("#homeGames").addEventListener("click", () => game.open());
+  $("#homeGames").addEventListener("click", () => quest.open());
   $("#homeSetupGo")?.addEventListener("click", () => openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => !st.done()))));
   // Continue: put setup away for now (it stays in Settings, under Set up app) and go back to reading.
   $("#homeSetupLater")?.addEventListener("click", () => { setupSet({ skipped: true }); const l = store.get("last"); showView("read"); openChapter(l.book, l.chapter); });

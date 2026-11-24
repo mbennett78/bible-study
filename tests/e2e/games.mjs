@@ -25,7 +25,8 @@ try {
 
   // Solo: Gospels, 5 questions, every answer right.
   await page.click("#homeGames"); await page.waitForTimeout(200);
-  check("games open from Home", await page.$eval("dialog.game", (d) => d.open));
+  await page.click("dialog.quest [data-practice]"); await page.waitForTimeout(200);
+  check("the practice quiz opens from Bible Quest", await page.$eval("dialog.game", (d) => d.open));
   await page.click('dialog.game [data-scope="gospels"]');
   await page.click('dialog.game [data-count="5"]');
   await page.click('dialog.game [data-timer="0"]');
@@ -110,6 +111,7 @@ try {
   check("leaderboard saved", /Ava/.test(await txt(".g-board")) && /Grandpa/.test(await txt(".g-board")));
   await page.reload(); await page.waitForTimeout(700);
   await page.click("#homeGames"); await page.waitForTimeout(100);
+  await page.click("dialog.quest [data-practice]"); await page.waitForTimeout(100);
   check("players are remembered for next time", (await page.$$("dialog.game .g-player")).length === 3);
   await page.click('dialog.game [data-drop="0"]');
   check("a saved name can be tapped to add back", Boolean(await g('[data-known="Grandpa"]')));

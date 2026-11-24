@@ -1,0 +1,18 @@
+import { chromium, serve } from "./e2e/harness.mjs";
+const site = await serve(); const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 820, height: 1180 }, deviceScaleFactor: 1 });
+await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+await ctx.addInitScript(() => localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", quest: { coins: 120, sound: false } })));
+const page = await ctx.newPage(); const errs = []; page.on("pageerror", (e) => errs.push(e.message));
+await page.goto(site.url); await page.waitForTimeout(800);
+await page.click("#homeGames"); await page.waitForTimeout(500);
+await page.screenshot({ path: "/tmp/claude-0/-home-user/0bea5a56-e2e8-55ba-ba6d-586f6557118d/scratchpad/q1.png" });
+await page.click('[data-mode="buddy"]'); await page.waitForTimeout(300);
+await page.click('[data-lv="fair"]'); await page.waitForTimeout(500);
+await page.screenshot({ path: "/tmp/claude-0/-home-user/0bea5a56-e2e8-55ba-ba6d-586f6557118d/scratchpad/q2.png" });
+await page.$eval("[data-spin]", (b) => b.click()); await page.waitForTimeout(3600);
+await page.screenshot({ path: "/tmp/claude-0/-home-user/0bea5a56-e2e8-55ba-ba6d-586f6557118d/scratchpad/q3.png" });
+await page.$eval(".q-choice", (b) => b.click()); await page.waitForTimeout(1500);
+await page.screenshot({ path: "/tmp/claude-0/-home-user/0bea5a56-e2e8-55ba-ba6d-586f6557118d/scratchpad/q4.png" });
+console.log(errs);
+await b.close(); site.close();

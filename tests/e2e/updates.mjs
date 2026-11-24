@@ -45,11 +45,10 @@ try {
 
   // In the middle of a game.
   await page.evaluate(() => document.querySelector("#qmGames").click()); await page.waitForTimeout(300);
-  await page.click("#gStart"); await page.waitForTimeout(200);
+  await page.$eval('dialog.quest [data-mode="solo"]', (b) => b.click()); await page.waitForTimeout(200);
   await away(20);
-  check("or during a game left open", await still() && await page.$eval("dialog.game", (d) => d.open));
-  await page.click("dialog.game [data-close]"); await page.waitForTimeout(100);
-  await page.$eval("dialog.game", (d) => d.close());
+  check("or during a game left open", await still() && await page.$eval("dialog.quest", (d) => d.open));
+  await page.$eval("dialog.quest", (d) => d.close());
 
   // Writing in the journal.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(300);

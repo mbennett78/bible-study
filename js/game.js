@@ -234,7 +234,7 @@ export const SOUNDS = {
 
 /* ---------- Confetti in the colors of the current look ---------- */
 // Drawn inside the game window (which sits above the rest of the app).
-function confetti(host, colors, count = 140) {
+export function confetti(host, colors, count = 140) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const c = Object.assign(document.createElement("canvas"), { className: "g-confetti" });
   host.append(c);
