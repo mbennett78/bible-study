@@ -2008,15 +2008,35 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     chart() { chartForm(); },
   };
   box.querySelectorAll("[data-tool]").forEach((b) => b.addEventListener("click", () => { if (!panel.hidden && panel.dataset.tool === b.dataset.tool) { closePanel(); return; } panel.dataset.tool = b.dataset.tool; tools[b.dataset.tool](); }));
-  $("#eePhoto").addEventListener("change", async (ev) => {
-    const file = ev.target.files?.[0];
-    ev.target.value = "";
+  const addPhotoFile = async (file) => {
     if (!file) return;
     const photos = store.allEntries().reduce((n, x) => n + (x.pics || []).filter((p) => p.t === "photo").length, 0);
     if (photos >= 60) { msg("You've added 60 photos to your journal, the most it can keep and sync. Remove an older one to add more."); return; }
     msg("Adding the photo…");
-    try { addPic({ t: "photo", src: await shrinkPhoto(file), alt: file.name.replace(/\.[^.]+$/, "") }); }
+    try { addPic({ t: "photo", src: await shrinkPhoto(file), alt: /^image\.\w+$/i.test(file.name || "") ? "Pasted picture" : (file.name || "Picture").replace(/\.[^.]+$/, "") }); }
     catch (err) { msg(err.message); }
+  };
+  $("#eePhoto").addEventListener("change", async (ev) => {
+    const file = ev.target.files?.[0];
+    ev.target.value = "";
+    await addPhotoFile(file);
+  });
+  // Pasting or dropping a picture (copied from Photos, a website or another app) adds it like
+  // the Photo button does. Pasted words go into the box as usual.
+  const imagesIn = (dt) => [...(dt?.files || [])].filter((f) => f.type.startsWith("image/"));
+  const editorEl = box.querySelector(".entry-editor");
+  editorEl.addEventListener("paste", async (ev) => {
+    const imgs = imagesIn(ev.clipboardData);
+    if (!imgs.length) return;
+    if (!ev.clipboardData.getData("text/plain")) ev.preventDefault();
+    for (const f of imgs.slice(0, 4)) await addPhotoFile(f);
+  });
+  editorEl.addEventListener("dragover", (ev) => { if ([...(ev.dataTransfer?.items || [])].some((i) => i.kind === "file")) ev.preventDefault(); });
+  editorEl.addEventListener("drop", async (ev) => {
+    const imgs = imagesIn(ev.dataTransfer);
+    if (!imgs.length) return;
+    ev.preventDefault();
+    for (const f of imgs.slice(0, 4)) await addPhotoFile(f);
   });
   drawQuotes(); drawPics(); drawRefs();
   if (addQuote) keep();
