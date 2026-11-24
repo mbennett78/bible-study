@@ -2,6 +2,8 @@
 // so the game only asks about chapters already read. `a` is the index of the right choice.
 // kind: "fact" | "connection" (needs every ref read) | "geography" | "history".
 // Answers follow the NASB wording where a phrase is quoted. The bank grows book by book.
+import { TRIVIA2 } from "./trivia-bank2.js";
+
 export const TRIVIA = [
   // Genesis
   { id: "gen1a", refs: ["GEN.1"], kind: "fact", q: "What did God create on the first day?", choices: ["Light", "The sun", "Dry land", "The animals"], a: 0, why: "Genesis 1:3–5" },
@@ -526,3 +528,4 @@ export const TRIVIA = [
   { id: "ar37", refs: ["EXO.35"], kind: "fact", topic: "arts", q: "For the tabernacle, skilled women spun blue, purple and scarlet yarn and what else?", choices: ["Fine linen and goats' hair", "Gold thread only", "Silk", "Camel hair rope"], a: 0, why: "Exodus 35:25-26." },
   { id: "ar38", refs: ["PSA.33"], kind: "fact", topic: "arts", q: "Psalm 33:3 says, \"Sing to Him a new song; play ___ with a shout of joy.\"", choices: ["Skillfully", "Quietly", "Slowly", "Alone"], a: 0, why: "Psalm 33:3. Doing art well is a way of honoring God." },
 ];
+TRIVIA.push(...TRIVIA2);

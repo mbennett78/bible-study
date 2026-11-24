@@ -1,6 +1,6 @@
 // Caches the app itself so it opens offline. Scripture text is not cached here.
-const VERSION = "bible-study-shell-v94";
-const SHELL = ["./", "index.html", "styles.css", "js/app.js", "js/books.js", "js/store.js", "js/text.js", "js/paths.js", "js/speech.js", "js/trivia.js", "js/trivia-bank.js", "js/art.js", "js/notes.js", "js/notes-more.js", "js/history.js", "js/glossary.js", "js/intros.js", "js/topics.js", "js/outlines.js", "js/stickers.js", "js/bookstats.js", "js/daily.js", "js/buddy.js", "js/game.js", "js/auth.js", "js/config.js", "js/vendor/supabase.js",
+const VERSION = "bible-study-shell-v95";
+const SHELL = ["./", "index.html", "styles.css", "js/app.js", "js/books.js", "js/store.js", "js/text.js", "js/paths.js", "js/speech.js", "js/trivia.js", "js/trivia-bank.js", "js/trivia-bank2.js", "js/art.js", "js/notes.js", "js/notes-more.js", "js/history.js", "js/glossary.js", "js/intros.js", "js/topics.js", "js/outlines.js", "js/stickers.js", "js/bookstats.js", "js/daily.js", "js/buddy.js", "js/game.js", "js/auth.js", "js/config.js", "js/vendor/supabase.js",
   "manifest.webmanifest", "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png"];
 
 self.addEventListener("install", (e) => {
