@@ -14,7 +14,7 @@ export default [
   },
   { files: ["js/config.js", "sw.js"], languageOptions: { sourceType: "script" } },
   {
-    files: ["tests/**/*.{js,mjs}", "eslint.config.js"],
+    files: ["tests/**/*.{js,mjs}", "tools/**/*.mjs", "eslint.config.js"],
     languageOptions: { ecmaVersion: 2024, sourceType: "module", globals: { ...globals.node, ...globals.browser } },
   },
 ];
