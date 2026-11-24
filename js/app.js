@@ -768,16 +768,38 @@ function lockNowButton(rerender) {
   b.addEventListener("click", () => { journalUnlocked = false; rerender(); if (rerender !== renderJournal) renderJournal(); });
   return b;
 }
+// Unlocking: a big number pad on the screen, like a phone's lock screen, so nobody has to
+// find the right keyboard. It opens as soon as the right passcode is tapped in.
 function unlockForm(onDone) {
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `<p class="muted small-print">Your journal is locked.</p><div class="unlock"><input type="password" inputmode="numeric" placeholder="Passcode" aria-label="Journal passcode"><button class="small">Unlock</button></div><p class="muted small-print" role="alert"></p>`;
-  const input = wrap.querySelector("input"), msg = wrap.querySelector("[role=alert]");
-  const tryIt = async () => {
-    if (await hashCode(input.value) === store.get("journalLock")) { journalUnlocked = true; onDone(); }
-    else { msg.textContent = "That passcode doesn't match. Try again."; input.value = ""; }
+  const wrap = Object.assign(document.createElement("div"), { className: "keypad-wrap" });
+  wrap.innerHTML = `<p class="kp-title">🔒 Your journal is locked</p><p class="muted small-print">Tap your passcode.</p>
+    <div class="kp-dots" aria-live="polite"></div>
+    <div class="keypad">${["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].map((k) => `<button type="button" data-kp="${k}" aria-label="${k === "⌫" ? "Delete" : k === "✓" ? "Unlock" : k}">${k}</button>`).join("")}</div>
+    <p class="kp-msg" role="alert"></p>`;
+  let code = "";
+  const dots = wrap.querySelector(".kp-dots"), msg = wrap.querySelector(".kp-msg");
+  const show = () => { dots.innerHTML = Array.from({ length: Math.max(4, code.length) }, (_, i) => `<i class="${i < code.length ? "on" : ""}"></i>`).join(""); };
+  const tryIt = async (final) => {
+    if (code.length >= 4 && await hashCode(code) === store.get("journalLock")) { journalUnlocked = true; onDone(); return; }
+    if (final) { msg.textContent = "That passcode doesn't match. Try again."; code = ""; show(); wrap.classList.remove("shake"); void wrap.offsetWidth; wrap.classList.add("shake"); }
   };
-  wrap.querySelector("button").addEventListener("click", tryIt);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter") tryIt(); });
+  wrap.querySelectorAll("[data-kp]").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.kp;
+    msg.textContent = "";
+    if (k === "⌫") code = code.slice(0, -1);
+    else if (k === "✓") { tryIt(true); return; }
+    else if (code.length < 8) code += k;
+    show();
+    tryIt(code.length === 8);
+  }));
+  // A keyboard still works too, for anyone who has one.
+  wrap.tabIndex = -1;
+  wrap.addEventListener("keydown", (e) => {
+    if (/^\d$/.test(e.key) && code.length < 8) { code += e.key; show(); tryIt(code.length === 8); }
+    else if (e.key === "Backspace") { code = code.slice(0, -1); show(); }
+    else if (e.key === "Enter") tryIt(true);
+  });
+  show();
   return wrap;
 }
 const JOURNAL_BOXES = [
@@ -788,59 +810,45 @@ const JOURNAL_BOXES = [
 // "Tuesday, Nov 24, 2026 · 8:15 PM": the date and time stamp for journal entries.
 const stampNow = (d = new Date()) => `${d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric", year: "numeric" })} · ${d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
 const whenSaved = (e) => e ? `Started ${fmtDate(e.created)} · last saved ${stampNow(new Date(e.updated))}` : "Saves by itself as you type";
-// A button that writes today's date and time into the box, so each entry is dated.
-function stampButton(ta, onChange) {
-  const b = Object.assign(document.createElement("button"), { type: "button", className: "stamp-btn", textContent: "🕒 Add today's date and time" });
-  b.addEventListener("click", (e) => {
-    e.preventDefault();
-    const line = `— ${stampNow()} —\n`;
-    ta.value = ta.value.trim() ? `${ta.value.replace(/\s+$/, "")}\n\n${line}` : line;
-    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
-    onChange();
-  });
-  return b;
-}
+// The journal under each chapter: the same "Add entry" buttons, with the chapter attached,
+// and this chapter's entries listed underneath. Older three-box notes stay readable and editable.
 function renderJournal() {
   const { book, chapter } = store.get("last");
+  const key = `${book}.${chapter}`;
   const inner = $("#journalInner");
   const entry = store.journalEntry(book, chapter);
-  const filled = entry ? JOURNAL_BOXES.filter((b) => (entry[b.field] || "").trim()).map((b) => b.label.toLowerCase()) : [];
-  $("#journalHint").textContent = journalLocked() ? "Locked" : filled.length ? `You've written ${filled.join(", ")}. Tap to read or add more.` : "Thoughts, prayers and gratitude for this chapter";
+  const mine = store.allEntries().filter((e) => e.ref === key);
+  const oldFilled = entry ? JOURNAL_BOXES.filter((b) => (entry[b.field] || "").trim()) : [];
+  const count = mine.length + (oldFilled.length ? 1 : 0);
+  $("#journalHint").textContent = journalLocked() ? "Locked" : count ? `${count} entr${count === 1 ? "y" : "ies"} on this chapter. Tap to read or add more.` : "Your thoughts, prayers and thanks on this chapter";
   inner.innerHTML = "";
   if (journalLocked()) { inner.append(unlockForm(renderJournal)); return; }
   if (store.get("journalLock")) inner.append(lockNowButton(renderJournal));
-  const ref = `${BOOK_BY_ID[book].name} ${chapter}`;
-  const saved = Object.assign(document.createElement("p"), { className: "saved" });
-  saved.textContent = whenSaved(entry);
-  for (const box of JOURNAL_BOXES) {
+  const top = document.createElement("div");
+  top.innerHTML = `<div class="add-entries">${[["bible", "Bible thoughts"], ["prayer", "A prayer"], ["gratitude", "Thankful for"]].map(([k, l]) => `<button class="add-entry ae-${k}" data-add="${k}"><span aria-hidden="true">${KIND[k].icon}</span><b>＋ ${l}</b></button>`).join("")}</div>
+    <div class="entry-host" id="chapterEntryHost"></div>
+    ${mine.length ? `<div class="chapter-entries">${mine.map((e) => `<button class="log-row entry-row er-${e.kind}" data-entry="${e.id}"><strong>${KIND[e.kind]?.icon || ""} ${esc(KIND[e.kind]?.label || "")}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${esc(e.text.slice(0, 160))}${e.text.length > 160 ? "…" : ""}</span></button>`).join("")}</div>` : ""}
+    <p class="muted small-print">Everything you write here is also in My Bible, under Journal.</p>`;
+  inner.append(top);
+  top.querySelectorAll("[data-add]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.add, ref: key }, $("#chapterEntryHost"))));
+  top.querySelectorAll("[data-entry]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.entry }, $("#chapterEntryHost"))));
+  if (!oldFilled.length) return;
+  // Notes written before entries existed: still here, still editable.
+  const old = Object.assign(document.createElement("details"), { className: "old-notes" });
+  old.innerHTML = `<summary>Earlier notes on this chapter</summary>`;
+  const saved = Object.assign(document.createElement("p"), { className: "saved", textContent: whenSaved(entry) });
+  for (const box of oldFilled) {
     const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
     wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
-    const ta = document.createElement("textarea");
+    const ta = Object.assign(document.createElement("textarea"), { rows: 3, value: entry[box.field] || "" });
     ta.id = box.field === "text" ? "journalText" : `journal-${box.field}`;
-    ta.rows = box.field === "text" ? 5 : 3;
-    ta.placeholder = box.ph(ref);
-    ta.value = entry?.[box.field] || "";
     let t;
-    ta.addEventListener("input", () => {
-      clearTimeout(t);
-      t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }, 500);
-    });
+    ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }, 500); });
     wrap.append(ta);
-    wrap.append(stampButton(ta, () => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }));
-    addMic(wrap, ta);
-    if (box.field === "prayer") {
-      const ans = Object.assign(document.createElement("label"), { className: "answered" });
-      ans.innerHTML = `<input type="checkbox" ${entry?.answered ? "checked" : ""}> Answered${entry?.answered ? ` <span class="muted">· ${fmtDate(entry.answered)}</span>` : ""}`;
-      ans.querySelector("input").addEventListener("change", (e) => {
-        store.setJournalField(book, chapter, "answered", e.target.checked ? new Date().toISOString() : "");
-        if (e.target.checked) { celebrate("small"); mascotSay("Praise God for answered prayer!"); }
-        renderJournal();
-      });
-      wrap.append(ans);
-    }
-    inner.append(wrap);
+    old.append(wrap);
   }
-  inner.append(saved);
+  old.append(saved);
+  inner.append(old);
 }
 // A microphone button beside a text box: talk instead of type (where the browser allows it).
 function addMic(wrap, ta) {
@@ -1134,48 +1142,133 @@ const DIARY_BOXES = [
   { field: "prayer", label: "Prayers", icon: "🙏", ph: "Who and what are you praying for?" },
   { field: "gratitude", label: "Gratitude", icon: "❀", ph: "What are you thankful for today?" },
 ];
+/* ---------- My Journey: the journal ----------
+   A notes-style journal: tap "Add" for My day, a prayer, something you're thankful for, or
+   thoughts on the chapter you're reading. Each entry is dated and timed, saved with a big
+   Save button, and listed below to read again. "Make my journal book" prints them all as a
+   keepsake titled "My Journey". */
+const ENTRY_KINDS = [
+  { kind: "day", label: "My day", add: "My day", icon: "✎", ph: "What's going on in your life today? What would you want your family to know someday?" },
+  { kind: "prayer", label: "Prayer", add: "A prayer", icon: "🙏", ph: "Who and what are you praying for?" },
+  { kind: "gratitude", label: "Gratitude", add: "Thankful for", icon: "❀", ph: "What are you thankful for today?" },
+  { kind: "bible", label: "Bible thoughts", add: "Bible thoughts", icon: "📖", ph: "What is this chapter saying to you? How does it make you feel?" },
+];
+const KIND = Object.fromEntries(ENTRY_KINDS.map((k) => [k.kind, k]));
+const dayOf = (iso) => { const d = new Date(iso); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const timeOf = (iso) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+let editing = null; // { id, kind, ref } while the editor is open
+let journalFilter = "all";
+
 function renderDiaryToday() {
   const el = $("#diaryToday");
   if (!el) return;
   el.innerHTML = "";
   if (journalLocked()) return;
-  const day = todayKey();
-  const entry = store.diaryEntry(day);
-  const card = Object.assign(document.createElement("div"), { className: "diary-card" });
-  card.innerHTML = `<p class="diary-date">${esc(dayLabel(day))}</p><h2>Today's journal</h2><p class="muted small-print">Your daily life journal, separate from your chapter notes. Each day gets its own dated page.</p>`;
-  const saved = Object.assign(document.createElement("p"), { className: "saved", textContent: entry ? `Saved ✓ ${stampNow(new Date(entry.updated))}` : "Saves by itself as you type" });
-  for (const box of DIARY_BOXES) {
-    const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
-    wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
-    const ta = Object.assign(document.createElement("textarea"), { rows: box.field === "text" ? 5 : 3, placeholder: box.ph, value: entry?.[box.field] || "" });
-    ta.id = `diary-${box.field}`;
-    let t;
-    ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setDiaryField(day, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; renderJournalList(); }, 600); });
-    wrap.append(ta);
-    wrap.append(stampButton(ta, () => { store.setDiaryField(day, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }));
-    addMic(wrap, ta);
-    card.append(wrap);
-  }
-  card.append(saved);
+  const name = (store.get("name") || "").trim();
+  const card = Object.assign(document.createElement("div"), { className: "diary-card journey" });
+  card.innerHTML = `<p class="diary-date">${esc(dayLabel(todayKey()))}</p>
+    <h2>My Journey</h2><p class="muted small-print">${name ? `A journal by ${esc(name)}. ` : ""}Tap what you'd like to write. Each entry is dated and saved, and you can read them all below.</p>
+    <div class="add-entries">${ENTRY_KINDS.map((k) => `<button class="add-entry ae-${k.kind}" data-add="${k.kind}"><span aria-hidden="true">${k.icon}</span><b>＋ ${esc(k.add)}</b></button>`).join("")}</div>
+    <div id="entryEditor"></div>`;
+  card.querySelectorAll("[data-add]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.add })));
   el.append(card);
+  if (editing && (!entryHost || entryHost.id === "entryEditor")) openEntry(editing);
 }
-
-/* ---------- Keepsake journal book (print or save as PDF) ---------- */
-function makeJournalBook() {
+// The writing box for a new entry, or for one they tapped to read or change.
+let entryHost = null;
+function openEntry({ id = null, kind = "day", ref = null } = {}, box = $("#entryEditor")) {
+  if (!box) return;
+  if (entryHost && entryHost !== box) entryHost.innerHTML = "";
+  entryHost = box;
+  const e = id ? store.entry(id) : null;
+  kind = e?.kind || kind;
+  if (kind === "bible" && !ref) ref = e?.ref || (() => { const { book, chapter } = store.get("last"); return `${book}.${chapter}`; })();
+  editing = { id, kind, ref };
+  const k = KIND[kind] || KIND.day;
+  const when = e ? `${stampNow(new Date(e.created))}${e.updated && dayOf(e.updated) !== dayOf(e.created) ? ` · changed ${fmtDate(e.updated)}` : ""}` : stampNow();
+  box.innerHTML = `<div class="entry-editor ee-${kind}">
+      <p class="ee-head"><span aria-hidden="true">${k.icon}</span> <b>${esc(k.label)}</b>${ref ? ` <span class="muted">· ${esc(keyRef(ref).name)}</span>` : ""}</p>
+      <p class="ee-when">🕒 ${esc(when)}</p>
+      <label class="ee-label" for="entryText">Write here</label>
+      <textarea id="entryText" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
+      ${kind === "prayer" ? `<label class="answered"><input type="checkbox" id="entryAnswered" ${e?.answered ? "checked" : ""}> God answered this prayer${e?.answered ? ` <span class="muted">· ${fmtDate(e.answered)}</span>` : ""}</label>` : ""}
+      <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
+      <p class="ee-msg" id="entryMsg" role="status"></p></div>`;
+  const ta = $("#entryText");
+  addMic(box.querySelector(".entry-editor"), ta);
+  // Words are never lost: what they type is kept as they go, and Save finishes the entry.
+  const newId = id || `e${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  let t = 0;
+  ta.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if (!ta.value.trim()) return;
+      store.saveEntry(newId, { kind, text: ta.value.trim(), ...(ref ? { ref } : {}) });
+      editing = { id: newId, kind, ref };
+      $("#entryMsg").textContent = "Kept as you type. Tap Save when you're done.";
+    }, 700);
+  });
+  $("#entrySave").addEventListener("click", () => {
+    clearTimeout(t);
+    const text = ta.value.trim();
+    if (!text) { $("#entryMsg").textContent = "Write something first, then tap Save."; ta.focus(); return; }
+    const ans = $("#entryAnswered");
+    const was = store.entry(newId);
+    store.saveEntry(newId, { kind, text, ...(ref ? { ref } : {}), ...(ans ? { answered: ans.checked ? (was?.answered || new Date().toISOString()) : "" } : {}) });
+    if (ans?.checked && !was?.answered) celebrate("small");
+    editing = null;
+    box.innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's in your journal below.</p>`;
+    renderJournalList(newId);
+    if (box.id === "chapterEntryHost") { renderJournal(); $("#chapterEntryHost").innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's listed below, and in My Bible, under Journal.</p>`; }
+  });
+  $("#entryCancel").addEventListener("click", () => {
+    clearTimeout(t);
+    if (ta.value.trim()) store.saveEntry(newId, { kind, text: ta.value.trim(), ...(ref ? { ref } : {}) });
+    editing = null; box.innerHTML = ""; renderJournalList();
+    if (box.id === "chapterEntryHost") renderJournal();
+  });
+  $("#entryDelete")?.addEventListener("click", () => {
+    const btn = $("#entryDelete");
+    if (btn.dataset.sure !== "1") { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete"; return; }
+    store.deleteEntry(id); editing = null;
+    box.innerHTML = `<p class="ee-saved" role="status">Deleted.</p>`;
+    renderJournalList();
+    if (box.id === "chapterEntryHost") renderJournal();
+  });
+  box.scrollIntoView({ block: "start", behavior: "smooth" });
+  if (!e) ta.focus();
+}
+/* ---------- The keepsake book: "My Journey, a journal by…" (print or save as PDF) ---------- */
+async function makeJournalBook() {
   if (journalLocked()) { mascotSay("Unlock your journal first."); return; }
-  const name = store.get("name").trim();
-  const entries = [
-    ...store.allDiary().map((d) => ({ when: d.day, title: dayLabel(d.day), kind: "Daily journal", parts: d })),
-    ...store.allJournal().map((j) => { const d = new Date(j.created || j.updated); const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; return { when: day, title: dayLabel(day), kind: `Reflections on ${keyRef(j.key).name}`, parts: j }; }),
-  ].sort((a, b) => a.when.localeCompare(b.when));
+  const name = (store.get("name") || "").trim();
   const para = (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
-  const sec = (label, t, extra = "") => (t || "").trim() ? `<h4>${label}${extra}</h4>${para(t)}` : "";
+  // Everything written, by day: new entries, older daily pages, and chapter journals.
+  const days = {};
+  const add = (day, item) => { (days[day] ||= []).push(item); };
+  for (const e of store.allEntries()) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", ref: e.ref, parts: [["", e.text]], answered: e.answered });
+  for (const d of store.allDiary()) add(d.day, { at: d.created || `${d.day}T12:00:00`, kind: "My day", parts: [["My day", d.text], ["Prayers", d.prayer], ["Gratitude", d.gratitude]], answered: d.answered });
+  for (const j of store.allJournal()) add(dayOf(j.created || j.updated), { at: j.created || j.updated, kind: "Bible thoughts", ref: j.key, parts: [["Thoughts", j.text], ["Prayers", j.prayer], ["Gratitude", j.gratitude]], answered: j.answered });
+  const order = Object.keys(days).sort();
+  // That day's verse of the day, in their own version when it can be fetched.
+  const verses = {};
+  await Promise.all(order.map(async (day) => {
+    const v = dailyToday(new Date(`${day}T12:00:00`)).verse;
+    const ref = `${BOOK_BY_ID[v.book].name} ${v.chapter}:${v.verse}`;
+    let words = "";
+    try { words = verseFromHtml((await getChapter(store.get("version"), v.book, v.chapter)).html, v.verse) || ""; } catch { /* the reference alone */ }
+    verses[day] = { ref, words, theme: v.theme };
+  }));
   const book = $("#printBook");
-  book.innerHTML = `<section class="pb-title"><p class="pb-orn">❦</p><h1>${name ? `The Journal of ${esc(name)}` : "My Journal"}</h1><p>My walk through the Bible, my prayers, and my life</p>
-      <p class="pb-range">${entries.length ? `${esc(dayLabel(entries[0].when))} to ${esc(dayLabel(entries[entries.length - 1].when))}` : ""}</p></section>
-    ${entries.length ? entries.map((e) => `<article class="pb-entry"><p class="pb-date">${esc(e.title)}</p><h3>${esc(e.kind)}</h3>
-      ${sec(e.kind === "Daily journal" ? "My day" : "Thoughts", e.parts.text)}${sec("Prayers", e.parts.prayer, e.parts.answered ? ` · answered ${esc(fmtDate(e.parts.answered))}` : "")}${sec("Gratitude", e.parts.gratitude)}</article>`).join("")
-      : `<p>No entries yet.</p>`}`;
+  book.innerHTML = `<section class="pb-title"><div class="pb-art">${seaScene(store.get("style"))}</div>
+      <h1>My Journey</h1><p class="pb-by">${name ? `a journal by ${esc(name)}` : "a journal"}</p>
+      <p class="pb-range">${order.length > 1 ? `${esc(dayLabel(order[0]))} to ${esc(dayLabel(order[order.length - 1]))}` : order.length ? esc(dayLabel(order[0])) : ""}</p></section>
+    ${order.length ? order.map((day) => `<article class="pb-day"><div class="pb-head">${seaScene(store.get("style"), { height: 60 })}</div><p class="pb-date">${esc(dayLabel(day))}</p>
+      ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => `<div class="pb-entry"><h3>${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""} <span class="pb-time">${esc(timeOf(it.at))}</span></h3>
+        ${it.parts.filter(([, t]) => (t || "").trim()).map(([label, t]) => `${label && it.parts.filter(([, x]) => (x || "").trim()).length > 1 ? `<h4>${esc(label)}</h4>` : ""}${para(t)}`).join("")}
+        ${it.answered ? `<p class="pb-answered">Answered ✓ ${esc(fmtDate(it.answered))}</p>` : ""}</div>`).join("")}
+      <aside class="pb-verse"><b>Verse of the day</b>${verses[day].words ? `<span>“${esc(verses[day].words)}”</span>` : `<span>${esc(verses[day].theme)}</span>`}<i>${esc(verses[day].ref)}</i></aside></article>`).join("")
+    : `<p>No entries yet.</p>`}`;
   book.hidden = false;
   document.body.classList.add("printing");
   const done = () => { document.body.classList.remove("printing"); book.hidden = true; window.removeEventListener("afterprint", done); };
@@ -1188,31 +1281,45 @@ function showDiaryDay(day) {
   const d = store.diaryEntry(day);
   if (!d) return;
   const para = (t) => esc(t).replace(/\n/g, "<br>");
-  $("#diaryToday").innerHTML = `<div class="diary-card"><p class="diary-date">${esc(dayLabel(day))}</p><h2>Daily journal</h2>
+  $("#diaryToday").innerHTML = `<div class="diary-card"><p class="diary-date">${esc(dayLabel(day))}</p><h2>My day</h2>
     ${DIARY_BOXES.filter((b) => (d[b.field] || "").trim()).map((b) => `<p class="jb-label">${b.icon} ${b.label}</p><p class="diary-read">${para(d[b.field])}</p>`).join("")}
-    <button class="small" id="backToday">Back to today</button></div>`;
+    <button class="small" id="backToday">Back to my journal</button></div>`;
   $("#backToday").addEventListener("click", renderDiaryToday);
   $("#diaryToday").scrollIntoView({ block: "start" });
 }
-let journalFilter = "all";
-function renderJournalList() {
+// Everything they've written, newest first, to read again. Tap an entry to open it.
+function renderJournalList(justSaved = null) {
   const el = $("#journalList");
-  if (journalLocked()) { el.innerHTML = ""; el.append(unlockForm(renderJournalList)); return; }
+  if (!el) return;
+  const keep = document.querySelector(".keepsake-row");
+  if (keep) keep.hidden = journalLocked();
+  if (journalLocked()) { el.innerHTML = ""; el.append(unlockForm(() => { renderJournalList(); renderDiaryToday(); })); return; }
   const lockRow = store.get("journalLock") ? lockNowButton(renderJournalList) : null;
+  const snip = (t) => `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}`;
   const items = [
-    ...store.allDiary().map((d) => ({ ...d, key: null, sortAt: d.updated, title: dayLabel(d.day), daily: true })),
-    ...store.allJournal().map((j) => ({ ...j, sortAt: j.updated, title: keyRef(j.key).name })),
-  ].filter((j) => journalFilter === "all" || (j[journalFilter] || "").trim()).sort((a, b) => b.sortAt.localeCompare(a.sortAt));
-  const snip = (t) => `${esc(t.slice(0, 140))}${t.length > 140 ? "…" : ""}`;
-  const filters = [["all", "All"], ["text", "Thoughts"], ["prayer", "Prayers"], ["gratitude", "Gratitude"]];
-  el.innerHTML = `<div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${l}</button>`).join("")}</div>` + (items.length ? items.map((j) => `<button class="log-row${j.daily ? " is-daily" : ""}" ${j.daily ? `data-day="${j.day}"` : `data-key="${j.key}"`}><strong>${j.daily ? "Daily journal" : esc(j.title)}</strong><small>${j.daily ? esc(j.title) : `${fmtDate(j.created || j.updated)}${j.created && fmtDate(j.created) !== fmtDate(j.updated) ? ` · edited ${fmtDate(j.updated)}` : ""}`}</small>
-      ${JOURNAL_BOXES.filter((b) => (journalFilter === "all" || journalFilter === b.field) && (j[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${j.daily && b.field === "text" ? "My day" : b.label}${b.field === "prayer" && j.answered ? " · answered ✓" : ""}:</em> ${snip(j[b.field])}</span>`).join("")}</button>`).join("")
-    : `<p class="empty">${journalFilter === "all" ? `Open "My journal" under any chapter to write your thoughts, prayers and gratitude. They'll be collected here.` : "Nothing here yet."}</p>`);
-  el.querySelectorAll("[data-day]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.day === todayKey()) $("#diary-text")?.focus(); else showDiaryDay(b.dataset.day); }));
+    ...store.allEntries().map((e) => ({ type: "entry", at: e.created, kinds: [e.kind], e })),
+    ...store.allDiary().map((d) => ({ type: "diary", at: d.updated, kinds: ["day", ...(d.prayer?.trim() ? ["prayer"] : []), ...(d.gratitude?.trim() ? ["gratitude"] : [])], d })),
+    ...store.allJournal().map((j) => ({ type: "chapter", at: j.updated, kinds: ["bible", ...(j.prayer?.trim() ? ["prayer"] : []), ...(j.gratitude?.trim() ? ["gratitude"] : [])], j })),
+  ].filter((it) => journalFilter === "all" || it.kinds.includes(journalFilter)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+  const filters = [["all", "All"], ...ENTRY_KINDS.map((k) => [k.kind, k.label])];
+  const row = (it) => {
+    if (it.type === "entry") {
+      const e = it.e, k = KIND[e.kind] || KIND.day;
+      return `<button class="log-row entry-row er-${e.kind}${e.id === justSaved ? " just-saved" : ""}" data-entry="${e.id}"><strong>${k.icon} ${esc(k.label)}${e.ref ? ` · ${esc(keyRef(e.ref).name)}` : ""}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${snip(e.text)}</span></button>`;
+    }
+    if (it.type === "diary") return `<button class="log-row is-daily" data-day="${it.d.day}"><strong>✎ My day</strong><small>${esc(dayLabel(it.d.day))}</small>${DIARY_BOXES.filter((b) => (it.d[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(it.d[b.field])}</span>`).join("")}</button>`;
+    const j = it.j;
+    return `<button class="log-row" data-key="${j.key}"><strong>📖 ${esc(keyRef(j.key).name)}</strong><small>${fmtDate(j.created || j.updated)}</small>${JOURNAL_BOXES.filter((b) => (j[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(j[b.field])}</span>`).join("")}</button>`;
+  };
+  el.innerHTML = `<h3 class="journal-list-head">My entries</h3><div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${esc(l)}</button>`).join("")}</div>`
+    + (items.length ? items.map(row).join("") : `<p class="empty">${journalFilter === "all" ? "Nothing written yet. Tap one of the buttons above to write your first entry." : "Nothing here yet."}</p>`);
+  el.querySelectorAll("[data-entry]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.entry })));
+  el.querySelectorAll("[data-day]").forEach((b) => b.addEventListener("click", () => showDiaryDay(b.dataset.day)));
   el.querySelectorAll("[data-jf]").forEach((b) => b.addEventListener("click", () => { journalFilter = b.dataset.jf; renderJournalList(); }));
   el.querySelectorAll("[data-key]").forEach((b) => b.addEventListener("click", () => {
     const r = keyRef(b.dataset.key); showView("read"); openChapter(r.book, r.chapter); $("#journalBox").open = true;
-  }));  if (lockRow) el.prepend(lockRow);
+  }));
+  if (lockRow) el.prepend(lockRow);
 }
 
 /* ---------- Trivia ---------- */
@@ -2261,7 +2368,7 @@ function wireDaily(root) {
   $("#dailyWrite")?.addEventListener("click", () => {
     showView("books");
     document.querySelector('[data-seg="journal"]')?.click();
-    setTimeout(() => { const ta = $("#diary-text"); if (ta) { ta.scrollIntoView({ block: "center" }); ta.focus(); } }, 150);
+    setTimeout(() => openEntry({ kind: "day" }), 150);
   });
   $("#dailyCustom").addEventListener("click", () => { $("#dailyCustomBox").hidden = !$("#dailyCustomBox").hidden; });
   root.querySelectorAll("[data-dpart]").forEach((c) => c.addEventListener("change", () => {

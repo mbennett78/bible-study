@@ -51,6 +51,7 @@ const defaults = {
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }
+  entries: {},              // journal entries: { id: { kind, text, ref, answered, created, updated, deleted } }
   diary: {},                // daily life journal by date: { "2026-11-22": { text, prayer, gratitude, created, updated } }
   journalLock: "",          // SHA-256 of the passcode, or ""
   journalCode: "",          // the passcode itself, so its owner can look it up (Show)
@@ -177,6 +178,20 @@ export const store = {
     state.diary = d;
     save();
   },
+  // Journal entries, one per "Add entry": My day, Prayer, Gratitude or Bible thoughts.
+  // A deleted entry is kept as a marker so another device's copy doesn't bring it back.
+  entry: (id) => { const e = state.entries?.[id]; return e && !e.deleted ? { id, ...e } : null; },
+  saveEntry(id, fields) {
+    const now = new Date().toISOString();
+    const was = state.entries?.[id] || {};
+    state.entries = { ...(state.entries || {}), [id]: { kind: "day", text: "", created: now, ...was, ...fields, deleted: false, updated: now } };
+    save();
+  },
+  deleteEntry(id) {
+    state.entries = { ...(state.entries || {}), [id]: { deleted: true, updated: new Date().toISOString() } };
+    save();
+  },
+  allEntries: () => Object.entries(state.entries || {}).filter(([, v]) => !v.deleted && (v.text || "").trim()).map(([id, v]) => ({ id, ...v })).sort((a, b) => b.created.localeCompare(a.created)),
   allDiary: () => Object.entries(state.diary || {}).map(([day, v]) => ({ day, ...v })).sort((a, b) => b.day.localeCompare(a.day)),
   allJournal: () => Object.entries(state.journal).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.updated.localeCompare(a.updated)),
   recordTrivia(results, label) {
@@ -205,7 +220,7 @@ export const store = {
   // Account backup: everything except Bible keys.
   snapshot: () => ({ ...structuredClone(state), apiBibleKey: "", esvKey: "" }),
   // No reading, notes or journal yet (in this device's data, or in a backup's).
-  isEmpty: (d = state) => !Object.keys(d.read || {}).length && !Object.keys(d.journal || {}).length && !Object.keys(d.diary || {}).length
+  isEmpty: (d = state) => !Object.keys(d.read || {}).length && !Object.keys(d.journal || {}).length && !Object.keys(d.diary || {}).length && !Object.keys(d.entries || {}).length
     && !Object.keys(d.visits || {}).length && !Object.keys(d.favorites || {}).length && !Object.values(d.pathRead || {}).some((m) => Object.keys(m || {}).length),
   restore(data) {
     state = fromSaved(data, { apiBibleKey: state.apiBibleKey, esvKey: state.esvKey, owner: state.owner }); save();
@@ -227,6 +242,7 @@ export const store = {
     state.pathStarted = { ...(data.pathStarted || {}), ...state.pathStarted };
     state.journal = byNewer(state.journal, data.journal);
     state.diary = byNewer(state.diary, data.diary);
+    state.entries = byNewer(state.entries, data.entries);
     const ids = new Set(state.archives.map((a) => a.id));
     state.archives = [...state.archives, ...(data.archives || []).filter((a) => !ids.has(a.id))];
     if ((data.trivia?.answered || 0) > (state.trivia?.answered || 0)) state.trivia = data.trivia;
