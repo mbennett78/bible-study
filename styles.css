@@ -2661,3 +2661,39 @@ textarea.nf-big { font-size: 1.25rem; }
 .print-book.pb-guide h1 { font-size: 22pt; }
 .print-book.pb-guide h2 { font-size: 15pt; margin-top: 1.1em; break-after: avoid; }
 .print-book.pb-guide li { margin-bottom: 4pt; }
+
+/* ---------- Callout boxes for a comment on a verse (optional; Plain is the default) ---------- */
+.co-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-family: var(--sans); }
+.co-pick button { font: inherit; font-size: .8rem; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.co-pick button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: #fff; }
+.ee-verse-offer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); font: .9rem var(--sans); }
+.ee-verse-offer span { flex: 1 1 100%; }
+.q-callout { position: relative; margin-top: 8px; font-family: var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.q-callout .co-tag { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.q-callout p { margin: 0; line-height: 1.5; }
+.q-callout:not(.co-plain) .q-note { background: transparent; border: 0; padding: 0; min-height: 2.4em; color: inherit; font: inherit; }
+.q-callout:not(.co-plain) { padding: 10px 14px 12px; color: #2b2620; }
+/* Classic: crisp white card with a fine gold double rule */
+.co-classic { background: #fffdf8; border: 3px double #b49a78; border-radius: 4px; font-family: var(--serif, Georgia, serif); font-style: italic; }
+.co-classic .co-tag { color: #8a6d45; font-style: normal; font-family: var(--sans); }
+/* Parchment: warm cream with a soft deckled edge */
+.co-parchment { background: linear-gradient(180deg, #f8efd9, #f1e3c2); border: 1px solid #d6bf8f; border-radius: 10px 14px 9px 13px; box-shadow: inset 0 0 18px rgb(150 110 50 / .15); font-family: var(--serif, Georgia, serif); }
+.co-parchment .co-tag { color: #7a5a2c; }
+/* Sticky note: bright, a little tilted, handwritten */
+.co-sticky { background: #fff3a6; border-radius: 2px; box-shadow: 0 3px 8px rgb(0 0 0 / .15); transform: rotate(-1deg); font-family: "Bradley Hand", "Segoe Print", "Chalkboard SE", "Comic Sans MS", cursive; font-size: 1.05em; }
+.co-sticky::before { content: ""; position: absolute; top: -8px; left: 50%; width: 60px; height: 16px; margin-left: -30px; background: rgb(255 255 255 / .55); border: 1px solid rgb(0 0 0 / .06); transform: rotate(2deg); }
+.co-sticky .co-tag { color: #8a6d00; font-family: var(--sans); }
+/* Bubble: a friendly speech bubble */
+.co-bubble { background: #e3f0fb; border: 2px solid #8fb9dd; border-radius: 18px; margin-top: 14px; }
+.co-bubble::before { content: ""; position: absolute; top: -11px; left: 22px; border: 10px solid transparent; border-top: 0; border-bottom-color: #8fb9dd; }
+.co-bubble::after { content: ""; position: absolute; top: -7px; left: 24px; border: 8px solid transparent; border-top: 0; border-bottom-color: #e3f0fb; }
+.co-bubble .co-tag { color: #2f6694; }
+/* Floral: soft pink with a dashed edge and a little flower */
+.co-floral { background: #fdf0f3; border: 2px dashed #e4a2b4; border-radius: 14px; padding-right: 34px !important; }
+.co-floral::after { content: "🌸"; position: absolute; top: 6px; right: 8px; font-size: 1.1rem; }
+.co-floral .co-tag { color: #b24d6c; }
+@media print {
+  .print-book .q-callout { break-inside: avoid; margin: 5pt 0 8pt; font-size: 10pt; }
+  .print-book .co-sticky { transform: rotate(-.6deg); }
+  .print-book .ee-quote:has(.q-callout:not(.co-plain)) { padding-bottom: 10pt; }
+}

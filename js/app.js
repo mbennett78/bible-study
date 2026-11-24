@@ -1768,12 +1768,18 @@ let entryHost = null;
 // the lesson title, the teacher and the passage.
 const QUOTE_TAGS = [["comment", "💬", "Comment"], ["thought", "💭", "Thought"], ["question", "❓", "Question"]];
 const entryHasContent = (f) => Boolean((f.text || "").trim() || f.title?.trim() || f.prayer?.trim() || f.gratitude?.trim() || f.quotes?.length || f.pics?.length);
+// Optional callout styles for the comment on a verse: some fun, some classy. Each one prints too.
+const CALLOUTS = [["plain", "Plain"], ["classic", "✒️ Classic"], ["parchment", "📜 Parchment"], ["sticky", "🗒️ Sticky note"], ["bubble", "💭 Bubble"], ["floral", "🌸 Floral"]];
 function quoteCardHtml(q, i, editable = true) {
+  const [, tagIcon, tagLabel] = QUOTE_TAGS.find(([t]) => t === (q.tag || "comment")) || QUOTE_TAGS[0];
+  const look = CALLOUTS.some(([c]) => c === q.look) ? q.look : "plain";
   return `<div class="ee-quote" data-q="${i}"><blockquote>“${esc(q.text)}”</blockquote><cite>${esc(refKeyName(q.ref))}${q.ver ? ` (${esc(q.ver)})` : ""}</cite>
     ${editable ? `<div class="qtags" role="group" aria-label="What kind of note">${QUOTE_TAGS.map(([t, ic, l]) => `<button type="button" data-qtag="${t}" aria-pressed="${(q.tag || "comment") === t}">${ic} ${l}</button>`).join("")}</div>
-    <textarea class="q-note" rows="1" placeholder="${q.tag === "question" ? "Your question about this verse…" : q.tag === "thought" ? "Your thought…" : "Your comment…"}">${esc(q.note || "")}</textarea>
+    <div class="q-callout co-${look}">${look === "plain" ? "" : `<span class="co-tag">${tagIcon} ${tagLabel}</span>`}<textarea class="q-note" rows="1" placeholder="${q.tag === "question" ? "Your question about this verse…" : q.tag === "thought" ? "Your thought…" : "Your comment…"}">${esc(q.note || "")}</textarea></div>
+    <div class="co-pick" role="group" aria-label="Callout box style (optional)"><span class="muted small-print">Box:</span>${CALLOUTS.map(([c, l]) => `<button type="button" data-colook="${c}" aria-pressed="${look === c}">${l}</button>`).join("")}</div>
     <button type="button" class="pic-x" data-qx="${i}" aria-label="Remove this verse">✕</button>`
-    : q.note ? `<p class="q-note-read">${(QUOTE_TAGS.find(([t]) => t === (q.tag || "comment")) || QUOTE_TAGS[0])[1]} ${esc(q.note)}</p>` : ""}</div>`;
+    : !q.note ? "" : look === "plain" ? `<p class="q-note-read">${tagIcon} ${esc(q.note)}</p>`
+    : `<div class="q-callout co-${look}"><span class="co-tag">${tagIcon} ${tagLabel}</span><p>${esc(q.note).replace(/\n/g, "<br>")}</p></div>`}</div>`;
 }
 function chartHtml(c) {
   const lines = (t) => String(t || "").split(/\n|,/).map((x) => x.trim()).filter(Boolean);
@@ -1898,6 +1904,9 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     const q = $("#eeQuotes");
     q.innerHTML = draft.quotes.map((x, i) => quoteCardHtml(x, i)).join("");
     q.querySelectorAll("[data-qtag]").forEach((b) => b.addEventListener("click", () => { const i = Number(b.closest("[data-q]").dataset.q); draft.quotes[i].tag = b.dataset.qtag; drawQuotes(); keep(); }));
+    q.querySelectorAll("[data-colook]").forEach((b) => b.addEventListener("click", () => { const i = Number(b.closest("[data-q]").dataset.q); draft.quotes[i].look = b.dataset.colook; drawQuotes(); keep(); }));
+    const grow = (n) => { n.style.height = "auto"; n.style.height = `${n.scrollHeight + 2}px`; };
+    q.querySelectorAll(".q-note").forEach((n) => { requestAnimationFrame(() => grow(n)); n.addEventListener("input", () => grow(n)); });
     q.querySelectorAll(".q-note").forEach((n) => n.addEventListener("input", () => { draft.quotes[Number(n.closest("[data-q]").dataset.q)].note = n.value; keepSoon(); }));
     q.querySelectorAll("[data-qx]").forEach((b) => b.addEventListener("click", () => { draft.quotes.splice(Number(b.dataset.qx), 1); drawQuotes(); keep(); }));
   };
@@ -2043,6 +2052,25 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   if (addQuote) keep();
   let rt = 0;
   ta.addEventListener("input", () => { keepSoon(); clearTimeout(rt); rt = setTimeout(drawRefs, 500); });
+  // Pasted a verse from another Bible app or website? Offer to make it a verse card, keeping
+  // the words exactly as pasted, with room for a comment in a callout box.
+  ta.addEventListener("paste", (ev) => {
+    const pasted = ev.clipboardData?.getData("text/plain") || "";
+    const card = scriptureFromPaste(pasted);
+    if (!card) return;
+    setTimeout(() => {
+      const offer = $("#eeVerseOffer") || Object.assign(document.createElement("div"), { id: "eeVerseOffer", className: "ee-verse-offer" });
+      offer.innerHTML = `<span>That looks like ${esc(refKeyName(card.ref))}. Make it a verse card you can comment on?</span><button type="button" class="small" data-vo="yes">📖 Make a verse card</button><button type="button" class="small quiet-link" data-vo="no">Keep as typed</button>`;
+      ta.after(offer);
+      offer.querySelector('[data-vo="yes"]').addEventListener("click", () => {
+        const at = ta.value.lastIndexOf(pasted);
+        if (at >= 0) ta.value = (ta.value.slice(0, at) + ta.value.slice(at + pasted.length)).replace(/\n{3,}/g, "\n\n");
+        draft.quotes.push({ ...card, tag: "comment", note: "" }); offer.remove(); drawQuotes(); drawRefs(); keep(); msg("Verse card added ✓");
+        $("#eeQuotes .ee-quote:last-child .q-note")?.focus();
+      });
+      offer.querySelector('[data-vo="no"]').addEventListener("click", () => offer.remove());
+    }, 0);
+  });
   box.querySelectorAll("#eeTitle, #eeSpeaker, #eePassage, #eePrayer, #eeGrat").forEach((i) => i.addEventListener("input", () => { keepSoon(); if (i.id === "eePassage") drawRefs(); }));
   $("#eeDate")?.addEventListener("change", () => { if ($("#eeDate").value > todayKey()) $("#eeDate").value = todayKey(); keep(); });
   box.querySelectorAll("[data-opener]").forEach((b) => b.addEventListener("click", () => {
@@ -2298,6 +2326,21 @@ function scanRefs(text) {
     if (!seen.has(r.name)) { seen.add(r.name); out.push(r); }
   }
   return out;
+}
+// Pasted Scripture: one reference plus the verse's words, in either order ("John 3:16 For God…"
+// or "“For God…” John 3:16 (NASB)"). Returns a verse card with the words exactly as pasted.
+const VERSION_TAGS = /\(?\b(NASB(?:1995|2020)?|NASB95|LSB|ESV|KJV|NKJV|NIV|CSB|HCSB|NLT|NRSV|RSV|ASV|AMP|MSG|NET|WEB)\b\)?/;
+function scriptureFromPaste(text) {
+  const t = String(text || "").trim();
+  if (t.length < 20 || t.length > 2500) return null;
+  const refs = scanRefs(t).filter((r) => r.verse);
+  if (refs.length !== 1) return null;
+  const r = refs[0];
+  const ver = (t.match(VERSION_TAGS) || [])[1] || "";
+  let words = t.replace(r.match, " ").replace(VERSION_TAGS, " ").replace(/\s+/g, " ").trim();
+  words = words.replace(/^[\s\-–—:,(]+|[\s\-–—,(]+$/g, "").replace(/\(\s*\)/g, "").trim().replace(/^["“”']+|["“”']+$/g, "").trim();
+  if (words.split(/\s+/).length < 4) return null;
+  return { ref: `${r.book}.${r.chapter}.${r.verse}${r.end ? `-${r.end}` : ""}`, text: words, ver };
 }
 const refButton = (r, text = `📖 ${r.name}`) => `<button type="button" class="ref-link" data-peek="${r.book}.${r.chapter}.${r.verse}.${r.end}">${esc(text)}</button>`;
 // Turns references in already-escaped text into buttons.
