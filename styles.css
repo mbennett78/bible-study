@@ -607,7 +607,7 @@ details.tool-card summary::-webkit-details-marker { display: none; }
 .vine .olive { fill: color-mix(in srgb, var(--on-page) 30%, var(--page-deep)); }
 .vine .vine-stem { stroke: color-mix(in srgb, var(--on-page) 40%, var(--page)); stroke-width: 2.2; }
 main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; }
-@media (min-width: 760px) { .vine { width: 70px; } main { padding-left: 12px; padding-right: 12px; } }
+@media (min-width: 760px) { .vine { width: 38px; } }
 .view { position: relative; }
 .corner-sprig { position: absolute; width: 92px; height: 38px; bottom: 6px; right: 10px; opacity: .8; pointer-events: none; }
 .corner-sprig.flip { right: auto; left: 10px; transform: scaleX(-1); }
@@ -1010,8 +1010,8 @@ html, body { min-height: 100%; overflow-x: clip; }
 body { min-height: 100vh; min-height: 100dvh; }
 .topbar { padding-left: calc(16px + env(safe-area-inset-left)); padding-right: calc(16px + env(safe-area-inset-right)); }
 main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc(26px + env(safe-area-inset-right)); }
-@media (min-width: 760px) { main { max-width: none; padding-left: calc(78px + env(safe-area-inset-left)); padding-right: calc(78px + env(safe-area-inset-right)); } }
-@media (min-width: 760px) and (max-width: 1099px) { main { max-width: 900px; } }
+/* A slim colored border (about a quarter to half an inch) so the bright page fills the screen. */
+@media (min-width: 760px) { main { max-width: none; padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } .vine { width: 38px; } }
 /* iPad landscape and bigger: Bible text on the left, the study section beside it */
 @media (min-width: 1100px) {
   main { max-width: 1400px; }
@@ -1313,7 +1313,9 @@ body.hide-visits #visitLine { display: none; }
 
 /* Welcome tour: a spotlight on one feature at a time, with big words and big buttons */
 .tour { position: fixed; inset: 0; z-index: 2000; }
-.tour-ring { position: fixed; border-radius: 16px; box-shadow: 0 0 0 4px var(--accent), 0 0 0 9999px rgb(0 0 0 / .55); transition: all .3s ease; pointer-events: none; }
+/* The thing being shown glows bright white and gold, and everything else dims, so it's obvious. */
+.tour-ring { position: fixed; border-radius: 16px; box-shadow: 0 0 0 4px #fff, 0 0 0 8px #f6c445, 0 0 26px 12px rgb(255 214 90 / .85), 0 0 0 9999px rgb(0 0 0 / .62); transition: all .3s ease; pointer-events: none; animation: tourGlow 1.6s ease-in-out infinite; }
+@keyframes tourGlow { 50% { box-shadow: 0 0 0 4px #fff, 0 0 0 9px #ffd75e, 0 0 38px 18px rgb(255 224 120 / .95), 0 0 0 9999px rgb(0 0 0 / .62); } }
 .tour.no-spot .tour-ring { top: 50% !important; left: 50% !important; width: 0 !important; height: 0 !important; box-shadow: 0 0 0 9999px rgb(0 0 0 / .55); }
 .tour-card { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom)); width: min(520px, calc(100vw - 24px)); background: var(--surface); color: var(--text); border-radius: 22px; padding: 18px 20px 16px; box-shadow: 0 12px 40px rgb(0 0 0 / .3); }
 .tour.no-spot .tour-card { top: 50% !important; bottom: auto !important; transform: translate(-50%, -50%); }
@@ -1333,7 +1335,7 @@ body.hide-visits #visitLine { display: none; }
 .tour-back[hidden] { display: none; }
 html.touring, html.touring body { overflow: hidden; }
 .big-btn { width: 100%; min-height: 56px; border-radius: 16px; border: 0; background: var(--accent); color: var(--bg); font-size: 1.15rem; font-weight: 700; margin-top: 8px; }
-@media (prefers-reduced-motion: reduce) { .tour-ring { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tour-ring { transition: none; animation: none; } }
 .path-cards.one { grid-template-columns: 1fr; }
 .pc-kind { display: block; font-size: .85rem; color: var(--muted); }
 .home-sub.small { font-size: 1rem; margin-top: -4px; }

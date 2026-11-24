@@ -42,7 +42,7 @@ every table.
 
 | Table | Who can read | Who can write |
 | --- | --- | --- |
-| `family_settings` (one row) | Any signed-in member | Any signed-in member (row `id = 1` only) |
+| `family_settings` (one row) | Any signed-in member | Only the organizer (`app_metadata.role = "organizer"`, row `id = 1` only) |
 | `user_backups` | Only the owner (`user_id = auth.uid()`) | Only the owner |
 | `ai_usage` | Only the owner's own rows | Nobody directly; only through the two functions below |
 
@@ -52,7 +52,8 @@ lock so two people asking at once can't both slip past the monthly limit, and
 `ai_record_turn()` can only fill in a row that belongs to the caller and hasn't been filled.
 
 **Trade-off:** the family's Bible keys are readable by any signed-in member, by design (one
-key for the whole family). The app only shows them inside "Family organizer tools", but a
+key for the whole family). The app shows them only inside "Family organizer tools", which only the organizer's account
+sees (tools/organizer.sql sets the mark; only Supabase admins can), but a
 technically minded member could read them from the database. That is acceptable for a
 family, and it is why sign-ups must be off.
 

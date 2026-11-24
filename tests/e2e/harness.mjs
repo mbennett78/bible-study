@@ -40,7 +40,7 @@ export function fakeSupabase(people) {
   const calls = [];
   const backups = {};
   const session = (u) => ({ access_token: `tok-${u.id}`, token_type: "bearer", expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, refresh_token: `ref-${u.id}`, user: user(u) });
-  const user = (u) => ({ id: u.id, email: u.email, aud: "authenticated", role: "authenticated", user_metadata: u.meta || {} });
+  const user = (u) => ({ id: u.id, email: u.email, aud: "authenticated", role: "authenticated", user_metadata: u.meta || {}, app_metadata: u.app || {} });
   const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*" };
   const bearer = (req) => (req.headers().authorization || "").replace("Bearer tok-", "");
   async function handle(route) {

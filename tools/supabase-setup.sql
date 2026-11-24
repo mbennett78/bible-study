@@ -1,6 +1,6 @@
 -- Run once in Supabase: SQL Editor -> New query -> paste -> Run.
 -- A one-row table that holds the family's shared API.Bible key.
--- Only signed-in family members (people added under Authentication -> Users) can read or change it.
+-- Signed-in family members can read it; only the family organizer can change it.
 create table if not exists public.family_settings (
   id int primary key default 1 check (id = 1),
   api_bible_key text,
@@ -15,8 +15,14 @@ drop policy if exists "family can read" on public.family_settings;
 drop policy if exists "family can add" on public.family_settings;
 drop policy if exists "family can change" on public.family_settings;
 create policy "family can read" on public.family_settings for select to authenticated using (true);
-create policy "family can add" on public.family_settings for insert to authenticated with check (id = 1);
-create policy "family can change" on public.family_settings for update to authenticated using (id = 1) with check (id = 1);
+-- Only the family organizer (see tools/organizer.sql) can save or change the shared settings.
+drop policy if exists "organizer can add" on public.family_settings;
+drop policy if exists "organizer can change" on public.family_settings;
+create policy "organizer can add" on public.family_settings for insert to authenticated
+  with check (id = 1 and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'organizer');
+create policy "organizer can change" on public.family_settings for update to authenticated
+  using (id = 1 and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'organizer')
+  with check (id = 1 and coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'organizer');
 
 -- Added later: extra Bible versions shared with the family (safe to run again).
 alter table public.family_settings add column if not exists extra_bibles jsonb default '[]'::jsonb;

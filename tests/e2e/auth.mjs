@@ -8,7 +8,7 @@ import { chromium, serve, check, finish, fakeSupabase, signInPage } from "./harn
 const site = await serve();
 const browser = await chromium.launch();
 const people = [
-  { id: "mel", email: "mel@example.com", password: "biblestudy" },
+  { id: "mel", email: "mel@example.com", password: "biblestudy", app: { role: "organizer" } },
   { id: "dad", email: "dad@example.com", password: "olive-tree-7", meta: { own_password: true } },
 ];
 const fake = fakeSupabase(people);
@@ -57,6 +57,8 @@ try {
     await page.reload(); await page.waitForTimeout(900);
     check("stays signed in after reopening", !(await visible(page, "#gate")));
     check("no password nag after it was changed", !(await page.$(".pw-sheet[open]")));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(600);
+    check("the family organizer sees the organizer tools", await visible(page, "#organizerBox"));
     // Sign out from the account button: this device only.
     await page.click("#acctBtn"); await page.waitForTimeout(200);
     await page.click("#acctOut"); await page.waitForTimeout(1200);
@@ -79,6 +81,8 @@ try {
     check("second device: setup opens", html.length > 0);
     check("second device: no password step", !sawPw);
     check("second device: no password nag", !(await page.$(".pw-sheet[open]")));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(600);
+    check("other family members never see the organizer tools or Bible keys", !(await visible(page, "#organizerBox")) && !(await visible(page, "#bibleTextCard")));
     await ctx.close();
   }
 

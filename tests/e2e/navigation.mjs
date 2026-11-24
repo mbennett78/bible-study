@@ -18,6 +18,12 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(site.url); await page.waitForTimeout(900);
   check("Home shows even when a path has no start date", (await page.$$("#homeView .resume-card")).length > 0);
+  check("Home shows My Bible and the three studies as four equal boxes", (await page.$$("#homeView .path-cards.four .path-card")).length === 4 && Boolean(await page.$("#homeView .path-cards.four .my-bible")));
+  check("no shopping links anywhere", !(await page.$("#view-shop")) && !(await page.$("#homeShop")) && !/amazon/i.test(await page.content()));
+  check("the bottom menu sits on the very bottom", await page.evaluate(() => { const r = document.querySelector(".tabbar").getBoundingClientRect(); return Math.abs(r.bottom - innerHeight) < 2; }));
+  await page.click("#dailyCustom"); await page.waitForTimeout(150);
+  await page.click('[data-dpart="prayer"]'); await page.waitForTimeout(300);
+  check("the prayer can be turned off while the question stays", !/Pray/.test(await page.textContent(".daily-card .dy-dev")) && /Think about/.test(await page.textContent(".daily-card .dy-dev")));
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(500);
   check("reading off the path offers a way back", /Back to my place: Genesis 3/.test(await page.textContent("#backToPlace")));
   await page.click("#backToPlace"); await page.waitForTimeout(500);

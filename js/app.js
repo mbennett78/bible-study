@@ -11,7 +11,7 @@ import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
-import { authEnabled, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, isOrganizer, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -59,8 +59,7 @@ function showView(name) {
     else b.removeAttribute("aria-current");
   });
   document.body.dataset.view = name;
-  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings", shop: "Books and music" }[name] || "";
-  if (name === "shop") renderShop();
+  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings" }[name] || "";
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
@@ -69,16 +68,6 @@ function showView(name) {
 }
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
 // Keep page content clear of the bottom menu, whatever its real height on this device.
-// Some iPad Safari windows place fixed bars off the true bottom edge. Line the bottom menu up
-// with what's actually on screen, including when someone has zoomed in.
-if (window.visualViewport) {
-  const bar = document.querySelector(".tabbar"), vv = window.visualViewport;
-  const pin = () => {
-    const gap = Math.round(window.innerHeight - (vv.height + vv.offsetTop));
-    bar.style.transform = Math.abs(gap) > 2 ? `translateY(${-gap}px)` : "";
-  };
-  vv.addEventListener("resize", pin); vv.addEventListener("scroll", pin); window.addEventListener("scroll", pin, { passive: true }); pin();
-}
 if ("ResizeObserver" in window) new ResizeObserver(([e]) => document.documentElement.style.setProperty("--tabbar-total", `${Math.ceil(e.target.getBoundingClientRect().height)}px`)).observe(document.querySelector(".tabbar"));
 
 /* ---------- Reading ---------- */
@@ -154,7 +143,8 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
         : e.kind === "auth" ? "API.Bible didn't accept the saved key, or this version isn't on the plan."
         : "No NASB edition was found on the plan. Pick one under Load versions on my plan.";
       readerEl.innerHTML = `<div class="message"><strong>The Bible text isn't ready yet</strong>Please ask the person who set up the app to share the Bible text with the family, then tap Try again.
-        <span class="why">${esc(why)}</span><br><button class="small" id="retryFamily">Try again</button> <button class="small" id="iSetUp">I set up the app</button></div>`;
+        <span class="why">${esc(why)}</span><br><button class="small" id="retryFamily">Try again</button> <button class="small" id="iSetUp" hidden>I set up the app</button></div>`;
+      isOrganizer().then((yes) => { if (yes && $("#iSetUp")) $("#iSetUp").hidden = false; });
       $("#retryFamily").addEventListener("click", async () => { const fk = await getFamilyKey(); if (fk) { store.set("apiBibleKey", ""); applyInvite({ ...fk, look: "" }); } openChapter(book, chapter); });
       $("#iSetUp").addEventListener("click", () => { showView("settings"); const box = $("#organizerBox"); if (box) box.open = true; $("#bibleTextCard").scrollIntoView({ block: "start" }); });
       return;
@@ -817,34 +807,13 @@ function addMic(wrap, ta) {
 // "" is the built-in helper: it answers right here in the chat, paid for by the family's
 // prepaid AI credits with daily and monthly limits (supabase/functions/study-partner).
 const TALK_ICON = `<svg class="talk-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 20c10 1 18 8 18 17 0 4-1.5 7.5-4 10.5l2 7-8-3c-2.5 1-5 1.5-8 1.5-8 0-15-4-17.5-10" class="ti-back"/><path d="M27 8C15 8 6 16 6 26c0 4.5 2 8.5 5 11.5L8 46l10-4c3 1.3 6 2 9 2 12 0 21-8 21-18S39 8 27 8z" class="ti-front"/><circle cx="17" cy="26" r="3" class="ti-dot"/><circle cx="27" cy="26" r="3" class="ti-dot"/><circle cx="37" cy="26" r="3" class="ti-dot"/></svg>`;
-const PARTNERS = [
-  ...(authEnabled ? [["", "Bible helper", TALK_ICON, null]] : []),
-  ["claude", "Claude", "🧡", (q) => `https://claude.ai/new?q=${encodeURIComponent(q)}`],
-  ["chatgpt", "ChatGPT", "💬", (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}`],
-  ["grok", "Grok", "⚡", (q) => `https://grok.com/?q=${encodeURIComponent(q)}`],
-  ["gemini", "Gemini", "✨", () => "https://gemini.google.com/app"],
-];
+// Only the family's shared Bible helper; nobody is sent off to other AI sites.
+const PARTNERS = [["", "Bible helper", TALK_ICON, null]];
 const CHAT_IDEAS = ["What's the main point of this chapter?", "What was happening when this was written?", "How does this point to Jesus?", "What does a key word mean in the original language?", "How can I live this out this week?", "How would I explain this to a friend who isn't a believer?"];
-function partnerPrompt(question) {
-  const { book, chapter } = store.get("last");
-  const ver = (versionList().find(([v]) => v === store.get("version")) || ["", "NASB"])[1];
-  return `I'm studying ${BOOK_BY_ID[book].name} ${chapter} (${ver}) and I'd like you to be my Bible study partner.
-
-${question.trim() || "Help me understand this chapter: what it says, the background, and how it connects to the rest of the Bible."}
-
-Please keep Scripture first and quote it exactly. Say clearly what the text states plainly, what is interpretation, and where the Bible is silent. Where the Bible is clear, say so clearly. Where faithful Christians differ, stay neutral: show the main views fairly, say who holds each and whether its support comes from the Bible or elsewhere, don't pick a winner, and end on the common ground. Name your sources and the tradition they come from (for example Baptist, Church of Christ, Catholic, or Jewish). No politics. I'm Baptist / Church of Christ, so mention other religions only briefly if they help. Keep it warm and easy to follow.`;
-}
-const currentPartner = () => PARTNERS.find(([v]) => v === (store.get("aiPartner") || ""));
+const currentPartner = () => PARTNERS[0];
 const builtIn = (p) => p && p[0] === "";
 function renderPartnerPicks() {
-  const cur = store.get("aiPartner") || "";
-  document.querySelectorAll(".partner-pick").forEach((el) => {
-    el.innerHTML = PARTNERS.map(([v, l, icon]) => `<button type="button" class="chat-avatar-btn" data-partner="${v}" aria-pressed="${cur === v}"><span class="chat-emoji" aria-hidden="true">${icon}</span>${l}</button>`).join("")
-      + (el.id === "partnerPick" || authEnabled ? "" : `<button type="button" class="chat-avatar-btn" data-partner="" aria-pressed="${!cur}">None</button>`);
-    el.querySelectorAll("[data-partner]").forEach((b) => b.addEventListener("click", () => { store.set("aiPartner", b.dataset.partner); renderPartnerPicks(); resetChat(); }));
-  });
-  const p = currentPartner();
-  if ($("#partnerHint")) $("#partnerHint").textContent = builtIn(p) ? "Ask questions and get answers right here" : p ? `Talk this chapter over with ${p[1]} ${p[2]}` : "Talk this chapter over with your AI helper";
+  if ($("#partnerHint")) $("#partnerHint").textContent = "Ask questions and get answers right here";
 }
 function chatBubble(who, text, extra = "") {
   const p = currentPartner();
@@ -860,9 +829,9 @@ let chatTurns = [];   // this chapter's conversation with the built-in helper
 let chatBusy = false;
 const HELPER_SAYS = {
   signin: "Please sign in first (Settings, then Account) so I can answer you here.",
-  setup: "The built-in helper isn't turned on yet. Whoever set up the app can switch it on. For now you can tap Claude, ChatGPT, Grok or Gemini above.",
-  monthly: "The family has used all of this month's questions, so I'm resting until the 1st. These questions are a gift provided by the app developer. For more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.",
-  credits: "The family's question credits are used up for now. These questions are a gift provided by the app developer. For more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.",
+  setup: "The built-in helper isn't turned on yet. Whoever set up the app can switch it on.",
+  monthly: "The family has used all of this month's questions, so I'm resting until the 1st. These questions are a gift provided by the app developer. For more, please contact the app developer.",
+  credits: "The family's question credits are used up for now. These questions are a gift provided by the app developer. For more, please contact the app developer.",
   offline: "I couldn't connect. Check your internet and try again.",
   refused: "I'm not able to help with that one. Try asking another way, or talk it over with someone you trust.",
   busy: "I'm a little busy right now. Please try again in a minute.",
@@ -889,7 +858,7 @@ async function askBuiltIn(q) {
   chatTurns.pop();
   const why = r?.error || "busy";
   chatBubble("them", why === "shared"
-    ? `You've had your ${r.per_person || 100} questions this month and some extras. What's left is saved so everyone else in the family gets their ${r.per_person || 100} too. Your questions come back on the 1st. These questions are provided by the app developer; for more, please contact the app developer. You can still tap Claude, ChatGPT, Grok or Gemini above.`
+    ? `You've had your ${r.per_person || 100} questions this month and some extras. What's left is saved so everyone else in the family gets their ${r.per_person || 100} too. Your questions come back on the 1st. These questions are provided by the app developer; for more, please contact the app developer.`
     : HELPER_SAYS[why] || HELPER_SAYS.busy);
 }
 // Once a session, when the family has used 70% of the month's helper budget.
@@ -908,35 +877,21 @@ async function checkHelperStanding() {
 }
 function resetChat() {
   if (!$("#chatLog")) return;
-  const p = currentPartner();
   const { book, chapter } = store.get("last");
   $("#chatLog").innerHTML = "";
   chatTurns = [];
-  chatBubble("them", builtIn(p)
-    ? `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm your Bible helper. Ask me anything about ${BOOK_BY_ID[book].name} ${chapter} and I'll answer right here.`
-    : p
-    ? `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm ${p[1]}, your study partner. What would you like to talk about in ${BOOK_BY_ID[book].name} ${chapter}?`
-    : "Hi! Pick your study partner above: Claude, ChatGPT, Grok or Gemini. Then ask me anything about this chapter.");
+  chatBubble("them", `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm your Bible helper. Ask me anything about ${BOOK_BY_ID[book].name} ${chapter}: what it means, the history and culture behind it, or how to live it out.`);
   $("#chatSuggest").innerHTML = CHAT_IDEAS.map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
   $("#chatSuggest").querySelectorAll(".chat-idea").forEach((b) => b.addEventListener("click", () => { $("#partnerQ").value = b.textContent; sendChat(); }));
 }
 async function sendChat() {
-  const p = currentPartner();
   const q = $("#partnerQ").value.trim();
   if (!q) { $("#partnerQ").focus(); return; }
   if (chatBusy) return;
   chatBubble("me", q);
   $("#partnerQ").value = "";
   buddy.excite();
-  if (builtIn(p)) { await askBuiltIn(q); return; }
-  if (!p) { chatBubble("them", "Pick Claude, ChatGPT, Grok or Gemini above first, then send again."); $("#partnerQ").value = q; return; }
-  const prompt = partnerPrompt(q);
-  let copied = false;
-  try { await navigator.clipboard.writeText(prompt); copied = true; } catch { /* not allowed */ }
-  window.open(p[3](prompt), "_blank", "noopener");
-  chatBubble("them", p[0] === "gemini"
-    ? `I opened Gemini for you. ${copied ? "Tap the message box there, paste, and send." : "Type your question there."} Come back here any time for the next question.`
-    : `I opened ${p[1]} with your question about this chapter ready. Press send there to see my answer. Come back here any time for the next question.`);
+  await askBuiltIn(q);
 }
 /* ---------- Study buddy: the little stick figure who opens the chat ---------- */
 const game = createGame({
@@ -1010,21 +965,6 @@ if ($("#partnerBox")) {
   $("#partnerGo").addEventListener("click", sendChat);
   $("#partnerBox").addEventListener("toggle", () => { if ($("#partnerBox").open && builtIn(currentPartner())) checkHelperStanding(); });
   $("#partnerQ").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } });
-}
-
-/* ---------- Books and music: Amazon searches, no store integration ---------- */
-const SHOP = [
-  ["Christian books", [["Bible study guides", "bible study guide book"], ["Christian living", "christian living books"], ["Apologetics: the case for Christ", "christian apologetics books"], ["C. S. Lewis", "C. S. Lewis books"], ["Max Lucado", "Max Lucado books"], ["Josh Ross", "Josh Ross books"], ["Devotionals", "daily christian devotional"], ["Bible commentaries", "bible commentary"]]],
-  ["Christian counseling and psychology", [["Christian psychology", "christian psychology books"], ["Christian counseling", "biblical counseling books"], ["Faith and anxiety", "christian books on anxiety and worry"], ["Grief and hope", "christian books on grief"], ["Marriage and family", "christian marriage and family books"]]],
-  ["Psychology", [["Popular psychology", "psychology books"], ["Habits and the mind", "habits psychology books"], ["Aging well and memory", "aging well memory books"]]],
-  ["For kids", [["Bible storybooks", "children's bible storybook"], ["Kids' devotionals", "devotional for kids"], ["Bible activity books", "bible activity book for kids"]]],
-  ["Christian music", [["Worship music", "worship music", "music"], ["Hymns", "hymns", "music"], ["Southern gospel", "southern gospel", "music"], ["A cappella hymns", "a cappella hymns", "music"], ["Kids' worship songs", "kids worship songs", "music"], ["Songbooks and hymnals", "hymnal songbook"]]],
-];
-function renderShop() {
-  const el = $("#shopList");
-  if (!el || el.childElementCount) return;
-  const url = (q, kind) => kind === "music" ? `https://music.amazon.com/search/${encodeURIComponent(q)}` : `https://www.amazon.com/s?k=${encodeURIComponent(q)}`;
-  el.innerHTML = SHOP.map(([title, items]) => `<div class="card shop-card"><h2>${esc(title)}</h2><div class="shop-links">${items.map(([label, q, kind]) => `<a class="btn-link" href="${url(q, kind)}" target="_blank" rel="noopener">${esc(label)}</a>`).join("")}</div></div>`).join("");
 }
 
 /* ---------- Daily life journal ---------- */
@@ -1902,13 +1842,12 @@ function pathCardsHtml() {
       <div class="pc-actions"><button class="small" data-start="${id}"${featured ? ` data-read-now="1"` : ""}>${label}</button>${isActive ? `<button class="quiet-link" data-stages="${id}">See ${featured ? "sections" : "stages"}</button>` : ""}</div>
     </div>`;
   };
-  // My Bible on its own, then the three self-guided studies. Every one has the same study
+  // My Bible first, then the three self-guided studies, as four equal boxes. Every one has the same study
   // section, questions, journal and read-aloud under each chapter.
   const [mine, ...studies] = PATH_ORDER;
-  return `<div class="path-cards one">${card(mine, true)}</div>
-    <h2 class="home-h">Self-guided studies</h2>
-    <p class="home-sub small">Each one walks through the whole Bible a different way. The study notes, Bible helper, journal and read-aloud are with you in all of them.</p>
-    <div class="path-cards four">${studies.map((id) => card(id)).join("")}</div>`;
+  return `<h2 class="home-h">Studies</h2>
+    <p class="home-sub small">Four ways through the whole Bible. The study notes, Bible helper, journal and read-aloud are with you in every one.</p>
+    <div class="path-cards four">${card(mine, true)}${studies.map((id) => card(id)).join("")}</div>`;
 }
 function wirePathCards(root) {
   root.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => {
@@ -1941,7 +1880,6 @@ function renderHome() {
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     ${pathCardsHtml()}
     <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible games</strong><small>Quiz yourself, or play with up to ${20} players or teams</small></span><span class="go" aria-hidden="true">›</span></button>
-    <button class="resume-card shop-link" id="homeShop"><span><strong>Books and music</strong><small>Christian books, counseling, psychology and worship music</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
       <h2>Go anywhere in the Bible</h2>
       <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>
@@ -1955,7 +1893,6 @@ function renderHome() {
   wirePathCards(view);
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
-  $("#homeShop").addEventListener("click", () => showView("shop"));
   $("#homeGames").addEventListener("click", () => game.open());
   $("#homeSetupGo")?.addEventListener("click", () => openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => !st.done()))));
   // Continue: put setup away for now (it stays in Settings, under Set up app) and go back to reading.
@@ -1965,8 +1902,9 @@ function renderHome() {
 
 
 /* ---------- Today: verse of the day, psalm and proverb, a question and a prayer ---------- */
-const DAILY_PARTS = [["verse", "Verse of the day"], ["readings", "Psalm and Proverb of the day"], ["devotion", "Question and prayer"]];
-const dailyOn = (k) => (store.get("daily") || {})[k] !== false;
+const DAILY_PARTS = [["verse", "Verse of the day"], ["readings", "Psalm and Proverb of the day"], ["question", "Think about (a question)"], ["prayer", "Prayer"]];
+// "devotion" was once one switch for both; an old "off" still turns both off.
+const dailyOn = (k) => { const d = store.get("daily") || {}; return d[k] ?? ((k === "question" || k === "prayer") ? d.devotion !== false : true) ; };
 function dailyHtml() {
   const t = dailyToday();
   const v = t.verse, name = BOOK_BY_ID[v.book].name;
@@ -1976,8 +1914,8 @@ function dailyHtml() {
       <blockquote id="dailyVerseText" class="dy-text">${esc(v.theme)}</blockquote>
       <button class="dy-ref" data-dgo="${v.book}.${v.chapter}.${v.verse}">${esc(name)} ${v.chapter}:${v.verse} · Read it in context ›</button></div>`);
   if (dailyOn("readings")) parts.push(`<div class="dy-row"><button class="dy-btn" data-dgo="PSA.${t.psalm}"><span aria-hidden="true">🎵</span> Psalm ${t.psalm}</button><button class="dy-btn" data-dgo="PRO.${t.proverb}"><span aria-hidden="true">💡</span> Proverbs ${t.proverb}</button></div>`);
-  if (dailyOn("devotion")) parts.push(`<div class="dy-dev"><span class="dy-label">Think about</span><p>${esc(t.devotion[0])}</p>
-      <span class="dy-label">Pray</span><p class="dy-prayer">${esc(t.devotion[1])}</p>
+  if (dailyOn("question") || dailyOn("prayer")) parts.push(`<div class="dy-dev">${dailyOn("question") ? `<span class="dy-label">Think about</span><p>${esc(t.devotion[0])}</p>` : ""}
+      ${dailyOn("prayer") ? `<span class="dy-label">Pray</span><p class="dy-prayer">${esc(t.devotion[1])}</p>` : ""}
       <button class="small" id="dailyWrite">✎ Write in my daily journal</button></div>`);
   return `<section class="daily-card" aria-label="Today">
     <div class="dy-head"><h2>Today</h2><span class="muted small-print">${esc(date)}</span><button class="quiet-link" id="dailyCustom">Choose what shows</button></div>
@@ -2330,20 +2268,30 @@ function renderAccount() {
   // Grown-up settings (Bible keys, invite links) live in a closed "Family organizer tools" box,
   // so everyone else just signs in and reads.
   const org = $("#organizerBody");
-  if (org && !org.dataset.ready) {
+  if (org && !org.dataset.ready) organizerGate(org);
+  wireSignOut();
+}
+// Family organizer tools: only the organizer's account ever sees them.
+async function organizerGate(org) {
+  org.dataset.ready = "1";
+  if (!(await isOrganizer())) { $("#organizerBox").hidden = true; $("#bibleTextCard").hidden = true; return; }
+  {
     org.dataset.ready = "1";
     org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>Share the Bible key with the family</h2>
       <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in, without seeing it. Everyone's reading counts toward your 5,000 a month.</p>
       <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
     org.append($("#bibleTextCard"));
+    $("#bibleTextCard").hidden = false;
     $("#organizerBox").hidden = false;
   }
-  $("#shareFamilyKey")?.addEventListener("click", async () => {
+  $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
     try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Shared ✓ Family members will get it, and these versions, the next time they open the app."; }
-    catch (x) { out.textContent = x.message; }
+    catch (x) { out.textContent = /row-level|policy|permission/i.test(x.message || "") ? "Only the family organizer's account can share the Bible key." : x.message; }
   });
+}
+function wireSignOut() {
   $("#signOutBtn")?.addEventListener("click", async () => {
     if (!confirm("Sign out of Bible Study on this device?")) return;
     $("#signOutBtn").disabled = true; $("#signOutBtn").textContent = "Saving and signing out…";
@@ -2535,32 +2483,14 @@ inviteWelcome();
 /* ---------- Welcome tour: big, simple steps that point at each feature ---------- */
 // Shown once, the first time someone opens the app (after setup). "Skip" ends it any time,
 // and it can always be taken again from Settings or the ⋮ menu.
-const qmTour = () => { const d = $("#quickMenu"); renderQuickMenu(); if (!d.open) d.show(); d.classList.add("tour-shown"); };
+// Short on purpose: six stops. Everything else is in ❓ help on each screen.
 const TOUR = [
-  { icon: "👋", title: "Welcome!", text: "This tour shows you around, one thing at a time. The part we're talking about is circled. Tap Next to go on, or Skip tour any time. You can take it again later: tap ❓ at the top or open the ⋮ menu." },
-  { view: "home", at: ".tabbar", icon: "🧭", title: "Getting around", text: "These big buttons at the bottom take you anywhere: Home, Read, My study, My path and Settings. Tap Home to get back to the start." },
-  { view: "home", at: "#helpBtn", icon: "❓", title: "Help is always here", text: "Not sure what something does? Tap ❓ at the top of any screen for help with that screen, or to take this tour again." },
-  { view: "home", at: "#acctBtn", icon: "👤", title: "Signing in and out", text: "Your first initial is in the top corner. Tap it to see who's signed in or to sign out. You stay signed in on this device until you sign out, so you won't need your password every time." },
-  { view: "home", at: "#quickMenu", before: qmTour, icon: "⋮", title: "The ⋮ menu", text: "Tap ⋮ at the top right for this menu. Jump to any page, take this tour again, and turn features on or off, like the read-aloud bar, trivia or the study section." },
-  { view: "home", at: ".daily-card", icon: "☀️", title: "Today", text: "Each day: a verse, a psalm and a proverb, a question to think about and a prayer. The whole family gets the same ones, so you can talk about them together. Tap \"Choose what shows\" to pick what you see." },
-  { view: "home", at: ".path-card.my-bible", icon: "📖", title: "My Bible", text: "Read the whole Bible in order, Genesis to Revelation. The bar shows how far you've come." },
-  { view: "home", at: ".path-cards.four", icon: "🛤️", title: "Self-guided studies", text: "Three more ways through the whole Bible: in the order things happened, by theme, or by who it was written to. Each shows your progress and keeps its own place, so you can switch any time." },
-  { view: "home", at: ".jump-card", icon: "🔎", title: "Go anywhere", text: "Jump to any book or chapter, even in the middle of a study. Your study keeps its place for when you come back." },
-  { view: "read", at: "#refButton", icon: "📚", title: "Pick a book", text: "Tap the book name at the top. Big squares show every book, Old Testament then New. Tap a book to see what it's about, then a chapter, then a verse. No spelling needed, but you can type if you like." },
-  { view: "read", at: ".version-switch", icon: "🔤", title: "Bible versions", text: "Switch versions at the top any time, even in the middle of a study. You stay on the same chapter. (Versions appear there once the family's Bible is set up.)" },
-  { view: "read", at: "#listenBar", icon: "🔊", title: "Read it to me", text: "Tap Read aloud and the app reads the chapter to you, highlighting each part as it goes. Turn on Read to me and it keeps reading every chapter you open, until you turn it off." },
-  { view: "read", at: "#bookIntro", icon: "📜", title: "Setting the stage", text: "Like a study Bible: who wrote the book, when, to whom, the setting, and where scholars' views differ. Tap it to open; it stays folded so the Bible text comes first." },
-  { view: "read", at: "#reader", icon: "👆", title: "Tap a word", text: "Tap any word in the Bible text to see what it means in plain words, and the Hebrew or Greek behind it. Nothing pops up unless you tap." },
-  { view: "read", at: "#studyNotes", icon: "🔎", title: "The study section", text: "Below every chapter: Strong's concordance with every Hebrew or Greek word, word search, history, maps then and now, science, scholars' views from different churches, cross-references, and the sources for all of it. Scripture comes first." },
-  { view: "read", at: "#partnerBox", icon: TALK_ICON, title: "Ask questions", text: "Open Chat with my study partner and ask anything about the chapter. The Bible helper answers right here. Tap 🎤 to talk instead of type." },
-  { view: "read", at: "#journalBox", icon: "✎", title: "My journal", text: "Write your thoughts, prayers and thanks for each chapter. Tap 🎤 to speak instead of typing. It saves by itself." },
-  { view: "books", at: "#view-books .segments", icon: "📊", title: "My study", text: "Your progress, the chapters you've visited, your favorites, your daily journal and all your journal entries in one place." },
-  { view: "settings", at: "#accountCard", icon: "🔑", title: "Your account", text: "Change your password here, and choose whether to stay signed in on this device." },
-  { view: "settings", at: "#lockCard", icon: "🔒", title: "Lock your journal (if you want)", text: "Your journal is open unless you choose to lock it. To lock it, type a passcode here and save. Then tap 🔒 Lock my journal whenever you like. To leave it open, do nothing." },
-  { view: "settings", at: "#textSize", wrap: ".card", icon: "🔠", title: "Easier to see and use", text: "Make the words bigger, make buttons bigger, turn on high contrast, turn tap-a-word on or off, and choose simple or deeper answers from the Bible helper. You can also pinch to zoom." },
-  { view: "settings", at: "#lookCard", icon: "🎨", title: "Change the look", text: "Classic, a spring garden, Christmas, Easter, Thanksgiving, pictures for kids, and more." },
-  { view: "shop", at: "#view-shop h1", wrap: "section", icon: "🎵", title: "Books and music", text: "Christian books, kids' books and worship music to buy on Amazon." },
-  { view: "home", at: "#helpBtn", icon: "🎉", title: "You're all set!", text: "Take this tour again any time: tap ❓ at the top or open the ⋮ menu. Enjoy your study!" },
+  { view: "home", at: ".tabbar", icon: "🧭", title: "Getting around", text: "These buttons at the bottom take you anywhere. Home brings you back to the start." },
+  { view: "home", at: ".path-cards.four", icon: "📖", title: "Your studies", text: "My Bible reads straight through, Genesis to Revelation. The other three go through the whole Bible a different way. Each keeps your place." },
+  { view: "read", at: "#reader", icon: "👆", title: "Read and tap", text: "Here's the Bible text. Tap any word to see what it means, with the Hebrew or Greek behind it." },
+  { view: "read", at: "#studyNotes", icon: "🔎", title: "Study notes", text: "Below each chapter: the history and culture, the main views scholars hold, maps and more, like a study Bible." },
+  { view: "read", at: "#partnerBox", icon: TALK_ICON, title: "Ask anything", text: "Your Bible helper answers questions about any chapter, right here. Or tap the little stick-figure friend on the side." },
+  { view: "home", at: "#helpBtn", icon: "❓", title: "Help any time", text: "Not sure about something? Tap ❓ at the top of any screen for help with that screen, or to take this tour again." },
 ];
 let tourAt = -1;
 const tourEl = document.createElement("div");
@@ -2663,7 +2593,6 @@ const HELP = {
   books: ["My study", ["Progress shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["My path", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
   settings: ["Settings", ["Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
-  shop: ["Books and music", ["Each button searches Amazon for that kind of book or music. Nothing is bought unless you buy it on Amazon."]],
 };
 const helpSheet = document.createElement("dialog");
 helpSheet.className = "welcome-back help-sheet"; helpSheet.setAttribute("aria-label", "Help");

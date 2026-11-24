@@ -112,6 +112,23 @@ export async function signOut() {
   try { localStorage.removeItem(AUTH_KEY); } catch { /* ignore */ }
 }
 
+// The family organizer is the one account marked { "role": "organizer" } in Supabase's
+// app_metadata (tools/organizer.sql). Only Supabase admins can set app_metadata, so nobody can
+// make themselves the organizer from the app. The database checks the same mark before
+// anyone can change the family's Bible settings.
+export async function isOrganizer() {
+  if (!authEnabled) return false;
+  try {
+    const c = await sb();
+    const { data: s } = await c.auth.getSession();
+    if (!s.session) return false;
+    const { data, error } = await c.auth.getUser(); // fresh from the server
+    const role = (error ? s.session.user : data.user)?.app_metadata?.role;
+    // Marked just now? Refresh the sign-in so the database sees the mark too.
+    if (role === "organizer" && s.session.user?.app_metadata?.role !== "organizer") await c.auth.refreshSession().catch(() => {});
+    return role === "organizer";
+  } catch { return false; }
+}
 // The family's shared Bible key, kept in the family's own Supabase (table family_settings,
 // readable and writable only by signed-in family members). Lets everyone read on one key
 // without invite links.
