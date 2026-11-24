@@ -120,7 +120,7 @@ try {
     check("naming: the chat says his name", /Ask Pip anything/.test(await page.textContent("#chatSheet h2")));
     await ctx.close();
   }
-  // Sometimes he asks them to play Bible Quest with him.
+  // Sometimes he asks them to play Bible Spin with him.
   {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
     await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
@@ -130,7 +130,7 @@ try {
     await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
-    check("play: now and then he asks them to play Bible Quest", /Bible Quest|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
+    check("play: now and then he asks them to play Bible Spin", /Bible Spin|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
     await page.$eval(".buddy-say .bs-yes", (b) => b.click()); await page.clock.runFor(1500);
     check("play: yes takes them straight to choosing how tough he plays", await page.$eval("dialog.quest", (d) => d.open) && Boolean(await page.$("dialog.quest [data-lv]")) && /How tough should Pip be/.test(await page.textContent("dialog.quest")));
     await ctx.close();

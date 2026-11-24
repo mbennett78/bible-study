@@ -2584,3 +2584,9 @@ textarea.nf-big { font-size: 1.25rem; }
 .buddy-tear { fill: #6fb3e8; }
 .buddy.teary .buddy-tear, .buddy.teary .buddy-frown, .buddy.teary .buddy-brow { display: inline; }
 .bnd-face .buddy-glasses, .bnd-face .buddy-paper, .bnd-face .buddy-mad, .bnd-face .buddy-tear { display: none; }
+
+/* Quick links at the top of the side margin */
+.margin-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 0 0 10px; }
+.margin-quick button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font: inherit; font-size: 1.15rem; cursor: pointer; min-height: 44px; }
+.margin-quick button span { font-size: .72rem; font-weight: 600; }
+.margin-quick button:hover { border-color: currentColor; }

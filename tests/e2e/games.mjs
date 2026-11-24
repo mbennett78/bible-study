@@ -26,7 +26,7 @@ try {
   // Solo: Gospels, 5 questions, every answer right.
   await page.click("#homeGames"); await page.waitForTimeout(200);
   await page.click("dialog.quest [data-practice]"); await page.waitForTimeout(200);
-  check("the practice quiz opens from Bible Quest", await page.$eval("dialog.game", (d) => d.open));
+  check("the practice quiz opens from Bible Spin", await page.$eval("dialog.game", (d) => d.open));
   await page.click('dialog.game [data-scope="gospels"]');
   await page.click('dialog.game [data-count="5"]');
   await page.click('dialog.game [data-timer="0"]');

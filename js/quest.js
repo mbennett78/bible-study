@@ -1,4 +1,4 @@
-// Bible Quest: the main Bible game. Spin the wheel, answer before the candle burns down,
+// Bible Spin: the main Bible game. Spin the wheel, answer before the candle burns down,
 // collect coins, and win a jewel for each kind of question (like the jewels on the high
 // priest's breastplate, Exodus 28:15-21). Collect them all to win.
 //
@@ -148,7 +148,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   const BH = () => esc(buddyName()); // the same, ready for HTML
   const dlg = document.createElement("dialog");
   dlg.className = "quest";
-  dlg.setAttribute("aria-label", "Bible Quest");
+  dlg.setAttribute("aria-label", "Bible Spin");
   document.body.append(dlg);
 
   const mine = () => ({ coins: 0, earned: 0, played: 0, won: 0, jewels: 0, best: 0, seen: [], badges: {}, players: [], buddy: "fair", sound: true, ...(store.get("quest") || {}) });
@@ -164,7 +164,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
 
   function paint(html) {
     dlg.classList.toggle("still", reduce());
-    dlg.innerHTML = `<div class="q-top"><span class="q-coins" aria-label="${mine().coins} coins">🪙 <b>${mine().coins.toLocaleString()}</b></span><span class="q-title">Bible Quest</span><button type="button" class="q-x" data-close aria-label="Close">×</button></div><div class="q-body">${html}</div>`;
+    dlg.innerHTML = `<div class="q-top"><span class="q-coins" aria-label="${mine().coins} coins">🪙 <b>${mine().coins.toLocaleString()}</b></span><span class="q-title">Bible Spin</span><button type="button" class="q-x" data-close aria-label="Close">×</button></div><div class="q-body">${html}</div>`;
     dlg.querySelector("[data-close]").onclick = () => { if (!game || game.over || confirm("Leave this game? It won't be saved.")) { stop(); game = null; dlg.close(); } };
   }
 
@@ -364,7 +364,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <div class="q-final">${game.players.map((pl) => `<div class="q-pl"><span class="q-pl-name">${esc(pl.name)}</span><span class="q-jewels">${CATEGORIES.map((c) => jewelSvg(c, pl.jewels[c.id], pl.progress[c.id] || 0)).join("")}</span><small>${pl.right} of ${pl.asked} right · ${pl.coins} 🪙</small></div>`).join("")}</div>
       ${winBonus ? `<p class="q-gain">Winner's bonus +${winBonus} 🪙</p>` : ""}
       ${fresh.length ? `<div class="q-newbadges"><h3>New badge${fresh.length > 1 ? "s" : ""}!</h3>${fresh.map(([, name, icon]) => `<div class="q-badge">${medal(icon, { fresh: true })}<b>${esc(name)}</b></div>`).join("")}</div>` : ""}
-      <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Quest</button></div>`);
+      <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
     if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("cheer"); } else sound("done");
     if (iWon) onWin?.(game.mode);
     else if (game.mode === "buddy" && top !== me) onBuddyWin?.();

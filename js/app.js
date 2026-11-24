@@ -1330,7 +1330,7 @@ async function sendChat() {
   buddyFeels(q);
   await askBuiltIn(q);
 }
-/* ---------- Games: Bible Quest, plus the older practice quiz ---------- */
+/* ---------- Games: Bible Spin, plus the older practice quiz ---------- */
 const game = createGame({
   store, esc,
   myName: () => store.get("name")?.trim() || "Me",
@@ -1342,7 +1342,7 @@ const game = createGame({
     return [...sw, accent, "#f4d35e"].filter(Boolean);
   },
 });
-// Bible Quest is the main game; the older quiz stays as "Practice one part of the Bible".
+// Bible Spin is the main game; the older quiz stays as "Practice one part of the Bible".
 const quest = createQuest({
   store, esc,
   myName: () => store.get("name")?.trim() || "Me",
@@ -1580,10 +1580,10 @@ setInterval(() => {
     }
     return;
   }
-  // About one visit in four, he asks them to play Bible Quest with him (if games are on).
+  // About one visit in four, he asks them to play Bible Spin with him (if games are on).
   if ((store.get("show") || {}).games !== false && Math.random() < 0.25) {
     const n = store.get("name")?.trim() || "";
-    const ask = [`Hey${n ? ` ${n}` : ""}! Want to play a round of Bible Quest with me? 🎲`, "I've been practicing my Bible trivia... bet you can't beat me! Want to play?", "Spin the wheel with me? I'll play fair, promise! 😄"];
+    const ask = [`Hey${n ? ` ${n}` : ""}! Want to play a round of Bible Spin with me? 🎲`, "I've been practicing my Bible trivia... bet you can't beat me! Want to play?", "Spin the wheel with me? I'll play fair, promise! 😄"];
     if (buddy.invite(ask[Math.floor(Math.random() * ask.length)], "Let's play!", () => quest.challenge())) {
       store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
       buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
@@ -2324,6 +2324,11 @@ $("#chooseNotes")?.addEventListener("click", () => { choosing = !choosing; if (!
 document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
 $("#notesSearch")?.addEventListener("input", () => renderNotesList());
 document.querySelectorAll("[data-open-games]").forEach((b) => b.addEventListener("click", () => quest.open()));
+// Quick links at the top of the side margin: notes, journal and games one tap away.
+document.querySelectorAll("[data-margin-go]").forEach((b) => b.addEventListener("click", () => {
+  if (window.innerWidth < 1000) setMargin(false);
+  if (b.dataset.marginGo) showView(b.dataset.marginGo);
+}));
 
 /* ---------- Trivia ---------- */
 const triviaDlg = $("#trivia");
@@ -3637,7 +3642,7 @@ function renderHome() {
       <div class="setup-resume-btns"><button class="big-btn" id="homeSetupGo">Continue to setup</button><button class="wb-new" id="homeSetupLater">Not now, keep reading</button></div></div>` : ""}
     <button class="resume-card" id="resumeBtn"><span><strong>${esc(resume.title)}</strong><small>${esc(resume.sub)}</small></span><span class="go" aria-hidden="true">›</span></button>
     ${pathCardsHtml()}
-    <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible Quest</strong><small>Spin, answer, win jewels: solo, with family, or against Buddy</small></span><span class="go" aria-hidden="true">›</span></button>
+    <button class="resume-card games-entry" id="homeGames"><span><strong>🎲 Bible Spin</strong><small>Spin, answer, win jewels: solo, with family, or against Buddy</small></span><span class="go" aria-hidden="true">›</span></button>
     <div class="jump-card">
       <h2>Go anywhere in the Bible</h2>
       <div class="jump-row"><input id="homeJump" type="search" placeholder="Type a book, like Psalm 23" autocomplete="off" aria-label="Find a book and chapter"><button class="small" id="homeBrowse">Browse books</button></div>

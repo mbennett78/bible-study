@@ -1,4 +1,4 @@
-// Bible Quest rules: every wedge of the wheel has questions, jewels take two right answers,
+// Bible Spin rules: every wedge of the wheel has questions, jewels take two right answers,
 // solo ends at three misses, coins reward speed, and Buddy plays fair (beatable, not perfect).
 import { test } from "node:test";
 import assert from "node:assert/strict";

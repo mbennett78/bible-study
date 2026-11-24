@@ -1,4 +1,4 @@
-// Bible Quest from start to finish: the wheel, the candle timer, coins, jewels, solo hearts,
+// Bible Spin from start to finish: the wheel, the candle timer, coins, jewels, solo hearts,
 // a fair game against Buddy, passing the device in a family game, and the practice quiz.
 // Run: node tests/e2e/quest.mjs
 import { chromium, serve, check, finish } from "./harness.mjs";
@@ -31,7 +31,7 @@ try {
   }, right);
 
   await page.click("#homeGames"); await page.clock.runFor(300);
-  check("Bible games opens Bible Quest", await page.$eval("dialog.quest", (d) => d.open));
+  check("Bible games opens Bible Spin", await page.$eval("dialog.quest", (d) => d.open));
   check("three big ways to play", (await page.$$("dialog.quest [data-mode]")).length === 3);
 
   // Solo
@@ -78,7 +78,7 @@ try {
   page.once("dialog", (d) => d.accept());
   await page.$eval("[data-close]", (b) => b.click()).catch(() => {});
   await page.clock.runFor(300);
-  check("closing mid-game shuts Bible Quest", !(await page.$eval("dialog.quest", (d) => d.open)));
+  check("closing mid-game shuts Bible Spin", !(await page.$eval("dialog.quest", (d) => d.open)));
 
   // Family
   await page.click("#homeGames"); await page.clock.runFor(300);
