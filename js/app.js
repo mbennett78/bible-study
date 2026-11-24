@@ -580,6 +580,8 @@ function openVerseSheet(v) {
   verseSheet.innerHTML = `<div class="ws-head"><h2>${esc(ref)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
     ${text ? `<p class="vs-text">${esc(text.length > 260 ? `${text.slice(0, 260)}…` : text)}</p>` : ""}
     ${vNote && !vNote.near ? `<div class="vs-note"><p class="vs-label">Study note</p><strong>${esc(vNote.head)}</strong><p>${esc(vNote.text.length > 420 ? `${vNote.text.slice(0, 420)}…` : vNote.text)}</p><button type="button" class="small" data-act="notes">All verse notes</button></div>` : ""}
+    <details class="vs-more vs-xref" hidden><summary>Cross-references</summary><div class="vs-xlist"></div><p class="muted small-print">Tap one to read it here. From OpenBible.info's cross-references (CC BY), ranked by how many readers found them helpful.</p></details>
+    <details class="vs-more vs-orig" hidden><summary>${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} words in this verse</summary><div class="vs-olist"></div><p class="muted small-print ws-credit">Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong (1890).</p></details>
     <p class="vs-label">Highlight</p>
     <div class="vs-colors">${HL_COLORS.map(([c, label]) => `<button type="button" class="vs-color hl-${c}" data-color="${c}" aria-pressed="${m.color === c}" aria-label="${label}">${m.color === c ? "✓" : ""}</button>`).join("")}
       <button type="button" class="vs-clear" data-color="" ${m.color ? "" : "disabled"}>No color</button></div>
@@ -629,8 +631,62 @@ function openVerseSheet(v) {
       try { await navigator.share({ text: quote }); } catch { /* they closed the share sheet */ }
     }
   }));
+  fillVerseTools(book, chapter, v);
   if (!verseSheet.isConnected) document.body.append(verseSheet); // added when first used, after the word sheet
   if (!verseSheet.open) verseSheet.showModal();
+}
+/* ---------- Cross-references and the original words, for every verse ---------- */
+const xrefCache = {};
+function loadXref(book, chapter) {
+  const k = `${book}.${chapter}`;
+  if (!xrefCache[k]) xrefCache[k] = fetch(`data/xref/${k}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) delete xrefCache[k]; return d; });
+  return xrefCache[k];
+}
+// "JHN.7.47-50" or "GEN.1.31-2:3" → the parts and a name to show.
+function parseXref(s) {
+  const [b, c, rest] = s.split(".");
+  const [v, end] = rest.split("-");
+  const [endC, endV] = end?.includes(":") ? end.split(":").map(Number) : [Number(c), end ? Number(end) : Number(v)];
+  const name = `${BOOK_BY_ID[b]?.name || b} ${c}:${v}${end ? `-${end}` : ""}`;
+  return { book: b, chapter: Number(c), verse: Number(v), endC, endV, name };
+}
+async function fillVerseTools(book, chapter, v) {
+  const me = `${book}.${chapter}.${v}`;
+  verseSheet.dataset.v = me;
+  const [x, rows] = await Promise.all([loadXref(book, chapter), loadStrongs(book, chapter)]);
+  if (verseSheet.dataset.v !== me) return; // another verse was opened meanwhile
+  const xbox = verseSheet.querySelector(".vs-xref"), obox = verseSheet.querySelector(".vs-orig");
+  const refs = (x?.[String(v)] || []).map(parseXref);
+  if (xbox && refs.length) {
+    xbox.hidden = false;
+    xbox.querySelector("summary").textContent = `Cross-references (${refs.length})`;
+    xbox.querySelector(".vs-xlist").innerHTML = refs.map((r, i) => `<div class="vs-x"><button type="button" class="vs-xbtn" data-x="${i}" aria-expanded="false">${esc(r.name)}</button><div class="vs-xtext" hidden></div></div>`).join("");
+    xbox.querySelectorAll("[data-x]").forEach((b) => b.addEventListener("click", async () => {
+      const r = refs[Number(b.dataset.x)], box = b.nextElementSibling;
+      const open = b.getAttribute("aria-expanded") !== "true";
+      b.setAttribute("aria-expanded", String(open)); box.hidden = !open;
+      if (!open || box.dataset.done) return;
+      box.innerHTML = `<p class="muted small-print">Loading…</p>`;
+      let words = "";
+      try {
+        const html = (await getChapter(store.get("version"), r.book, r.chapter)).html;
+        const last = r.endC === r.chapter ? r.endV : r.verse + 2;
+        const parts = [];
+        for (let n = r.verse; n <= Math.min(last, r.verse + 5); n += 1) { const t = verseFromHtml(html, n); if (t) parts.push(t); }
+        words = parts.join(" ") + (last > r.verse + 5 || r.endC !== r.chapter ? " …" : "");
+      } catch { /* shown below */ }
+      box.dataset.done = words ? "1" : "";
+      box.innerHTML = `${words ? `<p class="vs-xwords">${esc(words)}</p>` : `<p class="muted small-print">This verse couldn't load just now.</p>`}<button type="button" class="small" data-go>Go to ${esc(r.name)}</button>`;
+      box.querySelector("[data-go]").addEventListener("click", async () => { verseSheet.close(); showView("read"); await openChapter(r.book, r.chapter); setTimeout(() => goToVerse(r.verse), 300); });
+    }));
+  }
+  const words = (rows || []).filter((r) => r[5]?.includes(v)).sort((a, b) => (a[6] ? 1 : 0) - (b[6] ? 1 : 0));
+  if (obox && words.length) {
+    obox.hidden = false;
+    obox.querySelector("summary").textContent = `${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} words in this verse (${words.length})`;
+    obox.querySelector(".vs-olist").innerHTML = words.map((r) => origCard(r)).join("");
+    wireOrig(obox);
+  }
 }
 $("#reader").addEventListener("click", (e) => {
   const m = e.target.closest?.(".v, .verse-num, .chapter-num, [data-number]");

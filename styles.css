@@ -2423,3 +2423,15 @@ body.bars-away .follow { bottom: calc(52px + env(safe-area-inset-bottom)); }
 /* About this app, and the setup's "good to know" */
 .about-list { padding-left: 1.1em; margin: 8px 0 0; } .about-list li { margin-bottom: 8px; line-height: 1.5; }
 .setup-good { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--accent, #8a6d4e) 10%, transparent); }
+
+/* Cross-references and original words in the verse sheet */
+.verse-sheet .vs-more { margin: 10px 0; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; }
+.verse-sheet .vs-more > summary { cursor: pointer; padding: 12px 0; font-weight: 600; min-height: 44px; box-sizing: border-box; }
+.verse-sheet .vs-more[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.vs-x { border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.vs-x:last-child { border-bottom: 0; }
+.vs-xbtn { width: 100%; text-align: left; background: none; border: 0; padding: 10px 2px; font: inherit; color: var(--accent, inherit); font-weight: 600; min-height: 44px; display: flex; justify-content: space-between; }
+.vs-xbtn::after { content: "›"; color: var(--muted); transition: transform .2s; }
+.vs-xbtn[aria-expanded="true"]::after { transform: rotate(90deg); }
+.vs-xtext { padding: 0 2px 12px; }
+.vs-xwords { margin: 0 0 8px; font-family: var(--serif); line-height: 1.55; }
