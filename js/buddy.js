@@ -16,6 +16,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <circle class="buddy-head" cx="26" cy="22" r="10"/>
     <circle class="buddy-eye" cx="22.5" cy="20.5" r="1.6"/><circle class="buddy-eye" cx="29.5" cy="20.5" r="1.6"/>
     <path class="buddy-smile" d="M21.5 25.5q4.5 4 9 0"/>
+    <ellipse class="buddy-mouth" cx="26" cy="26.6" rx="2.8" ry="1.9"/>
     <path class="buddy-frown" d="M23 27.2q3-1.3 6 0"/>
     <path class="buddy-brow" d="M20.3 17.2l3.2-.8M31.7 17.2l-3.2-.8"/>
     <path class="buddy-line" d="M26 32v22"/>
@@ -48,8 +49,21 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   say.className = "buddy-say";
   say.setAttribute("role", "status");
   say.hidden = true;
-  say.innerHTML = `<button type="button" class="bs-words"></button><span class="bs-acts"><button type="button" class="bs-yes">Yes, I have a question</button><button type="button" class="bs-no">Not now</button></span>`;
-  const words = say.querySelector(".bs-words"), acts = say.querySelector(".bs-acts");
+  say.innerHTML = `<button type="button" class="bs-words"></button><span class="bs-acts"><button type="button" class="bs-yes">Yes, I have a question</button><button type="button" class="bs-no">Not now</button></span>
+    <form class="bs-name" hidden><input type="text" maxlength="16" autocomplete="off" aria-label="His name" value="Buddy"><button type="submit">That's your name!</button></form>`;
+  const words = say.querySelector(".bs-words"), acts = say.querySelector(".bs-acts"), nameForm = say.querySelector(".bs-name");
+  let onName = null;
+  // Asking for his name (people who set up the app before he could be named).
+  nameForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = nameForm.querySelector("input").value.trim().slice(0, 16) || "Buddy";
+    nameForm.hidden = true;
+    clearTimeout(visitTimer);
+    onName?.(v); onName = null;
+    speak(`I love it! I'm ${v} now. 😊 Tap me any time you want to talk.`, false);
+    play("excited", 1400);
+    visitTimer = setTimeout(goBack, 3500);
+  });
   document.body.append(say);
 
   // Where he stands: which edge, and how far down (0 = top of the free space, 1 = bottom).
@@ -138,9 +152,16 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     visitTimer = setTimeout(goBack, 2400);
   });
   function tapped() { endVisit(); play("excited", 1400); onTap(); }
+  // He "says" each line: his mouth moves for a moment, about as long as the words.
+  let talkTimer = 0;
   function speak(text, ask) {
+    if (ask !== "name") nameForm.hidden = true;
+    clearTimeout(talkTimer);
+    el.classList.add("speaking");
+    talkTimer = setTimeout(() => el.classList.remove("speaking"), Math.min(3200, 600 + text.length * 35));
     words.textContent = text;
-    acts.hidden = !ask;
+    acts.hidden = ask !== true;
+    if (ask === "name") nameForm.hidden = false;
     say.hidden = false;
     placeSay();
   }
@@ -155,7 +176,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     sitSoon(4000);
   }
   const goBack = () => { say.hidden = true; el.classList.add("walking"); el.classList.remove("visiting"); setTimeout(endVisit, 900); };
-  function visit(text, ms = 12000) {
+  // A visit where he asks what they'd like to call him; onPicked(name) saves it.
+  function askName(text, onPicked) {
+    if (!visit(text, 30000, "name")) return false;
+    onName = onPicked;
+    return true;
+  }
+  function visit(text, ms = 12000, ask = true) {
     if (el.hidden || drag || !say.hidden) return false;
     el.classList.remove("tucked", "sitting");
     el.classList.add("walking", "visiting");
@@ -163,7 +190,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     setTimeout(() => {
       el.classList.remove("walking");
       play("waving", 1200);
-      speak(text, true);
+      speak(text, ask);
     }, 900);
     visitTimer = setTimeout(goBack, ms);
     return true;
@@ -181,10 +208,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     place,
     show(on) { el.hidden = !on; if (!on) endVisit(); else place(); },
     visit,
+    askName,
     visiting: () => !say.hidden || el.classList.contains("visiting"),
     // Stands while the chat is open; sits again when it closes.
     chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },
     excite() { play("excited", 1400); },     // someone asked him something
+    // A friendly wave from where he sits, now and then, without walking over.
+    wave() { if (el.hidden || drag || !say.hidden) return false; el.classList.remove("tucked"); play("waving", 1600); sitSoon(3500); return true; },
     // Someone asked about something sad: a gentle, caring face for a while.
     caring(on) { clearTimeout(careTimer); el.classList.toggle("caring", on); if (on) { wake(); hold(8000); el.classList.remove("tucked"); careTimer = setTimeout(() => el.classList.remove("caring"), 90000); } },
     cheer() { play("cheering", 2600); },     // a great quiz score

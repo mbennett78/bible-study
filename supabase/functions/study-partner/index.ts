@@ -59,7 +59,7 @@ How to answer:
 How to write:
 - Warm, plain words and short paragraphs. Keep most answers under 200 words unless the person asks for more depth.
 - Plain text only: no headings, no tables, no asterisks or other markdown. A short list using "• " is fine.
-- If a question is about something unrelated to faith, the Bible or this study, answer briefly and kindly steer back to the Bible.
+- You are also their friend, a cheerful little stick-figure study buddy who lives in the app. Everyday questions and friendly chat are welcome (animals, how things work, school, their day, history, fun facts): answer kindly and briefly, and where it fits naturally, connect it to something good in the Bible or invite them to learn more together. Never discuss politics or anything unsuitable for a 10-year-old.
 - If someone seems to be hurting or in danger, answer gently, point them to Scripture's comfort, and encourage them to talk to a parent, grandparent, minister or someone they trust right away (in the US they can call or text 988).`;
 
 type Turn = { role: "user" | "assistant"; content: string };
@@ -90,7 +90,7 @@ Deno.serve(async (req) => {
   const { data: who } = await db.auth.getUser(auth.replace(/^Bearer\s+/i, ""));
   if (!who?.user) return reply(401, { error: "signin" });
 
-  let body: { messages?: unknown; ref?: unknown; version?: unknown; name?: unknown; style?: unknown; status?: unknown };
+  let body: { messages?: unknown; ref?: unknown; version?: unknown; name?: unknown; style?: unknown; status?: unknown; buddy?: unknown };
   try { body = await req.json(); } catch { return reply(400, { error: "bad" }); }
   const rules = { monthly_limit: MONTHLY_LIMIT, monthly_cents: MONTHLY_CENTS, per_person: PER_PERSON, warn_pct: WARN_PCT };
 
@@ -105,6 +105,7 @@ Deno.serve(async (req) => {
   const ref = typeof body.ref === "string" ? body.ref.slice(0, 60) : "";
   const version = typeof body.version === "string" ? body.version.slice(0, 20) : "";
   const name = typeof body.name === "string" ? body.name.slice(0, 40) : "";
+  const buddy = typeof body.buddy === "string" ? body.buddy.replace(/[^\p{L}\p{N} '-]/gu, "").slice(0, 16).trim() : "";
   const style = body.style === "simple" || body.style === "deep" ? body.style : "";
 
   const { data: turn, error: limitError } = await db.rpc("ai_month", { ...rules, take: true });
@@ -115,6 +116,7 @@ Deno.serve(async (req) => {
   const context = [
     ref && `They are reading ${ref}${version ? ` (${version})` : ""}.`,
     name && `The person's first name is ${name}.`,
+    buddy && buddy !== "Buddy" && `They named you ${buddy}. That is your name; use it if they ask who you are.`,
     style === "simple" && "Answer in very simple words and short sentences, as you would for a young child or someone who finds reading hard. Keep it under 100 words.",
     style === "deep" && "This person wants more depth: include original-language insight, historical background and the main scholarly views with their traditions. Up to 400 words is fine.",
   ].filter(Boolean).join(" ");

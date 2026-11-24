@@ -247,7 +247,7 @@ function syncVersionSwitch() {
   const cur = store.get("version");
   const el = document.querySelector(".version-switch");
   el.hidden = list.length < 2;
-  el.innerHTML = list.length > 3
+  el.innerHTML = list.length > 1
     ? `<select aria-label="Bible version">${list.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`
     : list.map(([v, l]) => `<button data-version="${esc(v)}" aria-pressed="${v === cur}">${esc(l)}</button>`).join("");
   const pick = async (v) => {
@@ -860,7 +860,7 @@ async function askBuiltIn(q) {
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
   buddy.thinking(true);
-  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "" });
+  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName() });
   wait.remove();
   buddy.thinking(false);
   chatBusy = false; $("#partnerGo").disabled = false;
@@ -941,13 +941,14 @@ const quest = createQuest({
   lively: () => (store.get("graphics") || "full") === "full",
   lookColors: () => ["#ffcf3f", "#ff7a59", "#5cc46b", "#3d8bb0", "#8e6bb5"],
   practice: () => game.open(),
+  buddyName: () => buddyName(),
 });
 const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
 // Tapping him opens the chat right where you are, on any page, in a sheet over the page.
 // It's the same chat as under each chapter (moved into the sheet while it's open).
 const chatSheet = document.createElement("dialog");
 chatSheet.className = "chat-sheet"; chatSheet.id = "chatSheet"; chatSheet.setAttribute("aria-label", "Ask my Bible helper");
-chatSheet.innerHTML = `<div class="chat-sheet-head"><span class="buddy buddy-inline" aria-hidden="true"></span><h2>Ask me anything!<small>Meaning, history, culture, people, places, words in Hebrew and Greek, or how to live it out. A gift for the family from the app's developer.</small></h2><button type="button" class="close-x" id="chatSheetClose" aria-label="Close">×</button></div>`;
+chatSheet.innerHTML = `<div class="chat-sheet-head"><span class="buddy buddy-inline" aria-hidden="true"></span><h2>Ask ${esc(buddyName())} anything!<small>Meaning, history, culture, people, places, words in Hebrew and Greek, or how to live it out. A gift for the family from the app's developer.</small></h2><button type="button" class="close-x" id="chatSheetClose" aria-label="Close">×</button></div>`;
 document.body.append(chatSheet);
 chatSheet.querySelector(".buddy-inline").innerHTML = BUDDY_SVG;
 $("#chatSheetClose").addEventListener("click", () => chatSheet.close());
@@ -971,6 +972,8 @@ function openBuddyChat() {
 // Now and then he walks over to say hi or ask if they're wondering anything. Gentle: only
 // after a few minutes of use, never while reading aloud, typing, or in another window, at
 // most three times a day, and never if turned off.
+// Each person names their own study buddy (first setup, or Settings); "Buddy" until they do.
+function buddyName() { return (store.get("buddyName") || "").trim() || "Buddy"; }
 const BUDDY_LINES = [
   (n) => `Hi${n ? ` ${n}` : ""}! 👋 Wondering anything? Ask me!`,
   // Now and then he just checks on them, because he's their friend.
@@ -978,20 +981,39 @@ const BUDDY_LINES = [
   (n) => `Just checking on you${n ? `, ${n}` : ""}. 💛 I'm glad you're here. Anything on your mind?`,
   () => "I was thinking about you! Hope your day is going well. Want to ask me anything?",
   (n) => `You matter so much${n ? `, ${n}` : ""}. If you're wondering about anything at all, I'm right here.`,
+  // Just being a friend: everyday things, and learning the Bible together.
+  (n) => `Hey${n ? ` ${n}` : ""}! How's your day going? I'd love to hear about it.`,
+  () => "What's the best thing that happened to you today? 😊",
+  () => "Have you had some water today? 💧 Even study buddies need reminders!",
+  () => "I love learning the Bible with you. Want to find something new together?",
+  () => "Did you know you can ask me about anything? Animals, history, how things work... I'll look it up!",
+  () => `I'm ${buddyName()}, your study buddy! I'm so glad we get to do this together.`,
   () => "Curious what life was like back then? Tap me and ask!",
   (n, ref) => `Any questions about ${ref}? I'd love to help.`,
   () => "Want to know what a word means in Hebrew or Greek? Ask me!",
   () => "I know lots about Bible people and places. Try me!",
 ];
 let buddyVisitAt = Date.now() + 4 * 60e3 + Math.random() * 3 * 60e3;
+let buddyWaveAt = Date.now() + 90e3 + Math.random() * 90e3;
 setInterval(() => {
-  if (Date.now() < buddyVisitAt || document.hidden || (store.get("show") || {}).buddy === false || (store.get("show") || {}).buddyvisits === false) return;
+  if (document.hidden || (store.get("show") || {}).buddy === false || (store.get("show") || {}).buddyvisits === false) return;
   if (reader.playing || document.querySelector("dialog[open]") || document.documentElement.classList.contains("touring")) return;
+  // Now and then a little wave from where he sits (no walking, no words).
+  if (Date.now() >= buddyWaveAt && Date.now() < buddyVisitAt - 60e3) { if (buddy.wave()) buddyWaveAt = Date.now() + 5 * 60e3 + Math.random() * 5 * 60e3; return; }
+  if (Date.now() < buddyVisitAt) return;
   const a = document.activeElement;
   if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
   const today = new Date().toDateString(), log = store.get("buddyVisitLog") || {};
   if (log.day === today && log.n >= 3) return;
   const { book, chapter } = store.get("last");
+  // Never named yet (set up before he could be): his first visit asks what to call him.
+  if (!store.get("buddyName") && (store.get("setup") || {}).done) {
+    if (buddy.askName(`Hi${store.get("name")?.trim() ? ` ${store.get("name").trim()}` : ""}! 👋 I'm your study buddy, and I don't have a name yet. What would you like to call me?`, (n) => setBuddyName(n))) {
+      store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+      buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+    }
+    return;
+  }
   const line = BUDDY_LINES[Math.floor(Math.random() * BUDDY_LINES.length)];
   if (buddy.visit(line(store.get("name")?.trim() || "", `${BOOK_BY_ID[book].name} ${chapter}`))) {
     store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
@@ -1334,7 +1356,7 @@ function initSettings() {
     $("#loadVersions").click();
   });
   esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); });
-  $("#saveEsvKey").addEventListener("click", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); keyStatus(esvKey.value.trim() ? "ESV key saved ✓" : "ESV key removed."); });
+  $("#saveEsvKey").addEventListener("click", async () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); keyStatus((esvKey.value.trim() ? "ESV key saved ✓" : "ESV key removed.") + await saveForFamily()); });
   if (store.get("apiBibleKey")) keyStatus("Key saved on this device ✓");
   // One device, one family: the invite link is only for a home without accounts.
   if (authEnabled) $("#shareKeyBox").hidden = true;
@@ -1357,6 +1379,7 @@ function initSettings() {
     store.set("nasbBibleId", sel.value);
     store.set("nasbLabel", sel.value ? sel.selectedOptions[0].textContent.split(" · ")[0] : "");
     syncVersionSwitch();
+    saveForFamily();
     if (store.get("version") === "NASB") { const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); }
   });
   $("#loadVersions").addEventListener("click", async (e) => {
@@ -1377,7 +1400,8 @@ function initSettings() {
       }
       const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
       btn.textContent = "Show the versions on my plan";
-      keyStatus(`Saved ✓ Your key works and opens ${bibles.length} English version${bibles.length === 1 ? "" : "s"}${hasNkjv ? "" : " (the NKJV isn't on this plan)"}. Turn on the ones the family can pick from below, then tap "Save key for the whole family".`);
+      const fam = await saveForFamily();
+      keyStatus(`Saved ✓ Your key works and opens ${bibles.length} English version${bibles.length === 1 ? "" : "s"}${hasNkjv ? "" : " (the NKJV isn't on this plan)"}.${fam} Turn on the ones the family can pick from below.`);
       const chosen = new Set((store.get("extraBibles") || []).map((b) => b.id));
       $("#extraVersionList").innerHTML = bibles.filter((b) => b.id !== store.get("nasbBibleId")).map((b) => `<label class="switch-row"><span>${esc(b.abbr)}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(b.abbr)}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
       $("#extraVersions").hidden = false;
@@ -1389,6 +1413,7 @@ function initSettings() {
         }
         store.set("extraBibles", x);
         extrasNow(); syncVersionSwitch();
+        saveForFamily().then((fam) => { if (fam) $("#extraVersionsNow").textContent += fam; });
       }));
     } catch (err) {
       btn.textContent = "Show the versions on my plan";
@@ -1464,8 +1489,12 @@ function renderSetup() {
   if (step.id === "welcome") {
     body.innerHTML = `${seaScene(store.get("style"))}<h2 class="setup-h">Welcome to your Bible study</h2>
       <p class="muted">A few quick steps make the app yours. This only happens the first time. You can change any of it later in Settings.</p>
-      <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>`;
+      <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>
+      <div class="setup-buddy"><span class="buddy buddy-inline" aria-hidden="true">${BUDDY_SVG}</span>
+        <label class="field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
+      <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
+    $("#setupBuddyName").addEventListener("input", (e) => setBuddyName(e.target.value));
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
       <p class="muted small-print">Classic 1 is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
@@ -1613,9 +1642,17 @@ function renderQuickMenu() {
   }));
 }
 // The same two buddy switches, in Settings.
+function setBuddyName(v) {
+  store.set("buddyName", String(v || "").trim().slice(0, 16));
+  const n = buddyName();
+  chatSheet.querySelector("h2").firstChild.textContent = `Ask ${n} anything!`;
+  buddy.el.setAttribute("aria-label", `Talk to ${n}, your study buddy`);
+  if ($("#buddyNameInput") && document.activeElement !== $("#buddyNameInput")) $("#buddyNameInput").value = n;
+}
 function renderBuddyToggles() {
   const shown = store.get("show") || {};
-  $("#buddyToggles").innerHTML = [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"]].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${shown[id] === false ? "" : "checked"}></label>`).join("");
+  $("#buddyToggles").innerHTML = `<label class="field">His name<input id="buddyNameInput" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label>` + [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"]].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${shown[id] === false ? "" : "checked"}></label>`).join("");
+  $("#buddyNameInput").addEventListener("input", (e) => setBuddyName(e.target.value));
   $("#buddyToggles").querySelectorAll("[data-buddy-feat]").forEach((i) => i.addEventListener("change", () => {
     store.set("show", { ...(store.get("show") || {}), [i.dataset.buddyFeat]: i.checked });
     applyAppearance();
@@ -2441,14 +2478,30 @@ function renderAccount() {
   wireSignOut();
 }
 // Family organizer tools: only the organizer's account ever sees them.
+// The organizer's keys and versions go to the family account the moment they're saved,
+// so there's no separate "share" step. Family members never see the key itself.
+let organizerHere = false;
+async function saveForFamily() {
+  if (!authEnabled || !organizerHere || !store.get("apiBibleKey")) return "";
+  try {
+    await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" });
+    store.set("familySyncedAt", new Date().toISOString());
+    const m = $("#familyKeyMsg"); if (m) m.textContent = `Saved for the whole family ✓ ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+    return " Saved for the whole family ✓";
+  } catch (x) {
+    return /row-level|policy|permission/i.test(x.message || "") ? " (Only the family organizer's account can save it for the family.)" : ` (Couldn't save it for the family: ${x.message})`;
+  }
+}
 async function organizerGate(org) {
   org.dataset.ready = "1";
   if (!(await isOrganizer())) { $("#organizerBox").hidden = true; $("#bibleTextCard").hidden = true; return; }
   {
     org.dataset.ready = "1";
-    org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>Save the Bible key for the whole family</h2>
-      <p class="muted small-print">Saves this device's API.Bible key to your family account, so the Bible text works for everyone. Nothing is sent to anyone: family members never see the key. Their app picks it up by itself when they sign in, and gets it back if a device ever forgets it. Everyone's reading counts toward your 5,000 a month.</p>
-      <button class="small" id="shareFamilyKey">Save key for the whole family</button><p class="small-print" id="familyKeyMsg"></p></div>
+    organizerHere = true;
+    org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>For the whole family</h2>
+      <p class="muted small-print">Whenever you tap Save above, or turn a version on or off, it's saved to your family account automatically. Nothing is sent to anyone: family members never see the key. Their app picks it up by itself when they sign in, and gets it back if a device ever forgets it. Everyone's reading counts toward your 5,000 a month.</p>
+      <p class="small-print" id="familyKeyMsg">${store.get("familySyncedAt") ? "Saved for the whole family ✓" : ""}</p>
+      <button class="small" id="shareFamilyKey">Save for the family again</button></div>
       <div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>`;
     // 1. The keys, 2. save them for everyone, 3. the family list.
     org.prepend($("#bibleTextCard"));
@@ -2459,8 +2512,9 @@ async function organizerGate(org) {
   $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
-    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Saved ✓ Everyone in the family gets it, and these versions, the next time they open the app."; }
-    catch (x) { out.textContent = /row-level|policy|permission/i.test(x.message || "") ? "Only the family organizer's account can save the Bible key for the family." : x.message; }
+    out.textContent = "Saving…";
+    const said = await saveForFamily();
+    if (!/✓/.test(said)) out.textContent = said.trim().replace(/^\(|\)$/g, "");
   });
 }
 // The organizer's family panel: who's in the family, the Bible helper allowance this month,

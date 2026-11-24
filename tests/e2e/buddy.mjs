@@ -14,7 +14,7 @@ try {
     await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: '<p><span class="v" data-number="1">1</span>In the beginning was the Word.</p>' } } }));
     await ctx.addInitScript(() => {
-      if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel" }));
+      if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy" }));
       // Pretend speech so read-aloud can be checked.
       window.__said = [];
       Object.defineProperty(window, "speechSynthesis", { configurable: true, value: { speak: (u) => { window.__said.push(u.text); setTimeout(() => u.onend && u.onend(), 50); }, cancel() {}, getVoices: () => [], addEventListener() {} } });
@@ -30,7 +30,7 @@ try {
     let b = await box();
     check(`${tag}: buddy is showing`, b.shown);
     check(`${tag}: buddy sits above the bottom buttons`, b.b <= tabTop, `${b.b} vs ${tabTop}`);
-    check(`${tag}: buddy is small`, b.r - b.l <= 64);
+    check(`${tag}: buddy is small (a touch bigger than before)`, b.r - b.l <= 72 && b.r - b.l >= 64);
     check(`${tag}: he sits quietly until someone talks to him`, await page.$eval(".buddy", (el) => el.classList.contains("sitting")));
     // Now and then he walks over to say hi.
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
@@ -79,8 +79,27 @@ try {
     await page.reload(); await page.waitForTimeout(800);
     check(`${tag}: can be turned off`, !(await box()).shown);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
-    check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input")).length === 2);
+    check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input[type=checkbox]")).length === 2);
+    await page.fill("#buddyNameInput", "Sparky");
+    check(`${tag}: each person can name their buddy`, /Ask Sparky anything/.test(await page.textContent("#chatSheet h2")));
     check(`${tag}: no page errors`, !errors.length, errors.join(" | "));
+    await ctx.close();
+  }
+  // Set up before he could be named: his first visit asks what to call him.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
+    await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel" })); });
+    const page = await ctx.newPage();
+    await page.clock.install();
+    await page.goto(site.url); await page.waitForTimeout(900);
+    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check("naming: his first visit asks what to call him", /What would you like to call me/.test(await page.textContent(".buddy-say")) && await page.$eval(".buddy-say .bs-name", (f) => !f.hidden));
+    await page.fill(".buddy-say .bs-name input", "Pip");
+    await page.$eval(".buddy-say .bs-name button", (b) => b.click()); await page.clock.runFor(300);
+    check("naming: he loves his new name, and it's saved", /I'm Pip now/.test(await page.textContent(".buddy-say")) && await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).buddyName === "Pip"));
+    check("naming: the chat says his name", /Ask Pip anything/.test(await page.textContent("#chatSheet h2")));
     await ctx.close();
   }
   // Microphone: explained before the device asks, and a kind way back if it was refused.

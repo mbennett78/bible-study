@@ -34,8 +34,8 @@ export const QUEST_BADGES = [
   ["firstJewel", "First jewel", "💎", "Win your first jewel"],
   ["firstWin", "Winner", "🏆", "Win a game"],
   ["breastplate", "The full breastplate", "🛡️", "Collect all six jewels in one game"],
-  ["beatBuddy", "Beat Buddy", "🤝", "Win against Buddy"],
-  ["beatTough", "Beat Tough Buddy", "🦁", "Win against Buddy on Tough"],
+  ["beatBuddy", "Beat your buddy", "🤝", "Win against your study buddy"],
+  ["beatTough", "Beat Tough buddy", "🦁", "Win against your study buddy on Tough"],
   ["streak5", "On fire", "🔥", "5 right in a row"],
   ["streak10", "Unstoppable", "⚡", "10 right in a row"],
   ["coins500", "Treasure", "🪙", "Earn 500 coins"],
@@ -108,7 +108,9 @@ const RIGHT = ["Right!", "Yes!", "You got it!", "Well done!", "Amen!", "Spot on!
 const WRONG = ["Not quite!", "Good try!", "So close!", "Now you know!"];
 
 /* ---------- The game window ---------- */
-export function createQuest({ store, esc, lively, lookColors, myName, practice }) {
+export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy" }) {
+  const B = () => buddyName(); // the name each person gave their study buddy (plain text)
+  const BH = () => esc(buddyName()); // the same, ready for HTML
   const dlg = document.createElement("dialog");
   dlg.className = "quest";
   dlg.setAttribute("aria-label", "Bible Quest");
@@ -140,7 +142,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
       <p class="q-tag">Spin, answer before the candle burns down, and collect all six jewels!</p>
       <button class="q-big q-solo" data-mode="solo"><span>🎯</span><b>Play solo</b><small>Three hearts. How many jewels can you win?</small></button>
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
-      <button class="q-big q-buddy" data-mode="buddy">${buddyFace()}<b>Challenge Buddy</b><small>He plays fair, so you can beat him!</small></button>
+      <button class="q-big q-buddy" data-mode="buddy">${buddyFace()}<b>Challenge ${BH()}</b><small>He plays fair, so you can beat him!</small></button>
       <div class="q-foot"><button class="q-link" data-badges>🏅 My badges (${earned} of ${QUEST_BADGES.length}) · ${m.won} win${m.won === 1 ? "" : "s"}</button>
       ${practice ? `<button class="q-link" data-practice>📖 Practice one part of the Bible</button>` : ""}
       <label class="q-link"><input type="checkbox" data-sound ${m.sound ? "checked" : ""}> Sounds</label></div></div>`);
@@ -163,10 +165,10 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
     const me = myName();
     if (mode === "solo") return start("solo", [newPlayer(me)]);
     if (mode === "buddy") {
-      paint(`<div class="q-setup">${buddyFace("q-buddy-big")}<h2>How tough should Buddy be?</h2><p class="q-tag">Buddy thinks for a few seconds and sometimes gets it wrong, just like a person.</p>
+      paint(`<div class="q-setup">${buddyFace("q-buddy-big")}<h2>How tough should ${BH()} be?</h2><p class="q-tag">${BH()} thinks for a few seconds and sometimes gets it wrong, just like a person.</p>
         <div class="q-levels">${BUDDY_LEVELS.map(([id, l, p]) => `<button class="q-big" data-lv="${id}"><b>${l}</b><small>He gets about ${Math.round(p * 10)} out of 10 right</small></button>`).join("")}</div>
         <button class="q-link" data-back>Back</button></div>`);
-      dlg.querySelectorAll("[data-lv]").forEach((b) => b.onclick = () => { save({ buddy: b.dataset.lv }); start("buddy", [newPlayer(me), newPlayer("Buddy", "buddy")], b.dataset.lv); });
+      dlg.querySelectorAll("[data-lv]").forEach((b) => b.onclick = () => { save({ buddy: b.dataset.lv }); start("buddy", [newPlayer(me), newPlayer(B(), "buddy")], b.dataset.lv); });
       dlg.querySelector("[data-back]").onclick = home;
       return;
     }
@@ -203,7 +205,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
         <span class="q-jewels">${CATEGORIES.map((c) => jewelSvg(c, pl.jewels[c.id], pl.progress[c.id] || 0)).join("")}</span>
         ${game.mode === "solo" ? `<span class="q-hearts" aria-label="${pl.hearts} hearts">${"❤️".repeat(Math.max(0, pl.hearts))}${"🤍".repeat(HEARTS - Math.max(0, pl.hearts))}</span>` : ""}</div>`).join("")}</div>
       <div class="q-wheel">${wheelSvg()}</div>
-      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini")} Buddy is spinning…</p>` : `<button class="q-spin" data-spin>SPIN</button><p class="q-turn">${game.mode === "solo" ? "" : `${esc(p.name)}'s turn`}</p>`}
+      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini")} ${BH()} is spinning…</p>` : `<button class="q-spin" data-spin>SPIN</button><p class="q-turn">${game.mode === "solo" ? "" : `${esc(p.name)}'s turn`}</p>`}
     </div>`);
     const go = () => spin();
     if (buddyPlays) later(go, 900); else dlg.querySelector("[data-spin]").onclick = go;
@@ -233,7 +235,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
       <div class="q-cat"><span>${cat.icon}</span>${esc(cat.name)}${owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
       <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
       <div class="q-choices">${order.map((k, n) => `<button class="q-choice" data-k="${k}" style="--d:${0.25 + n * 0.08}s" ${buddyPlays ? "disabled" : ""}><span class="q-letter">${"ABCD"[n]}</span>${esc(q.choices[k])}</button>`).join("")}</div>
-      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini thinking")} Buddy is thinking…</p>` : helps ? `<div class="q-helps">${Object.entries(HELPS).map(([id, h]) => `<button class="q-help" data-help="${id}" ${m.coins < h.cost ? "disabled" : ""}>${h.icon} ${h.label} <small>🪙 ${h.cost}</small></button>`).join("")}</div>` : ""}
+      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini thinking")} ${BH()} is thinking…</p>` : helps ? `<div class="q-helps">${Object.entries(HELPS).map(([id, h]) => `<button class="q-help" data-help="${id}" ${m.coins < h.cost ? "disabled" : ""}>${h.icon} ${h.label} <small>🪙 ${h.cost}</small></button>`).join("")}</div>` : ""}
     </div>`);
     const total = CANDLE_SECS * 1000;
     let deadline = Date.now() + total, done = false;
@@ -275,15 +277,15 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
   }
 
   function feedback(q, cat, right, coins, r, timedOut) {
-    const p = current(), who = p.kind === "buddy" ? "Buddy" : game.mode === "solo" ? "You" : p.name;
-    const head = right ? (p.kind === "buddy" ? "Buddy got it!" : pick(RIGHT)) : timedOut ? "The candle went out!" : p.kind === "buddy" ? "Buddy missed it!" : pick(WRONG);
+    const p = current(), who = p.kind === "buddy" ? B() : game.mode === "solo" ? "You" : p.name;
+    const head = right ? (p.kind === "buddy" ? `${B()} got it!` : pick(RIGHT)) : timedOut ? "The candle went out!" : p.kind === "buddy" ? `${B()} missed it!` : pick(WRONG);
     const streak = right && p.streak >= 3 ? `<p class="q-streak">🔥 ${p.streak} in a row!</p>` : "";
     paint(`<div class="q-fb ${right ? "good" : "bad"}" style="--cc:${cat.color}">
       <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : `<span class="q-fb-icon">${right ? "🎉" : "🙂"}</span>`}<h2>${esc(head)}</h2></div>
       ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}
       ${r.jewel ? `<div class="q-newjewel">${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span></p></div>` : ""}
       <div class="q-why"><p>${right ? "" : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
-      <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? "Buddy spins again" : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : "Buddy's turn") : "Next player"}</button></div>`);
+      <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? `${BH()} spins again` : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : `${BH()}'s turn`) : "Next player"}</button></div>`);
     if (r.jewel && lively()) confetti(dlg, [cat.color, "#f4d35e", ...lookColors()], 90);
     const next = () => {
       if (r.over) return end();
@@ -318,7 +320,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
     const fresh = QUEST_BADGES.filter(([id]) => badgesNow[id] && !m.badges[id]);
     save({ ...stats, badges: badgesNow, coins: m.coins + winBonus, earned });
     const title = game.mode === "solo" ? (iWon ? "You collected all six jewels!" : `You won ${jewelCount(me)} of 6 jewels!`)
-      : game.mode === "buddy" ? (top === me ? "You beat Buddy!" : "Buddy won this time!") : `${top.name} wins!`;
+      : game.mode === "buddy" ? (top === me ? `You beat ${B()}!` : `${B()} won this time!`) : `${top.name} wins!`;
     paint(`<div class="q-end">
       ${game.mode === "buddy" ? buddyFace(top === me ? "" : "excited") : `<span class="q-fb-icon">🏆</span>`}<h2>${esc(title)}</h2>
       ${game.mode === "buddy" && top !== me ? `<p class="q-tag">"Good game! Want a rematch?"</p>` : ""}
@@ -328,7 +330,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice }
       <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Quest</button></div>`);
     if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("cheer"); } else sound("done");
     const again = { mode: game.mode, names: game.players.filter((p) => p.kind === "person").map((p) => p.name), level: game.level };
-    dlg.querySelector("[data-again]").onclick = () => again.mode === "buddy" ? start("buddy", [newPlayer(again.names[0]), newPlayer("Buddy", "buddy")], again.level) : start(again.mode, again.names.map((n) => newPlayer(n)));
+    dlg.querySelector("[data-again]").onclick = () => again.mode === "buddy" ? start("buddy", [newPlayer(again.names[0]), newPlayer(B(), "buddy")], again.level) : start(again.mode, again.names.map((n) => newPlayer(n)));
     dlg.querySelector("[data-home]").onclick = home;
   }
 

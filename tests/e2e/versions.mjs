@@ -38,22 +38,23 @@ try {
   await page.goto(site.url); await page.waitForTimeout(900);
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(700);
   const reader = () => page.$eval("#reader", (el) => el.textContent);
-  const versionButtons = () => page.$$eval(".version-switch button", (a) => a.map((b) => b.textContent + (b.getAttribute("aria-pressed") === "true" ? "*" : "")));
-  check("switch lists every version", JSON.stringify(await versionButtons()) === JSON.stringify(["NASB1995*", "KJV", "ESV"]), JSON.stringify(await versionButtons()));
+  // The quick switch at the top of Read: one "NASB ▾" pill listing every version.
+  const versionButtons = () => page.$$eval(".version-switch select option", (a) => a.map((o) => o.textContent + (o.selected ? "*" : "")));
+  check("the quick switch at the top lists every version", JSON.stringify(await versionButtons()) === JSON.stringify(["NASB1995*", "KJV", "ESV"]), JSON.stringify(await versionButtons()));
   check("NASB text shown", (await reader()).includes("NASB1995 words of verse 1"));
   check("copyright shown for the NASB", (await page.textContent("#copyright")).includes("NASB1995 copyright"));
 
   // Read down to verse 12, then switch to the ESV.
   await page.$eval('#reader [data-number="12"]', (el) => { const top = document.querySelector(".topbar")?.getBoundingClientRect().bottom || 0; scrollTo(0, scrollY + el.getBoundingClientRect().top - top - 12); });
   await page.waitForTimeout(200);
-  await page.click('.version-switch [data-version="ESV"]'); await page.waitForTimeout(900);
+  await page.selectOption(".version-switch select", "ESV"); await page.waitForTimeout(900);
   check("ESV text shown after switching", (await reader()).includes("ESV words of verse 1") && !(await reader()).includes("NASB1995 words"));
   check("ESV asked for John 3", esvAsked.at(-1) === "John 3", esvAsked.at(-1));
   check("ESV copyright shown", /English Standard Version/.test(await page.textContent("#copyright")));
   const keptPlace = await page.$$eval("#reader .verse-num", (a) => { const top = document.querySelector(".topbar")?.getBoundingClientRect().bottom || 0; const m = a.find((x) => x.getBoundingClientRect().top >= top); return m ? Number(m.textContent) : 0; });
   check("switching mid-chapter keeps your place", keptPlace >= 10 && keptPlace <= 14, `top verse ${keptPlace}`);
 
-  await page.click('.version-switch [data-version="B:kjv"]'); await page.waitForTimeout(900);
+  await page.selectOption(".version-switch select", "B:kjv"); await page.waitForTimeout(900);
   check("KJV text shown", (await reader()).includes("KJV words of verse 1"));
   check("the chosen version is remembered", await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).version === "B:kjv"));
   await page.reload(); await page.waitForTimeout(900);
@@ -61,7 +62,7 @@ try {
   check("still KJV after reopening", (await reader()).includes("KJV words") && (await versionButtons()).includes("KJV*"));
 
   // ESV: one-chapter books and the Song of Solomon.
-  await page.click('.version-switch [data-version="ESV"]'); await page.waitForTimeout(600);
+  await page.selectOption(".version-switch select", "ESV"); await page.waitForTimeout(600);
   for (const [book, ch, want] of [["JUD", 1, "Jude 1:1-25"], ["OBA", 1, "Obadiah 1:1-21"], ["3JN", 1, "3 John 1:1-15"], ["SNG", 2, "Song of Solomon 2"], ["PSA", 119, "Psalms 119"]]) {
     await page.evaluate(([b, c]) => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.last = { book: b, chapter: c }; localStorage.setItem("bible-study:v1", JSON.stringify(s)); }, [book, ch]);
     esvAsked.length = 0;
@@ -71,18 +72,18 @@ try {
 
   // Changing NASB editions never shows the other edition's saved words.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(400);
-  await page.click('.version-switch [data-version="NASB"]'); await page.waitForTimeout(700);
+  await page.selectOption(".version-switch select", "NASB"); await page.waitForTimeout(700);
   check("NASB 1995 shown", (await reader()).includes("NASB1995 words"));
   await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.nasbBibleId = "nasb20"; s.nasbLabel = "NASB2020"; localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
   await page.reload(); await page.waitForTimeout(900);
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(500);
   check("a new NASB edition shows its own words, not the saved copy", (await reader()).includes("NASB2020 words"));
 
-  // Seven or more versions switch to a dropdown that still works.
+  // Many versions still fit in the same pill.
   await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.extraBibles = ["kjv", "bsb", "asv", "web", "lsv", "fbv"].map((id) => ({ id, label: id.toUpperCase() })); localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
   await page.reload(); await page.waitForTimeout(900);
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(500);
-  check("many versions show as a dropdown", (await page.$$eval(".version-switch select option", (o) => o.length)) === 8);
+  check("many versions all show in the pill", (await page.$$eval(".version-switch select option", (o) => o.length)) === 8);
   await page.selectOption(".version-switch select", "B:bsb"); await page.waitForTimeout(800);
   check("dropdown switches the text", (await reader()).includes("BSB words"));
   check("no page errors", !errors.length, errors.join(" | "));
