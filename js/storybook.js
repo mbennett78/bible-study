@@ -206,7 +206,6 @@ const sycamore = (x, y, s = 1) => g(x, y, s, `<path d="M-12 0 C -8 -20, -14 -40,
   <g class="sb-sway" style="transform-origin:0 -60px">${[[-46, -70, 26, 18], [-14, -86, 30, 20], [22, -84, 28, 19], [50, -66, 24, 16], [0, -64, 28, 14]].map(([a, b, rx, ry]) => `<ellipse cx="${a}" cy="${b}" rx="${rx}" ry="${ry}" fill="#7fa65a" ${L2}/>`).join("")}
   ${[[-40, -64], [-20, -80], [10, -92], [30, -76], [48, -62], [-2, -70], [-52, -76]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="2.6" fill="#b9874a" ${L2}/>`).join("")}</g>`);
 const leafFront = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:-1s">${[[-14, 0, 16, 10], [10, 2, 14, 9]].map(([a, b, rx, ry]) => `<ellipse cx="${a}" cy="${b}" rx="${rx}" ry="${ry}" fill="#8db866" ${L2}/>`).join("")}<circle cx="-6" cy="-2" r="2.4" fill="#b9874a" ${L2}/></g>`);
-const kidP = (o) => person({ ...o, kid: true });
 const pig = (x, y, s = 1) => g(x, y, s, `<ellipse cx="0" cy="-8" rx="14" ry="9" fill="#f2b7b0" ${L}/><circle cx="12" cy="-12" r="6.4" fill="#f2b7b0" ${L}/><ellipse cx="17" cy="-11" rx="3" ry="2.4" fill="#e89a92" ${L2}/><circle cx="11" cy="-14" r="1" fill="${INK}"/><path d="M-8 0 L -8 -2 M -2 0 L -2 -2 M 6 0 L 6 -2" stroke="${INK}" stroke-width="2.4"/><path d="M-14 -10 c -4 -2, -4 -6, 0 -6" stroke="${INK}" stroke-width="1.2" fill="none"/>`);
 
 /* ---------- The scenes ---------- */
@@ -274,7 +273,7 @@ export const STORYBOOK = {
     ${rocks(150, 196, .7)}${scrub(330, 198, .8)}` },
   sheep: { caption: "The Good Shepherd carries His lamb", draw: (id) => `${sky(id, "#bfe3f5", "#f6f2e2")}${cloud(id, 90, 30, 1)}${cloud(id, 280, 40, .7)}
     ${hills(id, "#b9b27a", "#a5a066")}${wash(id, `<path d="M220 168 C 250 160, 320 160, 360 166 L 360 182 C 320 186, 260 184, 220 180 Z" fill="#8fc6e0"/>`)}${oliveTree(40, 160, 1)}${oliveTree(320, 150, .7)}
-    ${stick(id, `${g(160, 192, .95, `${person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "calm", arms: ["up", "up"], staff: "left", staffTop: -118 })}${g(0, -66, .42, `<g transform="rotate(-8)">${sheep()}</g>`)}`)}
+    ${stick(id, `${g(160, 192, .95, `${person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "calm", arms: ["down", "down"], staff: "left", staffTop: -118 })}${g(0, -40, .62, `<g transform="rotate(-4)">${sheep()}</g>`)}`)}
       ${g(84, 188, .6, sheep())}${g(250, 190, .62, flip(sheep()))}${g(300, 184, .5, sheep({ down: true }))}`)}
     ${anemone(120, 196)}${anemone(212, 198, "#e9e2f2")}${rocks(28, 196, .8)}${scrub(350, 198, .8)}` },
   prodigal: { caption: "The father runs to welcome his son home", draw: (id) => `${sky(id, "#f6c9a0", "#fcefdc")}<circle cx="300" cy="70" r="26" fill="#ffd98a" opacity=".8" filter="url(#soft${id})"/>
