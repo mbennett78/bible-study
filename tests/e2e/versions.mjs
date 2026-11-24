@@ -20,7 +20,11 @@ try {
     const label = { nasb95: "NASB1995", nasb20: "NASB2020", kjv: "KJV", bsb: "BSB" }[id] || id;
     r.fulfill({ json: { data: { content: verses(30, label), copyright: `${label} copyright line` } } });
   });
-  await ctx.route(/api\.esv\.org/, (r) => {
+  // A 2-second silent recording stands in for the ESV narrator.
+  const wav = (() => { const n = 16000, b = Buffer.alloc(44 + n * 2); b.write("RIFF", 0); b.writeUInt32LE(36 + n * 2, 4); b.write("WAVEfmt ", 8); b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(8000, 24); b.writeUInt32LE(16000, 28); b.writeUInt16LE(2, 32); b.writeUInt16LE(16, 34); b.write("data", 36); b.writeUInt32LE(n * 2, 40); return b; })();
+  const audioAsked = [];
+  await ctx.route(/api\.esv\.org\/v3\/passage\/audio/, (r) => { audioAsked.push(new URL(r.request().url()).searchParams.get("q")); r.fulfill({ contentType: "audio/wav", body: wav }); });
+  await ctx.route(/api\.esv\.org\/v3\/passage\/html/, (r) => {
     const q = new URL(r.request().url()).searchParams.get("q");
     esvAsked.push(q);
     const body = `<h2>${q}</h2><p><b class="chapter-num">3:1</b>ESV words of verse 1.</p>` + Array.from({ length: 29 }, (_, i) => `<p><b class="verse-num">${i + 2}</b>ESV words of verse ${i + 2}. ${"More words here. ".repeat(6)}</p>`).join("");
@@ -53,6 +57,13 @@ try {
   check("ESV copyright shown", /English Standard Version/.test(await page.textContent("#copyright")));
   const keptPlace = await page.$$eval("#reader .verse-num", (a) => { const top = document.querySelector(".topbar")?.getBoundingClientRect().bottom || 0; const m = a.find((x) => x.getBoundingClientRect().top >= top); return m ? Number(m.textContent) : 0; });
   check("switching mid-chapter keeps your place", keptPlace >= 10 && keptPlace <= 14, `top verse ${keptPlace}`);
+  // Read aloud in the ESV uses the recorded narrator, and says so.
+  await page.evaluate(() => document.querySelector("#playBtn").click()); await page.waitForTimeout(1200);
+  check("ESV read aloud asks for the recording of John 3", audioAsked.at(-1) === "John 3", audioAsked.join(", "));
+  check("ESV read aloud says a recorded narrator is reading", /recorded narrator/.test(await page.textContent("#narrator")) && await page.isVisible("#narrator"), await page.textContent("#narrator"));
+  check("the play button shows Pause while the recording plays", (await page.textContent("#playBtn")).includes("Pause"));
+  await page.evaluate(() => document.querySelector("#playBtn").click()); await page.waitForTimeout(200);
+  check("pausing the recording", (await page.textContent("#playBtn")).includes("Read aloud"));
 
   await page.selectOption(".version-switch select", "B:kjv"); await page.waitForTimeout(900);
   check("KJV text shown", (await reader()).includes("KJV words of verse 1"));

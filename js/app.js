@@ -4,7 +4,7 @@ import { findTopics } from "./topics.js";
 import { OUTLINES } from "./outlines.js";
 import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
 import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
-import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb } from "./text.js";
+import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG } from "./buddy.js";
@@ -227,6 +227,9 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     buddyFeelsPassage(readerEl.textContent, `${book}.${chapter}`);
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
+    // The ESV has a real narrator. Other versions are read by the device's own voice.
+    reader.audioFor = version === "ESV" && store.get("humanVoice") !== false && !result.offline ? () => esvAudioUrl(book, chapter) : null;
+    syncNarrator(null);
     applyVerseMarks(book, chapter);
     followKey = ""; setTimeout(updateFollow, 60);
     markStudyWords(readerEl, book, chapter, token);
@@ -815,9 +818,10 @@ const reader = new Reader({
       if (r.top < 90 || r.bottom > window.innerHeight - 140) el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     }
   },
+  onSource(src) { syncNarrator(src); },
   onState(state) {
-    $("#listenBtn").setAttribute("aria-pressed", String(state === "playing"));
-    syncPlayBtn(state === "playing");
+    $("#listenBtn").setAttribute("aria-pressed", String(state === "playing" || state === "loading"));
+    syncPlayBtn(state === "playing" || state === "loading", state === "loading");
     updateDrive(state);
   },
   onEnd() {
@@ -2176,6 +2180,8 @@ function initSettings() {
   $("#wordTap").checked = store.get("wordTap") !== false;
   $("#followNotes").checked = store.get("followNotes") !== false;
   $("#focusRead").checked = store.get("focusRead") !== false;
+  $("#humanVoice").checked = store.get("humanVoice") !== false;
+  $("#humanVoice").addEventListener("change", (e) => { store.set("humanVoice", e.target.checked); const { book, chapter } = store.get("last"); reader.stop(); openChapter(book, chapter); });
   $("#focusRead").addEventListener("change", (e) => { store.set("focusRead", e.target.checked); if (!e.target.checked) setBarsAway(false); });
   $("#followNotes").addEventListener("change", (e) => { store.set("followNotes", e.target.checked); followKey = ""; });
   $("#wordTap").addEventListener("change", () => { store.set("wordTap", $("#wordTap").checked); syncStudyWords(); });
@@ -2320,7 +2326,8 @@ function renderSetup() {
       <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>
       <div class="setup-buddy"><span class="buddy buddy-inline" aria-hidden="true">${BUDDY_SVG}</span>
         <label class="field buddy-name-field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
-      <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>`;
+      <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>
+      <p class="setup-good muted small-print"><b>Good to know:</b> your study buddy's answers come from AI, so they can be wrong; check them against the Bible. The study notes share what Bible scholars think. They aren't any church's official teaching. More under Settings, About.</p>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
     $("#setupName").addEventListener("change", (e) => setMyName(e.target.value));
     $("#setupBuddyName").addEventListener("input", (e) => setBuddyName(e.target.value));
@@ -3303,15 +3310,22 @@ $("#topPrev").addEventListener("click", () => { const { book, chapter } = store.
 $("#topNext").addEventListener("click", () => { const { book, chapter } = store.get("last"); const n = neighbors(book, chapter).next; if (n) openChapter(n.book, n.chapter); });
 
 /* ---------- Listen bar: read aloud, volume, speed, drive mode ---------- */
-function syncPlayBtn(playing) {
+// Who is reading: the recorded ESV narrator, or the device's voice.
+function syncNarrator(src) {
+  const el = $("#narrator");
+  if (!el) return;
+  el.hidden = !src;
+  el.textContent = src === "recorded" ? "🎙 Read by a recorded narrator. ESV audio © Crossway." : src === "device" ? "Read by this device's voice." : "";
+}
+function syncPlayBtn(playing, loading = false) {
   const btn = $("#playBtn");
   btn.setAttribute("aria-pressed", String(playing));
-  btn.querySelector("span").textContent = playing ? "Pause" : "Read aloud";
+  btn.querySelector("span").textContent = loading ? "Loading…" : playing ? "Pause" : "Read aloud";
   $("#playIcon").setAttribute("d", playing ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
 }
 function setRate(r) {
   store.set("voiceRate", r);
-  reader.rate = r;
+  reader.setRate(r);
   $("#voiceRate").value = r;
   const opts = [...$("#quickRate").options].map((o) => Number(o.value));
   $("#quickRate").value = String(opts.reduce((a, b) => (Math.abs(b - r) < Math.abs(a - r) ? b : a)));
@@ -3323,7 +3337,7 @@ function setDrive(on) {
   // "Keep reading": read aloud carries on into the next chapter. The old big-button Drive screen is retired.
   if (!$("#drive").hidden) closeDrive();
 }
-$("#playBtn").hidden = !canSpeak;
+$("#playBtn").hidden = !canSpeak && !store.get("esvKey");
 $("#playBtn").addEventListener("click", () => { reader.toggle(); readArmed = reader.playing; });
 $("#quickRate").addEventListener("change", (e) => setRate(Number(e.target.value)));
 // Sleep timer and repeat, for listening at bedtime or on a long drive.
@@ -3354,7 +3368,7 @@ $("#driveQuick").addEventListener("change", (e) => {
   $("#volumeCtl").hidden = apple || !canSpeak;
   $("#volumeNote").hidden = !apple || !canSpeak;
   $("#volume").value = store.get("voiceVolume") ?? 1;
-  $("#volume").addEventListener("input", (e) => { reader.volume = Number(e.target.value); store.set("voiceVolume", reader.volume); });
+  $("#volume").addEventListener("input", (e) => { reader.setVolume(Number(e.target.value)); store.set("voiceVolume", reader.volume); });
 }
 
 

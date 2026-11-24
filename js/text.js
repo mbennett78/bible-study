@@ -22,8 +22,26 @@ function cachePut(entry) {
   try {
     const list = (JSON.parse(localStorage.getItem(CACHE_KEY)) || []).filter((c) => c.id !== entry.id);
     list.unshift(entry);
-    localStorage.setItem(CACHE_KEY, JSON.stringify(list.slice(0, CACHE_MAX)));
+    localStorage.setItem(CACHE_KEY, JSON.stringify(withinEsvLimits(list).slice(0, CACHE_MAX)));
   } catch { /* ignore */ }
+}
+
+// Crossway allows an app to keep no more than 500 verses, or half of any one book, of the ESV.
+// So at most 3 ESV chapters are kept, and never more than half of a book's chapters
+// (one-chapter books are allowed whole). The newest are kept.
+const ESV_KEEP = 3;
+function withinEsvLimits(list) {
+  let kept = 0;
+  const perBook = {};
+  return list.filter((c) => {
+    if (!String(c.id).startsWith("ESV:")) return true;
+    const book = String(c.id).slice(4).split(".")[0];
+    const total = BOOK_BY_ID[book]?.chapters || 1;
+    const allowed = total === 1 ? 1 : Math.floor(total / 2);
+    if (kept >= ESV_KEEP || (perBook[book] || 0) >= allowed) return false;
+    kept += 1; perBook[book] = (perBook[book] || 0) + 1;
+    return true;
+  });
 }
 
 export class TextError extends Error {
@@ -177,4 +195,18 @@ export function bibleGatewayUrl(version, book, ch) {
   // Bible Gateway calls the 2020 edition plain "NASB".
   const v = version === "ESV" ? "ESV" : extra ? extra.label.replace(/[^A-Za-z0-9]/g, "").replace(/^NASB2020$/, "NASB") : /95/.test(store.get("nasbLabel")) ? "NASB1995" : "NASB";
   return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(`${BOOK_BY_ID[book].name} ${ch}`)}&version=${v}`;
+}
+
+// The ESV's recorded narration for a chapter (Crossway's ESV API audio). The API answers with
+// a redirect to an MP3; the key travels in a header, so the file is fetched here and played
+// from memory. Resolves to null when there's no key or the recording can't be reached.
+export async function esvAudioUrl(book, ch) {
+  const key = store.get("esvKey");
+  if (!key) return null;
+  const q = new URLSearchParams({ q: esvQuery(book, ch) });
+  const res = await fetch(`https://api.esv.org/v3/passage/audio/?${q}`, { headers: { Authorization: `Token ${key}` } });
+  if (!res.ok) return null;
+  const type = res.headers.get("content-type") || "";
+  if (!/audio|mpeg|octet-stream/.test(type)) return null;
+  return URL.createObjectURL(await res.blob());
 }

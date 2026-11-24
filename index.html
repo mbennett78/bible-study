@@ -12,7 +12,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Bible Study">
   <!-- Only this site's own files run. Data comes only from the family's Supabase, API.Bible and the ESV API. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://rest.api.bible https://api.scripture.api.bible https://api.esv.org; font-src 'self' data:; media-src 'self' data: blob:; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://rest.api.bible https://api.scripture.api.bible https://api.esv.org https://*.esv.org; font-src 'self' data:; media-src 'self' data: blob: https://*.esv.org; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -144,7 +144,7 @@
         <button id="prevCh" aria-label="Previous chapter">‹ <span></span></button>
         <button id="nextCh" aria-label="Next chapter"><span></span> ›</button>
       </nav>
-      <p class="copyright" id="copyright"></p>
+      <p class="narrator muted small-print" id="narrator" hidden></p><p class="copyright" id="copyright"></p>
     </section>
 
     <!-- Books / tracker -->
@@ -320,6 +320,7 @@
         </label>
         <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
         <label class="switch-row"><span>Full screen while reading on a phone<small>The menus slide out of the way as you scroll down. Scroll up a little, or tap the Menu tab, to bring them back.</small></span><input type="checkbox" role="switch" id="focusRead"></label>
+        <label class="switch-row"><span>Recorded narrator for the ESV<small>With an ESV key, the ESV is read by a real person's recorded voice. Other versions, and times without a signal, use this device's voice.</small></span><input type="checkbox" role="switch" id="humanVoice"></label>
         <label class="switch-row"><span>Follow-along study notes<small>While you read, the study note for the verse you're on shows at the bottom of the page.</small></span><input type="checkbox" role="switch" id="followNotes"></label>
         <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
         <label class="switch-row"><span>Dotted line under study words<small>A light line under the names of God and the key words, so you know they're worth tapping.</small></span><input type="checkbox" role="switch" id="studyWords"></label>
@@ -339,6 +340,19 @@
           </select>
         </label>
       </div>
+
+      <details class="card organizer about-card" id="aboutCard">
+        <summary><h2>About this app</h2></summary>
+        <p>A free Bible study made for our family, not for sale.</p>
+        <ul class="about-list">
+          <li><b>The Bible text</b> belongs to its publishers. Each chapter shows its copyright line at the bottom. The ESV is from Crossway, used with their permission for non-commercial use. The NASB is © The Lockman Foundation. Other versions come through API.Bible.</li>
+          <li><b>Recorded ESV narration</b> is © Crossway.</li>
+          <li><b>The study buddy</b> answers with AI (Claude, by Anthropic). It tries hard to be accurate, but it can make mistakes. Check what it says against the Bible, and ask a pastor or teacher about anything important.</li>
+          <li><b>The study notes</b> show what respected Bible scholars have written, with their sources listed. Where scholars differ, more than one view is shown. They aren't any church's official teaching.</li>
+          <li><b>Paintings</b> in Classic 3 are by David Roberts (1839), from the Cleveland Museum of Art's open collection.</li>
+          <li><b>Your privacy:</b> your journal and notes stay on your device and in our family's own account. Keys are never put in backups.</li>
+        </ul>
+      </details>
 
       <div class="card">
         <h2>Backup</h2>

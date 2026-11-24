@@ -2419,3 +2419,7 @@ body.bars-away .follow { bottom: calc(52px + env(safe-area-inset-bottom)); }
 .book-what select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
 .ref-head { display: flex; align-items: center; gap: 12px; } .ref-head > div { flex: 1; }
 @media print { .ref-print { display: none; } }
+
+/* About this app, and the setup's "good to know" */
+.about-list { padding-left: 1.1em; margin: 8px 0 0; } .about-list li { margin-bottom: 8px; line-height: 1.5; }
+.setup-good { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--accent, #8a6d4e) 10%, transparent); }

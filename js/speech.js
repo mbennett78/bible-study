@@ -33,7 +33,7 @@ function pickVoice(name) {
 }
 
 export class Reader {
-  constructor({ onState, onEnd, onChunk }) {
+  constructor({ onState, onEnd, onChunk, onSource }) {
     this.onState = onState;
     this.onChunk = onChunk;
     this.onEnd = onEnd;
@@ -43,18 +43,73 @@ export class Reader {
     this.rate = 1;
     this.volume = 1;
     this.voiceName = "";
+    // A recorded narrator: audioFor() resolves to an audio URL for the loaded chapter, or null.
+    // When it can't be had, the device voice reads instead.
+    this.audioFor = null;
+    this.audio = null;
+    this.audioUrl = null;
+    this.usingAudio = false;
+    this.onSource = onSource; // called with "recorded" or "device"
   }
   load(chunks, intro) {
     this.stop();
+    if (this.audio) { this.audio.removeAttribute("src"); this.audio.load(); }
+    if (this.audioUrl?.startsWith("blob:")) URL.revokeObjectURL(this.audioUrl);
+    this.audioUrl = null; this.audioTried = false; this.usingAudio = false;
     this.blocks = intro ? [null, ...(chunks.blocks || [])] : (chunks.blocks || []);
     this.chunks = intro ? [intro, ...chunks] : chunks;
     this.index = 0;
+    this.cum = null;
   }
   play() {
-    if (!canSpeak || !this.chunks.length) return;
+    if (!this.chunks.length) return;
+    if (this.audioFor && !this.audioTried) { this.#startAudio(); return; }
+    if (this.usingAudio) { this.#resumeAudio(); return; }
+    if (!canSpeak) return;
     this.playing = true;
     this.onState?.("playing");
+    this.onSource?.("device");
     this.#speakNext();
+  }
+  async #startAudio() {
+    this.audioTried = true;
+    this.playing = true;
+    this.onState?.("loading");
+    let url = null;
+    try { url = await this.audioFor(); } catch { url = null; }
+    if (!url) { this.usingAudio = false; if (this.playing) { this.playing = false; this.play(); } return; }
+    this.audioUrl = url;
+    this.usingAudio = true;
+    if (!this.audio) {
+      this.audio = new Audio();
+      this.audio.preload = "auto";
+      this.audio.addEventListener("timeupdate", () => this.#followAudio());
+      this.audio.addEventListener("ended", () => { this.playing = false; this.onChunk?.(-1); this.onState?.("ended"); this.onEnd?.(); });
+      this.audio.addEventListener("error", () => { if (!this.usingAudio) return; this.usingAudio = false; if (this.playing) { this.playing = false; this.play(); } });
+    }
+    this.audio.src = url;
+    if (this.playing) this.#resumeAudio(); // else paused while it loaded; play() picks it up
+  }
+  #resumeAudio() {
+    this.playing = true;
+    this.audio.playbackRate = this.rate;
+    this.audio.volume = this.volume;
+    // Start where the highlighted part is, roughly, after "back" or a chapter reload.
+    if (this.index > 0 && this.audio.duration && this.audio.currentTime === 0) this.audio.currentTime = this.#timeAt(this.index);
+    this.audio.play().then(() => { this.onState?.("playing"); this.onSource?.("recorded"); }).catch(() => { this.usingAudio = false; this.playing = false; this.play(); });
+  }
+  // Recordings have no verse timings, so the highlight follows by how far through the words it is.
+  #weights() {
+    if (!this.cum) { let t = 0; this.cum = this.chunks.map((c) => (t += (c || "").length)); }
+    return this.cum;
+  }
+  #timeAt(i) { const w = this.#weights(), total = w[w.length - 1] || 1; return ((w[i - 1] || 0) / total) * (this.audio.duration || 0); }
+  #followAudio() {
+    if (!this.audio?.duration) return;
+    const w = this.#weights(), total = w[w.length - 1] || 1;
+    const at = (this.audio.currentTime / this.audio.duration) * total;
+    const i = Math.max(0, w.findIndex((x) => x >= at));
+    if (i !== this.index) { this.index = i; this.onChunk?.(i); }
   }
   #speakNext() {
     if (!this.playing) return;
@@ -76,15 +131,23 @@ export class Reader {
   }
   pause() {
     this.playing = false;
-    speechSynthesis.cancel(); // cancel + resume-from-chunk is more reliable than pause() on iOS
+    if (this.usingAudio && this.audio) this.audio.pause();
+    else if (canSpeak) speechSynthesis.cancel(); // cancel + resume-from-chunk is more reliable than pause() on iOS
     this.onState?.("paused");
   }
+  setRate(r) { this.rate = r; if (this.audio) this.audio.playbackRate = r; }
+  setVolume(v) { this.volume = v; if (this.audio) this.audio.volume = v; }
   toggle() { this.playing ? this.pause() : this.play(); }
-  restart() { this.stop(); this.index = 0; this.play(); }
-  back() { const was = this.playing; this.stop(); this.index = Math.max(0, this.index - 1); if (was) this.play(); }
+  restart() { this.stop(); this.index = 0; if (this.audio && this.usingAudio) this.audio.currentTime = 0; this.play(); }
+  back() {
+    const was = this.playing;
+    if (this.usingAudio && this.audio) { this.index = Math.max(0, this.index - 1); this.audio.currentTime = this.#timeAt(this.index); if (!was) this.onChunk?.(this.index); return; }
+    this.stop(); this.index = Math.max(0, this.index - 1); if (was) this.play();
+  }
   stop() {
     this.playing = false;
     this.onChunk?.(-1);
+    if (this.audio) { this.audio.pause(); if (this.audio.duration) this.audio.currentTime = 0; }
     if (canSpeak) speechSynthesis.cancel();
   }
 }
