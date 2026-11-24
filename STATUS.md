@@ -1,7 +1,7 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Tue Nov 24, 2026, 12:16 PM Central
+**Last updated:** Tue Nov 24, 2026, 12:18 PM Central
 **Current version:** v149 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 12:18 PM: Luke, John and Acts notes are live. Every chapter of Matthew through Acts now has study notes, three days ahead of plan. Starting Romans through Revelation.
 - Tue Nov 24, 12:10 PM: Matthew notes are live (Mark too). The end-of-chapter questions are now called "Quick check"; Bible Spin and the other games stay behind Games. New automatic checks click every menu, button and Games entry on phone and iPad (all go where they should), and play Bible Spin start to finish in every mode: solo, Buddy at all three levels, and a three-player family game. That found and fixed one glitch: after Buddy missed and you tapped "My turn!", the game could jump back to Buddy a moment later.
 - Tue Nov 24, 11:59 AM: The Notes and Journal fix works in every look and every Bible version (it's the same screen underneath; only colors and pictures change). The crucifixion chapters now have their own gentle picture (three empty crosses on a hill at sunset) instead of the empty tomb. Kids' Bible pictures are a recurring update item.
 - Tue Nov 24, 11:57 AM: Fixed Melissa's bug: "My notes" under a chapter opened the locked journal. Notes (study comments and research, never locked) and the Journal (personal reflections, lockable, in the side menu) are now separate everywhere. Added kids' Bible illustrations to the monthly plan and decluttering menus to the device check.
@@ -43,8 +44,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Study notes: Jeremiah | Done | Nov 24 |
 | Study notes: Lamentations, Ezekiel | Done (early) | Nov 24 |
 | Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Done (Tue Nov 24) | Thu Nov 26 |
-| Study notes: Matthew, Mark, Luke, John, Acts | In progress | Fri Nov 27 |
-| Study notes: Romans through Revelation (New Testament complete) | Not started | Sat Nov 28 |
+| Study notes: Matthew, Mark, Luke, John, Acts | Done (Tue Nov 24) | Fri Nov 27 |
+| Study notes: Romans through Revelation (New Testament complete) | In progress | Sat Nov 28 |
 | Catch-up day for notes | Not started | Sun Nov 29 |
 | Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Not started | Sun Nov 29 |
 | Buddy grows, part 1: built-in app guide that points out and explains features and settings (no AI needed) | Not started | Mon Nov 30 |
