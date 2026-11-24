@@ -12,7 +12,7 @@ import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
-import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -785,6 +785,21 @@ const JOURNAL_BOXES = [
   { field: "prayer", label: "Prayers", icon: "🙏", ph: () => "Who and what are you praying for?" },
   { field: "gratitude", label: "Gratitude", icon: "❀", ph: () => "What are you thankful for today?" },
 ];
+// "Tuesday, Nov 24, 2026 · 8:15 PM": the date and time stamp for journal entries.
+const stampNow = (d = new Date()) => `${d.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric", year: "numeric" })} · ${d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+const whenSaved = (e) => e ? `Started ${fmtDate(e.created)} · last saved ${stampNow(new Date(e.updated))}` : "Saves by itself as you type";
+// A button that writes today's date and time into the box, so each entry is dated.
+function stampButton(ta, onChange) {
+  const b = Object.assign(document.createElement("button"), { type: "button", className: "stamp-btn", textContent: "🕒 Add today's date and time" });
+  b.addEventListener("click", (e) => {
+    e.preventDefault();
+    const line = `— ${stampNow()} —\n`;
+    ta.value = ta.value.trim() ? `${ta.value.replace(/\s+$/, "")}\n\n${line}` : line;
+    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+    onChange();
+  });
+  return b;
+}
 function renderJournal() {
   const { book, chapter } = store.get("last");
   const inner = $("#journalInner");
@@ -796,7 +811,7 @@ function renderJournal() {
   if (store.get("journalLock")) inner.append(lockNowButton(renderJournal));
   const ref = `${BOOK_BY_ID[book].name} ${chapter}`;
   const saved = Object.assign(document.createElement("p"), { className: "saved" });
-  saved.textContent = entry ? `Saved ${fmtDate(entry.updated)}` : "Saves as you type";
+  saved.textContent = whenSaved(entry);
   for (const box of JOURNAL_BOXES) {
     const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
     wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
@@ -808,9 +823,10 @@ function renderJournal() {
     let t;
     ta.addEventListener("input", () => {
       clearTimeout(t);
-      t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = "Saved just now"; }, 500);
+      t = setTimeout(() => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }, 500);
     });
     wrap.append(ta);
+    wrap.append(stampButton(ta, () => { store.setJournalField(book, chapter, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }));
     addMic(wrap, ta);
     if (box.field === "prayer") {
       const ans = Object.assign(document.createElement("label"), { className: "answered" });
@@ -1023,6 +1039,9 @@ setInterval(() => {
   // Now and then a little wave from where he sits (no walking, no words).
   if (Date.now() >= buddyWaveAt && Date.now() < buddyVisitAt - 60e3) { if (buddy.wave()) buddyWaveAt = Date.now() + 5 * 60e3 + Math.random() * 5 * 60e3; return; }
   if (Date.now() < buddyVisitAt) return;
+  // While someone is reading, he never pops up with words over the Bible: he saves his
+  // visit for Home or another screen (a wave or a trick from the edge is still fine).
+  if (document.body.dataset.view === "read") return;
   const a = document.activeElement;
   if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
   const today = new Date().toDateString(), log = store.get("buddyVisitLog") || {};
@@ -1124,15 +1143,16 @@ function renderDiaryToday() {
   const entry = store.diaryEntry(day);
   const card = Object.assign(document.createElement("div"), { className: "diary-card" });
   card.innerHTML = `<p class="diary-date">${esc(dayLabel(day))}</p><h2>Today's journal</h2><p class="muted small-print">Your daily life journal, separate from your chapter notes. Each day gets its own dated page.</p>`;
-  const saved = Object.assign(document.createElement("p"), { className: "saved", textContent: entry ? `Saved ${new Date(entry.updated).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}` : "Saves as you type" });
+  const saved = Object.assign(document.createElement("p"), { className: "saved", textContent: entry ? `Saved ✓ ${stampNow(new Date(entry.updated))}` : "Saves by itself as you type" });
   for (const box of DIARY_BOXES) {
     const wrap = Object.assign(document.createElement("label"), { className: `journal-box jb-${box.field}` });
     wrap.innerHTML = `<span class="jb-label"><span aria-hidden="true">${box.icon}</span> ${box.label}</span>`;
     const ta = Object.assign(document.createElement("textarea"), { rows: box.field === "text" ? 5 : 3, placeholder: box.ph, value: entry?.[box.field] || "" });
     ta.id = `diary-${box.field}`;
     let t;
-    ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setDiaryField(day, box.field, ta.value); saved.textContent = "Saved just now"; renderJournalList(); }, 600); });
+    ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { store.setDiaryField(day, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; renderJournalList(); }, 600); });
     wrap.append(ta);
+    wrap.append(stampButton(ta, () => { store.setDiaryField(day, box.field, ta.value); saved.textContent = `Saved ✓ ${stampNow()}`; }));
     addMic(wrap, ta);
     card.append(wrap);
   }
@@ -1340,21 +1360,46 @@ $("#mascot").addEventListener("click", () => mascotSay(friendWhich === "donkey"
 function initSettings() {
   const apiKey = $("#apiBibleKey"), esvKey = $("#esvKey"), size = $("#textSize"), theme = $("#theme"), sel = $("#nasbSelect");
   $("#userName").value = store.get("name");
-  $("#userName").addEventListener("change", (e) => { store.set("name", e.target.value.trim()); });
+  const saveName = () => {
+    const v = $("#userName").value.trim();
+    store.set("name", v);
+    setMyName(v);
+    $("#userNameMsg").textContent = v ? `Saved ✓ Hi, ${v}!` : "Saved ✓";
+  };
+  $("#userName").addEventListener("change", saveName);
+  $("#saveUserName").addEventListener("click", saveName);
   renderLookCard();
   $("#modePace").checked = store.get("yearPace");
   $("#modePace").addEventListener("change", (e) => { store.set("yearPace", e.target.checked); renderMargin(); });
-  const lockStatus = () => { $("#lockStatus").textContent = store.get("journalLock") ? "Your journal is locked with a passcode." : "No passcode set."; };
+  // The saved passcode shows as dots (with Show to see it), so it's clear one is saved.
+  const lockStatus = (saved = false) => {
+    const has = Boolean(store.get("journalLock"));
+    $("#lockStatus").textContent = has ? `${saved ? "Saved ✓ " : "✓ "}Your journal has a passcode.` : "No passcode yet. Your journal is open to anyone using this device.";
+    $("#lockStatus").classList.toggle("ok", has);
+    $("#lockLabel").textContent = has ? "Your passcode" : "New passcode";
+    $("#lockCode").value = has ? store.get("journalCode") || "" : "";
+    $("#lockCode").placeholder = has ? "Saved (type a new one to change it)" : "4 to 8 digits";
+    $("#lockShow").hidden = has && !store.get("journalCode") && !$("#lockCode").value;
+    $("#lockSet").textContent = has ? "Save new passcode" : "Save passcode";
+  };
   lockStatus();
+  $("#lockCode").addEventListener("input", () => { $("#lockShow").hidden = false; });
+  $("#lockShow").addEventListener("click", () => {
+    const show = $("#lockCode").type === "password";
+    $("#lockCode").type = show ? "text" : "password";
+    $("#lockShow").textContent = show ? "Hide" : "Show";
+    $("#lockShow").setAttribute("aria-pressed", String(show));
+  });
   $("#lockSet").addEventListener("click", async () => {
     const code = $("#lockCode").value.trim();
-    if (!/^\d{4,8}$/.test(code)) { $("#lockStatus").textContent = "Use 4 to 8 digits."; return; }
+    if (!/^\d{4,8}$/.test(code)) { $("#lockStatus").textContent = "Use 4 to 8 digits (numbers only)."; $("#lockStatus").classList.remove("ok"); return; }
     store.set("journalLock", await hashCode(code));
-    journalUnlocked = false; $("#lockCode").value = ""; lockStatus(); renderJournal();
+    store.set("journalCode", code); // kept on this device only, so they can look it up
+    journalUnlocked = false; lockStatus(true); renderJournal();
   });
   $("#lockClear").addEventListener("click", () => {
     if (journalLocked()) { $("#lockStatus").textContent = "Unlock your journal first (open it under any chapter), then remove the passcode."; return; }
-    store.set("journalLock", ""); lockStatus(); renderJournal();
+    store.set("journalLock", ""); store.set("journalCode", ""); lockStatus(); $("#lockStatus").textContent = "Passcode removed. Your journal is open."; renderJournal();
   });
   const modes = store.get("modes");
   $("#modeDrive").checked = modes.drive;
@@ -1546,6 +1591,7 @@ function renderSetup() {
         <label class="field buddy-name-field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
       <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
+    $("#setupName").addEventListener("change", (e) => setMyName(e.target.value));
     $("#setupBuddyName").addEventListener("input", (e) => setBuddyName(e.target.value));
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>

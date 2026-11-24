@@ -102,7 +102,20 @@ export async function verifyEmailCode(email, code) {
 export async function changePassword(password) {
   const c = await sb();
   const { error } = await c.auth.updateUser({ password, data: { own_password: true, temp_password: false } });
-  if (error) throw new Error(friendly(error));
+  if (!error) return;
+  // Choosing the password they already have is fine: it's their choice. Supabase refuses
+  // "the same password", so just note that they have their own password and call it saved.
+  if (/should be different|same.password/i.test(String(error.message || "")) || error.code === "same_password") {
+    const { error: e2 } = await c.auth.updateUser({ data: { own_password: true, temp_password: false } });
+    if (!e2) return;
+  }
+  throw new Error(friendly(error));
+}
+
+// Their name on the account (the family list shows it too).
+export async function setMyName(name) {
+  if (!authEnabled) return;
+  try { const c = await sb(); await c.auth.updateUser({ data: { name: String(name || "").trim().slice(0, 40) } }); } catch { /* saved on the device anyway */ }
 }
 
 // Signs out of this device only. (Supabase's default would sign the person out of every

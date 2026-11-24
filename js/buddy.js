@@ -237,7 +237,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
       setTimeout(() => el.classList.remove(name), ms);
     }
     if (name === "yay") popUp("Yay!", ms);
-    if (name === "pondering") popUp("?", ms);
+    // Thinking: a question mark, then the lightbulb of a good idea.
+    if (name === "pondering") { popUp("?", 2600); setTimeout(() => { if (el.classList.contains("pondering")) popUp("💡", ms - 2700); }, 2700); }
     sitSoon(ms + 2500);
     return true;
   }
@@ -287,7 +288,14 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     trick,                                    // "cartwheel" | "stroll" | "pondering" | "yay"
     nap,
     sleeping: () => el.classList.contains("sleeping"),
-    thinking(on) { wake(); hold(); if (on) el.classList.remove("tucked"); el.classList.toggle("thinking", on); },
+    // Looking something up: his magnifying glass while he thinks, and a lightbulb when he's got it.
+    thinking(on) {
+      wake(); hold(); if (on) el.classList.remove("tucked");
+      const was = el.classList.contains("thinking");
+      el.classList.toggle("thinking", on);
+      if (on) { pop.textContent = "🔍"; pop.classList.add("on", "search"); }
+      else { pop.classList.remove("search"); if (was) popUp("💡", 1800); else pop.classList.remove("on"); }
+    },
     talking(on) { wake(); if (on) { hold(60000); el.classList.remove("tucked"); } else hold(); el.classList.toggle("talking", on); },
   };
 }

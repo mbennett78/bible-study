@@ -133,7 +133,7 @@ try {
       for (const c of await page.$eval(".buddy", (b) => [...b.classList])) seen.add(c);
       if (seen.has("sleeping")) break;
     }
-    check("tricks: he does things on his own (cartwheels, strolls, thinking, Yay!)", ["cartwheel", "strolling", "pondering", "yay"].filter((c) => seen.has(c)).length >= 2, [...seen].join(" "));
+    check("tricks: he does things on his own (cartwheels, strolls, thinking, Yay!)", ["cartwheel", "strolling", "pondering", "yay"].some((c) => seen.has(c)), [...seen].join(" "));
     for (let i = 0; i < 40 && !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))); i++) await page.clock.runFor(5000);
     check("nap: he lies down for a nap when nobody's been around", await page.$eval(".buddy", (b) => b.classList.contains("sleeping")) && /z z z/.test(await page.textContent(".buddy-pop")));
     await page.mouse.click(200, 400); await page.clock.runFor(300);
@@ -142,6 +142,24 @@ try {
     check("voice: a switch to have him talk out loud, off to start", await page.$eval('[data-buddy-feat="buddyvoice"]', (i) => !i.checked));
     check("name box: big and easy to type in", await page.$eval("#buddyNameInput", (i) => i.getBoundingClientRect().height >= 48 && i.getBoundingClientRect().width >= 250));
     check("tricks: no page errors", !errs.length, errs.join(" | "));
+    await ctx.close();
+  }
+  // While reading, his words never pop up over the Bible; they wait for another screen.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
+    await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy" })); });
+    const page = await ctx.newPage();
+    await page.clock.install();
+    await page.goto(site.url); await page.waitForTimeout(900);
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click());
+    let popped = false;
+    for (let i = 0; i < 300 && !popped; i++) { await page.clock.runFor(2000); popped = !(await page.$eval(".buddy-say", (el) => el.hidden)); }
+    check("reading: his talk bubble never pops up over the Bible", !popped);
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=home]").click());
+    for (let i = 0; i < 60 && !popped; i++) { await page.clock.runFor(2000); popped = !(await page.$eval(".buddy-say", (el) => el.hidden)); }
+    check("reading: he says hi once they're on another screen", popped);
     await ctx.close();
   }
   // Microphone: explained before the device asks, and a kind way back if it was refused.

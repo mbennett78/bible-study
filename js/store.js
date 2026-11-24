@@ -53,6 +53,7 @@ const defaults = {
   journal: {},              // { "JHN.3": { text, prayer, gratitude, answered, created, updated } }
   diary: {},                // daily life journal by date: { "2026-11-22": { text, prayer, gratitude, created, updated } }
   journalLock: "",          // SHA-256 of the passcode, or ""
+  journalCode: "",          // the passcode itself, so its owner can look it up (Show)
   trivia: { answered: 0, correct: 0, sessions: [], recent: [] },
   setup: { done: false, skipped: false }, // first-time setup
   graphics: "full",         // "full" | "simple" (no cartoon faces or characters) | "none"

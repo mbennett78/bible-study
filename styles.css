@@ -807,6 +807,8 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .top-title { font-family: var(--serif); font-size: 1.2rem; padding: 6px 4px; display: none; }
 body:not([data-view="read"]) .top-title { display: inline; }
 body:not([data-view="read"]) .read-only { display: none !important; }
+.stamp-btn { display: inline-block; margin: 6px 0 0; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+.lock-status.ok { color: var(--accent); font-weight: 700; }
 .mybible-sub { margin: -4px 0 12px; }
 .mybible-go { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0 0 16px; padding: 14px 16px; border: 0; border-radius: 16px; background: var(--accent); color: var(--surface); font: inherit; text-align: left; cursor: pointer; }
 .mybible-go > span:nth-child(2) { flex: 1; display: flex; flex-direction: column; }
@@ -1482,6 +1484,9 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .buddy.visiting { transition: transform .9s ease-in-out, top .25s ease; }
 .buddy-say { position: fixed; z-index: 7; max-width: min(250px, 70vw); padding: 10px 14px; border-radius: 16px 16px 16px 4px; background: var(--surface); color: var(--text); border: 2px solid var(--accent); font: inherit; font-size: 1rem; font-weight: 600; text-align: left; box-shadow: 0 6px 18px rgb(0 0 0 / .18); cursor: pointer; animation: buddy-say-in .35s ease-out; }
 .buddy-say.on-right { border-radius: 16px 16px 4px 16px; }
+/* A little tail pointing down to him, so it's clear the words are his. */
+.buddy-say::after { content: ""; position: absolute; bottom: -9px; left: 14px; width: 14px; height: 14px; background: var(--surface); border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg) skew(8deg, 8deg); }
+.buddy-say.on-right::after { left: auto; right: 14px; }
 .buddy-say[hidden] { display: none; }
 .buddy-say { cursor: default; }
 .buddy-name-field input[type="text"] { font-size: 1.25rem; min-height: 52px; }
@@ -1545,6 +1550,8 @@ html.touring .buddy-say, body.hide-buddy .buddy-say, html[data-graphics="none"] 
 .buddy-arm-l { transform-origin: 26px 38px; transform-box: view-box; }
 .buddy-pop { position: absolute; left: 0; right: 0; top: -6px; text-align: center; font-weight: 800; font-size: 1rem; color: var(--accent); opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; pointer-events: none; text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface); }
 .buddy-pop.on { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) { .buddy-pop.search { animation: buddy-search 1.4s ease-in-out infinite; } }
+@keyframes buddy-search { 0%, 100% { transform: translate(-8px, 0) rotate(-12deg); } 50% { transform: translate(8px, 2px) rotate(12deg); } }
 .buddy.pondering .buddy-arm-r { transform: rotate(-100deg); }
 .buddy.pondering .buddy-head, .buddy.pondering .buddy-eye { transform: rotate(-6deg); transform-origin: 26px 30px; transform-box: view-box; }
 .buddy.yay .buddy-arm-r { transform: rotate(-72deg); }

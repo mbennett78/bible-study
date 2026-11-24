@@ -117,10 +117,8 @@ try {
     await page.fill("#gateCode", "123456"); await page.click("#gateCodeForm button[type=submit]"); await page.waitForTimeout(1000);
     check("the right code signs in", !(await visible(page, "#gate")));
     check("asked to choose a new password", Boolean(await page.$(".pw-sheet[open]")));
-    await page.fill("#pwNew", "grace-2026"); await page.click("#pwSave"); await page.waitForTimeout(400);
-    check("reusing the current password is explained", /already have/.test(await text(page, "#pwSheetMsg")), await text(page, "#pwSheetMsg"));
-    await page.fill("#pwNew", "mercy-2026"); await page.click("#pwSave"); await page.waitForTimeout(1800);
-    check("new password saved after reset", !(await page.$(".pw-sheet[open]")) && people[0].password === "mercy-2026");
+    await page.fill("#pwNew", "grace-2026"); await page.click("#pwSave"); await page.waitForTimeout(1800);
+    check("keeping the same password is allowed and counts as saved", !(await page.$(".pw-sheet[open]")) && people[0].password === "grace-2026", await text(page, "#pwSheetMsg"));
     await page.reload(); await page.waitForTimeout(900);
     check("not asked again after the reset", !(await page.$(".pw-sheet[open]")));
     check("no page errors (reset)", !page.errors.length, page.errors.join(" | "));
@@ -156,7 +154,7 @@ try {
     await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.journal = { "JHN.3": { text: "Dad's private note", updated: new Date().toISOString() } }; localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
     await page.reload(); await page.waitForTimeout(800);
     await page.click("#acctBtn"); await page.waitForTimeout(200); await page.click("#acctOut"); await page.waitForTimeout(1200);
-    await signIn(page, "mel@example.com", "mercy-2026");
+    await signIn(page, "mel@example.com", "grace-2026");
     const melSees = await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).journal);
     check("the next person doesn't see the last person's journal", !JSON.stringify(melSees).includes("Dad's private note"));
     await page.evaluate(() => { const d = document.querySelector(".pw-sheet[open]"); if (d) d.close(); });

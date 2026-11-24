@@ -214,8 +214,9 @@
       <div class="card">
         <h2>You</h2>
         <label class="field">Your name
-          <input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you">
+          <span class="key-row"><input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you" maxlength="40"><button type="button" class="small" id="saveUserName">Save</button></span>
         </label>
+        <p class="small-print key-status" id="userNameMsg" role="status"></p>
         <label class="field">My Bible version
           <select id="myVersion"></select>
         </label>
@@ -225,12 +226,12 @@
 
       <div class="card" id="lockCard">
         <h2>Journal passcode</h2>
-        <p class="muted small-print" id="lockStatus"></p>
-        <label class="field">New passcode
-          <input id="lockCode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4 to 8 digits">
+        <p class="small-print lock-status" id="lockStatus" role="status"></p>
+        <label class="field"><span id="lockLabel">New passcode</span>
+          <span class="key-row"><input id="lockCode" type="password" inputmode="numeric" autocomplete="off" placeholder="4 to 8 digits" maxlength="8"><button type="button" class="small" id="lockShow" aria-pressed="false">Show</button></span>
         </label>
         <div class="row">
-          <button class="small" id="lockSet">Set passcode</button>
+          <button class="small" id="lockSet">Save passcode</button>
           <button class="small" id="lockClear">Remove passcode</button>
         </div>
         <p class="muted small-print">The passcode hides your journal on screen. It isn't encryption: someone with your unlocked device and technical know-how could still reach the saved text.</p>
