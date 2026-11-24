@@ -1,0 +1,178 @@
+// Hebrews chapter notes.
+import { makeBook } from "./make.js";
+
+const sources = {
+  lane: "William L. Lane, Hebrews, 2 vols., Word Biblical Commentary 47A-B (Word, 1991).",
+  obrienH: "Peter T. O'Brien, The Letter to the Hebrews, Pillar New Testament Commentary (Eerdmans, 2010).",
+  bruceH: "F. F. Bruce, The Epistle to the Hebrews, rev. ed., New International Commentary on the New Testament (Eerdmans, 1990).",
+  guthrieH: "George H. Guthrie, Hebrews, NIV Application Commentary (Zondervan, 1998).",
+  ellingworth: "Paul Ellingworth, The Epistle to the Hebrews, New International Greek Testament Commentary (Eerdmans, 1993).",
+  bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+};
+
+export default makeBook({ lang: "Greek", sources, use: ["lane", "obrienH"] }, {
+  1: {
+    intro: "\"God, after He spoke long ago to the fathers in the prophets in many portions and in many ways, in these last days has spoken to us in His Son.\" The Son is heir of all things, through whom God made the world. \"He is the radiance of His glory and the exact representation of His nature, and upholds all things by the word of His power.\" After making purification for sins, He sat down at the right hand of the Majesty on high. Then a chain of Old Testament quotations shows the Son is far greater than the angels: angels worship Him, and God says to the Son, \"Your throne, O God, is forever and ever.\"",
+    v: [
+      ["1:1", "God... spoke long ago to the fathers in the prophets in many portions and in many ways", "God has spoken."],
+      ["1:2", "In these last days has spoken to us in His Son", "The final word."],
+      ["1:3", "He is the radiance of His glory and the exact representation of His nature", "Seeing God in Jesus."],
+      ["1:6", "Let all the angels of God worship Him", "Above the angels."],
+      ["1:8", "Your throne, O God, is forever and ever", "The Son is God."],
+      ["1:14", "Are they not all ministering spirits, sent out to render service", "Angels serve."],
+    ],
+    bg: [["Who wrote Hebrews?", "The letter does not name its author. Early guesses included Paul, Barnabas, Luke, Apollos and Priscilla. The third-century scholar Origen said, \"Who wrote the epistle, God only knows.\" It was written to Jewish believers tempted to turn back from Christ under pressure, probably before the temple fell in AD 70.", "debated", ["bruceH", "lane"]]],
+    w: [["exact representation", "charaktēr", "G5481", "an exact imprint, stamp", "The mark a seal or coin die leaves in wax or metal, matching it exactly. Jesus shows exactly what God is like.", ["bdag", "ellingworth"]]],
+    refs: [["PSA.2", "Psalm 2:7", "You are My Son"], ["PSA.45", "Psalm 45:6-7", "Your throne, O God"], ["PSA.110", "Psalm 110:1", "Sit at My right hand"], ["JHN.1", "John 1:1-18", "The Word made flesh"]],
+  },
+  2: {
+    intro: "\"We must pay much closer attention to what we have heard, so that we do not drift away from it.\" How will we escape if we neglect so great a salvation? God put all things under the Son. \"We do see Him who was made for a little while lower than the angels, namely, Jesus, because of the suffering of death crowned with glory and honor.\" He shared our flesh and blood so that through death He might destroy the one who had the power of death, the devil, and free those who lived in fear of death. \"He had to be made like His brethren in all things, so that He might become a merciful and faithful high priest.\" \"Since He Himself was tempted in that which He has suffered, He is able to come to the aid of those who are tempted.\"",
+    v: [
+      ["2:1", "So that we do not drift away from it", "Don't drift."],
+      ["2:3", "How will we escape if we neglect so great a salvation?", "So great a salvation."],
+      ["2:9", "So that by the grace of God He might taste death for everyone", "For everyone."],
+      ["2:11", "He is not ashamed to call them brethren", "Jesus our brother."],
+      ["2:14", "That through death He might render powerless him who had the power of death", "Death defeated."],
+      ["2:18", "He is able to come to the aid of those who are tempted", "He helps."],
+    ],
+    w: [["drift away", "pararreō", "G3901", "to flow past, drift away", "Like a boat slowly drifting past the harbor when no one is paying attention. Faith is more often lost by drifting than by sudden rebellion.", ["bdag", "lane"]]],
+    refs: [["PSA.8", "Psalm 8:4-6", "What is man?"], ["PSA.22", "Psalm 22:22", "I will proclaim Your name to My brethren"], ["PHP.2", "Philippians 2:7-8", "Made like men"]],
+  },
+  3: {
+    intro: "\"Consider Jesus, the Apostle and High Priest of our confession.\" Moses was faithful as a servant in God's house, but Christ is faithful as a Son over God's house, \"whose house we are, if we hold fast our confidence.\" Then a warning from Psalm 95: \"Today if you hear His voice, do not harden your hearts\" as Israel did in the wilderness, when they did not enter God's rest because of unbelief. \"Encourage one another day after day, as long as it is still called 'Today,' so that none of you will be hardened by the deceitfulness of sin.\"",
+    v: [
+      ["3:1", "Consider Jesus, the Apostle and High Priest of our confession", "Fix your thoughts on Jesus."],
+      ["3:5", "Moses was faithful in all His house as a servant", "Faithful Moses."],
+      ["3:6", "Christ was faithful as a Son over His house, whose house we are", "We are His house."],
+      ["3:7", "Today if you hear His voice", "Listen today."],
+      ["3:13", "Encourage one another day after day", "Daily encouragement."],
+      ["3:19", "They were not able to enter because of unbelief", "Unbelief shuts out."],
+    ],
+    refs: [["NUM.12", "Numbers 12:7", "Moses faithful in My house"], ["PSA.95", "Psalm 95:7-11", "Do not harden your hearts"], ["NUM.14", "Numbers 14", "Israel refuses to enter"]],
+  },
+  4: {
+    intro: "A promise of entering God's rest still stands. Joshua gave Israel the land, but not the final rest, for David later still spoke of \"Today.\" \"There remains a Sabbath rest for the people of God.\" \"The word of God is living and active and sharper than any two-edged sword... and able to judge the thoughts and intentions of the heart.\" Nothing is hidden from God. \"We do not have a high priest who cannot sympathize with our weaknesses, but One who has been tempted in all things as we are, yet without sin. Therefore let us draw near with confidence to the throne of grace, so that we may receive mercy and find grace to help in time of need.\"",
+    v: [
+      ["4:9", "There remains a Sabbath rest for the people of God", "Rest ahead."],
+      ["4:12", "The word of God is living and active and sharper than any two-edged sword", "A living word."],
+      ["4:13", "All things are open and laid bare to the eyes of Him", "Nothing hidden."],
+      ["4:15", "One who has been tempted in all things as we are, yet without sin", "He understands."],
+      ["4:16", "Let us draw near with confidence to the throne of grace", "Come boldly."],
+    ],
+    refs: [["GEN.2", "Genesis 2:2", "God rested"], ["MAT.11", "Matthew 11:28-30", "I will give you rest"], ["MAT.4", "Matthew 4:1-11", "Jesus tempted"]],
+  },
+  5: {
+    intro: "Every high priest is chosen from among people to offer gifts and sacrifices for sins, and can deal gently with others because he too is weak. No one takes this honor for himself; God calls him. So Christ was appointed by God, who said, \"You are a priest forever according to the order of Melchizedek.\" \"In the days of His flesh, He offered up both prayers and supplications with loud crying and tears... Although He was a Son, He learned obedience from the things which He suffered.\" The writer wants to say more but scolds his readers: they should be teachers by now but still need milk, not solid food.",
+    v: [
+      ["5:2", "He can deal gently with the ignorant and misguided", "Gentle priests."],
+      ["5:4", "No one takes the honor to himself, but receives it when he is called by God", "Called by God."],
+      ["5:6", "You are a priest forever according to the order of Melchizedek", "A forever priest."],
+      ["5:7", "With loud crying and tears", "Jesus in Gethsemane."],
+      ["5:8", "He learned obedience from the things which He suffered", "Obedience through suffering."],
+      ["5:12", "You have come to need milk and not solid food", "Time to grow up."],
+    ],
+    refs: [["PSA.110", "Psalm 110:4", "A priest forever"], ["LUK.22", "Luke 22:41-44", "Jesus prays in agony"], ["1CO.3", "1 Corinthians 3:1-2", "Milk, not solid food"]],
+  },
+  6: {
+    intro: "\"Let us press on to maturity,\" beyond the elementary teachings. Then a serious warning: it is impossible to renew to repentance those who have tasted the heavenly gift and then fallen away, since they crucify the Son of God again. But the writer is confident of better things for his readers, for \"God is not unjust so as to forget your work and the love which you have shown toward His name.\" Be imitators of those who through faith and patience inherit the promises. God swore by Himself to Abraham, giving two unchangeable things, His promise and His oath. \"This hope we have as an anchor of the soul, a hope both sure and steadfast.\"",
+    v: [
+      ["6:1", "Let us press on to maturity", "Keep growing."],
+      ["6:10", "God is not unjust so as to forget your work and the love which you have shown", "God remembers."],
+      ["6:12", "Imitators of those who through faith and patience inherit the promises", "Faith and patience."],
+      ["6:13", "He swore by Himself", "God's oath."],
+      ["6:18", "It is impossible for God to lie", "Unchanging God."],
+      ["6:19", "This hope we have as an anchor of the soul", "An anchor."],
+    ],
+    views: [["The warning in 6:4-6", "Some read it as describing true believers who can fall away and be lost. Others read it as describing people who came close to faith and tasted its blessings but never truly trusted Christ. Others read it as a real warning God uses to keep His people from falling away. All agree the passage calls readers to keep trusting Christ, and the writer says he is confident of better things for them (6:9).", ["lane", "obrienH", "guthrieH"]]],
+    refs: [["GEN.22", "Genesis 22:16-17", "God swears to Abraham"], ["GEN.14", "Genesis 14:18-20", "Melchizedek"], ["NUM.23", "Numbers 23:19", "God is not a man that He should lie"]],
+  },
+  7: {
+    intro: "Melchizedek was king of Salem and priest of God Most High. He met Abraham after battle and blessed him, and Abraham gave him a tenth. His name means \"king of righteousness,\" and Salem means \"peace.\" Scripture tells nothing of his birth or death, so he pictures a priest who continues forever. If perfection had come through the Levitical priests, there would be no need for another priest. Jesus came from Judah, not Levi, and was made priest by an oath, \"not on the basis of a law of physical requirement, but according to the power of an indestructible life.\" \"He is able also to save forever those who draw near to God through Him, since He always lives to make intercession for them.\"",
+    v: [
+      ["7:2", "King of righteousness, and then also king of Salem, which is king of peace", "Righteousness and peace."],
+      ["7:16", "According to the power of an indestructible life", "A life that can't end."],
+      ["7:22", "Jesus has become the guarantee of a better covenant", "A better covenant."],
+      ["7:25", "He always lives to make intercession for them", "Jesus prays for us."],
+      ["7:26", "Holy, innocent, undefiled, separated from sinners", "The perfect priest."],
+      ["7:27", "He did once for all when He offered up Himself", "Once for all."],
+    ],
+    refs: [["GEN.14", "Genesis 14:17-20", "Abraham meets Melchizedek"], ["PSA.110", "Psalm 110:4", "The LORD has sworn"], ["ROM.8", "Romans 8:34", "Christ intercedes for us"]],
+  },
+  8: {
+    intro: "\"We have such a high priest, who has taken His seat at the right hand of the throne of the Majesty in the heavens,\" serving in the true tabernacle which the Lord pitched. The earthly tabernacle was a copy and shadow of the heavenly one; Moses was told to make it after the pattern shown him on the mountain. Jesus has a better ministry and is mediator of a better covenant with better promises. Then the longest Old Testament quotation in the New Testament, from Jeremiah 31: \"I will put My laws into their minds, and I will write them on their hearts. And I will be their God, and they shall be My people... and I will remember their sins no more.\"",
+    v: [
+      ["8:1", "We have such a high priest, who has taken His seat", "Seated in heaven."],
+      ["8:5", "A copy and shadow of the heavenly things", "Shadow and reality."],
+      ["8:6", "Mediator of a better covenant, which has been enacted on better promises", "Better promises."],
+      ["8:10", "I will put My laws into their minds, and I will write them on their hearts", "Hearts changed."],
+      ["8:12", "I will remember their sins no more", "Forgiven and forgotten."],
+    ],
+    refs: [["JER.31", "Jeremiah 31:31-34", "The new covenant"], ["EXO.25", "Exodus 25:40", "Make it after the pattern"], ["LUK.22", "Luke 22:20", "The new covenant in My blood"]],
+  },
+  9: {
+    intro: "The writer describes the tabernacle: the lampstand, the table and bread, the golden altar of incense and the ark of the covenant in the Holy of Holies. Only the high priest entered that inner room, once a year, with blood. This showed the way into God's presence was not yet open. \"But when Christ appeared as a high priest... He entered the holy place once for all, having obtained eternal redemption,\" not with the blood of goats but with His own blood. If animal blood cleansed the body, \"how much more will the blood of Christ... cleanse your conscience.\" \"Without shedding of blood there is no forgiveness.\" Christ was offered once to bear the sins of many, and \"will appear a second time\" to bring salvation to those who eagerly await Him.",
+    v: [
+      ["9:7", "Into the second, only the high priest enters once a year", "Once a year."],
+      ["9:12", "Through His own blood, He entered the holy place once for all", "Once for all."],
+      ["9:14", "How much more will the blood of Christ... cleanse your conscience", "A clean conscience."],
+      ["9:22", "Without shedding of blood there is no forgiveness", "The cost of forgiveness."],
+      ["9:27", "It is appointed for men to die once and after this comes judgment", "Once."],
+      ["9:28", "Christ also, having been offered once to bear the sins of many, will appear a second time", "He will return."],
+    ],
+    bg: [["The Day of Atonement", "On Yom Kippur the high priest entered the Most Holy Place with incense and blood to atone for himself and the people (Leviticus 16). Hebrews shows that Jesus fulfilled this day once and for all.", "strong", ["lane", "bruceH"]]],
+    refs: [["EXO.25", "Exodus 25-26", "The tabernacle"], ["LEV.16", "Leviticus 16", "The Day of Atonement"], ["MAT.27", "Matthew 27:51", "The veil torn"]],
+  },
+  10: {
+    intro: "The Law is only a shadow of good things to come, so its sacrifices, repeated every year, could never make people perfect. \"It is impossible for the blood of bulls and goats to take away sins.\" So Christ came: \"Behold, I have come to do Your will, O God.\" \"By this will we have been sanctified through the offering of the body of Jesus Christ once for all.\" Since we have confidence to enter the holy place by His blood, through the new and living way, \"let us draw near... let us hold fast the confession of our hope without wavering... let us consider how to stimulate one another to love and good deeds, not forsaking our own assembling together.\" Do not throw away your confidence; \"My righteous one shall live by faith.\"",
+    v: [
+      ["10:4", "It is impossible for the blood of bulls and goats to take away sins", "Animal sacrifices could not."],
+      ["10:10", "We have been sanctified through the offering of the body of Jesus Christ once for all", "Once for all."],
+      ["10:14", "By one offering He has perfected for all time those who are sanctified", "One offering."],
+      ["10:19", "We have confidence to enter the holy place by the blood of Jesus", "Come in."],
+      ["10:23", "Let us hold fast the confession of our hope without wavering, for He who promised is faithful", "Hold on."],
+      ["10:24", "Let us consider how to stimulate one another to love and good deeds", "Spur each other on."],
+      ["10:25", "Not forsaking our own assembling together", "Meet together."],
+    ],
+    refs: [["PSA.40", "Psalm 40:6-8", "I come to do Your will"], ["HAB.2", "Habakkuk 2:3-4", "The righteous will live by faith"], ["ACT.2", "Acts 2:42-47", "Believers meeting together"]],
+  },
+  11: {
+    intro: "\"Faith is the assurance of things hoped for, the conviction of things not seen.\" \"Without faith it is impossible to please Him, for he who comes to God must believe that He is and that He is a rewarder of those who seek Him.\" Then the great hall of faith: by faith Abel offered a better sacrifice; Enoch walked with God; Noah built an ark; Abraham went out not knowing where he was going and offered Isaac; Sarah received strength to conceive; Isaac, Jacob and Joseph looked ahead; Moses' parents hid him; Moses chose to suffer with God's people; Israel crossed the Red Sea; Jericho's walls fell; Rahab welcomed the spies. And many more conquered kingdoms, shut lions' mouths, or suffered and died, \"men of whom the world was not worthy.\"",
+    v: [
+      ["11:1", "Faith is the assurance of things hoped for, the conviction of things not seen", "What faith is."],
+      ["11:3", "By faith we understand that the worlds were prepared by the word of God", "Faith and creation."],
+      ["11:6", "Without faith it is impossible to please Him", "Faith pleases God."],
+      ["11:8", "By faith Abraham... went out, not knowing where he was going", "Going without knowing."],
+      ["11:13", "All these died in faith, without receiving the promises", "Seeing from far away."],
+      ["11:31", "By faith Rahab the harlot did not perish", "Rahab's faith."],
+      ["11:38", "Men of whom the world was not worthy", "Faithful heroes."],
+    ],
+    why: "Hebrews 11 is a tour through the Old Testament. Families can trace each name back to its story and see faith in action.",
+    refs: [["GEN.4", "Genesis 4:4", "Abel's offering"], ["GEN.6", "Genesis 6:13-22", "Noah builds the ark"], ["GEN.12", "Genesis 12:1-4", "Abraham goes"], ["JOS.6", "Joshua 6", "Jericho's walls"], ["DAN.6", "Daniel 6:22", "Lions' mouths shut"]],
+  },
+  12: {
+    intro: "\"Since we have so great a cloud of witnesses surrounding us, let us also lay aside every encumbrance and the sin which so easily entangles us, and let us run with endurance the race that is set before us, fixing our eyes on Jesus, the author and perfecter of faith, who for the joy set before Him endured the cross.\" God disciplines His children as a loving father does, \"for our good, so that we may share His holiness.\" Strengthen weak knees, pursue peace and holiness, and watch that no bitter root springs up. You have not come to the frightening mountain of Sinai, but to Mount Zion, the heavenly Jerusalem, and to Jesus. \"Our God is a consuming fire.\"",
+    v: [
+      ["12:1", "Since we have so great a cloud of witnesses surrounding us", "The crowd cheering."],
+      ["12:2", "Fixing our eyes on Jesus, the author and perfecter of faith", "Eyes on Jesus."],
+      ["12:6", "Those whom the Lord loves He disciplines", "Loving correction."],
+      ["12:11", "Afterwards it yields the peaceful fruit of righteousness", "Fruit from training."],
+      ["12:14", "Pursue peace with all men, and the sanctification without which no one will see the Lord", "Peace and holiness."],
+      ["12:22", "You have come to Mount Zion and to the city of the living God", "Coming home."],
+      ["12:28", "Since we receive a kingdom which cannot be shaken", "Unshakable."],
+    ],
+    refs: [["PRO.3", "Proverbs 3:11-12", "The LORD disciplines those He loves"], ["EXO.19", "Exodus 19:16-19", "Mount Sinai"], ["1CO.9", "1 Corinthians 9:24", "Run to win"], ["DEU.4", "Deuteronomy 4:24", "A consuming fire"]],
+  },
+  13: {
+    intro: "\"Let love of the brethren continue. Do not neglect to show hospitality to strangers, for by this some have entertained angels without knowing it.\" Remember prisoners and the mistreated. Honor marriage. \"Make sure that your character is free from the love of money, being content with what you have; for He Himself has said, 'I will never desert you, nor will I ever forsake you.'\" Remember your leaders and imitate their faith. \"Jesus Christ is the same yesterday and today and forever.\" Jesus suffered outside the gate, so let us go out to Him, bearing His reproach, for here we have no lasting city. Offer a sacrifice of praise and do good and share. The letter ends with a blessing from \"the God of peace, who brought up from the dead the great Shepherd of the sheep.\"",
+    v: [
+      ["13:2", "Some have entertained angels without knowing it", "Hospitality."],
+      ["13:3", "Remember the prisoners, as though in prison with them", "Remember the suffering."],
+      ["13:5", "I will never desert you, nor will I ever forsake you", "Never alone."],
+      ["13:8", "Jesus Christ is the same yesterday and today and forever", "Unchanging."],
+      ["13:14", "Here we do not have a lasting city, but we are seeking the city which is to come", "A city to come."],
+      ["13:15", "Let us continually offer up a sacrifice of praise to God", "Praise."],
+      ["13:20", "The great Shepherd of the sheep", "Our Shepherd."],
+    ],
+    refs: [["GEN.18", "Genesis 18:1-8", "Abraham welcomes visitors"], ["DEU.31", "Deuteronomy 31:6", "He will not fail you"], ["JHN.10", "John 10:11", "The good shepherd"], ["MAL.3", "Malachi 3:6", "I, the LORD, do not change"]],
+  },
+});
