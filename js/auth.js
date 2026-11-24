@@ -101,7 +101,7 @@ export async function verifyEmailCode(email, code) {
 // so a second phone or tablet doesn't ask them to replace the starter one again.
 export async function changePassword(password) {
   const c = await sb();
-  const { error } = await c.auth.updateUser({ password, data: { own_password: true } });
+  const { error } = await c.auth.updateUser({ password, data: { own_password: true, temp_password: false } });
   if (error) throw new Error(friendly(error));
 }
 
@@ -193,6 +193,23 @@ export async function askHelper({ messages, ref, version, name, style, status })
   } catch { return { error: "offline" }; }
 }
 
+// The organizer's panel (Edge Function "family-admin"): list the family, add someone, give a
+// new temporary password, or remove someone. The function itself checks that the caller is
+// the organizer, so this does nothing for anyone else.
+export async function familyAdmin(action, data = {}) {
+  if (!authEnabled) return { error: "signin" };
+  try {
+    const c = await sb();
+    const { data: out, error } = await c.functions.invoke("family-admin", { body: { action, ...data } });
+    if (!error) return out || { error: "busy" };
+    const res = error.context;
+    if (res && typeof res.json === "function") {
+      if (res.status === 404) return { error: "setup" };
+      try { return await res.json(); } catch { return { error: "busy" }; }
+    }
+    return { error: /fetch|network|relay/i.test(String(error.message)) ? "offline" : "setup" };
+  } catch { return { error: "offline" }; }
+}
 // Where the family stands this month with the Bible helper: { warn, pct, mine, per_person }.
 export async function helperStatus() {
   const r = await askHelper({ status: true });

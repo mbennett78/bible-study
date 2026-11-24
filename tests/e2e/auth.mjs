@@ -59,6 +59,9 @@ try {
     check("no password nag after it was changed", !(await page.$(".pw-sheet[open]")));
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(600);
     check("the family organizer sees the organizer tools", await visible(page, "#organizerBox"));
+    await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
+    check("the organizer's panel lists the family and the Bible helper questions left", /11,960 of 12,000 questions left/.test(await text(page, "#familyPanel")) && (await page.$$("#familyPanel .fam-list li")).length === 2, await text(page, "#familyPanel"));
+    check("the organizer can't remove their own account", (await page.$$("#familyPanel [data-fam-rm]")).length === 1);
     // Sign out from the account button: this device only.
     await page.click("#acctBtn"); await page.waitForTimeout(200);
     await page.click("#acctOut"); await page.waitForTimeout(1200);

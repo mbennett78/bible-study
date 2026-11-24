@@ -1492,6 +1492,15 @@ html.touring .buddy-say, body.hide-buddy .buddy-say, html[data-graphics="none"] 
   .buddy.walking .buddy-legs-stand { animation: buddy-walk .3s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
 }
 @keyframes buddy-walk { from { transform: skewX(-12deg); } to { transform: skewX(12deg); } }
+/* The organizer's family panel */
+.fam-helper { margin-bottom: 14px; } .fam-helper h3, #familyPanel h3 { font-size: 1rem; margin: 10px 0 6px; }
+.fam-helper p { margin: 6px 0; }
+.fam-list { list-style: none; padding: 0; margin: 0 0 10px; }
+.fam-list li { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.fam-who { flex: 1 1 220px; } .fam-who small { display: block; color: var(--muted); }
+.fam-acts { display: flex; gap: 8px; }
+.fam-form { flex-basis: 100%; }
+button.danger { color: #a23b2a; }
 /* The chat as a sheet, on any page */
 .chat-sheet { width: min(640px, 96vw); max-height: 86dvh; padding: 16px 16px 12px; border: 0; border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 20px 60px rgb(0 0 0 / .3); }
 .chat-sheet::backdrop { background: rgb(0 0 0 / .35); }

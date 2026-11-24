@@ -11,7 +11,7 @@ import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
-import { authEnabled, isOrganizer, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -2332,18 +2332,82 @@ async function organizerGate(org) {
   if (!(await isOrganizer())) { $("#organizerBox").hidden = true; $("#bibleTextCard").hidden = true; return; }
   {
     org.dataset.ready = "1";
-    org.innerHTML = `<div class="card inner" id="familyKeyCard"><h2>Share the Bible key with the family</h2>
+    org.innerHTML = `<div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>
+      <div class="card inner" id="familyKeyCard"><h2>Share the Bible key with the family</h2>
       <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in, without seeing it. Everyone's reading counts toward your 5,000 a month.</p>
       <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
     org.append($("#bibleTextCard"));
     $("#bibleTextCard").hidden = false;
     $("#organizerBox").hidden = false;
+    $("#organizerBox").addEventListener("toggle", () => { if ($("#organizerBox").open) renderFamilyPanel(); });
   }
   $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
     try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Shared ✓ Family members will get it, and these versions, the next time they open the app."; }
     catch (x) { out.textContent = /row-level|policy|permission/i.test(x.message || "") ? "Only the family organizer's account can share the Bible key." : x.message; }
+  });
+}
+// The organizer's family panel: who's in the family, the Bible helper allowance this month,
+// and add / new temporary password / remove.
+const ADMIN_SAYS = {
+  setup: "The family panel isn't switched on yet. In Supabase, add the Edge Function named family-admin (see docs/SETUP.md), then tap Try again.",
+  not_allowed: "Only the family organizer's account can use this.",
+  signin: "Please sign in again, then try once more.",
+  offline: "Couldn't connect. Check the internet and try again.",
+  email: "That email doesn't look right.",
+  password: "Temporary passwords need at least 6 characters.",
+  exists: "Someone with that email is already in the family.",
+  self: "You can't remove your own account here.",
+};
+const adminSays = (r) => ADMIN_SAYS[r?.error] || "Something went wrong. Please try again in a minute.";
+const when = (iso) => iso ? new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "never";
+async function renderFamilyPanel() {
+  const body = $("#familyPanelBody");
+  if (!body) return;
+  const r = await familyAdmin("list");
+  if (!r || r.error) { body.innerHTML = `<p class="muted small-print">${esc(adminSays(r))}</p><button class="small" id="famRetry">Try again</button>`; $("#famRetry").onclick = renderFamilyPanel; return; }
+  const h = r.helper;
+  body.innerHTML = `<div class="fam-helper"><h3>Bible helper this month</h3>
+      <div class="bar"><span style="width:${h.pct}%"></span></div>
+      <p><strong>${h.left.toLocaleString()}</strong> of ${h.limit.toLocaleString()} questions left · about $${(h.cents / 100).toFixed(2)} of $${(h.centsLimit / 100).toFixed(2)} used</p>
+      <p class="muted small-print">Everyone is guaranteed ${h.perPerson} questions a month. It all starts fresh on ${esc(when(h.resets))}.</p></div>
+    <h3>Family members (${r.people.length})</h3>
+    <ul class="fam-list">${r.people.map((p) => `<li data-id="${p.id}">
+      <div class="fam-who"><strong>${esc(p.name || p.email.split("@")[0])}</strong>${p.organizer ? ` <span class="pc-badge">Organizer</span>` : ""}
+        <small>${esc(p.email)} · last signed in ${esc(when(p.lastSignIn))} · ${p.asked} helper question${p.asked === 1 ? "" : "s"} this month${p.tempPassword ? " · has a temporary password" : ""}</small></div>
+      <div class="fam-acts"><button class="small" data-fam-pw>New password</button>${p.organizer ? "" : `<button class="small danger" data-fam-rm>Remove</button>`}</div>
+      <div class="fam-form" hidden></div></li>`).join("")}</ul>
+    <details class="fam-add"><summary>Add a family member</summary>
+      <label class="field">Name<input id="famName" type="text" autocomplete="off" maxlength="40"></label>
+      <label class="field">Email<input id="famEmail" type="email" autocomplete="off"></label>
+      <label class="field">Temporary password<input id="famPw" type="text" autocomplete="off" minlength="6"></label>
+      <p class="muted small-print">Send them the app link and this password. They choose their own password the first time they sign in.</p>
+      <button class="small" id="famAddGo">Add to the family</button><p class="small-print" id="famAddMsg"></p></details>`;
+  body.querySelectorAll("[data-fam-pw]").forEach((b) => b.addEventListener("click", () => {
+    const li = b.closest("li"), f = li.querySelector(".fam-form");
+    f.hidden = false;
+    f.innerHTML = `<label class="field">New temporary password<input type="text" class="fam-newpw" autocomplete="off" minlength="6"></label>
+      <button class="small" data-go>Save</button> <button class="quiet-link" data-cancel>Cancel</button><p class="small-print" data-msg></p>`;
+    f.querySelector("[data-cancel]").onclick = () => { f.hidden = true; };
+    f.querySelector("[data-go]").onclick = async () => {
+      const out = f.querySelector("[data-msg]");
+      out.textContent = "Saving…";
+      const res = await familyAdmin("password", { id: li.dataset.id, password: f.querySelector(".fam-newpw").value });
+      out.textContent = res?.ok ? "Saved ✓ Tell them this password. They'll choose their own when they sign in." : adminSays(res);
+    };
+  }));
+  body.querySelectorAll("[data-fam-rm]").forEach((b) => b.addEventListener("click", async () => {
+    const li = b.closest("li"), who = li.querySelector("strong").textContent;
+    if (!confirm(`Remove ${who} from the family? They won't be able to sign in, and their saved backup is deleted. This can't be undone.`)) return;
+    const res = await familyAdmin("remove", { id: li.dataset.id });
+    if (res?.ok) renderFamilyPanel(); else alert(adminSays(res));
+  }));
+  $("#famAddGo").addEventListener("click", async () => {
+    const out = $("#famAddMsg");
+    out.textContent = "Adding…";
+    const res = await familyAdmin("add", { name: $("#famName").value, email: $("#famEmail").value, password: $("#famPw").value });
+    if (res?.ok) { renderFamilyPanel(); } else out.textContent = adminSays(res);
   });
 }
 function wireSignOut() {
@@ -2472,7 +2536,9 @@ if (authEnabled) {
   // A shared tablet: keep each person's reading and journal apart.
   store.switchPerson(signedInUser.id);
   // Already has their own password (set on another device, or signed in with it)? Don't ask again.
-  if (signedInUser.user_metadata?.own_password && !flag(RESET_KEY)) { flag(STARTER_KEY, false); setupSet({ password: true }); }
+  if (signedInUser.user_metadata?.own_password && !signedInUser.user_metadata?.temp_password && !flag(RESET_KEY)) { flag(STARTER_KEY, false); setupSet({ password: true }); }
+  // The organizer gave them a temporary password: they choose their own first.
+  if (signedInUser.user_metadata?.temp_password) flag(STARTER_KEY, true);
   if (flag(STARTER_KEY) || flag(RESET_KEY)) setupSet({ password: false });
   else if (!(store.get("setup") || {}).done) setupSet({ password: true });
   // First-time setup only asks for a new password when they're still on the starter one.

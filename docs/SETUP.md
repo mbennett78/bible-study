@@ -75,6 +75,21 @@ edited. To send to family members:
    `PER_PERSON=100`, `WARN_PCT=70`. Set them with `supabase secrets set` or in the dashboard
    under Edge Functions, Secrets.
 
+## 6b. The family panel (optional)
+
+The organizer's "My family" panel (Settings, Family organizer tools) lists everyone, shows
+the Bible helper allowance left this month, and can add people, give a new temporary
+password, or remove someone. It runs as a second Edge Function, which only the organizer can
+use (it checks the organizer mark from `tools/organizer.sql` on every request):
+
+```sh
+supabase functions deploy family-admin
+```
+
+Or in the dashboard: Edge Functions, Deploy a new function, Via Editor, name it exactly
+`family-admin`, paste `supabase/functions/family-admin/index.ts`, Deploy. It needs no new
+secrets: Supabase gives Edge Functions their own admin access, which never leaves Supabase.
+
 ## 7. Bible versions
 
 1. **API.Bible** (NASB and others): sign up at scripture.api.bible, create an app and copy
