@@ -92,6 +92,7 @@ export const DEVOTIONS = [
 const dayOfYear = (d = new Date()) => Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
 
 export function dailyToday(d = new Date()) {
+  if (Number.isNaN(d.getTime?.())) d = new Date(); // a bad date never breaks a page
   const n = dayOfYear(d);
   const [book, chapter, verse, theme] = DAILY_VERSES[(n - 1) % DAILY_VERSES.length];
   return {

@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Tue Nov 24, 2026, 3:21 PM Central
-**Current version:** v175 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Tue Nov 24, 2026, 3:31 PM Central
+**Current version:** v176 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 3:35 PM: The device pass is done, a week early. Landscape phones, iPad landscape and a small 320-pixel phone all fit with no sideways sliding, and the header picture now stays a short band on landscape phones too. Read-aloud and voice (talking to Buddy) pass every check on phone, iPad and computer. Printing works on phone and computer: notes print as a little book with a cover, the journal book has a title page and one page per day with that day's verse, and a chapter's study notes print cleanly. While testing, I found that one bad date in a journal entry could stop "Print my book" from opening; that's fixed so it can never block printing. Picture: printing-check.png.
 - Tue Nov 24, 2:40 PM: Started the device pass (due Wed Dec 2). I checked all seven screens on an iPhone, an iPad and a computer, plus all ten looks on a computer and the printed user guide. No screen slides sideways and there are no errors. Fixes so far: the read-aloud Speed and Sleep menus and the Repeat button are bigger and easier to tap; the chapter links in each book's outline have a bigger tap area; and on iPads and computers the header picture is now a band at most 320 pixels tall instead of filling most of the first screen, so Home and Settings show their content right away (phones unchanged). The printed guide comes out as 3 clean pages. Next: read-aloud and voice on each device, landscape phones, and printing notes and the journal. Picture: computer-looks-check.png.
 - Tue Nov 24, 2:35 PM: Buddy grows, part 2 is done, a week early. In scary stories (the lions' den, Goliath, the storm at sea, the cross and about 20 more) he shows a small 😨 and a little shiver, with no words over the Bible. Ask "Are you okay?" and he feels better and says so ("The lions gave me a fright, but 'When I am afraid, I will put my trust in You'"). He has ten story props, like Zacchaeus' sycamore tree, a little boat for the storms, David's five stones, the star and a harp for the Psalms. The tree comes first, and the rest unlock one at a time as people chat, play and teach him; he says in the chat when he finds a new one. He remembers what each person teaches him, like "My favorite verse is John 3:16" or "Remember that I love horses." Now and then he brings one up, and "What do you remember about me?", "forget that" and "forget everything" all work. It stays private on their device and in their own backup. His welcome back gets warmer the more time they spend together. He never gets bigger, and he can still be quieted, moved or turned off. The user guide explains all of it. Tests pass, including 11 new ones.
 - Tue Nov 24, 2:05 PM: Settings and the Menu are decluttered. Settings now folds into six groups (Help and guide; You and your account; Buddy and look; Reading and Bible; This device and backup; About and family). Each shows one line about what's inside, and only one is open at a time. Help and guide, with the user guide, starts open at the top. On a phone the page went from about 7,500 pixels tall to 2,300. Buddy's "Show me" and every link to a setting open the right group by themselves. The Menu's 12 show-or-hide switches are now three short groups (Under each chapter; Journal and games; Buddy and decorations), each saying how many are showing, and "Trivia" is now called "Quick check" there too. Pictures: settings-folded.png and menu-folded.png. All tests pass.
@@ -71,7 +72,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Buddy grows, part 2: small story props (a tree to climb at Zacchaeus, and more), unlocked as they include him | Done (Tue Nov 24) | Tue Dec 1 |
 | Buddy grows, part 2: remembers what each person teaches him (private, per person) and grows warmer with attention | Done (Tue Nov 24) | Tue Dec 1 |
 | Deeper notes on the most-read chapters (first to be trimmed if notes run late; the rest continues after release) | Done (Tue Nov 24): 43 thin chapters filled out; all 64 on the most-read list now have full notes | Tue Dec 1 |
-| Check every screen on phone, iPad and computer, including read-aloud, voice and printing. Keep menus short and clean: fold long lists into dropdowns or categories | In progress (part 1 done Tue Nov 24) | Wed Dec 2 |
+| Check every screen on phone, iPad and computer, including read-aloud, voice and printing. Keep menus short and clean: fold long lists into dropdowns or categories | Done (Tue Nov 24) | Wed Dec 2 |
 | Christmas gift packet: setup page and illustrated user guide (draft) | In progress | Wed Dec 2 |
 | Siblings' starter kit: code plus setup checklist (draft) | Not started | Wed Dec 2 |
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
