@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 12:45 PM: Bible Spin got its game-show upgrade, five days early. Each right answer adds oil to a lamp; when it's full you choose any jewel you still need and answer one question to win it. Streaks of 3, 5 and 10 earn bonus coins. Every sixth question brings a bonus round of three quick questions with nothing to lose. The wheel's friends now say something when the wheel lands on them, cheer each new jewel, and Buddy reacts to your answers. All 16 automatic playthrough checks pass (solo, Buddy at every level, a three-player family game). Preview: bible-spin-new-moments.png in the project folder.
 - Tue Nov 24, 12:41 PM: Six New Testament pictures for the kids' Bible: Jesus' baptism with the dove (Matthew 3, Mark 1, Luke 3), water into wine at Cana, Lazarus coming out of the tomb, Palm Sunday, the Last Supper (all four Gospels), and the light on the road to Damascus. Preview: kids-nt-stories.png in the project folder.
 - Tue Nov 24, 12:40 PM: Six more kids' Bible pictures: Abraham and Isaac with the ram in the thicket (gentle), manna and quail in the desert, Gideon's trumpets and torches, Ruth in Boaz's field (all of Ruth), young Samuel hearing God call at night, and fire from heaven on Mount Carmel. Preview: kids-more-ot-stories.png in the project folder.
 - Tue Nov 24, 12:38 PM: Three more kids' Bible pictures: the tower of Babel (Genesis 11), Abraham counting the stars (Genesis 15) and Jacob's dream of the stairway with angels (Genesis 28). Preview: kids-babel-stars-ladder.png in the project folder.
@@ -67,7 +68,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
 | Gift packet and starter kit finished | Not started | Thu Dec 3 |
 | Print-friendly setup page and user guide saved to the project folder (final) | Not started | Thu Dec 3 |
-| Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Not started | Sun Nov 29 |
+| Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
 | Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |
 | Every Bible Spin mode played start to finish automatically; glitches fixed | Done (Tue Nov 24), rerun before release | Nov 24 |
 | End-of-chapter questions named "Quick check"; games behind Games | Done (Tue Nov 24) | Nov 24 |
