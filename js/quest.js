@@ -10,6 +10,13 @@
 //     think, he gets some wrong (how many depends on Easy, Fair or Tough), and he has no
 //     power-ups. He can be beaten.
 //
+// Extras that make it feel like a real game show:
+//   - The lamp: every right answer adds oil. When the lamp is full (three right), you choose
+//     any jewel you still need and get one question for it.
+//   - Streaks: 3, 5 and 10 right in a row earn bonus coins.
+//   - Bonus round: every sixth question, three quick questions for extra coins (no hearts lost).
+//   - The wheel's friends react: each one has something to say, and they cheer your jewels.
+//
 // Coins (saved per person) buy small helps in Solo and Challenge Buddy: take away two wrong
 // answers, or more time. Family games have no helps, so they stay fair.
 import { TRIVIA } from "./trivia-bank.js";
@@ -30,6 +37,9 @@ export const CANDLE_SECS = 20;
 export const HEARTS = 3;
 export const MAX_ROUNDS = 40;      // a family game always ends
 export const BUDDY_LEVELS = [["easy", "Easy", 0.5], ["fair", "Fair", 0.65], ["tough", "Tough", 0.78]];
+export const LAMP_FULL = 3;         // right answers that fill the lamp
+export const STREAK_REWARDS = [[3, "Hot streak!", 10], [5, "On fire!", 20], [10, "Unstoppable!", 50]];
+export const BONUS_EVERY = 6, BONUS_QS = 3, BONUS_SECS = 10, BONUS_COINS = 20;
 export const HELPS = { half: { cost: 30, label: "Take away 2", icon: "✂️" }, time: { cost: 20, label: "+10 seconds", icon: "🕯️" } };
 export const QUEST_BADGES = [
   ["firstJewel", "First jewel", "💎", "Win your first jewel"],
@@ -64,26 +74,33 @@ export function buddyTurn(level = "fair", rand = Math.random) {
   const p = (BUDDY_LEVELS.find(([id]) => id === level) || BUDDY_LEVELS[1])[2];
   return { right: rand() < p, ms: 2500 + Math.floor(rand() * 6500) };
 }
-export const newPlayer = (name, kind = "person") => ({ name, kind, jewels: {}, progress: {}, coins: 0, right: 0, asked: 0, streak: 0, longest: 0, hearts: HEARTS });
+export const newPlayer = (name, kind = "person") => ({ name, kind, jewels: {}, progress: {}, coins: 0, right: 0, asked: 0, streak: 0, longest: 0, hearts: HEARTS, lamp: 0 });
+export const missingJewels = (p) => CATEGORIES.filter((c) => !p.jewels[c.id]);
+// A person (not Buddy) gets a bonus round after every sixth question they answer.
+export const bonusDue = (p) => p.kind === "person" && p.asked > 0 && p.asked % BONUS_EVERY === 0;
 export const jewelCount = (p) => CATEGORIES.filter((c) => p.jewels[c.id]).length;
-// Record one answer. Returns what happened: { jewel, won, out }.
-export function answer(game, player, catId, right, coins = 0) {
+// Record one answer. Returns what happened: { jewel, won, out, streak }.
+// A "jewel try" (from a full lamp) wins the jewel with one right answer.
+export function answer(game, player, catId, right, coins = 0, { jewelTry = false } = {}) {
   player.asked++;
   game.rounds = (game.rounds || 0) + 1;
-  let jewel = false;
+  let jewel = false, streak = null;
   if (right) {
     player.right++; player.streak++; player.longest = Math.max(player.longest, player.streak); player.coins += coins;
     if (!player.jewels[catId]) {
-      player.progress[catId] = (player.progress[catId] || 0) + 1;
+      player.progress[catId] = jewelTry ? NEED_PER_JEWEL : (player.progress[catId] || 0) + 1;
       if (player.progress[catId] >= NEED_PER_JEWEL) { player.jewels[catId] = true; jewel = true; player.coins += 25; }
     }
+    const sr = STREAK_REWARDS.find(([n]) => n === player.streak);
+    if (sr) { streak = { label: sr[1], coins: sr[2] }; player.coins += sr[2]; }
   } else {
     player.streak = 0;
     if (game.mode === "solo") player.hearts--;
   }
+  player.lamp = jewelTry ? 0 : right ? Math.min(LAMP_FULL, (player.lamp || 0) + 1) : player.lamp || 0;
   const won = jewelCount(player) === CATEGORIES.length;
   const out = game.mode === "solo" ? player.hearts <= 0 : false;
-  return { jewel, won, out, over: won || out || (game.mode !== "solo" && game.rounds >= MAX_ROUNDS) };
+  return { jewel, won, out, streak, over: won || out || (game.mode !== "solo" && game.rounds >= MAX_ROUNDS) };
 }
 // Who's ahead: most jewels, then most right answers, then most coins.
 export const leader = (players) => [...players].sort((a, b) => jewelCount(b) - jewelCount(a) || b.right - a.right || b.coins - a.coins)[0];
@@ -141,6 +158,19 @@ const buddyFace = (cls = "") => `<span class="buddy buddy-inline ${cls}" aria-hi
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const RIGHT = ["Right!", "Yes!", "You got it!", "Well done!", "Amen!", "Spot on!"];
 const WRONG = ["Not quite!", "Good try!", "So close!", "Now you know!"];
+// What each friend on the wheel says when the wheel lands on them.
+const SAYS = {
+  people: ["Who's who in the Bible?", "Name that person!", "Meet someone famous!"],
+  places: ["Where in the Bible world?", "Grab your map!", "Where did it happen?"],
+  stories: ["What happened next?", "Story time!", "A miracle question!"],
+  stem: ["Count it up!", "Let's measure and think!", "Numbers and nature!"],
+  books: ["Where is it written?", "Open the scroll!", "Know your books?"],
+  history: ["Back in time we go!", "Kings and kingdoms!", "Long, long ago..."],
+  arts: ["Sing it, paint it, play it!", "Music and making!", "Harps and hymns!"],
+};
+const BUDDY_CHEER = ["Nice one!", "Ooh, you're good!", "I knew that one too... I think!", "Well played!"];
+const BUDDY_TEASE = ["Phew, my turn!", "Tricky one!", "I'd have guessed that too.", "Don't worry, it was a hard one!"];
+const lampHtml = (p) => `<span class="q-lamp${(p.lamp || 0) >= LAMP_FULL ? " full" : ""}" title="Fill the lamp to choose a jewel" aria-label="Lamp ${p.lamp || 0} of ${LAMP_FULL}">🪔${Array.from({ length: LAMP_FULL }, (_, i) => `<b class="${i < (p.lamp || 0) ? "on" : ""}"></b>`).join("")}</span>`;
 
 /* ---------- The game window ---------- */
 export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy", onWin, onBuddyWin = null }) {
@@ -234,15 +264,23 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
 
   /* The board: jewels, hearts, and the wheel */
   function board() {
-    const p = current(), buddyPlays = p.kind === "buddy";
+    const p = current(), buddyPlays = p.kind === "buddy", lampFull = (p.lamp || 0) >= LAMP_FULL && missingJewels(p).length > 0;
     paint(`<div class="q-board">
       <div class="q-players">${game.players.map((pl, i) => `<div class="q-pl${i === game.turn ? " on" : ""}">
-        <span class="q-pl-name">${pl.kind === "buddy" ? buddyFace("q-mini") : ""}${esc(pl.name)}</span>
+        <span class="q-pl-name">${pl.kind === "buddy" ? buddyFace("q-mini") : ""}${esc(pl.name)}${pl.streak >= 3 ? ` <i class="q-fire" title="${pl.streak} in a row">🔥${pl.streak}</i>` : ""}</span>${lampHtml(pl)}
         <span class="q-jewels">${CATEGORIES.map((c) => jewelSvg(c, pl.jewels[c.id], pl.progress[c.id] || 0)).join("")}</span>
         ${game.mode === "solo" ? `<span class="q-hearts" aria-label="${pl.hearts} hearts">${"❤️".repeat(Math.max(0, pl.hearts))}${"🤍".repeat(HEARTS - Math.max(0, pl.hearts))}</span>` : ""}</div>`).join("")}</div>
-      <div class="q-wheel">${wheelSvg()}</div>
-      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini")} ${BH()} is spinning…</p>` : `<button class="q-spin" data-spin>SPIN</button><p class="q-turn">${game.mode === "solo" ? "" : `${esc(p.name)}'s turn`}</p>`}
+      ${lampFull ? `<div class="q-lampfull"><p class="q-lamp-head">🪔 ${buddyPlays ? `${BH()}'s lamp is full!` : "Your lamp is full!"}</p><p class="q-tag">${buddyPlays ? `${BH()} is choosing a jewel…` : "Choose a jewel. Answer one question to win it!"}</p>
+        <div class="q-pickgrid">${missingJewels(p).map((c, i) => `<button class="q-pickjewel" data-pickjewel="${c.id}" style="--cc:${c.color}" ${buddyPlays ? "disabled" : ""}>${critter(c, "", i)}<span>${esc(c.name)}</span></button>`).join("")}</div></div>`
+      : `<div class="q-wheel">${wheelSvg()}</div>
+      ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini")} ${BH()} is spinning…</p>` : `<button class="q-spin" data-spin>SPIN</button><p class="q-turn">${game.mode === "solo" ? "" : `${esc(p.name)}'s turn`}</p>`}`}
     </div>`);
+    if (lampFull) {
+      const choose = (id) => { sound("streak"); ask(CATEGORIES.find((c) => c.id === id), { jewelTry: true }); };
+      if (buddyPlays) { const opts = missingJewels(p); later(() => choose(pick(opts).id), 1600); }
+      else dlg.querySelectorAll("[data-pickjewel]").forEach((b) => b.onclick = () => choose(b.dataset.pickjewel));
+      return;
+    }
     const go = () => spin();
     if (buddyPlays) later(go, 900); else dlg.querySelector("[data-spin]").onclick = go;
   }
@@ -261,7 +299,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   }
 
   /* A question flies in; the candle burns down */
-  function ask(cat) {
+  function ask(cat, { jewelTry = false } = {}) {
     const p = current(), buddyPlays = p.kind === "buddy", m = mine();
     const q = pickQuestion(cat.id, m.seen);
     save({ seen: [...m.seen.filter((id) => id !== q.id), q.id].slice(-200) });
@@ -270,7 +308,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const owned = p.jewels[cat.id];
     const helps = game.mode !== "family" && !buddyPlays;
     paint(`<div class="q-ask" style="--cc:${cat.color}">
-      <div class="q-cat">${critter(cat, "big")}${esc(cat.name)}${owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
+      <div class="q-cat">${critter(cat, "big")}${esc(cat.name)}${jewelTry ? `<small>👑 Jewel question! Get it right to win this jewel.</small>` : owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
+      <p class="q-say" style="--cc:${cat.color}">${esc(pick(SAYS[cat.id] || ["Here we go!"]))}</p>
       <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
       <div class="q-choices">${order.map((k, n) => `<button class="q-choice" data-k="${k}" style="--d:${0.25 + n * 0.08}s" ${buddyPlays ? "disabled" : ""}><span class="q-letter">${"ABCD"[n]}</span>${esc(q.choices[k])}</button>`).join("")}</div>
       ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini thinking")} ${BH()} is thinking…</p>` : helps ? `<div class="q-helps">${Object.entries(HELPS).map(([id, h]) => `<button class="q-help" data-help="${id}" ${m.coins < h.cost ? "disabled" : ""}>${h.icon} ${h.label} <small>🪙 ${h.cost}</small></button>`).join("")}</div>` : ""}
@@ -291,10 +330,11 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       const right = k === q.a, msLeft = Math.max(0, deadline - Date.now());
       dlg.querySelectorAll(".q-choice").forEach((b) => { b.disabled = true; if (+b.dataset.k === q.a) b.classList.add("right"); else if (+b.dataset.k === k) b.classList.add("wrong"); });
       const coins = right ? coinsFor(msLeft, total, p.streak + 1) : 0;
-      const r = answer(game, p, cat.id, right, coins);
-      if (p.kind === "person" && game.mode !== "family") save({ coins: mine().coins + coins + (r.jewel ? 25 : 0), earned: mine().earned + coins + (r.jewel ? 25 : 0) });
-      sound(right ? (r.jewel ? "streak" : "right") : "wrong");
-      later(() => feedback(q, cat, right, coins, r, k === null), buddyPlays ? 1300 : 900);
+      const r = answer(game, p, cat.id, right, coins, { jewelTry });
+      const extra = coins + (r.jewel ? 25 : 0) + (r.streak?.coins || 0);
+      if (p.kind === "person" && game.mode !== "family") save({ coins: mine().coins + extra, earned: mine().earned + extra });
+      sound(right ? (r.jewel || r.streak ? "streak" : "right") : "wrong");
+      later(() => feedback(q, cat, right, coins, r, k === null, jewelTry), buddyPlays ? 1300 : 900);
     };
     tick = setInterval(burn, 100); burn();
     if (buddyPlays) {
@@ -314,28 +354,81 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     });
   }
 
-  function feedback(q, cat, right, coins, r, timedOut) {
+  function feedback(q, cat, right, coins, r, timedOut, jewelTry = false) {
     const p = current(), who = p.kind === "buddy" ? B() : game.mode === "solo" ? "You" : p.name;
-    const head = right ? (p.kind === "buddy" ? `${B()} got it!` : pick(RIGHT)) : timedOut ? "The candle went out!" : p.kind === "buddy" ? `${B()} missed it!` : pick(WRONG);
-    const streak = right && p.streak >= 3 ? `<p class="q-streak">🔥 ${p.streak} in a row!</p>` : "";
+    const head = right ? (p.kind === "buddy" ? `${B()} got it!` : pick(RIGHT)) : timedOut ? "The candle went out!" : p.kind === "buddy" ? `${B()} missed it!` : jewelTry ? "Not this time!" : pick(WRONG);
+    const streak = r.streak ? `<p class="q-streak big">🔥 ${esc(r.streak.label)} ${p.streak} in a row! <span>+${r.streak.coins} 🪙</span></p>` : right && p.streak >= 3 ? `<p class="q-streak">🔥 ${p.streak} in a row!</p>` : "";
+    const react = game.mode === "buddy" && p.kind === "person" ? `<p class="q-react">${buddyFace("q-mini")} <span>${esc(right ? pick(BUDDY_CHEER) : pick(BUDDY_TEASE))}</span></p>` : "";
+    const lampNote = jewelTry && !right ? `<p class="q-tag">The lamp is empty again. Fill it with three right answers to try again.</p>` : "";
     paint(`<div class="q-fb ${right ? "good" : "bad"}" style="--cc:${cat.color}">
       <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : critter(cat, `big q-fb-critter ${right ? "cheer" : "sad"}`, 0, right ? "happy" : "sad")}<h2>${esc(head)}</h2></div>
-      ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}
-      ${r.jewel ? `<div class="q-newjewel">${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span></p></div>` : ""}
+      ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}${react}${lampNote}
+      ${r.jewel ? `<div class="q-newjewel"><span class="q-rays" aria-hidden="true"></span>${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span><small>Jewel ${jewelCount(p)} of ${CATEGORIES.length}</small></p></div>
+        <div class="q-crew q-crew-cheer">${CATEGORIES.map((c, i) => critter(c, p.jewels[c.id] ? "cheer" : "", i, p.jewels[c.id] ? "happy" : "")).join("")}</div>` : ""}
       <div class="q-why"><p>${right ? `✓ <b>${esc(q.choices[q.a])}</b>. ` : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
       <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? `${BH()} spins again` : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : `${BH()}'s turn`) : "Next player"}</button></div>`);
     if (r.jewel && lively()) confetti(dlg, [cat.color, "#f4d35e", ...lookColors()], 90);
     // Runs once: Buddy's turn moves on by itself, and tapping the button too must not move twice.
     let moved = false;
+    const proceed = () => {
+      if (!right && game.mode !== "solo") { game.turn = (game.turn + 1) % game.players.length; return game.mode === "family" ? passTo() : board(); }
+      board();
+    };
     const next = () => {
       if (moved) return;
       moved = true;
       if (r.over) return end();
-      if (!right && game.mode !== "solo") { game.turn = (game.turn + 1) % game.players.length; return game.mode === "family" ? passTo() : board(); }
-      board();
+      if (bonusDue(p)) return bonusIntro(p, proceed);
+      proceed();
     };
     dlg.querySelector("[data-next]").onclick = next;
     if (p.kind === "buddy") later(next, 2600);
+  }
+
+  /* Bonus round: three quick questions for extra coins. Nothing to lose. */
+  function bonusIntro(p, then) {
+    paint(`<div class="q-bonus-intro"><p class="q-bonus-star" aria-hidden="true">⭐</p><h2>Bonus round!</h2>
+      <p class="q-tag">${game.mode === "family" ? `${esc(p.name)}, ` : ""}${BONUS_QS} quick questions, ${BONUS_SECS} seconds each. +${BONUS_COINS} 🪙 for every right answer, and no hearts to lose!</p>
+      <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "cheer", i, "happy")).join("")}</div>
+      <button class="q-btn" data-next>Let's go!</button></div>`);
+    sound("streak");
+    dlg.querySelector("[data-next]").onclick = () => bonusQ(p, 0, 0, then);
+  }
+  function bonusQ(p, n, got, then) {
+    const m = mine(), cat = pick(CATEGORIES), q = pickQuestion(cat.id, m.seen);
+    save({ seen: [...m.seen.filter((id) => id !== q.id), q.id].slice(-200) });
+    const order = q.choices.map((_, k) => k).sort(() => Math.random() - 0.5);
+    paint(`<div class="q-ask q-bonus" style="--cc:${cat.color}">
+      <div class="q-cat">⭐ Bonus ${n + 1} of ${BONUS_QS}<small>${esc(cat.name)} · +${BONUS_COINS} 🪙</small></div>
+      <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
+      <div class="q-choices">${order.map((k, i) => `<button class="q-choice" data-k="${k}" style="--d:${0.15 + i * 0.06}s"><span class="q-letter">${"ABCD"[i]}</span>${esc(q.choices[k])}</button>`).join("")}</div></div>`);
+    const total = BONUS_SECS * 1000, deadline = Date.now() + total;
+    let done = false;
+    const wax = dlg.querySelector(".qc-wax"), flameBox = dlg.querySelector(".q-candle");
+    const done1 = (k) => {
+      if (done) return; done = true; stop();
+      const right = k === q.a;
+      dlg.querySelectorAll(".q-choice").forEach((b) => { b.disabled = true; if (+b.dataset.k === q.a) b.classList.add("right"); else if (+b.dataset.k === k) b.classList.add("wrong"); });
+      if (right) { p.coins += BONUS_COINS; if (game.mode !== "family") save({ coins: mine().coins + BONUS_COINS, earned: mine().earned + BONUS_COINS }); }
+      sound(right ? "right" : "wrong");
+      later(() => (n + 1 < BONUS_QS ? bonusQ(p, n + 1, got + (right ? 1 : 0), then) : bonusEnd(got + (right ? 1 : 0), then)), 1100);
+    };
+    const burn = () => {
+      const left = Math.max(0, deadline - Date.now()), f = left / total;
+      wax.setAttribute("height", String(Math.max(2, 58 * f))); wax.setAttribute("y", String(26 + 58 * (1 - f)));
+      flameBox.style.setProperty("--fy", `${58 * (1 - f)}px`); flameBox.classList.toggle("low", left < 3000);
+      if (left <= 0) done1(null);
+    };
+    tick = setInterval(burn, 100); burn();
+    dlg.querySelectorAll(".q-choice").forEach((b) => b.onclick = () => done1(+b.dataset.k));
+  }
+  function bonusEnd(got, then) {
+    paint(`<div class="q-bonus-intro"><h2>${got === BONUS_QS ? "Perfect bonus round!" : got ? `${got} of ${BONUS_QS} right!` : "Nice try!"}</h2>
+      ${got ? `<p class="q-gain">+${got * BONUS_COINS} 🪙</p>` : `<p class="q-tag">No coins this time, but no hearts lost either.</p>`}
+      <div class="q-crew q-crew-cheer">${CATEGORIES.map((c, i) => critter(c, got ? "cheer" : "", i, got ? "happy" : "")).join("")}</div>
+      <button class="q-btn" data-next>Back to the game</button></div>`);
+    if (got === BONUS_QS && lively()) confetti(dlg, ["#f4d35e", "#ffe27a", ...lookColors()], 70);
+    dlg.querySelector("[data-next]").onclick = then;
   }
 
   function passTo() {

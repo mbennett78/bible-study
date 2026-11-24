@@ -2,7 +2,7 @@
 // solo ends at three misses, coins reward speed, and Buddy plays fair (beatable, not perfect).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CATEGORIES, NEED_PER_JEWEL, HEARTS, MAX_ROUNDS, BUDDY_LEVELS, questionsFor, pickQuestion, coinsFor, buddyTurn, newPlayer, answer, jewelCount, leader } from "../../js/quest.js";
+import { CATEGORIES, NEED_PER_JEWEL, HEARTS, MAX_ROUNDS, BUDDY_LEVELS, LAMP_FULL, STREAK_REWARDS, BONUS_EVERY, questionsFor, pickQuestion, coinsFor, buddyTurn, newPlayer, answer, jewelCount, leader, missingJewels, bonusDue } from "../../js/quest.js";
 
 test("every wedge of the wheel has plenty of questions, each with one right answer", () => {
   for (const c of CATEGORIES) {
@@ -69,4 +69,36 @@ test("the leader has the most jewels, then the most right answers", () => {
   assert.equal(leader([a, b]).name, "B");
   b.jewels = { people: true }; a.right = 5; b.right = 3;
   assert.equal(leader([a, b]).name, "A");
+});
+
+test("the lamp: three right answers fill it, and a jewel try wins the jewel in one", () => {
+  const game = { mode: "solo" }, p = newPlayer("Me");
+  answer(game, p, "people", true); answer(game, p, "places", false); answer(game, p, "arts", true);
+  assert.equal(p.lamp, 2, "a wrong answer doesn't drain the lamp");
+  answer(game, p, "books", true);
+  assert.equal(p.lamp, LAMP_FULL);
+  answer(game, p, "books", true);
+  assert.equal(p.lamp, LAMP_FULL, "the lamp never overfills");
+  const r = answer(game, p, "history", true, 0, { jewelTry: true });
+  assert.equal(r.jewel, true); assert.equal(p.jewels.history, true); assert.equal(p.lamp, 0);
+  assert.ok(!missingJewels(p).some((c) => c.id === "history"));
+  p.lamp = LAMP_FULL;
+  const miss = answer(game, p, "stem", false, 0, { jewelTry: true });
+  assert.equal(miss.jewel, false); assert.equal(p.lamp, 0, "a missed jewel try empties the lamp");
+});
+
+test("streaks of 3, 5 and 10 earn bonus coins once each", () => {
+  const game = { mode: "family" }, p = newPlayer("A");
+  const got = [];
+  for (let i = 0; i < 10; i++) { const r = answer(game, p, CATEGORIES[i % CATEGORIES.length].id, true); if (r.streak) got.push([p.streak, r.streak.coins]); }
+  assert.deepEqual(got, STREAK_REWARDS.map(([n, , c]) => [n, c]));
+});
+
+test("a bonus round comes after every sixth question, for people only", () => {
+  const game = { mode: "buddy" }, me = newPlayer("Me"), bud = newPlayer("Buddy", "buddy");
+  for (let i = 0; i < BONUS_EVERY; i++) { answer(game, me, "people", i % 2 === 0); answer(game, bud, "people", true); }
+  assert.equal(bonusDue(me), true);
+  assert.equal(bonusDue(bud), false);
+  answer(game, me, "people", true);
+  assert.equal(bonusDue(me), false);
 });

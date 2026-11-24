@@ -35,14 +35,18 @@ try {
     return q ? "ok" : "unknown question";
   }, rightChance);
 
-  // Drive one game to its end. Returns { ended, steps, unknown }.
+  // Drive one game to its end. Returns { ended, steps, unknown }. Counts jewel picks from a full lamp,
+  // and bonus rounds, across all games.
+  let picks = 0, bonusRounds = 0;
   async function play(rightChance, maxSteps = 400) {
     let steps = 0, idle = 0, unknown = 0;
     while (steps++ < maxSteps) {
       if (await has(".q-end")) return { ended: true, steps, unknown };
       if (await has("[data-ready]")) { await tap("[data-ready]"); await page.clock.runFor(300); idle = 0; continue; }
+      if (await has(".q-bonus-intro .q-bonus-star")) bonusRounds++;
       if (await has("[data-next]")) { await tap("[data-next]"); await page.clock.runFor(400); idle = 0; continue; }
       if (await has("[data-spin]")) { await tap("[data-spin]"); await page.clock.runFor(3200); idle = 0; continue; }
+      if (await page.$("dialog.quest [data-pickjewel]:not([disabled])")) { await tap("[data-pickjewel]:not([disabled])"); picks++; await page.clock.runFor(600); idle = 0; continue; }
       const myTurn = await page.$$eval("dialog.quest .q-choice", (bs) => bs.some((b) => !b.disabled)).catch(() => false);
       if (myTurn) { if ((await answer(rightChance)) === "unknown question") unknown++; await page.clock.runFor(1600); idle = 0; continue; }
       // Buddy's turn, or an animation: let time pass.
@@ -95,6 +99,8 @@ try {
   await play(0.2);
   if (await has("[data-again]")) { await tap("[data-again]"); await page.clock.runFor(400); check("Play again starts a fresh game", await has("[data-spin]") || await has("[data-ready]")); }
   await page.$eval("dialog.quest [data-close]", (b) => b.click()).catch(() => {}); await page.clock.runFor(300);
+  check("a full lamp lets players choose a jewel (seen and played)", picks > 0, `${picks} picks`);
+  check("bonus rounds come up and play through", bonusRounds > 0, `${bonusRounds} bonus rounds`);
   check("Bible Spin closes cleanly", !(await page.$eval("dialog.quest", (d) => d.open)));
   check("no page errors in any game", !errors.length, errors.slice(0, 3).join(" | "));
 } catch (e) { stopped = e; console.log(e.stack?.split("\n").slice(0, 8).join("\n")); }
