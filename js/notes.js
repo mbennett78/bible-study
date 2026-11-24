@@ -3,7 +3,8 @@ import { BOOKS } from "./books.js";
 // culture, geography, original-language words, scholars' views, and sources.
 // Every note carries an evidence label so it's clear what is firm and what is debated.
 // Full notes so far: Genesis 1-3, Exodus 14, Psalms 1 and 23, Isaiah 53, Matthew 5, Luke 2, 5 and 15,
-// John 1, 3 and 11, Acts 2, Romans 8, 1 Corinthians 13 and Revelation 21. More are added book by book.
+// John 1, 3, 11 and 14, Acts 2, Romans 8 and 12, 1 Corinthians 13, Ephesians 2, Philippians 4
+// and Revelation 21. More are added book by book.
 //
 // A source is a plain citation, or { text, url } when there's a page to open. Every source
 // gets a "Look it up" link either way (a library search when there's no page of its own).
@@ -990,6 +991,182 @@ export const NOTES = {
       fee: "Gordon D. Fee, The First Epistle to the Corinthians, rev. ed., New International Commentary on the New Testament (Eerdmans, 2014).",
       thiselton: "Anthony C. Thiselton, The First Epistle to the Corinthians, New International Greek Testament Commentary (Eerdmans, 2000).",
       metzger: "Bruce M. Metzger, A Textual Commentary on the Greek New Testament, 2nd ed. (German Bible Society, 1994).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "JHN.14": {
+    crossRefs: [
+      ["JHN.13", "John 13:33-38", "Where I am going, you cannot follow Me now"],
+      ["JHN.16", "John 16:7-15", "It is to your advantage that I go away: the Helper will come"],
+      ["ACT.4", "Acts 4:12", "There is salvation in no one else"],
+      ["1TH.4", "1 Thessalonians 4:16-17", "So we shall always be with the Lord"],
+      ["1JN.2", "1 John 2:1", "We have an Advocate with the Father"],
+      ["PHP.4", "Philippians 4:6-7", "The peace of God, which surpasses all comprehension"],
+    ],
+    intro: "The night before the cross, in the upper room, Jesus comforts disciples who have just heard that He is leaving and that Peter will deny Him. \"Do not let your heart be troubled.\" He promises a place in the Father's house, shows Himself as the way to the Father, and promises another Helper, the Holy Spirit, and a peace the world cannot give.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "14:1", head: "Do not let your heart be troubled", ev: "scripture", src: ["carson"], text: "The same word, \"troubled\" (tarasso), was used of Jesus Himself at Lazarus's tomb (11:33) and as He spoke of His betrayer (13:21). He knows the feeling from inside. \"Your\" is plural: He is speaking to all of them together." },
+        { ref: "14:2", head: "Many dwelling places", ev: "strong", src: ["carson", "bdag"], text: "\"Dwelling places\" (monai) means places to stay or live. The KJV's \"mansions\" comes from the Latin mansiones, which in 1611 still meant simply \"dwellings,\" not grand houses. The point is room: there is a place for each of them." },
+        { ref: "14:3", head: "I will come again", ev: "debated", src: ["carson", "keener"], text: "Jesus promises to come and take them to Himself. Whether He means His return at the end of the age, His coming after the resurrection, His coming through the Spirit, or more than one of these, is discussed under Scholars and views." },
+        { ref: "14:6", head: "I am the way, and the truth, and the life", ev: "scripture", src: ["carson", "kostenberger"], text: "Thomas asks for directions; Jesus answers that He is the road. This is one of seven \"I am\" sayings with a picture in John's Gospel. Early Christians were called followers of \"the Way\" (Acts 9:2)." },
+        { ref: "14:9", head: "He who has seen Me has seen the Father", ev: "scripture", src: ["kostenberger"], text: "Philip asks to see the Father. Jesus answers that the Father has been in plain sight all along, in Him. This picks up the opening of the Gospel: \"No one has seen God at any time; the only begotten God... has explained Him\" (1:18)." },
+        { ref: "14:16", head: "Another Helper", ev: "strong", src: ["bdag", "keener"], text: "\"Another\" (allos) means another of the same kind. Jesus has been their Helper; the Spirit will be another like Him, and will be with them forever. The word \"Helper\" is discussed under Greek words." },
+        { ref: "14:26", head: "He will teach you all things", ev: "scripture", src: ["carson"], text: "The Spirit will bring to the apostles' remembrance all that Jesus said. Many see here a promise behind the writing of the New Testament: the Gospels rest on what the Spirit helped the apostles remember." },
+        { ref: "14:27", head: "Peace I leave with you", ev: "good", src: ["keener"], text: "\"Shalom\" was the ordinary Jewish greeting and farewell, as it still is. Jesus uses the everyday word for something no one else can give: peace with God and in the heart, even with the cross a few hours away." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The upper room discourse", ev: "strong", src: ["carson"], text: "John 13-17 is Jesus' long farewell at the Last Supper, which John alone records at length. Farewell speeches were a known form in Scripture (Jacob in Genesis 49, Moses in Deuteronomy) and in Jewish writings: a leader gathers his own, comforts them, gives commands and speaks of the future." },
+        { head: "The Father's house", ev: "good", src: ["kostenberger", "keener"], text: "Earlier in John, \"My Father's house\" meant the temple (2:16). A large Jewish household could add rooms to the family home as sons married. Both pictures stand behind the promise: a home with God, with room prepared." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "παράκλητος", say: "parakletos", strongs: "G3875", count: "5 times, all in John's writings", means: "one called alongside: helper, advocate, comforter", ev: "strong", src: ["bdag"], text: "Used of a friend who speaks up for someone in court. Translations vary (Helper, Comforter, Advocate, Counselor) because no one English word covers it. In 1 John 2:1 the same word is used of Jesus: \"We have an Advocate with the Father.\"" },
+        { word: "μονή", say: "mone", strongs: "G3438", count: "twice, John 14:2 and 14:23", means: "a dwelling, a place to stay", ev: "strong", src: ["bdag"], text: "Notice where the word comes back: \"We will come to him and make Our abode with him\" (14:23). Jesus prepares a place for us with the Father, and the Father and Son make their home with us now." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "His return at the end of the age", who: "Second coming view", src: ["carson"], text: "Many read \"I will come again and receive you to Myself\" (14:3) as Christ's return, when believers will be with Him forever (1 Thessalonians 4:17). The going away is His death, resurrection and ascension; the coming back is His return." },
+        { head: "His coming to the believer now", who: "Present coming view", src: ["keener"], text: "Others point to the rest of the chapter: \"I will come to you\" (14:18) and \"We will come to him and make Our abode with him\" (14:23). On this view Jesus comes after the resurrection and through the Spirit, and the believer is already at home with God." },
+        { head: "Both, now and later", who: "Combined view", src: ["kostenberger", "carson"], text: "Many scholars hold that John deliberately holds both together: Christ comes to His people now by the Spirit, and will come for them at the end. What starts now is completed then." },
+      ] },
+    ],
+    sources: {
+      carson: "D. A. Carson, The Gospel According to John, Pillar New Testament Commentary (Eerdmans, 1991).",
+      keener: "Craig S. Keener, The Gospel of John: A Commentary, 2 vols. (Hendrickson, 2003).",
+      kostenberger: "Andreas J. Köstenberger, John, Baker Exegetical Commentary on the New Testament (Baker, 2004).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "ROM.12": {
+    crossRefs: [
+      ["1CO.12", "1 Corinthians 12:4-27", "Many members, one body, different gifts"],
+      ["1PE.2", "1 Peter 2:5", "Living stones offering spiritual sacrifices"],
+      ["2CO.3", "2 Corinthians 3:18", "Transformed into the same image, from glory to glory"],
+      ["PRO.25", "Proverbs 25:21-22", "If your enemy is hungry, give him food"],
+      ["MAT.5", "Matthew 5:43-48", "Love your enemies and pray for those who persecute you"],
+      ["EPH.4", "Ephesians 4:1-16", "Walk worthy of your calling, with gifts for building up the body"],
+    ],
+    intro: "After eleven chapters on what God has done, Paul turns with \"therefore\" to how we live. The chapter moves from worship (offer yourselves as living sacrifices) to the church (one body with many gifts) to everyday love, even for enemies. Many call it the Christian's daily guide.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "12:1", head: "Therefore... by the mercies of God", ev: "scripture", src: ["moo"], text: "\"Therefore\" looks back over everything in chapters 1-11. The appeal is not \"do this so God will be merciful\" but \"because God has been merciful.\"" },
+        { ref: "12:1", head: "A living and holy sacrifice", ev: "good", src: ["moo", "dunn"], text: "Temple sacrifices were killed and burned. Paul asks for a sacrifice that stays alive: the whole person, \"your bodies,\" given to God in everyday life. \"Spiritual service of worship\" translates two words discussed under Greek words." },
+        { ref: "12:2", head: "Do not be conformed... but be transformed", ev: "strong", src: ["bdag", "moo"], text: "\"Conformed\" means pressed into a pattern from outside. \"Transformed\" is the word used of Jesus' transfiguration (Matthew 17:2): a change from within, by \"the renewing of your mind.\"" },
+        { ref: "12:3", head: "Not to think more highly of himself", ev: "scripture", src: ["schreiner"], text: "A play on words in Greek: not to over-think (hyperphronein) but to think with sober judgment (sophronein), according to the measure of faith God has given." },
+        { ref: "12:6", head: "Gifts that differ", ev: "scripture", src: ["moo"], text: "Seven gifts are named: prophecy, serving, teaching, encouraging, giving, leading and showing mercy. The list is a sample, not complete (compare 1 Corinthians 12 and Ephesians 4). The main point is that every member has something to give." },
+        { ref: "12:13", head: "Practicing hospitality", ev: "good", src: ["dunn"], text: "Literally \"pursuing love of strangers\" (philoxenia). Inns had poor reputations, so travelling Christians depended on believers opening their homes. Paul says to chase after it, not just allow it." },
+        { ref: "12:18", head: "So far as it depends on you", ev: "scripture", src: ["schreiner"], text: "Paul is realistic: peace with everyone is not always possible. But our part should never be the reason it fails." },
+        { ref: "12:20", head: "Heap burning coals on his head", ev: "debated", src: ["moo", "dunn"], text: "Paul quotes Proverbs 25:21-22. What the burning coals mean has puzzled readers since the early church; see Scholars and views. The next verse settles the purpose: \"overcome evil with good.\"" },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Christians in the capital", ev: "strong", src: ["moo"], text: "The church in Rome met in several homes (16:5, 14-15) and included Jews and Gentiles, slaves and free. Some had been expelled under Claudius about AD 49 and had come back. Living at peace and blessing persecutors was a real challenge for them, and a few years later Nero's persecution would test it." },
+        { head: "Bodies as sacrifices", ev: "good", src: ["dunn"], text: "Many in the Greek world thought of the body as a prison for the soul and of real religion as purely inward. Paul, like the Old Testament, treats the body as part of the person who belongs to God, and so as the place where worship happens day by day." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "λογικός", say: "logikos", strongs: "G3050", count: "twice, Romans 12:1 and 1 Peter 2:2", means: "reasonable, rational, spiritual", ev: "debated", src: ["bdag", "moo"], text: "From logos, \"word\" or \"reason.\" The KJV has \"reasonable service,\" the NASB and ESV \"spiritual service of worship.\" The idea is worship that fits, that makes sense, given what God has done; worship of the mind and heart, not only of ritual." },
+        { word: "μεταμορφόω", say: "metamorphoo", strongs: "G3339", count: "4 times", means: "to be transformed, changed in form", ev: "strong", src: ["bdag"], text: "The root of \"metamorphosis.\" It is used of Jesus' transfiguration (Matthew 17:2; Mark 9:2) and of believers being changed into Christ's image (2 Corinthians 3:18). The verb is present tense: an ongoing change." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "Shame that leads to change", who: "Repentance view", src: ["moo", "schreiner"], text: "Most commentators read the burning coals as the painful sense of shame an enemy feels when repaid with kindness, a shame that may lead to a change of heart. Kindness wins the enemy rather than defeating him." },
+        { head: "A sign of repentance", who: "Ancient custom view", src: ["dunn"], text: "Some scholars connect Proverbs with an Egyptian text in which a penitent carried a dish of burning coals on the head as a sign of sorrow. On this view kindness invites the enemy to show repentance. Others think the parallel is too distant to be sure." },
+        { head: "Leaving judgment to God", who: "Judgment view", src: ["dunn", "moo"], text: "Some early writers read the coals as God's judgment on an enemy who refuses kindness, since in the Old Testament coals often picture judgment. Most modern scholars find this hard to fit with verse 21. All agree on the command itself: feed the hungry enemy." },
+      ] },
+    ],
+    sources: {
+      moo: "Douglas J. Moo, The Epistle to the Romans, New International Commentary on the New Testament (Eerdmans, 1996).",
+      schreiner: "Thomas R. Schreiner, Romans, Baker Exegetical Commentary on the New Testament (Baker, 1998).",
+      dunn: "James D. G. Dunn, Romans 9-16, Word Biblical Commentary 38B (Word, 1988).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "EPH.2": {
+    crossRefs: [
+      ["ROM.3", "Romans 3:21-26", "Justified as a gift by His grace through the redemption in Christ"],
+      ["ROM.6", "Romans 6:4-11", "Dead to sin, alive to God in Christ"],
+      ["TIT.3", "Titus 3:4-7", "Not by works of righteousness, but according to His mercy"],
+      ["GAL.3", "Galatians 3:26-28", "All one in Christ Jesus"],
+      ["JAS.2", "James 2:14-26", "Faith without works is dead"],
+      ["1PE.2", "1 Peter 2:4-10", "Living stones built up as a spiritual house"],
+    ],
+    intro: "Paul tells the story of salvation in two movements. First, what God did for each of us: dead in sin, made alive with Christ, saved by grace through faith, and created for good works. Second, what God did for all of us together: Jews and Gentiles, once divided by a wall, made one new people and built into one temple where God lives by His Spirit.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "2:1", head: "Dead in your trespasses and sins", ev: "scripture", src: ["arnold", "hoehner"], text: "Paul does not say sick or weak, but dead: cut off from the life of God. The rest of the passage shows why only God could change this." },
+        { ref: "2:4", head: "But God", ev: "scripture", src: ["hoehner"], text: "Two words turn the whole passage. After three verses on our condition, God acts, \"being rich in mercy, because of His great love.\"" },
+        { ref: "2:6", head: "Raised us up with Him, and seated us with Him", ev: "scripture", src: ["lincoln"], text: "What God did for Christ in 1:20 (raised Him and seated Him at His right hand), He has done for believers \"with Him.\" Paul writes it in the past tense: in Christ it is already true." },
+        { ref: "2:8", head: "By grace you have been saved through faith", ev: "scripture", src: ["hoehner", "arnold"], text: "Grace is the source; faith is the means by which it is received. \"Have been saved\" is a Greek perfect: something done in the past that still stands. What exactly \"that is not of yourselves\" points back to is discussed under Scholars and views." },
+        { ref: "2:10", head: "We are His workmanship", ev: "strong", src: ["bdag", "lincoln"], text: "Not saved by works (2:9), but saved for good works (2:10). \"Workmanship\" is poiema, something made, like a work of art. God prepared the good works beforehand, \"so that we would walk in them.\"" },
+        { ref: "2:12", head: "Without hope and without God", ev: "scripture", src: ["arnold"], text: "Paul describes what Gentiles lacked before Christ: no Messiah, no share in Israel's covenants and promises, no hope. The Greek has atheoi, \"without God,\" though they had many gods." },
+        { ref: "2:14", head: "He Himself is our peace", ev: "strong", src: ["arnold", "lincoln"], text: "Christ broke down \"the dividing wall\" between Jew and Gentile. Paul's readers would think of the actual barrier in the Jerusalem temple; see History and culture." },
+        { ref: "2:20", head: "The foundation of the apostles and prophets", ev: "good", src: ["hoehner", "lincoln"], text: "The church is pictured as a building with Christ as the cornerstone, the first stone laid, which sets the line for every other. Most commentators read \"prophets\" here as New Testament prophets, since 3:5 and 4:11 name apostles and prophets together." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The temple warning stone", ev: "strong", src: ["josephus", "arnold"], text: "A low stone barrier (the soreg) kept Gentiles out of the inner courts of Herod's temple. Josephus describes warning signs on it in Greek and Latin. Two of them have been found: a complete one in 1871, now in the Istanbul Archaeology Museum, and a fragment in 1935, now in the Israel Museum. They read: \"No foreigner may enter within the barrier around the temple. Whoever is caught will have himself to blame for the death that follows.\" Paul himself was nearly killed when he was accused of bringing a Gentile past it (Acts 21:28-31)." },
+        { head: "Ephesus and its temple", ev: "strong", src: ["arnold"], text: "Ephesus was home to the temple of Artemis, one of the Seven Wonders of the ancient world. Paul spent about three years there (Acts 20:31). Writing to Christians who had left that temple, Paul says they are now themselves becoming \"a holy temple in the Lord\" (2:21)." },
+        { head: "To whom was the letter sent?", ev: "debated", src: ["metzger", "hoehner"], text: "The words \"in Ephesus\" in 1:1 are missing from several of the oldest manuscripts. Some scholars think the letter was meant to be read in several churches around Ephesus; others hold that it was written to Ephesus itself. The message is the same either way." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "χάρις", say: "charis", strongs: "G5485", count: "about 155 times", means: "grace, favor, a gift freely given", ev: "strong", src: ["bdag"], text: "In everyday Greek it meant kindness or a favor given freely. Paul makes it the heart of the gospel: God's undeserved kindness, given in Christ. It appears three times in this chapter (2:5, 2:7, 2:8), including \"the surpassing riches of His grace.\"" },
+        { word: "ποίημα", say: "poiema", strongs: "G4161", count: "twice, Romans 1:20 and Ephesians 2:10", means: "something made, a work", ev: "strong", src: ["bdag"], text: "Our word \"poem\" comes from it, though it means any made thing. In Romans 1:20 it is used of creation itself. In Ephesians 2:10 it is the new creation: believers, made by God in Christ." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "The whole of salvation is the gift", who: "Salvation as gift view", src: ["hoehner", "arnold", "lincoln"], text: "In Greek, \"that\" (touto) is neuter, while \"grace\" and \"faith\" are both feminine. So most commentators read \"that\" as pointing to the whole idea just stated: being saved by grace through faith is not our own doing but God's gift." },
+        { head: "Faith itself is the gift", who: "Faith as gift view", src: ["hoehner"], text: "Others, including many older interpreters, read \"that\" as including faith: even the faith by which we receive salvation is given by God. They note that Greek sometimes uses a neuter word to sum up a feminine idea." },
+        { head: "Grace, faith and works together", who: "Common ground", src: ["arnold", "lincoln"], text: "Both views agree that salvation is God's work and not something we earn, and that it leads to good works (2:10). How grace, faith, baptism and obedience fit together is discussed across the whole New Testament (for example Titus 3:5, James 2:14-26). Readers should compare those passages too." },
+      ] },
+    ],
+    sources: {
+      hoehner: "Harold W. Hoehner, Ephesians: An Exegetical Commentary (Baker, 2002).",
+      arnold: "Clinton E. Arnold, Ephesians, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2010).",
+      lincoln: "Andrew T. Lincoln, Ephesians, Word Biblical Commentary 42 (Word, 1990).",
+      metzger: "Bruce M. Metzger, A Textual Commentary on the Greek New Testament, 2nd ed. (German Bible Society, 1994).",
+      josephus: "Flavius Josephus, Jewish War 5.193-194 and Jewish Antiquities 15.417 (first century AD).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "PHP.4": {
+    crossRefs: [
+      ["PHP.2", "Philippians 2:1-5", "Be of the same mind: have the attitude of Christ"],
+      ["MAT.6", "Matthew 6:25-34", "Do not be worried about your life"],
+      ["1PE.5", "1 Peter 5:7", "Cast all your anxiety on Him, because He cares for you"],
+      ["ACT.16", "Acts 16:11-40", "The church at Philippi begins, and Paul and Silas sing in prison"],
+      ["2CO.12", "2 Corinthians 12:9-10", "My grace is sufficient for you"],
+      ["1TI.6", "1 Timothy 6:6-8", "Godliness with contentment is great gain"],
+    ],
+    intro: "Paul writes from prison to the church he loved most. The last chapter is full of joy: stand firm, make peace with each other, rejoice always, pray instead of worrying, think on what is good. He thanks them for their gift and shares a secret he has learned: contentment in any situation, through Christ who gives him strength.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "4:2", head: "Euodia and Syntyche", ev: "scripture", src: ["fee"], text: "Two women who had \"shared my struggle in the cause of the gospel\" (4:3) had fallen out. Paul names them, gently, and asks each the same thing: \"live in harmony in the Lord.\" Women had been at the heart of this church from its first day (Acts 16:13-15)." },
+        { ref: "4:3", head: "True companion", ev: "debated", src: ["fee", "hawthorne"], text: "Paul asks his \"true companion\" (syzygos, \"yoke-fellow\") to help the two women. No one knows who this was. Suggestions include Luke, Epaphroditus, Silas, or a man actually named Syzygus, \"true to his name.\"" },
+        { ref: "4:4", head: "Rejoice in the Lord always", ev: "scripture", src: ["fee"], text: "Written from prison, with a death sentence possible (1:20). \"Joy\" and \"rejoice\" appear some 16 times in this short letter. Joy \"in the Lord\" does not depend on circumstances, but on Him." },
+        { ref: "4:6", head: "Be anxious for nothing", ev: "scripture", src: ["bockmuehl"], text: "Paul gives the alternative to worry: \"in everything by prayer and supplication with thanksgiving let your requests be made known to God.\" Thanksgiving is part of the cure." },
+        { ref: "4:7", head: "The peace of God will guard your hearts", ev: "strong", src: ["bdag", "fee"], text: "\"Guard\" is a military word: to keep watch, as a garrison guards a city. Philippi was a Roman colony settled by army veterans, and soldiers were a familiar sight. God's peace stands sentry over the heart and mind." },
+        { ref: "4:8", head: "Dwell on these things", ev: "good", src: ["bockmuehl", "hawthorne"], text: "Paul lists eight qualities (true, honorable, right, pure, lovely, of good repute, excellence, worthy of praise). Several were words Greek moral teachers also used. Paul takes the best of what his readers already valued and directs it to the Lord." },
+        { ref: "4:11", head: "I have learned to be content", ev: "strong", src: ["bdag", "fee"], text: "\"Content\" is autarkes, a favorite word of Stoic philosophers, who meant being self-sufficient. Paul borrows the word and changes its meaning: not sufficient in himself, but in Christ (4:13)." },
+        { ref: "4:13", head: "I can do all things through Him who strengthens me", ev: "scripture", src: ["fee", "bockmuehl"], text: "Often quoted on its own, the verse is about contentment: whether hungry or well fed, in need or in plenty (4:12), Christ gives the strength to face it. It is less about achieving anything and more about enduring everything." },
+        { ref: "4:22", head: "Those of Caesar's household", ev: "good", src: ["hawthorne", "fee"], text: "\"Caesar's household\" meant the emperor's slaves and freedmen who ran the imperial service, not his family. They worked wherever the empire did. The gospel had reached people at the heart of the empire's administration." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Philippi, a little Rome", ev: "strong", src: ["fee", "bockmuehl"], text: "Named after Philip II of Macedon, the father of Alexander the Great. After the battle of Philippi in 42 BC and again after the battle of Actium in 31 BC, Rome settled veterans there and made it a colony with Roman law and Latin as an official language. Paul tells them their true \"citizenship is in heaven\" (3:20)." },
+        { head: "A church that gave", ev: "scripture", src: ["fee"], text: "The Philippians supported Paul again and again (4:15-16; 2 Corinthians 11:9), though they were poor themselves (2 Corinthians 8:1-2). This chapter is partly a thank-you note for the gift Epaphroditus brought." },
+        { head: "Where was Paul in prison?", ev: "debated", src: ["hawthorne", "bockmuehl", "fee"], text: "The traditional view, held by many scholars, is Rome, about AD 60-62 (Acts 28:30). Others suggest Ephesus, about AD 54-55, because of the many trips between Paul and Philippi the letter mentions; a few suggest Caesarea. The letter's message does not depend on the answer." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "αὐτάρκης", say: "autarkes", strongs: "G842", count: "once, Philippians 4:11", means: "content, self-sufficient", ev: "strong", src: ["bdag"], text: "The related noun autarkeia means contentment in 2 Corinthians 9:8 and 1 Timothy 6:6. For Stoic thinkers it meant needing nothing outside oneself; for Paul it means needing nothing outside Christ." },
+        { word: "φρουρέω", say: "phroureo", strongs: "G5432", count: "4 times", means: "to guard, to keep under watch", ev: "strong", src: ["bdag"], text: "Used of a city guarded by a garrison (2 Corinthians 11:32), and of believers \"protected by the power of God through faith\" (1 Peter 1:5)." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "A name, or a description?", who: "The true companion", src: ["fee", "hawthorne"], text: "Since Paul does not name the \"true companion,\" scholars offer guesses, each with reasons: Luke, who was with Paul at Philippi's founding (the \"we\" passages of Acts 16 stop there); Epaphroditus, who carried the letter; or Syzygus as a personal name, with Paul punning on it. Scripture is silent, and nothing in the passage depends on it." },
+        { head: "Rome, Ephesus or Caesarea", who: "Where Paul wrote", src: ["hawthorne", "bockmuehl"], text: "Those who favor Rome point to the praetorian guard (1:13) and Caesar's household (4:22). Those who favor Ephesus point to the distance: Rome is far from Philippi, and the letter implies several journeys back and forth. Both sides agree Paul was in real danger of death." },
+      ] },
+    ],
+    sources: {
+      fee: "Gordon D. Fee, Paul's Letter to the Philippians, New International Commentary on the New Testament (Eerdmans, 1995).",
+      hawthorne: "Gerald F. Hawthorne and Ralph P. Martin, Philippians, rev. ed., Word Biblical Commentary 43 (Thomas Nelson, 2004).",
+      bockmuehl: "Markus Bockmuehl, The Epistle to the Philippians, Black's New Testament Commentaries (A&C Black, 1997).",
       bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
     },
   },
