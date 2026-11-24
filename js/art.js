@@ -750,6 +750,19 @@ const giraffe = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})
   <path d="M14 -43 L 14 -47 M 17 -43 L 18 -47" stroke="#a8743f" stroke-width="1.2"/>${[[-3, -16], [3, -14], [-1, -12], [6, -17], [11, -27], [13, -33]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="1.4" fill="#b9772e"/>`).join("")}${eyes([[18, -41]], .7)}</g>`;
 const bunny = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="-4" rx="6" ry="4.4" fill="#f2efe9"/><circle cx="6" cy="-7" r="3.4" fill="#f2efe9"/>
   <ellipse cx="5" cy="-13" rx="1.3" ry="4" fill="#f2efe9"/><ellipse cx="7.4" cy="-12.6" rx="1.3" ry="4" fill="#f2efe9"/><circle cx="-6" cy="-5" r="1.8" fill="#fff"/>${eyes([[7, -7.6]], .6)}</g>`;
+// Genesis 11, 15 and 28: the tower of Babel, Abraham counting the stars, Jacob's ladder.
+const elder = (x, y, s = 1, robe = "#8a6a48", cloth = "#e9e2d0") => `<g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M-8 0 C -9 -12, -6 -20, 0 -21 C 6 -20, 9 -12, 8 0 Z" fill="${robe}"/><circle cx="0" cy="-26" r="6" fill="#e8b98f"/>
+  <path d="M-6.5 -27 C -7 -35, 7 -35, 6.5 -27 L 7.5 -20 L 4.5 -24 C 2 -29, -2 -29, -4.5 -24 L -7.5 -20 Z" fill="${cloth}"/>
+  <path d="M-4.4 -24 C -4 -17, 4 -17, 4.4 -24 C 2 -22, -2 -22, -4.4 -24 Z" fill="#f4f1ea"/>${eyes([[-2.2, -26.2], [2.2, -26.2]], .9)}</g>`;
+const helper = (x, y, s, robe) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-5 0 C -6 -8, -4 -13, 0 -14 C 4 -13, 6 -8, 5 0 Z" fill="${robe}"/><circle cx="0" cy="-17" r="3.6" fill="#e8b98f"/></g>`;
+const babelTower = () => `<g transform="translate(150 78)">${[[0, 88, 16], [1, 72, 14], [2, 56, 13], [3, 42, 12], [4, 30, 11]].map(([n, w, h]) => {
+    const y = -n * 14; return `<rect x="${-w / 2}" y="${y - h}" width="${w}" height="${h}" fill="${["#d9b77a", "#cfa96a", "#c69e5f", "#bd9455", "#b48a4c"][n]}" stroke="#9a7440" stroke-width=".8"/>${Array.from({ length: Math.floor(w / 10) }, (_, k) => `<rect x="${-w / 2 + 4 + k * 10}" y="${y - h + 4}" width="4" height="5" fill="#8a6a3a" opacity=".7"/>`).join("")}`; }).join("")}
+  <path d="M-12 -70 L -12 -80 M 12 -70 L 12 -80 M -12 -75 L 12 -75" stroke="#8a6a3a" stroke-width="1.4"/><path d="M-15 -80 L 15 -80" stroke="#8a6a3a" stroke-width="1.8"/>
+  <path d="M-44 0 L -54 -26 L -46 -26 Z" fill="none"/><path d="M44 -14 L 52 -14 L 46 0" stroke="#8a6a3a" stroke-width="1.4" fill="none"/></g>`;
+const bubble = (x, y, w, c, squig) => `<g transform="translate(${x} ${y})"><path d="M0 0 h ${w} a 4 4 0 0 1 4 4 v 6 a 4 4 0 0 1 -4 4 h ${-w + 8} l -6 5 l 1 -5 h -3 a 4 4 0 0 1 -4 -4 v -6 a 4 4 0 0 1 4 -4 Z" fill="#fffdf4" stroke="${c}" stroke-width="1"/><text x="${w / 2}" y="10" text-anchor="middle" font-size="7" font-weight="700" fill="${c}" font-family="Georgia, serif">${squig}</text></g>`;
+const angelK = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-2 -14 C -12 -22, -16 -10, -7 -6 Z M 2 -14 C 12 -22, 16 -10, 7 -6 Z" fill="#fff" opacity=".9"/>
+  <path d="M-6 0 C -5 -8, -3 -13, 0 -14 C 3 -13, 5 -8, 6 0 Z" fill="#fdf8ea"/><circle cx="0" cy="-17" r="3.4" fill="#f1cfa8"/><ellipse cx="0" cy="-21.6" rx="3.8" ry="1.1" fill="none" stroke="#f5c542" stroke-width="1"/></g>`;
 // Eden (Genesis 2-3): two trees in the middle of the garden, a river that parts into four
 // streams, Adam and Eve in leaf clothes, and the animals Adam named. Genesis 3 adds the serpent.
 const fruitTree = (x, y, fruit, glow = false) => `<g transform="translate(${x} ${y})">
@@ -807,6 +820,20 @@ const STORY_ART = {
   eden: ["God planted a garden, and Adam named the animals", () => edenScene(false), ["#bfe3f5", "#eef8fb"]],
   fall: ["They hid among the trees of the garden", () => edenScene(true), ["#c9dfe9", "#eef6f2"]],
   creation: ["In the beginning God created the heavens and the earth", () => creationScene(), ["#9cc9e6", "#e8f4fb"]],
+  babel: ["The tower of Babel: God mixed up their language", () => `${sun(320, 18, 8)}<path d="M0 72 C 90 64, 270 64, 360 72 L 360 90 L 0 90 Z" fill="#d9c08a"/><path d="M0 80 C 100 76, 260 76, 360 80 L 360 90 L 0 90 Z" fill="#c9ab6e"/>
+    ${babelTower()}${[[100, 84, "#5b8fb9"], [204, 84, "#a65a6a"], [226, 84, "#6aa06a"], [252, 84, "#c9a35a"], [276, 84, "#7f6cc8"]].map(([a, b, c]) => helper(a, b, .9, c)).join("")}
+    ${bubble(186, 46, 20, "#a65a6a", "¿?")}${bubble(232, 54, 22, "#6aa06a", "~&amp;~")}${bubble(262, 38, 22, "#7f6cc8", "!?#")}${bubble(78, 52, 20, "#5b8fb9", "@*?")}
+    ${palm(40, 76, .6)}${palm(330, 78, .55)}`, ["#f6dfb6", "#fbf2dd"]],
+  stars: ["Look up and count the stars (Genesis 15:5)", () => `${Array.from({ length: 46 }, (_, i) => `<circle cx="${(i * 79) % 356 + 2}" cy="${(i * 41) % 58 + 4}" r="${i % 4 ? .9 : 1.5}" fill="#fff6c8"/>`).join("")}
+    <path d="M0 72 C 90 64, 270 66, 360 72 L 360 90 L 0 90 Z" fill="#4a5a3a"/><path d="M0 82 C 100 78, 260 78, 360 82 L 360 90 L 0 90 Z" fill="#3e4c30"/>
+    ${tent(252, 76, 2.2)}<circle cx="252" cy="70" r="3" fill="#ffd36b" opacity=".7"/>${elder(170, 84, 1.1, "#7a5a3a", "#d9cdb0")}<path d="M175 68 L 190 50" stroke="#7a5a3a" stroke-width="4.6" stroke-linecap="round"/><path d="M190 50 L 196 41" stroke="#e8b98f" stroke-width="2.6" stroke-linecap="round"/>
+    ${lamb(300, 84, .26)}${lamb(320, 86, .24)}`, ["#1f2a4a", "#3b4c78"]],
+  ladder: ["Jacob's dream: a stairway to heaven", () => `${Array.from({ length: 30 }, (_, i) => `<circle cx="${(i * 83) % 356 + 2}" cy="${(i * 29) % 50 + 4}" r="${i % 3 ? .8 : 1.3}" fill="#fff6c8"/>`).join("")}
+    <path d="M190 84 L 250 0 L 290 0 L 214 84 Z" fill="#ffe9a0" opacity=".35"/><path d="M196 84 L 256 0 M 210 84 L 278 0" stroke="#f5d78a" stroke-width="1.6"/>
+    ${Array.from({ length: 9 }, (_, i) => { const t = i / 9; return `<path d="M${196 + t * 60} ${84 - t * 84} L ${210 + t * 68} ${84 - t * 84}" stroke="#f5d78a" stroke-width="1.4"/>`; }).join("")}
+    ${angelK(218, 58, .8)}${angelK(244, 30, .7)}${angelK(264, 10, .6)}
+    <path d="M0 76 C 90 70, 270 70, 360 76 L 360 90 L 0 90 Z" fill="#5a5a48"/><path d="M0 84 C 100 80, 260 80, 360 84 L 360 90 L 0 90 Z" fill="#4a4a3a"/>
+    <ellipse cx="108" cy="80" rx="9" ry="5" fill="#9a9a8a"/><g transform="translate(140 82)"><path d="M-28 0 C -26 -7, 20 -8, 26 -2 C 26 2, -26 3, -28 0 Z" fill="#7a5a3a"/><circle cx="-26" cy="-6" r="5.4" fill="#e8b98f"/><path d="M-31 -8 C -30 -13, -22 -13, -21 -8 Z" fill="#5a3a20"/><path d="M-28 -6 q 1.5 1 3 0 M -25 -6 q 1.5 1 3 0" stroke="#3b2b20" stroke-width=".7" fill="none"/></g>`, ["#26315a", "#46578a"]],
   ark: ["Noah's ark", () => `${sun(320, 18, 8)}${waves(62)}
     ${bob(`<path d="M-60 0 L 60 0 L 48 18 L -48 18 Z" fill="#9a6a3f"/><path d="M-60 0 L 60 0" stroke="#6e4826" stroke-width="2"/><rect x="-34" y="-20" width="68" height="20" fill="#c08a55"/><path d="M-40 -20 L 0 -34 L 40 -20 Z" fill="#7a4f2e"/>
       <rect x="-24" y="-14" width="10" height="9" rx="2" fill="#4b3320"/><rect x="14" y="-14" width="10" height="9" rx="2" fill="#4b3320"/>
@@ -899,7 +926,7 @@ const STORY_ART = {
     ${lamb(90, 78, .3)}${lamb(270, 80, .3)}${palm(40, 74, .7)}`, ["#cfeefc", "#f2fbff"]],
 };
 const STORIES = {
-  creation: ["GEN.1"], eden: ["GEN.2"], fall: ["GEN.3"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], joseph: ["GEN.37"],
+  creation: ["GEN.1"], eden: ["GEN.2"], fall: ["GEN.3"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], babel: ["GEN.11"], stars: ["GEN.15"], ladder: ["GEN.28"], joseph: ["GEN.37"],
   basket: ["EXO.2"], bush: ["EXO.3"], sea: ["EXO.14", "EXO.15"], tablets: ["EXO.19", "EXO.20", "EXO.31", "EXO.32", "EXO.34", "DEU.5"],
   walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
   manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
@@ -929,6 +956,9 @@ const KIDS_FX = {
   eden: () => `${fx.shimmer(72, 60, 300)}${fx.butterfly(30, 60, "#f08ab0")}${fx.butterfly(280, 52, "#f5c542", 3)}${fx.birds(16, 6)}`,
   fall: () => `${fx.shimmer(72, 60, 300)}${fx.leaves(180, 30)}`,
   ark: () => `${fx.birds(14, 0, 28)}${fx.drift(20, 4)}`,
+  babel: () => `${fx.birds(16, 4)}${fx.drift(18, 8)}`,
+  stars: () => `${fx.twinkles([[40, 14], [90, 30], [140, 10], [200, 24], [250, 12], [300, 30], [340, 16], [70, 50]])}${fx.glow(252, 70, 8, "#ffd36b")}`,
+  ladder: () => `${fx.twinkles([[30, 12], [80, 30], [150, 16], [320, 22]])}${fx.glow(246, 34, 16, "#fff6c8")}${fx.zz(110, 66)}`,
   rainbow: () => `${fx.birds(20, 3)}${fx.butterfly(120, 64, "#7f6cc8", 1)}${fx.butterfly(250, 60, "#f39c4a", 4)}`,
   basket: () => `${fx.shimmer(60)}${fx.butterfly(90, 34, "#5b8fb9", 2)}`,
   bush: () => `${fx.glow(150, 50, 20, "#ffe08a")}${fx.sparks(150, 46, 30)}`,
