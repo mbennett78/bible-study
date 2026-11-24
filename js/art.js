@@ -640,7 +640,45 @@ const waves = (y, c = "#4f9fc8", c2 = "#7fc3e0") => `<path d="M0 ${y} ${Array.fr
 const skyG = (id, a, b) => `<defs><linearGradient id="kg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient><clipPath id="kc${id}"><rect width="360" height="90" rx="16"/></clipPath></defs>`;
 const bob = (inner, x = 0, y = 0) => `<g transform="translate(${x} ${y})"><g class="bob">${inner}</g></g>`;
 
+// Eden (Genesis 2-3): two trees in the middle of the garden, a river that parts into four
+// streams, Adam and Eve in leaf clothes, and the animals Adam named. Genesis 3 adds the serpent.
+const fruitTree = (x, y, fruit, glow = false) => `<g transform="translate(${x} ${y})">
+  ${glow ? `<circle cx="0" cy="-34" r="27" fill="#fff6c8" opacity=".55"/>` : ""}
+  <path d="M-3 0 C -2 -12, -4 -22, -1 -30 L 2 -30 C 4 -22, 2 -12, 3 0 Z" fill="#7a5a3a"/>
+  <path d="M0 -24 L -9 -32 M 1 -26 L 10 -33" stroke="#7a5a3a" stroke-width="2.2"/>
+  <g class="sway" style="transform-origin:0px -30px"><circle cx="-11" cy="-36" r="12" fill="#5e9a48"/><circle cx="11" cy="-37" r="12" fill="#5e9a48"/><circle cx="0" cy="-46" r="13" fill="#76b35a"/><circle cx="0" cy="-33" r="11" fill="#6aa850"/>
+  ${[[-12, -38], [-4, -48], [7, -44], [13, -34], [-6, -31], [3, -36], [-15, -30]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="2.6" fill="${fruit}"/><circle cx="${a - .8}" cy="${b - .9}" r=".8" fill="#fff" opacity=".7"/>`).join("")}</g></g>`;
+const person = (x, y, s, hair, long) => `<g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M-3 0 L -3 -9 M 3 0 L 3 -9" stroke="#e8b98f" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M-7 -8 C -8 -14, -6 -20, 0 -21 C 6 -20, 8 -14, 7 -8 C 4 -6, -4 -6, -7 -8 Z" fill="#e8b98f"/>
+  <path d="M-8 -7 L -6 -14 L -3 -9 L 0 -15 L 3 -9 L 6 -14 L 8 -7 C 4 -4, -4 -4, -8 -7 Z" fill="#4f8f3c"/>
+  <circle cx="0" cy="-26" r="6" fill="#e8b98f"/>
+  ${long ? `<path d="M-6.5 -27 C -8 -36, 8 -36, 6.5 -27 L 7.5 -14 L 4.5 -16 L 4.5 -25 C 2 -29, -2 -29, -4.5 -25 L -4.5 -16 L -7.5 -14 Z" fill="${hair}"/>` : `<path d="M-6.5 -26 C -7 -34, 7 -34, 6.5 -26 C 4 -29, -4 -29, -6.5 -26 Z" fill="${hair}"/>`}
+  ${eyes([[-2.2, -25.6], [2.2, -25.6]], .9)}<path d="M-2 -22.6 Q 0 -21, 2 -22.6" stroke="#6b3d2a" stroke-width=".8" fill="none"/></g>`;
+const lion = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 0 L -14 -8 M -8 0 L -8 -8 M 6 0 L 6 -8 M 11 0 L 11 -8" stroke="#d9a04a" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="-2" cy="-11" rx="15" ry="7" fill="#e3b05a"/><path d="M-17 -12 C -22 -14, -24 -8, -21 -6" stroke="#d9a04a" stroke-width="1.6" fill="none"/>
+  <circle cx="13" cy="-16" r="9" fill="#b9772e"/><circle cx="14" cy="-16" r="5.6" fill="#e8b65e"/>${eyes([[12.2, -17], [16, -17]], .8)}</g>`;
+const deer = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-9 0 L -9 -9 M -5 0 L -5 -9 M 5 0 L 5 -9 M 9 0 L 9 -9" stroke="#a8743f" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="0" cy="-12" rx="12" ry="5.5" fill="#c08a55"/><path d="M9 -14 L 13 -24" stroke="#c08a55" stroke-width="4" stroke-linecap="round"/><ellipse cx="15" cy="-25" rx="4.4" ry="3" fill="#c08a55"/>
+  <path d="M13 -27 L 11 -33 M 12 -31 L 9 -32 M 16 -27 L 18 -33 M 17.5 -31 L 20 -32" stroke="#7a5a3a" stroke-width="1.1"/>${eyes([[16, -25.6]], .7)}</g>`;
+const edenFlower = (x, y, c) => `<g transform="translate(${x} ${y})"><path d="M0 0 L 0 -6" stroke="#5e8a3a" stroke-width="1.2"/>${[0, 72, 144, 216, 288].map((r) => `<circle cx="0" cy="-9" r="1.8" fill="${c}" transform="rotate(${r} 0 -7)"/>`).join("")}<circle cy="-7" r="1.2" fill="#f5c542"/></g>`;
+const edenScene = (fall) => `${sun(36, 18, 8)}
+    <path d="M0 52 C 70 44, 130 50, 180 48 C 240 46, 300 42, 360 50 L 360 90 L 0 90 Z" fill="#9bd06f"/>
+    <path d="M0 64 C 90 58, 270 58, 360 64 L 360 90 L 0 90 Z" fill="#86c25e"/>
+    ${[[16, 52, .4], [342, 50, .42], [62, 50, .34], [300, 48, .34]].map(([a, b, c]) => oliveTree(a, b, c)).join("")}
+    <g fill="#5fb0d8"><path d="M176 62 C 150 64, 100 72, 40 90 L 58 90 C 110 76, 152 68, 178 65 Z"/><path d="M174 64 C 162 70, 130 82, 118 90 L 132 90 C 146 82, 166 72, 178 66 Z"/>
+      <path d="M186 64 C 198 70, 230 82, 242 90 L 228 90 C 214 82, 194 72, 182 66 Z"/><path d="M184 62 C 210 64, 260 72, 320 90 L 302 90 C 250 76, 208 68, 182 65 Z"/><ellipse cx="180" cy="63" rx="10" ry="3.4"/></g>
+    <g class="wave-move" stroke="#bfe6f5" stroke-width="1" fill="none"><path d="M96 78 q 6 -3 12 0"/><path d="M252 78 q 6 -3 12 0"/><path d="M150 84 q 5 -2 10 0"/><path d="M200 84 q 5 -2 10 0"/></g>
+    ${fruitTree(162, 60, "#f5c542", true)}${fruitTree(200, 60, "#e0453a")}
+    ${fall ? `<path d="M197 58 C 206 52, 194 46, 203 40 C 210 35, 198 30, 206 26" stroke="#5d8f3a" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="207" cy="25" r="2.4" fill="#5d8f3a"/><circle cx="207.6" cy="24.4" r=".6" fill="#222"/>` : ""}
+    ${person(104, 74, .95, "#5a3a20", false)}${person(124, 74, .92, "#8a5a2a", true)}
+    ${fall ? `<circle cx="131" cy="62" r="2.4" fill="#e0453a"/>` : `<g class="bob"><path d="M232 26 q 4 -4 8 0 q 4 -4 8 0" stroke="#4a5a6a" stroke-width="1.3" fill="none"/></g>`}
+    ${lion(262, 76, .62)}${lamb(240, 76, .3)}${deer(300, 70, .62)}${lamb(70, 78, .26)}
+    ${[[20, 80, "#f08ab0"], [34, 86, "#fff"], [146, 88, "#f5d04a"], [214, 88, "#f08ab0"], [332, 84, "#fff"], [348, 88, "#f5d04a"], [84, 66, "#fff"]].map(([a, b, c]) => edenFlower(a, b, c)).join("")}`;
+
 const STORY_ART = {
+  eden: ["God planted a garden in Eden", () => edenScene(false), ["#bfe3f5", "#eef8fb"]],
+  fall: ["The tree in the middle of the garden", () => edenScene(true), ["#c9dfe9", "#eef6f2"]],
   creation: ["God made everything, and it was good", () => `${sun(60, 26, 11)}<circle cx="300" cy="20" r="8" fill="#fdf3c4"/><circle cx="304" cy="17" r="7" fill="#9cc9e6"/>
     ${[[250, 12], [270, 30], [330, 34], [345, 12], [225, 26]].map(([a, b]) => `<path d="M${a} ${b - 3} L ${a + 1} ${b} L ${a + 4} ${b} L ${a + 1.5} ${b + 2} L ${a + 2.5} ${b + 5} L ${a} ${b + 3} L ${a - 2.5} ${b + 5} L ${a - 1.5} ${b + 2} L ${a - 4} ${b} L ${a - 1} ${b} Z" fill="#fff6c8"/>`).join("")}
     <path d="M0 64 C 80 50, 160 58, 220 62 C 280 54, 330 58, 360 62 L 360 90 L 0 90 Z" fill="#8cc56a"/><ellipse cx="170" cy="78" rx="34" ry="7" fill="#5fb0d8"/>
@@ -735,7 +773,7 @@ const STORY_ART = {
     ${lamb(90, 78, .3)}${lamb(270, 80, .3)}${palm(40, 74, .7)}`, ["#cfeefc", "#f2fbff"]],
 };
 const STORIES = {
-  creation: ["GEN.1", "GEN.2"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], joseph: ["GEN.37"],
+  creation: ["GEN.1"], eden: ["GEN.2"], fall: ["GEN.3"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], joseph: ["GEN.37"],
   basket: ["EXO.2"], bush: ["EXO.3"], sea: ["EXO.14", "EXO.15"], tablets: ["EXO.19", "EXO.20", "EXO.31", "EXO.32", "EXO.34", "DEU.5"],
   walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
   manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],

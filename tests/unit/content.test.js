@@ -102,3 +102,21 @@ test("every trivia question points at real chapters and has four different choic
     assert.ok(q.a >= 0 && q.a < q.choices.length && q.why, q.id);
   }
 });
+
+test("study notes have no science tab and don't say which churches hold which view", () => {
+  for (const [key, n] of Object.entries(NOTES)) {
+    assert.ok(!n.sections.some((s) => s.id === "science"), `${key}: science section`);
+    const views = JSON.stringify(n.sections.filter((s) => s.id === "views"));
+    assert.doesNotMatch(views, /(?<!John the )Baptist|Church(es)? of Christ|Catholic|Methodist|Presbyterian|Lutheran|Pentecostal|Restoration Movement/, key);
+  }
+});
+
+test("the topic finder points at real chapters and finds stories by what they're about", async () => {
+  const { TOPICS, STORIES, findTopics } = await import("../../js/topics.js");
+  const { OUTLINES } = await import("../../js/outlines.js");
+  const keys = [...STORIES.map(([, r]) => r[0]), ...Object.values(TOPICS).flatMap((t) => t.refs.map((r) => r[0]))];
+  for (const k of keys) { const [b, c, v] = k.split("."); assert.ok(BOOK_BY_ID[b] && Number(c) <= BOOK_BY_ID[b].chapters && /^\d+(-\d+)?$/.test(v), k); }
+  assert.equal(findTopics("the one about the lost sheep")[0].title, "The lost sheep");
+  assert.ok(findTopics("baptism")[0].refs.length >= 10);
+  for (const [b, list] of Object.entries(OUTLINES)) for (const [r] of list) assert.ok(Number(r.split("-").pop()) <= BOOK_BY_ID[b].chapters, `${b} ${r}`);
+});

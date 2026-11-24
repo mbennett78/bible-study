@@ -91,6 +91,13 @@
             <option value="0.8">Slow</option><option value="1">Normal</option><option value="1.2">Brisk</option>
           </select>
         </label>
+        <label class="listen-ctl">Sleep
+          <select id="sleepSel" aria-label="Sleep timer: stop reading after">
+            <option value="0">Off</option><option value="10">10 min</option><option value="20">20 min</option><option value="30">30 min</option><option value="60">1 hour</option><option value="chapter">End of chapter</option>
+          </select>
+        </label>
+        <button type="button" class="listen-repeat" id="repeatBtn" aria-pressed="false" aria-label="Repeat this chapter">🔁 Repeat</button>
+        <span class="listen-note" id="sleepNote" hidden></span>
         <label class="drive-switch">Read to me <input type="checkbox" role="switch" id="driveQuick" aria-label="Read to me: read each chapter aloud and keep going"></label>
       </div>
       <p class="visit-line" id="visitLine"></p>
@@ -146,10 +153,11 @@
       <h1>My Bible</h1>
       <p class="muted mybible-sub">Tap any book, then a chapter, to read it. Chapters you finish are checked off here.</p>
       <button class="mybible-go" id="myBibleGo"><span class="mbg-icon" aria-hidden="true">📖</span><span><strong>Keep reading</strong><small id="myBibleGoRef">John 1</small></span><span aria-hidden="true">›</span></button>
+      <button class="mybible-go find-go" id="findGo"><span class="mbg-icon" aria-hidden="true">🔍</span><span><strong>Find a verse</strong><small>By what it's about, or the words you remember</small></span><span aria-hidden="true">›</span></button>
       <div class="segments" role="tablist">
         <button data-seg="progress" aria-selected="true">Books</button>
         <button data-seg="history" aria-selected="false">History</button>
-        <button data-seg="favorites" aria-selected="false">Favorites</button>
+        <button data-seg="favorites" aria-selected="false">Saved</button>
         <button data-seg="journal" aria-selected="false">Journal</button>
       </div>
       <div data-seg-panel="progress">
@@ -161,7 +169,7 @@
         <div id="bookList"></div>
       </div>
       <div data-seg-panel="history" hidden><div id="historyList"></div></div>
-      <div data-seg-panel="favorites" hidden><div id="favList"></div></div>
+      <div data-seg-panel="favorites" hidden><div id="verseMarksList"></div><div id="favList"></div></div>
       <div data-seg-panel="journal" hidden>
         <div id="diaryToday"></div>
         <div class="row keepsake-row"><button class="small" id="makeBook">📖 Print my "My Journey" book</button><span class="muted small-print">Every entry by date, with that day's verse, ready to print or save as a PDF.</span></div>

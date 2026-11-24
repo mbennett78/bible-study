@@ -1,5 +1,7 @@
 import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store, onSave } from "./store.js";
+import { findTopics } from "./topics.js";
+import { OUTLINES } from "./outlines.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
@@ -195,7 +197,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     readerEl.innerHTML = (result.offline ? `<p class="offline-note">Offline: showing a saved copy.</p>` : "") + sanitize(result.html);
     // Until they've tried it once: let them know any word can be tapped.
     if (!store.get("wordTipSeen") && store.get("wordTap") !== false) {
-      readerEl.insertAdjacentHTML("afterbegin", `<p class="word-tip">💡 Tap any word to see what it means and the ${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} behind it. <button type="button" class="quiet-link">Got it</button></p>`);
+      readerEl.insertAdjacentHTML("afterbegin", `<p class="word-tip">💡 Tap any word to see what it means and the ${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} behind it. Tap a verse number to highlight or bookmark the verse. <button type="button" class="quiet-link">Got it</button></p>`);
       readerEl.querySelector(".word-tip button").addEventListener("click", () => { store.set("wordTipSeen", true); readerEl.querySelector(".word-tip")?.remove(); });
     }
     $("#copyright").textContent = result.copyright;
@@ -204,6 +206,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     buddyFeelsPassage(readerEl.textContent, `${book}.${chapter}`);
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
+    applyVerseMarks(book, chapter);
     markStudyWords(readerEl, book, chapter, token);
     // Read to me: once it's on and started, every chapter opened is read aloud.
     if (autoplayNext || (readArmed && driveOn() && !$("#view-read").hidden)) { autoplayNext = false; reader.play(); }
@@ -425,6 +428,115 @@ function goToVerse(v) {
   mark.classList.add("verse-flash");
   setTimeout(() => mark.classList.remove("verse-flash"), 2600);
 }
+/* ---------- Tap a verse number: highlight, bookmark, write a note, copy or share ---------- */
+const HL_COLORS = [["yellow", "Yellow"], ["green", "Green"], ["blue", "Blue"], ["pink", "Pink"]];
+const verseMarkEls = () => [...$("#reader").querySelectorAll(".v, .verse-num, .chapter-num, [data-number]")].filter((m) => !m.closest(".footnotes"));
+const markNum = (m) => (m.classList.contains("chapter-num") ? 1 : parseInt(m.dataset.number || m.textContent, 10) || 0);
+// The text nodes of each verse, in order.
+function verseTextNodes(readerEl) {
+  const walker = document.createTreeWalker(readerEl, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (n) => (n.nodeType === 1 && n.matches(".offline-note, .word-tip, .footnotes, sup, .v, .verse-num, .chapter-num, [data-number]") ? (n.matches(".v, .verse-num, .chapter-num, [data-number]") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) : NodeFilter.FILTER_ACCEPT),
+  });
+  const byVerse = new Map();
+  let verse = 1;
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    if (n.nodeType === 1) { if (n.matches(".v, .verse-num, .chapter-num, [data-number]")) { const num = markNum(n); if (num) verse = num; } continue; }
+    if (n.parentElement.closest(".v, .verse-num, .chapter-num, [data-number], .footnotes, sup")) continue;
+    if (!n.textContent.trim() && !/^[ \u00a0]+$/.test(n.textContent)) continue; // keep spaces between words, skip line breaks between paragraphs
+    if (!byVerse.has(verse)) byVerse.set(verse, []);
+    byVerse.get(verse).push(n);
+  }
+  return byVerse;
+}
+function verseText(v) { return (verseTextNodes($("#reader")).get(v) || []).map((n) => n.textContent).join("").replace(/\s+/g, " ").trim(); }
+// Draw the highlights and bookmarks saved for this chapter.
+function applyVerseMarks(book, chapter) {
+  const readerEl = $("#reader");
+  if (!readerEl) return;
+  readerEl.querySelectorAll("mark.hl").forEach((m) => m.replaceWith(...m.childNodes));
+  readerEl.querySelectorAll(".is-bookmarked").forEach((m) => m.classList.remove("is-bookmarked"));
+  const marks = store.chapterMarks(book, chapter);
+  if (!Object.keys(marks).length) return;
+  const nodes = verseTextNodes(readerEl);
+  for (const [v, m] of Object.entries(marks)) {
+    if (m.color) for (const n of nodes.get(Number(v)) || []) {
+      const mk = Object.assign(document.createElement("mark"), { className: `hl hl-${m.color}` });
+      mk.dataset.v = v;
+      n.replaceWith(mk); mk.append(n);
+    }
+    if (m.bookmark) verseMarkEls().find((x) => markNum(x) === Number(v))?.classList.add("is-bookmarked");
+  }
+}
+const verseSheet = document.createElement("dialog");
+verseSheet.className = "word-sheet verse-sheet"; verseSheet.setAttribute("aria-label", "Verse");
+verseSheet.addEventListener("click", (e) => { if (e.target === verseSheet) verseSheet.close(); });
+function openVerseSheet(v) {
+  const { book, chapter } = store.get("last");
+  const ref = `${BOOK_BY_ID[book].name} ${chapter}:${v}`;
+  const text = verseText(v);
+  const m = store.verseMark(book, chapter, v) || {};
+  const ver = (versionList().find(([x]) => x === store.get("version")) || ["", "NASB"])[1];
+  verseSheet.innerHTML = `<div class="ws-head"><h2>${esc(ref)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
+    ${text ? `<p class="vs-text">${esc(text.length > 260 ? `${text.slice(0, 260)}…` : text)}</p>` : ""}
+    <p class="vs-label">Highlight</p>
+    <div class="vs-colors">${HL_COLORS.map(([c, label]) => `<button type="button" class="vs-color hl-${c}" data-color="${c}" aria-pressed="${m.color === c}" aria-label="${label}">${m.color === c ? "✓" : ""}</button>`).join("")}
+      <button type="button" class="vs-clear" data-color="" ${m.color ? "" : "disabled"}>No color</button></div>
+    <div class="vs-acts">
+      <button type="button" class="vs-act" data-act="bookmark" aria-pressed="${Boolean(m.bookmark)}"><span aria-hidden="true">🔖</span>${m.bookmark ? "Bookmarked ✓" : "Bookmark"}</button>
+      <button type="button" class="vs-act" data-act="note"><span aria-hidden="true">📝</span>Write a note</button>
+      <button type="button" class="vs-act" data-act="copy"><span aria-hidden="true">📋</span>Copy</button>
+      ${navigator.share ? `<button type="button" class="vs-act" data-act="share"><span aria-hidden="true">↗</span>Share</button>` : ""}
+    </div>
+    <p class="vs-msg muted small-print" role="status"></p>
+    <p class="muted small-print">Highlights and bookmarks are saved to your account and show on all your devices. Find them in My Bible, under Saved.</p>`;
+  const msg = verseSheet.querySelector(".vs-msg");
+  verseSheet.querySelector(".ws-close").addEventListener("click", () => verseSheet.close());
+  verseSheet.querySelectorAll("[data-color]").forEach((b) => b.addEventListener("click", () => {
+    store.setVerseMark(book, chapter, v, { color: b.dataset.color });
+    applyVerseMarks(book, chapter);
+    verseSheet.close();
+  }));
+  const quote = `“${text}” ${ref} (${ver})`;
+  verseSheet.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", async () => {
+    const act = b.dataset.act;
+    if (act === "bookmark") { store.setVerseMark(book, chapter, v, { bookmark: !m.bookmark }); applyVerseMarks(book, chapter); verseSheet.close(); }
+    else if (act === "note") {
+      verseSheet.close();
+      notesTab = "mine"; renderNotes(book, chapter);
+      $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" });
+      if (journalLocked()) return;
+      openEntry({ kind: "bible", ref: `${book}.${chapter}` }, $("#chapterEntryHost"));
+      const ta = $("#entryText");
+      if (ta && !ta.value) { ta.value = `${ref}: `; ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    } else if (act === "copy") {
+      try { await navigator.clipboard.writeText(quote); msg.textContent = "Copied ✓"; } catch { msg.textContent = "Copying isn't allowed here. Press and hold the verse to copy it instead."; }
+    } else if (act === "share") {
+      try { await navigator.share({ text: quote }); } catch { /* they closed the share sheet */ }
+    }
+  }));
+  if (!verseSheet.isConnected) document.body.append(verseSheet); // added when first used, after the word sheet
+  if (!verseSheet.open) verseSheet.showModal();
+}
+$("#reader").addEventListener("click", (e) => {
+  const m = e.target.closest?.(".v, .verse-num, .chapter-num, [data-number]");
+  if (!m || !$("#reader").contains(m)) return;
+  const v = markNum(m);
+  if (v) openVerseSheet(v);
+});
+// Every verse someone has highlighted or bookmarked, newest first (My Bible, Saved).
+function renderVerseMarks() {
+  const el = $("#verseMarksList");
+  if (!el) return;
+  const all = store.allVerseMarks();
+  el.innerHTML = `<h2 class="home-h">Saved verses</h2>${all.length ? all.map((x) => {
+    const [b, c, v] = x.key.split(".");
+    return `<button class="log-row vm-row" data-vm="${esc(x.key)}"><strong>${x.color ? `<span class="vm-dot hl-${x.color}" aria-hidden="true"></span>` : ""}${x.bookmark ? "🔖 " : ""}${esc(BOOK_BY_ID[b]?.name || b)} ${c}:${v}</strong><small>${x.bookmark && x.color ? "Bookmarked and highlighted" : x.bookmark ? "Bookmarked" : "Highlighted"} · ${fmtDate(x.updated)}</small></button>`;
+  }).join("") : `<p class="empty">Tap a verse number while you read to highlight or bookmark a verse. It will be kept here.</p>`}<h2 class="home-h">Favorite chapters</h2>`;
+  el.querySelectorAll("[data-vm]").forEach((b) => b.addEventListener("click", async () => {
+    const [bk, c, v] = b.dataset.vm.split(".");
+    showView("read"); await openChapter(bk, Number(c)); setTimeout(() => goToVerse(Number(v)), 300);
+  }));
+}
 function chapterButtons(b) {
   const here = store.get("last");
   return Array.from({ length: b.chapters }, (_, i) => i + 1).map((ch) => {
@@ -473,6 +585,7 @@ function renderMyStudy() {
     <strong>${esc(keyRef(v.key).name)}</strong><span class="tag">${store.isFavorite(keyRef(v.key).book, keyRef(v.key).chapter) ? "♥ " : ""}${store.isRead(keyRef(v.key).book, keyRef(v.key).chapter) ? "Read" : ""}</span>
     <small>Visited ${v.count} time${v.count === 1 ? "" : "s"} · last ${fmtDate(v.last)}</small><span></span>
     ${v.count > 1 ? `<span class="log-dates">Visits: ${v.dates.slice(0, 6).map(fmtDate).join(" · ")}</span>` : ""}`, "Chapters you open will show up here with the dates you studied them.");
+  if (segment === "favorites") renderVerseMarks();
   if (segment === "favorites") renderLog("#favList", store.allFavorites(), (f) => {
     const v = store.visit(keyRef(f.key).book, keyRef(f.key).chapter);
     return `<strong>${esc(keyRef(f.key).name)}</strong><span class="tag">♥</span><small>Saved ${fmtDate(f.at)}${v ? ` · visited ${v.count} time${v.count === 1 ? "" : "s"}` : ""}</small>`;
@@ -605,6 +718,10 @@ const reader = new Reader({
     updateDrive(state);
   },
   onEnd() {
+    // Sleep timer set to "end of this chapter": stop here.
+    if (sleepAt === "chapter") { sleepAt = 0; $("#sleepSel").value = "0"; syncSleepNote(); return; }
+    // Repeat: read the same chapter again from the top.
+    if ($("#repeatBtn")?.getAttribute("aria-pressed") === "true") { reader.index = 0; setTimeout(() => reader.play(), 900); return; }
     // In drive mode, keep going chapter after chapter (following the path if one is active).
     if (!driveOn()) return;
     const { book, chapter } = store.get("last");
@@ -889,6 +1006,8 @@ function renderJournal() {
   const mine = store.allEntries().filter((e) => e.ref === key);
   const oldFilled = entry ? JOURNAL_BOXES.filter((b) => (entry[b.field] || "").trim()) : [];
   const count = mine.length + (oldFilled.length ? 1 : 0);
+  const mineTile = $('.ref-tile[data-tab="mine"] .rt-sub');
+  if (mineTile) mineTile.textContent = count ? `${count} entr${count === 1 ? "y" : "ies"}` : "Write one";
   $("#journalHint").textContent = journalLocked() ? "Locked" : count ? `${count} entr${count === 1 ? "y" : "ies"} on this chapter. Tap to read or add more.` : "Your thoughts, prayers and thanks on this chapter";
   inner.innerHTML = "";
   if (journalLocked()) { inner.append(unlockForm(renderJournal)); return; }
@@ -1226,7 +1345,7 @@ setInterval(() => {
   const a = document.activeElement;
   if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
   const today = new Date().toDateString(), log = store.get("buddyVisitLog") || {};
-  if (log.day === today && log.n >= 3) return;
+  if (log.day === today && log.n >= 2) return; // quiet by default: at most twice a day
   const { book, chapter } = store.get("last");
   // Never named yet (set up before he could be): his first visit asks what to call him.
   if (!store.get("buddyName") && (store.get("setup") || {}).done) {
@@ -2061,28 +2180,47 @@ function renderPassageArt(book, chapter) {
 
 /* ---------- Study notes: map, history, science, words, views, sources ---------- */
 let notesTab = "strongs";
-function mapSvg(map, mode) {
-  const { bounds, water, rivers, riverLabels, waterLabel, islands = [] } = map.outline;
+// Every name is shown twice when it changed: brown for its name in Bible times, blue for
+// today's. A key under the map says which is which.
+const shortNow = (t) => String(t || "").split(/[:(]/)[0].trim();
+function mapSvg(map) {
+  const { bounds, water, rivers, dryRivers = [], islands = [] } = map.outline;
+  const riverLabels = map.outline.riverLabels.map((l) => l.text ? { ...l, then: l.text, now: l.text } : l);
+  const waterLabels = map.outline.waterLabels || [{ ...map.outline.waterLabel, then: map.outline.waterLabel.text, now: map.outline.waterLabel.text }];
   const W = 340;
   const mid = ((bounds.lat[0] + bounds.lat[1]) / 2) * Math.PI / 180;
   const H = Math.round(W * (bounds.lat[1] - bounds.lat[0]) / ((bounds.lon[1] - bounds.lon[0]) * Math.cos(mid)));
   const X = (lon) => ((lon - bounds.lon[0]) / (bounds.lon[1] - bounds.lon[0])) * W;
   const Y = (lat) => ((bounds.lat[1] - lat) / (bounds.lat[1] - bounds.lat[0])) * H;
   const line = (pts) => pts.map(([la, lo], i) => `${i ? "L" : "M"}${X(lo).toFixed(1)} ${Y(la).toFixed(1)}`).join(" ");
+  const twoNames = (then, now, x, y, anchor, cls, angle = 0) => {
+    const same = !then || !now || then === now;
+    const rot = angle ? ` transform="rotate(${angle} ${x.toFixed(1)} ${y.toFixed(1)})"` : "";
+    return `<text class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}"${rot}>${then ? `<tspan class="${same ? "nm-both" : "nm-then"}">${esc(then)}</tspan>` : ""}${!same || !then ? `<tspan class="nm-now" x="${x.toFixed(1)}" dy="${then ? "1.1em" : 0}">${esc(now)}</tspan>` : ""}</text>`;
+  };
+  const hasEden = map.places.some((p) => p.kind === "eden");
   const places = map.places.map((p, i) => {
     const x = X(p.lon), y = Y(p.lat), right = p.side ? p.side === "right" : x < W * 0.62;
-    return `<g class="map-place" data-place="${i}" tabindex="0" role="button" aria-label="${esc(p[mode])}">
-      <circle class="map-dot-halo" cx="${x}" cy="${y}" r="9"/><circle class="map-dot" cx="${x}" cy="${y}" r="4.2"/>
-      <text class="map-label" x="${right ? x + 8 : x - 8}" y="${y + 4 + (p.dy || 0)}" text-anchor="${right ? "start" : "end"}">${esc(p[mode])}</text></g>`;
+    const eden = p.kind === "eden";
+    const dot = eden ? `<circle class="map-eden-ring" cx="${x}" cy="${y}" r="7"/><circle class="map-dot map-eden" cx="${x}" cy="${y}" r="4.2"/>` : `<circle class="map-dot" cx="${x}" cy="${y}" r="4"/>`;
+    return `<g class="map-place${eden ? " is-eden" : ""}" data-place="${i}" tabindex="0" role="button" aria-label="${esc(p.then)}${p.now !== p.then ? `, today ${esc(p.now)}` : ""}">
+      <circle class="map-dot-halo" cx="${x}" cy="${y}" r="10"/>${dot}
+      ${twoNames(p.then, shortNow(p.now), right ? x + 8 : x - 8, y + 3 + (p.dy || 0), right ? "start" : "end", "map-label")}</g>`;
   }).join("");
-  return `<svg class="notes-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="Map: ${esc(map.caption)}">
-    <rect class="map-land" width="${W}" height="${H}" rx="14"/>
+  const KH = 22; // the key, in a band under the map
+  const key = `<g class="map-key" transform="translate(0 ${H})"><rect class="map-key-band" width="${W}" height="${KH}"/>
+    <text x="10" y="15"><tspan class="nm-then">Brown</tspan><tspan class="nm-key"> = Bible times</tspan><tspan class="nm-now" dx="10">Blue</tspan><tspan class="nm-key"> = today</tspan></text>
+    ${hasEden ? `<circle class="map-dot map-eden" cx="${W - 112}" cy="11" r="4"/><text class="nm-key" x="${W - 104}" y="15">Possible site of Eden</text>` : ""}</g>`;
+  return `<svg class="notes-map" viewBox="0 0 ${W} ${H + KH}" role="img" aria-label="Map: ${esc(map.caption)}">
+    <defs><clipPath id="mapClip"><rect width="${W}" height="${H + KH}" rx="14"/></clipPath></defs>
+    <g clip-path="url(#mapClip)"><rect class="map-land" width="${W}" height="${H}"/>
     ${water.map((w) => `<path class="map-water" d="${line(w)} Z"/>`).join("")}
     ${islands.map((w) => `<path class="map-island" d="${line(w)} Z"/>`).join("")}
     ${rivers.map((r) => `<path class="map-river" d="${line(r)}"/>`).join("")}
-    ${riverLabels.map((l) => `<text class="map-river-label" x="${X(l.lon)}" y="${Y(l.lat)}">${esc(l.text)}</text>`).join("")}
-    <text class="map-water-label" x="${X(waterLabel.lon)}" y="${Y(waterLabel.lat)}" text-anchor="middle">${esc(waterLabel.text)}</text>
-    ${places}</svg>`;
+    ${dryRivers.map((r) => `<path class="map-river dry" d="${line(r)}"/>`).join("")}
+    ${waterLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-water-label", l.angle)).join("")}
+    ${riverLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-river-label", l.angle)).join("")}
+    ${places}${key}</g></svg>`;
 }
 /* ---------- Strong's concordance for every chapter ---------- */
 const strongsCache = {}, lexCache = {};
@@ -2178,8 +2316,11 @@ function renderBookIntro(book, chapter) {
       ${b ? `<p class="bi-about">${esc(b.about)}</p>
       <dl class="bi-facts">${row("Written by", b.who)}${row("When", b.when)}${row("First readers", b.to)}${row("Setting", b.setting)}${row("Key verse", b.key)}</dl>
       ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}` : ""}
+      ${OUTLINES[book] ? `<h3 class="bi-h">Outline of ${esc(name)}</h3><ol class="bi-outline">${OUTLINES[book].map(([r, what]) => `<li><button type="button" class="bi-ch" data-bi-ch="${parseInt(r, 10)}">${BOOK_BY_ID[book].chapters === 1 ? "" : `${r.includes("-") ? "Chapters" : "Chapter"} ${esc(r)}`}</button> ${esc(what)}</li>`).join("")}</ol>` : ""}
+      <a class="bi-video" href="https://www.youtube.com/@bibleproject/search?query=${encodeURIComponent(`${name} overview`)}" target="_blank" rel="noopener">▶ Watch BibleProject's free overview of ${esc(name)} ↗</a>
       <p class="muted small-print">Introductions give the traditional view first and say where scholars differ. Scripture itself is the guide.</p>
     </div>`;
+  box.querySelectorAll("[data-bi-ch]").forEach((x) => x.addEventListener("click", () => openChapter(book, Number(x.dataset.biCh))));
   box.open = false;
   box.hidden = false;
 }
@@ -2364,42 +2505,91 @@ function wireOpenIn(el) {
   });
 }
 
+// The Reference section under the Scripture: square tiles to pick from (no skinny tabs),
+// and the one picked opens underneath. "My notes" brings this chapter's journal in here too.
+const REF_TILES = {
+  verses: ["📖", "Verse by verse"], strongs: ["א", "Strong's concordance"], map: ["🗺️", "Map"],
+  history: ["🏛️", "Background"], geography: ["⛰️", "Geography"], words: ["✍️", "Key words"],
+  views: ["🎓", "Scholars and views"], xref: ["🔗", "Cross-references"], search: ["🔍", "Find a verse"],
+  sources: ["📚", "Sources"], mine: ["📝", "My notes"],
+};
+function journalHome() {
+  // Put the chapter journal back in its own box before the Reference section is redrawn.
+  const ji = $("#journalInner"), jb = $("#journalBox");
+  if (ji && jb && !jb.contains(ji)) jb.append(ji);
+  if (jb) jb.hidden = false;
+}
+function myNotesCount(book, chapter) {
+  const key = `${book}.${chapter}`;
+  const old = store.journalEntry(book, chapter);
+  return store.allEntries().filter((e) => e.ref === key).length + (old && JOURNAL_BOXES.some((b) => (old[b.field] || "").trim()) ? 1 : 0);
+}
+function refTilesHtml(tiles, subs = {}) {
+  return `<div class="ref-tiles" role="tablist" aria-label="Reference and resources">${tiles.map((id) => `<button class="ref-tile" role="tab" data-tab="${id}" aria-selected="${id === notesTab}">
+    <span class="rt-icon" aria-hidden="true">${REF_TILES[id][0]}</span><span class="rt-label">${esc(REF_TILES[id][1])}</span>${subs[id] ? `<span class="rt-sub">${esc(subs[id])}</span>` : ""}</button>`).join("")}</div>`;
+}
+function refHead(book, chapter) {
+  return `<div class="ref-head"><span class="ref-icon" aria-hidden="true">📚</span><div><h2>Reference &amp; resources</h2><p class="muted small-print">Study helps for ${esc(refName({ book, chapter }))}. Tap a square to open it.</p></div></div>`;
+}
+function wireRef(el, book, chapter) {
+  el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
+    notesTab = b.dataset.tab;
+    renderNotes(book, chapter);
+    $("#refPanel")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }));
+  el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
+  wireWordSearch(el);
+  wireOpenIn(el);
+  fillStrongs(el, book, chapter);
+  const slot = el.querySelector("#refJournalSlot");
+  if (slot) {
+    const ji = $("#journalInner"), jb = $("#journalBox");
+    if (ji) { slot.append(ji); if (jb) jb.hidden = true; renderJournal(); }
+  }
+}
+function mineHtml(book, chapter) {
+  return `<p class="muted small-print">Your journal entries on ${esc(refName({ book, chapter }))}. The whole journal is in the side menu, under Journal.</p><div id="refJournalSlot" class="ref-journal"></div>`;
+}
 function renderNotes(book, chapter) {
   const el = $("#studyNotes");
+  journalHome();
   const n = notesFor(book, chapter);
+  const mineN = myNotesCount(book, chapter);
+  const mineSub = mineN ? `${mineN} entr${mineN === 1 ? "y" : "ies"}` : "Write one";
+  el.className = "notes-card ref-section";
   if (!n) {
-    el.className = "notes-card";
-    const tabs = [["strongs", "Strong's concordance"], ["search", "Word search"]];
-    if (!tabs.some(([id]) => id === notesTab)) notesTab = "strongs";
-    el.innerHTML = `<div class="notes-head"><h2>Study</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
-      <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
-      <div class="notes-panel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : wordSearchHtml()}</div>
-      <p class="muted small-print" style="margin-top:14px">Full study notes (verse by verse, background, key words, scholars' views and sources) are written for these chapters so far, with more on the way:</p>
+    const tiles = ["strongs", "search", "mine"];
+    if (!tiles.includes(notesTab)) notesTab = "strongs";
+    el.innerHTML = `${refHead(book, chapter)}${refTilesHtml(tiles, { mine: mineSub })}
+      <div class="notes-panel" id="refPanel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : notesTab === "mine" ? mineHtml(book, chapter) : wordSearchHtml()}</div>
+      <p class="muted small-print" style="margin-top:14px">Full study notes (verse by verse, background, maps, key words, scholars' views and sources) are written for these chapters so far, with more on the way:</p>
       <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>
       ${openInHtml(book, chapter)}`;
-    el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
-    el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
-    wireWordSearch(el);
-    wireOpenIn(el);
-    fillStrongs(el, book, chapter);
+    wireRef(el, book, chapter);
     return;
   }
-  el.className = "notes-card";
   const srcKeys = Object.keys(n.sources);
   const about = (id) => ABOUT[id] ? `<p class="notes-about">${esc(ABOUT[id])}</p>` : "";
   const cite = (ids) => ids?.length ? ` <button class="cite" data-cite="${ids[0]}">[${ids.map((k) => srcKeys.indexOf(k) + 1).join(", ")}]</button>` : "";
+  // "Read more" links straight to each source (its own page, or a library search).
+  const readMore = (ids) => ids?.length ? `<p class="read-more"><span>Read more:</span> ${ids.map((k) => { const t = sourceText(n.sources[k]); const short = t.split(/ \(|, (?=\d)/)[0].replace(/\.$/, ""); return `<a href="${esc(sourceUrl(n.sources[k]))}" target="_blank" rel="noopener">${esc(short)} ↗</a>`; }).join(" · ")}</p>` : "";
+  const paras = (t) => String(t).split("\n\n").map((x) => `<p>${esc(x)}</p>`);
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
-  const label = (sec) => sec.id === "verses" ? "Verse by verse" : sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Key words" : sec.title.split(" ")[0];
-  const verseSec = n.sections.filter((sec) => sec.id === "verses"), otherSecs = n.sections.filter((sec) => sec.id !== "verses");
-  const tabs = [...verseSec.map((sec) => [sec.id, label(sec)]), ["strongs", "Strong's concordance"], ...(n.map ? [["map", "Map then and now"]] : []), ...otherSecs.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
-  if (!tabs.some(([id]) => id === notesTab)) notesTab = tabs[0][0];
+  const sec = (id) => n.sections.find((x) => x.id === id);
+  const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...(n.map ? ["map"] : []), ...n.sections.filter((x) => x.id !== "verses").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), ...(n.crossRefs ? ["xref"] : []), "search", "sources", "mine"];
+  const secFor = (id) => id === "words" ? n.sections.find((x) => x.lang) : sec(id);
+  const subs = { mine: mineSub, sources: `${srcKeys.length} sources` };
+  for (const id of tiles) { const x = secFor(id); if (x) subs[id] = id === "views" ? `${x.items.filter((it) => it.who !== "Common ground" && !it.extra).length} views` : `${x.items.length} notes`; }
+  if (n.map) subs.map = `${n.map.places.length} places`;
+  if (n.crossRefs) subs.xref = `${n.crossRefs.length} passages`;
+  if (!tiles.includes(notesTab)) notesTab = tiles[0];
   let body = "";
   if (notesTab === "strongs") {
     body = `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>`;
+  } else if (notesTab === "mine") {
+    body = mineHtml(book, chapter);
   } else if (notesTab === "map") {
-    const mode = el.dataset.mode || "then";
-    body = `<div class="map-toggle" role="group" aria-label="Map labels"><button data-mode="then" aria-pressed="${mode === "then"}">Then</button><button data-mode="now" aria-pressed="${mode === "now"}">Now</button></div>
-      ${mapSvg(n.map, mode)}<p class="map-note" id="mapNote">Tap a place to learn about it.</p><p class="muted small-print">${esc(n.map.caption)} The map is simplified, not drawn to survey scale.</p>`;
+    body = `<div class="map-scroll">${mapSvg(n.map)}</div><p class="map-swipe muted small-print">Swipe sideways to see the whole map.</p><p class="map-note" id="mapNote">Tap a place on the map to read about it.</p><p class="muted small-print">${esc(n.map.caption)} Simplified from standard Bible atlases; not drawn to survey scale.</p>`;
   } else if (notesTab === "xref") {
     body = `<div class="xrefs">${n.crossRefs.map(([k, ref, why]) => `<button class="xref" data-go="${k}"><strong>${esc(ref)}</strong><span>${esc(why)}</span></button>`).join("")}</div>`;
   } else if (notesTab === "search") {
@@ -2408,68 +2598,106 @@ function renderNotes(book, chapter) {
     body = `<ol class="sources">${srcKeys.map((k) => `<li id="src-${k}">${esc(sourceText(n.sources[k]))} <a class="src-link" href="${esc(sourceUrl(n.sources[k]))}" target="_blank" rel="noopener">Look it up ↗</a></li>`).join("")}</ol>
       <div class="ev-key">${Object.keys(EVIDENCE).map((k) => `<p>${ev(k)} ${esc(EVIDENCE[k].tip)}</p>`).join("")}</div>`;
   } else {
-    const sec = n.sections.find((s) => s.id === notesTab);
-    const kinds = sec.id === "views" ? sec.items.filter((it) => it.who !== "Common ground").length : 0;
-    body = (kinds > 1 ? `<p class="views-count">There ${kinds === 1 ? "is" : "are"} ${kinds} main views here.</p>` : "") + sec.items.map((it) => it.ref
+    const s2 = secFor(notesTab);
+    const kinds = s2.id === "views" ? s2.items.filter((it) => it.who !== "Common ground" && !it.extra).length : 0;
+    body = (kinds > 1 ? `<p class="views-count">There are ${kinds} main views here.</p>` : "") + s2.items.map((it) => it.ref
       ? `<div class="note-item verse-note"><div class="note-head"><button class="vref" data-verse="${esc(it.ref)}" aria-label="Go to verse ${esc(it.ref)}">${esc(it.ref)}</button><strong>${esc(it.head)}</strong>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
       : it.word
-      ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${sec.lang === "Hebrew" ? "he" : "el"}" dir="${sec.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div>
-        ${it.strongs ? `<p class="strongs"><span class="strongs-num">Strong's ${esc(it.strongs)}</span>${it.count ? ` Used ${esc(it.count)} in the ${sec.lang === "Hebrew" ? "Hebrew Old Testament" : "Greek New Testament"}.` : ""}</p>` : ""}
+      ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${s2.lang === "Hebrew" ? "he" : "el"}" dir="${s2.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div>
+        ${it.strongs ? `<p class="strongs"><span class="strongs-num">Strong's ${esc(it.strongs)}</span>${it.count ? ` Used ${esc(it.count)} in the ${s2.lang === "Hebrew" ? "Hebrew Old Testament" : "Greek New Testament"}.` : ""}</p>` : ""}
         <p>${esc(it.text)}${cite(it.src)}</p></div>`
-      : `<div class="note-item"><div class="note-head"><strong>${esc(it.head)}</strong>${it.who ? `<span class="who">${esc(it.who)}</span>` : ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`).join("");
+      : `<div class="note-item${it.who === "Common ground" ? " common-ground" : ""}${s2.id === "views" ? " view-item" : ""}"><div class="note-head"><strong>${esc(it.head)}</strong>${it.who ? `<span class="who">${esc(it.who)}</span>` : ev(it.ev)}</div>${paras(it.text).join("")}${it.ask ? `<p class="view-ask"><strong>Questions raised:</strong> ${esc(it.ask)}</p>` : ""}${readMore(it.src)}</div>`).join("");
+    if (s2.lang) body += `<p class="muted small-print">Strong's numbers follow James Strong's Exhaustive Concordance (1890). Counts are approximate and vary a little by edition and by how word forms are grouped.</p>`;
   }
-  if (n.sections.find((x) => x.id === notesTab)?.lang) body += `<p class="muted small-print">Strong's numbers follow James Strong's Exhaustive Concordance (1890). Counts are approximate and vary a little by edition and by how word forms are grouped.</p>`;
-  el.innerHTML = `<div class="notes-head"><h2>Study notes</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
-    <p class="notes-intro">${esc(n.intro)}</p>
-    <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
-    <div class="notes-panel">${about(notesTab)}${body}</div>${openInHtml(book, chapter)}`;
+  el.innerHTML = `${refHead(book, chapter)}<p class="notes-intro">${esc(n.intro)}</p>
+    ${refTilesHtml(tiles, subs)}
+    <div class="notes-panel" id="refPanel"><h3 class="ref-panel-title"><span aria-hidden="true">${REF_TILES[notesTab][0]}</span> ${esc(REF_TILES[notesTab][1])}</h3>${about(notesTab)}${body}</div>${openInHtml(book, chapter)}`;
   el.querySelectorAll("[data-verse]").forEach((b) => b.addEventListener("click", () => { const v = parseInt(String(b.dataset.verse).split(":")[1], 10); if (v) goToVerse(v); }));
-  wireOpenIn(el);
-  fillStrongs(el, book, chapter);
-  el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
-  el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
-  wireWordSearch(el);
-  el.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => { el.dataset.mode = b.dataset.mode; renderNotes(book, chapter); }));
+  wireRef(el, book, chapter);
   el.querySelectorAll("[data-cite]").forEach((b) => b.addEventListener("click", () => { notesTab = "sources"; renderNotes(book, chapter); $(`#src-${b.dataset.cite}`)?.classList.add("hi"); }));
   el.querySelectorAll("[data-place]").forEach((g) => {
     const show = () => {
       const p = n.map.places[Number(g.dataset.place)];
       el.querySelectorAll(".map-place").forEach((x) => x.classList.toggle("is-on", x === g));
-      $("#mapNote").innerHTML = `<strong>${esc(p.then)}</strong>${p.now !== p.then ? ` <span class="muted">· today: ${esc(p.now)}</span>` : ""}<br>${esc(p.note)}`;
+      $("#mapNote").innerHTML = `<strong class="nm-then">${esc(p.then)}</strong>${p.now !== p.then ? ` <span class="nm-now">· today: ${esc(p.now)}</span>` : ""}<br>${esc(p.note)}`;
     };
     g.addEventListener("click", show);
     g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
   });
 }
 
-/* ---------- Word search: how many times a word appears in the Bible ---------- */
+/* ---------- Find a verse: by what it's about, by the words, or by asking the helper ---------- */
 let lastSearch = null;
+const refKeyName = (k) => { const [b, c, v] = k.split("."); return `${BOOK_BY_ID[b]?.name || b} ${c}${v ? `:${v}` : ""}`; };
 function wordSearchHtml() {
-  return `<div class="word-search"><p class="muted small-print">How many times does a word appear in the Bible? Type a word or phrase, like <em>shepherd</em> or <em>fishermen</em>.</p>
-    <form class="jump-row" id="wsForm"><input id="wsInput" type="search" placeholder="A word or phrase" autocomplete="off" value="${esc(lastSearch?.q || "")}"><button class="small" type="submit">Count</button></form>
+  return `<div class="word-search"><p class="muted small-print">Remember what a verse is about, or a few of its words? Try <em>the lost sheep</em>, <em>baptism</em>, <em>worry</em> or <em>love is patient</em>.</p>
+    <form class="jump-row" id="wsForm"><input id="wsInput" type="search" placeholder="What is it about, or what does it say?" autocomplete="off" enterkeyhint="search" value="${esc(lastSearch?.q || "")}"><button class="small" type="submit">Find</button></form>
     <div id="wsOut">${lastSearch ? lastSearch.html : ""}</div></div>`;
+}
+function topicResultsHtml(q) {
+  const found = findTopics(q);
+  if (!found.length) return "";
+  return `<div class="find-topics">${found.map((t) => `<div class="find-topic"><h4>${t.kind === "story" ? "📜" : "📌"} ${esc(t.title)}${t.refs.length > 1 ? ` <span class="muted small-print">${t.refs.length} passages</span>` : ""}</h4>
+    <div class="ws-list">${t.refs.map(([k, about]) => `<button class="ws-verse" data-ref="${esc(k)}"><strong>${esc(refKeyName(k))}</strong><span>${esc(about)}</span></button>`).join("")}</div></div>`).join("")}</div>`;
+}
+function wireFindResults(out) {
+  out.querySelectorAll("[data-ref]").forEach((b) => b.addEventListener("click", async () => {
+    const [bk, c, v] = b.dataset.ref.split(".");
+    if (!BOOK_BY_ID[bk]) return;
+    if (findSheet.open) findSheet.close();
+    showView("read"); await openChapter(bk, Number(c));
+    const n = parseInt(v, 10); if (n > 1) setTimeout(() => goToVerse(n), 300);
+  }));
+  out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (findSheet.open) findSheet.close(); if (BOOK_BY_ID[bk] && c) { showView("read"); openChapter(bk, Number(c)); } }));
+  out.querySelector("[data-ask]")?.addEventListener("click", () => {
+    if (findSheet.open) findSheet.close();
+    openBuddyChat();
+    $("#partnerQ").value = `Where in the Bible is the passage about "${out.dataset.q}"? Please list the references, best match first.`;
+    sendChat();
+  });
 }
 function wireWordSearch(root) {
   const form = root.querySelector("#wsForm");
   if (!form) return;
+  const out = root.querySelector("#wsOut");
+  if (lastSearch) { out.dataset.q = lastSearch.q; wireFindResults(out); }
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const q = root.querySelector("#wsInput").value.trim();
     if (!q) return;
-    const out = root.querySelector("#wsOut");
-    out.innerHTML = `<p class="muted small-print">Searching…</p>`;
+    root.querySelector("#wsInput").blur();
+    out.dataset.q = q;
+    const topics = topicResultsHtml(q);
+    const ask = `<div class="find-ask"><p>Not here? Your Bible helper can find a verse from a description.</p><button class="small" type="button" data-ask>💬 Ask my Bible helper to find it</button></div>`;
+    out.innerHTML = `${topics ? `<h3 class="find-h">By topic and story</h3>${topics}` : ""}<h3 class="find-h">Verses with these words</h3><p class="muted small-print" id="wsWords">Searching…</p>${ask}`;
+    wireFindResults(out);
+    let words;
     try {
       const r = await searchBible(q, 20);
-      const html = `<p class="ws-total"><strong>${r.total.toLocaleString()}</strong> verse${r.total === 1 ? "" : "s"} in the ${esc(store.get("nasbLabel") || "NASB")} contain “${esc(q)}”.</p>
-        ${r.verses.length ? `<div class="ws-list">${r.verses.map((v) => `<button class="ws-verse" data-ch="${esc(v.chapter.slice(0, 2).join("."))}"><strong>${esc(v.ref)}</strong><span>${esc(v.text.slice(0, 160))}${v.text.length > 160 ? "…" : ""}</span></button>`).join("")}</div>${r.total > r.verses.length ? `<p class="muted small-print">Showing the first ${r.verses.length}, in Bible order.</p>` : ""}` : ""}`;
-      lastSearch = { q, html };
-      out.innerHTML = html;
-      out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (BOOK_BY_ID[bk] && c) openChapter(bk, Number(c)); }));
+      words = `<p class="ws-total"><strong>${r.total.toLocaleString()}</strong> verse${r.total === 1 ? "" : "s"} in the ${esc(store.get("nasbLabel") || "NASB")} contain “${esc(q)}”.</p>
+        ${r.verses.length ? `<div class="ws-list">${r.verses.map((v) => `<button class="ws-verse" data-ref="${esc(/^[1-3A-Z]{3}\.\d+\.\d+/.test(v.id || "") ? v.id.split("-")[0] : v.chapter.slice(0, 2).join("."))}"><strong>${esc(v.ref)}</strong><span>${esc(v.text.slice(0, 160))}${v.text.length > 160 ? "…" : ""}</span></button>`).join("")}</div>${r.total > r.verses.length ? `<p class="muted small-print">Showing the first ${r.verses.length}, in Bible order.</p>` : ""}` : ""}`;
     } catch (err) {
-      out.innerHTML = `<p class="muted small-print">${esc(err.message || "The search didn't work.")}${err.kind === "nokey" ? " Add your key in Settings, under Bible text." : ""}</p>`;
+      words = `<p class="muted small-print">${esc(err.message || "The search didn't work.")}${err.kind === "nokey" ? " Add your key in Settings, under Bible text." : ""}</p>`;
     }
+    if (out.dataset.q !== q) return;
+    const box = out.querySelector("#wsWords");
+    if (box) { box.outerHTML = `<div id="wsWords">${words}</div>`; wireFindResults(out.querySelector("#wsWords")); }
+    lastSearch = { q, html: out.innerHTML };
   });
 }
+// The same finder in its own window, from My Bible (and anywhere else that wants it).
+const findSheet = document.createElement("dialog");
+findSheet.className = "word-sheet find-sheet"; findSheet.setAttribute("aria-label", "Find a verse");
+findSheet.addEventListener("click", (e) => { if (e.target === findSheet) findSheet.close(); });
+function openFind() {
+  findSheet.innerHTML = `<div class="ws-head"><h2>🔍 Find a verse</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>${wordSearchHtml()}`;
+  findSheet.querySelector(".ws-close").addEventListener("click", () => findSheet.close());
+  wireWordSearch(findSheet);
+  if (!findSheet.isConnected) document.body.append(findSheet);
+  findSheet.showModal();
+  setTimeout(() => findSheet.querySelector("#wsInput")?.focus(), 60);
+}
+$("#findGo")?.addEventListener("click", openFind);
 
 /* ---------- Home: the four study paths ---------- */
 const PATH_ICONS = {
@@ -2754,6 +2982,22 @@ function setDrive(on) {
 $("#playBtn").hidden = !canSpeak;
 $("#playBtn").addEventListener("click", () => { reader.toggle(); readArmed = reader.playing; });
 $("#quickRate").addEventListener("change", (e) => setRate(Number(e.target.value)));
+// Sleep timer and repeat, for listening at bedtime or on a long drive.
+let sleepAt = 0, sleepTimer = 0;
+function syncSleepNote() {
+  const n = $("#sleepNote");
+  if (!n) return;
+  n.hidden = !sleepAt;
+  n.textContent = sleepAt === "chapter" ? "Stops at the end of this chapter" : sleepAt ? `Stops at ${new Date(sleepAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "";
+}
+$("#sleepSel")?.addEventListener("change", (e) => {
+  clearTimeout(sleepTimer);
+  const v = e.target.value;
+  sleepAt = v === "chapter" ? "chapter" : Number(v) ? Date.now() + Number(v) * 60e3 : 0;
+  if (typeof sleepAt === "number" && sleepAt) sleepTimer = setTimeout(() => { if (reader.playing) reader.pause(); sleepAt = 0; $("#sleepSel").value = "0"; syncSleepNote(); }, Number(v) * 60e3);
+  syncSleepNote();
+});
+$("#repeatBtn")?.addEventListener("click", (e) => { const on = e.currentTarget.getAttribute("aria-pressed") !== "true"; e.currentTarget.setAttribute("aria-pressed", String(on)); });
 $("#driveQuick").addEventListener("change", (e) => {
   setDrive(e.target.checked);
   // Turning Read to me on starts reading this chapter now; off stops it.
@@ -2777,9 +3021,27 @@ $("#driveQuick").addEventListener("change", (e) => {
 let signedInUser = null;
 // Account backup of reading, notes and journal (never the Bible keys).
 let lastBackup = "";
+// Each backup first brings in what the person's other devices saved, so an iPhone and an
+// iPad stay in step on their own: reading, journal, highlights and bookmarks.
+let backupBusy = false;
 async function backupNow() {
-  if (!signedInUser) return;
-  try { if (await saveBackup(store.snapshot())) { lastBackup = new Date().toISOString(); showBackupStatus(); } } catch { /* offline: next change tries again */ }
+  if (!signedInUser || backupBusy) return;
+  backupBusy = true;
+  try {
+    const b = await loadBackup();
+    if (b?.data && store.mergeFrom(b.data)) afterSync();
+    if (await saveBackup(store.snapshot())) { lastBackup = new Date().toISOString(); showBackupStatus(); }
+  } catch { /* offline: next change tries again */ }
+  backupBusy = false;
+}
+// Show what just arrived from another device, without interrupting anything.
+function afterSync() {
+  try {
+    updatePathBits();
+    if (!$("#view-home").hidden) renderHome();
+    const { book, chapter } = store.get("last");
+    if (!$("#view-read").hidden) { applyVerseMarks(book, chapter); if (!document.activeElement?.matches?.("textarea, input")) renderJournal(); }
+  } catch { /* the next screen change shows it */ }
 }
 function showBackupStatus() {
   const el = $("#backupStatus");
@@ -3197,7 +3459,12 @@ if (authEnabled) {
   // From here on, back up a few seconds after each change, and when the app is put away.
   let backupTimer = null;
   onSave(() => { clearTimeout(backupTimer); backupTimer = setTimeout(backupNow, 8000); });
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && backupTimer) { clearTimeout(backupTimer); backupNow(); } });
+  let lastPull = 0;
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && backupTimer) { clearTimeout(backupTimer); backupNow(); }
+    // Back on this device: pick up anything saved on another one (at most once a minute).
+    else if (document.visibilityState === "visible" && Date.now() - lastPull > 60000) { lastPull = Date.now(); backupNow(); }
+  });
   backupNow();
 }
 renderAccount();

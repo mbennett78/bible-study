@@ -38,3 +38,27 @@ test("a backup snapshot never includes Bible keys and restores cleanly", async (
   assert.ok(store.isRead("GEN", 1));
   assert.equal(store.get("apiBibleKey"), "SECRET", "restoring keeps this device's keys");
 });
+
+test("devices stay in step: un-marking sticks, highlights and bookmarks sync, newest wins", async () => {
+  const { store } = await import(`../../js/store.js?sync=${Date.now()}`);
+  store.setRead("JHN", 3, true);
+  store.toggleFavorite("JHN", 3);
+  const other = store.snapshot(); // the other device still has both marks
+  store.setRead("JHN", 3, false); // un-marked here, later
+  store.toggleFavorite("JHN", 3);
+  store.setVerseMark("JHN", 3, 16, { color: "yellow" });
+  assert.equal(store.mergeFrom(other), false, "nothing new came in");
+  assert.ok(!store.isRead("JHN", 3), "an un-marked chapter isn't brought back");
+  assert.ok(!store.isFavorite("JHN", 3));
+  assert.equal(store.verseMark("JHN", 3, 16).color, "yellow");
+  // The other device highlights a verse and bookmarks another: both arrive.
+  const theirs = { ...store.snapshot(), highlights: { "PSA.23.1": { color: "green", bookmark: true, updated: "2099-01-01T00:00:00.000Z" } } };
+  assert.equal(store.mergeFrom(theirs), true);
+  assert.equal(store.verseMark("PSA", 23, 1).color, "green");
+  assert.ok(store.verseMark("PSA", 23, 1).bookmark);
+  assert.equal(store.allVerseMarks().length, 2);
+  // Marking it read again later wins over the older un-mark.
+  store.setRead("JHN", 3, true);
+  store.mergeFrom(other);
+  assert.ok(store.isRead("JHN", 3));
+});

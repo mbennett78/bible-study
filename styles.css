@@ -779,7 +779,7 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .map-toggle { display: inline-flex; background: var(--line); border-radius: 999px; padding: 3px; margin-bottom: 8px; }
 .map-toggle button { border: 0; background: none; border-radius: 999px; padding: 5px 16px; font-size: .85rem; color: var(--muted); }
 .map-toggle button[aria-pressed="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / .1); }
-.notes-map { display: block; width: 100%; max-height: 420px; height: auto; margin: 0 auto; }
+.notes-map { display: block; width: 100%; max-height: 640px; height: auto; margin: 0 auto; }
 .map-land { fill: #efe6d2; }
 .map-water { fill: #a9cbd6; stroke: #7fa9b8; stroke-width: 1; stroke-linejoin: round; }
 .map-river { fill: none; stroke: #7fa9b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -2098,3 +2098,98 @@ body[data-view="read"] .buddy.in-rail:not(.dragging) { width: 64px; height: 76px
 .reader .sw { text-decoration: underline dotted color-mix(in srgb, var(--accent) 55%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: pointer; }
 body.plain-reading .reader .sw, body.no-study-words .reader .sw { text-decoration: none; }
 .sw-demo { text-decoration: underline dotted; text-underline-offset: 3px; }
+
+/* ---------- Reference & resources: a clearly marked section under the Scripture ---------- */
+.ref-section { border-top: 4px solid var(--accent); padding-top: 14px; }
+.ref-head { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+.ref-head h2 { margin: 0; font-size: 1.25rem; letter-spacing: .01em; }
+.ref-head p { margin: 2px 0 0; }
+.ref-icon { font-size: 1.6rem; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: var(--accent-soft); flex: none; }
+.ref-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 14px; }
+@container (max-width: 430px) { .ref-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 430px) { .ref-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ref-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 96px; padding: 12px 8px; border: 1.5px solid var(--line); border-radius: 16px; background: var(--bg); color: var(--text); text-align: center; font: inherit; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; }
+.ref-tile:active { transform: scale(.97); }
+.rt-icon { font-size: 1.6rem; line-height: 1; font-family: var(--serif); font-weight: 700; color: var(--accent); }
+.rt-label { font-weight: 700; font-size: .95rem; line-height: 1.2; }
+.rt-sub { font-size: .76rem; color: var(--muted); }
+.ref-tile[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.ref-panel-title { margin: 0 0 10px; font-size: 1.1rem; display: flex; gap: 8px; align-items: center; }
+#refPanel { border-top: 1px solid var(--line); padding-top: 14px; scroll-margin-top: 80px; }
+.ref-journal .add-entries { margin-top: 6px; }
+.view-item { border-left: 3px solid var(--line); padding-left: 12px; }
+.view-item p { line-height: 1.6; }
+.view-item.common-ground { border-left-color: var(--accent); background: var(--accent-soft); border-radius: 0 12px 12px 0; padding: 10px 12px; }
+.view-ask { font-size: .92rem; color: var(--muted); }
+.view-ask strong { color: var(--text); }
+.read-more { font-size: .85rem; margin-top: 4px; }
+.read-more span { color: var(--muted); }
+.read-more a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+
+/* Maps: brown for Bible-times names, blue for today's names, with a key under the map. */
+.notes-map .nm-then { fill: #8a4513; font-family: var(--serif); font-weight: 700; }
+.notes-map .nm-now { fill: #1d5f94; font-family: var(--sans); font-style: italic; font-weight: 600; font-size: .9em; }
+.notes-map .nm-both { fill: #4a3a2c; font-weight: 700; }
+.notes-map .map-label { font-size: 10px; }
+.notes-map .map-river-label { font-size: 8.5px; font-style: normal; paint-order: stroke; stroke: #efe6d2; stroke-width: 2.5px; stroke-linejoin: round; }
+.notes-map .map-water-label { font-size: 10px; font-style: italic; paint-order: stroke; stroke: #a9cbd6; stroke-width: 2px; }
+.notes-map .map-water-label .nm-then, .notes-map .map-water-label .nm-both { font-weight: 600; font-style: italic; }
+.map-river.dry { stroke-dasharray: 3 3; stroke-width: 1.6; opacity: .85; }
+.map-eden { fill: #3f8f3c; }
+.map-eden-ring { fill: none; stroke: #3f8f3c; stroke-width: 1.4; stroke-dasharray: 2.5 2; }
+.map-key-band { fill: #fbf7ee; stroke: #d9ccb0; stroke-width: 1; }
+.map-key text { font: 600 9.5px var(--sans); }
+.map-key .nm-key, .notes-map .nm-key { fill: #4a3a2c; font-weight: 500; }
+.map-note .nm-then { color: #8a4513; }
+.map-note .nm-now { color: #1d5f94; font-style: italic; }
+:root[data-theme="dark"] .map-note .nm-then { color: #e0a070; }
+:root[data-theme="dark"] .map-note .nm-now { color: #8cc4f0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map-note .nm-then { color: #e0a070; } :root:not([data-theme="light"]) .map-note .nm-now { color: #8cc4f0; } }
+/* On phones the map stays big enough to read; swipe across it. */
+.map-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 14px; }
+.map-swipe { display: none; margin: 4px 0 0; }
+@media (max-width: 560px) { .map-scroll .notes-map { width: 600px; max-width: none; max-height: none; } .map-swipe { display: block; } }
+
+/* Verse highlights: soft colors that keep the words easy to read, in light and dark. */
+:root { --hl-yellow: #fbe7a1; --hl-green: #cdeccf; --hl-blue: #cfe3f7; --hl-pink: #f8d3df; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --hl-yellow: #5d5021; --hl-green: #2c4f33; --hl-blue: #26425f; --hl-pink: #5a2f40; } }
+:root[data-theme="dark"] { --hl-yellow: #5d5021; --hl-green: #2c4f33; --hl-blue: #26425f; --hl-pink: #5a2f40; }
+mark.hl { color: inherit; border-radius: 0; padding: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.hl-yellow { background: var(--hl-yellow); } .hl-green { background: var(--hl-green); } .hl-blue { background: var(--hl-blue); } .hl-pink { background: var(--hl-pink); }
+.reader .v, .reader .verse-num, .reader [data-number] { cursor: pointer; }
+.reader .is-bookmarked::before { content: "🔖"; font-size: .8em; margin-right: 1px; }
+.verse-sheet .vs-text { font-family: var(--serif); font-size: 1.05rem; line-height: 1.55; background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; margin: 4px 0 12px; }
+.vs-label { font-weight: 700; margin: 0 0 6px; }
+.vs-colors { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.vs-color { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.vs-color[aria-pressed="true"] { border-color: var(--text); }
+.vs-clear { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 10px 14px; font: inherit; }
+.vs-clear:disabled { opacity: .45; }
+.vs-acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.vs-act { display: flex; gap: 8px; align-items: center; justify-content: center; min-height: 52px; border: 1.5px solid var(--line); background: var(--bg); color: var(--text); border-radius: 14px; font: 600 1rem var(--sans); }
+.vs-act[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.vs-msg { min-height: 1.2em; }
+.vm-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid var(--line); }
+#verseMarksList .home-h { font-size: 1.05rem; margin: 6px 0 8px; }
+
+/* Find a verse */
+.find-go { margin-top: 10px; }
+.find-h { font-size: 1rem; margin: 16px 0 8px; }
+.find-topic h4 { margin: 12px 0 6px; font-size: .98rem; }
+.find-ask { margin-top: 16px; padding: 12px; border-radius: 14px; background: var(--accent-soft); }
+.find-ask p { margin: 0 0 8px; }
+.find-sheet .ws-list { max-height: none; }
+
+.listen-repeat { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 6px 12px; font: 600 .85rem var(--sans); }
+.listen-repeat[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+#sleepNote { flex-basis: 100%; }
+.bi-h { font-size: 1rem; margin: 14px 0 6px; }
+.bi-outline { margin: 0 0 10px; padding-left: 1.3em; line-height: 1.5; }
+.bi-outline li { margin: 4px 0; }
+.bi-ch { border: 0; background: none; padding: 0; color: var(--accent); font: 700 .95rem var(--sans); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.bi-video { display: inline-block; margin: 4px 0 10px; padding: 8px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--text); font-weight: 600; text-decoration: none; }
+/* iPad/iPhone Safari: when its bar shrinks or the page bounces, nothing shows above the header. */
+.topbar::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 400px; background: var(--page); pointer-events: none; }
+html { background: var(--page); }
+/* Verse numbers are easy to tap: a bigger touch area without moving the words. */
+.reader .v, .reader .verse-num, .reader [data-number] { padding: 6px 3px; margin: -6px -1px; border-radius: 6px; }

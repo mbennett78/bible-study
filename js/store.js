@@ -20,7 +20,7 @@ const defaults = {
   version: "NASB",          // "NASB" | "ESV" | "B:<API.Bible id>" for an extra version
   extraBibles: [],
   voiceName: "",
-  aiPartner: "",            // "claude" | "chatgpt" | "grok" | "gemini" | "" (none)            // the reader voice picked on this device ("" = automatic)          // more versions from the same API.Bible plan: [{ id, label }]
+  aiPartner: "",            // no longer used (the Bible helper is built in); kept so older saved data loads
   apiBibleKey: "",
   esvKey: "",
   nasbBibleId: "",          // API.Bible id for the chosen NASB edition
@@ -32,6 +32,8 @@ const defaults = {
   read: {},                 // { "JHN.3": "2026-11-22T16:00:00.000Z" }
   visits: {},               // { "JHN.3": { count: 4, last: iso, dates: [iso, ...] } }
   favorites: {},            // { "JHN.3": iso }
+  highlights: {},           // verse marks: { "JHN.3.16": { color: "yellow" | "" (cleared), bookmark: bool, updated: iso } }
+  removed: {},              // when something was un-marked, so another device's copy doesn't bring it back: { "read:JHN.3": iso }
   modes: { drive: false, voiceCommands: true },
   voiceRate: 1,
   voiceVolume: 1,
@@ -108,14 +110,17 @@ function save() {
 // Settings that belong to the device, not the person: kept when someone else signs in.
 const DEVICE_KEYS = ["apiBibleKey", "esvKey", "nasbBibleId", "nasbLabel", "extraBibles", "versionsDefaulted", "familySyncedAt", "voiceName", "theme"];
 
+const markRemoved = (k) => { state.removed = { ...(state.removed || {}), [k]: new Date().toISOString() }; };
+const unremove = (k) => { if (state.removed?.[k]) { const r = { ...state.removed }; delete r[k]; state.removed = r; } };
+
 export const store = {
   get: (k) => state[k],
   set(k, v) { state[k] = v; save(); },
   isRead: (book, ch) => Boolean(state.read[`${book}.${ch}`]),
   setRead(book, ch, on) {
     const k = `${book}.${ch}`;
-    if (on) state.read[k] = new Date().toISOString();
-    else delete state.read[k];
+    if (on) { state.read[k] = new Date().toISOString(); unremove(`read:${k}`); }
+    else { delete state.read[k]; markRemoved(`read:${k}`); }
     save();
   },
   readCount(book) {
@@ -137,7 +142,7 @@ export const store = {
   isFavorite: (book, ch) => Boolean(state.favorites[`${book}.${ch}`]),
   toggleFavorite(book, ch) {
     const k = `${book}.${ch}`;
-    if (state.favorites[k]) delete state.favorites[k]; else state.favorites[k] = new Date().toISOString();
+    if (state.favorites[k]) { delete state.favorites[k]; markRemoved(`fav:${k}`); } else { state.favorites[k] = new Date().toISOString(); unremove(`fav:${k}`); }
     save();
     return Boolean(state.favorites[k]);
   },
@@ -146,7 +151,7 @@ export const store = {
   setPathRead(pathId, book, ch, on) {
     const k = `${book}.${ch}`;
     const m = { ...(state.pathRead[pathId] || {}) };
-    if (on) m[k] = new Date().toISOString(); else delete m[k];
+    if (on) { m[k] = new Date().toISOString(); unremove(`path:${pathId}:${k}`); } else { delete m[k]; markRemoved(`path:${pathId}:${k}`); }
     state.pathRead = { ...state.pathRead, [pathId]: m };
     save();
   },
@@ -156,6 +161,19 @@ export const store = {
     if (!state.pathStarted[pathId]) state.pathStarted = { ...state.pathStarted, [pathId]: new Date().toISOString() };
     save();
   },
+  // Verse highlights and bookmarks. A cleared mark stays as a dated marker so it syncs.
+  verseMark: (book, ch, v) => { const m = state.highlights?.[`${book}.${ch}.${v}`]; return m && (m.color || m.bookmark) ? m : null; },
+  chapterMarks(book, ch) {
+    const pre = `${book}.${ch}.`, out = {};
+    for (const [k, m] of Object.entries(state.highlights || {})) if (k.startsWith(pre) && (m.color || m.bookmark)) out[Number(k.slice(pre.length))] = m;
+    return out;
+  },
+  setVerseMark(book, ch, v, fields) {
+    const k = `${book}.${ch}.${v}`;
+    state.highlights = { ...(state.highlights || {}), [k]: { color: "", bookmark: false, ...(state.highlights?.[k] || {}), ...fields, updated: new Date().toISOString() } };
+    save();
+  },
+  allVerseMarks: () => Object.entries(state.highlights || {}).filter(([, m]) => m.color || m.bookmark).map(([k, m]) => ({ key: k, ...m })).sort((a, b) => b.updated.localeCompare(a.updated)),
   journalFor: (book, ch) => state.journal[`${book}.${ch}`]?.text || "",
   setJournal(book, ch, text) { this.setJournalField(book, ch, "text", text); },
   // Each chapter's journal has three boxes: thoughts (text), prayers and gratitude.
@@ -228,7 +246,8 @@ export const store = {
   // Brings in progress from another device without losing anything here: read marks, favorites,
   // visits, path progress and archives are combined; for a journal entry the newer one is kept.
   mergeFrom(data) {
-    if (!data) return;
+    if (!data) return false;
+    const before = JSON.stringify([state.read, state.favorites, state.visits, state.pathRead, state.pathStarted, state.journal, state.diary, state.entries, state.highlights, state.removed, state.archives.length, state.trivia, state.activePath]);
     const newer = (a, b) => (!a ? b : !b ? a : (b.updated || "") > (a.updated || "") ? b : a);
     const byNewer = (mine = {}, theirs = {}) => { const out = { ...mine }; for (const [k, v] of Object.entries(theirs)) out[k] = newer(out[k], v); return out; };
     state.read = { ...(data.read || {}), ...state.read };
@@ -247,7 +266,17 @@ export const store = {
     state.archives = [...state.archives, ...(data.archives || []).filter((a) => !ids.has(a.id))];
     if ((data.trivia?.answered || 0) > (state.trivia?.answered || 0)) state.trivia = data.trivia;
     if (!state.activePath && data.activePath) state.activePath = data.activePath;
-    save();
+    state.highlights = byNewer(state.highlights, data.highlights);
+    // Un-marked on one device: stays un-marked everywhere, unless it was marked again later.
+    const removed = { ...(data.removed || {}) };
+    for (const [k, at] of Object.entries(state.removed || {})) if (!removed[k] || at > removed[k]) removed[k] = at;
+    state.removed = removed;
+    const drop = (obj, prefix) => { for (const k of Object.keys(obj)) { const at = removed[`${prefix}${k}`]; if (at && at >= obj[k]) delete obj[k]; } };
+    drop(state.read, "read:"); drop(state.favorites, "fav:");
+    for (const [pid, m] of Object.entries(state.pathRead)) { const c = { ...m }; drop(c, `path:${pid}:`); state.pathRead[pid] = c; }
+    const changed = before !== JSON.stringify([state.read, state.favorites, state.visits, state.pathRead, state.pathStarted, state.journal, state.diary, state.entries, state.highlights, state.removed, state.archives.length, state.trivia, state.activePath]);
+    if (changed) save();
+    return changed;
   },
   // A shared tablet: each person's reading, notes and journal are kept apart. When someone
   // different signs in, the last person's data is set aside on this device (it is also in

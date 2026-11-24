@@ -1,7 +1,7 @@
-// Study notes for each chapter: then-and-now map, history and culture, geography,
-// science, original-language words, the main Christian views, and sources.
+// Study notes for each chapter: a map with Bible-times and present-day names, history and
+// culture, geography, original-language words, scholars' views, and sources.
 // Every note carries an evidence label so it's clear what is firm and what is debated.
-// Full notes so far: Genesis 1, Psalm 23, Luke 2, Luke 5, John 1 and John 3. More are added book by book.
+// Full notes so far: Genesis 1 and 2, Psalm 23, Luke 2, Luke 5, John 1 and John 3. More are added book by book.
 //
 // A source is a plain citation, or { text, url } when there's a page to open. Every source
 // gets a "Look it up" link either way (a library search when there's no page of its own).
@@ -10,15 +10,15 @@
 export const ABOUT = {
   verses: "Verse by verse: notes on key verses, the way a study Bible explains them at the bottom of the page. Tap a verse number to jump to it.",
   strongs: "Strong's concordance: every Hebrew or Greek word in this chapter, numbered as in James Strong's concordance (1890). Tap a word to see what it means and where else it's used.",
-  map: "Map then and now: the places in this chapter, with their names in Bible times and today.",
+  map: "Map: the places in this chapter. Brown names are what they were called in Bible times; blue names are what they're called today. Tap a place to read about it.",
   history: "Background: the history, culture and archaeology behind the chapter. Each note is labeled with how firm the evidence is.",
   geography: "Geography: the land itself, and how it shapes the story.",
-  science: "Science and nature: where the chapter touches the natural world. Science describes how things work; Scripture tells who made them and why. These notes show where the two meet.",
   words: "Key words: important words in the original language, what they mean, and how they're used elsewhere in the Bible.",
-  views: "Scholars and views: what Bible scholars and church traditions think. These are interpretations, not Scripture. Where faithful Christians differ, each main view is given fairly, and the common ground is shown.",
+  views: "Scholars and views: how careful Bible scholars read this passage, the reasons they give, and the questions others raise. These are interpretations, not Scripture. Each view is given in its best light, with sources you can open and read for yourself, and the common ground comes last.",
   xref: "Cross-references: other passages on the same subject. Scripture is the best explainer of Scripture.",
-  search: "Word search: how many times a word or phrase appears in the Bible, and where.",
-  sources: "Sources: the commentaries, lexicons and studies behind these notes. Tap Look it up to find any of them.",
+  search: "Find a verse: type what it's about (a story, or a topic like baptism or worry) or the words you remember. You'll get a list of passages, and your Bible helper can find the rest.",
+  sources: "Sources: the commentaries, lexicons and studies behind these notes. Tap Look it up to open the source, or to find the book in a library.",
+  mine: "My notes: what you've written in your journal about this chapter. Only you can see these.",
 };
 export const sourceText = (s) => (typeof s === "string" ? s : s.text);
 // A page for the source itself, or a library search for the book.
@@ -41,20 +41,56 @@ const GALILEE = {
   riverLabels: [{ lat: 32.93, lon: 35.632, text: "Jordan River" }, { lat: 32.697, lon: 35.592, text: "Jordan River" }],
   waterLabel: { lat: 32.755, lon: 35.6, text: "Sea of Galilee" },
 };
+// Coastlines and rivers traced from standard atlases (simplified). Rivers carry their Bible
+// name and today's name, so the map can show both.
 const NEAR_EAST = {
-  bounds: { lat: [24.5, 38.5], lon: [28.5, 49] },
+  bounds: { lat: [24.5, 39.4], lon: [28.5, 52] },
   water: [
+    // Mediterranean (the Great Sea)
     [[31.0, 28.5], [31.2, 29.9], [31.5, 31.0], [31.3, 32.3], [31.1, 33.3], [31.3, 34.2], [31.9, 34.65], [32.8, 34.95], [33.3, 35.2], [33.9, 35.45], [34.4, 35.8], [35.2, 35.9], [35.6, 35.75], [36.0, 35.95], [36.6, 36.2], [36.9, 36.0], [36.8, 35.5], [36.7, 34.7], [36.3, 34.0], [36.1, 33.4], [36.2, 32.6], [36.6, 31.9], [36.8, 30.7], [36.4, 30.4], [36.2, 29.6], [36.6, 28.5]],
-    [[30.05, 48.5], [29.4, 48.0], [28.3, 48.6], [27.0, 49.6], [26.3, 50.1], [25.5, 50.8], [24.5, 51.2], [24.5, 49.0], [26.0, 49.0], [27.5, 48.6], [29.0, 48.2], [29.9, 49.0]],
+    // Red Sea with the Gulf of Suez and the Gulf of Aqaba
+    [[29.97, 32.55], [29.0, 32.7], [28.2, 33.2], [27.2, 33.85], [26.1, 34.3], [25.0, 34.95], [24.5, 35.2], [24.5, 37.6], [25.0, 37.2], [26.2, 36.4], [27.4, 35.4], [28.0, 34.62], [29.0, 34.75], [29.53, 35.0], [29.4, 34.88], [28.5, 34.5], [28.0, 34.43], [27.73, 34.25], [28.3, 33.6], [29.0, 32.95], [29.6, 32.72], [29.97, 32.58]],
+    // Persian Gulf
+    [[29.95, 48.6], [29.6, 48.3], [29.35, 48.05], [28.6, 48.4], [27.9, 48.85], [27.0, 49.6], [26.4, 50.1], [25.9, 50.15], [25.5, 50.45], [25.0, 50.75], [25.5, 50.85], [26.15, 51.25], [25.6, 51.55], [25.0, 51.6], [24.5, 51.65], [24.5, 52.0], [27.8, 52.0], [28.5, 51.2], [28.95, 50.8], [29.6, 50.3], [30.1, 49.6], [30.2, 49.0]],
+    // Caspian Sea (southwest corner)
+    [[39.4, 49.3], [38.4, 48.88], [37.5, 49.1], [37.3, 49.6], [37.1, 50.3], [36.8, 51.0], [36.65, 51.6], [36.7, 52.0], [39.4, 52.0]],
+    // Dead Sea, Lake Van, Lake Urmia
+    [[31.78, 35.57], [31.5, 35.48], [31.1, 35.4], [31.05, 35.45], [31.5, 35.58]],
+    [[38.95, 42.9], [38.8, 43.6], [38.4, 43.3], [38.5, 42.5], [38.75, 42.3]],
+    [[38.2, 45.6], [37.7, 45.9], [37.2, 45.6], [37.6, 45.2], [38.0, 45.3]],
   ],
   rivers: [
+    // Nile
     [[31.4, 31.0], [30.05, 31.25], [28.1, 30.75], [27.2, 31.2], [26.15, 32.7], [25.7, 32.65], [24.5, 32.9]],
-    [[37.0, 38.5], [36.0, 38.2], [34.5, 40.9], [33.4, 43.3], [32.55, 44.3], [31.0, 46.0], [30.45, 47.65], [30.05, 48.5]],
-    [[37.5, 42.4], [36.35, 43.15], [35.0, 43.6], [33.3, 44.4], [32.0, 45.8], [31.0, 47.4], [30.45, 47.65]],
+    // Jordan
+    [[33.2, 35.62], [32.85, 35.6], [32.7, 35.57], [32.2, 35.55], [31.78, 35.56]],
+    // Euphrates
+    [[39.4, 40.0], [38.8, 39.0], [38.0, 38.6], [37.0, 38.0], [36.5, 38.2], [35.95, 39.0], [35.33, 40.14], [34.45, 40.95], [34.13, 42.2], [33.42, 43.3], [33.3, 43.8], [32.55, 44.35], [32.0, 44.6], [31.3, 45.3], [31.04, 46.26], [31.0, 47.43]],
+    // Tigris
+    [[38.5, 39.4], [37.9, 40.2], [37.33, 42.19], [36.34, 43.13], [35.46, 43.3], [34.6, 43.68], [34.2, 43.9], [33.3, 44.4], [32.5, 45.82], [31.84, 47.15], [31.0, 47.43]],
+    // Shatt al-Arab, where the two flow together to the Gulf
+    [[31.0, 47.43], [30.5, 47.81], [29.95, 48.6]],
+    // Karun (some say the Gihon)
+    [[32.6, 50.3], [32.05, 48.85], [31.32, 48.67], [30.43, 48.17]],
+  ],
+  dryRivers: [
+    // Wadi al-Batin, a dry riverbed across Arabia (some say the Pishon)
+    [[24.8, 40.2], [25.6, 42.0], [26.3, 43.9], [27.4, 45.2], [28.5, 46.5], [29.6, 47.4]],
   ],
   islands: [[[35.2, 32.3], [35.6, 34.6], [35.1, 34.0], [34.6, 33.0], [34.9, 32.4]]],
-  riverLabels: [{ lat: 27.4, lon: 31.6, text: "Nile" }, { lat: 34.2, lon: 41.2, text: "Euphrates" }, { lat: 35.4, lon: 44.0, text: "Tigris" }],
-  waterLabel: { lat: 33.6, lon: 31.9, text: "Mediterranean Sea" },
+  riverLabels: [
+    { lat: 27.4, lon: 31.6, then: "Nile", now: "Nile" },
+    { lat: 34.9, lon: 39.6, then: "Perath", now: "Euphrates", angle: -30 },
+    { lat: 37.0, lon: 40.0, then: "Hiddekel", now: "Tigris", angle: 0 },
+    { lat: 32.7, lon: 49.0, then: "Gihon?", now: "Karun" },
+    { lat: 26.9, lon: 42.3, then: "Pishon?", now: "Wadi al-Batin (dry)", angle: 25 },
+  ],
+  waterLabels: [
+    { lat: 33.7, lon: 31.6, then: "The Great Sea", now: "Mediterranean Sea" },
+    { lat: 26.6, lon: 35.0, then: "Red Sea", now: "Red Sea", angle: -55 },
+    { lat: 27.5, lon: 50.0, then: "", now: "Persian Gulf", angle: -40 },
+    { lat: 37.9, lon: 49.9, then: "", now: "Caspian Sea" },
+  ],
 };
 
 export const NOTES = {
@@ -153,10 +189,10 @@ export const NOTES = {
         { word: "ὑψόω", say: "hypsoō", strongs: "G5312", count: "20 times", means: "lift up, exalt", ev: "strong", src: ["bdag", "carson"], text: "John uses it for Jesus being lifted up on the cross (3:14, 8:28, 12:32-34). His death is also His exaltation." },
       ] },
       { id: "views", title: "How Christians read it", items: [
-        { head: "Water means baptism", who: "Churches of Christ, and many churches through history", src: ["cottrell"], text: "\"Born of water and the Spirit\" refers to baptism, when a believer is born again. They connect it with Acts 2:38 (\"repent, and each of you be baptized... and you will receive the gift of the Holy Spirit\") and Titus 3:5 (\"the washing of regeneration\"). Many early Christian writers read it this way too." },
-        { head: "Water means natural birth", who: "Some Baptist and evangelical interpreters", src: ["schreiner"], text: "\"Water\" is the first, physical birth, and \"Spirit\" is the second, spiritual birth, matching the next verse: \"That which is born of the flesh is flesh, and that which is born of the Spirit is spirit\" (3:6). Baptism follows the new birth as an act of obedience." },
-        { head: "God's promised cleansing", who: "Many commentators", src: ["carson"], text: "\"Water and Spirit\" together recall Ezekiel 36:25-27, where God promises to sprinkle clean water and put a new spirit within His people. It describes one new birth from two sides, cleansing and new life, which is why Jesus expected \"the teacher of Israel\" to understand it (3:10)." },
-        { head: "What all of them agree on", who: "Common ground", src: ["morris"], text: "New birth is God's work by His Spirit, and no one sees the kingdom of God without it. Jesus commands baptism (Matthew 28:19), and whoever believes in Him has eternal life (3:16)." },
+        { head: "Water means baptism", who: "Baptism reading", src: ["cottrell", "justin"], text: "\"Born of water and the Spirit\" (3:5) points to baptism, the moment a believer is born again. Those who read it this way point to Acts 2:38 (\"Repent, and each of you be baptized... and you will receive the gift of the Holy Spirit\"), to Titus 3:5 (\"the washing of regeneration and renewing by the Holy Spirit\") and to 1 Peter 3:21. John's own setting supports it: right after this conversation, Jesus and His disciples are baptizing in Judea (3:22), and John the Baptist is baptizing nearby \"because there was much water there\" (3:23).\n\nIt is also the oldest reading on record. Around AD 155, Justin Martyr described a new believer's baptism and quoted Jesus' words, \"Unless you are born again, you will not enter the kingdom of heaven\" (First Apology 61).", ask: "Others ask how Nicodemus could be expected to understand Christian baptism before it began (3:10). Supporters answer that he already knew John's baptism of repentance and the washings of the Law." },
+        { head: "Water means natural birth", who: "Two-births reading", src: ["schreiner"], text: "\"Water\" is the first, physical birth, and \"Spirit\" the second, spiritual birth. Nicodemus has just asked whether a man can enter his mother's womb a second time (3:4), and the very next verse sets the two births side by side: \"That which is born of the flesh is flesh, and that which is born of the Spirit is spirit\" (3:6). In this reading the new birth is the Spirit's inner work, and baptism follows it as the believer's act of obedience.", ask: "Critics note that in Greek \"water and Spirit\" share a single preposition (ex hydatos kai pneumatos), which reads most naturally as one birth seen two ways, not two births." },
+        { head: "God's promised cleansing", who: "Prophecy reading", src: ["carson", "kostenberger"], text: "\"Water and Spirit\" together recall Ezekiel 36:25-27: \"I will sprinkle clean water on you, and you will be clean... I will give you a new heart and put a new spirit within you.\" D. A. Carson argues that this is why Jesus could scold \"the teacher of Israel\" for not understanding (3:10): the prophets had already promised a day when God would wash His people and give them His Spirit. Water and Spirit describe one new birth from two sides, cleansing from sin and new life from God." },
+        { head: "What all of them agree on", who: "Common ground", src: ["morris"], text: "New birth is God's work by His Spirit, and no one sees the kingdom of God without it. Jesus commands baptism (Matthew 28:19). Whoever believes in Him has eternal life (3:16). Readers who differ on verse 5 can study it side by side, Bibles open, as Nicodemus did." },
       ] },
     ],
     sources: {
@@ -165,8 +201,9 @@ export const NOTES = {
       morris: "Leon Morris, The Gospel According to John, rev. ed., New International Commentary (Eerdmans, 1995).",
       keener: "Craig S. Keener, The Gospel of John: A Commentary, 2 vols. (Hendrickson, 2003).",
       bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
-      cottrell: "Jack Cottrell, Baptism: A Biblical Study (College Press, 1989). A Restoration Movement scholar.",
-      schreiner: "Thomas R. Schreiner and Shawn D. Wright, eds., Believer's Baptism (B&H Academic, 2006). Baptist scholars.",
+      cottrell: "Jack Cottrell, Baptism: A Biblical Study (College Press, 1989).",
+      schreiner: "Thomas R. Schreiner and Shawn D. Wright, eds., Believer's Baptism (B&H Academic, 2006).",
+      justin: { text: "Justin Martyr, First Apology 61 (about AD 155), in Ante-Nicene Fathers, vol. 1.", url: "https://en.wikipedia.org/wiki/First_Apology_of_Justin_Martyr" },
       danby: "Herbert Danby, trans., The Mishnah (Oxford University Press, 1933), Sanhedrin 1:6.",
       notley: "R. Steven Notley and Ze'ev Safrai, Eusebius, Onomasticon (Brill, 2005).",
     },
@@ -296,13 +333,15 @@ export const NOTES = {
     intro: "Genesis 1 tells how God made the heavens and the earth in six days and filled them with life, with people made in His image as the high point.",
     map: {
       outline: NEAR_EAST,
-      caption: "Genesis 1 names no places. This map shows where the creation stories of Israel's neighbors were written down, so you can see what Genesis was speaking into.",
+      caption: "Genesis 1 names no places. The map shows the two most likely areas for Eden (Genesis 2), and the cities where the creation stories of Israel's neighbors were written down, so you can see what Genesis was speaking into.",
       places: [
-        { lat: 31.78, lon: 35.23, then: "Jerusalem", now: "Jerusalem", note: "Where Israel's Scriptures were kept and read in the temple." },
-        { lat: 32.54, lon: 44.42, then: "Babylon", now: "Ruins near Hillah, Iraq", note: "Home of the creation epic Enuma Elish, where the god Marduk builds the world from a defeated sea goddess." },
-        { lat: 36.36, lon: 43.15, dy: -6, then: "Nineveh", now: "Mosul, Iraq", note: "Tablets of Enuma Elish were found here in King Ashurbanipal's library in the 1840s and 1850s." },
-        { lat: 29.85, lon: 31.25, then: "Memphis", now: "Mit Rahina, near Cairo, Egypt", note: "An Egyptian text (the Shabaka Stone) says the god Ptah made things by thought and word." },
-        { lat: 35.6, lon: 35.78, side: "right", dy: 12, then: "Ugarit", now: "Ras Shamra, near Latakia, Syria", note: "Its Baal stories describe a storm god fighting Yam, the sea." },
+        { lat: 30.4, lon: 47.9, kind: "eden", side: "left", dy: 14, then: "Eden? (southern view)", now: "Near Basra, Iraq", note: "One of the two leading suggestions. The Tigris and Euphrates join here and flow to the Persian Gulf, and the Karun and a dry Arabian riverbed (Wadi al-Batin) once flowed in nearby. Some think the garden's land now lies under the shallow Gulf. Genesis 2:10-14 names the rivers but not the exact spot." },
+        { lat: 38.6, lon: 40.6, kind: "eden", side: "left", dy: -4, then: "Eden? (northern view)", now: "Highlands of eastern Turkey", note: "The other leading suggestion. The Tigris and Euphrates both begin in these mountains, and Genesis says the river flowed out of Eden and then divided (2:10), which sounds like a place upstream, where rivers begin." },
+        { lat: 31.78, lon: 35.23, side: "left", then: "Jerusalem", now: "Jerusalem", note: "Where Israel's Scriptures were kept and read in the temple." },
+        { lat: 32.54, lon: 44.42, side: "left", then: "Babylon", now: "Ruins near Hillah, Iraq", note: "Home of the creation epic Enuma Elish, where the god Marduk builds the world from a defeated sea goddess." },
+        { lat: 36.36, lon: 43.15, side: "right", then: "Nineveh", now: "Mosul, Iraq", note: "Tablets of Enuma Elish were found here in King Ashurbanipal's library in the 1840s and 1850s." },
+        { lat: 29.85, lon: 31.25, side: "right", then: "Memphis", now: "Near Cairo, Egypt", note: "An Egyptian text (the Shabaka Stone) says the god Ptah made things by thought and word." },
+        { lat: 35.6, lon: 35.78, side: "right", dy: -2, then: "Ugarit", now: "Ras Shamra, Syria", note: "Its Baal stories describe a storm god fighting Yam, the sea." },
       ],
     },
     sections: [
@@ -311,11 +350,6 @@ export const NOTES = {
         { head: "The sun and moon aren't named", ev: "debated", src: ["hasel", "wenham"], text: "Verse 16 says \"the greater light\" and \"the lesser light\" instead of the usual Hebrew words for sun and moon, which were also names of gods in the region. Many scholars think this is on purpose: the lights people worshiped are only lamps God hung in the sky. Others think it's simply the poetic style of the chapter." },
         { head: "Made in His image", ev: "good", src: ["walton", "wenham", "mathews"], text: "Kings in the ancient Near East set up statues, called images, to show where they ruled. Genesis gives that honor to every person, male and female (1:27): each one represents God's rule on earth. In neighboring stories, people were made to do the gods' chores." },
         { head: "A pattern of forming and filling", ev: "strong", src: ["wenham", "mathews"], text: "Days 1 to 3 shape the spaces (light, sky and sea, land). Days 4 to 6 fill them (lights, birds and fish, animals and people). The seventh day, when God rests, stands apart. This careful structure is plain in the Hebrew." },
-      ] },
-      { id: "science", title: "Science and nature", items: [
-        { head: "The universe had a beginning", ev: "strong", src: ["planck"], text: "Measurements of the cosmic background light show the universe has not always existed. Its age is measured at about 13.8 billion years." },
-        { head: "How believers relate this to Genesis", ev: "faith", src: ["ross", "morris", "collins"], text: "Many Christians see harmony with \"In the beginning God created.\" Old-earth believers accept the measured age and read the days as long ages or as God's workdays. Young-earth believers hold that the days were recent, ordinary days, and they question the assumptions behind the long ages. Science can describe how the world works. It can't prove or disprove that God created it." },
-        { head: "Light before the sun", ev: "debated", src: ["collins", "ross", "morris"], text: "Light appears on day 1 (1:3), but the sun, moon and stars on day 4 (1:14-19). Some say God Himself was the first light source. Some say the sun already existed and became visible from the earth's surface on day 4. Others say the days are arranged by topic, not in time order." },
       ] },
       { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
         { word: "בְּרֵאשִׁית", say: "bereshit", strongs: "H7225", count: "about 50 times in the Old Testament (as reshit, \"beginning, first\")", means: "in the beginning", ev: "debated", src: ["wenham", "halot"], text: "Most translations read it as a full statement: \"In the beginning God created.\" Some Jewish translations read it as \"When God began to create.\" The first reading points more clearly to creation from nothing." },
@@ -327,13 +361,14 @@ export const NOTES = {
         { word: "יוֹם", say: "yom", strongs: "H3117", count: "about 2,300 times", means: "day", ev: "debated", src: ["collins", "morris", "ross"], text: "It can mean a 24-hour day, the daylight hours, or a longer time (\"in the day that the Lord God made earth and heaven,\" Genesis 2:4). How to take it in Genesis 1 is the heart of the debate about the days." },
       ] },
       { id: "views", title: "How Christians read it", items: [
-        { head: "Six ordinary days, recently", who: "Young earth", src: ["morris"], text: "The days are 24-hour days, marked by \"evening and morning,\" and the earth is thousands of years old. This view is widely held in Churches of Christ and Baptist churches." },
-        { head: "Real days, a mature creation", who: "Young earth, created mature", src: ["morris"], text: "The days are real days, but God made a working world that looked older from the start, as Adam was made a grown man and trees were made already bearing fruit (1:11-12, 2:7). Some add that floods, earthquakes and other forces can make things look older than they are." },
-        { head: "Long ages", who: "Day-age, old earth", src: ["ross"], text: "Each day is a long period. Some note that the sun, moon and seasons that mark our days aren't set in place until day 4 (1:14-19), so the first days may not be 24-hour days. The order of creation fits what science finds." },
-        { head: "God's workdays", who: "Analogical days", src: ["collins"], text: "The days are God's workdays, told in a way that's like a human work week, and they give the pattern for our own week and Sabbath. They aren't meant to give the age of the earth." },
-        { head: "A framework", who: "Literary framework", src: ["blocher"], text: "The six days are a frame that arranges creation by topic (forming and filling) to teach who made all things and why." },
-        { head: "A cosmic temple", who: "Functional view", src: ["walton"], text: "Genesis 1 tells how God set up the world as His temple, giving each part its role, and then took up His rest in it." },
-        { head: "What all of them agree on", who: "Common ground", src: ["mathews"], text: "God alone made everything. Creation is good. Every human being bears God's image. The Sabbath points to God's rest." },
+        { head: "Six ordinary days, a young earth", who: "24-hour days", src: ["basil", "morris"], text: "This view takes the days as ordinary days and calls it the plainest reading. When the Hebrew word yom (day) comes with a number (\"the second day\") and with \"evening and morning,\" it almost always means a normal day. The Ten Commandments build the work week on the creation week: \"in six days the LORD made the heavens and the earth... and rested on the seventh day\" (Exodus 20:11). Add up the ages in the family lines of Genesis 5 and 11, and creation lands thousands of years ago, not millions.\n\nThe reading is ancient. Basil of Caesarea, preaching on Genesis around AD 378, said the first day was a day of twenty-four hours. Henry Morris's The Genesis Record (1976) gave it wide modern reach. Its defenders add a reason from the gospel: Romans 5:12 says death entered the world through sin, which is hard to fit with long ages of death before Adam. They hold that Noah's flood laid down much of the rock record, and they question the starting assumptions behind long dates.", ask: "Others ask how there were evenings and mornings before the sun was set in place on day 4, and how light from distant galaxies reached the earth so soon." },
+        { head: "Real days, a mature creation", who: "Created mature", src: ["morris"], text: "Here too the days are ordinary days, but God made a working world, not a world of seeds and newborns. Adam was formed a grown man, and the trees were already bearing fruit (1:11-12, 2:7-9). A world made mature would look older than it is from its very first day, much as the wine Jesus made at Cana (John 2:1-11) tasted like good, aged wine though it was minutes old.", ask: "Critics reply that some evidence, such as light recording stars that exploded long ago, would then show events that never happened. Supporters answer that God is not deceiving anyone when He has told us what He did." },
+        { head: "Long ages", who: "Day-age", src: ["ross", "planck", "dalrymple"], text: "Each day is a long era. The same word yom covers the whole creation week in Genesis 2:4 (\"in the day that the LORD God made earth and heaven\"), and Psalm 90:4 says a thousand years are like a day to God. The seventh day has no \"evening and morning,\" and Hebrews 4:3-11 treats God's rest as still going on, so they argue that at least one day of the week is not 24 hours long. A great deal happens on day six: Adam tends the garden, names the animals, and has time to feel alone before Eve is made (2:15-23).\n\nAstronomer Hugh Ross argues that Genesis 1 gives the same order science finds: a beginning, light, oceans, dry land, plant life, sea creatures, land animals, and people last of all. The universe's age is measured at about 13.8 billion years from the light left over from its beginning, and the earth's at about 4.5 billion years from its oldest rocks and meteorites.", ask: "Critics note that plants appear on day 3 before the sun on day 4, and that \"evening and morning\" sound like ordinary days. Supporters answer that the sun already existed and became visible from the earth's surface on day 4." },
+        { head: "God's workdays", who: "Analogical days", src: ["collins", "augustine"], text: "Old Testament scholar C. John Collins reads the days as God's workdays, told by comparison with a human work week. They are real days for God, but described in a human way, the way Scripture speaks of God's \"arm,\" or says that on the seventh day He \"rested and was refreshed\" (Exodus 31:17). The point is the pattern: we work six days and rest because God did. How long God's days were, the text doesn't say.\n\nThe idea that the days may not be ordinary is very old. Augustine, in The Literal Meaning of Genesis (written about AD 401-415), thought God may have created all things at once, with the days showing the order of His work rather than a span of hours." },
+        { head: "A framework", who: "Literary framework", src: ["blocher", "kline", "kline96"], text: "The six days form a frame of two matching sets of three. Days 1 to 3 make realms: light, then sky and seas, then land. Days 4 to 6 fill them with rulers: the lights, then birds and fish, then animals and people. Day 1 pairs with day 4, day 2 with day 5, day 3 with day 6. Henri Blocher and Meredith Kline argue that this arrangement is by topic, not by clock, much as the Gospel writers sometimes group events by theme.\n\nKline points to Genesis 2:5: no plant had yet sprung up \"for the LORD God had not sent rain upon the earth.\" If God was working through ordinary means like rain while He made the world, the days were not a rush of miracles in a few hours.", ask: "Critics answer that Genesis 1 reads like a straightforward account, numbered days and all, and that a beautiful pattern doesn't rule out a real sequence." },
+        { head: "A cosmic temple", who: "Functional view", src: ["walton"], text: "John Walton reads Genesis 1 against the ancient Near East, where people cared most about what a thing does, its function. In his reading the seven days describe God giving the world its working order (time, weather, food) and then taking up His rest in it, the way a king sits on his throne in a finished temple (Psalm 132:7-8, 13-14; Isaiah 66:1). The chapter tells us that the whole world is God's dwelling place and why it exists, not how old it is.", ask: "Critics say the word bara (create) is about bringing things into being, not only giving them roles, and that Hebrews 11:3 teaches the world was made out of what is not visible." },
+        { head: "Light before the sun", who: "A question every view answers", extra: true, src: ["collins", "ross", "morris"], text: "Light appears on day 1 (1:3), but the sun, moon and stars on day 4 (1:14-19). Some say God Himself lit the first days, as He will light the new creation, where \"they will not have need of the light of a lamp nor the light of the sun\" (Revelation 22:5). Some say the sun already shone and became visible from the surface on day 4 as the sky cleared. Others say the days are arranged by topic, so day 4 tells more about the light of day 1." },
+        { head: "What all of them agree on", who: "Common ground", src: ["mathews", "planck"], text: "God alone made everything, and He made it from nothing visible (Hebrews 11:3). The universe had a beginning, which science now affirms as well. Creation is good, orderly and dependable. Every person, male and female, bears God's image and has great worth. The week of work and rest is God's gift. Believers who differ about the days stand together on the first words of the Bible: \"In the beginning God created the heavens and the earth.\"" },
       ] },
     ],
     sources: {
@@ -344,10 +379,90 @@ export const NOTES = {
       mathews: "Kenneth A. Mathews, Genesis 1-11:26, New American Commentary (Broadman & Holman, 1996).",
       halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
       planck: { text: "Planck Collaboration, \"Planck 2018 results. VI. Cosmological parameters,\" Astronomy & Astrophysics 641 (2020): A6.", url: "https://doi.org/10.1051/0004-6361/201833910" },
+      dalrymple: "G. Brent Dalrymple, The Age of the Earth (Stanford University Press, 1991).",
+      basil: { text: "Basil of Caesarea, Hexaemeron, Homily 2 (about AD 378), in Nicene and Post-Nicene Fathers, 2nd series, vol. 8.", url: "https://www.newadvent.org/fathers/32012.htm" },
+      augustine: { text: "Augustine, The Literal Meaning of Genesis (De Genesi ad litteram), about AD 401-415.", url: "https://en.wikipedia.org/wiki/De_Genesi_ad_litteram" },
+      kline: "Meredith G. Kline, \"Because It Had Not Rained,\" Westminster Theological Journal 20 (1958): 146-157.",
+      kline96: { text: "Meredith G. Kline, \"Space and Time in the Genesis Cosmogony,\" Perspectives on Science and Christian Faith 48 (1996): 2-15.", url: "https://asa3.org/ASA/PSCF3-96Klineold.html" },
       collins: "C. John Collins, Genesis 1-4: A Linguistic, Literary, and Theological Commentary (P&R, 2006).",
       morris: "Henry M. Morris, The Genesis Record (Baker, 1976).",
-      ross: "Hugh Ross, A Matter of Days (NavPress, 2004).",
+      ross: { text: "Hugh Ross, A Matter of Days (NavPress, 2004).", url: "https://reasons.org" },
       blocher: "Henri Blocher, In the Beginning (InterVarsity Press, 1984).",
+    },
+  },
+
+  "GEN.2": {
+    crossRefs: [
+      ["GEN.1", "Genesis 1:26-31", "Male and female in God's image, blessed and given the earth"],
+      ["EXO.20", "Exodus 20:8-11", "The Sabbath, rooted in God's rest on the seventh day"],
+      ["EZK.28", "Ezekiel 28:13-14", "Eden, the garden of God, on the holy mountain"],
+      ["EZK.47", "Ezekiel 47:1-12", "A river flows from God's house and brings life, with trees for food and healing"],
+      ["MAT.19", "Matthew 19:4-6", "Jesus quotes Genesis 2:24 on marriage"],
+      ["1CO.15", "1 Corinthians 15:45-49", "The first Adam and the last Adam"],
+      ["EPH.5", "Ephesians 5:31-32", "\"The two shall become one flesh\": Christ and the church"],
+      ["REV.22", "Revelation 22:1-5", "The river of the water of life and the tree of life, restored"],
+    ],
+    intro: "God rests on the seventh day. Then the story draws close: the LORD God forms the man from the dust, breathes life into him, plants a garden in Eden with a river and two trees in its middle, and makes the woman as the partner who fits him.",
+    map: {
+      outline: NEAR_EAST,
+      caption: "Genesis 2:10-14 names four rivers. Two are known today, the Tigris and the Euphrates. The Pishon and the Gihon are uncertain, so the two most likely areas for Eden are marked with a question mark. The Bible doesn't give the exact spot.",
+      places: [
+        { lat: 30.4, lon: 47.9, kind: "eden", side: "left", dy: 14, then: "Eden? (southern view)", now: "Near Basra, Iraq", note: "One of the two leading suggestions. The Tigris and Euphrates join here and flow to the Persian Gulf, and the Karun and a dry Arabian riverbed (Wadi al-Batin) once flowed in nearby. Some think the garden's land now lies under the shallow Gulf. Genesis 2:10-14 names the rivers but not the exact spot." },
+        { lat: 38.6, lon: 40.6, kind: "eden", side: "left", dy: -4, then: "Eden? (northern view)", now: "Highlands of eastern Turkey", note: "The other leading suggestion. The Tigris and Euphrates both begin in these mountains, and Genesis says the river flowed out of Eden and then divided (2:10), which sounds like a place upstream, where rivers begin." },
+        { lat: 31.0, lon: 47.43, side: "right", dy: -10, then: "Where the rivers join", now: "Al-Qurnah, Iraq", note: "The Tigris and Euphrates meet here and flow on together as the Shatt al-Arab. A local tradition even points out an \"Adam's tree\" in the town." },
+        { lat: 38.08, lon: 46.29, side: "left", dy: 4, then: "Eden? (a newer suggestion)", now: "Near Tabriz, Iran", note: "Historian David Rohl suggested a valley here, east of Lake Urmia, and matched the Gihon with the Aras River. Few scholars follow him, but it shows how people try to fit the four rivers." },
+        { lat: 32.54, lon: 44.42, side: "left", dy: -6, then: "Babylon", now: "Ruins near Hillah, Iraq", note: "Shinar, the plain of Babylon, is where people moved \"east\" after the flood (11:2). Eden was also \"toward the east\" (2:8)." },
+        { lat: 31.78, lon: 35.23, side: "left", then: "Jerusalem", now: "Jerusalem", note: "Israel's temple, decorated with cherubim, palm trees and flowers, recalled the garden where God once walked with people (1 Kings 6:29)." },
+      ],
+    },
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "2:2", head: "God rested", ev: "scripture", src: ["wenham"], text: "The Hebrew shabat means to stop or cease, the root of the word Sabbath. God was not tired (Isaiah 40:28). He stopped because the work was finished and good, and He blessed the seventh day and made it holy, the first thing in the Bible called holy." },
+        { ref: "2:4", head: "The LORD God", ev: "strong", src: ["wenham", "mathews"], text: "Here God's personal name appears for the first time: YHWH, shown in most English Bibles as LORD in small capitals. Genesis 1 calls Him Elohim, the mighty Creator. Genesis 2 joins the two, \"the LORD God,\" the Creator who is also the God who knows His people by name and makes covenants with them." },
+        { ref: "2:7", head: "Dust and breath", ev: "strong", src: ["wenham", "halot"], text: "God \"formed\" (yatsar, the word for a potter shaping clay) the man from the dust and breathed into him the breath of life. People are made of the same stuff as the earth, and yet alive with breath from God. Job 33:4: \"The Spirit of God has made me, and the breath of the Almighty gives me life.\"" },
+        { ref: "2:9", head: "Two trees in the middle of the garden", ev: "debated", src: ["wenham", "collins"], text: "The tree of life stands for the life God gives; it returns in Proverbs 3:18 and in Revelation 22:2, where its leaves are \"for the healing of the nations.\" The tree of the knowledge of good and evil is the one tree God forbids. Many scholars think \"knowing good and evil\" means deciding for yourself what is good and evil, a right that belongs to God alone. Scripture never names the fruit; the apple came later, from art and from a Latin pun (malum means both \"evil\" and \"apple\")." },
+        { ref: "2:10-14", head: "A river and four branches", ev: "debated", src: ["wenham", "sauer"], text: "A river flows out of Eden to water the garden and then divides into four. The Tigris (Hiddekel) and Euphrates are well known. The Pishon flowed around Havilah, a land of gold, and the Gihon around Cush. Their identity is uncertain, which is why scholars still debate where Eden was. See the map." },
+        { ref: "2:15", head: "To cultivate it and keep it", ev: "good", src: ["wenham", "walton"], text: "Work came before the fall: Adam was given a garden to tend. The two verbs, avad (serve, work) and shamar (keep, guard), are used together later for the priests' work in the tabernacle (Numbers 3:7-8). Adam was a gardener and something like a priest in God's first sanctuary." },
+        { ref: "2:18", head: "A helper suitable for him", ev: "strong", src: ["wenham", "halot"], text: "\"Helper\" (ezer) is no lesser word: it is used most often for God Himself as Israel's help (Psalm 121:1-2). \"Suitable for him\" (kenegdo) means corresponding to him, like a reflection facing him. For the first time something is \"not good\": the man alone." },
+        { ref: "2:24", head: "One flesh", ev: "scripture", src: ["mathews"], text: "Jesus quotes this verse as God's design for marriage (Matthew 19:4-6), and Paul sees in it a picture of Christ and the church (Ephesians 5:31-32)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Where was Eden?", ev: "debated", src: ["sauer", "hamblin", "esvmap"], text: "Genesis places the garden \"toward the east\" and ties it to two rivers everyone in Israel knew. That points to Mesopotamia, modern Iraq and its neighbors. Beyond that, scholars differ. The two leading answers are near the head of the Persian Gulf, where the rivers meet, and in the mountains of eastern Turkey, where they begin. Both are marked on the map. See Scholars and views for each case." },
+        { head: "Gold, bdellium and onyx", ev: "good", src: ["sauer", "wenham"], text: "Havilah, the land of the Pishon, had \"good gold,\" bdellium (a sweet-smelling resin, or possibly pearls) and onyx (2:11-12). Western Arabia has some of the oldest gold mines in the world, such as Mahd adh-Dhahab, \"cradle of gold,\" still worked today. Later, Havilah is linked with Arabian tribes (Genesis 25:18)." },
+        { head: "A royal garden", ev: "good", src: ["dalley2", "wenham"], text: "Ancient kings planted walled parks with streams, fruit trees and animals as signs of their power and wealth. Assyrian kings boasted of theirs, and the Persian word for such a park, pardes, came into Greek as paradeisos and into English as \"paradise.\" Genesis tells of a garden planted by the true King, who walked in it with the people He made (3:8)." },
+        { head: "The first sanctuary", ev: "good", src: ["wenham2", "walton"], text: "Eden reads like the first temple. God walks there (3:8, the same verb used of His presence in the tabernacle, Leviticus 26:12). The entrance faces east, and cherubim guard it (3:24), as cherubim were woven into the tabernacle curtain and carved in the temple. Gold and onyx appear again on the high priest's garments (Exodus 28:9-20). The Bible's story moves from this garden to a garden-city where God dwells with His people again (Revelation 21-22)." },
+        { head: "What ancient readers thought", ev: "silent", src: ["josephus"], text: "The Jewish historian Josephus (about AD 93) thought the Pishon was the Ganges of India and the Gihon the Nile of Egypt, since Cush is often Ethiopia. Few hold that today, because those rivers can't branch from one source. It shows that readers have wondered about these rivers for two thousand years." },
+      ] },
+      { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
+        { word: "עֵדֶן", say: "Eden", strongs: "H5731", count: "about 15 times as the place name", means: "Eden; delight", ev: "good", src: ["halot", "wenham"], text: "As a common word, eden means delight or luxury: \"You give them to drink of the river of Your delights\" (Psalm 36:8). Some also link the name to an old Sumerian and Akkadian word, edin, meaning a plain or open steppe. Either way, Eden was a land, and the garden was planted \"toward the east, in Eden\" (2:8)." },
+        { word: "גַּן", say: "gan", strongs: "H1588", count: "about 40 times", means: "garden", ev: "strong", src: ["halot"], text: "An enclosed, tended garden or park. The Greek translation of the Old Testament used paradeisos here, and Jesus promised the thief on the cross, \"Today you shall be with Me in Paradise\" (Luke 23:43)." },
+        { word: "אָדָם / אֲדָמָה", say: "adam / adamah", strongs: "H120 + H127", count: "adam about 550 times; adamah about 225 times", means: "man / ground", ev: "strong", src: ["halot", "wenham"], text: "God formed the adam (man) from the adamah (ground). The wordplay ties people to the earth they were made to tend, and it returns with sorrow in 3:19: \"you are dust, and to dust you shall return.\"" },
+        { word: "עֵזֶר כְּנֶגְדּוֹ", say: "ezer kenegdo", strongs: "H5828 + H5048", count: "ezer 21 times", means: "a helper corresponding to him", ev: "strong", src: ["halot", "wenham"], text: "Ezer is used of God as His people's helper (Exodus 18:4; Psalm 33:20; 121:1-2). Kenegdo means \"like what is opposite him\": a partner who matches and completes, not a servant." },
+        { word: "חִדֶּקֶל", say: "Hiddekel", strongs: "H2313", count: "2 times (Genesis 2:14, Daniel 10:4)", means: "the Tigris", ev: "strong", src: ["halot"], text: "The Hebrew form of the old Akkadian name for the Tigris, Idiqlat. Daniel later stood \"by the bank of the great river, that is, the Hiddekel\" (Daniel 10:4). The Euphrates is Perath (H6578), still called the Firat in Turkish today." },
+      ] },
+      { id: "views", title: "Where was Eden?", items: [
+        { head: "At the head of the Persian Gulf", who: "Southern view", src: ["sauer", "hamblin", "esvmap"], text: "The Tigris and Euphrates meet in southern Iraq and flow to the Gulf. Archaeologist Juris Zarins proposed that the Gihon is the Karun River, which flows down from Iran into the same spot, and that the Pishon is the Wadi al-Batin, a riverbed now dry that once carried water across Arabia from the gold country of the west. In the 1990s, James Sauer pointed to satellite images showing this ancient river channel. Zarins also noted that the Gulf was dry land during the last Ice Age and filled as the seas rose, so the garden's land may now lie under water.", ask: "Critics note that Genesis says one river flowed out of Eden and then divided (2:10). At the Gulf, four rivers come together; they don't split apart." },
+        { head: "In the mountains where the rivers begin", who: "Northern view", src: ["ligonier", "rohl"], text: "If the river flowed out of Eden and then divided into four \"heads\" (2:10), Eden sounds like high ground where rivers start. The Tigris and Euphrates both rise in the highlands of eastern Turkey, near Lake Van, not far from the mountains of Ararat where the ark came to rest (8:4). Some match the other two rivers with streams of the same region, such as the Aras, which flows to the Caspian Sea. Historian David Rohl placed Eden in a valley near Tabriz, Iran.", ask: "Critics reply that no single spring feeds all four rivers in those mountains, and the Pishon and Gihon are still guesses." },
+        { head: "Reshaped by the flood", who: "Lost geography", src: ["morris"], text: "If Noah's flood changed the face of the earth, the rivers Noah's family later named may have carried the old names to new rivers, the way settlers in America named new towns after old ones. On this view, the original Eden can't be found on any modern map.", ask: "Others point out that Genesis 2 speaks of Assyria and Cush in the writer's own day, as if readers could still find the rivers." },
+        { head: "A real place that points beyond itself", who: "Theological geography", src: ["wenham2", "walton"], text: "Many scholars stress what Eden means more than where it was. Ezekiel calls it \"the garden of God\" on \"the holy mountain of God\" (Ezekiel 28:13-14). Rivers flowing out of God's place return in Ezekiel 47 and Revelation 22:1-2, where the river of life flows from God's throne past the tree of life. Eden is the first place God lived with His people, and the Bible ends with that home restored." },
+        { head: "What all of them agree on", who: "Common ground", src: ["mathews"], text: "Genesis presents Eden as a real place in a real world, named with rivers its first readers knew. People were made to live with God, to work and to keep His garden. The way back was closed (3:24), and Jesus opens it again: \"To him who overcomes, I will grant to eat of the tree of life which is in the Paradise of God\" (Revelation 2:7)." },
+      ] },
+    ],
+    sources: {
+      wenham: "Gordon J. Wenham, Genesis 1-15, Word Biblical Commentary 1 (Word, 1987).",
+      mathews: "Kenneth A. Mathews, Genesis 1-11:26, New American Commentary (Broadman & Holman, 1996).",
+      collins: "C. John Collins, Genesis 1-4: A Linguistic, Literary, and Theological Commentary (P&R, 2006).",
+      walton: "John H. Walton, Genesis, NIV Application Commentary (Zondervan, 2001).",
+      halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+      wenham2: "Gordon J. Wenham, \"Sanctuary Symbolism in the Garden of Eden Story,\" Proceedings of the Ninth World Congress of Jewish Studies (1986): 19-25.",
+      sauer: { text: "James A. Sauer, \"The River Runs Dry,\" Biblical Archaeology Review 22:4 (1996); reported in Christianity Today, October 7, 1996.", url: "https://www.christianitytoday.com/1996/10/do-photos-evidence-lost-edenic-river/" },
+      hamblin: "Dora Jane Hamblin, \"Has the Garden of Eden Been Located at Last?\" Smithsonian 18, no. 2 (May 1987): 127-135. On the work of Juris Zarins.",
+      esvmap: { text: "ESV Global Study Bible, map \"The Garden of Eden\" (Crossway).", url: "https://esv.org/resources/esv-global-study-bible/map-01-02" },
+      ligonier: { text: "Ligonier Ministries, \"Where Was the Garden of Eden?\"", url: "https://learn.ligonier.org/articles/where-was-the-garden-of-eden" },
+      rohl: "David M. Rohl, Legend: The Genesis of Civilisation (Century, 1998).",
+      dalley2: "Stephanie Dalley, The Mystery of the Hanging Garden of Babylon (Oxford University Press, 2013).",
+      josephus: { text: "Josephus, Antiquities of the Jews 1.38-39 (about AD 93).", url: "https://penelope.uchicago.edu/Josephus/ant-1.html" },
+      morris: "Henry M. Morris, The Genesis Record (Baker, 1976).",
     },
   },
 
@@ -381,16 +496,13 @@ export const NOTES = {
         { head: "Three kinds of nets", ev: "good", src: ["nun"], text: "Gospel writers use different words for different nets. A cast net (Mark 1:16) is thrown by one man in shallow water. A seine or dragnet (Matthew 13:47) is pulled through the water by a team. Luke 5 uses diktyon, the general word for a net, and the heavy trammel nets set at night fit the scene. Fishermen washed and mended these nets after every night of work (5:2)." },
         { head: "Fishing was a business", ev: "good", src: ["nun", "strabo", "green"], text: "Simon had partners, James and John (5:10), and Mark mentions hired men (Mark 1:20). Towns like Magdala salted fish for sale, and its Greek name, Taricheae, means \"salted-fish town.\" Leaving their boats was leaving a working family business." },
         { head: "Through the roof", ev: "debated", src: ["bock", "green"], text: "Galilean houses had flat roofs of beams, branches and packed mud, reached by an outside stair. Luke says the friends lowered the man \"through the tiles\" (5:19), while Mark says they dug through (Mark 2:4). Many think Luke used a word his Greek-speaking readers would picture. Others note that some houses did use tiles." },
+        { head: "Why they fished at night", ev: "good", src: ["nun"], text: "In clear daylight fish can see a net and swim away, so the heavy trammel nets were set at night. Simon's \"we worked hard all night\" (5:5) describes the normal way to fish. Letting the nets down in daytime, in deep water, was not what an expert would expect to work, which makes his \"but I will do as You say\" all the more striking." },
+        { head: "St. Peter's fish", ev: "good", src: ["nun"], text: "The lake's best-known fish is a tilapia (Sarotherodon galilaeus), served today as \"St. Peter's fish.\" Tilapia swim in large schools, which helps picture a catch big enough to tear the nets and nearly sink two boats (5:6-7). Luke tells it as a sign of who Jesus is: Simon's answer is not \"good fishing\" but \"I am a sinful man, Lord\" (5:8)." },
         { head: "Levi at the tax booth", ev: "good", src: ["green", "bock"], text: "Capernaum sat on a road near the border between Herod Antipas' territory and Philip's, so tolls were collected there. Tax collectors were seen as cheats who worked with foreign powers, which is why the religious leaders objected to Jesus eating with them (5:30)." },
       ] },
       { id: "geography", title: "Geography", items: [
         { head: "The lowest freshwater lake on earth", ev: "strong", src: ["britannica", "josephus"], text: "The lake's surface lies about 690 feet (210 meters) below sea level. It is about 13 miles long and 8 miles wide, fed by the Jordan River from the north. The Jewish historian Josephus praised its sweet water and its many kinds of fish." },
         { head: "Sudden storms", ev: "strong", src: ["britannica"], text: "Hills rise steeply around the lake. Cool air from the heights can rush down onto the warm water and stir up strong winds quickly, as in the storm of Luke 8:22-25." },
-      ] },
-      { id: "science", title: "Science and nature", items: [
-        { head: "Why they fished at night", ev: "good", src: ["nun"], text: "In clear daylight fish can see a net and swim away, so trammel nets were set at night. Simon's \"we worked hard all night\" (5:5) describes the normal way to fish. Letting the nets down in daytime, in deep water, was not what an expert would expect to work." },
-        { head: "St. Peter's fish", ev: "good", src: ["nun"], text: "The lake's best-known fish is a tilapia (Sarotherodon galilaeus), served today as \"St. Peter's fish.\" Tilapia swim in large schools, which helps explain a catch big enough to tear nets and nearly sink two boats (5:6-7)." },
-        { head: "A miracle, or good timing?", ev: "faith", src: ["bock"], text: "Some try to explain the catch as a school of fish that Jesus happened to spot. Luke tells it as a sign of who Jesus is. Simon's response is not \"good fishing\" but \"I am a sinful man, Lord\" (5:8)." },
       ] },
       { id: "words", title: "Greek words", lang: "Greek", items: [
         { word: "Ἐπιστάτα", say: "epistata", strongs: "G1988", count: "7 times, all in Luke", means: "Master", ev: "strong", src: ["bdag", "bock"], text: "A title for someone in charge, like a foreman or overseer. Only Luke uses it in the New Testament. Simon starts with \"Master\" (5:5) and ends with \"Lord\" (5:8)." },
