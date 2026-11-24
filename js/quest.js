@@ -253,6 +253,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const i = Math.floor(Math.random() * CATEGORIES.length), slice = 360 / CATEGORIES.length;
     const turns = 360 * 4 + (360 - (i * slice + slice / 2)) + (Math.random() - 0.5) * slice * 0.6;
     const wheel = dlg.querySelector(".q-wheel-spin");
+    if (!wheel || !game || game.over) return; // the board was left (closed, or a new screen) before the spin
     wheel.style.transition = reduce() ? "none" : "transform 2.6s cubic-bezier(.17,.67,.22,1)";
     requestAnimationFrame(() => { wheel.style.transform = `rotate(${turns}deg)`; });
     sound("tick");
@@ -324,7 +325,11 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <div class="q-why"><p>${right ? `✓ <b>${esc(q.choices[q.a])}</b>. ` : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
       <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? `${BH()} spins again` : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : `${BH()}'s turn`) : "Next player"}</button></div>`);
     if (r.jewel && lively()) confetti(dlg, [cat.color, "#f4d35e", ...lookColors()], 90);
+    // Runs once: Buddy's turn moves on by itself, and tapping the button too must not move twice.
+    let moved = false;
     const next = () => {
+      if (moved) return;
+      moved = true;
       if (r.over) return end();
       if (!right && game.mode !== "solo") { game.turn = (game.turn + 1) % game.players.length; return game.mode === "family" ? passTo() : board(); }
       board();
