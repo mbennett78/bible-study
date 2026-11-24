@@ -1224,9 +1224,19 @@ export const NOTES = {
 Object.assign(NOTES, MORE_NOTES);
 
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
+// Books whose chapter-by-chapter notes live in js/chapters/<book>.js. They load the first time
+// a chapter of that book is opened, and the app caches them for offline use.
+export const CHAPTER_BOOKS = new Set(["GEN"]);
+const bookLoads = {}, bookReady = new Set();
+export const bookNotesReady = (book) => !CHAPTER_BOOKS.has(book) || bookReady.has(book);
+export const loadBookNotes = (book) => (bookLoads[book] ??= !CHAPTER_BOOKS.has(book) ? Promise.resolve()
+  : import(`./chapters/${book.toLowerCase()}.js`).then((m) => {
+    for (const [ch, n] of Object.entries(m.default)) NOTES[`${book}.${ch}`] ??= n;
+    bookReady.add(book);
+  }, () => { delete bookLoads[book]; }));
 // In Bible order.
 const ORDER = BOOKS.map((b) => b.id);
-export const sampleChapters = () => Object.keys(NOTES).sort((a, b) => {
+export const sampleChapters = () => Object.keys(NOTES).filter((k) => !NOTES[k].brief).sort((a, b) => {
   const [ba, ca] = a.split("."), [bb, cb] = b.split(".");
   return (ORDER.indexOf(ba) - ORDER.indexOf(bb)) || (Number(ca) - Number(cb));
 });

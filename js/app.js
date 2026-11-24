@@ -12,7 +12,7 @@ import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
-import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl, MAP_OUTLINES } from "./notes.js";
+import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl, MAP_OUTLINES, bookNotesReady, loadBookNotes } from "./notes.js";
 import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
@@ -177,6 +177,12 @@ let autoplayNext = false;
 let readArmed = false; // "Read to me" is reading in this visit (never starts by itself when the app opens)
 async function openChapter(book, chapter, { scroll = true } = {}) {
   store.set("last", { book, chapter });
+  // This book's chapter notes load the first time; show them as soon as they arrive.
+  if (!bookNotesReady(book)) loadBookNotes(book).then(() => {
+    const here = store.get("last");
+    if (here.book !== book || !bookNotesReady(book)) return;
+    renderNotes(here.book, here.chapter); renderBookIntro(here.book, here.chapter); updateFollow();
+  });
   const version = store.get("version");
   $("#refLabel").textContent = `${BOOK_BY_ID[book].name} ${chapter}`;
   document.title = `${BOOK_BY_ID[book].name} ${chapter} · Bible Study`;

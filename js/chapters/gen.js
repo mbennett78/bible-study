@@ -1,0 +1,565 @@
+// Genesis 4-50 chapter notes (Genesis 1-3 have full notes in notes.js).
+import { makeBook } from "./make.js";
+
+const sources = {
+  waltke: "Bruce K. Waltke with Cathi J. Fredricks, Genesis: A Commentary (Zondervan, 2001).",
+  kidner: "Derek Kidner, Genesis, Tyndale Old Testament Commentaries (InterVarsity Press, 1967).",
+  wenham1: "Gordon J. Wenham, Genesis 1-15, Word Biblical Commentary 1 (Word, 1987).",
+  wenham2: "Gordon J. Wenham, Genesis 16-50, Word Biblical Commentary 2 (Word, 1994).",
+  hamilton1: "Victor P. Hamilton, The Book of Genesis, Chapters 1-17, New International Commentary on the Old Testament (Eerdmans, 1990).",
+  hamilton2: "Victor P. Hamilton, The Book of Genesis, Chapters 18-50, New International Commentary on the Old Testament (Eerdmans, 1995).",
+  walton: "John H. Walton, Genesis, NIV Application Commentary (Zondervan, 2001).",
+  mathews: "Kenneth A. Mathews, Genesis 1-11:26 and Genesis 11:27-50:26, New American Commentary (Broadman & Holman, 1996 and 2005).",
+  kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
+  anet: "James B. Pritchard, ed., Ancient Near Eastern Texts Relating to the Old Testament, 3rd ed. (Princeton University Press, 1969).",
+  halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+};
+
+export default makeBook({ lang: "Hebrew", sources, use: ["waltke", "kidner"] }, {
+  4: {
+    intro: "Outside Eden, Adam and Eve have two sons. Cain the farmer grows jealous when God accepts his brother Abel's offering and not his own, and he murders Abel. God marks Cain for protection even as He sends him away. Cain's line builds cities and crafts, while the chapter closes with Seth's birth and people beginning to call on the name of the LORD.",
+    v: [
+      ["4:4-5", "Abel's offering and Cain's", "Abel brought \"the firstlings of his flock and of their fat portions\"; Cain simply brought \"an offering of the fruit of the ground.\" Hebrews 11:4 says Abel offered \"by faith,\" so the difference lay in the heart of the worshiper, not only the kind of gift.", "scripture", ["waltke", "wenham1"]],
+      ["4:7", "Sin crouching at the door", "God warns Cain that sin is \"crouching at the door; and its desire is for you, but you must master it.\" Sin is pictured as a wild animal waiting to pounce. The same words \"desire\" and \"rule\" appeared in 3:16."],
+      ["4:9", "Am I my brother's keeper?", "God asks a question He already knows the answer to, giving Cain room to confess. Cain answers with a lie and a sneer."],
+      ["4:15", "The mark of Cain", "God puts a sign on Cain so that no one would kill him. Scripture does not say what the mark was. It was a mark of mercy, not of curse.", "silent"],
+      ["4:26", "Calling on the name of the LORD", "With Seth's son Enosh, \"men began to call upon the name of the LORD\": the first mention of regular public worship."],
+    ],
+    bg: [["The first cities and crafts", "Cain's descendants build a city, keep livestock, make music on lyre and pipe, and forge bronze and iron (4:17-22). Genesis shows culture growing quickly, but without God, as Lamech's boasting song of revenge shows (4:23-24).", "good", ["walton", "wenham1"]]],
+    why: "Readers have always asked where Cain's wife came from, and who Cain feared would kill him (4:14). Genesis does not say, so scholars weigh the clues differently.",
+    views: [
+      ["A sister or close relative", "Genesis 5:4 says Adam \"had other sons and daughters.\" Many hold that Cain married a sister or niece, before God later forbade close marriages (Leviticus 18), when the human family was still new.", ["mathews", "kidner"]],
+      ["Others outside the story", "Some suggest Genesis 4 tells only the line that matters to its story, and that the narrative is selective. Most careful readers still hold that all people descend from Adam and Eve (Acts 17:26).", ["walton"]],
+    ],
+    common: "Everyone agrees on the chapter's point: sin spreads fast once it enters the world, yet God still speaks, warns, protects and keeps a faithful line.",
+    refs: [["HEB.11", "Hebrews 11:4", "By faith Abel offered a better sacrifice"], ["1JN.3", "1 John 3:12", "Not as Cain, who was of the evil one"], ["MAT.23", "Matthew 23:35", "From the blood of righteous Abel"]],
+  },
+  5: {
+    intro: "A family record from Adam to Noah, ten generations in all. Each entry follows the same pattern, and each ends with the same refrain, \"and he died,\" except one: Enoch \"walked with God; and he was not, for God took him.\"",
+    v: [
+      ["5:1-3", "In the likeness of God, and of Adam", "Humans were made in God's likeness (5:1), and Seth is born in Adam's likeness and image (5:3). The image of God passes on through the generations, even after the fall."],
+      ["5:5", "And he died", "The repeated phrase shows God's warning in 2:17 coming true. Even very long lives end in death."],
+      ["5:24", "Enoch walked with God", "Enoch did not die; God took him. Hebrews 11:5 says he \"was pleasing to God\" and was taken up \"so that he would not see death.\" He is a picture of the hope that death will not have the last word."],
+      ["5:29", "Noah, rest", "Lamech names his son Noah, which sounds like the Hebrew for \"rest\" or \"comfort,\" hoping he would bring relief from the curse on the ground."],
+    ],
+    why: "The ages in Genesis 5 are very long, from 365 years for Enoch to 969 for Methuselah. Scholars differ on how to read the numbers and whether the list is complete.",
+    views: [
+      ["Ages as written", "Many read the ages as actual lifespans, before life spans shortened after the flood (6:3; 11:10-32).", ["mathews"]],
+      ["A selective family list", "Ancient genealogies sometimes skip generations (Matthew 1:8 skips three kings). Many conservative scholars hold that Genesis 5 lists key ancestors, so it cannot simply be added up to date creation.", ["kitchen", "kidner"]],
+      ["Numbers with meaning", "Some note that the Sumerian King List gives kings before the flood reigns of tens of thousands of years, and suggest Genesis's numbers carry symbolic weight as well as being much more modest.", ["walton", "wenham1"]],
+    ],
+    common: "All agree the chapter teaches that God keeps His line of promise from Adam to Noah, and that walking with God is what matters most.",
+    refs: [["HEB.11", "Hebrews 11:5", "By faith Enoch was taken up"], ["JUD.1", "Jude 1:14", "Enoch, in the seventh generation from Adam"], ["LUK.3", "Luke 3:36-38", "Jesus' family line traced back to Adam"]],
+  },
+  6: {
+    intro: "Wickedness fills the earth, and the LORD is grieved that He made mankind. He decides to send a flood. But Noah, a righteous man who walked with God, finds favor, and God tells him to build an ark for his family and the animals.",
+    v: [
+      ["6:3", "One hundred and twenty years", "God says His Spirit will not strive with man forever. Some read the 120 years as the time left before the flood; others as a new limit on lifespans.", "debated", ["wenham1", "kidner"]],
+      ["6:5-6", "Grieved in His heart", "\"Every intent of the thoughts of his heart was only evil continually.\" God's response is not cold anger but grief."],
+      ["6:8", "Noah found favor", "The first use of \"grace\" (favor) in the Bible. Noah is saved by God's favor, and he lives by faith (Hebrews 11:7)."],
+      ["6:14-16", "The ark", "About 450 by 75 by 45 feet if the cubit is about 18 inches, with three decks. Its proportions are like those of a stable barge, built to float, not to sail.", "good", ["mathews"]],
+      ["6:18", "My covenant", "The first time the word covenant appears. God binds Himself by promise to Noah."],
+    ],
+    w: [["תֵּבָה", "tevah", "H8392", "ark, box", "Used only for Noah's ark and for the basket that carried baby Moses (Exodus 2:3). In both, God saves His chosen one through the waters.", ["halot", "waltke"]]],
+    why: "Who were the \"sons of God\" who married the \"daughters of men\" (6:2), and who were the Nephilim (6:4)? The text is brief, and its words are used in different ways elsewhere.",
+    views: [
+      ["Angels who sinned", "\"Sons of God\" means angels in Job 1:6 and 38:7. Some connect this to Jude 6 and 2 Peter 2:4. Many early Jewish and Christian writers read it this way.", ["hamilton1", "wenham1"]],
+      ["The line of Seth", "Others hold that the godly line of Seth married into the ungodly line of Cain, and that Jesus' words that angels do not marry (Matthew 22:30) weigh against the first view.", ["kidner", "mathews"]],
+      ["Proud kings", "Some see powerful rulers who claimed divine status and took any women they wanted.", ["walton"]],
+    ],
+    common: "All agree the point is that people crossed God-given boundaries and corruption spread everywhere, which is why judgment came.",
+    refs: [["HEB.11", "Hebrews 11:7", "By faith Noah prepared an ark"], ["1PE.3", "1 Peter 3:20", "Eight persons were brought safely through the water"], ["MAT.24", "Matthew 24:37-39", "As in the days of Noah"]],
+  },
+  7: {
+    intro: "Noah, his family and the animals enter the ark, and the LORD shuts them in. The rain falls for forty days, the waters rise over the mountains, and every living thing outside the ark dies. Only Noah and those with him remain.",
+    v: [
+      ["7:1", "You alone I have seen righteous", "God's invitation is personal: \"Enter the ark, you and all your household.\""],
+      ["7:2-3", "Seven pairs of clean animals", "Extra clean animals were taken, likely for sacrifice afterward (8:20) and food."],
+      ["7:11", "Fountains of the deep and windows of the sky", "The waters above and below that God separated at creation (1:6-9) come back together. The flood is creation undone."],
+      ["7:16", "The LORD closed it behind him", "God Himself shuts the door. Salvation is His work, and so is the timing of judgment."],
+    ],
+    bg: [["Other ancient flood stories", "Babylonian texts such as the Epic of Gilgamesh and the Atrahasis Epic also tell of a great flood, a boat and a hero who sends out birds. Genesis differs sharply: one holy God judges sin, rather than gods annoyed by human noise.", "strong", ["anet", "walton"]]],
+    why: "Was the flood worldwide, or a vast regional flood that covered the whole world Noah's readers knew? Both sides take the text seriously.",
+    views: [
+      ["A worldwide flood", "The waters covered \"all the high mountains everywhere under the heavens\" (7:19), all air-breathing life died, and God promised never again to flood the earth (9:11), which would not hold for local floods.", ["mathews"]],
+      ["A regional flood", "\"All the earth\" can mean all the land in view (Genesis 41:57). Some hold the flood covered the whole region of the human world then, and destroyed all of humanity outside the ark.", ["walton", "kidner"]],
+    ],
+    common: "Both agree the flood truly happened, that God judged real sin, and that Noah's family was saved by grace through the ark, a picture Peter links to salvation in Christ (1 Peter 3:20-21).",
+    refs: [["2PE.3", "2 Peter 3:5-7", "The world at that time was destroyed, being flooded"], ["LUK.17", "Luke 17:26-27", "The flood came and destroyed them all"]],
+  },
+  8: {
+    intro: "God remembers Noah. The waters go down, the ark rests on the mountains of Ararat, and Noah sends out a raven and then a dove until it returns with an olive leaf. Noah leaves the ark, builds an altar and worships, and God promises that seasons will continue as long as the earth remains.",
+    v: [
+      ["8:1", "God remembered Noah", "To remember, in the Bible, means to act on a promise. A wind passes over the earth, as the Spirit hovered over the waters at creation (1:2)."],
+      ["8:4", "The mountains of Ararat", "Ararat is the region of Urartu, in today's eastern Turkey and Armenia. The text names the range, not a single peak.", "good", ["wenham1", "kitchen"]],
+      ["8:11", "A freshly picked olive leaf", "The dove's olive leaf showed that plants were growing again on lower ground."],
+      ["8:20-22", "Noah's first act", "Before building a house, Noah builds an altar. God promises, \"While the earth remains, seedtime and harvest... shall not cease.\""],
+    ],
+    refs: [["GEN.9", "Genesis 9:11-17", "The rainbow covenant"], ["ISA.54", "Isaiah 54:9", "As I swore that the waters of Noah would not flood the earth again"]],
+  },
+  9: {
+    intro: "God blesses Noah and his sons and repeats the command to fill the earth. He allows animals for food but forbids eating blood, and He sets the value of human life because people bear His image. God makes a covenant with all living things and gives the rainbow as its sign. The chapter ends with Noah's drunkenness and the cursing of Canaan.",
+    v: [
+      ["9:3-4", "Meat, but not blood", "Green plants were given before (1:29); now animals too. Blood, the life, is to be poured out, not eaten, a rule later echoed for Gentile believers (Acts 15:20)."],
+      ["9:6", "In the image of God", "Taking a human life is so serious because every person is made in God's image. This is why human life is sacred."],
+      ["9:13", "My bow in the cloud", "The Hebrew word for rainbow is the ordinary word for a warrior's bow. God, as it were, hangs up His bow."],
+      ["9:20-25", "Noah's failure and Canaan's curse", "Even righteous Noah sins. Ham sees his father's shame and tells his brothers; Shem and Japheth cover him without looking. The curse falls on Ham's son Canaan, foreshadowing Israel and Canaan later."],
+    ],
+    why: "What exactly did Ham do (9:22), and why was Canaan cursed rather than Ham? The wording is short.",
+    views: [
+      ["Disrespect and mockery", "Many hold that Ham looked on his father's nakedness and spread it, dishonoring him. Canaan is named because Genesis is preparing for the later story of Canaan's sins (Leviticus 18:3).", ["kidner", "hamilton1"]],
+      ["A more serious act", "Some read \"saw his father's nakedness\" as a phrase for a sexual sin, as in Leviticus 18, which would explain the strong reaction.", ["wenham1"]],
+    ],
+    common: "All reject any use of this passage to justify racism or slavery. The curse names Canaan only, and Scripture teaches that all peoples come from one man and are loved by God (Acts 17:26).",
+    refs: [["ACT.15", "Acts 15:20", "Abstain from blood"], ["EZK.1", "Ezekiel 1:28", "Like the rainbow in the clouds, the glory of the LORD"], ["REV.4", "Revelation 4:3", "A rainbow around the throne"]],
+  },
+  10: {
+    intro: "The Table of Nations: the families that came from Noah's sons Japheth, Ham and Shem, spread out by their lands, languages and nations. About seventy nations are listed, showing that the whole human family is one.",
+    v: [
+      ["10:1", "These are the records", "One of the \"generations\" headings (toledot) that divide Genesis into sections."],
+      ["10:8-10", "Nimrod", "A mighty hunter who founded kingdoms in Babel, Erech and Akkad in Shinar (Babylonia), then Nineveh in Assyria."],
+      ["10:25", "Peleg, in whose days the earth was divided", "Peleg's name means \"division.\" Most connect this to the dividing of languages at Babel in chapter 11."],
+    ],
+    bg: [["Real places and peoples", "Many names match known peoples and places: Madai (the Medes), Mizraim (Egypt), Cush (south of Egypt), Asshur (Assyria), Elam, Javan (the Greeks of Ionia), Sidon and Heth.", "strong", ["kitchen", "wenham1"]]],
+    refs: [["1CH.1", "1 Chronicles 1:4-27", "The same family lines"], ["ACT.17", "Acts 17:26", "He made from one man every nation"]],
+  },
+  11: {
+    intro: "All people speak one language and settle in Shinar, where they build a city and a tower \"whose top will reach into heaven\" to make a name for themselves. God confuses their language and scatters them. The chapter then traces Shem's family down to Terah and his son Abram.",
+    v: [
+      ["11:4", "Let us make for ourselves a name", "The builders want fame and safety apart from God. In the very next chapter God promises Abram, \"I will make your name great\" (12:2)."],
+      ["11:5", "The LORD came down to see", "A touch of irony: the tower meant to reach heaven is so small that God must \"come down\" to see it."],
+      ["11:9", "Babel", "The name sounds like the Hebrew word for confuse (balal). Babylon's own name meant \"gate of god.\""],
+      ["11:30", "Sarai was barren", "The line of promise seems to end before it begins. Everything that follows depends on God's power."],
+    ],
+    bg: [["Ziggurats", "Babylonian temple-towers called ziggurats were built of baked brick with tar, just as 11:3 describes. They were stairways for a god to come down to his temple.", "strong", ["walton", "anet"]]],
+    refs: [["ACT.2", "Acts 2:5-11", "At Pentecost every nation hears in its own language"], ["GEN.12", "Genesis 12:1-3", "I will make your name great"], ["REV.7", "Revelation 7:9", "From every nation and tongue"]],
+  },
+  12: {
+    intro: "God calls Abram to leave his country and family for a land God will show him, promising to make him a great nation and to bless all the families of the earth through him. Abram obeys at age 75 and travels to Canaan, building altars as he goes. During a famine he goes to Egypt and, afraid, passes Sarai off as his sister.",
+    v: [
+      ["12:1", "Go forth", "God's call comes with no map. Hebrews 11:8: \"he went out, not knowing where he was going.\""],
+      ["12:2-3", "Seven promises", "A great nation, blessing, a great name, being a blessing, blessing those who bless him, cursing those who curse him, and \"in you all the families of the earth will be blessed.\" Paul calls this the gospel preached beforehand (Galatians 3:8)."],
+      ["12:7", "To your descendants I will give this land", "The first time God appears to Abram in Canaan. Abram answers by building an altar."],
+      ["12:10-13", "Say you are my sister", "Abram's faith wavers. Sarai really was his half-sister (20:12), but the half-truth was meant to deceive, and it put her in danger."],
+    ],
+    bg: [["When did Abraham live?", "Most place Abraham between about 2000 and 1800 BC. Names like Abram, travel between Mesopotamia and Egypt, and the customs in his story fit the early second millennium BC.", "good", ["kitchen", "wenham1"]]],
+    refs: [["GAL.3", "Galatians 3:8", "The gospel preached beforehand to Abraham"], ["HEB.11", "Hebrews 11:8-10", "By faith Abraham went out"], ["ACT.7", "Acts 7:2-4", "Stephen tells Abraham's call"]],
+  },
+  13: {
+    intro: "Back from Egypt, Abram and his nephew Lot have so many flocks that their herdsmen quarrel. Abram generously lets Lot choose land first. Lot chooses the well-watered Jordan valley near Sodom. God then tells Abram to look in every direction, for all the land he sees will belong to his descendants.",
+    v: [
+      ["13:8", "Let there be no strife", "Abram, the elder, gives up his right to choose first: \"we are brothers.\""],
+      ["13:10-13", "Lot looked", "Lot chose by sight; the valley looked \"like the garden of the LORD.\" But \"the men of Sodom were wicked exceedingly.\""],
+      ["13:14-17", "Lift up your eyes", "After Lot leaves, God tells Abram to look in every direction and walk through the land. What Abram gave up, God gives back much larger."],
+      ["13:18", "Hebron", "Abram settles by the oaks of Mamre at Hebron and builds an altar. Hebron becomes the family burial place (23:19)."],
+    ],
+    refs: [["PHP.2", "Philippians 2:3-4", "Regard one another as more important"], ["2PE.2", "2 Peter 2:7-8", "Righteous Lot, tormented by what he saw"]],
+  },
+  14: {
+    intro: "Four eastern kings defeat five kings of the Jordan valley and carry off Lot. Abram leads 318 trained men in a night attack and rescues everyone. Returning, he meets Melchizedek, king of Salem and priest of God Most High, who blesses him. Abram gives him a tenth but refuses any reward from the king of Sodom.",
+    v: [
+      ["14:14", "318 trained men", "Abram was a wealthy chief with a household large enough to field a small army."],
+      ["14:18", "Melchizedek, king of Salem", "His name means \"king of righteousness,\" and Salem means \"peace\"; Psalm 76:2 links Salem with Jerusalem. He brings bread and wine and blesses Abram."],
+      ["14:20", "A tenth of all", "The first tithe in the Bible, given freely as thanks to God for the victory."],
+      ["14:22-23", "Not a thread or a sandal strap", "Abram will not let anyone but God say they made him rich."],
+    ],
+    why: "Who was Melchizedek? He appears suddenly, with no family line, and Psalm 110 and Hebrews 7 give him great weight.",
+    views: [
+      ["A real king-priest who pictures Christ", "Most hold that Melchizedek was a real Canaanite king who worshiped the true God, and that Hebrews uses the silence about his ancestry as a picture of Christ's endless priesthood.", ["kidner", "wenham1"]],
+      ["An appearance of Christ", "Some suggest he was an appearance of the Son of God before His birth, since Hebrews 7:3 says he was \"made like the Son of God\" and \"remains a priest perpetually.\"", ["hamilton1"]],
+    ],
+    common: "All agree the point Hebrews draws: Jesus is a priest forever \"according to the order of Melchizedek,\" greater than the Levitical priests (Psalm 110:4; Hebrews 7).",
+    refs: [["PSA.110", "Psalm 110:4", "A priest forever according to the order of Melchizedek"], ["HEB.7", "Hebrews 7:1-10", "Melchizedek and the greater priesthood"]],
+  },
+  15: {
+    intro: "God tells Abram, \"Do not fear; I am a shield to you.\" Abram worries that he has no child. God shows him the stars and promises descendants as many as they. Abram believes, and God counts it as righteousness. Then God seals His promise of the land in a solemn covenant ceremony, passing alone between the divided animals.",
+    v: [
+      ["15:1", "Your very great reward", "The first time the phrase \"the word of the LORD came\" appears. God Himself is Abram's reward."],
+      ["15:6", "He believed the LORD", "\"He believed in the LORD; and He reckoned it to him as righteousness.\" Paul builds Romans 4 and Galatians 3 on this verse: a person is made right with God by faith."],
+      ["15:13-16", "Four hundred years", "God foretells slavery in a foreign land and a return in the fourth generation, \"for the iniquity of the Amorite is not yet complete.\""],
+      ["15:17", "A smoking oven and a flaming torch", "In ancient covenants both parties walked between cut animals, calling a curse on themselves if they broke it (Jeremiah 34:18). Here only God passes through. He takes the whole oath on Himself."],
+    ],
+    w: [["אָמַן", "aman", "H539", "to believe, to be firm, to trust", "The root of \"amen.\" To believe God is to lean your full weight on Him as firm and reliable.", ["halot"]]],
+    refs: [["ROM.4", "Romans 4:3, 18-22", "Abraham believed God"], ["GAL.3", "Galatians 3:6", "Reckoned to him as righteousness"], ["HEB.6", "Hebrews 6:13-18", "God swore by Himself"]],
+  },
+  16: {
+    intro: "Still childless after ten years, Sarai gives her Egyptian servant Hagar to Abram, and Hagar conceives. Tension follows; Sarai mistreats Hagar and she runs away. The angel of the LORD finds her by a spring, sends her back, and promises her son Ishmael many descendants. Hagar names the LORD \"the God who sees.\"",
+    v: [
+      ["16:2", "Abram listened to Sarai", "The same words used of Adam in 3:17. Taking matters into their own hands brings sorrow."],
+      ["16:7", "The angel of the LORD", "The first appearance of this figure, who speaks as God Himself (16:10)."],
+      ["16:11", "Ishmael, God hears", "God tells Hagar to name her son Ishmael, \"because the LORD has given heed to your affliction.\""],
+      ["16:13", "El Roi, the God who sees", "A runaway servant girl is the first person in the Bible to give God a name."],
+    ],
+    bg: [["A servant as a stand-in mother", "Marriage contracts from the ancient Near East (for example from Nuzi and Old Assyrian texts) allowed a childless wife to give her servant to her husband, with the child counted as hers.", "strong", ["wenham2", "kitchen"]]],
+    why: "Who is \"the angel of the LORD\"? He speaks as the LORD, and those who see him say they have seen God (16:13; Judges 13:22).",
+    views: [
+      ["The Son of God before His birth", "Many hold that he is a pre-incarnate appearance of Christ, since he is distinct from the LORD yet speaks as the LORD.", ["kidner"]],
+      ["An angel speaking for God", "Others hold he is a created angel so fully God's messenger that he speaks in God's name, as an ambassador speaks for a king.", ["wenham2", "walton"]],
+    ],
+    common: "All agree the God of the Bible sees and hears the weak and the forgotten, including those outside the chosen family.",
+    refs: [["GAL.4", "Galatians 4:21-31", "Hagar and Sarah as two covenants"], ["GEN.21", "Genesis 21:17", "God heard the voice of the lad"]],
+  },
+  17: {
+    intro: "When Abram is 99, God appears as El Shaddai, God Almighty, and confirms His covenant. He renames Abram \"Abraham,\" father of a multitude, and Sarai \"Sarah,\" and promises that Sarah will bear a son, Isaac, within a year. Circumcision becomes the sign of the covenant, and Abraham obeys that same day.",
+    v: [
+      ["17:1", "Walk before Me, and be blameless", "God Almighty (El Shaddai) calls Abram to a whole-hearted life lived in His presence."],
+      ["17:5", "Abraham", "\"Father of a multitude of nations.\" Paul says Abraham is the father of all who believe, Jew and Gentile (Romans 4:16-17)."],
+      ["17:10-11", "The sign of circumcision", "Every male in Abraham's household is to be circumcised as the sign of the covenant. The prophets and Paul later speak of circumcision of the heart (Deuteronomy 10:16; Romans 2:29)."],
+      ["17:17", "Abraham laughed", "Abraham falls on his face and laughs at the thought of a son at 100. The name Isaac means \"he laughs.\""],
+    ],
+    w: [["שַׁדַּי", "Shaddai", "H7706", "Almighty", "Used of God 48 times, often when He promises to do what is humanly impossible. The meaning of the word itself is discussed, but the Greek translation and later Bibles render it \"Almighty.\"", ["halot", "wenham2"]]],
+    refs: [["ROM.4", "Romans 4:9-12", "Circumcision as a seal of faith"], ["COL.2", "Colossians 2:11-12", "Circumcision made without hands"]],
+  },
+  18: {
+    intro: "Three visitors come to Abraham's tent at Mamre in the heat of the day. He hurries to welcome them with a meal. One of them, the LORD, promises that Sarah will have a son in a year, and Sarah laughs. Then the LORD tells Abraham of the coming judgment on Sodom, and Abraham pleads for the city: would God spare it for fifty righteous people? for ten?",
+    v: [
+      ["18:2-8", "Abraham's hospitality", "He runs, bows, hurries and serves. Hebrews 13:2: \"some have entertained angels without knowing it.\""],
+      ["18:14", "Is anything too difficult for the LORD?", "God's answer to Sarah's laugh, echoed by the angel to Mary in Luke 1:37."],
+      ["18:19", "I have chosen him", "God chose Abraham so that he would teach his household \"to keep the way of the LORD by doing righteousness and justice.\""],
+      ["18:25", "Shall not the Judge of all the earth deal justly?", "Abraham's bold prayer rests on God's own character. God agrees to spare the city even for ten righteous people."],
+    ],
+    refs: [["HEB.13", "Hebrews 13:2", "Entertained angels without knowing it"], ["LUK.1", "Luke 1:37", "Nothing will be impossible with God"], ["JAS.5", "James 5:16", "The prayer of a righteous man"]],
+  },
+  19: {
+    intro: "Two angels come to Sodom, and Lot takes them in. The men of the city surround the house demanding to abuse the visitors. The angels strike them blind and hurry Lot's family out. God rains fire and brimstone on Sodom and Gomorrah. Lot's wife looks back and becomes a pillar of salt. The chapter ends sadly with Lot's daughters in a cave.",
+    v: [
+      ["19:1", "Lot sitting in the gate", "The gate was where elders and leaders sat. Lot had moved from near Sodom (13:12) to a place of standing in it."],
+      ["19:16", "He hesitated", "Lot lingers, and the angels take him by the hand, \"the compassion of the LORD being upon him.\""],
+      ["19:26", "Lot's wife", "She looked back, longing for what she left. Jesus said, \"Remember Lot's wife\" (Luke 17:32)."],
+      ["19:29", "God remembered Abraham", "Lot was saved because God remembered Abraham's prayer."],
+    ],
+    bg: [["Where was Sodom?", "Sodom lay near the southern or northern end of the Dead Sea. Ruins at Bab edh-Dhra, south-east of the sea, and at Tall el-Hammam, north-east of it, have each been proposed. Scholars continue to debate the site.", "debated", ["kitchen", "hamilton2"]]],
+    refs: [["2PE.2", "2 Peter 2:6-9", "The Lord knows how to rescue the godly"], ["LUK.17", "Luke 17:28-32", "Remember Lot's wife"], ["JUD.1", "Jude 1:7", "Sodom and Gomorrah as an example"]],
+  },
+  20: {
+    intro: "Abraham again calls Sarah his sister, this time in Gerar, and King Abimelech takes her. God warns Abimelech in a dream, and he returns Sarah untouched, with gifts. Abraham prays for Abimelech's household and God heals them.",
+    v: [
+      ["20:3", "God came to Abimelech in a dream", "God protects Sarah, the mother of the promised son, even when Abraham fails to."],
+      ["20:7", "He is a prophet", "The first use of the word prophet in the Bible. Abraham will pray for the king."],
+      ["20:11", "No fear of God in this place", "Abraham assumed the worst about others. In fact Abimelech was the one acting with integrity."],
+      ["20:17", "Abraham prayed", "The failing believer still has a role: he prays, and God heals."],
+    ],
+    refs: [["GEN.12", "Genesis 12:10-20", "The same fear in Egypt"], ["GEN.26", "Genesis 26:6-11", "Isaac does the same thing"], ["PSA.105", "Psalm 105:14-15", "Do not touch My anointed ones"]],
+  },
+  21: {
+    intro: "The LORD does exactly as He promised: Sarah bears Isaac when Abraham is 100. At Isaac's weaning feast Ishmael mocks him, and Sarah asks Abraham to send Hagar and Ishmael away. God provides water for them in the wilderness and promises to make Ishmael a nation. Abraham makes a treaty with Abimelech at Beersheba.",
+    v: [
+      ["21:1", "The LORD did for Sarah as He had promised", "\"As He had said... as He had promised\": the words stress that God keeps His word, on time."],
+      ["21:6", "God has made laughter for me", "Sarah's laugh of doubt (18:12) becomes a laugh of joy."],
+      ["21:17", "God heard the voice of the lad", "The meaning of Ishmael's name comes true. God cares for the son who was sent away."],
+      ["21:33", "The Everlasting God", "Abraham plants a tamarisk tree at Beersheba and calls on the name of the LORD, El Olam, the Everlasting God."],
+    ],
+    refs: [["GAL.4", "Galatians 4:28-31", "Children of promise like Isaac"], ["HEB.11", "Hebrews 11:11", "By faith Sarah received ability to conceive"]],
+  },
+  22: {
+    intro: "God tests Abraham: \"Take now your son, your only son, whom you love, Isaac,\" and offer him on a mountain in Moriah. Abraham obeys. On the mountain, as he raises the knife, the angel of the LORD stops him, and Abraham sees a ram caught in a thicket. He names the place \"The LORD Will Provide.\" God renews His promise with an oath.",
+    v: [
+      ["22:1", "God tested Abraham", "The reader is told this is a test; Abraham is not. God does not tempt anyone to sin (James 1:13), but He proves and strengthens faith."],
+      ["22:5", "We will worship and return to you", "Hebrews 11:19 says Abraham \"considered that God is able to raise people even from the dead.\""],
+      ["22:8", "God will provide for Himself the lamb", "Abraham's answer to Isaac points far beyond that day, to \"the Lamb of God who takes away the sin of the world\" (John 1:29)."],
+      ["22:14", "The LORD Will Provide", "Hebrew Yahweh Yireh. \"In the mount of the LORD it will be provided.\""],
+      ["22:16-18", "By Myself I have sworn", "The only time God swears an oath to the patriarchs. Hebrews 6:13 explains: He could swear by no one greater."],
+    ],
+    bg: [["Mount Moriah", "2 Chronicles 3:1 says Solomon built the temple on Mount Moriah in Jerusalem, so the place of Isaac's near sacrifice became the place of Israel's sacrifices.", "good", ["kidner", "wenham2"]]],
+    refs: [["HEB.11", "Hebrews 11:17-19", "By faith Abraham offered up Isaac"], ["JAS.2", "James 2:21-23", "Faith working with his works"], ["JHN.3", "John 3:16", "He gave His only begotten Son"], ["ROM.8", "Romans 8:32", "He who did not spare His own Son"]],
+  },
+  23: {
+    intro: "Sarah dies at Hebron at 127, and Abraham mourns her. He buys the cave of Machpelah and the field around it from Ephron the Hittite for 400 shekels of silver, in a formal public sale at the city gate. It is the first piece of the promised land Abraham owns.",
+    v: [
+      ["23:4", "A stranger and a sojourner", "After more than sixty years in Canaan, Abraham still owns no land. Hebrews 11:13 says the patriarchs confessed they were strangers on earth, looking for a heavenly country."],
+      ["23:10-16", "A polite bargain", "Ephron offers the field as a gift, then names a high price. Abraham pays it in full, before witnesses, so no one could later dispute it."],
+      ["23:19", "The cave of Machpelah", "Abraham, Isaac, Rebekah, Leah and Jacob will all be buried here (49:31; 50:13)."],
+    ],
+    bg: [["Hebron today", "A large building over the traditional cave of Machpelah, built under Herod the Great, still stands in Hebron.", "good", ["hamilton2"]]],
+    refs: [["HEB.11", "Hebrews 11:13-16", "Strangers and exiles on the earth"], ["ACT.7", "Acts 7:5", "Not even a foot of ground"]],
+  },
+  24: {
+    intro: "Abraham sends his oldest servant to his relatives in Mesopotamia to find a wife for Isaac. The servant prays for a sign at the well, and before he finishes, Rebekah comes and offers water to him and his camels. Her family agrees, Rebekah says \"I will go,\" and Isaac takes her as his wife and loves her.",
+    v: [
+      ["24:12-14", "A servant's prayer", "The longest chapter in Genesis turns on a simple prayer, asking God to show \"lovingkindness\" (hesed) to his master."],
+      ["24:19-20", "Water for ten camels", "A thirsty camel can drink many gallons. Rebekah's offer showed remarkable kindness and hard work."],
+      ["24:27", "The LORD has guided me", "The servant first thanks God before saying anything to the family."],
+      ["24:58", "I will go", "Like Abraham, Rebekah leaves her family for an unknown land."],
+      ["24:67", "He loved her", "The first time the Bible says a husband loved his wife."],
+    ],
+    w: [["חֶסֶד", "hesed", "H2617", "steadfast love, lovingkindness, loyal love", "Love that keeps its promises. It runs through the whole Old Testament as the word for God's covenant faithfulness.", ["halot"]]],
+    refs: [["PRO.3", "Proverbs 3:5-6", "He will make your paths straight"], ["PSA.37", "Psalm 37:5", "Commit your way to the LORD"]],
+  },
+  25: {
+    intro: "Abraham dies at 175 and is buried by Isaac and Ishmael. Isaac prays for his barren wife Rebekah, and she conceives twins, who struggle within her. God tells her the older will serve the younger. Esau grows up a hunter and Jacob a quiet man of the tents. Hungry Esau sells his birthright to Jacob for a bowl of red stew.",
+    v: [
+      ["25:8", "Gathered to his people", "A phrase that points to life beyond death, joining those who went before."],
+      ["25:21", "Isaac prayed", "Rebekah waited twenty years (25:20, 26). The child of promise comes through prayer."],
+      ["25:23", "The older will serve the younger", "Paul cites this to show that God's choice depends on His mercy, not human merit (Romans 9:10-13)."],
+      ["25:34", "Esau despised his birthright", "The birthright brought a double share and family leadership. Hebrews 12:16 calls Esau \"godless\" for trading it for a single meal."],
+    ],
+    refs: [["ROM.9", "Romans 9:10-13", "Jacob I loved"], ["HEB.12", "Hebrews 12:16-17", "Esau sold his own birthright"], ["MAL.1", "Malachi 1:2-3", "Jacob and Esau"]],
+  },
+  26: {
+    intro: "In a famine God tells Isaac not to go to Egypt and repeats to him the promises made to Abraham. In Gerar Isaac, like his father, calls Rebekah his sister. God blesses Isaac with a hundredfold harvest. The Philistines fill in his wells out of envy, and Isaac keeps moving and digging until he finds room at Rehoboth. God appears to him at Beersheba.",
+    v: [
+      ["26:3-5", "I will be with you", "The promises pass to Isaac, \"because Abraham obeyed Me.\""],
+      ["26:12", "A hundredfold", "Even in famine Isaac's crops yield a hundred times what he sowed."],
+      ["26:22", "Rehoboth, room", "Instead of fighting over wells, Isaac moves on. \"Now the LORD has made room for us.\""],
+      ["26:24", "Do not fear, for I am with you", "God's words come the night Isaac reaches Beersheba. Isaac builds an altar there."],
+    ],
+    refs: [["MAT.5", "Matthew 5:9", "Blessed are the peacemakers"], ["ROM.12", "Romans 12:18", "Be at peace with all men"]],
+  },
+  27: {
+    intro: "Old and blind, Isaac plans to bless Esau. Rebekah overhears and helps Jacob disguise himself as Esau with goat skins and borrowed clothes. Isaac blesses Jacob. When Esau returns, he weeps bitterly and plans to kill his brother, so Rebekah sends Jacob away to her brother Laban.",
+    v: [
+      ["27:12", "I will bring a curse on myself", "Jacob worries about being caught, not about deceiving his father."],
+      ["27:20", "The LORD your God caused it to happen", "Jacob even uses God's name in his lie."],
+      ["27:33", "Isaac trembled violently", "Isaac realizes that God's word to Rebekah (25:23) has been fulfilled despite his own plans."],
+      ["27:41", "Esau hated Jacob", "Deceit brings a broken family. Rebekah never sees her favorite son again."],
+    ],
+    why: "Should Jacob and Rebekah be blamed, or were they securing what God had promised (25:23)? The narrator does not stop to judge.",
+    views: [
+      ["Wrong means for a right end", "Most hold that God's purpose stood, but that the deception was sin, and the rest of Jacob's life shows its painful harvest (29:25).", ["waltke", "kidner"]],
+      ["Isaac was also at fault", "Others stress that Isaac was trying to bless Esau against God's word and kept the blessing private.", ["wenham2"]],
+    ],
+    common: "All agree that God works His purposes even through a deeply flawed family, without approving their sin.",
+    refs: [["HEB.11", "Hebrews 11:20", "By faith Isaac blessed Jacob and Esau"], ["HEB.12", "Hebrews 12:17", "Esau sought it with tears"]],
+  },
+  28: {
+    intro: "Jacob leaves home alone. At night, sleeping with a stone for a pillow, he dreams of a stairway reaching to heaven with angels going up and down, and the LORD standing above it, repeating the promises to Abraham and adding, \"I am with you and will keep you wherever you go.\" Jacob names the place Bethel and vows to follow God.",
+    v: [
+      ["28:12", "A ladder set on the earth", "Likely a great stairway like those on a ziggurat. Unlike Babel, heaven reaches down to earth by God's choice."],
+      ["28:15", "I will not leave you", "God promises His presence to a man running from his own sins."],
+      ["28:16", "Surely the LORD is in this place", "\"And I did not know it.\""],
+      ["28:19", "Bethel, house of God", "The town was called Luz before."],
+    ],
+    refs: [["JHN.1", "John 1:51", "The angels of God ascending and descending on the Son of Man"], ["HEB.13", "Hebrews 13:5", "I will never desert you"]],
+  },
+  29: {
+    intro: "Jacob arrives in Haran, meets Rachel at a well and falls in love. He agrees to work seven years for her, and the years seem like a few days. But on the wedding night Laban gives him Leah instead. Jacob works seven more years for Rachel. God sees that Leah is unloved and gives her four sons, ending with Judah.",
+    v: [
+      ["29:20", "A few days", "Love makes long work light."],
+      ["29:25", "Why have you deceived me?", "The deceiver is deceived. Jacob took the place of the older son; now the older daughter is put in place of the younger."],
+      ["29:31", "The LORD saw that Leah was unloved", "God notices the one who is overlooked."],
+      ["29:35", "This time I will praise the LORD", "Leah stops naming sons after her longing for Jacob's love and simply praises God. Judah (praise) becomes the ancestor of David and of Jesus."],
+    ],
+    refs: [["GAL.6", "Galatians 6:7", "Whatever a man sows, this he will also reap"], ["MAT.1", "Matthew 1:2-3", "Judah in Jesus' family line"]],
+  },
+  30: {
+    intro: "Rachel envies Leah and gives Jacob her servant Bilhah. Leah answers with her servant Zilpah. A rivalry of births follows, including the mandrakes bargain. At last God remembers Rachel and she bears Joseph. Jacob then outwits Laban over the flocks and grows very rich.",
+    v: [
+      ["30:1-2", "Give me children, or else I die", "Jacob answers sharply, \"Am I in the place of God?\""],
+      ["30:14-16", "Mandrakes", "Mandrake roots were thought to help a woman conceive. Yet the next children come because \"God gave heed\" (30:17, 22)."],
+      ["30:22", "God remembered Rachel", "After long years, Rachel's prayer is answered."],
+      ["30:37-43", "Peeled rods", "Jacob uses an old belief about breeding. Jacob later credits God, not the rods (31:9-12)."],
+    ],
+    refs: [["GEN.31", "Genesis 31:9-12", "God took away your father's livestock"], ["1SA.1", "1 Samuel 1:5-20", "Hannah, another barren wife who prays"]],
+  },
+  31: {
+    intro: "God tells Jacob to go home. Jacob leaves secretly with his family and flocks, and Rachel steals her father's household idols. Laban chases them, but God warns Laban in a dream not to harm Jacob. Rachel hides the idols, and Jacob and Laban make a covenant with a heap of stones as a witness.",
+    v: [
+      ["31:3", "Return... and I will be with you", "After twenty years, God calls Jacob home with the same promise He gave at Bethel."],
+      ["31:19", "Household idols", "Hebrew teraphim, small family gods. Some suggest they were also tied to the family inheritance."],
+      ["31:42", "The Fear of Isaac", "Jacob speaks of God as the one his father Isaac worshiped in reverent awe."],
+      ["31:49", "Mizpah", "\"May the LORD watch between you and me when we are absent one from the other.\" It was a warning between two men who did not trust each other, though it is often used today as a blessing."],
+    ],
+    refs: [["GEN.28", "Genesis 28:15", "I will bring you back to this land"], ["PSA.121", "Psalm 121:7-8", "The LORD will guard your going out and your coming in"]],
+  },
+  32: {
+    intro: "Jacob learns that Esau is coming with 400 men. Afraid, he divides his camp, prays a humble prayer, and sends gifts ahead. Alone that night by the Jabbok River, a man wrestles with him until daybreak, touches his hip, and blesses him with a new name, Israel. Jacob names the place Peniel: \"I have seen God face to face.\"",
+    v: [
+      ["32:10", "I am unworthy", "Jacob's first truly humble prayer: \"I am unworthy of all the lovingkindness and of all the faithfulness which You have shown to Your servant.\""],
+      ["32:26", "I will not let you go unless you bless me", "Crippled, Jacob can only cling."],
+      ["32:28", "Israel", "\"You have striven with God and with men and have prevailed.\" The name of the man becomes the name of the nation."],
+      ["32:30", "Peniel", "\"Face of God.\" Jacob limps away blessed."],
+    ],
+    why: "Who wrestled with Jacob? The text calls him \"a man\" (32:24), Jacob says he saw God (32:30), and Hosea 12:4 says he wrestled with the angel.",
+    views: [
+      ["God Himself in human form", "Many hold that God appeared as a man, perhaps the pre-incarnate Son, since Jacob says \"I have seen God face to face.\"", ["kidner", "waltke"]],
+      ["An angel representing God", "Others follow Hosea 12:4, holding that Jacob met God through His angel.", ["wenham2", "hamilton2"]],
+    ],
+    common: "All agree that Jacob met God, that God humbled him and blessed him, and that he left changed.",
+    refs: [["HOS.12", "Hosea 12:3-4", "He wrestled with the angel and prevailed"], ["2CO.12", "2 Corinthians 12:9", "Power perfected in weakness"]],
+  },
+  33: {
+    intro: "Jacob bows seven times as Esau approaches. Esau runs to meet him, hugs him, kisses him, and they weep. Jacob insists Esau accept his gifts: \"I see your face as one sees the face of God.\" The brothers part in peace, and Jacob settles near Shechem, where he builds an altar to \"God, the God of Israel.\"",
+    v: [
+      ["33:4", "Esau ran to meet him", "Jesus seems to echo this scene in the father who runs to his son in Luke 15:20."],
+      ["33:10", "Like the face of God", "Jacob has just seen God's face (32:30); now he sees grace in his brother's face."],
+      ["33:20", "El-Elohe-Israel", "\"God, the God of Israel.\" Jacob now calls God his own."],
+    ],
+    refs: [["LUK.15", "Luke 15:20", "The father ran and embraced him"], ["MAT.5", "Matthew 5:23-24", "First be reconciled to your brother"]],
+  },
+  34: {
+    intro: "Shechem, a local prince, violates Jacob's daughter Dinah and then wants to marry her. Jacob's sons answer deceitfully, insisting the men of the city be circumcised. While the men are recovering, Simeon and Levi kill them all and plunder the city. Jacob rebukes them for endangering the family.",
+    v: [
+      ["34:2", "He violated her", "The Bible tells this painful story honestly and calls it a disgrace (34:7)."],
+      ["34:13", "Deceitfully", "Jacob's sons use the sign of God's covenant as a weapon."],
+      ["34:30", "You have brought trouble on me", "Jacob's concern is mostly for himself. Later he will judge Simeon and Levi's anger (49:5-7)."],
+    ],
+    refs: [["GEN.49", "Genesis 49:5-7", "Cursed be their anger"], ["ROM.12", "Romans 12:19", "Never take your own revenge"]],
+  },
+  35: {
+    intro: "God sends Jacob back to Bethel. Jacob tells his household to put away their foreign gods and purify themselves. At Bethel God confirms the name Israel and the promises. Rachel dies giving birth to Benjamin near Bethlehem, Reuben sins against his father, and Isaac dies and is buried by Esau and Jacob.",
+    v: [
+      ["35:2", "Put away the foreign gods", "Going back to meet God requires clearing out idols. They bury them under the oak at Shechem."],
+      ["35:11", "Be fruitful and multiply", "God repeats the creation blessing to Israel: kings will come from him."],
+      ["35:18", "Ben-oni and Benjamin", "Rachel, dying, names him \"son of my sorrow.\" Jacob renames him \"son of my right hand.\""],
+      ["35:20", "Rachel's tomb", "A pillar marked the grave \"to this day.\" Jeremiah 31:15 pictures Rachel weeping for her children, quoted in Matthew 2:18."],
+    ],
+    refs: [["JER.31", "Jeremiah 31:15", "Rachel is weeping for her children"], ["MAT.2", "Matthew 2:18", "Rachel weeping in Ramah"]],
+  },
+  36: {
+    intro: "The family line of Esau, who is Edom, and the chiefs and kings of Edom in the hill country of Seir. Esau moves away from Jacob because the land cannot support both of them.",
+    v: [
+      ["36:1", "Esau, that is, Edom", "Edom means \"red,\" recalling the red stew (25:30) and Esau's red hair."],
+      ["36:6-7", "Too great to live together", "Like Abraham and Lot, the brothers separate peacefully."],
+      ["36:31", "Before any king reigned over Israel", "Edom had kings long before Israel did. Many see this line as a later editorial note."],
+    ],
+    bg: [["Edom", "Edom lay south and east of the Dead Sea. Its people were later Israel's neighbors and often its enemies. The book of Obadiah is about Edom.", "strong", ["kitchen"]]],
+    refs: [["OBA.1", "Obadiah 1:1-21", "God's word about Edom"], ["NUM.20", "Numbers 20:14-21", "Edom refuses Israel passage"]],
+  },
+  37: {
+    intro: "Jacob loves Joseph more than his other sons and gives him a special tunic. Joseph dreams that his family will bow to him, and his brothers hate him. When Joseph comes to check on them, they throw him into a pit, then sell him to traders headed for Egypt. They dip his tunic in goat's blood, and Jacob mourns, sure that his son is dead.",
+    v: [
+      ["37:3", "A varicolored tunic", "The famous \"coat of many colors.\" The Hebrew may mean a long-sleeved robe, the clothing of someone who does not do hard work."],
+      ["37:5-11", "Joseph's dreams", "Sheaves and stars bow to Joseph. His father rebukes him, but \"kept the saying in mind.\""],
+      ["37:26-28", "Twenty shekels of silver", "Judah suggests selling rather than killing Joseph. Twenty shekels was the price of a young slave in this period.", "good", ["kitchen"]],
+      ["37:35", "Refusing to be comforted", "Jacob, who once deceived his father with a goat and clothing (27:16), is now deceived the same way."],
+    ],
+    bg: [["The price of a slave", "Joseph's price of twenty shekels matches slave prices in the early second millennium BC; later the price rose to thirty and then more. A small detail that fits the time.", "strong", ["kitchen"]]],
+    refs: [["ACT.7", "Acts 7:9", "The patriarchs became jealous of Joseph"], ["PSA.105", "Psalm 105:17", "Joseph, sold as a slave"]],
+  },
+  38: {
+    intro: "Judah leaves his brothers and marries a Canaanite woman. After his two sons die, he fails to give his daughter-in-law Tamar to his third son as custom required. Tamar disguises herself, and Judah sleeps with her, thinking she is a prostitute. When she is found pregnant, she shows his seal and staff. Judah admits, \"She is more righteous than I.\" She bears twins, Perez and Zerah.",
+    v: [
+      ["38:8", "Raise up offspring for your brother", "The custom later called levirate marriage (Deuteronomy 25:5-10) kept a dead man's name and inheritance alive."],
+      ["38:18", "Your seal and your cord and your staff", "A cylinder seal on a cord was like a man's signature and ID card."],
+      ["38:26", "She is more righteous than I", "Judah's turning point. He will later offer himself in Benjamin's place (44:33)."],
+      ["38:29", "Perez", "Perez becomes an ancestor of David and of Jesus. Tamar is one of the women Matthew names in Jesus' genealogy."],
+    ],
+    refs: [["MAT.1", "Matthew 1:3", "Judah the father of Perez and Zerah by Tamar"], ["RUT.4", "Ruth 4:12, 18-22", "The house of Perez to David"], ["DEU.25", "Deuteronomy 25:5-10", "The brother-in-law's duty"]],
+  },
+  39: {
+    intro: "Joseph is sold to Potiphar, an Egyptian officer, and the LORD makes everything he does prosper. Potiphar's wife tries again and again to seduce him, and he refuses. She falsely accuses him, and Joseph is thrown into prison. But the LORD is with him there too, and the jailer puts him in charge.",
+    v: [
+      ["39:2", "The LORD was with Joseph", "The phrase frames the chapter (39:2, 3, 21, 23). God's presence does not mean the absence of trouble."],
+      ["39:9", "How could I sin against God?", "Joseph sees that sin is first of all against God."],
+      ["39:12", "He fled", "Joseph leaves his garment and runs. Paul: \"Flee immorality\" (1 Corinthians 6:18)."],
+      ["39:21", "Kindness in prison", "God shows Joseph hesed, steadfast love, even in the dungeon."],
+    ],
+    refs: [["1CO.6", "1 Corinthians 6:18", "Flee immorality"], ["2TI.2", "2 Timothy 2:22", "Flee from youthful lusts"], ["ACT.7", "Acts 7:9-10", "God was with him"]],
+  },
+  40: {
+    intro: "Pharaoh's cupbearer and baker are thrown into the same prison as Joseph. Each has a troubling dream. Joseph says interpretations belong to God, then tells them: the cupbearer will be restored in three days, and the baker will be hanged. It happens just as he said, but the cupbearer forgets Joseph.",
+    v: [
+      ["40:7", "Why are your faces so sad today?", "Joseph notices other people's pain even in his own trouble."],
+      ["40:8", "Do not interpretations belong to God?", "Joseph points away from himself to God."],
+      ["40:14", "Remember me", "Joseph asks for help. The cupbearer forgets for two full years."],
+    ],
+    bg: [["Dreams in Egypt", "Egyptians took dreams very seriously. Dream-interpretation manuals survive from Egypt, such as the Chester Beatty dream book, written well before 1000 BC.", "strong", ["kitchen", "wenham2"]]],
+    refs: [["DAN.2", "Daniel 2:27-28", "There is a God in heaven who reveals mysteries"], ["PSA.105", "Psalm 105:19", "Until the time that his word came to pass"]],
+  },
+  41: {
+    intro: "Pharaoh dreams of seven fat cows eaten by seven thin ones, and seven full ears of grain swallowed by seven thin ones. No one can explain it until the cupbearer remembers Joseph. Joseph explains seven years of plenty followed by seven years of famine. Pharaoh makes him ruler over all Egypt at age thirty. Joseph stores grain, marries, and has two sons, Manasseh and Ephraim.",
+    v: [
+      ["41:16", "It is not in me; God will give Pharaoh an answer", "Even before Pharaoh, Joseph gives God the credit."],
+      ["41:38", "A man in whom is a divine spirit", "Pharaoh recognizes God's wisdom in Joseph."],
+      ["41:46", "Thirty years old", "Thirteen years after being sold (37:2), Joseph stands before Pharaoh."],
+      ["41:51-52", "Manasseh and Ephraim", "\"God has made me forget all my trouble\" and \"God has made me fruitful in the land of my affliction.\""],
+    ],
+    bg: [["Egyptian details", "A gold chain, a signet ring, fine linen, a chariot and an Egyptian name, Zaphenath-paneah, fit known Egyptian practice for appointing high officials.", "good", ["kitchen", "hamilton2"]]],
+    refs: [["PSA.105", "Psalm 105:20-22", "He made him lord of his house"], ["ACT.7", "Acts 7:10-11", "Governor over Egypt"]],
+  },
+  42: {
+    intro: "Famine reaches Canaan, and Jacob sends ten sons to Egypt to buy grain. They bow before Joseph without recognizing him. Joseph recognizes them, speaks roughly, accuses them of spying, and keeps Simeon until they bring their youngest brother Benjamin. The brothers say to one another, \"We are truly guilty concerning our brother.\"",
+    v: [
+      ["42:6", "They bowed down to him", "Joseph's dreams (37:7) come true."],
+      ["42:21", "We are truly guilty", "Twenty years later, the brothers' conscience still speaks."],
+      ["42:24", "He turned away and wept", "Joseph's tough words hide a tender heart. He is testing whether his brothers have changed."],
+      ["42:36", "All these things are against me", "Jacob does not yet see that God is working for him."],
+    ],
+    refs: [["GEN.37", "Genesis 37:7-9", "The dreams of bowing sheaves"], ["ROM.8", "Romans 8:28", "God causes all things to work together for good"]],
+  },
+  43: {
+    intro: "The famine grows worse. Judah promises to be personally responsible for Benjamin, and Jacob lets him go. Joseph invites the brothers to a feast at his house. Seeing Benjamin, he has to leave the room to weep. The brothers are amazed to be seated in birth order, and Benjamin gets five times as much food.",
+    v: [
+      ["43:9", "I myself will be surety for him", "Judah, who once sold Joseph, now offers himself for Benjamin."],
+      ["43:14", "God Almighty grant you compassion", "Jacob entrusts his sons to El Shaddai."],
+      ["43:30", "Deeply stirred over his brother", "Joseph hurries out to weep in private."],
+      ["43:32", "Egyptians could not eat with Hebrews", "A detail about Egyptian customs that fits their known separateness from foreign herdsmen."],
+    ],
+    refs: [["HEB.7", "Hebrews 7:22", "Jesus, the guarantee of a better covenant"], ["GEN.44", "Genesis 44:32-34", "Judah keeps his word"]],
+  },
+  44: {
+    intro: "Joseph hides his silver cup in Benjamin's sack and then sends his steward after the brothers. When the cup is found, Joseph says Benjamin must stay as his slave. Judah steps forward and gives a moving speech, offering to stay as a slave in Benjamin's place so their father will not die of grief.",
+    v: [
+      ["44:5", "Divination cup", "Egyptians used cups for divination. Joseph speaks as an Egyptian official would, as part of his test."],
+      ["44:16", "God has found out the iniquity of your servants", "Judah connects their trouble with their old sin against Joseph."],
+      ["44:33", "Let your servant remain instead of the lad", "The longest speech in Genesis. The brother who sold one son of Rachel now gives himself to save the other. The test is passed."],
+    ],
+    refs: [["JHN.15", "John 15:13", "Lay down his life for his friends"], ["HEB.7", "Hebrews 7:14", "Our Lord descended from Judah"]],
+  },
+  45: {
+    intro: "Joseph can hold back no longer. He sends everyone else out and says, \"I am Joseph!\" His brothers are terrified, but Joseph tells them not to be distressed, because God sent him ahead to save lives. Pharaoh invites the whole family to Egypt. When Jacob hears that Joseph is alive, his spirit revives.",
+    v: [
+      ["45:5", "God sent me before you to preserve life", "Joseph sees God's hand behind all that happened: \"it was not you who sent me here, but God\" (45:8)."],
+      ["45:15", "He kissed all his brothers and wept", "Forgiveness is real and warm, not merely formal."],
+      ["45:24", "Do not quarrel on the journey", "Joseph knows his brothers well."],
+      ["45:27-28", "The spirit of their father Jacob revived", "\"It is enough; my son Joseph is still alive.\""],
+    ],
+    refs: [["GEN.50", "Genesis 50:20", "God meant it for good"], ["EPH.4", "Ephesians 4:32", "Forgiving each other"], ["ACT.7", "Acts 7:13-14", "Joseph made himself known"]],
+  },
+  46: {
+    intro: "Jacob sets out for Egypt. At Beersheba God speaks to him at night: \"Do not be afraid to go down to Egypt, for I will make you a great nation there.\" Seventy members of Jacob's family are listed. Joseph meets his father in Goshen, and they weep on each other's necks.",
+    v: [
+      ["46:3-4", "I will go down with you", "God's presence goes with His people into a foreign land, and He promises to bring them back."],
+      ["46:27", "Seventy", "The family that went down to Egypt numbered seventy. Stephen, following the Greek translation, says seventy-five (Acts 7:14), counting a few more of Joseph's descendants.", "good", ["wenham2"]],
+      ["46:29-30", "Now let me die", "Jacob's long grief ends: \"since I have seen your face, that you are still alive.\""],
+      ["46:34", "Shepherds are loathsome to Egyptians", "Living apart in Goshen kept Israel from blending into Egypt."],
+    ],
+    refs: [["EXO.1", "Exodus 1:1-7", "Israel multiplies in Egypt"], ["ACT.7", "Acts 7:14-15", "Jacob went down to Egypt"]],
+  },
+  47: {
+    intro: "Joseph presents his father and five brothers to Pharaoh, and they settle in the best of the land, Goshen. Jacob blesses Pharaoh. As the famine continues, Joseph buys up the land of Egypt for Pharaoh in exchange for grain, and the people become tenants who give a fifth of the harvest. Jacob makes Joseph promise to bury him in Canaan.",
+    v: [
+      ["47:7", "Jacob blessed Pharaoh", "The aged shepherd blesses the most powerful king on earth: Abraham's family is a blessing to the nations (12:3)."],
+      ["47:9", "Few and unpleasant have been my years", "Jacob, at 130, sums up his life honestly as a pilgrimage."],
+      ["47:25", "You have saved our lives", "The Egyptians themselves thank Joseph for his famine policy."],
+      ["47:29-30", "Do not bury me in Egypt", "Jacob's faith looks to the land God promised."],
+    ],
+    refs: [["HEB.11", "Hebrews 11:21", "By faith Jacob, as he was dying"], ["GEN.50", "Genesis 50:13", "Buried in the cave of Machpelah"]],
+  },
+  48: {
+    intro: "Jacob, sick and nearly blind, adopts Joseph's sons Ephraim and Manasseh as his own, so Joseph receives a double portion. When he blesses them, he crosses his hands and puts his right hand on the younger, Ephraim, saying the younger will be greater.",
+    v: [
+      ["48:5", "Ephraim and Manasseh shall be mine", "Joseph's two sons will each become a tribe of Israel."],
+      ["48:15-16", "The God who has been my shepherd all my life", "The first time the Bible calls God a shepherd. \"The angel who has redeemed me from all evil\" points to God's rescues throughout Jacob's life."],
+      ["48:14, 19", "Crossed hands", "Again God's choice goes to the younger, as with Isaac, Jacob and Joseph himself."],
+    ],
+    refs: [["HEB.11", "Hebrews 11:21", "Jacob blessed each of the sons of Joseph"], ["PSA.23", "Psalm 23:1", "The LORD is my shepherd"]],
+  },
+  49: {
+    intro: "Jacob gathers his twelve sons and tells them what will happen \"in the days to come.\" Some words are stern (Reuben, Simeon and Levi), and some are rich with promise, above all for Judah, from whom the scepter will not depart, and for Joseph. Then Jacob gives instructions for his burial and dies.",
+    v: [
+      ["49:3-4", "Reuben, uncontrolled as water", "The firstborn loses his place because of his sin (35:22)."],
+      ["49:8-10", "Judah, a lion's whelp", "Kingship will belong to Judah. Revelation 5:5 calls Jesus \"the Lion that is from the tribe of Judah.\""],
+      ["49:22-26", "Joseph, a fruitful bough", "The longest blessing, naming God as the Mighty One of Jacob, the Shepherd, the Stone of Israel and the Almighty."],
+      ["49:33", "Gathered to his people", "Jacob dies having blessed all his sons."],
+    ],
+    w: [["שִׁילֹה", "Shiloh", "H7886", "uncertain: \"Shiloh,\" \"until he comes to whom it belongs,\" or \"tribute to him\"", "One of the hardest phrases in Genesis to translate. The meaning is debated, though both Jewish and Christian readers long took it as a promise of a coming king.", ["halot", "wenham2"]]],
+    why: "Genesis 49:10 says the scepter will not depart from Judah \"until Shiloh comes.\" The Hebrew is hard, and translations differ.",
+    views: [
+      ["A name or title for the Messiah", "Many read \"Shiloh\" as a title for the coming ruler, \"he to whom it belongs,\" fulfilled in Jesus, the son of David (compare Ezekiel 21:27).", ["kidner", "waltke"]],
+      ["Tribute brought to Judah's king", "Others, changing the vowels slightly, read \"until tribute comes to him,\" promising that nations will bring tribute to Judah's ruler. This too was read of a future king.", ["wenham2", "hamilton2"]],
+    ],
+    common: "Either way, the verse promises a lasting royal line from Judah to whom the peoples will be obedient, a hope fulfilled in David and in Christ.",
+    refs: [["REV.5", "Revelation 5:5", "The Lion from the tribe of Judah"], ["HEB.7", "Hebrews 7:14", "Our Lord was descended from Judah"], ["DEU.33", "Deuteronomy 33", "Moses blesses the tribes"]],
+  },
+  50: {
+    intro: "Joseph mourns his father, and a great procession of Egyptians and Israelites carries Jacob to Canaan for burial. Afterward the brothers fear that Joseph will now take revenge. Joseph weeps and says, \"You meant evil against me, but God meant it for good.\" Joseph dies at 110, asking that his bones be carried to the promised land.",
+    v: [
+      ["50:2-3", "Embalming", "Embalming took forty days, and Egypt mourned seventy days, as for a great official. This fits Egyptian practice.", "strong", ["kitchen"]],
+      ["50:19", "Am I in God's place?", "Joseph leaves judgment to God."],
+      ["50:20", "God meant it for good", "\"You meant evil against me, but God meant it for good in order to bring about this present result, to preserve many people alive.\" One of the clearest statements of God's providence in Scripture."],
+      ["50:24-25", "God will surely take care of you", "Joseph's dying words look ahead to the exodus. His bones were carried out of Egypt (Exodus 13:19) and buried at Shechem (Joshua 24:32)."],
+    ],
+    refs: [["ROM.8", "Romans 8:28", "God causes all things to work together for good"], ["HEB.11", "Hebrews 11:22", "By faith Joseph gave orders about his bones"], ["EXO.13", "Exodus 13:19", "Moses took the bones of Joseph"]],
+  },
+});

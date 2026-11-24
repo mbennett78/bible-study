@@ -128,3 +128,29 @@ test("debated and unknown audiences explain why, with at least two sources", asy
     assert.ok(onPath.has(b) && ["debated", "unknown"].includes(a.status) && a.text.length > 120 && a.src.length >= 2, b);
   }
 });
+
+test("chapter notes load for every listed book, cite listed sources and are cached offline", async () => {
+  const { CHAPTER_BOOKS, loadBookNotes, NOTES: ALL, EVIDENCE: EV } = await import("../../js/notes.js");
+  const { readFileSync, existsSync } = await import("node:fs");
+  const sw = readFileSync(new URL("../../sw.js", import.meta.url), "utf8");
+  for (const b of CHAPTER_BOOKS) {
+    assert.ok(existsSync(new URL(`../../js/chapters/${b.toLowerCase()}.js`, import.meta.url)), b);
+    assert.ok(sw.includes(`"${b.toLowerCase()}"`), `${b} is not in the offline list in sw.js`);
+    const mod = await import(`../../js/chapters/${b.toLowerCase()}.js`);
+    await loadBookNotes(b);
+    for (const [ch, n] of Object.entries(mod.default)) {
+      const key = `${b}.${ch}`;
+      assert.ok(Number(ch) >= 1 && Number(ch) <= BOOK_BY_ID[b].chapters, key);
+      assert.ok(ALL[key], `${key} did not load`);
+      assert.ok(n.intro && n.intro.length > 60, `${key}: intro`);
+      for (const sec of n.sections) for (const it of sec.items) {
+        for (const id of it.src) assert.ok(n.sources[id], `${key}: missing source ${id}`);
+        if (it.ev) assert.ok(EV[it.ev], `${key}: label ${it.ev}`);
+        if (it.ref) assert.equal(Number(String(it.ref).split(":")[0]), Number(ch), `${key}: verse ${it.ref} is in another chapter`);
+      }
+      for (const [k] of n.crossRefs || []) { const [rb, rc] = k.split("."); assert.ok(BOOK_BY_ID[rb] && Number(rc) <= BOOK_BY_ID[rb].chapters, `${key}: cross-reference ${k}`); }
+      const views = JSON.stringify(n.sections.filter((s) => s.id === "views"));
+      assert.doesNotMatch(views, /(?<!John the )Baptist|Church(es)? of Christ|Catholic|Methodist|Presbyterian|Lutheran|Pentecostal|Restoration Movement/, key);
+    }
+  }
+});
