@@ -1915,3 +1915,11 @@ dialog.quest .buddy-inline { position: static; display: inline-block; width: 44p
 dialog.quest .buddy .buddy-head { fill: #fff; } dialog.quest .buddy .buddy-line, dialog.quest .buddy .buddy-smile { stroke: #ffcf3f; } dialog.quest .buddy .buddy-head, dialog.quest .buddy .ti-front { stroke: #ffcf3f; } dialog.quest .buddy .buddy-eye, dialog.quest .buddy .ti-dot { fill: #22305e; } dialog.quest .buddy .ti-front { fill: #fff; }
 dialog.quest.still *, dialog.quest.still *::before { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) { dialog.quest *, dialog.quest *::before { animation: none !important; transition: none !important; } }
+/* Study notes, laid out like a study Bible: a short "what this is" line at the top of each
+   part, verse numbers in the margin of verse notes, and serif text for the notes themselves. */
+.notes-about { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; font-size: .88rem; line-height: 1.45; color: var(--text); }
+.note-item p { font-family: var(--serif); font-size: 1rem; }
+.verse-note .note-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.vref { flex: none; border: 0; background: none; padding: 0; color: var(--accent); font: inherit; font-weight: 800; font-size: .95rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.views-count { margin: 0 0 8px; font-weight: 700; }
+.src-link { white-space: nowrap; font-weight: 600; color: var(--accent); }

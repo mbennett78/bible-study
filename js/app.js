@@ -8,7 +8,7 @@ import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
-import { notesFor, sampleChapters, EVIDENCE } from "./notes.js";
+import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl } from "./notes.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
@@ -2034,8 +2034,8 @@ function renderNotes(book, chapter) {
     if (!tabs.some(([id]) => id === notesTab)) notesTab = "strongs";
     el.innerHTML = `<div class="notes-head"><h2>Study</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
       <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
-      <div class="notes-panel">${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : wordSearchHtml()}</div>
-      <p class="muted small-print" style="margin-top:14px">Background, maps then and now, scholars' views and cross-references are written for these chapters so far, with more on the way:</p>
+      <div class="notes-panel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : wordSearchHtml()}</div>
+      <p class="muted small-print" style="margin-top:14px">Full study notes (verse by verse, background, key words, scholars' views and sources) are written for these chapters so far, with more on the way:</p>
       <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>
       ${openInHtml(book, chapter)}`;
     el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
@@ -2047,11 +2047,13 @@ function renderNotes(book, chapter) {
   }
   el.className = "notes-card";
   const srcKeys = Object.keys(n.sources);
+  const about = (id) => ABOUT[id] ? `<p class="notes-about">${esc(ABOUT[id])}</p>` : "";
   const cite = (ids) => ids?.length ? ` <button class="cite" data-cite="${ids[0]}">[${ids.map((k) => srcKeys.indexOf(k) + 1).join(", ")}]</button>` : "";
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
-  const label = (sec) => sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Key words" : sec.title.split(" ")[0];
-  const tabs = [["strongs", "Strong's concordance"], ["map", "Map then and now"], ...n.sections.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
-  if (!tabs.some(([id]) => id === notesTab)) notesTab = "strongs";
+  const label = (sec) => sec.id === "verses" ? "Verse by verse" : sec.id === "history" ? "Background" : sec.id === "views" ? "Scholars and views" : sec.lang ? "Key words" : sec.title.split(" ")[0];
+  const verseSec = n.sections.filter((sec) => sec.id === "verses"), otherSecs = n.sections.filter((sec) => sec.id !== "verses");
+  const tabs = [...verseSec.map((sec) => [sec.id, label(sec)]), ["strongs", "Strong's concordance"], ...(n.map ? [["map", "Map then and now"]] : []), ...otherSecs.map((sec) => [sec.id, label(sec)]), ...(n.crossRefs ? [["xref", "Cross-references"]] : []), ["search", "Word search"], ["sources", "Sources"]];
+  if (!tabs.some(([id]) => id === notesTab)) notesTab = tabs[0][0];
   let body = "";
   if (notesTab === "strongs") {
     body = `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>`;
@@ -2064,11 +2066,14 @@ function renderNotes(book, chapter) {
   } else if (notesTab === "search") {
     body = wordSearchHtml();
   } else if (notesTab === "sources") {
-    body = `<ol class="sources">${srcKeys.map((k) => `<li id="src-${k}">${esc(n.sources[k])}</li>`).join("")}</ol>
+    body = `<ol class="sources">${srcKeys.map((k) => `<li id="src-${k}">${esc(sourceText(n.sources[k]))} <a class="src-link" href="${esc(sourceUrl(n.sources[k]))}" target="_blank" rel="noopener">Look it up ↗</a></li>`).join("")}</ol>
       <div class="ev-key">${Object.keys(EVIDENCE).map((k) => `<p>${ev(k)} ${esc(EVIDENCE[k].tip)}</p>`).join("")}</div>`;
   } else {
     const sec = n.sections.find((s) => s.id === notesTab);
-    body = sec.items.map((it) => it.word
+    const kinds = sec.id === "views" ? sec.items.filter((it) => it.who !== "Common ground").length : 0;
+    body = (kinds > 1 ? `<p class="views-count">There ${kinds === 1 ? "is" : "are"} ${kinds} main views here.</p>` : "") + sec.items.map((it) => it.ref
+      ? `<div class="note-item verse-note"><div class="note-head"><button class="vref" data-verse="${esc(it.ref)}" aria-label="Go to verse ${esc(it.ref)}">${esc(it.ref)}</button><strong>${esc(it.head)}</strong>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
+      : it.word
       ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${sec.lang === "Hebrew" ? "he" : "el"}" dir="${sec.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div>
         ${it.strongs ? `<p class="strongs"><span class="strongs-num">Strong's ${esc(it.strongs)}</span>${it.count ? ` Used ${esc(it.count)} in the ${sec.lang === "Hebrew" ? "Hebrew Old Testament" : "Greek New Testament"}.` : ""}</p>` : ""}
         <p>${esc(it.text)}${cite(it.src)}</p></div>`
@@ -2078,7 +2083,8 @@ function renderNotes(book, chapter) {
   el.innerHTML = `<div class="notes-head"><h2>Study notes</h2><span class="muted small-print">${esc(refName({ book, chapter }))}</span></div>
     <p class="notes-intro">${esc(n.intro)}</p>
     <div class="notes-tabs" role="tablist">${tabs.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === notesTab}">${esc(label)}</button>`).join("")}</div>
-    <div class="notes-panel">${body}</div>${openInHtml(book, chapter)}`;
+    <div class="notes-panel">${about(notesTab)}${body}</div>${openInHtml(book, chapter)}`;
+  el.querySelectorAll("[data-verse]").forEach((b) => b.addEventListener("click", () => { const v = parseInt(String(b.dataset.verse).split(":")[1], 10); if (v) goToVerse(v); }));
   wireOpenIn(el);
   fillStrongs(el, book, chapter);
   el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { notesTab = b.dataset.tab; renderNotes(book, chapter); }));
