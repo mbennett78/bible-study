@@ -17,12 +17,12 @@ import { topicOf, SOUNDS, medal, confetti } from "./game.js";
 import { BUDDY_SVG } from "./buddy.js";
 
 export const CATEGORIES = [
-  { id: "people", name: "People", icon: "👤", color: "#e07a5f", topics: ["people"] },
-  { id: "places", name: "Places", icon: "🗺️", color: "#3d8bb0", topics: ["places"] },
-  { id: "stories", name: "Stories", icon: "📖", color: "#6f9a4a", topics: ["events"] },
-  { id: "numbers", name: "Numbers", icon: "🔢", color: "#d39b2a", topics: ["numbers"] },
-  { id: "books", name: "Books", icon: "📚", color: "#8e6bb5", topics: ["books", "connections"] },
-  { id: "world", name: "History & Science", icon: "🔭", color: "#3f8a82", topics: ["history", "science"] },
+  { id: "people", name: "People", icon: "👤", color: "#e8634a", topics: ["people"] },
+  { id: "places", name: "Places", icon: "🗺️", color: "#2f8fd0", topics: ["places"] },
+  { id: "stories", name: "Stories & Miracles", icon: "✨", color: "#4fae4a", topics: ["events"] },
+  { id: "stem", name: "STEM", icon: "🔬", color: "#f2a516", topics: ["science", "numbers"] },
+  { id: "books", name: "Books & Verses", icon: "📜", color: "#9b5fc7", topics: ["books", "connections"] },
+  { id: "history", name: "History", icon: "🏛️", color: "#e0457b", topics: ["history"] },
 ];
 export const NEED_PER_JEWEL = 2;   // right answers in a category to win its jewel
 export const CANDLE_SECS = 20;
@@ -237,7 +237,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const p = current(), buddyPlays = p.kind === "buddy", m = mine();
     const q = pickQuestion(cat.id, m.seen);
     save({ seen: [...m.seen.filter((id) => id !== q.id), q.id].slice(-200) });
-    const order = q.choices.map((_, k) => k).sort(() => Math.random() - 0.5);
+    const order = q.choices.map((_, k) => k);
+    for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } // fair shuffle
     const owned = p.jewels[cat.id];
     const helps = game.mode !== "family" && !buddyPlays;
     paint(`<div class="q-ask" style="--cc:${cat.color}">
