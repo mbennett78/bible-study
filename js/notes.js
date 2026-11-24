@@ -1226,7 +1226,7 @@ Object.assign(NOTES, MORE_NOTES);
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
 // Books whose chapter-by-chapter notes live in js/chapters/<book>.js. They load the first time
 // a chapter of that book is opened, and the app caches them for offline use.
-export const CHAPTER_BOOKS = new Set(["GEN"]);
+export const CHAPTER_BOOKS = new Set(["GEN", "EXO"]);
 const bookLoads = {}, bookReady = new Set();
 export const bookNotesReady = (book) => !CHAPTER_BOOKS.has(book) || bookReady.has(book);
 export const loadBookNotes = (book) => (bookLoads[book] ??= !CHAPTER_BOOKS.has(book) ? Promise.resolve()
