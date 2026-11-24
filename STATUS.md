@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:31 AM: Micah, Nahum, Habakkuk, Zephaniah, Haggai and Malachi notes are live; only Zechariah is left for the Old Testament. Settings > Backup now says "Bible keys come from your family sign-in, not this file."
 - Tue Nov 24, 11:28 AM: Daniel, Hosea, Joel, Amos, Obadiah and Jonah notes are live. Micah through Malachi are next.
 - Tue Nov 24, 11:24 AM: Lamentations and Ezekiel are live, a day ahead of plan. Daniel and the minor prophets are next.
 - Tue Nov 24, 11:20 AM: Jeremiah 1-52 notes are live. The Books and music page stays removed (Melissa's decision), and "no shopping or selling" is now a standing rule.
