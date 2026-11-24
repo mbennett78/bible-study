@@ -24,7 +24,7 @@ export const ABOUT = {
   search: "Find a verse: type what it's about (a story, or a topic like baptism or worry) or the words you remember. You'll get a list of passages, and your Bible helper can find the rest.",
   sources: "Sources: the commentaries, lexicons and studies behind these notes. Tap Look it up to open the source, or to find the book in a library.",
   where: "When and where: the time period of this chapter, the world around it, the regions and places it names, and the tribes of Israel. Places and their locations come from OpenBible.info, which weighs the identifications made by scholars and archaeologists. Dates are approximate; where careful scholars differ, it says so.",
-  mine: "My notes: what you've written in your journal about this chapter. Only you can see these.",
+  mine: "My notes: your study comments, research and verse cards on this chapter. Never locked. Only you can see them.",
 };
 export const sourceText = (s) => (typeof s === "string" ? s : s.text);
 // A page for the source itself, or a library search for the book.

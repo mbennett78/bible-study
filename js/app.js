@@ -622,12 +622,12 @@ function openVerseSheet(v) {
       const choices = [open && ["open", "The note I'm writing"], today && (!open || open.id !== today.id) && ["church", `Today's church notes${today.title ? `: ${today.title}` : ""}`], ["new", `A new note on ${BOOK_BY_ID[book].name} ${chapter}`]].filter(Boolean);
       const go = (where) => {
         verseSheet.close();
-        if (journalLocked() || !$("#chapterEntryHost")) { showView("notes"); openEntry({ kind: "bible", ref: `${book}.${chapter}`, addQuote: quote }, $("#notesEditor")); return; }
+        if (!$("#chapterEntryHost")) { showView("notes"); openEntry({ kind: "note", ref: `${book}.${chapter}`, addQuote: quote }, $("#notesEditor")); return; }
         if (where === "open") { openEntry({ id: open.id, kind: open.kind, ref: open.ref, addQuote: quote }, entryHost); return; }
         if (where === "church") { showView("journal"); setTimeout(() => openEntry({ id: today.id, addQuote: quote }), 150); return; }
         notesTab = "mine"; renderNotes(book, chapter);
         $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" });
-        openEntry({ kind: "bible", ref: `${book}.${chapter}`, addQuote: quote }, $("#chapterEntryHost"));
+        openEntry({ kind: "note", ref: `${book}.${chapter}`, addQuote: quote }, $("#chapterEntryHost"));
       };
       if (choices.length === 1) go("new");
       else {
@@ -1184,21 +1184,21 @@ function renderJournal() {
   const key = `${book}.${chapter}`;
   const inner = $("#journalInner");
   const entry = store.journalEntry(book, chapter);
-  const mine = store.allEntries().filter((e) => e.ref === key);
+  const mine = store.allEntries().filter((e) => e.ref === key && NOTE_KINDS.includes(e.kind));
   const oldFilled = entry ? JOURNAL_BOXES.filter((b) => (entry[b.field] || "").trim()) : [];
   const count = mine.length + (oldFilled.length ? 1 : 0);
   const mineTile = $('.ref-tile[data-tab="mine"] .rt-sub');
-  if (mineTile) mineTile.textContent = count ? `${count} entr${count === 1 ? "y" : "ies"}` : "Write one";
-  $("#journalHint").textContent = journalLocked() ? "Locked" : count ? `${count} entr${count === 1 ? "y" : "ies"} on this chapter. Tap to read or add more.` : "Your thoughts, prayers and thanks on this chapter";
+  if (mineTile) mineTile.textContent = count ? `${count} note${count === 1 ? "" : "s"}` : "Write one";
+  $("#journalHint").textContent = count ? `${count} note${count === 1 ? "" : "s"} on this chapter. Tap to read or add more.` : "Study comments, research and verse cards";
   inner.innerHTML = "";
-  if (journalLocked()) { inner.append(unlockForm(renderJournal)); return; }
-  if (store.get("journalLock")) inner.append(lockNowButton(renderJournal));
+  // Notes are never locked. Personal reflections (the Journal) live in the side menu.
   const top = document.createElement("div");
-  top.innerHTML = `<div class="add-entries">${[["bible", "Bible thoughts"], ["prayer", "A prayer"], ["gratitude", "Thankful for"]].map(([k, l]) => `<button class="add-entry ae-${k}" data-add="${k}"><span aria-hidden="true">${KIND[k].icon}</span><b>＋ ${l}</b></button>`).join("")}</div>
+  top.innerHTML = `<div class="add-entries"><button class="add-entry ae-note" data-add="note"><span aria-hidden="true">📝</span><b>＋ A note on ${esc(refName({ book, chapter }))}</b></button></div>
     <div class="entry-host" id="chapterEntryHost"></div>
-    ${mine.length ? `<div class="chapter-entries">${mine.map((e) => `<button class="log-row entry-row er-${e.kind}" data-entry="${e.id}"><strong>${KIND[e.kind]?.icon || ""} ${esc(KIND[e.kind]?.label || "")}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span></button>`).join("")}</div>` : ""}
-    <p class="muted small-print">Everything you write here is also in My Bible, under Journal.</p>`;
+    ${mine.length ? `<div class="chapter-entries">${mine.map((e) => `<button class="log-row entry-row er-${e.kind}" data-entry="${e.id}"><strong>${KIND[e.kind]?.icon || ""} ${esc(e.title || KIND[e.kind]?.label || "")}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span></button>`).join("")}</div>` : ""}
+    <p class="muted small-print">📝 Notes are for study: comments, research and verses. They're never locked, and they're all in Notes in the menu. Personal reflections and prayers go in your <button type="button" class="quiet-link" data-to-journal>✎ Journal</button>.</p>`;
   inner.append(top);
+  top.querySelector("[data-to-journal]")?.addEventListener("click", () => showView("journal"));
   top.querySelectorAll("[data-add]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.add, ref: key }, $("#chapterEntryHost"))));
   top.querySelectorAll("[data-entry]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.entry }, $("#chapterEntryHost"))));
   if (!oldFilled.length) return;
@@ -2097,7 +2097,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     editing = null;
     box.innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. ${box.id === "notesEditor" ? "It's in your notes below." : noteKind ? "It's in My Notes." : "It's in your journal below."}</p>`;
     renderJournalList(newId); renderNotesList(newId);
-    if (box.id === "chapterEntryHost") { renderJournal(); $("#chapterEntryHost").innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's listed below, and in Journal.</p>`; }
+    if (box.id === "chapterEntryHost") { renderJournal(); $("#chapterEntryHost").innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's listed below, and in Notes.</p>`; }
   });
   $("#entryCancel").addEventListener("click", () => {
     clearTimeout(t);
@@ -2234,7 +2234,7 @@ async function makeJournalBook() {
 function printNotes(book, chapter) {
   const n = notesFor(book, chapter), key = `${book}.${chapter}`;
   const name = refName({ book, chapter });
-  const mine = store.allEntries().filter((e) => e.ref === key || (e.quotes || []).some((q) => q.ref.startsWith(`${key}.`)));
+  const mine = store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (e.ref === key || (e.quotes || []).some((q) => q.ref.startsWith(`${key}.`))));
   const srcKeys = n ? Object.keys(n.sources) : [];
   const cite = (ids) => ids?.length ? `<sup>${ids.map((k) => srcKeys.indexOf(k) + 1).join(",")}</sup>` : "";
   const ev = (k) => k && EVIDENCE[k] ? `<span class="pn-ev">${esc(EVIDENCE[k].label)}</span>` : "";
@@ -2274,7 +2274,7 @@ function renderJournalList(justSaved = null) {
   const lockRow = store.get("journalLock") ? lockNowButton(renderJournalList) : null;
   const snip = (t) => `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}`;
   const items = [
-    ...store.allEntries().map((e) => ({ type: "entry", at: e.created, kinds: [e.kind, ...(e.prayer?.trim() ? ["prayer"] : []), ...(e.gratitude?.trim() ? ["gratitude"] : [])], e })),
+    ...store.allEntries().filter((e) => !KIND[e.kind]?.notesOnly).map((e) => ({ type: "entry", at: e.created, kinds: [e.kind, ...(e.prayer?.trim() ? ["prayer"] : []), ...(e.gratitude?.trim() ? ["gratitude"] : [])], e })),
     ...store.allDiary().map((d) => ({ type: "diary", at: d.updated, kinds: ["day", ...(d.prayer?.trim() ? ["prayer"] : []), ...(d.gratitude?.trim() ? ["gratitude"] : [])], d })),
     ...store.allJournal().map((j) => ({ type: "chapter", at: j.updated, kinds: ["bible", ...(j.prayer?.trim() ? ["prayer"] : []), ...(j.gratitude?.trim() ? ["gratitude"] : [])], j })),
   ].filter((it) => journalFilter === "all" || it.kinds.includes(journalFilter)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
@@ -3549,7 +3549,7 @@ function journalHome() {
 function myNotesCount(book, chapter) {
   const key = `${book}.${chapter}`;
   const old = store.journalEntry(book, chapter);
-  return store.allEntries().filter((e) => e.ref === key).length + (old && JOURNAL_BOXES.some((b) => (old[b.field] || "").trim()) ? 1 : 0);
+  return store.allEntries().filter((e) => e.ref === key && NOTE_KINDS.includes(e.kind)).length + (old && JOURNAL_BOXES.some((b) => (old[b.field] || "").trim()) ? 1 : 0);
 }
 function refTilesHtml(tiles, subs = {}) {
   return `<div class="ref-tiles" role="tablist" aria-label="Reference and resources">${tiles.map((id) => `<button class="ref-tile" role="tab" data-tab="${id}" aria-selected="${id === notesTab}">
@@ -3578,14 +3578,14 @@ function wireRef(el, book, chapter) {
   }
 }
 function mineHtml(book, chapter) {
-  return `<p class="muted small-print">Your journal entries on ${esc(refName({ book, chapter }))}. The whole journal is in the side menu, under Journal.</p><div id="refJournalSlot" class="ref-journal"></div>`;
+  return `<p class="muted small-print">Your study notes on ${esc(refName({ book, chapter }))}. All your notes are in Notes, in the menu.</p><div id="refJournalSlot" class="ref-journal"></div>`;
 }
 function renderNotes(book, chapter) {
   const el = $("#studyNotes");
   journalHome();
   const n = notesFor(book, chapter);
   const mineN = myNotesCount(book, chapter);
-  const mineSub = mineN ? `${mineN} entr${mineN === 1 ? "y" : "ies"}` : "Write one";
+  const mineSub = mineN ? `${mineN} note${mineN === 1 ? "" : "s"}` : "Write one";
   el.className = "notes-card ref-section";
   if (!n) {
     const tiles = ["strongs", "where", "search", "mine"];

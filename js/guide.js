@@ -26,7 +26,9 @@ export const GUIDE = [
     "He tries hard to be accurate but can make mistakes. Check what he says against the Bible.",
   ] },
   { id: "journal", icon: "✍️", title: "Journal and notes", tips: [
-    "Journal holds daily entries, prayers, things you're thankful for, Bible thoughts and church notes.",
+    "✎ Journal is for personal reflections: your days, prayers and things you're thankful for. It's in the side menu, and you can lock it with a passcode.",
+    "📝 Notes are for study: comments, research and verses on a passage. Write them under any chapter, in My notes, or in Notes in the menu. Notes are never locked.",
+    "Quote a verse, or paste one, and it becomes a verse card. Add your comment in an optional callout box: Classic, Parchment, Sticky note, Bubble or Floral.",
     "Add verses, pictures, arrows, shaded boxes, maps, charts and tables with the buttons under the writing box.",
     "📷 Photo opens your photo library or camera. You can also paste a picture or words from another app.",
     "Your words save as you type, even without a signal.",

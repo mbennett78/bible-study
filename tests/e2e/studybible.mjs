@@ -64,7 +64,7 @@ try {
   const ent = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem("bible-study:v1")).entries || {}));
   check("the quote, its question, sticker and chart are saved", ent.some((e) => e.quotes?.[0]?.tag === "question" && e.quotes[0].note === "Why rest?" && e.pics?.length === 2));
   check("it's listed with this passage's notes", /God finished His work/.test(await page.textContent("#refPanel")));
-  check("My notes tile counts it", /1 entry/.test(await page.textContent('.ref-tile[data-tab="mine"]')));
+  check("My notes tile counts it", /1 note/.test(await page.textContent('.ref-tile[data-tab="mine"]')));
 
   // Find a verse
   await page.evaluate(() => document.querySelector(".tabbar [data-view=books]").click()); await page.waitForTimeout(300);

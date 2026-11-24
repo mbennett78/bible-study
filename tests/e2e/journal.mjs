@@ -63,13 +63,13 @@ try {
   await page.click('#journalList [data-entry]:has-text("Grandma")'); await page.waitForTimeout(300);
   await page.check("#entryAnswered"); await page.click("#entrySave"); await page.waitForTimeout(300);
   check("a prayer can be marked answered", /answered ✓/.test(await page.textContent("#journalList")));
-  // The chapter journal has the same buttons, with the chapter attached.
+  // Notes on a chapter: never locked, separate from the journal.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(500);
-  await page.evaluate(() => { document.querySelector("#journalBox").open = true; document.querySelector('#journalBox [data-add="bible"]').click(); });
+  await page.evaluate(() => { document.querySelector("#journalBox").open = true; document.querySelector('#journalBox [data-add="note"]').click(); });
   await page.waitForTimeout(200);
-  check("chapter journal: Bible thoughts on John 3", /John 3/.test(await page.textContent("#chapterEntryHost")));
+  check("chapter notes: a note on John 3", /John 3/.test(await page.textContent("#chapterEntryHost")));
   await page.fill("#entryText", "Born from above."); await page.click("#entrySave"); await page.waitForTimeout(300);
-  check("chapter journal: listed under the chapter", /Born from above/.test(await page.textContent("#journalInner")));
+  check("chapter notes: listed under the chapter", /Born from above/.test(await page.textContent("#journalInner")));
 
   // Lock it, then unlock with the number pad.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(200);
@@ -79,6 +79,12 @@ try {
   check("passcode: Show reveals it", await page.$eval("#lockCode", (i) => i.type === "text" && i.value === "2580"));
   await openJournal();
   check("locked: a big number pad appears", (await page.$$("#journalList .keypad button")).length === 12 && !(await page.$("#journalList input")));
+  // The bug Melissa found: notes on a chapter must never show the journal's lock.
+  await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(500);
+  await page.evaluate(() => { document.querySelector("#journalBox").open = true; });
+  check("locked journal: chapter notes stay open, with no number pad", !(await page.$("#journalInner .keypad")) && /Born from above/.test(await page.textContent("#journalInner")) && /My notes on this chapter/.test(await page.textContent("#journalBox summary")));
+  check("chapter notes point to the Journal for personal reflections", Boolean(await page.$("#journalInner [data-to-journal]")));
+  await openJournal();
   for (const d of "1111") await page.click(`#journalList [data-kp="${d}"]`);
   await page.click('#journalList [data-kp="✓"]'); await page.waitForTimeout(200);
   check("locked: a wrong code is explained", /doesn't match/.test(await page.textContent("#journalList")));
