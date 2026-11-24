@@ -2475,3 +2475,25 @@ textarea.nf-big { font-size: 1.25rem; }
 .peek-words { font-family: var(--serif); font-size: 1.1rem; line-height: 1.6; }
 .peek-words sup { font-size: .65em; color: var(--muted); margin: 0 2px 0 4px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Knowledge growth bars */
+.knowledge .growth { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 4px; height: 44px; margin-top: 8px; }
+.knowledge .gbar { flex: 1; max-width: 22px; background: color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 4px 4px 1px 1px; }
+.knowledge .growth-note { grid-column: 1 / -1; }
+.notes-print-row { align-items: center; gap: 10px; margin: 6px 0 4px; flex-wrap: wrap; }
+@media print {
+  .pn-book { font-size: 11.5pt; }
+  .pn-note { break-inside: avoid-page; border-top: 1pt solid #cdbba2; padding-top: 10pt; margin-top: 14pt; }
+  .pn-note:first-child { border-top: 0; margin-top: 0; }
+  .pn-note h2 { font-size: 17pt; font-weight: 600; margin: 2pt 0 4pt; color: #3a2e24; }
+  .pn-meta { font-family: var(--sans); font-size: 8.5pt; letter-spacing: .06em; text-transform: uppercase; color: #8a7560; margin: 0; }
+  .pn-sub { font-style: italic; color: #5a4a3a; margin: 0 0 6pt; }
+  .pn-verses { font-family: var(--sans); font-size: 8.5pt; color: #6b5238; margin: 6pt 0 0; }
+  .print-book .note-table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 10.5pt; break-inside: avoid; }
+  .print-book .note-table th, .print-book .note-table td { border: .75pt solid #b49a78; padding: 4pt 6pt; text-align: left; vertical-align: top; }
+  .print-book .note-table th { background: #efe5d4; }
+  .print-book .ref-link { background: none; padding: 0; text-decoration: none; }
+  .print-book .ee-pic.is-table { width: 100%; }
+  .print-book .nf-hand p { font-family: "Bradley Hand", "Segoe Print", "Chalkboard SE", cursive; }
+  .print-book .nf-big p { font-size: 14pt; }
+}

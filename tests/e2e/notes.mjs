@@ -52,6 +52,11 @@ try {
   check("search finds words in a table", (await page.textContent("#notesList")).includes("Wednesday class"));
   await page.fill("#notesSearch", "zebra"); await page.waitForTimeout(200);
   check("search with no match says so", (await page.textContent("#notesList")).includes("No notes match"));
+  await page.fill("#notesSearch", ""); await page.waitForTimeout(200);
+  await page.evaluate(() => { window.print = () => { window.__printed = document.querySelector("#printBook").innerHTML; }; });
+  await page.click("#printNotes"); await page.waitForTimeout(300);
+  const printed = await page.evaluate(() => window.__printed || "");
+  check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("General notes"), printed.slice(0, 100));
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
   // Phone: the bottom bar stays the same; Notes is in the ☰ menu.

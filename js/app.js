@@ -1758,7 +1758,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       </div>
       <div class="ee-panel" id="eePanel" hidden></div>
       ${kind === "prayer" ? `<label class="answered"><input type="checkbox" id="entryAnswered" ${e?.answered ? "checked" : ""}> God answered this prayer${e?.answered ? ` <span class="muted">· ${fmtDate(e.answered)}</span>` : ""}</label>` : ""}
-      <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
+      <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${noteKind ? `<button class="small" id="entryPrint">🖨 Print</button>` : ""}${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
       <p class="ee-msg" id="entryMsg" role="status"></p></div>`;
   const ta = $("#entryText"), panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
   addMic(box.querySelector(".entry-editor"), ta);
@@ -1912,6 +1912,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     editing = null; box.innerHTML = ""; renderJournalList(); renderNotesList();
     if (box.id === "chapterEntryHost") renderJournal();
   });
+  $("#entryPrint")?.addEventListener("click", () => { keep(); const saved = store.entry(newId); if (saved) printNotesBook([{ id: newId, ...saved }]); else msg("Write something first, then print."); });
   $("#entryDelete")?.addEventListener("click", () => {
     const btn = $("#entryDelete");
     if (btn.dataset.sure !== "1") { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete"; return; }
@@ -2144,10 +2145,10 @@ let notesFilter = "all";
 function renderNotesList(justSaved = null) {
   const el = $("#notesList");
   if (!el) return;
-  const q = norm($("#notesSearch")?.value || "");
   const all = store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind));
-  const list = all.filter((e) => (notesFilter === "all" || e.kind === notesFilter)
-    && (!q || norm(`${e.title || ""} ${e.text || ""} ${e.speaker || ""} ${e.passage || ""} ${e.ref ? keyRef(e.ref).name : ""} ${(e.quotes || []).map((x) => x.text).join(" ")} ${(e.pics || []).filter((p) => p.t === "table").map((p) => p.rows.flat().join(" ")).join(" ")}`).includes(q)));
+  const list = shownNotes();
+  const pb = $("#printNotes");
+  if (pb) { pb.hidden = !list.length; pb.textContent = list.length === all.length ? "🖨 Print my notes" : `🖨 Print these ${list.length} note${list.length === 1 ? "" : "s"}`; }
   $("#notesFilter").innerHTML = [["all", "All"], ...NOTE_KINDS.map((k) => [k, NOTE_LABEL[k]])].map(([v, l]) => `<button type="button" data-nf="${v}" aria-pressed="${notesFilter === v}">${esc(l)}${v === "all" ? "" : ` <span class="muted">${all.filter((e) => e.kind === v).length}</span>`}</button>`).join("");
   $("#notesFilter").querySelectorAll("[data-nf]").forEach((b) => b.addEventListener("click", () => { notesFilter = b.dataset.nf; renderNotesList(); }));
   if (!list.length) { el.innerHTML = `<p class="empty">${all.length ? "No notes match." : "No notes yet. Tap one of the buttons above to start one. Every note is dated, and you can give it a heading so it's easy to find."}</p>`; return; }
@@ -2169,6 +2170,33 @@ function renderNotesList(justSaved = null) {
   }).join("");
   el.querySelectorAll("[data-note]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.note }, $("#notesEditor"))));
 }
+// Notes on paper: each note with its heading, date, passage, verses, tables and pictures.
+function printNotesBook(list, title = "My Notes") {
+  if (!list.length) { mascotSay("There are no notes to print here yet."); return; }
+  const name = (store.get("name") || "").trim();
+  const days = [...new Set(list.map((e) => dayOf(e.created)))].sort();
+  const para = (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+  const one = (e) => `<section class="pn-note nk-${e.kind}">
+      <p class="pn-meta">${esc(NOTE_LABEL[e.kind] || "Note")} · ${esc(stampNow(new Date(e.created)))}</p>
+      <h2>${esc(e.title || defaultHeading(e))}</h2>
+      ${e.speaker || e.passage || (e.ref && e.kind !== "church") ? `<p class="pn-sub">${[e.speaker, e.passage, e.ref && e.kind !== "church" ? keyRef(e.ref).name : ""].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
+      ${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}
+      ${e.text ? `<div class="pb-lines nf-${esc(e.font || "classic")}">${para(e.text)}</div>` : ""}
+      ${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
+      ${scanRefs(`${e.passage || ""} ${e.text || ""}`).length ? `<p class="pn-verses">Verses: ${scanRefs(`${e.passage || ""} ${e.text || ""}`).map((r) => esc(r.name)).join(" · ")}</p>` : ""}
+    </section>`;
+  const html = list.length === 1 ? `<article class="pn-book">${one(list[0])}</article>`
+    : `<section class="pn-cover"><div class="pb-art">${seaScene(store.get("style"), { height: 120 })}</div><p class="pb-orn" aria-hidden="true">❦</p><h1>${esc(title)}</h1>
+      <p class="pb-by">${name ? esc(name) : ""}</p><p class="pb-range">${days.length > 1 ? `${esc(dayLabel(days[0]))} to ${esc(dayLabel(days[days.length - 1]))}` : esc(dayLabel(days[0]))}</p></section>
+      <article class="pn-book">${[...list].sort((a, b) => a.created.localeCompare(b.created)).map(one).join("")}</article>`;
+  printPages(html, "notes");
+}
+function shownNotes() {
+  const q = norm($("#notesSearch")?.value || "");
+  return store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (notesFilter === "all" || e.kind === notesFilter)
+    && (!q || norm(`${e.title || ""} ${e.text || ""} ${e.speaker || ""} ${e.passage || ""} ${e.ref ? keyRef(e.ref).name : ""} ${(e.quotes || []).map((x) => x.text).join(" ")} ${(e.pics || []).filter((p) => p.t === "table").map((p) => p.rows.flat().join(" ")).join(" ")}`).includes(q)));
+}
+$("#printNotes")?.addEventListener("click", () => printNotesBook(shownNotes(), notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]));
 document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
 $("#notesSearch")?.addEventListener("input", () => renderNotesList());
 document.querySelectorAll("[data-open-games]").forEach((b) => b.addEventListener("click", () => quest.open()));
@@ -2184,7 +2212,7 @@ function updateTriviaHint() {
 function isReadKey(k) { const [b, c] = k.split("."); return store.isRead(b, Number(c)); }
 function startTrivia() {
   const current = store.get("last");
-  const qs = pickQuestions({ isRead: isReadKey, current, pathId: store.get("activePath"), recent: store.get("trivia").recent });
+  const qs = pickQuestions({ isRead: isReadKey, current, pathId: store.get("activePath"), recent: store.get("trivia").recent, seen: store.get("trivia").seen || {} });
   const results = [];
   let i = 0;
   $("#triviaTitle").textContent = "Bible trivia";
@@ -2198,7 +2226,7 @@ function startTrivia() {
     if (i >= qs.length) return showScore();
     const q = qs[i];
     body.innerHTML = `<div class="trivia-progress">${qs.map((_, k) => `<span class="${results[k] ? (results[k].right ? "right" : "wrong") : ""}"></span>`).join("")}</div>
-      <p class="trivia-kind">${kindLabel[q.kind] || ""} · ${q.refs.map((r) => esc(keyRef(r).name)).join(" + ")}</p>
+      <p class="trivia-kind">${q.review ? "🔁 Review · " : ""}${kindLabel[q.kind] || ""} · ${q.refs.map((r) => esc(keyRef(r).name)).join(" + ")}</p>
       <p class="trivia-q">${esc(q.q)}</p>
       <div class="trivia-choices">${q.choices.map((c, k) => `<button data-k="${k}">${esc(c)}</button>`).join("")}</div>
       <p class="trivia-why" hidden></p>`;
@@ -2222,14 +2250,17 @@ function startTrivia() {
     body.append(next);
   }
   function showScore() {
-    store.recordTrivia(results, `${BOOK_BY_ID[current.book].name} ${current.chapter}`);
+    const keepRec = keepingRecord();
+    store.recordTrivia(results, `${BOOK_BY_ID[current.book].name} ${current.chapter}`, keepRec);
     const score = results.filter((r) => r.right).length;
     const r = knowledgeRating(store.get("trivia"));
     const great = score / results.length >= 0.8;
+    const fresh = qs.filter((q) => !q.review).length;
     body.innerHTML = `<div class="trivia-score">
       <p class="big">${score}/${results.length}</p>
       <p>${great ? "Wonderful! You know this well." : score ? "Good work. Every round helps it stick." : "That's how we learn. Try another round."}</p>
-      <p class="muted small-print">Your Bible knowledge: <strong>${esc(r.level)}</strong> · ${r.pct}% correct over ${r.answered} questions</p>
+      <p class="muted small-print">${fresh === qs.length ? "All new questions this round." : `${fresh} new question${fresh === 1 ? "" : "s"} and ${qs.length - fresh} review.`}</p>
+      ${keepRec ? `<p class="muted small-print">Your Bible knowledge: <strong>${esc(r.level)}</strong> · ${r.pct}% correct over ${r.answered} questions. See how you're growing in My Bible.</p>` : `<p class="muted small-print">No record is kept, as you chose. You can turn it on in Settings.</p>`}
       <button class="trivia-next" id="playAgain">Play again with new questions</button></div>`;
     $("#playAgain").addEventListener("click", startTrivia);
     celebrate(great ? "big" : "small");
@@ -2240,8 +2271,24 @@ function startTrivia() {
 }
 $("#triviaBtn").addEventListener("click", startTrivia);
 $("#triviaClose").addEventListener("click", () => triviaDlg.close());
+const keepingRecord = () => store.get("knowledgeRecord") !== false;
+// How someone is growing: their last rounds as small bars, and this month against last month.
+function growthHtml(t) {
+  const rounds = t.sessions.slice(0, 12).reverse();
+  if (rounds.length < 2) return "";
+  const month = (d) => d.slice(0, 7), now = new Date();
+  const thisM = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastM = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, "0")}`;
+  const pctIn = (m) => { const s = t.sessions.filter((x) => month(x.at) === m); const a = s.reduce((n, x) => n + x.total, 0); return a ? Math.round((s.reduce((n, x) => n + x.score, 0) / a) * 100) : null; };
+  const a = pctIn(thisM), b = pctIn(lastM);
+  return `<div class="growth" aria-label="Your last ${rounds.length} rounds">${rounds.map((x) => `<span class="gbar" style="height:${Math.max(8, Math.round((x.score / x.total) * 100))}%" title="${esc(x.label || "")}: ${x.score} of ${x.total}"></span>`).join("")}</div>
+    <small class="growth-note">Your last ${rounds.length} rounds${a !== null ? ` · this month ${a}%` : ""}${b !== null ? ` · last month ${b}%` : ""}${a !== null && b !== null && a > b ? " · growing! 🌱" : ""}</small>`;
+}
 function renderKnowledge() {
   const t = store.get("trivia");
+  $("#knowledge").hidden = !keepingRecord();
+  if (!keepingRecord()) { $("#knowledge").innerHTML = ""; return; }
   const r = knowledgeRating(t);
   const last = t.sessions[0];
   const C = 2 * Math.PI * 22;
@@ -2250,7 +2297,8 @@ function renderKnowledge() {
       <circle cx="27" cy="27" r="22" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(r.pct / 100) * C} ${C}" transform="rotate(-90 27 27)"/>
     </svg>
     <strong>Bible knowledge: ${esc(r.level)}</strong>
-    <small>${t.answered ? `${r.pct}% correct over ${t.answered} trivia questions${last ? ` · last round ${last.score}/${last.total} on ${fmtDate(last.at)}` : ""}` : "Play chapter trivia to see your rating grow."}</small>`;
+    <small>${t.answered ? `${r.pct}% correct over ${t.answered} trivia questions${last ? ` · last round ${last.score}/${last.total} on ${fmtDate(last.at)}` : ""}` : "Play chapter trivia to see your rating grow."}</small>
+    ${growthHtml(t)}`;
 }
 
 /* ---------- Celebrations ---------- */
@@ -2410,6 +2458,14 @@ function initSettings() {
   $("#followNotes").checked = store.get("followNotes") !== false;
   $("#focusRead").checked = store.get("focusRead") !== false;
   $("#humanVoice").checked = store.get("humanVoice") !== false;
+  $("#knowledgeRecord").checked = keepingRecord();
+  $("#knowledgeRecord").addEventListener("change", (e) => { store.set("knowledgeRecord", e.target.checked); $("#clearKnowledge").hidden = !e.target.checked; renderKnowledge(); });
+  $("#clearKnowledge").hidden = !keepingRecord();
+  $("#clearKnowledge").addEventListener("click", (e) => {
+    const b = e.currentTarget;
+    if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Tap again to clear it"; return; }
+    store.clearKnowledge(); b.dataset.sure = ""; b.textContent = "Cleared ✓"; renderKnowledge();
+  });
   $("#humanVoice").addEventListener("change", (e) => { store.set("humanVoice", e.target.checked); const { book, chapter } = store.get("last"); reader.stop(); openChapter(book, chapter); });
   $("#focusRead").addEventListener("change", (e) => { store.set("focusRead", e.target.checked); if (!e.target.checked) setBarsAway(false); });
   $("#followNotes").addEventListener("change", (e) => { store.set("followNotes", e.target.checked); followKey = ""; });

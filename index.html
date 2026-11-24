@@ -190,6 +190,7 @@
       <div class="entry-host" id="notesEditor"></div>
       <label class="notes-find"><span class="sr-only">Search my notes</span><input id="notesSearch" type="search" placeholder="🔍 Search my notes" autocomplete="off"></label>
       <div class="journal-filter notes-filter" id="notesFilter" role="group" aria-label="Show"></div>
+      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print my notes</button><span class="muted small-print">Prints what's shown: pick a kind or search first to print just those.</span></div>
       <div id="notesList"></div>
     </section>
 
@@ -337,6 +338,8 @@
         <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
         <label class="switch-row"><span>Full screen while reading on a phone<small>The menus slide out of the way as you scroll down. Scroll up a little, or tap the Menu tab, to bring them back.</small></span><input type="checkbox" role="switch" id="focusRead"></label>
         <label class="switch-row"><span>Recorded narrator for the ESV<small>With an ESV key, the ESV is read by a real person's recorded voice. Other versions, and times without a signal, use this device's voice.</small></span><input type="checkbox" role="switch" id="humanVoice"></label>
+        <label class="switch-row"><span>Keep my Bible knowledge record<small>After each quiz you always see your score. With this on, the app also keeps your scores so you can see how you're growing, in My Bible. Only you can see it. Turn it off for no record at all.</small></span><input type="checkbox" role="switch" id="knowledgeRecord"></label>
+        <button type="button" class="small" id="clearKnowledge">Clear my knowledge record</button>
         <label class="switch-row"><span>Follow-along study notes<small>While you read, the study note for the verse you're on shows at the bottom of the page.</small></span><input type="checkbox" role="switch" id="followNotes"></label>
         <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
         <label class="switch-row"><span>Dotted line under study words<small>A light line under the names of God and the key words, so you know they're worth tapping.</small></span><input type="checkbox" role="switch" id="studyWords"></label>

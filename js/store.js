@@ -212,15 +212,24 @@ export const store = {
   allEntries: () => Object.entries(state.entries || {}).filter(([, v]) => !v.deleted && ((v.text || "").trim() || (v.title || "").trim() || v.quotes?.length || v.pics?.length)).map(([id, v]) => ({ id, ...v })).sort((a, b) => b.created.localeCompare(a.created)),
   allDiary: () => Object.entries(state.diary || {}).map(([day, v]) => ({ day, ...v })).sort((a, b) => b.day.localeCompare(a.day)),
   allJournal: () => Object.entries(state.journal).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.updated.localeCompare(a.updated)),
-  recordTrivia(results, label) {
+  // Which questions were asked is always kept, so rounds stay fresh. The score history (the
+  // "Bible knowledge" record) is kept only when they've chosen to keep it.
+  recordTrivia(results, label, keepRecord = true) {
     const t = state.trivia;
     const correct = results.filter((r) => r.right).length;
+    const seen = { ...(t.seen || {}) };
+    for (const r of results) seen[r.id] = (seen[r.id] || 0) + 1;
     state.trivia = {
-      answered: t.answered + results.length,
-      correct: t.correct + correct,
-      sessions: [{ at: new Date().toISOString(), score: correct, total: results.length, label }, ...t.sessions].slice(0, 100),
-      recent: [...results.map((r) => r.id), ...t.recent].slice(0, 40),
+      answered: keepRecord ? t.answered + results.length : t.answered,
+      correct: keepRecord ? t.correct + correct : t.correct,
+      sessions: keepRecord ? [{ at: new Date().toISOString(), score: correct, total: results.length, label }, ...t.sessions].slice(0, 200) : t.sessions,
+      recent: [...results.map((r) => r.id), ...t.recent].slice(0, 150),
+      seen,
     };
+    save();
+  },
+  clearKnowledge() {
+    state.trivia = { ...state.trivia, answered: 0, correct: 0, sessions: [] };
     save();
   },
   // Saves the current walk through a path to the archive and starts it fresh.
