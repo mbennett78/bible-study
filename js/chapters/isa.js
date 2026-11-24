@@ -356,4 +356,269 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
     bg: [["Merodach-baladan", "Merodach-baladan II was a real Babylonian ruler who rebelled against Assyria twice (around 721-710 and 703 BC). His interest in Hezekiah fits his search for allies against Assyria.", "strong", ["kitchen", "oswalt"]]],
     refs: [["2KI.20", "2 Kings 20:12-19", "The same story"], ["DAN.1", "Daniel 1:3-6", "Judah's young men serve in Babylon"]],
   },
+  40: {
+    intro: "\"Comfort, O comfort My people,\" says your God. Jerusalem's warfare is ended and her iniquity removed. \"A voice is calling, Clear the way for the LORD in the wilderness.\" All flesh is grass, \"but the word of our God stands forever.\" God tends His flock like a shepherd. Who has measured the waters in His hand? To whom will you compare God? \"Those who wait for the LORD will gain new strength; they will mount up with wings like eagles.\"",
+    v: [
+      ["40:1", "Comfort, O comfort My people", "A new tone of hope."],
+      ["40:3", "Clear the way for the LORD", "Fulfilled in John the Baptist."],
+      ["40:8", "The word of our God stands forever", "Quoted in 1 Peter 1:24-25."],
+      ["40:11", "Like a shepherd He will tend His flock", "God's tender care."],
+      ["40:31", "They will mount up with wings like eagles", "Strength for those who wait on God."],
+    ],
+    why: "Isaiah 40-66 speaks to people in Babylonian exile and names Cyrus, who lived 150 years after Isaiah. Scholars discuss how these chapters relate to Isaiah son of Amoz.",
+    views: [
+      ["One prophet, Isaiah", "Many hold that Isaiah himself wrote the whole book, predicting the exile and Cyrus by God's revelation, noting that the New Testament quotes chapters 40-66 as Isaiah's words (John 12:38-41) and that the book shares one style and theme, \"the Holy One of Israel.\"", ["oswalt", "motyer", "smithG"]],
+      ["Isaiah's message carried on", "Others think later prophets in Isaiah's tradition wrote chapters 40-66 during and after the exile, addressing their own day, while the book was deliberately joined as one message.", ["childs"]],
+    ],
+    common: "All agree the book was received as one inspired whole, and that chapters 40-66 announce God's comfort, the return from exile, and the coming Servant.",
+    refs: [["MAT.3", "Matthew 3:3", "The voice of one crying in the wilderness"], ["1PE.1", "1 Peter 1:24-25", "The word of the Lord endures forever"], ["JHN.10", "John 10:11", "The good shepherd"]],
+  },
+  41: {
+    intro: "God calls the nations to court. He has raised up a conqueror from the east. Idol makers encourage each other to nail their idols down so they won't totter. But to Israel God says, \"Do not fear, for I am with you; do not anxiously look about you, for I am your God. I will strengthen you, surely I will help you, surely I will uphold you with My righteous right hand.\"",
+    v: [
+      ["41:8", "Abraham My friend", "Quoted in James 2:23."],
+      ["41:10", "Do not fear, for I am with you", "One of the Bible's most loved promises."],
+      ["41:13", "I am the LORD your God, who upholds your right hand", "God holds our hand."],
+      ["41:23", "Declare the things that are going to come", "Idols cannot predict the future."],
+    ],
+    refs: [["JAS.2", "James 2:23", "Abraham the friend of God"], ["HEB.13", "Hebrews 13:5-6", "I will never desert you"]],
+  },
+  42: {
+    intro: "The first Servant Song: \"Behold, My Servant, whom I uphold; My chosen one in whom My soul delights. I have put My Spirit upon Him.\" \"A bruised reed He will not break and a dimly burning wick He will not extinguish.\" He will be a light to the nations, opening blind eyes. \"Sing to the LORD a new song.\"",
+    v: [
+      ["42:1", "Behold, My Servant... in whom My soul delights", "Echoed at Jesus' baptism."],
+      ["42:3", "A bruised reed He will not break", "Gentle with the weak. Quoted in Matthew 12:18-21."],
+      ["42:6", "A light to the nations", "Salvation for all peoples."],
+      ["42:8", "My glory I will not give to another", "God alone is God."],
+    ],
+    bg: [["The Servant Songs", "Four passages (42:1-9, 49:1-13, 50:4-11, 52:13-53:12) describe the Servant of the LORD. Sometimes Israel is called God's servant, but these songs describe one who suffers to restore Israel itself. The New Testament sees them fulfilled in Jesus.", "strong", ["oswalt", "motyer"]]],
+    refs: [["MAT.12", "Matthew 12:17-21", "Matthew quotes Isaiah 42"], ["MAT.3", "Matthew 3:17", "My beloved Son, in whom I am well-pleased"], ["LUK.2", "Luke 2:32", "A light of revelation to the Gentiles"]],
+  },
+  43: {
+    intro: "\"Do not fear, for I have redeemed you; I have called you by name; you are Mine! When you pass through the waters, I will be with you.\" \"You are precious in My sight... and I love you.\" \"You are My witnesses... before Me there was no God formed.\" \"Behold, I will do something new.\" \"I, even I, am the one who wipes out your transgressions for My own sake.\"",
+    v: [
+      ["43:1", "I have called you by name; you are Mine", "Personal belonging."],
+      ["43:2", "When you pass through the waters, I will be with you", "God's presence in trials."],
+      ["43:4", "You are precious in My sight", "God's love."],
+      ["43:19", "Behold, I will do something new", "God's new work."],
+      ["43:25", "I will not remember your sins", "Forgiveness."],
+    ],
+    refs: [["JHN.10", "John 10:3", "He calls His own sheep by name"], ["ACT.1", "Acts 1:8", "You shall be My witnesses"], ["2CO.5", "2 Corinthians 5:17", "New things have come"]],
+  },
+  44: {
+    intro: "\"I will pour out My Spirit on your offspring.\" \"I am the first and I am the last, and there is no God besides Me.\" A long satire: a man cuts down a tree, uses half to cook his dinner and warm himself, and carves the rest into a god and prays, \"Deliver me, for you are my god.\" God says of Cyrus, \"He is My shepherd.\"",
+    v: [
+      ["44:3", "I will pour out My Spirit on your offspring", "Blessing for children."],
+      ["44:6", "I am the first and I am the last", "Jesus uses this title in Revelation 1:17."],
+      ["44:17", "He falls down before it and worships", "The folly of idols."],
+      ["44:28", "It is I who says of Cyrus, He is My shepherd", "Named about 150 years ahead."],
+    ],
+    refs: [["REV.1", "Revelation 1:17", "I am the first and the last"], ["EZR.1", "Ezra 1:1-4", "Cyrus's decree"], ["PSA.115", "Psalm 115:4-8", "Idols"]],
+  },
+  45: {
+    intro: "God speaks to Cyrus, His anointed: \"I will go before you and make the rough places smooth... so that you may know that it is I, the LORD.\" \"I am the LORD, and there is no other; besides Me there is no God.\" \"Turn to Me and be saved, all the ends of the earth.\" \"To Me every knee will bow, every tongue will swear allegiance.\"",
+    v: [
+      ["45:1", "To Cyrus His anointed", "A pagan king used for God's purpose."],
+      ["45:7", "Causing well-being and creating calamity", "God rules over all events."],
+      ["45:22", "Turn to Me and be saved, all the ends of the earth", "Charles Spurgeon was converted hearing this verse."],
+      ["45:23", "Every knee will bow", "Applied to Jesus in Philippians 2:10-11."],
+    ],
+    bg: [["Cyrus's own words", "The Cyrus Cylinder in the British Museum records Cyrus saying the god Marduk chose him and called him by name, and that he returned exiled peoples. Isaiah says it was the LORD who called him.", "strong", ["kitchen", "oswalt"]]],
+    refs: [["PHP.2", "Philippians 2:10-11", "Every knee should bow"], ["ROM.14", "Romans 14:11", "Every knee shall bow to Me"]],
+  },
+  46: {
+    intro: "Babylon's gods Bel and Nebo are loaded on animals and carried into exile, a burden to weary beasts. But God says to Israel, \"Even to your old age I will be the same, and even to your graying years I will bear you! I have done it, and I will carry you.\" \"My purpose will be established.\"",
+    v: [
+      ["46:1", "Bel has bowed down, Nebo stoops over", "Babylon's gods must be carried."],
+      ["46:4", "Even to your old age... I will carry you", "The true God carries His people."],
+      ["46:10", "Declaring the end from the beginning", "God knows the future."],
+    ],
+    refs: [["DEU.1", "Deuteronomy 1:31", "As a man carries his son"], ["PSA.71", "Psalm 71:18", "Even when I am old and gray"]],
+  },
+  47: {
+    intro: "A taunt against Babylon, pictured as a proud queen: \"Come down and sit in the dust, O virgin daughter of Babylon.\" She said, \"I will be a queen forever,\" and, \"I am, and there is no one besides me.\" Her sorceries and astrologers cannot save her.",
+    v: [
+      ["47:7", "I will be a queen forever", "Pride before the fall."],
+      ["47:10", "I am, and there is no one besides me", "Claiming God's own words."],
+      ["47:13", "Let the astrologers... stand up and save you", "They cannot."],
+    ],
+    refs: [["REV.18", "Revelation 18:7", "I sit as a queen"]],
+  },
+  48: {
+    intro: "God rebukes stubborn Israel, \"your neck is an iron sinew.\" He told them things beforehand so they could not credit their idols. \"I have refined you, but not as silver; I have tested you in the furnace of affliction.\" \"I am the LORD your God, who teaches you to profit, who leads you in the way you should go.\" \"Go forth from Babylon!\"",
+    v: [
+      ["48:10", "In the furnace of affliction", "Hardship that refines."],
+      ["48:17", "Who teaches you to profit", "God's good guidance."],
+      ["48:18", "Your peace would have been like a river", "What obedience brings."],
+      ["48:20", "Go forth from Babylon!", "The call to return home."],
+    ],
+    refs: [["1PE.1", "1 Peter 1:6-7", "Faith tested by fire"], ["PSA.32", "Psalm 32:8", "I will instruct you"]],
+  },
+  49: {
+    intro: "The second Servant Song: \"The LORD called Me from the womb.\" The Servant feels He has labored in vain, but God says, \"It is too small a thing that You should be My Servant to raise up the tribes of Jacob... I will also make You a light of the nations.\" Zion says, \"The LORD has forgotten me.\" God answers, \"Can a woman forget her nursing child?... Even these may forget, but I will not forget you. I have inscribed you on the palms of My hands.\"",
+    v: [
+      ["49:1", "The LORD called Me from the womb", "A calling from before birth."],
+      ["49:6", "A light of the nations", "Paul applies this to his mission (Acts 13:47)."],
+      ["49:15", "Can a woman forget her nursing child?", "God's love is stronger than a mother's."],
+      ["49:16", "Inscribed you on the palms of My hands", "Never forgotten."],
+    ],
+    refs: [["ACT.13", "Acts 13:47", "A light for the Gentiles"], ["LUK.2", "Luke 2:32", "A light of revelation"], ["JHN.20", "John 20:27", "See My hands"]],
+  },
+  50: {
+    intro: "The third Servant Song: \"The Lord GOD has given Me the tongue of disciples, that I may know how to sustain the weary one with a word. He awakens Me morning by morning.\" \"I gave My back to those who strike Me... I did not cover My face from humiliation and spitting.\" \"I have set My face like flint.\" \"Who is among you that fears the LORD... let him trust in the name of the LORD.\"",
+    v: [
+      ["50:4", "To sustain the weary one with a word", "Listening to God first."],
+      ["50:6", "I gave My back to those who strike Me", "Fulfilled in Jesus' trial."],
+      ["50:7", "I have set My face like flint", "Jesus set His face toward Jerusalem (Luke 9:51)."],
+      ["50:10", "Let him trust in the name of the LORD", "Trust in the dark."],
+    ],
+    refs: [["MAT.26", "Matthew 26:67", "They spat in His face"], ["LUK.9", "Luke 9:51", "He resolutely set His face"]],
+  },
+  51: {
+    intro: "\"Look to the rock from which you were hewn\": look to Abraham and Sarah. God will comfort Zion and make her wilderness like Eden. His salvation will be forever. \"Awake, awake, put on strength, O arm of the LORD.\" \"The ransomed of the LORD will return and come with joyful shouting to Zion.\"",
+    v: [
+      ["51:1", "Look to the rock from which you were hewn", "Remember your roots."],
+      ["51:3", "Her wilderness He will make like Eden", "Restoration."],
+      ["51:6", "My salvation will be forever", "It outlasts heaven and earth."],
+      ["51:11", "Everlasting joy will be on their heads", "Joy at the return."],
+    ],
+    refs: [["GEN.12", "Genesis 12:1-3", "God's call to Abraham"], ["HEB.11", "Hebrews 11:11-12", "Abraham and Sarah"]],
+  },
+  52: {
+    intro: "\"Awake, awake, clothe yourself in your strength, O Zion.\" \"How lovely on the mountains are the feet of him who brings good news, who announces peace... who says to Zion, Your God reigns!\" \"Depart, depart, go out from there.\" The fourth Servant Song begins: \"Behold, My servant will prosper... His appearance was marred more than any man.\" He will sprinkle many nations.",
+    v: [
+      ["52:7", "How lovely are the feet of him who brings good news", "Quoted in Romans 10:15."],
+      ["52:10", "All the ends of the earth may see the salvation of our God", "Salvation for the world."],
+      ["52:13", "Behold, My servant will prosper", "The fourth Servant Song begins."],
+      ["52:14", "His appearance was marred more than any man", "Suffering before glory."],
+    ],
+    refs: [["ROM.10", "Romans 10:15", "Beautiful feet"], ["ISA.53", "Isaiah 53", "The Servant's suffering continues"]],
+  },
+  54: {
+    intro: "\"Shout for joy, O barren one.\" Enlarge your tent; your descendants will possess nations. God was like a husband who briefly left: \"For a brief moment I forsook you, but with great compassion I will gather you.\" \"The mountains may be removed... but My lovingkindness will not be removed from you.\" \"No weapon that is formed against you will prosper.\"",
+    v: [
+      ["54:1", "Shout for joy, O barren one", "Quoted in Galatians 4:27."],
+      ["54:2", "Enlarge the place of your tent", "God will grow His family."],
+      ["54:10", "My lovingkindness will not be removed from you", "Love firmer than mountains."],
+      ["54:17", "No weapon formed against you will prosper", "God's protection."],
+    ],
+    refs: [["GAL.4", "Galatians 4:27", "Rejoice, barren woman"], ["ROM.8", "Romans 8:38-39", "Nothing can separate us"]],
+  },
+  55: {
+    intro: "\"Ho! Every one who thirsts, come to the waters; and you who have no money come, buy and eat... without money and without cost.\" \"Seek the LORD while He may be found.\" \"My thoughts are not your thoughts, nor are your ways My ways.\" As rain waters the earth, \"so will My word be which goes forth from My mouth; it will not return to Me empty.\" \"You will go out with joy... and all the trees of the field will clap their hands.\"",
+    v: [
+      ["55:1", "Come, buy without money", "Grace is free."],
+      ["55:6", "Seek the LORD while He may be found", "Don't wait."],
+      ["55:8-9", "My ways are higher than your ways", "God is beyond us."],
+      ["55:11", "My word will not return to Me empty", "God's word accomplishes its purpose."],
+      ["55:12", "The trees of the field will clap their hands", "Creation rejoices."],
+    ],
+    refs: [["JHN.7", "John 7:37", "If anyone is thirsty, let him come"], ["REV.22", "Revelation 22:17", "Let the one who is thirsty come"], ["ACT.13", "Acts 13:34", "The sure mercies of David"]],
+  },
+  56: {
+    intro: "\"Preserve justice and do righteousness, for My salvation is about to come.\" God welcomes foreigners and eunuchs who hold fast His covenant: \"I will give them an everlasting name.\" \"My house will be called a house of prayer for all the peoples.\" Israel's leaders, though, are blind watchmen and lazy dogs.",
+    v: [
+      ["56:3-5", "Let not the eunuch say, I am a dry tree", "No one is excluded who loves God."],
+      ["56:7", "A house of prayer for all the peoples", "Jesus quoted this when He cleared the temple."],
+    ],
+    refs: [["MRK.11", "Mark 11:17", "My house shall be called a house of prayer"], ["ACT.8", "Acts 8:26-39", "The Ethiopian eunuch"]],
+  },
+  57: {
+    intro: "The righteous perish and no one considers that they are taken from coming evil. God condemns idolatry on every hill. But \"I dwell on a high and holy place, and also with the contrite and lowly of spirit in order to revive the spirit of the lowly.\" \"Peace, peace to him who is far and to him who is near.\" \"There is no peace for the wicked.\"",
+    v: [
+      ["57:15", "I dwell... also with the contrite and lowly", "The high God lives with the humble."],
+      ["57:19", "Peace, peace to him who is far and to him who is near", "Paul echoes this in Ephesians 2:17."],
+      ["57:21", "There is no peace for the wicked", "A refrain."],
+    ],
+    refs: [["EPH.2", "Ephesians 2:17", "Peace to those far and near"], ["PSA.51", "Psalm 51:17", "A broken and contrite heart"]],
+  },
+  58: {
+    intro: "The people fast and complain that God does not notice. God answers: they fast while oppressing workers and fighting. \"Is this not the fast which I choose, to loosen the bonds of wickedness... to divide your bread with the hungry and bring the homeless poor into the house?\" \"Then your light will break out like the dawn.\" Call the Sabbath a delight.",
+    v: [
+      ["58:3", "Why have we fasted and You do not see?", "Religion without love."],
+      ["58:6-7", "Is this not the fast which I choose?", "True devotion helps the needy."],
+      ["58:8", "Your light will break out like the dawn", "Blessing follows mercy."],
+      ["58:11", "You will be like a watered garden", "Refreshed by God."],
+    ],
+    refs: [["MAT.6", "Matthew 6:16-18", "When you fast"], ["JAS.2", "James 2:15-17", "Faith without works"]],
+  },
+  59: {
+    intro: "\"The LORD's hand is not so short that it cannot save... but your iniquities have made a separation between you and your God.\" Truth stumbles in the street. God saw there was no one to intervene, \"so His own arm brought salvation to Him.\" He put on righteousness like a breastplate and a helmet of salvation. \"A Redeemer will come to Zion.\"",
+    v: [
+      ["59:1-2", "Your iniquities have made a separation", "Sin separates us from God."],
+      ["59:16", "His own arm brought salvation", "God Himself saves."],
+      ["59:17", "Righteousness like a breastplate, a helmet of salvation", "Paul uses this in Ephesians 6."],
+      ["59:20", "A Redeemer will come to Zion", "Quoted in Romans 11:26."],
+    ],
+    refs: [["ROM.3", "Romans 3:10-18", "Paul quotes 59:7-8"], ["EPH.6", "Ephesians 6:14-17", "The armor of God"], ["ROM.11", "Romans 11:26", "The Deliverer will come from Zion"]],
+  },
+  60: {
+    intro: "\"Arise, shine; for your light has come, and the glory of the LORD has risen upon you.\" Darkness covers the earth, but nations will come to your light, and kings to the brightness of your rising. They bring gold and frankincense on camels. \"No longer will you have the sun for light by day... but you will have the LORD for an everlasting light.\"",
+    v: [
+      ["60:1", "Arise, shine; for your light has come", "A Christmas and Epiphany favorite."],
+      ["60:3", "Nations will come to your light", "The nations drawn to God."],
+      ["60:6", "They will bring gold and frankincense", "Recalled in the wise men's gifts."],
+      ["60:19", "The LORD for an everlasting light", "Echoed in Revelation 21:23."],
+    ],
+    refs: [["MAT.2", "Matthew 2:11", "Gold, frankincense and myrrh"], ["REV.21", "Revelation 21:23-26", "The Lamb is its lamp"], ["JHN.8", "John 8:12", "The light of the world"]],
+  },
+  61: {
+    intro: "\"The Spirit of the Lord GOD is upon me, because the LORD has anointed me to bring good news to the afflicted; He has sent me to bind up the brokenhearted, to proclaim liberty to captives... to proclaim the favorable year of the LORD.\" He gives \"a garland instead of ashes, the oil of gladness instead of mourning.\" \"He has clothed me with garments of salvation.\"",
+    v: [
+      ["61:1", "The Spirit of the Lord GOD is upon me", "Jesus read this in Nazareth and said, \"Today this Scripture has been fulfilled.\""],
+      ["61:2", "The favorable year of the LORD", "Jesus stopped reading before \"the day of vengeance.\""],
+      ["61:3", "A garland instead of ashes", "Beauty for ashes."],
+      ["61:10", "Garments of salvation", "Clothed by God."],
+    ],
+    refs: [["LUK.4", "Luke 4:16-21", "Jesus reads Isaiah 61"], ["MAT.5", "Matthew 5:4", "Blessed are those who mourn"]],
+  },
+  62: {
+    intro: "\"For Zion's sake I will not keep silent.\" Zion will be called by a new name: no longer \"Forsaken\" but \"My delight is in her.\" \"As the bridegroom rejoices over the bride, so your God will rejoice over you.\" Watchmen on the walls will never be silent. \"Say to the daughter of Zion, Lo, your salvation comes.\"",
+    v: [
+      ["62:4", "My delight is in her", "Hephzibah: God's delight."],
+      ["62:5", "As the bridegroom rejoices over the bride", "God's joy over His people."],
+      ["62:6-7", "Give Him no rest", "Persistent prayer."],
+    ],
+    refs: [["REV.21", "Revelation 21:2", "A bride adorned for her husband"], ["ZEP.3", "Zephaniah 3:17", "He will rejoice over you"]],
+  },
+  63: {
+    intro: "A warrior comes from Edom in red-stained garments: \"I have trodden the wine trough alone.\" Then the prophet remembers \"the lovingkindnesses of the LORD\": \"In all their affliction He was afflicted, and the angel of His presence saved them.\" But they rebelled and grieved His Holy Spirit. \"You, O LORD, are our Father, our Redeemer from of old.\"",
+    v: [
+      ["63:3", "I have trodden the wine trough alone", "Echoed in Revelation 19:13-15."],
+      ["63:9", "In all their affliction He was afflicted", "God shares His people's pain."],
+      ["63:10", "They grieved His Holy Spirit", "Paul echoes this in Ephesians 4:30."],
+      ["63:16", "You, O LORD, are our Father", "A rare Old Testament prayer to God as Father."],
+    ],
+    refs: [["REV.19", "Revelation 19:13-15", "Robe dipped in blood"], ["EPH.4", "Ephesians 4:30", "Do not grieve the Holy Spirit"], ["HEB.4", "Hebrews 4:15", "He sympathizes with our weaknesses"]],
+  },
+  64: {
+    intro: "\"Oh, that You would rend the heavens and come down.\" From ancient times no eye has seen a God besides Him, who acts for those who wait for Him. \"All of us have become like one who is unclean, and all our righteous deeds are like a filthy garment.\" \"But now, O LORD, You are our Father, we are the clay, and You our potter.\"",
+    v: [
+      ["64:1", "Oh, that You would rend the heavens and come down", "A longing for God to act."],
+      ["64:4", "No eye has seen a God besides You", "Paul echoes this in 1 Corinthians 2:9."],
+      ["64:6", "Our righteous deeds are like a filthy garment", "We cannot save ourselves."],
+      ["64:8", "We are the clay, and You our potter", "Shaped by God."],
+    ],
+    refs: [["1CO.2", "1 Corinthians 2:9", "Eye has not seen"], ["MRK.1", "Mark 1:10", "The heavens torn open at Jesus' baptism"], ["JER.18", "Jeremiah 18:1-6", "The potter's house"]],
+  },
+  65: {
+    intro: "\"I permitted Myself to be found by those who did not seek Me.\" God held out His hands all day to a rebellious people. But for His servants: \"Behold, I create new heavens and a new earth; and the former things will not be remembered.\" No more weeping, long lives, homes and vineyards enjoyed. \"Before they call, I will answer.\" \"The wolf and the lamb will graze together.\"",
+    v: [
+      ["65:1", "I permitted Myself to be found by those who did not seek Me", "Paul applies this to the Gentiles (Romans 10:20)."],
+      ["65:17", "I create new heavens and a new earth", "The great future hope."],
+      ["65:19", "No longer will be heard in her the voice of weeping", "Sorrow ended."],
+      ["65:24", "Before they call, I will answer", "God's readiness."],
+    ],
+    refs: [["ROM.10", "Romans 10:20-21", "Found by those who did not seek Me"], ["REV.21", "Revelation 21:1-4", "A new heaven and new earth"], ["2PE.3", "2 Peter 3:13", "New heavens and a new earth"]],
+  },
+  66: {
+    intro: "\"Heaven is My throne and the earth is My footstool. Where then is a house you could build for Me?\" \"To this one I will look, to him who is humble and contrite of spirit, and who trembles at My word.\" Zion will give birth to a nation in a day. \"As one whom his mother comforts, so I will comfort you.\" God will gather all nations to see His glory, and send messengers to declare it. All flesh will come to worship.",
+    v: [
+      ["66:1", "Heaven is My throne", "Quoted by Stephen in Acts 7:49."],
+      ["66:2", "Him who is humble and contrite... and trembles at My word", "Whom God looks to."],
+      ["66:13", "As one whom his mother comforts", "God's motherly comfort."],
+      ["66:22", "The new heavens and the new earth will endure", "A lasting future."],
+    ],
+    refs: [["ACT.7", "Acts 7:48-50", "Stephen quotes Isaiah 66"], ["MAT.28", "Matthew 28:19", "Go to all nations"], ["REV.21", "Revelation 21", "All things new"]],
+  },
 });
