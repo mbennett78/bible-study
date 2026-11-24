@@ -2765,3 +2765,15 @@ details.set-group[open] > summary { padding-left: 6px; }
 .buddy.scared .buddy-body, .buddy.scared svg { animation: buddy-shiver .18s linear 12; }
 @keyframes buddy-shiver { 25% { transform: translateX(-1px); } 75% { transform: translateX(1px); } }
 @media (prefers-reduced-motion: reduce) { .buddy.scared .buddy-body, .buddy.scared svg { animation: none; } }
+
+/* Device pass (Nov 24): bigger read-aloud controls for older eyes and fingers, and on wide
+   screens the header picture stays a band so the page itself shows up on the first screen. */
+.listen-ctl select { min-height: 40px; padding: 4px 8px; font: 600 .95rem var(--sans); border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.listen-ctl { font-size: .92rem; }
+.listen-repeat { min-height: 40px; padding: 8px 14px; font-size: .92rem; }
+.bi-ch { display: inline-block; padding: 6px 0; min-height: 32px; }
+@media (min-width: 700px) {
+  .view > .art-slot > .scene, .view > .art-slot > svg.scene, #homeView > div > .scene:first-child, #homeView > .scene { max-height: 320px; }
+  .view > .art-slot > figure.scene { max-height: 320px; overflow: hidden; }
+
+}
