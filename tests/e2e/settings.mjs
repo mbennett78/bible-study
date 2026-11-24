@@ -23,10 +23,13 @@ try {
   await page.click('#guideList [data-guide="offline"] summary');
   check("a topic opens to show its tips", /next two ahead/.test(await page.textContent('#guideList [data-guide="offline"]')));
   await page.screenshot({ path: process.env.SHOT || "/dev/null" }).catch(() => {});
-  await page.$eval('[data-jump="sg-reading"]', (b) => b.click()); await page.waitForTimeout(1500);
-  const top = await page.$eval("#sg-reading", (h) => h.getBoundingClientRect().top);
-  check("a section button jumps to that group", top >= 0 && top < 200, String(top));
-  await page.click('[data-jump="sg-help"]'); await page.waitForTimeout(700);
+  const setGroups = await page.$$eval("#view-settings details.set-group", (ds) => ds.map((d) => ({ open: d.open, hint: d.querySelector("summary small")?.textContent || "" })));
+  check("Settings folds into six groups, each saying what's inside, with only Help and guide open", setGroups.length === 6 && setGroups.every((g) => g.hint.length > 5) && setGroups.filter((g) => g.open).length === 1 && setGroups[0].open, JSON.stringify(setGroups));
+  await page.click('details[data-group="sg-reading"] > summary'); await page.waitForTimeout(500);
+  check("opening a group shows its settings and folds the others away", await page.isVisible("#textSize") && !(await page.isVisible("#guideCard")));
+  const h = await page.evaluate(() => document.querySelector("#view-settings").scrollHeight);
+  check("Settings stays short", h < 4500, String(h));
+  await page.click('details[data-group="sg-help"] > summary'); await page.waitForTimeout(500);
   await page.click("#printGuide"); await page.waitForTimeout(200);
   check("Print the guide offers paper or sending a copy", /User Guide/.test(await page.textContent(".send-sheet")) && (await page.$$(".send-sheet .send-opt")).length === 2);
   check("no page errors", !errors.length, errors.join("; "));

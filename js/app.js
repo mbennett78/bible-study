@@ -269,12 +269,12 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
         <span class="why">${esc(why)}</span><br><button class="small" id="retryFamily">Try again</button> <button class="small" id="iSetUp" hidden>I set up the app</button></div>`;
       isOrganizer().then((yes) => { if (yes && $("#iSetUp")) $("#iSetUp").hidden = false; });
       $("#retryFamily").addEventListener("click", async () => { const fk = await getFamilyKey(); if (fk) { store.set("apiBibleKey", ""); applyInvite({ ...fk, look: "" }); } openChapter(book, chapter); });
-      $("#iSetUp").addEventListener("click", () => { showView("settings"); const box = $("#organizerBox"); if (box) box.open = true; $("#bibleTextCard").scrollIntoView({ block: "start" }); });
+      $("#iSetUp").addEventListener("click", () => { showView("settings"); const box = $("#organizerBox"); if (box) { revealSetting(box); box.open = true; } revealSetting($("#bibleTextCard")).scrollIntoView({ block: "start" }); });
       return;
     }
     readerEl.innerHTML = `<div class="message"><strong>Can't show this chapter yet</strong>${esc(e.message || "Something went wrong.")}
       ${needsSettings ? `<br><button class="small" id="goSettings">${e.kind === "nokey" ? "How to get your free key" : "Open Settings"}</button>` : `<br><button class="small" id="retry">Try again</button>`}</div>`;
-    $("#goSettings")?.addEventListener("click", () => { showView("settings"); if (e.kind === "nokey") { $("#keyHelp").open = true; $("#keyHelp").scrollIntoView({ block: "center" }); } });
+    $("#goSettings")?.addEventListener("click", () => { showView("settings"); if (e.kind === "nokey") { revealSetting($("#keyHelp")).open = true; $("#keyHelp").scrollIntoView({ block: "center" }); } });
     $("#retry")?.addEventListener("click", () => openChapter(book, chapter));
   }
 }
@@ -1399,7 +1399,7 @@ function buddyShowPlace(go) {
   else showView(view);
   if (!sel) return;
   setTimeout(() => {
-    const el = document.querySelector(sel);
+    const el = revealSetting(document.querySelector(sel));
     if (!el) return;
     const spot = el.closest(".field, .switch-row, .card") && !el.matches(".card, h2") ? el.closest(".field, .switch-row") || el : el;
     spot.scrollIntoView({ block: "center" });
@@ -3045,7 +3045,7 @@ function renderSetupCard() {
 const FEATURES = [
   { id: "listen", label: "Read-aloud bar", hint: "Play, speed and drive mode at the top of each chapter" },
   { id: "notes", label: "Study section", hint: "Strong's concordance, word search, maps, history and scholars under each chapter" },
-  { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
+  { id: "trivia", label: "Quick check", hint: "A few questions after each chapter" },
   { id: "games", label: "Bible games", hint: "Quiz yourself or play together, on Home and in this menu" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
   { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in Journal" },
@@ -3100,12 +3100,26 @@ function renderLookCard() {
   $("#lookGraphics").querySelectorAll("[data-set-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.setGfx); applyAppearance(); renderLookCard(); }));
 }
 const GRAPHICS = [["full", "Lively", "Gentle motion in every look: birds and doves in flight, branches and flowers in the breeze, fish swimming, twinkling stars. Plus friendly characters and confetti in the playful looks."], ["simple", "Still", "The same scenes, maps and borders, drawn still and elegant: no cartoon faces, no motion and no confetti. A good fit for anyone who'd rather not have cartoons."], ["none", "Text only", "Just the Bible text and tools, no pictures."]];
+const QM_GROUPS = [
+  ["reading", "Under each chapter", ["listen", "notes", "trivia", "journal", "visits"]],
+  ["journal", "Journal and games", ["diary", "games"]],
+  ["friends", "Buddy and decorations", ["buddy", "buddyvisits", "mascot", "vines", "pathmargin"]],
+];
 function renderQuickMenu() {
   const shown = store.get("show") || {};
-  $("#qmToggles").innerHTML = FEATURES.map((f) => `<label class="switch-row"><span>${esc(f.label)}<small>${esc(f.hint)}</small></span><input type="checkbox" role="switch" data-qm-feat="${f.id}" ${shown[f.id] === false ? "" : "checked"}></label>`).join("");
+  // Three short folded groups instead of one long list of switches.
+  const row = (f) => `<label class="switch-row"><span>${esc(f.label)}<small>${esc(f.hint)}</small></span><input type="checkbox" role="switch" data-qm-feat="${f.id}" ${shown[f.id] === false ? "" : "checked"}></label>`;
+  const open = new Set([...document.querySelectorAll("#qmToggles details[open]")].map((d) => d.dataset.qmGroup));
+  $("#qmToggles").innerHTML = QM_GROUPS.map(([id, title, ids]) => {
+    const fs = FEATURES.filter((f) => ids.includes(f.id));
+    const on = fs.filter((f) => shown[f.id] !== false).length;
+    return `<details class="qm-group" data-qm-group="${id}" ${open.has(id) ? "open" : ""}><summary>${esc(title)}<small>${on} of ${fs.length} showing</small></summary>${fs.map(row).join("")}</details>`;
+  }).join("");
   $("#qmToggles").querySelectorAll("[data-qm-feat]").forEach((i) => i.addEventListener("change", () => {
     store.set("show", { ...(store.get("show") || {}), [i.dataset.qmFeat]: i.checked });
     applyAppearance();
+    const d = i.closest("details"), all = d.querySelectorAll("[data-qm-feat]");
+    d.querySelector("summary small").textContent = `${[...all].filter((x) => x.checked).length} of ${all.length} showing`;
     if (i.dataset.qmFeat === "pathmargin" && !i.checked) setMargin(false);
   }));
 }
@@ -4772,17 +4786,45 @@ $("#newsList").innerHTML = NEWS.map((n) => `<details class="guide-topic"><summar
 function syncNewsSetting() { $("#newsShow").checked = !store.get("newsOff"); }
 syncNewsSetting();
 $("#newsShow").addEventListener("change", (e) => { store.set("newsOff", !e.target.checked); if (!$("#view-home").hidden) renderHome(); });
-document.querySelectorAll("[data-jump]").forEach((b) => b.addEventListener("click", () => {
-  const to = document.getElementById(b.dataset.jump);
-  to.scrollIntoView({ block: "start" });
-  to.focus({ preventScroll: true });
-}));
+// Settings stays short: each group folds into one row with a line saying what's inside, and
+// only one group is open at a time. Help and guide (with the user guide) starts open.
+const SET_HINTS = {
+  "sg-help": "User guide, what's new, the tour",
+  "sg-you": "Your name, account, Bible version, journal passcode",
+  "sg-buddy": "Your study buddy, colors and pictures",
+  "sg-reading": "Text size, read aloud, study helps, Bible text",
+  "sg-device": "Home screen, backup",
+  "sg-about": "About this app, family organizer tools",
+};
+document.querySelectorAll("#view-settings h2.settings-group").forEach((h) => {
+  const items = [];
+  for (let n = h.nextElementSibling; n && !n.matches("h2.settings-group"); n = n.nextElementSibling) items.push(n);
+  const box = Object.assign(document.createElement("details"), { className: "set-group", open: h.id === "sg-help" });
+  box.dataset.group = h.id;
+  const sum = document.createElement("summary");
+  h.before(box);
+  sum.append(h);
+  sum.insertAdjacentHTML("beforeend", `<small>${esc(SET_HINTS[h.id] || "")}</small>`);
+  box.append(sum, ...items);
+  box.addEventListener("toggle", () => {
+    if (!box.open) return;
+    document.querySelectorAll("#view-settings details.set-group[open]").forEach((d) => { if (d !== box) d.open = false; });
+    if (box.getBoundingClientRect().top < 60) box.scrollIntoView({ block: "start" });
+  });
+});
+document.querySelector("#view-settings .settings-jump")?.remove();
+// Opens whichever Settings group holds this spot (for links that take you to a setting).
+function revealSetting(el) {
+  const d = el?.closest?.("details.set-group");
+  if (d && !d.open) d.open = true;
+  return el;
+}
 const HELP = {
   home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
   read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
   books: ["My Bible", ["Tap Keep reading to go back to where you were, or tap any book and then a chapter to read it.", "Books shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["Bible study", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
-  settings: ["Settings", ["The User guide at the top explains every part of the app, and can be printed.", "Tap a section name near the top to jump to it.", "Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
+  settings: ["Settings", ["The User guide at the top explains every part of the app, and can be printed.", "Settings is sorted into groups. Tap a group to open it; Help and guide is first.", "Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
 };
 const helpSheet = document.createElement("dialog");
 helpSheet.className = "welcome-back help-sheet"; helpSheet.setAttribute("aria-label", "Help");

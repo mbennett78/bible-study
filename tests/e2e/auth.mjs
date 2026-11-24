@@ -62,7 +62,7 @@ try {
     check("no password nag after it was changed", !(await page.$(".pw-sheet[open]")));
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(600);
     check("the family organizer sees the organizer tools", await visible(page, "#organizerBox"));
-    await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
+    await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.closest("details.set-group").open = true; d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
     check("the organizer's panel lists the family and the Bible helper questions left", /11,960 of 12,000 questions left/.test(await text(page, "#familyPanel")) && (await page.$$("#familyPanel .fam-list li")).length === 2, await text(page, "#familyPanel"));
     await page.click("#familyLooksGo"); await page.waitForTimeout(500);
     const looks = await text(page, "#familyLooks");

@@ -113,6 +113,7 @@ try {
     check(`${tag}: can be turned off`, !(await box()).shown);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
     check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input[type=checkbox]")).length >= 2 && Boolean(await page.$("[data-buddy-feat=buddy]")) && Boolean(await page.$("[data-buddy-feat=buddyvisits]")));
+    await page.evaluate((s) => { document.querySelector(s).closest("details.set-group").open = true; }, "#buddyNameInput"); await page.waitForTimeout(100);
     await page.fill("#buddyNameInput", "Sparky");
     check(`${tag}: each person can name their buddy`, /Ask Sparky anything/.test(await page.textContent("#chatSheet h2")));
     check(`${tag}: no page errors`, !errors.length, errors.join(" | "));

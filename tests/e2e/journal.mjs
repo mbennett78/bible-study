@@ -73,7 +73,8 @@ try {
 
   // Lock it, then unlock with the number pad.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(200);
-  await page.fill("#lockCode", "2580"); await page.click("#lockSet"); await page.waitForTimeout(400);
+  await page.evaluate((s) => { document.querySelector(s).closest("details.set-group").open = true; }, "#lockCode"); await page.waitForTimeout(100);
+    await page.fill("#lockCode", "2580"); await page.click("#lockSet"); await page.waitForTimeout(400);
   check("passcode: shows it's saved, as dots", /Saved ✓/.test(await page.textContent("#lockStatus")) && await page.$eval("#lockCode", (i) => i.type === "password" && i.value.length === 4));
   await page.click("#lockShow");
   check("passcode: Show reveals it", await page.$eval("#lockCode", (i) => i.type === "text" && i.value === "2580"));

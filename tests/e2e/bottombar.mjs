@@ -55,6 +55,7 @@ try {
     // Typing: the bar steps aside for the keyboard.
     await page.evaluate(() => { delete VisualViewport.prototype.height; delete VisualViewport.prototype.offsetTop; });
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
+    await page.evaluate((s) => { document.querySelector(s).closest("details.set-group").open = true; }, "#userName"); await page.waitForTimeout(100);
     await page.focus("#userName").catch(() => page.focus("input[type=text]"));
     await page.waitForTimeout(150);
     if (!rail) check(`${dev}: while typing, the bar steps aside for the keyboard`, await page.$eval(".tabbar", (t) => getComputedStyle(t).visibility === "hidden"));

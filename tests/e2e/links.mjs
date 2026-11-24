@@ -88,8 +88,8 @@ try {
 
     // Settings jumps.
     await page.$eval('nav.tabbar [data-view="settings"]', (b) => b.click()); await page.waitForTimeout(300);
-    const jumps = await page.$$eval("[data-jump]", (bs) => bs.map((b) => b.dataset.jump));
-    check(`${label}: every Settings jump has a section to go to`, jumps.length === 6 && await page.evaluate((ids) => ids.every((id) => document.getElementById(id)), jumps));
+    const groups = await page.$$eval("#view-settings details.set-group", (ds) => ds.map((d) => d.querySelectorAll(".card").length));
+    check(`${label}: every Settings group opens to something`, groups.length === 6 && groups.every((n) => n > 0), JSON.stringify(groups));
 
     // Web links: https, open in a new tab, safe.
     const links = await page.$$eval("a[href]", (as) => as.map((a) => ({ href: a.getAttribute("href"), target: a.target, rel: a.rel })));
