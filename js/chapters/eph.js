@@ -2,14 +2,13 @@
 import { makeBook } from "./make.js";
 
 const sources = {
-  obrien: "Peter T. O'Brien, The Letter to the Ephesians, Pillar New Testament Commentary (Eerdmans, 1999).",
   arnold: "Clinton E. Arnold, Ephesians, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2010).",
   hoehner: "Harold W. Hoehner, Ephesians: An Exegetical Commentary (Baker Academic, 2002).",
   stottE: "John Stott, The Message of Ephesians, The Bible Speaks Today (InterVarsity Press, 1979).",
   bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
 };
 
-export default makeBook({ lang: "Greek", sources, use: ["obrien", "arnold"] }, {
+export default makeBook({ lang: "Greek", sources, use: ["arnold", "hoehner"] }, {
   1: {
     intro: "Paul writes to the saints in Ephesus and bursts into praise: \"Blessed be the God and Father of our Lord Jesus Christ, who has blessed us with every spiritual blessing in the heavenly places in Christ.\" God chose us in Him before the foundation of the world, adopted us as sons, and in Him we have redemption through His blood, the forgiveness of our sins. Believers were sealed with the Holy Spirit as a pledge of what is coming. Paul prays that the eyes of their hearts would be enlightened to know the hope of His calling and the surpassing greatness of His power, the same power that raised Christ and seated Him far above every ruler.",
     v: [
@@ -20,9 +19,9 @@ export default makeBook({ lang: "Greek", sources, use: ["obrien", "arnold"] }, {
       ["1:18", "That the eyes of your heart may be enlightened", "Seeing with the heart."],
       ["1:22", "He put all things in subjection under His feet", "Christ over all."],
     ],
-    bg: [["Ephesus", "Ephesus was one of the largest cities in the Roman world, home to the great temple of Artemis, one of the seven wonders. Magic and fear of spiritual powers were common there (Acts 19:19), which is why Paul stresses Christ's power over every ruler and authority.", "strong", ["arnold", "obrien"]]],
+    bg: [["Ephesus", "Ephesus was one of the largest cities in the Roman world, home to the great temple of Artemis, one of the seven wonders. Magic and fear of spiritual powers were common there (Acts 19:19), which is why Paul stresses Christ's power over every ruler and authority.", "strong", ["arnold", "hoehner"]]],
     w: [["pledge", "arrabōn", "G728", "down payment, first installment", "A business word for a deposit that guarantees the rest will be paid. The Spirit is God's guarantee that the full inheritance is coming.", ["bdag"]]],
-    views: [["\"He chose us in Him\" (1:4)", "Some read this as God choosing particular individuals for salvation before time began. Others read it as God choosing a people, the church, in Christ, so that whoever is in Christ by faith shares in that choice. Others stress that God chose in advance the destiny of believers: to be holy and blameless. All agree it is grace, rooted in God's love, and centered in Christ.", ["obrien", "arnold", "hoehner"]]],
+    views: [["\"He chose us in Him\" (1:4)", "Some read this as God choosing particular individuals for salvation before time began. Others read it as God choosing a people, the church, in Christ, so that whoever is in Christ by faith shares in that choice. Others stress that God chose in advance the destiny of believers: to be holy and blameless. All agree it is grace, rooted in God's love, and centered in Christ.", ["arnold", "hoehner", "stottE"]]],
     refs: [["ACT.19", "Acts 19", "Paul in Ephesus"], ["PSA.110", "Psalm 110:1", "Sit at My right hand"], ["2CO.1", "2 Corinthians 1:22", "The Spirit as a pledge"]],
   },
   3: {
@@ -35,7 +34,7 @@ export default makeBook({ lang: "Greek", sources, use: ["obrien", "arnold"] }, {
       ["3:19", "To know the love of Christ which surpasses knowledge", "Love beyond measure."],
       ["3:20", "Able to do far more abundantly beyond all that we ask or think", "God is able."],
     ],
-    w: [["mystery", "mystērion", "G3466", "a secret now revealed", "Not a puzzle, but something God kept hidden in the past and has now made known. Here it is that Jews and Gentiles become one people in Christ.", ["bdag", "obrien"]]],
+    w: [["mystery", "mystērion", "G3466", "a secret now revealed", "Not a puzzle, but something God kept hidden in the past and has now made known. Here it is that Jews and Gentiles become one people in Christ.", ["bdag", "hoehner"]]],
     refs: [["EPH.2", "Ephesians 2:11-22", "One new people"], ["COL.1", "Colossians 1:26-27", "Christ in you"], ["GAL.3", "Galatians 3:28-29", "Heirs of the promise"]],
   },
   4: {

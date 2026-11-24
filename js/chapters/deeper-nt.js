@@ -43,8 +43,6 @@ const sources = {
   morrisJ: "Leon Morris, The Gospel According to John, rev. ed., New International Commentary on the New Testament (Eerdmans, 1995).",
   mounceR: "Robert H. Mounce, The Book of Revelation, rev. ed., New International Commentary on the New Testament (Eerdmans, 1998).",
   murphy: "Jerome Murphy-O'Connor, St. Paul's Corinth: Texts and Archaeology, 3rd ed. (Liturgical Press, 2002).",
-  obrien: "Peter T. O'Brien, The Letter to the Ephesians, Pillar New Testament Commentary (Eerdmans, 1999).",
-  obrienH: "Peter T. O'Brien, The Letter to the Hebrews, Pillar New Testament Commentary (Eerdmans, 2010).",
   osborne: "Grant R. Osborne, Revelation, 2nd ed., Baker Exegetical Commentary on the New Testament (Baker Academic, 2023).",
   pao: "David W. Pao, Colossians and Philemon, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2012).",
   schreinerG: "Thomas R. Schreiner, Galatians, Zondervan Exegetical Commentary on the New Testament (Zondervan, 2010).",
@@ -109,15 +107,15 @@ const chapters = {
   "HEB.12": {
     v: [
       ["12:3", "Consider Him who has endured such hostility by sinners", "When we grow weary, we look at what Jesus endured. His endurance strengthens ours.", "scripture", ["lane"]],
-      ["12:7-8", "It is for discipline that you endure; God deals with you as with sons", "Hard things in a believer's life are not signs that God has abandoned them but that He is training them as His children.", "scripture", ["obrienH"]],
+      ["12:7-8", "It is for discipline that you endure; God deals with you as with sons", "Hard things in a believer's life are not signs that God has abandoned them but that He is training them as His children.", "scripture", ["bruceH"]],
       ["12:12-13", "Strengthen the hands that are weak and the knees that are feeble", "Quoting Isaiah 35:3. Believers help each other keep going, making straight paths so the lame are healed, not further hurt.", "scripture", ["lane"]],
       ["12:15", "See to it that no root of bitterness springing up causes trouble", "Bitterness spreads like a weed and can defile many. The church watches out for one another.", "scripture", ["bruceH"]],
-      ["12:18-21", "You have not come to a mountain that can be touched", "Sinai was fire, darkness, gloom and terror (Exodus 19). Even Moses trembled.", "scripture", ["obrienH"]],
+      ["12:18-21", "You have not come to a mountain that can be touched", "Sinai was fire, darkness, gloom and terror (Exodus 19). Even Moses trembled.", "scripture", ["bruceH"]],
       ["12:24", "Jesus, the mediator of a new covenant, and the sprinkled blood, which speaks better than the blood of Abel", "Abel's blood cried out for justice (Genesis 4:10). Jesus' blood speaks forgiveness.", "scripture", ["lane"]],
     ],
     bg: [["The stadium", "The picture in 12:1-2 comes from Greek athletic games. Runners stripped off anything heavy, kept their eyes on the finish, and ran before a packed stadium. The \"witnesses\" are the faithful of chapter 11, whose lives testify that faith is worth it.", "good", ["lane", "guthrieH"]]],
     w: [["agōn", "ah-GOHN", "G73", "race, contest", "The word for an athletic contest, the root of our word \"agony.\" The Christian life is a long-distance race, not a sprint.", ["bdag"]],
-      ["paideia", "pye-DAY-ah", "G3809", "discipline, training", "The whole upbringing of a child: teaching, correction and training. It is about growth, not punishment.", ["bdag", "obrienH"]]],
+      ["paideia", "pye-DAY-ah", "G3809", "discipline, training", "The whole upbringing of a child: teaching, correction and training. It is about growth, not punishment.", ["bdag", "lane"]]],
   },
   "JHN.15": {
     v: [
@@ -133,10 +131,10 @@ const chapters = {
   "HEB.11": {
     v: [
       ["11:4", "By faith Abel offered to God a better sacrifice than Cain", "The first name in the list. Though he died, \"he still speaks.\"", "scripture", ["lane"]],
-      ["11:7", "By faith Noah... prepared an ark for the salvation of his household", "Noah built for a flood he had never seen, trusting only God's warning.", "scripture", ["obrienH"]],
+      ["11:7", "By faith Noah... prepared an ark for the salvation of his household", "Noah built for a flood he had never seen, trusting only God's warning.", "scripture", ["bruceH"]],
       ["11:11-12", "By faith even Sarah herself received ability to conceive", "Sarah laughed at first (Genesis 18:12), yet she is honored here. Faith can grow from doubt.", "scripture", ["bruceH"]],
       ["11:17-19", "By faith Abraham, when he was tested, offered up Isaac", "Abraham reasoned that God could raise the dead, so the promise through Isaac would still come true.", "scripture", ["lane"]],
-      ["11:24-26", "By faith Moses... refused to be called the son of Pharaoh's daughter", "Moses chose suffering with God's people over the treasures of Egypt, \"considering the reproach of Christ greater riches.\"", "scripture", ["obrienH"]],
+      ["11:24-26", "By faith Moses... refused to be called the son of Pharaoh's daughter", "Moses chose suffering with God's people over the treasures of Egypt, \"considering the reproach of Christ greater riches.\"", "scripture", ["bruceH"]],
       ["11:39-40", "God had provided something better for us, so that apart from us they would not be made perfect", "The faithful of the past and believers today will be completed together.", "scripture", ["lane"]],
     ],
     bg: [["A Hall of Faith", "Ancient Jewish writers liked lists of heroes (see Sirach 44-50). Hebrews makes faith the common thread, and includes surprising people: Rahab, Samson and Jephthah. God honors imperfect people who trust Him.", "good", ["lane", "guthrieH"]]],
@@ -190,10 +188,10 @@ const chapters = {
   },
   "EPH.6": {
     v: [
-      ["6:2-3", "Honor your father and mother (which is the first commandment with a promise)", "Paul quotes the fifth commandment (Exodus 20:12). Honor lasts a lifetime, even after obedience is no longer required of grown children.", "scripture", ["obrien"]],
+      ["6:2-3", "Honor your father and mother (which is the first commandment with a promise)", "Paul quotes the fifth commandment (Exodus 20:12). Honor lasts a lifetime, even after obedience is no longer required of grown children.", "scripture", ["hoehner"]],
       ["6:5-9", "Slaves... masters", "Paul addresses the households of his day. He tells masters they too have a Master in heaven and must stop threatening. These words planted seeds that later Christians used to oppose slavery.", "good", ["arnold", "stottE"]],
       ["6:14-15", "Having girded your loins with truth... the breastplate of righteousness... shod your feet", "Each piece draws on Isaiah (11:5, 52:7, 59:17), where God Himself wears the armor. Believers wear God's own armor.", "scripture", ["arnold"]],
-      ["6:16", "The shield of faith with which you will be able to extinguish all the flaming arrows", "Roman shields were large and covered with leather that could be soaked in water to put out burning arrows.", "good", ["arnold", "obrien"]],
+      ["6:16", "The shield of faith with which you will be able to extinguish all the flaming arrows", "Roman shields were large and covered with leather that could be soaked in water to put out burning arrows.", "good", ["arnold", "hoehner"]],
       ["6:19-20", "Pray on my behalf... I am an ambassador in chains", "Paul asks not for release but for boldness to speak the gospel.", "scripture", ["stottE"]],
     ],
     w: [["panoplia", "pan-op-LEE-ah", "G3833", "full armor", "The complete gear of a heavily armed soldier, from which we get \"panoply.\"", ["bdag"]],

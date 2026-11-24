@@ -3,14 +3,13 @@ import { makeBook } from "./make.js";
 
 const sources = {
   lane: "William L. Lane, Hebrews, 2 vols., Word Biblical Commentary 47A-B (Word, 1991).",
-  obrienH: "Peter T. O'Brien, The Letter to the Hebrews, Pillar New Testament Commentary (Eerdmans, 2010).",
   bruceH: "F. F. Bruce, The Epistle to the Hebrews, rev. ed., New International Commentary on the New Testament (Eerdmans, 1990).",
   guthrieH: "George H. Guthrie, Hebrews, NIV Application Commentary (Zondervan, 1998).",
   ellingworth: "Paul Ellingworth, The Epistle to the Hebrews, New International Greek Testament Commentary (Eerdmans, 1993).",
   bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
 };
 
-export default makeBook({ lang: "Greek", sources, use: ["lane", "obrienH"] }, {
+export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
   1: {
     intro: "\"God, after He spoke long ago to the fathers in the prophets in many portions and in many ways, in these last days has spoken to us in His Son.\" The Son is heir of all things, through whom God made the world. \"He is the radiance of His glory and the exact representation of His nature, and upholds all things by the word of His power.\" After making purification for sins, He sat down at the right hand of the Majesty on high. Then a chain of Old Testament quotations shows the Son is far greater than the angels: angels worship Him, and God says to the Son, \"Your throne, O God, is forever and ever.\"",
     v: [
@@ -83,7 +82,7 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "obrienH"] }, {
       ["6:18", "It is impossible for God to lie", "Unchanging God."],
       ["6:19", "This hope we have as an anchor of the soul", "An anchor."],
     ],
-    views: [["The warning in 6:4-6", "Some read it as describing true believers who can fall away and be lost. Others read it as describing people who came close to faith and tasted its blessings but never truly trusted Christ. Others read it as a real warning God uses to keep His people from falling away. All agree the passage calls readers to keep trusting Christ, and the writer says he is confident of better things for them (6:9).", ["lane", "obrienH", "guthrieH"]]],
+    views: [["The warning in 6:4-6", "Some read it as describing true believers who can fall away and be lost. Others read it as describing people who came close to faith and tasted its blessings but never truly trusted Christ. Others read it as a real warning God uses to keep His people from falling away. All agree the passage calls readers to keep trusting Christ, and the writer says he is confident of better things for them (6:9).", ["lane", "bruceH", "guthrieH"]]],
     refs: [["GEN.22", "Genesis 22:16-17", "God swears to Abraham"], ["GEN.14", "Genesis 14:18-20", "Melchizedek"], ["NUM.23", "Numbers 23:19", "God is not a man that He should lie"]],
   },
   7: {
