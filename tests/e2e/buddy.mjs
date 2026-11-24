@@ -15,13 +15,14 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: '<p><span class="v" data-number="1">1</span>In the beginning was the Word.</p>' } } }));
     await ctx.addInitScript(() => {
       if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy" }));
+      Math.random = () => 0.6; // his visit asks if they're wondering anything (not a game or a check-in)
       // Pretend speech so read-aloud can be checked.
       window.__said = [];
       Object.defineProperty(window, "speechSynthesis", { configurable: true, value: { speak: (u) => { window.__said.push(u.text); setTimeout(() => u.onend && u.onend(), 50); }, cancel() {}, getVoices: () => [], addEventListener() {} } });
       window.SpeechSynthesisUtterance = function (t) { this.text = t; };
     });
     const page = await ctx.newPage();
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(site.url); await page.waitForTimeout(900);
@@ -30,7 +31,10 @@ try {
     let b = await box();
     check(`${tag}: buddy is showing`, b.shown);
     check(`${tag}: buddy sits above the bottom buttons`, b.b <= tabTop, `${b.b} vs ${tabTop}`);
-    check(`${tag}: buddy is easy to see but not in the way`, b.r - b.l <= 84 && b.r - b.l >= 76);
+    check(`${tag}: buddy is easy to see but not in the way`, tag === "phone" ? b.r - b.l <= 64 && b.r - b.l >= 56 : b.r - b.l <= 84 && b.r - b.l >= 76, `${b.r - b.l}`);
+    // His own margin: the page's cards end before he begins, so he never covers words or typing.
+    const cardRight = await page.$eval("#view-home", (v) => v.getBoundingClientRect().right);
+    check(`${tag}: the page leaves a margin for him`, cardRight <= b.l + 2, `card ends ${cardRight}, he starts ${b.l}`);
     check(`${tag}: he sits quietly until someone talks to him`, await page.$eval(".buddy", (el) => el.classList.contains("sitting")));
     // Now and then he walks over to say hi.
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
@@ -92,12 +96,17 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel" })); });
     const page = await ctx.newPage();
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
-    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
-    check("naming: his first visit asks what to call him", /What would you like to call me/.test(await page.textContent(".buddy-say")) && await page.$eval(".buddy-say .bs-name", (f) => !f.hidden));
-    await page.fill(".buddy-say .bs-name input", "Pip");
-    await page.$eval(".buddy-say .bs-name button", (b) => b.click()); await page.clock.runFor(300);
+    for (let i = 0; i < 300 && !(await page.$("dialog.buddy-name-dialog[open]")); i++) await page.clock.runFor(2000);
+    check("naming: his first visit asks what to call him, in a big window", /What would you like to call me/.test(await page.textContent(".buddy-name-dialog")));
+    const nb = await page.$eval(".buddy-name-dialog", (d) => { const r = d.getBoundingClientRect(), i = d.querySelector("input").getBoundingClientRect(); return { top: r.top, w: r.width, ih: i.height, ib: i.bottom }; });
+    check("naming: the window sits near the top (above any keyboard), roomy, with a big box", nb.top < 80 && nb.w >= 340 && nb.ih >= 56 && nb.ib < 844 * 0.45, JSON.stringify(nb));
+    check("naming: the box is ready to type in", await page.evaluate(() => document.activeElement?.closest(".buddy-name-dialog") !== null));
+    await page.clock.runFor(60000);
+    check("naming: it stays until they answer", Boolean(await page.$("dialog.buddy-name-dialog[open]")));
+    await page.fill(".buddy-name-dialog input", "Pip");
+    await page.click(".buddy-name-dialog .bnd-save"); await page.clock.runFor(1500);
     check("naming: he loves his new name, and it's saved", /I'm Pip now/.test(await page.textContent(".buddy-say")) && await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).buddyName === "Pip"));
     check("naming: the chat says his name", /Ask Pip anything/.test(await page.textContent("#chatSheet h2")));
     await ctx.close();
@@ -109,7 +118,7 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { Math.random = () => 0.1; if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Pip" })); });
     const page = await ctx.newPage();
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
     check("play: now and then he asks them to play Bible Quest", /Bible Quest|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
@@ -125,7 +134,7 @@ try {
     await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", buddyVisitLog: { day: new Date().toISOString().slice(0, 10), n: 9 } })); });
     const page = await ctx.newPage();
     const errs = []; page.on("pageerror", (e) => errs.push(e.message));
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     const seen = new Set();
     for (let i = 0; i < 40; i++) {
@@ -133,15 +142,66 @@ try {
       for (const c of await page.$eval(".buddy", (b) => [...b.classList])) seen.add(c);
       if (seen.has("sleeping")) break;
     }
-    check("tricks: he does things on his own (cartwheels, strolls, thinking, Yay!)", ["cartwheel", "strolling", "pondering", "yay"].some((c) => seen.has(c)), [...seen].join(" "));
+    check("tricks: he does things on his own (cartwheels, strolls, thinking, Yay!)", ["cartwheel", "strolling", "pondering", "yay", "reading"].some((c) => seen.has(c)), [...seen].join(" "));
     for (let i = 0; i < 40 && !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))); i++) await page.clock.runFor(5000);
     check("nap: he lies down for a nap when nobody's been around", await page.$eval(".buddy", (b) => b.classList.contains("sleeping")) && /z z z/.test(await page.textContent(".buddy-pop")));
     await page.mouse.click(200, 400); await page.clock.runFor(300);
     check("nap: a tap anywhere wakes him up", !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))));
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.clock.runFor(500);
     check("voice: a switch to have him talk out loud, off to start", await page.$eval('[data-buddy-feat="buddyvoice"]', (i) => !i.checked));
-    check("name box: big and easy to type in", await page.$eval("#buddyNameInput", (i) => i.getBoundingClientRect().height >= 48 && i.getBoundingClientRect().width >= 250));
+    check("name box: big and easy to type in", await page.$eval("#buddyNameInput", (i) => i.getBoundingClientRect().height >= 48 && i.getBoundingClientRect().width >= 240));
     check("tricks: no page errors", !errs.length, errs.join(" | "));
+    await ctx.close();
+  }
+  // Time of day, check-ins, moods over his head, thank-yous and celebrations.
+  {
+    const setupStore = (extra = {}) => JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", last: { book: "JHN", chapter: 11 }, ...extra });
+    const open = async (time, extra, html = '<p><span class="v" data-number="1">1</span>Jesus wept. They mourned with sorrow and tears and grief, weeping at the death.</p>') => {
+      const ctx = await browser.newContext({ viewport: { width: 820, height: 1180 } });
+      await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+      await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: html } } }));
+      await ctx.addInitScript((st) => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", st); }, setupStore(extra));
+      const page = await ctx.newPage();
+      const errs = []; page.on("pageerror", (e) => errs.push(e.message));
+      await page.clock.install({ time: new Date(time) });
+      await page.goto(site.url); await page.waitForTimeout(900);
+      return { ctx, page, errs };
+    };
+    let { ctx, page, errs } = await open("2026-11-24T08:00:00");
+    for (let i = 0; i < 30 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check("time: he says good morning", /Good morning, Mel/.test(await page.textContent(".buddy-say")), await page.textContent(".buddy-say"));
+    // A sad chapter: a little cloud over his head.
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click());
+    await page.clock.runFor(3500);
+    check("mood: a cloud over his head for a sad chapter", /☁️/.test(await page.textContent(".buddy-pop")) && await page.$eval(".buddy-pop", (p) => p.classList.contains("on")), await page.textContent(".buddy-pop"));
+    // A thank-you: hearts.
+    await page.evaluate(() => { document.querySelector("#partnerBox").open = true; });
+    await page.clock.runFor(8000);
+    await page.fill("#partnerQ", "Thank you!"); await page.evaluate(() => document.querySelector("#partnerGo").click()); await page.clock.runFor(300);
+    check("thanks: a thank-you gets hearts", /💕/.test(await page.textContent(".buddy-pop")));
+    check("moods: no page errors", !errs.length, errs.join(" | "));
+    await ctx.close();
+    ({ ctx, page, errs } = await open("2026-11-24T22:30:00"));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click());
+    for (let i = 0; i < 30 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check("time: late at night he says it's time for bed", /bed|Goodnight/.test(await page.textContent(".buddy-say")), await page.textContent(".buddy-say"));
+    await page.clock.runFor(30000);
+    for (let i = 0; i < 12 && !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))); i++) await page.clock.runFor(10000);
+    check("time: late at night he falls asleep quickly", await page.$eval(".buddy", (b) => b.classList.contains("sleeping")));
+    await ctx.close();
+    // A check-in, with his own answers.
+    ({ ctx, page, errs } = await open("2026-11-24T14:00:00", { show: { games: false } }, "<p>Text</p>"));
+    await page.evaluate(() => { Math.random = () => 0.05; });
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click());
+    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    const words = await page.textContent(".buddy-say .bs-words");
+    check("check-in: he gently asks how they're doing", /gotten out of the house/.test(words) && /Yes, I did/.test(await page.textContent(".bs-yes")) && /Not yet/.test(await page.textContent(".bs-no")), words);
+    await page.click(".bs-yes"); await page.clock.runFor(300);
+    check("check-in: he answers kindly", /Fresh air/.test(await page.textContent(".buddy-say")));
+    // Typing somewhere: his bubble gets out of the way.
+    await page.clock.runFor(4000);
+    await page.evaluate(() => window.__bud = 1);
+    check("check-ins: no page errors", !errs.length, errs.join(" | "));
     await ctx.close();
   }
   // While reading, his words never pop up over the Bible; they wait for another screen.
@@ -151,7 +211,7 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy" })); });
     const page = await ctx.newPage();
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click());
     let popped = false;

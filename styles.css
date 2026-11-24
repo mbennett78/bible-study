@@ -209,7 +209,11 @@ dialog::backdrop { background: rgb(0 0 0 / .3); }
 .key-row button { flex: none; min-height: 44px; }
 .key-status:empty { display: none; }
 .setup-versions { display: grid; gap: 8px; }
-.tabbar::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 200px; background: var(--page); pointer-events: none; }
+.tabbar::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 100vh; background: var(--page); pointer-events: none; }
+.tabbar { will-change: transform; }
+.bar-probe { position: fixed; left: 0; bottom: 0; width: 1px; height: 0; pointer-events: none; visibility: hidden; }
+/* While typing, the keyboard has the bottom of the screen: the buttons step aside. */
+@media (pointer: coarse) { html.typing .tabbar { visibility: hidden; } }
 .update-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--tabbar-total, 70px) + 10px); z-index: 30; max-width: min(480px, calc(100vw - 32px)); padding: 12px 18px; border: 0; border-radius: 14px; background: var(--accent); color: var(--surface); font: inherit; font-weight: 700; box-shadow: 0 6px 20px rgb(0 0 0 / .25); cursor: pointer; }
 .tabbar button {
   flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -1479,8 +1483,8 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .buddy.dragging { cursor: grabbing; transition: none; }
 .buddy.tucked { opacity: .55; }
 /* Visiting: he walks a few steps in from his edge, then back. */
-.buddy.visiting { transform: translateX(-64px); }
-.buddy.visiting:not(.on-right) { transform: translateX(64px); }
+.buddy.visiting { transform: translateX(-10px); }
+.buddy.visiting:not(.on-right) { transform: translateX(10px); }
 .buddy.visiting { transition: transform .9s ease-in-out, top .25s ease; }
 .buddy-say { position: fixed; z-index: 7; max-width: min(250px, 70vw); padding: 10px 14px; border-radius: 16px 16px 16px 4px; background: var(--surface); color: var(--text); border: 2px solid var(--accent); font: inherit; font-size: 1rem; font-weight: 600; text-align: left; box-shadow: 0 6px 18px rgb(0 0 0 / .18); cursor: pointer; animation: buddy-say-in .35s ease-out; }
 .buddy-say.on-right { border-radius: 16px 16px 4px 16px; }
@@ -1926,8 +1930,9 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
 /* ---------- My Journey: the journal ---------- */
 .journey h2 { font-family: var(--serif); font-size: 1.6rem; margin: 2px 0 4px; }
 .add-entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
-.add-entry { display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 10px 14px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); font: inherit; font-size: 1.02rem; text-align: left; cursor: pointer; }
-.add-entry span { font-size: 1.5rem; }
+.add-entry { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; min-height: 76px; padding: 10px 8px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); font: inherit; font-size: 1.02rem; text-align: left; cursor: pointer; }
+.add-entry span { font-size: 1.5rem; line-height: 1; }
+.add-entry b { text-align: center; line-height: 1.25; }
 .add-entry:active { transform: scale(.98); }
 .ae-day { border-color: #c9a46a; } .ae-prayer { border-color: #7d9bc9; } .ae-gratitude { border-color: #d98fa6; } .ae-bible { border-color: #8fb07c; }
 .entry-editor { margin: 6px 0 12px; padding: 14px; border-radius: 16px; background: var(--surface); border: 2px solid var(--accent); box-shadow: 0 6px 18px rgb(0 0 0 / .08); }
@@ -1973,3 +1978,42 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
   .pb-verse b { display: block; font-family: var(--sans); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: #8a6d55; }
   .pb-verse span { display: block; margin: 4px 0; } .pb-verse i { color: #555; }
 }
+
+/* ---------- Buddy's own margin: the page leaves room on his side, so he, his little
+   pictures and his bubble's tail never sit on the reading or on a box someone types in. ---------- */
+:root { --buddy-gutter: 96px; }
+@media (max-width: 600px) {
+  :root { --buddy-gutter: 64px; }
+  .buddy { width: 58px; height: 68px; }
+}
+@media (max-width: 940px) {
+  body.buddy-right main { padding-right: calc(var(--buddy-gutter) + env(safe-area-inset-right)); }
+  body.buddy-left main { padding-left: calc(var(--buddy-gutter) + env(safe-area-inset-left)); }
+}
+@media (max-width: 600px) {
+  body.buddy-right main { padding-left: calc(10px + env(safe-area-inset-left)); }
+  body.buddy-left main { padding-right: calc(10px + env(safe-area-inset-right)); }
+}
+/* Reading his own little Bible as he strolls along his margin. */
+.buddy-book { display: none; }
+.buddy-book-page { fill: var(--surface); stroke: var(--accent); stroke-width: 1.6; stroke-linejoin: round; }
+.buddy-book-spine { stroke: var(--accent); stroke-width: 1.2; }
+.buddy.reading .buddy-book { display: inline; }
+.buddy.reading .buddy-arm-r { transform: rotate(-38deg); }
+.buddy.reading .buddy-arm-l { transform: rotate(38deg); }
+.buddy.reading .buddy-head, .buddy.reading .buddy-eye, .buddy.reading .buddy-smile { transform: translateY(1.5px); transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) { .buddy.reading { transition: top 6s ease-in-out, opacity .3s ease; } }
+.buddy-pop { font-size: 1.25rem; }
+/* Naming him: a big, calm window near the top, above the keyboard. */
+.buddy-name-dialog { position: fixed; top: calc(env(safe-area-inset-top) + 4vh); margin: 0 auto; width: min(520px, calc(100vw - 32px)); max-height: none; padding: 22px 22px 20px; border: 0; border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 18px 48px rgb(0 0 0 / .3); }
+.buddy-name-dialog::backdrop { background: rgb(0 0 0 / .35); }
+.bnd-form { display: grid; gap: 14px; text-align: center; }
+.bnd-face { display: block; width: 64px; height: 76px; margin: 0 auto -4px; }
+.bnd-face .buddy-svg { width: 100%; height: 100%; }
+.bnd-face .buddy-bubble, .bnd-face .buddy-mouth, .bnd-face .buddy-frown, .bnd-face .buddy-brow, .bnd-face .buddy-shut, .bnd-face .buddy-legs-sit, .bnd-face .buddy-book { display: none; }
+.bnd-q { margin: 0; font-size: 1.2rem; font-weight: 600; line-height: 1.4; }
+.bnd-label { display: grid; gap: 6px; text-align: left; font-weight: 600; color: var(--muted); }
+.bnd-label input { width: 100%; min-height: 60px; padding: 8px 16px; font-size: 1.5rem; border: 2px solid var(--accent); border-radius: 14px; background: var(--bg); color: var(--text); }
+.bnd-acts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.bnd-acts button { min-height: 52px; padding: 8px 22px; border-radius: 999px; font-size: 1.1rem; font-weight: 700; border: 2px solid var(--accent); background: var(--surface); color: var(--text); }
+.bnd-acts .bnd-save { background: var(--accent); color: var(--surface); }

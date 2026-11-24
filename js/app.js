@@ -58,6 +58,7 @@ function applyAppearance() {
 // Whoever looks after the keys sees every version on the plan in Settings without tapping
 // anything: the list loads by itself, once per visit to the app.
 let planVersionsLoaded = false;
+let pendingMood = null; // Buddy's feeling about the chapter, shown once they're reading it
 function loadPlanVersionsOnce() {
   const card = $("#bibleTextCard");
   if (planVersionsLoaded || !card || card.hidden || !store.get("apiBibleKey")) return;
@@ -72,7 +73,8 @@ function showView(name) {
     else b.removeAttribute("aria-current");
   });
   document.body.dataset.view = name;
-  $("#topTitle").textContent = { home: "Home", books: "My Bible", path: "My path", settings: "Settings" }[name] || "";
+  $("#topTitle").textContent = { home: "Home", books: "My Bible", path: "Bible study", settings: "Settings" }[name] || "";
+  if (name === "read") showPassageMood();
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
@@ -82,6 +84,42 @@ function showView(name) {
 document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
 // Keep page content clear of the bottom menu, whatever its real height on this device.
 if ("ResizeObserver" in window) new ResizeObserver(([e]) => document.documentElement.style.setProperty("--tabbar-total", `${Math.ceil(e.target.getBoundingClientRect().height)}px`)).observe(document.querySelector(".tabbar"));
+// The bottom buttons stay pinned to the bottom edge of what's on screen. iPad and iPhone
+// Safari sometimes leave a "fixed" bar floating above the bottom (after the keyboard closes,
+// or as the address bar grows and shrinks), with the page showing underneath it. So we
+// measure where the screen's visible bottom really is and move the bar onto it, every time
+// the visible area changes. While someone is typing, the bar steps aside for the keyboard.
+const tabbarEl = document.querySelector(".tabbar");
+const barProbe = Object.assign(document.createElement("div"), { className: "bar-probe" });
+barProbe.setAttribute("aria-hidden", "true");
+document.body.append(barProbe);
+const typingField = () => { const a = document.activeElement; return Boolean(a && (/^(TEXTAREA|SELECT)$/.test(a.tagName) || (a.tagName === "INPUT" && !/^(checkbox|radio|button|submit|range|color|file)$/.test(a.type)) || a.isContentEditable)); };
+function pinTabbar() {
+  const typing = typingField();
+  document.documentElement.classList.toggle("typing", typing);
+  const vv = window.visualViewport;
+  if (!vv || typing || vv.scale > 1.05) { tabbarEl.style.transform = ""; return; } // zoomed in: leave it be
+  // Where "bottom: 0" lands, and where the visible screen really ends (same coordinates).
+  const shift = Math.round(vv.offsetTop + vv.height - barProbe.getBoundingClientRect().top);
+  tabbarEl.style.transform = shift && Math.abs(shift) < 800 ? `translateY(${shift}px)` : "";
+}
+let pinQueued = false;
+const pinSoon = () => { if (pinQueued) return; pinQueued = true; requestAnimationFrame(() => { pinQueued = false; pinTabbar(); }); };
+window.visualViewport?.addEventListener("resize", pinSoon);
+window.visualViewport?.addEventListener("scroll", pinSoon);
+addEventListener("scroll", pinSoon, { passive: true });
+addEventListener("resize", pinSoon);
+addEventListener("orientationchange", () => [100, 400, 900].forEach((ms) => setTimeout(pinTabbar, ms)));
+addEventListener("pageshow", pinSoon);
+document.addEventListener("focusin", pinSoon);
+// When the keyboard closes, Safari can leave the page shifted: settle it, then re-pin.
+document.addEventListener("focusout", () => setTimeout(() => {
+  if (typingField()) return;
+  window.scrollTo(window.scrollX, window.scrollY);
+  [0, 250, 700].forEach((ms) => setTimeout(pinTabbar, ms));
+}, 60));
+setInterval(() => { if (!document.hidden) pinTabbar(); }, 1500);
+pinTabbar();
 
 /* ---------- Reading ---------- */
 function neighbors(book, ch) {
@@ -146,6 +184,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     $("#copyright").textContent = result.copyright;
     store.recordVisit(book, chapter);
     updateVisitLine();
+    buddyFeelsPassage(readerEl.textContent, `${book}.${chapter}`);
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
     // Read to me: once it's on and started, every chapter opened is read aloud.
@@ -208,6 +247,7 @@ function toggleRead() {
     $("#triviaHint").textContent = `You finished ${BOOK_BY_ID[book].name}! Play ${BOOK_BY_ID[book].name} trivia`;
     $("#triviaBtn").classList.add("glow");
     mascotSay(`You finished ${BOOK_BY_ID[book].name}! Want to try some trivia?`);
+    buddy.celebrate(`You finished ${BOOK_BY_ID[book].name}! I'm SO proud of you! 🎉`);
   } else if (on) mascotSay(pick(["Well done today.", "Another chapter hidden in your heart.", "Keep going, you're doing great."]));
   if (on) celebrate(store.readCount(book) === BOOK_BY_ID[book].chapters ? "big" : "small");
 }
@@ -958,6 +998,12 @@ async function sendChat() {
   if (chatBusy) return;
   chatBubble("me", q);
   $("#partnerQ").value = "";
+  // A simple thank-you: hearts from him, and a warm reply right away (no need to look anything up).
+  if (/^[\s\p{P}]*(thank(s| you)( so much| very much)?|thx|ty|love you)([\s,]+\p{L}+){0,3}[\s\p{P}\p{Extended_Pictographic}]*$/iu.test(q)) {
+    buddy.love();
+    chatBubble("them", pickOne(["You're so welcome! 💕", "Anytime, friend! 😊", "Aww, you're welcome! I love helping you. 💕"]));
+    return;
+  }
   buddyFeels(q);
   await askBuiltIn(q);
 }
@@ -981,6 +1027,8 @@ const quest = createQuest({
   lookColors: () => ["#ffcf3f", "#ff7a59", "#5cc46b", "#3d8bb0", "#8e6bb5"],
   practice: () => game.open(),
   buddyName: () => buddyName(),
+  // A win at trivia: he can hardly contain himself (once the game window closes).
+  onWin: () => buddyAfterDialogs(() => buddy.celebrate(pickOne([`You WON! 🏆 That was amazing, ${store.get("name")?.trim() || "friend"}!`, "Woohoo! You're a trivia champion! 🎉", "YES! I knew you could do it! 🏆"]), "trophy")),
 });
 // He says his little lines out loud too, when the family turns that on (Settings, Study buddy).
 // Never over the Bible reading, and off by default so he's never a surprise in church.
@@ -1038,13 +1086,85 @@ const BUDDY_LINES = [
   (n, ref) => `Any questions about ${ref}? I'd love to help.`,
   () => "Want to know what a word means in Hebrew or Greek? Ask me!",
   () => "I know lots about Bible people and places. Try me!",
+  (n) => `Can I look anything up for you${n ? `, ${n}` : ""}? I'm happy to help.`,
 ];
+// Little things he just says, like a friend sitting nearby. No answer needed.
+const BUDDY_CHAT = [
+  "I just read about Noah's ark. That's a LOT of animals! 🐘🦒",
+  "Fun fact: a mustard seed is teeny tiny, but it grows into a big plant. 🌱",
+  "I love quiet time with my Bible. ☕",
+  "Psalm 118:24 is one of my favorites: this is the day the Lord has made! ☀️",
+  "I've been practicing my trivia. Watch out! 😄",
+  "Sometimes I just like sitting here with you. 💛",
+  "Did you know the Bible has 66 books? I'm reading them one by one too! 📖",
+];
+// Gentle check-ins, with his own answers.
+const BUDDY_CHECKINS = [
+  () => ["Have you gotten out of the house today? ☀️", { label: "Yes, I did!", line: "Wonderful! Fresh air is a gift from God. 🌤️" }, { label: "Not yet", line: "Maybe a little walk later? Even the porch counts! 😊" }],
+  () => ["Have you talked with someone you love today? 📞", { label: "Yes!", line: "That makes my heart happy! 💕" }, { label: "Not yet", line: "Maybe give someone a call? I bet they'd love it." }],
+  () => ["Want to write a little in your journal today? ✏️", { label: "Sure!", line: "Yay! I'll open it for you.", go: () => openMyJourney() }, { label: "Not now", line: "Okie! It'll be right there when you want it." }],
+];
+function openMyJourney() {
+  showView("books");
+  document.querySelector('[data-seg="journal"]')?.click();
+  setTimeout(() => openEntry({ kind: "day" }), 150);
+}
+// Run something once no window (like the game) is open over the page.
+function buddyAfterDialogs(fn, tries = 600) {
+  if (!document.querySelector("dialog[open]")) { setTimeout(fn, 400); return; }
+  if (tries > 0) setTimeout(() => buddyAfterDialogs(fn, tries - 1), 1000);
+}
+// A cloud over his head for a sad chapter, hearts for a happy one, lightning for a dramatic one.
+const MOOD_WORDS = {
+  sad: /\b(wept|weep\w*|mourn\w*|sorrow\w*|grie(f|ve\w*)|lament\w*|sackcloth|tears|famine|afflict\w*|captiv\w*|desolat\w*|died|death|slain|forsaken|anguish)\b/gi,
+  happy: /\b(love\w*|joy\w*|rejoic\w*|prais\w*|bless\w*|peace|hope|grace|merc\w*|glad\w*|sing|song|thank\w*|comfort\w*|delight\w*|shepherd)\b/gi,
+  dramatic: /\b(fire|storm|thunder\w*|lightning\w*|sword\w*|battle\w*|earthquake|war|plague\w*|flood|smote|struck|chariots?|hail|fought|destroy\w*)\b/gi,
+};
+let lastMoodRef = "";
+function buddyFeelsPassage(text, ref) {
+  if (ref === lastMoodRef || (store.get("show") || {}).buddy === false) return;
+  lastMoodRef = ref;
+  const counts = Object.fromEntries(Object.entries(MOOD_WORDS).map(([k, re]) => [k, (text.match(re) || []).length]));
+  const [kind, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  if (n < 3) return;
+  pendingMood = { kind, ref };
+  if (document.body.dataset.view === "read") showPassageMood();
+}
+// Shown once they're actually looking at the chapter.
+function showPassageMood() {
+  const m = pendingMood;
+  if (!m) return;
+  pendingMood = null;
+  setTimeout(() => { const l = store.get("last"); if (l && `${l.book}.${l.chapter}` === m.ref && document.body.dataset.view === "read") buddy.mood(m.kind, 7000); }, 2500);
+}
+// Good morning, good evening, and "time for bed?" once each, at the right time of day.
+function timeOfDay(h = new Date().getHours()) { return h >= 5 && h < 11 ? "morning" : h >= 17 && h < 21 ? "evening" : h >= 21 || h < 5 ? "late" : ""; }
+function buddyTimeHello() {
+  const when = timeOfDay();
+  if (!when) return false;
+  const today = new Date().toDateString(), log = store.get("buddyHello") || {};
+  const said = log.day === today ? log.said || [] : [];
+  if (said.includes(when)) return false;
+  const n = store.get("name")?.trim() || "";
+  const text = {
+    morning: pickOne([`Good morning${n ? `, ${n}` : ""}! ☀️ I'm so glad you're here.`, `Good morning${n ? `, ${n}` : ""}! ☀️ This is the day the Lord has made!`]),
+    evening: pickOne([`Good evening${n ? `, ${n}` : ""}! 🌆 How was your day?`, `Evening${n ? `, ${n}` : ""}! I hope today was a good one. 💛`]),
+    late: pickOne([`It's getting late${n ? `, ${n}` : ""}. 🌙 Time for bed soon? Goodnight, sleep well!`, `Yawn... 🥱 it's late! Don't stay up too long${n ? `, ${n}` : ""}. Goodnight! 🌙`]),
+  }[when];
+  // While reading, no words over the Bible: just a little sun or moon over his head.
+  const ok = document.body.dataset.view === "read" ? buddy.mood(when === "morning" ? "morning" : "night", 5000) : buddy.visit(text, 8000, false);
+  if (ok) store.set("buddyHello", { day: today, said: [...said, when] });
+  return ok;
+}
 let buddyVisitAt = Date.now() + 4 * 60e3 + Math.random() * 3 * 60e3;
+const buddyStartedAt = Date.now();
 let buddyWaveAt = Date.now() + 90e3 + Math.random() * 90e3;
 setInterval(() => {
   if (document.hidden || (store.get("show") || {}).buddy === false || (store.get("show") || {}).buddyvisits === false) return;
   if (reader.playing || document.querySelector("dialog[open]") || document.documentElement.classList.contains("touring")) return;
   // Now and then a little wave from where he sits (no walking, no words).
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "");
+  if (!typing && Date.now() - buddyStartedAt > 15e3 && buddyTimeHello()) return;
   if (Date.now() >= buddyWaveAt && Date.now() < buddyVisitAt - 60e3) { if (buddy.wave()) buddyWaveAt = Date.now() + 5 * 60e3 + Math.random() * 5 * 60e3; return; }
   if (Date.now() < buddyVisitAt) return;
   // While someone is reading, he never pops up with words over the Bible: he saves his
@@ -1073,8 +1193,13 @@ setInterval(() => {
     }
     return;
   }
-  const line = BUDDY_LINES[Math.floor(Math.random() * BUDDY_LINES.length)];
-  if (buddy.visit(line(store.get("name")?.trim() || "", `${BOOK_BY_ID[book].name} ${chapter}`))) {
+  // Otherwise: a check-in, a little chat, or an offer to help.
+  const roll = Math.random();
+  let went;
+  if (roll < 0.3) { const [q, yes, no] = pickOne(BUDDY_CHECKINS)(); went = buddy.ask(q, yes, no); }
+  else if (roll < 0.55) went = buddy.visit(pickOne(BUDDY_CHAT), 8000, false);
+  else went = buddy.visit(pickOne(BUDDY_LINES)(store.get("name")?.trim() || "", `${BOOK_BY_ID[book].name} ${chapter}`));
+  if (went) {
     store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
     buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
   }
@@ -3106,7 +3231,7 @@ const HELP = {
   home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
   read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
   books: ["My Bible", ["Tap Keep reading to go back to where you were, or tap any book and then a chapter to read it.", "Books shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
-  path: ["My path", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
+  path: ["Bible study", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
   settings: ["Settings", ["Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
 };
 const helpSheet = document.createElement("dialog");

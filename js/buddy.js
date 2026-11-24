@@ -24,6 +24,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-arm-l"><path class="buddy-line" d="M26 38l-10 9"/></g>
     <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
     <g class="buddy-legs-stand"><path class="buddy-line" d="M26 54l-8 18M26 54l8 18"/></g>
+    <g class="buddy-book"><path class="buddy-book-page" d="M17 44.5l9 2.2l9-2.2v9l-9 2.2l-9-2.2z"/><path class="buddy-book-spine" d="M26 46.7v9"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
@@ -32,7 +33,10 @@ const SPOT_KEY = "bible-study:buddy-spot";
 // His little tricks while nobody needs him, and when he naps.
 const TRICK_EVERY_MS = 25000;
 const NAP_AFTER_MS = 150000;
-const TRICKS = ["cartwheel", "stroll", "pondering", "yay", "stroll", "pondering", "yay", "cartwheel"];
+const TRICKS = ["cartwheel", "stroll", "pondering", "yay", "reading", "pondering", "reading", "stroll", "yay", "reading", "cartwheel"];
+// Late at night he gets sleepy: he yawns now and then and naps much sooner.
+const lateNow = () => { const h = new Date().getHours(); return h >= 22 || h < 5; };
+const LATE_NAP_MS = 45000;
 const SIT_AFTER_MS = 12000;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
@@ -57,27 +61,39 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   say.setAttribute("role", "status");
   say.hidden = true;
   say.innerHTML = `<button type="button" class="bs-words"></button><span class="bs-acts"><button type="button" class="bs-yes">Yes, I have a question</button><button type="button" class="bs-no">Not now</button></span>
-    <form class="bs-name" hidden><input type="text" maxlength="16" autocomplete="off" aria-label="His name" value="Buddy"><button type="submit">That's your name!</button></form>`;
-  const words = say.querySelector(".bs-words"), acts = say.querySelector(".bs-acts"), nameForm = say.querySelector(".bs-name");
-  let onName = null;
-  // Asking for his name (people who set up the app before he could be named).
-  nameForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const v = nameForm.querySelector("input").value.trim().slice(0, 16) || "Buddy";
-    nameForm.hidden = true;
-    clearTimeout(visitTimer);
-    onName?.(v); onName = null;
-    speak(`I love it! I'm ${v} now. 😊 Tap me any time you want to talk.`, false);
-    play("excited", 1400);
-    visitTimer = setTimeout(goBack, 3500);
-  });
+`;
+  const words = say.querySelector(".bs-words"), acts = say.querySelector(".bs-acts");
   document.body.append(say);
+  // Asking for his name (people who set up the app before he could be named): a big, calm
+  // window near the top of the screen, so the keyboard never covers what they're typing, and
+  // it stays until they answer.
+  const nameDlg = document.createElement("dialog");
+  nameDlg.className = "buddy-name-dialog";
+  nameDlg.setAttribute("aria-label", "Name your study buddy");
+  nameDlg.innerHTML = `<form class="bnd-form"><span class="bnd-face" aria-hidden="true">${BUDDY_SVG}</span><p class="bnd-q"></p>
+    <label class="bnd-label">My name will be<input type="text" maxlength="16" autocomplete="off" autocapitalize="words" enterkeyhint="done" value="Buddy"></label>
+    <div class="bnd-acts"><button type="submit" class="bnd-save">That's your name!</button><button type="button" class="bnd-later">Maybe later</button></div></form>`;
+  document.body.append(nameDlg);
+  const nameInput = nameDlg.querySelector("input");
+  let onName = null;
+  nameDlg.querySelector("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = nameInput.value.trim().slice(0, 16) || "Buddy";
+    nameInput.blur(); nameDlg.close();
+    onName?.(v); onName = null;
+    setTimeout(() => { visit(`I love it! I'm ${v} now. 😊 Tap me any time you want to talk.`, 5000, false); setTimeout(() => play("excited", 1400), 1000); }, 350);
+  });
+  nameDlg.querySelector(".bnd-later").addEventListener("click", () => {
+    nameInput.blur(); nameDlg.close(); onName = null;
+    setTimeout(() => visit("Okie! You can name me any time in Settings. 😊", 4000, false), 350);
+  });
 
   // Where he stands: which edge, and how far down (0 = top of the free space, 1 = bottom).
   // Until someone moves him, he takes the side the app suggests (away from the corner friend).
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(SPOT_KEY)); } catch { /* first time */ }
   let spot = saved || { side: defaultSide(), y: 1 };
+  let wanderY = null; // where his little reading walks have taken him (not saved)
 
   // The space he may use: below the top bar and above the bottom buttons.
   function bounds() {
@@ -87,12 +103,14 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     return { top, bottom: Math.max(top + el.offsetHeight, bottom) };
   }
   function place() {
-    if (!saved) spot = { side: defaultSide(), y: 1 };
+    if (!saved) spot = { side: defaultSide(), y: wanderY ?? 1 };
     const b = bounds(), h = el.offsetHeight || 84;
     el.style.top = `${b.top + clamp(spot.y, 0, 1) * (b.bottom - b.top - h)}px`;
     el.style.left = spot.side === "left" ? "4px" : "";
     el.style.right = spot.side === "right" ? "4px" : "";
     el.classList.toggle("on-right", spot.side === "right");
+    document.body.classList.toggle("buddy-right", !el.hidden && spot.side === "right");
+    document.body.classList.toggle("buddy-left", !el.hidden && spot.side === "left");
     placeSay();
   }
   function placeSay() {
@@ -149,31 +167,33 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   let onYes = null;
   yesBtn.addEventListener("click", () => {
     clearTimeout(visitTimer);
+    if (onAnswer) { const a = onAnswer.yes; onAnswer = null; speak(a.line, false); play(a.go ? "excited" : "yay", 1600); visitTimer = setTimeout(() => { if (a.go) { endVisit(); a.go(); } else goBack(); }, a.go ? 1300 : 3200); return; }
     const then = onYes || onTap;
     speak(onYes ? pick(PLAY_LINES) : pick(YES_LINES), false);
     play("excited", 1400);
     visitTimer = setTimeout(() => { endVisit(); then(); }, 1100);
   });
   // "Not now": a happy "Okie!" and back he goes.
-  say.querySelector(".bs-no").addEventListener("click", () => {
+  const noBtn = say.querySelector(".bs-no");
+  noBtn.addEventListener("click", () => {
     clearTimeout(visitTimer);
+    if (onAnswer) { const a = onAnswer.no; onAnswer = null; speak(a.line, false); play("waving", 1200); visitTimer = setTimeout(goBack, 3200); return; }
     speak(pick(NO_LINES), false);
     play("waving", 1200);
     visitTimer = setTimeout(goBack, 2400);
   });
   function tapped() { rouse(); endVisit(); play("excited", 1400); onTap(); }
   // He "says" each line: his mouth moves for a moment, about as long as the words.
-  let talkTimer = 0;
+  let talkTimer = 0, sayShownAt = 0;
   function speak(text, ask) {
-    if (ask !== "name") nameForm.hidden = true;
     clearTimeout(talkTimer);
     el.classList.add("speaking");
     talkTimer = setTimeout(() => el.classList.remove("speaking"), Math.min(3200, 600 + text.length * 35));
     words.textContent = text;
     sayOutLoud?.(text);
     acts.hidden = ask !== true;
-    if (ask === "name") nameForm.hidden = false;
     say.hidden = false;
+    sayShownAt = Date.now();
     placeSay();
   }
 
@@ -189,11 +209,27 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   const goBack = () => { say.hidden = true; el.classList.add("walking"); el.classList.remove("visiting"); setTimeout(endVisit, 900); };
   // A visit where he asks what they'd like to call him; onPicked(name) saves it.
   function askName(text, onPicked) {
-    if (!visit(text, 30000, "name")) return false;
+    if (el.hidden || drag || !say.hidden || document.querySelector("dialog[open]")) return false;
+    rouse();
+    nameDlg.querySelector(".bnd-q").textContent = text;
+    nameInput.value = "Buddy";
     onName = onPicked;
+    nameDlg.showModal();
+    play("waving", 1600);
+    setTimeout(() => { nameInput.focus(); nameInput.select(); }, 120);
+    return true;
+  }
+  // A friendly question with his own two answers, like "Have you gotten outside today?"
+  // yes/no: { label, line (what he says back), go (optional, runs after) }.
+  function ask(text, yes, no) {
+    if (!visit(text, 16000)) return false;
+    onAnswer = { yes, no };
+    yesBtn.textContent = yes.label;
+    noBtn.textContent = no.label;
     return true;
   }
   // A visit that invites them to something ("Want to play?"): yes runs `go` instead of the chat.
+  let onAnswer = null;
   function invite(text, yesLabel, go) {
     if (!visit(text, 14000)) return false;
     onYes = go;
@@ -201,8 +237,9 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     return true;
   }
   function visit(text, ms = 12000, ask = true) {
-    onYes = null;
+    onYes = null; onAnswer = null;
     yesBtn.textContent = "Yes, I have a question";
+    noBtn.textContent = "Not now";
     if (el.hidden || drag || !say.hidden) return false;
     rouse();
     el.classList.remove("tucked", "sitting");
@@ -222,13 +259,25 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   let lastActive = Date.now(), trickUntil = 0;
   const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.graphics === "simple";
   const busy = () => el.hidden || drag || !say.hidden || keepStanding || el.classList.contains("visiting") || Date.now() < holdUntil || Date.now() < trickUntil || document.hidden;
-  const popUp = (text, ms) => { pop.textContent = text; pop.classList.add("on"); setTimeout(() => pop.classList.remove("on"), ms); };
+  let popTimer = 0;
+  const popUp = (text, ms) => { clearTimeout(popTimer); pop.classList.remove("snore"); pop.textContent = text; pop.classList.add("on"); popTimer = setTimeout(() => pop.classList.remove("on"), ms); };
   function trick(name) {
     if (busy() || el.classList.contains("sleeping")) return false;
-    const ms = { cartwheel: 1700, stroll: 3200, pondering: 5000, yay: 2000 }[name] || 2000;
+    const ms = { cartwheel: 1700, stroll: 3200, pondering: 5000, yay: 2000, reading: 9000 }[name] || 2000;
     trickUntil = Date.now() + ms + 400;
     el.classList.remove("tucked", "sitting");
-    if (name === "stroll") {
+    if (name === "reading") {
+      // He reads his own little Bible, strolling slowly up or down his margin.
+      el.classList.add("reading", "walking");
+      const b = bounds(), h = el.offsetHeight || 84, span = Math.max(1, b.bottom - b.top - h);
+      const now = (el.getBoundingClientRect().top - b.top) / span;
+      wanderY = clamp(now + (now > 0.5 ? -1 : 1) * (0.25 + Math.random() * 0.3), 0, 1);
+      if (saved) spot.y = wanderY;
+      setTimeout(() => { el.style.top = `${b.top + wanderY * span}px`; }, 50);
+      setTimeout(() => el.classList.remove("walking"), 6000);
+      setTimeout(() => el.classList.remove("reading"), ms);
+      if (Math.random() < 0.5) setTimeout(() => { if (el.classList.contains("reading")) popUp(pick(["💡", "💕", "🙂"]), 2200); }, 6400);
+    } else if (name === "stroll") {
       el.classList.add("walking", "strolling");
       setTimeout(() => el.classList.remove("strolling"), 1500);
       setTimeout(() => el.classList.remove("walking"), ms);
@@ -240,6 +289,15 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     // Thinking: a question mark, then the lightbulb of a good idea.
     if (name === "pondering") { popUp("?", 2600); setTimeout(() => { if (el.classList.contains("pondering")) popUp("💡", ms - 2700); }, 2700); }
     sitSoon(ms + 2500);
+    return true;
+  }
+  // A little picture over his head for a few seconds: a cloud for a sad passage, hearts
+  // for a happy one, lightning for a dramatic one, a sun or moon for the time of day.
+  const MOODS = { sad: "☁️", happy: "💕", dramatic: "⚡", idea: "💡", morning: "☀️", night: "🌙", sleepy: "🥱", party: "🎉", trophy: "🏆" };
+  function mood(kind, ms = 6000) {
+    if (el.hidden || el.classList.contains("sleeping") || pop.classList.contains("search")) return false;
+    popUp(MOODS[kind] || kind, ms);
+    if (kind === "sad") { el.classList.add("caring"); setTimeout(() => el.classList.remove("caring"), ms); }
     return true;
   }
   function nap() {
@@ -258,7 +316,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   addEventListener("keydown", active);
   setInterval(() => {
     if (still()) return;
-    if (Date.now() - lastActive > NAP_AFTER_MS) { nap(); return; }
+    if (Date.now() - lastActive > (lateNow() ? LATE_NAP_MS : NAP_AFTER_MS)) { nap(); return; }
+    if (lateNow() && Math.random() < 0.3) { if (!busy()) mood("sleepy", 2600); return; }
     if (Math.random() < 0.55) trick(pick(TRICKS));
   }, TRICK_EVERY_MS);
 
@@ -266,16 +325,36 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   // While someone scrolls through the reading he sits and fades a little, so he never
   // distracts from the words. He's still there to tap.
   const tuck = (on) => { el.classList.toggle("tucked", on); if (on && !keepStanding) el.classList.add("sitting"); };
-  addEventListener("scroll", () => { if (!drag && Date.now() > holdUntil) tuck(true); }, { passive: true });
+  addEventListener("scroll", () => {
+    if (!say.hidden && Date.now() - sayShownAt > 1500) { clearTimeout(visitTimer); goBack(); }
+    if (!drag && Date.now() > holdUntil) tuck(true);
+  }, { passive: true });
+  // Someone starts typing somewhere: his bubble gets out of the way at once.
+  document.addEventListener("focusin", (e) => {
+    const t = e.target;
+    if (say.hidden || say.contains(t) || nameDlg.contains(t) || !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    clearTimeout(visitTimer); goBack();
+  });
   requestAnimationFrame(place);
 
   return {
     el,
     place,
-    show(on) { el.hidden = !on; if (!on) endVisit(); else place(); },
+    show(on) { el.hidden = !on; if (!on) endVisit(); place(); },
     visit,
     askName,
     invite,
+    ask,
+    mood,
+    // A thank-you: hearts and a happy little "Yay!".
+    love() { if (el.hidden) return; rouse(); el.classList.remove("tucked"); play("yay", 2000); popUp("💕", 2600); },
+    // The big moments: winning at trivia, finishing a book. He's SO excited.
+    celebrate(text, icon = "party") {
+      if (el.hidden) return;
+      rouse(); el.classList.remove("tucked");
+      play("cheering", 2600); popUp(MOODS[icon] || icon, 3200);
+      if (text) setTimeout(() => { if (say.hidden && !document.querySelector("dialog[open]")) { speak(text, false); clearTimeout(visitTimer); visitTimer = setTimeout(goBack, 6000); } }, 400);
+    },
     visiting: () => !say.hidden || el.classList.contains("visiting"),
     // Stands while the chat is open; sits again when it closes.
     chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },
