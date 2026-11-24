@@ -1230,10 +1230,15 @@ export const CHAPTER_BOOKS = new Set(["GEN", "EXO", "LEV", "NUM", "DEU", "JOS", 
 const bookLoads = {}, bookReady = new Set();
 export const bookNotesReady = (book) => !CHAPTER_BOOKS.has(book) || bookReady.has(book);
 export const loadBookNotes = (book) => (bookLoads[book] ??= !CHAPTER_BOOKS.has(book) ? Promise.resolve()
-  : import(`./chapters/${book.toLowerCase()}.js`).then((m) => {
-    for (const [ch, n] of Object.entries(m.default)) NOTES[`${book}.${ch}`] ??= n;
+  : Promise.all([import(`./chapters/${book.toLowerCase()}.js`), import(`./chapters/deeper-${NT_BOOKS.has(book) ? "nt" : "ot"}.js`).catch(() => null), import("./chapters/make.js")]).then(([m, d, { deepen }]) => {
+    for (const [ch, n] of Object.entries(m.default)) {
+      const key = `${book}.${ch}`;
+      if (NOTES[key]) continue;
+      NOTES[key] = d?.default.chapters[key] ? deepen(n, d.default.chapters[key], d.default) : n;
+    }
     bookReady.add(book);
   }, () => { delete bookLoads[book]; }));
+const NT_BOOKS = new Set(["MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"]);
 // In Bible order.
 const ORDER = BOOKS.map((b) => b.id);
 export const sampleChapters = () => Object.keys(NOTES).filter((k) => !NOTES[k].brief).sort((a, b) => {

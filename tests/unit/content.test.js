@@ -154,3 +154,26 @@ test("chapter notes load for every listed book, cite listed sources and are cach
     }
   }
 });
+
+test("deeper notes add to the most-read chapters without repeating a verse note", async () => {
+  const { loadBookNotes, NOTES: ALL } = await import("../../js/notes.js");
+  for (const f of ["ot", "nt"]) {
+    const { existsSync } = await import("node:fs");
+    if (!existsSync(new URL(`../../js/chapters/deeper-${f}.js`, import.meta.url))) continue;
+    const d = (await import(`../../js/chapters/deeper-${f}.js`)).default;
+    for (const [key, x] of Object.entries(d.chapters)) {
+      const [b] = key.split(".");
+      for (const src of [...(x.v || []).map((r) => r[4]), ...(x.bg || []).map((r) => r[3]), ...(x.w || []).map((r) => r[5])]) for (const id of src || []) assert.ok(d.sources[id], `${key}: unknown source ${id}`);
+      const book = (await import(`../../js/chapters/${b.toLowerCase()}.js`)).default;
+      const usedHere = new Set([...(x.v || []).map((r) => r[4]), ...(x.bg || []).map((r) => r[3]), ...(x.w || []).map((r) => r[5])].flat().filter(Boolean).concat(x.v?.some((r) => !r[4]) || x.bg?.some((r) => !r[3]) || x.w?.some((r) => !r[5]) ? d.use : []));
+      for (const id of usedHere) { const text = d.sources[id]; if (Object.values(book).some((c) => c.sources[id] && c.sources[id] !== text)) assert.fail(`${key}: source key ${id} means a different book here than in ${b}`); }
+      await loadBookNotes(b);
+      const n = ALL[key];
+      assert.ok(n && n.deeper, `${key} was not deepened`);
+      const refs = n.sections.find((s) => s.id === "verses")?.items.map((i) => i.ref) || [];
+      const nums = refs.map((r) => Number(String(r).split(":")[1]));
+      assert.deepEqual(nums, [...nums].sort((a, c) => a - c), `${key}: verse notes out of order`);
+      for (const r of x.v || []) assert.equal(refs.filter((q) => q === r[0]).length, 1, `${key}: ${r[0]} is noted twice`);
+    }
+  }
+});
