@@ -1226,7 +1226,7 @@ Object.assign(NOTES, MORE_NOTES);
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
 // Books whose chapter-by-chapter notes live in js/chapters/<book>.js. They load the first time
 // a chapter of that book is opened, and the app caches them for offline use.
-export const CHAPTER_BOOKS = new Set(["GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST", "JOB", "PSA", "PRO", "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN", "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "MAL", "ZEC", "MRK", "MAT", "LUK", "JHN", "ACT", "ROM", "1CO"]);
+export const CHAPTER_BOOKS = new Set(["GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST", "JOB", "PSA", "PRO", "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN", "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "MAL", "ZEC", "MRK", "MAT", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO"]);
 const bookLoads = {}, bookReady = new Set();
 export const bookNotesReady = (book) => !CHAPTER_BOOKS.has(book) || bookReady.has(book);
 export const loadBookNotes = (book) => (bookLoads[book] ??= !CHAPTER_BOOKS.has(book) ? Promise.resolve()
