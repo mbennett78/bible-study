@@ -1,5 +1,6 @@
 import { STICKERS, BOOK_ART } from "./stickers.js";
 import { BOOK_BY_ID } from "./books.js";
+import { STORYBOOK, storybookSvg } from "./storybook.js";
 
 // Hand-drawn style illustrations as inline SVG. Colors come from CSS classes
 // (styles.css, "Illustrations"), so each look (Sage, Feminine, Masculine, Animated)
@@ -1160,6 +1161,8 @@ function bookScene(book) {
 export function kidsStory(book, chapter) {
   const key = `${book}.${chapter}`;
   const name = Object.keys(STORIES).find((k) => STORIES[k].includes(key));
+  // The best-known stories have a big storybook picture (js/storybook.js).
+  if (name && STORYBOOK[name]) return { kind: name, caption: STORYBOOK[name].caption, svg: storybookSvg(name, ++uid) };
   const [caption, draw, [a, b]] = name ? STORY_ART[name] : bookScene(book);
   const id = ++uid;
   return { kind: name || "book", caption, svg: `<svg class="fish-strip passage-art kids-story" viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/><g class="kids-ink">${draw()}</g>${name ? (KIDS_FX[name]?.() || "") : ""}</g></svg>` };

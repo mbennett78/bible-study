@@ -2348,6 +2348,39 @@ html { background: var(--page); }
 @keyframes kfPartR { from { transform: translateX(-46px); } }
 @keyframes kfBounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-4px); } 55% { transform: translateY(0) scaleY(.96); } }
 @keyframes kfSway { 50% { transform: rotate(3deg); } }
+/* Storybook pictures (js/storybook.js): taller, with gentle movement and blinking eyes. */
+.fish-strip.kids-story.storybook { aspect-ratio: 360 / 200; }
+.storybook .sb-blink { animation: sbBlink 5s ease-in-out var(--bl, 0s) infinite; transform-box: fill-box; transform-origin: center; }
+.storybook .sb-bob { animation: sbBob 5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 90%; }
+.storybook .sb-fly { animation: sbFly 9s ease-in-out infinite; }
+.storybook .sb-flap { animation: sbFlap .45s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 20% 100%; }
+.storybook .sb-wave { animation: sbWave 4s ease-in-out infinite alternate; }
+.storybook .sb-wave2 { animation: sbWave 3s ease-in-out -1s infinite alternate-reverse; }
+.storybook .sb-drift { animation: sbDrift var(--sd, 40s) ease-in-out infinite alternate; }
+.storybook .sb-spin { animation: sbSpin 40s linear infinite; }
+.storybook .sb-twinkle { animation: sbTwinkle var(--sd, 3s) ease-in-out var(--sdl, 0s) infinite; transform-box: fill-box; transform-origin: center; }
+.storybook .sb-tail { animation: sbTail 2.4s ease-in-out infinite; }
+.storybook .sb-zz { animation: sbZz 3s ease-in-out infinite; }
+.storybook .sb-peek { animation: sbPeek 6s ease-in-out infinite; }
+.storybook .sb-swim { animation: sbSwim 7s ease-in-out var(--sdl, 0s) infinite; }
+.storybook .sb-glow { animation: sbGlow 4s ease-in-out infinite; }
+.storybook .sb-mote { animation: sbMote 6s ease-in-out var(--sdl, 0s) infinite; }
+@keyframes sbBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes sbBob { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-4px) rotate(1deg); } }
+@keyframes sbFly { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(30px, -8px); } 50% { transform: translate(60px, 4px); } 75% { transform: translate(28px, 10px); } }
+@keyframes sbFlap { to { transform: scaleY(.45); } }
+@keyframes sbWave { to { transform: translateX(-16px); } }
+@keyframes sbDrift { to { transform: translateX(26px); } }
+@keyframes sbSpin { to { transform: rotate(360deg); } }
+@keyframes sbTwinkle { 0%, 100% { opacity: .55; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.12); } }
+@keyframes sbTail { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(14deg); } }
+@keyframes sbZz { 0% { transform: translate(0, 4px); opacity: 0; } 30%, 70% { opacity: 1; } 100% { transform: translate(4px, -8px); opacity: 0; } }
+@keyframes sbPeek { 0%, 40%, 100% { transform: translateY(6px); } 55%, 85% { transform: translateY(0); } }
+@keyframes sbSwim { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(10px, -5px); } }
+@keyframes sbGlow { 0%, 100% { opacity: .2; } 50% { opacity: .34; } }
+@keyframes sbMote { 0%, 100% { transform: translate(0, 0); opacity: .3; } 50% { transform: translate(6px, 14px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .storybook [class*="sb-"] { animation: none !important; } }
+:root[data-still]:not([data-graphics="full"]) .storybook [class*="sb-"] { animation: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .kids-story [class*="kf-"], .kids-story .kf-shimmer path { animation: none !important; }
   .kids-story .kf-fly, .kids-story .kf-rain, .kids-story .kf-rise, .kids-story .kf-fall, .kids-story .kf-jump { display: none; }
