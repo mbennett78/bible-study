@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 12:37 PM: Kids' Bible pictures refreshed for Genesis 1-3. Genesis 1 now shows all seven days of creation left to right, numbered 1-7, from the starry dark to Adam and Eve and the day of rest. Genesis 2 shows the garden with more animals and Adam naming them ("Elephant!"). Genesis 3 shows Adam and Eve hiding among the trees, with the serpent in the tree. Picture: kids-creation-eden.png in the project folder.
 - Tue Nov 24, 12:33 PM: James through Revelation notes are live, so every chapter of the Bible now has study notes, four days ahead of plan. Revelation shows the main ways people read it (the thousand years, the 144,000, 666) fairly, with sources. Next: refreshing the Creation and Garden of Eden pictures in the kids' Bible.
 - Tue Nov 24, 12:28 PM: Romans through Hebrews notes are live (Romans, 1 and 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 and 2 Thessalonians, 1 and 2 Timothy, Titus, Philemon, Hebrews). Debated passages, like baptism in Romans 6 and Titus 3, the gifts in 1 Corinthians 12, and the "caught up" passage in 1 Thessalonians 4, show the main views fairly with sources and no church labels. Next: James through Revelation.
 - Tue Nov 24, 12:18 PM: Luke, John and Acts notes are live. Every chapter of Matthew through Acts now has study notes, three days ahead of plan. Starting Romans through Revelation.
