@@ -784,6 +784,21 @@ const palmFrond = (x, y, r = 0) => `<g transform="translate(${x} ${y}) rotate(${
 const wrapped = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-7 0 C -8 -12, -6 -20, 0 -21 C 6 -20, 8 -12, 7 0 Z" fill="#f4f1ea"/>${[-4, -8, -12, -16].map((b) => `<path d="M-7 ${b} L 7 ${b - 2}" stroke="#d9d3c6" stroke-width="1"/>`).join("")}
   <circle cx="0" cy="-26" r="6" fill="#f4f1ea"/><circle cx="0" cy="-25" r="3.6" fill="#e8b98f"/>${eyes([[-1.4, -25.6], [1.4, -25.6]], .6)}<path d="M-1.4 -23.6 Q 0 -22.6, 1.4 -23.6" stroke="#6b3d2a" stroke-width=".6" fill="none"/></g>`;
 const cityWall = (x, y, w) => `<g transform="translate(${x} ${y})"><rect x="0" y="-18" width="${w}" height="18" fill="#d9c08a"/>${Array.from({ length: Math.floor(w / 8) }, (_, i) => `<rect x="${i * 8}" y="-22" width="5" height="4" fill="#d9c08a"/>`).join("")}<rect x="${w / 2 - 6}" y="-12" width="12" height="12" rx="6" fill="#8a6a3a"/></g>`;
+// More stories: Esther, Samson, Elijah's chariot, Naaman, Nehemiah's wall, the Sermon on the
+// Mount, Jesus and the children, Peter freed from prison, and the prodigal son.
+const crownK = (x, y, s = 1) => `<path transform="translate(${x} ${y}) scale(${s})" d="M-5 0 L -5.6 -5 L -2.6 -2.6 L 0 -6.4 L 2.6 -2.6 L 5.6 -5 L 5 0 Z" fill="#f5c542" stroke="#c9962a" stroke-width=".5"/>`;
+const pillar = (x, y, h, c = "#e9dcc0") => `<g transform="translate(${x} ${y})"><rect x="-6" y="${-h}" width="12" height="${h}" fill="${c}"/><rect x="-9" y="${-h - 4}" width="18" height="4" fill="#d6c6a2"/><rect x="-9" y="-3" width="18" height="3" fill="#d6c6a2"/>${[-3, 0, 3].map((a) => `<path d="M${a} ${-h + 2} L ${a} -4" stroke="#cdbd98" stroke-width=".8"/>`).join("")}</g>`;
+const strongMan = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-10 0 C -11 -12, -8 -20, 0 -21 C 8 -20, 11 -12, 10 0 Z" fill="#8a6a48"/><path d="M-10 -15 L -24 -24 M 10 -15 L 24 -24" stroke="#e3b088" stroke-width="3.4" stroke-linecap="round"/>
+  <circle cx="0" cy="-26" r="6" fill="#e3b088"/><path d="M-6.6 -27 C -7 -35, 7 -35, 6.6 -27 C 4 -30, -4 -30, -6.6 -27 Z" fill="#4a2e1a"/>${[-6, -3.6, 3.6, 6].map((a) => `<path d="M${a} -28 C ${a * 1.3} -20, ${a * 1.2} -14, ${a * 1.4} -9" stroke="#4a2e1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>`).join("")}
+  ${eyes([[-2.2, -26.2], [2.2, -26.2]], .9)}<path d="M-2 -22.8 Q 0 -21.2, 2 -22.8" stroke="#6b3d2a" stroke-width=".8" fill="none"/></g>`;
+const chariotFire = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-22 -4 C -30 -14, -20 -22, -14 -16 C -12 -26, 0 -26, 0 -16 C 6 -24, 18 -20, 12 -8 Z" fill="#ffb347" opacity=".9"/><path d="M-16 -6 C -20 -12, -14 -16, -10 -12 C -8 -18, 0 -18, -1 -10 C 4 -14, 10 -12, 6 -6 Z" fill="#ffe08a"/>
+  <path d="M-12 0 L 10 0 L 14 -10 L -12 -10 Z" fill="#e06a3a"/><circle cx="-4" cy="2" r="6" fill="none" stroke="#c94c2a" stroke-width="2"/><path d="M-4 -4 L -4 8 M -10 2 L 2 2" stroke="#c94c2a" stroke-width="1"/>
+  ${[24, 40].map((a) => `<g transform="translate(${a} -4)"><path d="M-9 0 C -10 -6, 8 -8, 10 -4 L 14 -10 L 15 -6 L 12 0 Z" fill="#ff8a3d"/><path d="M-7 0 L -9 6 M -3 0 L -3 6 M 5 0 L 6 6 M 9 0 L 11 6" stroke="#ff8a3d" stroke-width="1.8" stroke-linecap="round"/><path d="M12 -9 C 8 -16, 4 -12, 2 -8" stroke="#ffd36b" stroke-width="2" fill="none"/></g>`).join("")}
+  <path d="M10 -6 L 18 -6" stroke="#c94c2a" stroke-width="1.2"/></g>`;
+const stoneRow = (x, y, n, c1 = "#c9b48a", c2 = "#b9a374") => Array.from({ length: n }, (_, i) => `<rect x="${x + i * 12}" y="${y}" width="11" height="7" rx="1" fill="${i % 2 ? c1 : c2}" stroke="#9a8458" stroke-width=".5"/>`).join("");
+const pig = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="-6" rx="9" ry="6" fill="#f2a7b5"/><circle cx="9" cy="-8" r="4.6" fill="#f2a7b5"/><ellipse cx="13" cy="-7.4" rx="2" ry="1.6" fill="#e48a9c"/><path d="M8 -12 L 9 -15 L 11 -12" fill="#e48a9c"/><circle cx="10" cy="-9" r=".7" fill="#333"/>
+  <path d="M-5 -1 L -5 2 M 5 -1 L 5 2" stroke="#e48a9c" stroke-width="2.2" stroke-linecap="round"/><path d="M-9 -7 c -3 -1 -2 -4 0 -3" stroke="#e48a9c" stroke-width="1" fill="none"/></g>`;
+const chains = (x, y) => `<g transform="translate(${x} ${y})" fill="none" stroke="#9aa0a8" stroke-width="1.4">${[0, 5, 10].map((a) => `<ellipse cx="${a}" cy="0" rx="3" ry="1.8"/>`).join("")}</g>`;
 // Eden (Genesis 2-3): two trees in the middle of the garden, a river that parts into four
 // streams, Adam and Eve in leaf clothes, and the animals Adam named. Genesis 3 adds the serpent.
 const fruitTree = (x, y, fruit, glow = false) => `<g transform="translate(${x} ${y})">
@@ -904,6 +919,53 @@ const STORY_ART = {
     <path d="M0 66 C 90 60, 270 60, 360 66 L 360 90 L 0 90 Z" fill="#d9c08a"/><path d="M0 80 C 120 74, 240 74, 360 80" stroke="#c9ab6e" stroke-width="6" fill="none"/>
     <g transform="translate(176 82)"><path d="M-14 0 C -16 -8, -10 -14, -2 -14 C 6 -14, 12 -8, 12 0 Z" fill="#a65a6a"/><circle cx="2" cy="-19" r="6" fill="#e8b98f"/><path d="M-4 -20 C -4 -27, 8 -27, 8 -20 Z" fill="#5a3a20"/><path d="M8 -14 L 14 -22" stroke="#e8b98f" stroke-width="2.4" stroke-linecap="round"/><path d="M-1 -19 q 1.4 .8 2.8 0 M 3 -19 q 1.4 .8 2.8 0" stroke="#3b2b20" stroke-width=".7" fill="none"/></g>
     ${kid(110, 82, .85, "#5b6f8f", "#e9e2d0")}${kid(86, 82, .85, "#7a5a3a", "#d9cdb0")}`, ["#bfe3f5", "#fbf2dd"]],
+  esther: ["Queen Esther: “for such a time as this” (Esther 4:14)", () => `<rect width="360" height="90" fill="#5a3a6a"/><path d="M0 74 H 360 V 90 H 0 Z" fill="#c9a35a"/><path d="M60 80 L 300 80" stroke="#b0574a" stroke-width="8" opacity=".7"/>
+    ${pillar(40, 74, 58, "#efe3c8")}${pillar(320, 74, 58, "#efe3c8")}<path d="M0 6 Q 40 18 80 6 T 160 6 T 240 6 T 320 6 T 400 6" stroke="#f5c542" stroke-width="2" fill="none" opacity=".7"/>
+    <rect x="226" y="40" width="44" height="40" rx="4" fill="#8a2a4a"/><rect x="230" y="34" width="36" height="10" rx="3" fill="#a63a5a"/>${elder(248, 74, 1.05, "#7a2a6a", "#e9e2d0")}${crownK(248, 40, 1.1)}
+    <path d="M238 58 L 186 50" stroke="#f5c542" stroke-width="2.2" stroke-linecap="round"/><circle cx="185" cy="50" r="2.6" fill="#f5c542"/>
+    ${kid(170, 82, 1.1, "#7f6cc8", "#4a2e1a")}${crownK(170, 47, .9)}<path d="M162 82 C 150 84, 140 84, 132 82 L 160 70 Z" fill="#7f6cc8" opacity=".85"/>
+    ${kid(96, 82, .85, "#c9a35a", "#e9e2d0")}${kid(300, 82, .85, "#6aa06a", "#e9e2d0")}`, ["#5a3a6a", "#7a4a8a"]],
+  samson: ["Samson: God gave him great strength", () => `${sun(330, 16, 7)}<rect x="40" y="10" width="280" height="10" fill="#d6c6a2"/><path d="M30 10 L 180 -2 L 330 10 Z" fill="#c9b48a"/>
+    ${pillar(130, 76, 52)}${pillar(230, 76, 52)}<path d="M0 74 C 90 70, 270 70, 360 74 L 360 90 L 0 90 Z" fill="#d9b77a"/>
+    ${strongMan(180, 82, 1.2)}<path d="M150 44 l -4 -3 M 150 50 l -5 0 M 210 44 l 4 -3 M 210 50 l 5 0" stroke="#f5c542" stroke-width="1.4" stroke-linecap="round"/>
+    ${lion(62, 82, .7)}${palm(330, 76, .55)}`, ["#cfeefc", "#fbf2dd"]],
+  elisha: ["A chariot of fire, and Elisha picks up Elijah's cloak", () => `<path d="M0 0 H 360 V 90 H 0 Z" fill="none"/>
+    <path d="M210 8 C 190 20, 230 30, 205 42 C 185 52, 220 60, 200 70" stroke="#d6e1ea" stroke-width="5" fill="none" opacity=".8"/>
+    ${chariotFire(210, 34, 1.15)}${elder(206, 26, .55, "#8a6a48", "#e9e2d0")}<path d="M150 36 C 156 40, 158 46, 154 52 C 148 50, 144 44, 150 36 Z" fill="#7a5a3a"/>
+    <path d="M0 70 C 90 64, 270 66, 360 70 L 360 90 L 0 90 Z" fill="#9bd06f"/><path d="M0 80 C 80 74, 160 86, 360 78 L 360 86 C 160 92, 80 82, 0 88 Z" fill="#6fb3d9"/>
+    ${kid(140, 76, 1, "#6a5a8a", "#e9e2d0")}<path d="M134 54 L 130 46 M 146 54 L 150 46" stroke="#e8b98f" stroke-width="2.4" stroke-linecap="round"/>
+    ${palm(40, 72, .55)}${palm(320, 72, .5)}`, ["#ffe2b0", "#cfeefc"]],
+  naaman: ["Naaman washed seven times in the Jordan and was healed", () => `${sun(320, 16, 8)}<path d="M0 60 C 90 54, 270 54, 360 60 L 360 90 L 0 90 Z" fill="#9bd06f"/>
+    <path d="M0 70 C 90 64, 200 76, 360 66 L 360 90 L 0 90 Z" fill="#5fa8d3"/><path d="M0 78 C 90 72, 200 84, 360 74 L 360 90 L 0 90 Z" fill="#4a95c4"/>
+    <g transform="translate(180 82)"><circle cx="0" cy="-12" r="6" fill="#e8b98f"/><path d="M-6.4 -13 C -7 -20, 7 -20, 6.4 -13 C 4 -16, -4 -16, -6.4 -13 Z" fill="#3b2b20"/>${eyes([[-2.2, -12.4], [2.2, -12.4]], .9)}<path d="M-2 -9 Q 0 -7.4, 2 -9" stroke="#6b3d2a" stroke-width=".8" fill="none"/><path d="M-16 -4 C -8 -8, 8 -8, 16 -4" stroke="#fff" stroke-width="1.6" fill="none" opacity=".9"/></g>
+    ${Array.from({ length: 7 }, (_, i) => `<g transform="translate(${126 + i * 18} 30)"><circle r="6.4" fill="${i < 6 ? "#fff6c8" : "#f5c542"}" stroke="#c9a35a" stroke-width=".8"/><text y="2.6" text-anchor="middle" font-size="7.5" font-weight="700" fill="#7a5a2a" font-family="sans-serif">${i + 1}</text></g>`).join("")}
+    ${kid(70, 62, .85, "#a65a6a", "#e9e2d0")}${kid(92, 62, .8, "#5b8fb9", "#f1c84b")}${palm(30, 60, .55)}${palm(336, 60, .5)}`, ["#cfeefc", "#f2fbff"]],
+  wall: ["Nehemiah and the people rebuild the wall of Jerusalem", () => `${sun(40, 16, 8)}<path d="M0 74 C 90 70, 270 70, 360 74 L 360 90 L 0 90 Z" fill="#d9b77a"/>
+    ${stoneRow(150, 67, 18)}${stoneRow(156, 60, 17)}${stoneRow(150, 53, 14)}${stoneRow(156, 46, 10)}${stoneRow(150, 39, 6)}
+    <rect x="262" y="24" width="30" height="50" fill="#c9b48a"/><path d="M268 74 L 268 52 C 268 42, 286 42, 286 52 L 286 74 Z" fill="#6e5236"/>
+    ${kid(210, 38, .7, "#6aa06a", "#e9e2d0")}<path d="M216 22 L 224 18" stroke="#8a8a8a" stroke-width="1.6" stroke-linecap="round"/>
+    ${elder(100, 82, 1, "#5b6fb9", "#e9e2d0")}<path d="M108 58 L 128 48" stroke="#e8b98f" stroke-width="2.2" stroke-linecap="round"/>
+    ${kid(60, 82, .85, "#a65a6a", "#f1c84b")}<rect x="52" y="48" width="14" height="8" rx="1" fill="#b9a374" stroke="#9a8458" stroke-width=".5"/>
+    ${kid(320, 82, .85, "#c9a35a", "#e9e2d0")}<rect x="312" y="48" width="14" height="8" rx="1" fill="#c9b48a" stroke="#9a8458" stroke-width=".5"/>`, ["#cfeefc", "#fbf2dd"]],
+  sermon: ["Jesus teaches on the mountain: “Blessed are...”", () => `${sun(330, 16, 8)}<path d="M80 90 C 120 40, 200 26, 260 40 C 300 50, 340 70, 360 90 Z" fill="#8cc46a"/><path d="M0 76 C 90 70, 270 72, 360 76 L 360 90 L 0 90 Z" fill="#9bd06f"/>
+    ${jesusK(206, 46, .9)}<path d="M212 30 L 226 22" stroke="#fdf8ea" stroke-width="3.4" stroke-linecap="round"/>
+    ${[[40, 86, "#5b8fb9", "#e9e2d0"], [66, 86, "#a65a6a", "#f1c84b"], [92, 84, "#6aa06a", "#e9e2d0"], [118, 82, "#c9a35a", "#f4f1ea"], [144, 78, "#7f6cc8", "#e9e2d0"], [270, 80, "#5b8fb9", "#f1c84b"], [296, 84, "#a65a6a", "#e9e2d0"], [322, 86, "#6aa06a", "#f4f1ea"]].map(([a, b, r, c], i) => kid(a, b, i % 3 === 1 ? .7 : .82, r, c)).join("")}
+    ${lily(166, 80, .55)}${lily(176, 82, .5)}${lily(250, 82, .55)}`, ["#cfeefc", "#f2fbff"]],
+  children: ["“Let the little children come to Me” (Mark 10:14)", () => `${sun(40, 16, 8)}<path d="M0 74 C 90 68, 270 68, 360 74 L 360 90 L 0 90 Z" fill="#9bd06f"/>
+    <rect x="162" y="66" width="38" height="12" rx="3" fill="#a39a88"/>${jesusK(180, 70, 1)}<path d="M172 58 C 166 62, 164 66, 168 70 M 188 58 C 194 62, 196 66, 192 70" stroke="#e3b088" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    ${kid(180, 72, .5, "#f08ab0", "#f1c84b")}
+    ${[[140, 84, "#5b8fb9", "#f1c84b"], [118, 84, "#6aa06a", "#4a2e1a"], [218, 84, "#c9a35a", "#f1c84b"], [242, 84, "#7f6cc8", "#4a2e1a"], [266, 84, "#a65a6a", "#e9e2d0"]].map(([a, b, r, c]) => kid(a, b, .62, r, c)).join("")}
+    ${kid(84, 84, .9, "#8a6a48", "#e9e2d0")}${kid(300, 84, .9, "#6a5a8a", "#e9e2d0")}${flower(30, 84)}${flower(340, 84)}${flower(60, 86)}`, ["#cfeefc", "#f2fbff"]],
+  peter: ["An angel leads Peter out of prison (Acts 12)", () => `<rect width="360" height="90" fill="#3b3a4a"/>${Array.from({ length: 20 }, (_, i) => `<rect x="${(i % 10) * 36 + (i > 9 ? 18 : 0)}" y="${i > 9 ? 12 : 0}" width="34" height="11" fill="none" stroke="#4a4958" stroke-width="1"/>`).join("")}
+    <path d="M0 76 H 360 V 90 H 0 Z" fill="#2e2d3a"/><rect x="270" y="26" width="40" height="50" fill="#fff6c8" opacity=".85"/><path d="M270 26 L 250 22 L 250 80 L 270 76 Z" fill="#5a4838"/>
+    ${Array.from({ length: 5 }, (_, i) => `<path d="M${40 + i * 14} 20 L ${40 + i * 14} 76" stroke="#7a7a88" stroke-width="2.4"/>`).join("")}<path d="M36 20 L 100 20" stroke="#7a7a88" stroke-width="3"/>
+    <circle cx="190" cy="48" r="30" fill="#fff6c8" opacity=".22"/>${angelK(208, 74, 1.5)}${elder(168, 80, 1, "#8a6a48", "#e9e2d0")}
+    ${chains(146, 82)}${chains(184, 84)}<path d="M156 76 l -3 -3 M 160 74 l 0 -4" stroke="#fff6c8" stroke-width="1" stroke-linecap="round"/>`, ["#3b3a4a", "#3b3a4a"]],
+  prodigal: ["The father runs to hug his son who came home (Luke 15)", () => `${sun(40, 18, 8)}<path d="M0 70 C 90 64, 270 64, 360 70 L 360 90 L 0 90 Z" fill="#9bd06f"/><path d="M110 90 C 140 80, 200 76, 240 72" stroke="#d9c08a" stroke-width="8" fill="none"/>
+    <g transform="translate(270 72)"><rect x="0" y="-30" width="62" height="30" fill="#d9c08a"/><rect x="-2" y="-34" width="66" height="5" fill="#b9a374"/><rect x="24" y="-18" width="12" height="18" fill="#6e5236"/><rect x="8" y="-24" width="9" height="8" fill="#fff6c8"/><rect x="45" y="-24" width="9" height="8" fill="#fff6c8"/></g>
+    ${elder(190, 82, 1.05, "#7a2a6a", "#e9e2d0")}${kid(172, 84, .95, "#9a8a70", "#6b4a2a")}<path d="M166 72 l 4 2 M 170 64 l 3 3" stroke="#6e5a46" stroke-width="1.2"/>
+    <path d="M184 66 C 178 70, 172 70, 166 68 M 198 64 C 196 72, 186 74, 176 72" stroke="#e8b98f" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M186 40 c -2 -3, -6 -1, -3 2 l 3 3 l 3 -3 c 3 -3, -1 -5, -3 -2 z" fill="#f08ab0"/>
+    ${pig(40, 84, .8)}${pig(70, 86, .7)}${sheep(120, 76, .55)}${kid(318, 84, .8, "#6aa06a", "#e9e2d0")}`, ["#cfeefc", "#fbf2dd"]],
   ark: ["Noah's ark", () => `${sun(320, 18, 8)}${waves(62)}
     ${bob(`<path d="M-60 0 L 60 0 L 48 18 L -48 18 Z" fill="#9a6a3f"/><path d="M-60 0 L 60 0" stroke="#6e4826" stroke-width="2"/><rect x="-34" y="-20" width="68" height="20" fill="#c08a55"/><path d="M-40 -20 L 0 -34 L 40 -20 Z" fill="#7a4f2e"/>
       <rect x="-24" y="-14" width="10" height="9" rx="2" fill="#4b3320"/><rect x="14" y="-14" width="10" height="9" rx="2" fill="#4b3320"/>
@@ -971,7 +1033,7 @@ const STORY_ART = {
     <path d="M226 84 C 228 60, 222 40, 232 22" stroke="#7a5a3a" stroke-width="7" fill="none"/><path d="M228 46 L 252 34" stroke="#7a5a3a" stroke-width="4"/>
     <g class="sway" style="transform-origin:236px 40px"><circle cx="220" cy="22" r="18" fill="#6f9a4e"/><circle cx="246" cy="18" r="16" fill="#86b061"/><circle cx="262" cy="34" r="12" fill="#6f9a4e"/></g>
     ${kid(248, 36, .62, "#a65a6a", "#f1c84b")}${kid(150, 84, 1, "#fffdf0", "#c9b48a")}${kid(110, 84, .8, "#5b8fb9", "#e9e2d0")}`, ["#cfeefc", "#f2fbff"]],
-  sheep: ["The shepherd finds the lost sheep", () => `<path d="M0 60 C 80 48, 280 50, 360 60 L 360 90 L 0 90 Z" fill="#8cc56a"/>${sun(320, 18, 8)}
+  sheep: ["The Good Shepherd cares for His sheep", () => `<path d="M0 60 C 80 48, 280 50, 360 60 L 360 90 L 0 90 Z" fill="#8cc56a"/>${sun(320, 18, 8)}
     ${kid(170, 84, 1.05, "#8a6a48", "#c9b48a")}${bob(lamb(0, 0, .4), 204, 74)}${lamb(60, 76, .32)}${lamb(90, 80, .3)}${lamb(272, 78, .32)}`, ["#cfeefc", "#f2fbff"]],
   tomb: ["He is risen!", () => `${sun(250, 54, 16)}<path d="M0 70 C 90 60, 270 60, 360 70 L 360 90 L 0 90 Z" fill="#8cc56a"/>
     <path d="M150 74 C 152 34, 230 26, 280 50 C 296 58, 300 68, 300 74 Z" fill="#b5a693"/><path d="M212 74 L 212 56 C 212 46, 236 46, 236 56 L 236 74 Z" fill="#3b332c"/><circle cx="182" cy="62" r="13" fill="#cfc4b4" stroke="#9a8e7e"/>
@@ -1000,9 +1062,11 @@ const STORIES = {
   basket: ["EXO.2"], bush: ["EXO.3"], sea: ["EXO.14", "EXO.15"], tablets: ["EXO.19", "EXO.20", "EXO.31", "EXO.32", "EXO.34", "DEU.5"],
   walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
   manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
-  nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], sheep: ["LUK.15", "PSA.23", "JHN.10"], samaritan: ["LUK.10"],
+  nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], prodigal: ["LUK.15"], sheep: ["PSA.23", "JHN.10"], samaritan: ["LUK.10"],
   cross: ["MAT.27", "MRK.15", "LUK.23", "JHN.19"], tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20"], pentecost: ["ACT.2"], ship: ["ACT.27"],
   baptism: ["MAT.3", "MRK.1", "LUK.3"], cana: ["JHN.2"], lazarus: ["JHN.11"], palms: ["MAT.21", "MRK.11", "JHN.12"], supper: ["MAT.26", "MRK.14", "LUK.22", "JHN.13"], damascus: ["ACT.9"],
+  esther: ["EST.2", "EST.4", "EST.5", "EST.7", "EST.8"], samson: ["JDG.13", "JDG.14", "JDG.15", "JDG.16"], elisha: ["2KI.2"], naaman: ["2KI.5"], wall: ["NEH.2", "NEH.3", "NEH.4", "NEH.6"],
+  sermon: ["MAT.5", "MAT.6", "MAT.7", "LUK.6"], children: ["MAT.19", "MRK.10", "LUK.18"], peter: ["ACT.12"],
 };
 
 /* ---------- Lovely little animations for the kids' pictures ---------- */
@@ -1038,6 +1102,15 @@ const KIDS_FX = {
   lazarus: () => `${fx.glow(262, 66, 22, "#fff6c8")}${fx.birds(18, 2)}`,
   palms: () => `${fx.birds(16, 3)}${fx.leaves(120, 40, "#6aa850")}`,
   supper: () => `${fx.glow(60, 18, 10, "#ffe08a")}${fx.glow(180, 44, 16, "#fff6c8")}`,
+  esther: () => `${fx.twinkles([[60, 10], [140, 8], [220, 10], [300, 8]], "#f5c542")}${fx.glow(170, 40, 10, "#fff1a8")}`,
+  samson: () => `${fx.glow(180, 52, 26, "#fff1a8")}${fx.birds(18, 6)}`,
+  elisha: () => `${fx.sparks(200, 30, 50, "#ffb347")}${fx.glow(210, 28, 24, "#ffd36b")}`,
+  naaman: () => `${fx.shimmer(80)}${fx.twinkles([[180, 60], [168, 66], [194, 64]], "#fff")}`,
+  wall: () => `${fx.birds(14, 3)}${fx.drift(20, 6)}`,
+  sermon: () => `${fx.birds(16, 2)}${fx.butterfly(250, 66, "#f08ab0")}`,
+  children: () => `${fx.butterfly(80, 50, "#f5c542")}${fx.butterfly(290, 56, "#f08ab0", 3)}${fx.glow(180, 46, 18, "#fff6c8")}`,
+  peter: () => `${fx.glow(208, 50, 26, "#fff6c8")}${fx.twinkles([[200, 30], [230, 46], [186, 60]], "#fff")}`,
+  prodigal: () => `${fx.glow(186, 44, 14, "#ffd0e0")}${fx.birds(16, 4)}`,
   damascus: () => `${fx.glow(220, 20, 30, "#fff6c8")}${fx.twinkles([[230, 20], [260, 34], [210, 46]], "#fff")}`,
   babel: () => `${fx.birds(16, 4)}${fx.drift(18, 8)}`,
   stars: () => `${fx.twinkles([[40, 14], [90, 30], [140, 10], [200, 24], [250, 12], [300, 30], [340, 16], [70, 50]])}${fx.glow(252, 70, 8, "#ffd36b")}`,

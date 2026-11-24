@@ -52,6 +52,8 @@ const defaults = {
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
   newsSeen: "",             // the last "What's new" note put away (js/whatsnew.js)
   newsOff: false,           // no "What's new" notes on Home
+  lastOpenAt: 0,            // when the app was last opened (for Buddy's "welcome back")
+  buddyWelcomeDay: "",      // the day Buddy last said "welcome back" (once a day at most)
   style: "classic",         // the default look for new people. classic | classic2 | sage | nativity | easter | fall | christmas | masculine ("Animated") | animated ("For kids")
   margin: true,             // learning path margin open
   yearPace: true,           // suggest a daily reading to finish a path in a year

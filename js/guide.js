@@ -22,6 +22,8 @@ export const GUIDE = [
   { id: "buddy", icon: "🙂", title: "Your study buddy", tips: [
     "Tap the little stick-figure friend to ask any Bible question.",
     "Ask him simple things too, like \"jump rope,\" \"dance\" or \"do a cartwheel.\"",
+    "Ask him where things are, like \"Where is text size?\" or \"How do I lock my journal?\" He answers right away, even with no signal, and can show you the spot.",
+    "He remembers where you left off and your study, knows the season (like Advent), and after a long study time he may suggest a stretch.",
     "In the way? Drag him up or down either edge. In Settings, under My study buddy, you can rename him, make him quieter, or hide him.",
     "He tries hard to be accurate but can make mistakes. Check what he says against the Bible.",
   ] },

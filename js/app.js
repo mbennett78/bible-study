@@ -8,6 +8,7 @@ import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionNam
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand } from "./buddy.js";
+import { guideAnswer, seasonNow, welcomeLine, sessionNudge, timeAnswer } from "./buddyguide.js";
 import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
@@ -1371,8 +1372,40 @@ async function sendChat() {
     if (did && !chatSheet.open) buddy.says(line, Math.max(4000, BUDDY_ACTIONS[did].ms + 1500));
     return;
   }
+  // "What day is it?", "How long have I been studying?": he just knows.
+  const when = timeAnswer(q, { sessionMs: studyMs, season: seasonNow(new Date(), easterOf(new Date().getFullYear())) });
+  if (when) { chatBubble("them", when); buddySpeak(when); return; }
+  // "Where do I change the text size?": he answers and offers to show them the spot.
+  const how = guideAnswer(q);
+  if (how) {
+    const row = chatBubble("them", how.say);
+    buddySpeak(how.say);
+    if (how.go) {
+      const b = Object.assign(document.createElement("button"), { type: "button", className: "small chat-show", textContent: how.label || "Show me" });
+      b.addEventListener("click", () => buddyShowPlace(how.go));
+      row.querySelector(".chat-bubble").append(document.createElement("br"), b);
+    }
+    return;
+  }
   buddyFeels(q);
   await askBuiltIn(q);
+}
+// Takes them to a place in the app and points it out with a soft glow (no tour, no popups).
+function buddyShowPlace(go) {
+  if (chatSheet.open) chatSheet.close();
+  if (go === "games") { quest.open(); return; }
+  const [view, sel] = go;
+  if (view === "read") { const { book, chapter } = store.get("last"); showView("read"); openChapter(book, chapter); }
+  else showView(view);
+  if (!sel) return;
+  setTimeout(() => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    const spot = el.closest(".field, .switch-row, .card") && !el.matches(".card, h2") ? el.closest(".field, .switch-row") || el : el;
+    spot.scrollIntoView({ block: "center" });
+    spot.classList.remove("buddy-point"); void spot.offsetWidth; spot.classList.add("buddy-point");
+    setTimeout(() => spot.classList.remove("buddy-point"), 3200);
+  }, 250);
 }
 /* ---------- Games: Bible Spin, plus the older practice quiz ---------- */
 const game = createGame({
@@ -1584,13 +1617,49 @@ function buddyTimeHello() {
 }
 let buddyVisitAt = Date.now() + 4 * 60e3 + Math.random() * 3 * 60e3;
 const buddyStartedAt = Date.now();
+// How long they've been here this time (only while the app is on screen).
+let studyMs = 0, studyTick = Date.now();
+const nudgesSaid = [];
+setInterval(() => { const t = Date.now(); if (!document.hidden && t - studyTick < 60e3) studyMs += t - studyTick; studyTick = t; }, 10e3);
+const awayMs = (() => { const was = store.get("lastOpenAt") || 0; store.set("lastOpenAt", Date.now()); return was ? Date.now() - was : 0; })();
+// "Welcome back! Last time you were in John 3. Want to pick up there?" Once a day, on Home only.
+function buddyWelcome() {
+  const today = new Date().toDateString();
+  if (!awayMs || !(store.get("setup") || {}).done || store.get("buddyWelcomeDay") === today || document.body.dataset.view !== "home") return false;
+  const { book, chapter } = store.get("last");
+  const visited = Object.keys(store.get("visits") || {}).length > 0;
+  const path = store.get("activePath");
+  const study = path && path !== "general" && PATH_BY_ID[path] ? (PATH_BY_ID[path].short || PATH_BY_ID[path].name || "") : "";
+  const place = visited && BOOK_BY_ID[book] ? `${BOOK_BY_ID[book].name} ${chapter}` : "";
+  const season = seasonNow(new Date(), easterOf(new Date().getFullYear()));
+  const hello = { morning: "Good morning", evening: "Good evening" }[timeOfDay()] || "";
+  const text = welcomeLine({ name: store.get("name")?.trim() || "", place, study, away: awayMs, season, hello });
+  const ok = place ? buddy.ask(text, { label: "Keep reading", go: () => { showView("read"); openChapter(book, chapter); } }, { label: "Not now", line: "Okie! It'll be right here when you're ready. 😊" }) : buddy.visit(text, 8000, false);
+  if (ok) {
+    store.set("buddyWelcomeDay", today);
+    markActive(); // he said it, so no "Welcome back" window on top of him
+    // He already said hello, so no separate "good morning" right after.
+    const when = timeOfDay(), log = store.get("buddyHello") || {};
+    if (when) store.set("buddyHello", { day: today, said: [...(log.day === today ? log.said || [] : []), when] });
+  }
+  return ok;
+}
+// After a long stretch: "We've been studying for 30 minutes! Maybe stretch?" Not over the Bible.
+function buddyStudyNudge() {
+  const n = sessionNudge(studyMs, nudgesSaid);
+  if (!n || document.body.dataset.view === "read") return false;
+  if (buddy.visit(n.line, 8000, false)) { nudgesSaid.push(n.mark); if (n.mark === 90) nudgesSaid.push(30); return true; }
+  return false;
+}
 let buddyWaveAt = Date.now() + 90e3 + Math.random() * 90e3;
 setInterval(() => {
   if (document.hidden || (store.get("show") || {}).buddy === false || (store.get("show") || {}).buddyvisits === false) return;
   if (reader.playing || document.querySelector("dialog[open]") || document.documentElement.classList.contains("touring")) return;
   // Now and then a little wave from where he sits (no walking, no words).
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "");
+  if (!typing && Date.now() - buddyStartedAt > 15e3 && buddyWelcome()) return;
   if (!typing && Date.now() - buddyStartedAt > 15e3 && buddyTimeHello()) return;
+  if (!typing && buddyStudyNudge()) return;
   if (Date.now() >= buddyWaveAt && Date.now() < buddyVisitAt - 60e3) { if (buddy.wave()) buddyWaveAt = Date.now() + 5 * 60e3 + Math.random() * 5 * 60e3; return; }
   if (Date.now() < buddyVisitAt) return;
   // While someone is reading, he never pops up with words over the Bible: he saves his
@@ -4735,10 +4804,13 @@ function cameBack() {
   lastActive = 0; markActive();
   const last = store.get("last");
   const where = `${BOOK_BY_ID[last.book].name} ${last.chapter}`;
+  const path = store.get("activePath"), study = path && path !== "general" && PATH_BY_ID[path] ? PATH_BY_ID[path].short || "" : "";
+  const season = seasonNow(new Date(), easterOf(new Date().getFullYear()));
+  store.set("buddyWelcomeDay", new Date().toDateString()); // Buddy won't say it again today
   showView("home");
   welcomeBack.innerHTML = `<div class="wb-icon" aria-hidden="true">👋</div>
     <h2>Welcome back${store.get("name") ? `, ${esc(store.get("name"))}` : ""}!</h2>
-    <p>You were reading <strong>${esc(where)}</strong>.</p>
+    <p>You were reading <strong>${esc(where)}</strong>${study ? ` in your ${esc(study)} study` : ""}.</p>${season ? `<p class="wb-season">${esc(season.line)}</p>` : ""}
     <button type="button" class="big-btn" id="wbResume">Go back to ${esc(where)}</button>
     <button type="button" class="wb-new" id="wbNew">Start something new</button>`;
   welcomeBack.showModal();
