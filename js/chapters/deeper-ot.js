@@ -34,6 +34,10 @@ const sources = {
   blockD: "Daniel I. Block, Deuteronomy, NIV Application Commentary (Zondervan, 2012).",
   waltkeM: "Bruce K. Waltke, A Commentary on Micah (Eerdmans, 2007).",
   baker: "Joyce Baldwin, David W. Baker and T. Desmond Alexander, Obadiah, Jonah, Micah, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
+  bergen: "Robert D. Bergen, 1, 2 Samuel, New American Commentary 7 (Broadman & Holman, 1996).",
+  baldwin: "Joyce G. Baldwin, 1 and 2 Samuel, Tyndale Old Testament Commentaries (InterVarsity Press, 1988).",
+  tsumura: "David Toshio Tsumura, The First Book of Samuel, New International Commentary on the Old Testament (Eerdmans, 2007).",
+  hoffmeierS: "James K. Hoffmeier, Ancient Israel in Sinai: The Evidence for the Authenticity of the Wilderness Tradition (Oxford University Press, 2005).",
   halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
 };
 
@@ -301,6 +305,39 @@ const chapters = {
       ["119:176", "I have gone astray like a lost sheep; seek Your servant", "After 175 verses of love for God's word, the psalm ends humbly: he still needs the Shepherd to find him.", "scripture", ["kidner", "allen"]],
     ],
     w: [["'imrah", "im-RAH", "H565", "word, promise", "One of eight words the psalm uses for God's word (law, testimonies, precepts, statutes, commandments, judgments, word, promise). It often means a specific promise God has spoken.", ["halot", "allen"]]],
+  },
+  "ISA.40": {
+    v: [
+      ["40:2", "Speak kindly to Jerusalem... her iniquity has been removed", "Literally \"speak to the heart.\" After the judgment of exile, God's first word is tenderness: the time of punishment is over.", "scripture", ["oswalt"]],
+      ["40:6-7", "All flesh is grass... the grass withers, the flower fades", "Human power, even Babylon's, is as short-lived as a wildflower in a desert wind.", "scripture", ["motyer"]],
+      ["40:9", "Get yourself up on a high mountain, O Zion, bearer of good news", "\"Here is your God!\" This announcement of good news is where the New Testament word \"gospel\" draws its meaning.", "good", ["oswalt", "motyer"]],
+      ["40:12", "Who has measured the waters in the hollow of His hand", "God holds the oceans in His palm and weighs mountains on scales. The questions that follow show how small idols and nations are beside Him.", "scripture", ["oswalt"]],
+      ["40:18-20", "To whom then will you liken God?", "Idol-makers choose wood that will not rot and fasten their gods so they will not tip over. The living God needs no propping up.", "scripture", ["motyer"]],
+      ["40:26", "Lift up your eyes on high and see who has created these stars", "Babylon worshiped the stars. Isaiah says God calls each one by name, and not one is missing.", "good", ["oswalt"]],
+      ["40:28-29", "The Everlasting God... does not become weary or tired. He gives strength to the weary", "The tireless God shares His strength with tired people.", "scripture", ["motyer"]],
+    ],
+    w: [["qavah", "kah-VAH", "H6960", "wait, hope", "In 40:31 \"those who wait for the LORD\" are those who look to Him with expectant trust, like a cord stretched tight toward Him.", ["halot"]]],
+  },
+  "EXO.3": {
+    v: [
+      ["3:1", "Moses was pasturing the flock of Jethro his father-in-law", "Forty years after fleeing Egypt, the prince had become a shepherd in the desert. God was preparing him for leading a flock of people through that same wilderness.", "scripture", ["stuart"]],
+      ["3:2", "The bush was burning with fire, yet the bush was not consumed", "Fire often shows God's presence (Exodus 13:21; 19:18). A small desert bush that is not burned up has been seen as a picture of Israel, suffering in Egypt but not destroyed.", "good", ["cole", "stuart"]],
+      ["3:6", "I am the God of your father, the God of Abraham, the God of Isaac, and the God of Jacob", "Jesus used this verse to show the resurrection: God is the God of the living, not the dead (Mark 12:26-27).", "scripture", ["cole"]],
+      ["3:8", "A land flowing with milk and honey", "A picture of rich pastures and plenty. Milk came from flocks grazing good land; honey may be from bees or from dates.", "good", ["stuart"]],
+      ["3:18", "Let us go a three days' journey into the wilderness", "The first request is modest. Pharaoh's refusal of even this shows how hard his heart was.", "scripture", ["stuart"]],
+    ],
+    bg: [["Where is Mount Horeb?", "Horeb is another name for Mount Sinai. Its exact location is debated. The traditional site is Jebel Musa in the southern Sinai Peninsula, where St. Catherine's Monastery has stood since the 500s; other sites in Sinai and in Arabia have also been proposed.", "debated", ["hoffmeierS", "stuart"]]],
+  },
+  "1SA.17": {
+    v: [
+      ["17:4", "A champion came out from the armies of the Philistines named Goliath", "Ancient armies sometimes settled battles by single combat between champions. The whole nation's fate rode on one fight.", "good", ["bergen", "tsumura"]],
+      ["17:5-7", "A bronze helmet... a coat of scale-armor... the shaft of his spear was like a weaver's beam", "His armor alone weighed about 125 pounds. Every detail shows how hopeless the fight looked.", "good", ["bergen"]],
+      ["17:28", "Why have you come down?... I know your insolence", "David's oldest brother mocks him. Faith is often misunderstood, even at home.", "scripture", ["baldwin"]],
+      ["17:38-39", "Saul clothed David with his garments", "David tries the king's armor and cannot walk in it. God would use David as he was, with the tools he knew.", "scripture", ["baldwin"]],
+      ["17:40", "He chose for himself five smooth stones from the brook", "River stones were smooth and round, the best ammunition for a sling.", "good", ["bergen"]],
+      ["17:50", "There was no sword in David's hand", "The writer stresses it: the victory was God's, not weaponry's.", "scripture", ["tsumura"]],
+    ],
+    bg: [["The Valley of Elah", "The battle took place in the Valley of Elah, about 15 miles southwest of Bethlehem, on the border between Judah and Philistine land. Archaeologists have excavated a fortified town above the valley (Khirbet Qeiyafa) from about David's time.", "good", ["kitchen", "tsumura"]]],
   },
 };
 

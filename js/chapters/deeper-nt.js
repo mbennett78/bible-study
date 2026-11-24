@@ -20,6 +20,9 @@ const sources = {
   france: "R. T. France, The Gospel of Matthew, New International Commentary on the New Testament (Eerdmans, 2007).",
   guthrie2: "George H. Guthrie, 2 Corinthians, Baker Exegetical Commentary on the New Testament (Baker Academic, 2015).",
   guthrieH: "George H. Guthrie, Hebrews, NIV Application Commentary (Zondervan, 1998).",
+  feeC: "Gordon D. Fee, The First Epistle to the Corinthians, rev. ed., New International Commentary on the New Testament (Eerdmans, 2014).",
+  thiselton: "Anthony C. Thiselton, The First Epistle to the Corinthians, New International Greek Testament Commentary (Eerdmans, 2000).",
+  garland: "David E. Garland, 1 Corinthians, Baker Exegetical Commentary on the New Testament (Baker Academic, 2003).",
   harris: "Murray J. Harris, The Second Epistle to the Corinthians, New International Greek Testament Commentary (Eerdmans, 2005).",
   hemerR: "Colin J. Hemer, The Letters to the Seven Churches of Asia in Their Local Setting (Sheffield Academic Press, 1986).",
   hoehner: "Harold W. Hoehner, Ephesians: An Exegetical Commentary (Baker Academic, 2002).",
@@ -207,6 +210,42 @@ const chapters = {
     bg: [["Who were the Galatians?", "Galatia was a Roman province in central Asia Minor (modern Turkey). Paul planted churches there on his first missionary journey (Acts 13-14). Whether the letter went to these southern cities or to ethnic Galatians farther north is debated, but its message is the same.", "debated", ["mooG", "bruceG"]]],
     w: [["eleutheria", "el-yoo-ther-EE-ah", "G1657", "freedom", "Freedom from the law's curse and from slavery to sin, but never freedom to do wrong (5:13). It is freedom to love.", ["bdag", "mooG"]],
       ["sarx", "SARKS", "G4561", "flesh", "Here not the body itself but human nature turned away from God, the self that wants its own way.", ["bdag"]]],
+  },
+  "MAT.6": {
+    v: [
+      ["6:1", "Beware of practicing your righteousness before men to be noticed by them", "The theme of 6:1-18: giving, praying and fasting should be done for God's eyes, not for applause.", "scripture", ["france"]],
+      ["6:5-6", "Go into your inner room, close your door and pray to your Father who is in secret", "The \"inner room\" was often a storeroom, the one room in a small house with a door. Prayer is a private conversation with a Father who sees.", "good", ["keener", "carson"]],
+      ["6:7-8", "Do not use meaningless repetition... your Father knows what you need before you ask", "Prayer is not about the number of words. We pray not to inform God, but because He is our Father.", "scripture", ["france"]],
+      ["6:11", "Give us this day our daily bread", "Workers were often paid day by day. The prayer trusts God one day at a time.", "good", ["keener"]],
+      ["6:16-18", "Whenever you fast, do not put on a gloomy face", "Jesus assumes His followers will fast, but quietly, for God alone.", "scripture", ["carson"]],
+      ["6:19-20", "Do not store up for yourselves treasures on earth, where moth and rust destroy", "In that world wealth was often kept in fine clothes (moths) and metal (rust or corrosion), and thieves \"dug through\" mud-brick walls.", "good", ["keener"]],
+      ["6:24", "No one can serve two masters", "\"Wealth\" here is mammon, money treated almost as a rival god.", "scripture", ["france"]],
+    ],
+    w: [["merimnaō", "meh-rim-NAH-oh", "G3309", "worry, be anxious", "Used six times in 6:25-34. It means a divided, distracted mind. Jesus does not forbid planning, but anxious fretting that forgets the Father.", ["bdag", "carson"]],
+      ["abba / patēr", "PAH-tair", "G3962", "Father", "Jesus calls God \"your Father\" ten times in this chapter. Praying \"Our Father\" puts us in a family.", ["bdag"]]],
+  },
+  "ROM.3": {
+    v: [
+      ["3:1-2", "What advantage has the Jew?... they were entrusted with the oracles of God", "Israel had God's word, a great privilege. But privilege is not the same as righteousness.", "scripture", ["mooR"]],
+      ["3:11-12", "There is none who understands, there is none who seeks for God", "Paul strings together Old Testament verses (Psalms 14, 53, 5, 140, 10, 36 and Isaiah 59) to show that everyone, Jew and Gentile, stands guilty.", "scripture", ["schreinerR"]],
+      ["3:19-20", "So that every mouth may be closed", "Like a defendant with nothing left to say. The law shows sin clearly, but cannot make anyone righteous.", "scripture", ["mooR"]],
+      ["3:22", "Even the righteousness of God through faith in Jesus Christ for all those who believe", "Right standing with God comes through faith, and it is available to everyone. Scholars discuss whether \"faith in Jesus Christ\" can also mean \"the faithfulness of Jesus Christ\"; both readings put Christ at the center.", "debated", ["mooR", "schreinerR"]],
+      ["3:27-28", "Where then is boasting? It is excluded", "If salvation is a gift received by faith, no one can brag about earning it.", "scripture", ["stottR"]],
+      ["3:31", "Do we then nullify the Law through faith? May it never be! On the contrary, we establish the Law", "Faith does not throw out God's law; it fulfills what the law was pointing to.", "scripture", ["cranfield"]],
+    ],
+    bg: [["The Roman road", "Romans 3:23 is the first stop of the \"Romans Road,\" a well-known way of explaining the gospel using verses from Romans (3:23, 6:23, 5:8, 10:9-10).", "strong", ["stottR"]]],
+  },
+  "1CO.15": {
+    v: [
+      ["15:1-2", "The gospel which I preached to you, which also you received, in which also you stand", "The gospel is something received, stood on, and held fast.", "scripture", ["feeC"]],
+      ["15:4", "He was buried, and He was raised on the third day", "The burial shows He truly died; the third day ties the resurrection to a date and a real tomb.", "scripture", ["thiselton"]],
+      ["15:8-10", "Last of all, as to one untimely born, He appeared to me also", "Paul counts himself the least of the apostles because he persecuted the church. \"By the grace of God I am what I am.\"", "scripture", ["garland"]],
+      ["15:17-19", "If Christ has not been raised, your faith is worthless; you are still in your sins", "Paul ties everything to a real event. Christianity stands or falls on the resurrection.", "scripture", ["feeC"]],
+      ["15:22", "As in Adam all die, so also in Christ all will be made alive", "As in Romans 5, Adam and Christ are the two heads of humanity.", "scripture", ["thiselton"]],
+      ["15:35-38", "How are the dead raised? And with what kind of body do they come?", "A seed is planted and comes up as a plant, connected but far more glorious. So will the resurrection body be.", "scripture", ["garland"]],
+      ["15:42-44", "It is sown a perishable body, it is raised an imperishable body", "Four contrasts: perishable and imperishable, dishonor and glory, weakness and power, natural and spiritual.", "scripture", ["feeC"]],
+    ],
+    w: [["egeirō", "eh-GAY-roh", "G1453", "raise, wake up", "Used about 19 times in this chapter. It means raising a person, not just a spirit living on. In 15:4 the form means \"He has been raised and remains alive.\"", ["bdag", "thiselton"]]],
   },
 };
 
