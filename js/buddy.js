@@ -33,6 +33,7 @@ const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 // What he says back, so it never sounds the same twice in a row.
 const NO_LINES = ["Okie! 😊", "Sure thing! Just let me know.", "Okay! I'll be right over here.", "No problem! I'm here whenever you need me.", "Okie dokie! Happy reading."];
+const PLAY_LINES = ["Yay! Let's play! 🎲", "Woohoo! Get ready to spin!", "Game on! I'll try my best!"];
 const YES_LINES = ["Oh yeah! I can find something!", "Ooh, yay! What is it?", "Oh good, I love questions!", "Yes! Let's find out together!"];
 let careTimer = 0;
 
@@ -138,11 +139,14 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.addEventListener("click", (e) => { if (e.detail === 0) tapped(); });
   words.addEventListener("click", () => tapped());
   // "Yes": he's thrilled, then the chat opens.
-  say.querySelector(".bs-yes").addEventListener("click", () => {
+  const yesBtn = say.querySelector(".bs-yes");
+  let onYes = null;
+  yesBtn.addEventListener("click", () => {
     clearTimeout(visitTimer);
-    speak(pick(YES_LINES), false);
+    const then = onYes || onTap;
+    speak(onYes ? pick(PLAY_LINES) : pick(YES_LINES), false);
     play("excited", 1400);
-    visitTimer = setTimeout(() => { endVisit(); onTap(); }, 1100);
+    visitTimer = setTimeout(() => { endVisit(); then(); }, 1100);
   });
   // "Not now": a happy "Okie!" and back he goes.
   say.querySelector(".bs-no").addEventListener("click", () => {
@@ -182,7 +186,16 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     onName = onPicked;
     return true;
   }
+  // A visit that invites them to something ("Want to play?"): yes runs `go` instead of the chat.
+  function invite(text, yesLabel, go) {
+    if (!visit(text, 14000)) return false;
+    onYes = go;
+    yesBtn.textContent = yesLabel;
+    return true;
+  }
   function visit(text, ms = 12000, ask = true) {
+    onYes = null;
+    yesBtn.textContent = "Yes, I have a question";
     if (el.hidden || drag || !say.hidden) return false;
     el.classList.remove("tucked", "sitting");
     el.classList.add("walking", "visiting");
@@ -209,6 +222,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     show(on) { el.hidden = !on; if (!on) endVisit(); else place(); },
     visit,
     askName,
+    invite,
     visiting: () => !say.hidden || el.classList.contains("visiting"),
     // Stands while the chat is open; sits again when it closes.
     chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },

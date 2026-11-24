@@ -1014,6 +1014,16 @@ setInterval(() => {
     }
     return;
   }
+  // About one visit in four, he asks them to play Bible Quest with him (if games are on).
+  if ((store.get("show") || {}).games !== false && Math.random() < 0.25) {
+    const n = store.get("name")?.trim() || "";
+    const ask = [`Hey${n ? ` ${n}` : ""}! Want to play a round of Bible Quest with me? 🎲`, "I've been practicing my Bible trivia... bet you can't beat me! Want to play?", "Spin the wheel with me? I'll play fair, promise! 😄"];
+    if (buddy.invite(ask[Math.floor(Math.random() * ask.length)], "Let's play!", () => quest.challenge())) {
+      store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+      buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+    }
+    return;
+  }
   const line = BUDDY_LINES[Math.floor(Math.random() * BUDDY_LINES.length)];
   if (buddy.visit(line(store.get("name")?.trim() || "", `${BOOK_BY_ID[book].name} ${chapter}`))) {
     store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });

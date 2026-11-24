@@ -1755,9 +1755,20 @@ dialog.game.still *, dialog.game.still *::after { animation: none !important; tr
 dialog.quest { position: fixed; inset: 0; width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0;
   color: #fff; background: radial-gradient(120% 80% at 50% 0%, #3c5aa8 0%, #283b7a 45%, #1a2550 100%); font-size: 1.05rem; overflow: hidden; }
 dialog.quest::backdrop { background: #1a2550; }
+/* Soft sparkles drifting behind everything. */
+dialog.quest::before { content: ""; position: absolute; inset: -50% 0 0; pointer-events: none; opacity: .55;
+  background-image: radial-gradient(2px 2px at 12% 18%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 78% 12%, #fff 50%, transparent 51%), radial-gradient(2.5px 2.5px at 42% 36%, #ffe58a 50%, transparent 51%), radial-gradient(1.5px 1.5px at 88% 48%, #fff 50%, transparent 51%), radial-gradient(2px 2px at 22% 64%, #ffe58a 50%, transparent 51%), radial-gradient(1.5px 1.5px at 62% 78%, #fff 50%, transparent 51%), radial-gradient(2px 2px at 8% 88%, #fff 50%, transparent 51%);
+  background-size: 100% 50%; }
+@media (prefers-reduced-motion: no-preference) { dialog.quest:not(.still)::before { animation: q-drift 30s linear infinite; } }
+@keyframes q-drift { to { transform: translateY(33.3%); } }
+.q-top, .q-body { position: relative; }
+.q-bulb { fill: #fff7d1; } .q-bulb.alt { fill: #ffffff; }
+@media (prefers-reduced-motion: no-preference) { dialog.quest:not(.still) .q-bulb { animation: q-twinkle 1.2s ease-in-out infinite alternate; } dialog.quest:not(.still) .q-bulb.alt { animation-delay: .6s; } }
+@keyframes q-twinkle { from { opacity: .35; } to { opacity: 1; } }
+.q-hub-star { font-weight: 900; text-shadow: 0 1px 0 rgb(0 0 0 / .2); }
 .q-top { display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 16px 6px; }
 .q-title { flex: 1; text-align: center; font-family: var(--serif); font-size: 1.25rem; letter-spacing: .02em; }
-.q-coins { background: rgb(0 0 0 / .25); border-radius: 999px; padding: 6px 14px; font-weight: 700; min-width: 84px; }
+.q-coins { background: linear-gradient(#ffd75a, #f0a91c); color: #5a3b00; border-radius: 999px; padding: 6px 14px; font-weight: 800; min-width: 84px; box-shadow: 0 3px 0 #b97a0c, inset 0 1px 0 rgb(255 255 255 / .6); }
 .q-x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgb(255 255 255 / .15); color: #fff; font-size: 1.6rem; line-height: 1; }
 .q-body { height: calc(100dvh - 64px - env(safe-area-inset-top)); overflow-y: auto; padding: 8px 16px calc(24px + env(safe-area-inset-bottom)); }
 .q-body > div { max-width: 620px; min-height: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
@@ -1779,7 +1790,7 @@ dialog.quest::backdrop { background: #1a2550; }
 @keyframes q-idle { to { transform: rotate(360deg); } }
 .q-wheel { width: min(300px, 74vw); } .q-wheel-svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 8px 0 rgb(0 0 0 / .2)); }
 .q-wheel-spin { transform-origin: 110px 110px; } .q-hub { fill: #fff; stroke: #ffcf3f; stroke-width: 5; } .q-pointer { fill: #ffcf3f; stroke: #fff; stroke-width: 3; }
-.q-spin { width: 150px; height: 64px; border: 0; border-radius: 999px; background: #ff7a59; color: #fff; font: inherit; font-weight: 900; font-size: 1.5rem; letter-spacing: .08em; box-shadow: 0 6px 0 #c4502f; cursor: pointer; animation: q-pulse 1.4s ease-in-out infinite; }
+.q-spin { width: 150px; height: 64px; border: 0; border-radius: 999px; background: linear-gradient(#ff9a7a, #ff6a45); color: #fff; font: inherit; font-weight: 900; font-size: 1.5rem; letter-spacing: .08em; box-shadow: 0 6px 0 #c4502f; cursor: pointer; animation: q-pulse 1.4s ease-in-out infinite; }
 .q-spin:disabled { animation: none; opacity: .6; }
 @keyframes q-pulse { 50% { transform: scale(1.06); } }
 .q-turn { margin: 0; font-weight: 700; display: flex; align-items: center; gap: 8px; }

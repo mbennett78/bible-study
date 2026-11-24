@@ -94,12 +94,21 @@ const jewelSvg = (c, have, progress = 0) => `<span class="q-jewel${have ? " have
 function wheelSvg() {
   const n = CATEGORIES.length, r = 100, slice = 360 / n;
   const pt = (deg, rad) => [110 + rad * Math.sin((deg * Math.PI) / 180), 110 - rad * Math.cos((deg * Math.PI) / 180)];
-  return `<svg class="q-wheel-svg" viewBox="0 0 220 220" aria-hidden="true"><g class="q-wheel-spin">${CATEGORIES.map((c, i) => {
+  const lights = Array.from({ length: 18 }, (_, i) => { const [x, y] = pt(i * 20 + 10, 108); return `<circle class="q-bulb${i % 2 ? " alt" : ""}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/>`; }).join("");
+  return `<svg class="q-wheel-svg" viewBox="0 0 220 220" aria-hidden="true">
+  <defs><radialGradient id="qShade" cx="50%" cy="50%" r="50%"><stop offset="55%" stop-color="#fff" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity=".18"/></radialGradient>
+    <radialGradient id="qGold" cx="40%" cy="35%" r="70%"><stop offset="0%" stop-color="#fff3b0"/><stop offset="60%" stop-color="#ffcf3f"/><stop offset="100%" stop-color="#e09b16"/></radialGradient>
+    <linearGradient id="qShine" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".45"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  <circle cx="110" cy="110" r="113" fill="url(#qGold)"/>
+  <g class="q-wheel-spin">${CATEGORIES.map((c, i) => {
     const a0 = i * slice, a1 = a0 + slice, [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r), [ix, iy] = pt(a0 + slice / 2, 64);
     return `<path d="M110 110 L${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z" fill="${c.color}" stroke="#fff" stroke-width="3"/>
       <text x="${ix.toFixed(1)}" y="${iy.toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="30">${c.icon}</text>`;
-  }).join("")}<circle cx="110" cy="110" r="104" fill="none" stroke="#fff" stroke-width="6"/></g>
-  <circle cx="110" cy="110" r="22" class="q-hub"/><path d="M110 2 L98 -14 H122 Z" class="q-pointer" transform="translate(0 16)"/></svg>`;
+  }).join("")}<circle cx="110" cy="110" r="${r}" fill="url(#qShade)"/><circle cx="110" cy="110" r="101" fill="none" stroke="#fff" stroke-width="4"/></g>
+  ${lights}
+  <path d="M30 92 A82 82 0 0 1 190 92 Q110 70 30 92 Z" fill="url(#qShine)" pointer-events="none"/>
+  <circle cx="110" cy="110" r="24" fill="url(#qGold)" stroke="#fff" stroke-width="4"/><text x="110" y="111" text-anchor="middle" dominant-baseline="central" font-size="20" fill="#fff" class="q-hub-star">★</text>
+  <path d="M110 2 L98 -14 H122 Z" class="q-pointer" transform="translate(0 16)"/></svg>`;
 }
 const candle = () => `<span class="q-candle" aria-hidden="true"><svg viewBox="0 0 40 90"><ellipse class="qc-glow" cx="20" cy="18" rx="16" ry="16"/><path class="qc-flame" d="M20 4 C 25 12, 25 18, 20 22 C 15 18, 15 12, 20 4 Z"/><rect class="qc-wick" x="19.2" y="21" width="1.6" height="5"/><rect class="qc-wax" x="11" y="26" width="18" height="58" rx="3"/><rect class="qc-dish" x="4" y="83" width="32" height="5" rx="2.5"/></svg></span>`;
 const buddyFace = (cls = "") => `<span class="buddy buddy-inline ${cls}" aria-hidden="true">${BUDDY_SVG}</span>`;
@@ -334,5 +343,10 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     dlg.querySelector("[data-home]").onclick = home;
   }
 
-  return { open() { home(); if (!dlg.open) dlg.showModal(); }, el: dlg };
+  return {
+    open() { home(); if (!dlg.open) dlg.showModal(); },
+    // Straight to "How tough should Buddy be?" (Buddy asked them to play).
+    challenge() { setupMode("buddy"); if (!dlg.open) dlg.showModal(); },
+    el: dlg,
+  };
 }

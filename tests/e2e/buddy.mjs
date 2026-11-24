@@ -102,6 +102,21 @@ try {
     check("naming: the chat says his name", /Ask Pip anything/.test(await page.textContent("#chatSheet h2")));
     await ctx.close();
   }
+  // Sometimes he asks them to play Bible Quest with him.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
+    await ctx.addInitScript(() => { Math.random = () => 0.1; if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Pip" })); });
+    const page = await ctx.newPage();
+    await page.clock.install();
+    await page.goto(site.url); await page.waitForTimeout(900);
+    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check("play: now and then he asks them to play Bible Quest", /Bible Quest|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
+    await page.$eval(".buddy-say .bs-yes", (b) => b.click()); await page.clock.runFor(1500);
+    check("play: yes takes them straight to choosing how tough he plays", await page.$eval("dialog.quest", (d) => d.open) && Boolean(await page.$("dialog.quest [data-lv]")) && /How tough should Pip be/.test(await page.textContent("dialog.quest")));
+    await ctx.close();
+  }
   // Microphone: explained before the device asks, and a kind way back if it was refused.
   {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
