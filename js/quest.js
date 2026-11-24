@@ -123,14 +123,19 @@ const CRITTER_BODY = {
   history: '<ellipse cx="50" cy="60" rx="36" ry="32"/>',
   arts: '<path d="M50 24 C74 24 86 42 84 62 C82 84 68 94 50 94 C32 94 16 84 16 62 C14 42 26 24 50 24Z"/>',
 };
-export const critter = (c, cls = "", i = 0) => `<span class="q-critter ${cls}" style="--cc:${c.color};--i:${i}" aria-hidden="true">
+const MOUTH = {
+  "": '<path d="M42 73 Q50 81 58 73" fill="none" stroke="#1d2550" stroke-width="3" stroke-linecap="round"/>',
+  happy: '<path d="M39 70 Q50 88 61 70 Z" fill="#1d2550"/><path d="M44 78 Q50 83 56 78" fill="#ff7aa8"/>',
+  sad: '<path d="M42 79 Q50 71 58 79" fill="none" stroke="#1d2550" stroke-width="3" stroke-linecap="round"/><path class="qcr-tear" d="M30 64 Q27 70 30 73 Q33 70 30 64Z" fill="#8fd3ff"/>',
+};
+export const critter = (c, cls = "", i = 0, mood = "") => `<span class="q-critter ${cls}" style="--cc:${c.color};--i:${i}" aria-hidden="true">
   <svg viewBox="0 0 100 100"><g class="qcr-body">${CRITTER_BODY[c.id] || CRITTER_BODY.people}</g>
     <ellipse cx="38" cy="42" rx="10" ry="5" fill="#fff" opacity=".35"/>
     <ellipse class="qcr-eye" cx="39" cy="58" rx="7" ry="8.5"/><ellipse class="qcr-eye" cx="61" cy="58" rx="7" ry="8.5"/>
     <circle cx="41" cy="60" r="3.6" fill="#1d2550"/><circle cx="63" cy="60" r="3.6" fill="#1d2550"/>
     <circle cx="42.4" cy="58.3" r="1.3" fill="#fff"/><circle cx="64.4" cy="58.3" r="1.3" fill="#fff"/>
     <ellipse cx="29" cy="70" rx="5" ry="3" fill="#ff7aa8" opacity=".55"/><ellipse cx="71" cy="70" rx="5" ry="3" fill="#ff7aa8" opacity=".55"/>
-    <path d="M42 73 Q50 81 58 73" fill="none" stroke="#1d2550" stroke-width="3" stroke-linecap="round"/></svg>
+    ${MOUTH[mood] || MOUTH[""]}</svg>
   <b class="qcr-hat">${c.icon}</b></span>`;
 const buddyFace = (cls = "") => `<span class="buddy buddy-inline ${cls}" aria-hidden="true">${BUDDY_SVG}</span>`;
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
@@ -313,10 +318,10 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const head = right ? (p.kind === "buddy" ? `${B()} got it!` : pick(RIGHT)) : timedOut ? "The candle went out!" : p.kind === "buddy" ? `${B()} missed it!` : pick(WRONG);
     const streak = right && p.streak >= 3 ? `<p class="q-streak">🔥 ${p.streak} in a row!</p>` : "";
     paint(`<div class="q-fb ${right ? "good" : "bad"}" style="--cc:${cat.color}">
-      <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : `<span class="q-fb-icon">${right ? "🎉" : "🙂"}</span>`}<h2>${esc(head)}</h2></div>
+      <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : critter(cat, `big q-fb-critter ${right ? "cheer" : "sad"}`, 0, right ? "happy" : "sad")}<h2>${esc(head)}</h2></div>
       ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}
       ${r.jewel ? `<div class="q-newjewel">${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span></p></div>` : ""}
-      <div class="q-why"><p>${right ? "" : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
+      <div class="q-why"><p>${right ? `✓ <b>${esc(q.choices[q.a])}</b>. ` : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
       <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? `${BH()} spins again` : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : `${BH()}'s turn`) : "Next player"}</button></div>`);
     if (r.jewel && lively()) confetti(dlg, [cat.color, "#f4d35e", ...lookColors()], 90);
     const next = () => {
