@@ -739,6 +739,17 @@ const waves = (y, c = "#4f9fc8", c2 = "#7fc3e0") => `<path d="M0 ${y} ${Array.fr
 const skyG = (id, a, b) => `<defs><linearGradient id="kg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient><clipPath id="kc${id}"><rect width="360" height="90" rx="16"/></clipPath></defs>`;
 const bob = (inner, x = 0, y = 0) => `<g transform="translate(${x} ${y})"><g class="bob">${inner}</g></g>`;
 
+// Creation (Genesis 1): the seven days left to right, from darkness and stars, to sky and
+// sea, land and trees, the sun, fish and birds, animals and people, and the day of rest.
+const dayBadge = (x, n) => `<g transform="translate(${x} 9)"><circle r="6" fill="#fffdf4" opacity=".92" stroke="#c9a35a" stroke-width=".8"/><text y="2.6" text-anchor="middle" font-size="7.5" font-weight="700" font-family="Georgia, serif" fill="#6b4a2a">${n}</text></g>`;
+const elephant = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-12 0 L -12 -9 M -6 0 L -6 -9 M 5 0 L 5 -9 M 10 0 L 10 -9" stroke="#8f9aa6" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-1" cy="-14" rx="15" ry="9" fill="#a3aeb9"/><circle cx="14" cy="-17" r="7.5" fill="#a3aeb9"/><ellipse cx="11" cy="-17" rx="4.5" ry="6" fill="#8f9aa6"/>
+  <path d="M19 -14 C 22 -8, 20 -3, 23 0" stroke="#a3aeb9" stroke-width="3.4" fill="none" stroke-linecap="round"/>${eyes([[16.5, -19]], .8)}</g>`;
+const giraffe = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-7 0 L -7 -12 M -3 0 L -3 -12 M 5 0 L 5 -12 M 9 0 L 9 -12" stroke="#d9a04a" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="1" cy="-15" rx="11" ry="5.5" fill="#efc068"/><path d="M8 -17 L 14 -38" stroke="#efc068" stroke-width="5" stroke-linecap="round"/><ellipse cx="17" cy="-40" rx="5" ry="3" fill="#efc068"/>
+  <path d="M14 -43 L 14 -47 M 17 -43 L 18 -47" stroke="#a8743f" stroke-width="1.2"/>${[[-3, -16], [3, -14], [-1, -12], [6, -17], [11, -27], [13, -33]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="1.4" fill="#b9772e"/>`).join("")}${eyes([[18, -41]], .7)}</g>`;
+const bunny = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="-4" rx="6" ry="4.4" fill="#f2efe9"/><circle cx="6" cy="-7" r="3.4" fill="#f2efe9"/>
+  <ellipse cx="5" cy="-13" rx="1.3" ry="4" fill="#f2efe9"/><ellipse cx="7.4" cy="-12.6" rx="1.3" ry="4" fill="#f2efe9"/><circle cx="-6" cy="-5" r="1.8" fill="#fff"/>${eyes([[7, -7.6]], .6)}</g>`;
 // Eden (Genesis 2-3): two trees in the middle of the garden, a river that parts into four
 // streams, Adam and Eve in leaf clothes, and the animals Adam named. Genesis 3 adds the serpent.
 const fruitTree = (x, y, fruit, glow = false) => `<g transform="translate(${x} ${y})">
@@ -771,19 +782,31 @@ const edenScene = (fall) => `${sun(36, 18, 8)}
     ${fruitTree(162, 60, "#f5c542", true)}${fruitTree(200, 60, "#e0453a")}
     ${fall ? `<path d="M197 58 C 206 52, 194 46, 203 40 C 210 35, 198 30, 206 26" stroke="#5d8f3a" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="207" cy="25" r="2.4" fill="#5d8f3a"/><circle cx="207.6" cy="24.4" r=".6" fill="#222"/>` : ""}
     ${person(104, 74, .95, "#5a3a20", false)}${person(124, 74, .92, "#8a5a2a", true)}
+    ${fall ? `<g transform="translate(114 76)"><ellipse cx="-12" cy="-6" rx="13" ry="9" fill="#4f8f3c"/><ellipse cx="10" cy="-7" rx="14" ry="10" fill="#5e9a48"/><ellipse cx="-1" cy="-11" rx="11" ry="8" fill="#6aa850"/>${[[-14, -9], [-4, -14], [8, -10], [16, -5]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="1.6" fill="#f08ab0"/>`).join("")}</g>` : `<g transform="translate(56 32)"><path d="M0 0 h 34 a 5 5 0 0 1 5 5 v 9 a 5 5 0 0 1 -5 5 h -4 l 6 6 l -12 -6 h -19 a 5 5 0 0 1 -5 -5 v -9 a 5 5 0 0 1 5 -5 Z" fill="#fffdf4" stroke="#c9a35a" stroke-width=".8" transform="translate(-4 -6)"/><text x="13.5" y="6.5" text-anchor="middle" font-size="6.4" font-family="Georgia, serif" font-weight="700" fill="#6b4a2a">Elephant!</text></g>`}
     ${fall ? `<circle cx="131" cy="62" r="2.4" fill="#e0453a"/>` : `<g class="bob"><path d="M232 26 q 4 -4 8 0 q 4 -4 8 0" stroke="#4a5a6a" stroke-width="1.3" fill="none"/></g>`}
-    ${lion(262, 76, .62)}${lamb(240, 76, .3)}${deer(300, 70, .62)}${lamb(70, 78, .26)}
+    ${lion(262, 76, .62)}${lamb(240, 76, .3)}${deer(300, 70, .62)}${giraffe(336, 72, .55)}${elephant(54, 84, .5)}${bunny(84, 84, .7)}${fall ? "" : bunny(284, 84, .6)}
     ${[[20, 80, "#f08ab0"], [34, 86, "#fff"], [146, 88, "#f5d04a"], [214, 88, "#f08ab0"], [332, 84, "#fff"], [348, 88, "#f5d04a"], [84, 66, "#fff"]].map(([a, b, c]) => edenFlower(a, b, c)).join("")}`;
 
+const creationScene = () => `<defs><linearGradient id="crNight" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f2a4a"/><stop offset=".55" stop-color="#2d3c63" stop-opacity=".85"/><stop offset="1" stop-color="#2d3c63" stop-opacity="0"/></linearGradient></defs>
+    <rect width="80" height="90" fill="url(#crNight)"/>
+    <circle cx="22" cy="26" r="7" fill="#fdf3c4"/><circle cx="25.5" cy="23.5" r="6" fill="#2a3758"/>
+    ${[[10, 40], [36, 18], [46, 36], [16, 56], [40, 52], [58, 24]].map(([a, b], n) => `<circle cx="${a}" cy="${b}" r="${n % 2 ? 1 : 1.4}" fill="#fff6c8"/>`).join("")}
+    ${Array.from({ length: 7 }, (_, n) => `<path d="M64 34 L ${64 + Math.cos((n - 3) * .32) * 16} ${34 + Math.sin((n - 3) * .32) * 16}" stroke="#ffe9a0" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>`).join("")}
+    <path d="M78 26 c 0 -5 7 -6 10 -3 c 2 -5 10 -5 12 0 c 5 -1 8 3 5 5 h -24 c -3 0 -4 -2 -3 -2 Z" fill="#fff" opacity=".9"/>
+    <path d="M0 70 C 40 66, 90 66, 116 70 L 116 90 L 0 90 Z" fill="#4f9fc8"/><path d="M0 78 q 7 -3 14 0 t 14 0 t 14 0 t 14 0 t 14 0 t 14 0 t 14 0 t 14 0" stroke="#8fc8e4" stroke-width="1.2" fill="none"/>
+    <path d="M104 90 C 108 70, 130 60, 170 60 C 230 60, 300 54, 360 60 L 360 90 Z" fill="#9bd06f"/><path d="M120 90 C 150 80, 250 76, 360 78 L 360 90 Z" fill="#86c25e"/>
+    ${oliveTree(128, 72, .42)}${palm(150, 70, .55)}${[[118, 78, "#f08ab0"], [140, 82, "#fff"], [160, 80, "#f5d04a"]].map(([a, b, c]) => edenFlower(a, b, c)).join("")}
+    ${sun(180, 30, 9)}
+    <ellipse cx="222" cy="80" rx="18" ry="5.5" fill="#5fb0d8"/><path d="M210 80 q 4 -2 8 0 M 226 82 q 4 -2 8 0" stroke="#bfe6f5" stroke-width="1" fill="none"/>
+    ${bob(`<path d="M0 0 q 5 -5 10 0 q 5 -5 10 0" stroke="#4a5a6a" stroke-width="1.5" fill="none"/>`, 214, 32)}${bob(`<path d="M0 0 q 4 -4 8 0 q 4 -4 8 0" stroke="#4a5a6a" stroke-width="1.3" fill="none"/>`, 238, 42)}
+    ${giraffe(262, 74, .7)}${elephant(284, 76, .55)}${lion(248, 88, .45)}${bunny(298, 88, .75)}
+    ${person(310, 82, .78, "#5a3a20", false)}${person(324, 82, .76, "#8a5a2a", true)}
+    <circle cx="343" cy="62" r="12" fill="#fff6c8" opacity=".6"/>${oliveTree(344, 72, .3)}${lamb(340, 86, .2)}
+    ${[30, 80, 130, 180, 230, 280, 335].map((x, n) => dayBadge(x, n + 1)).join("")}`;
 const STORY_ART = {
-  eden: ["God planted a garden in Eden", () => edenScene(false), ["#bfe3f5", "#eef8fb"]],
-  fall: ["The tree in the middle of the garden", () => edenScene(true), ["#c9dfe9", "#eef6f2"]],
-  creation: ["God made everything, and it was good", () => `${sun(60, 26, 11)}<circle cx="300" cy="20" r="8" fill="#fdf3c4"/><circle cx="304" cy="17" r="7" fill="#9cc9e6"/>
-    ${[[250, 12], [270, 30], [330, 34], [345, 12], [225, 26]].map(([a, b]) => `<path d="M${a} ${b - 3} L ${a + 1} ${b} L ${a + 4} ${b} L ${a + 1.5} ${b + 2} L ${a + 2.5} ${b + 5} L ${a} ${b + 3} L ${a - 2.5} ${b + 5} L ${a - 1.5} ${b + 2} L ${a - 4} ${b} L ${a - 1} ${b} Z" fill="#fff6c8"/>`).join("")}
-    <path d="M0 64 C 80 50, 160 58, 220 62 C 280 54, 330 58, 360 62 L 360 90 L 0 90 Z" fill="#8cc56a"/><ellipse cx="170" cy="78" rx="34" ry="7" fill="#5fb0d8"/>
-    ${bob(`<path d="M-6 0 C -2 -4, 4 -4, 6 0 C 4 4, -2 4, -6 0 Z M 6 0 L 10 -3 L 10 3 Z" fill="#f08a4b"/>`, 165, 78)}
-    ${oliveTree(70, 72, .5)}${oliveTree(290, 70, .45)}${lamb(230, 70, .32)}
-    ${bob(`<path d="M0 0 q 5 -5 10 0 q 5 -5 10 0" stroke="#4a5a6a" stroke-width="1.6" fill="none"/>`, 120, 22)}${bob(`<path d="M0 0 q 4 -4 8 0 q 4 -4 8 0" stroke="#4a5a6a" stroke-width="1.4" fill="none"/>`, 150, 34)}`, ["#9cc9e6", "#e8f4fb"]],
+  eden: ["God planted a garden, and Adam named the animals", () => edenScene(false), ["#bfe3f5", "#eef8fb"]],
+  fall: ["They hid among the trees of the garden", () => edenScene(true), ["#c9dfe9", "#eef6f2"]],
+  creation: ["In the beginning God created the heavens and the earth", () => creationScene(), ["#9cc9e6", "#e8f4fb"]],
   ark: ["Noah's ark", () => `${sun(320, 18, 8)}${waves(62)}
     ${bob(`<path d="M-60 0 L 60 0 L 48 18 L -48 18 Z" fill="#9a6a3f"/><path d="M-60 0 L 60 0" stroke="#6e4826" stroke-width="2"/><rect x="-34" y="-20" width="68" height="20" fill="#c08a55"/><path d="M-40 -20 L 0 -34 L 40 -20 Z" fill="#7a4f2e"/>
       <rect x="-24" y="-14" width="10" height="9" rx="2" fill="#4b3320"/><rect x="14" y="-14" width="10" height="9" rx="2" fill="#4b3320"/>
@@ -902,8 +925,8 @@ const fx = {
   drift: (y, d = 0) => `<g class="kf-drift" style="--kdel:${-d}s"><path d="M0 ${y} c 0 -6 8 -8 12 -4 c 2 -6 12 -6 14 0 c 6 -2 10 4 6 6 h -30 c -4 0 -4 -2 -2 -2 Z" fill="#fff" opacity=".85"/></g>`,
 };
 const KIDS_FX = {
-  creation: () => `${fx.twinkles([[250, 12], [270, 30], [330, 34], [345, 12], [225, 26]])}${fx.jump(170, 80, "#f08a4b")}${fx.butterfly(100, 56, "#f5c542", 2)}`,
-  eden: () => `${fx.shimmer(72, 60, 300)}${fx.butterfly(60, 56, "#f08ab0")}${fx.butterfly(280, 52, "#f5c542", 3)}${fx.birds(16, 6)}`,
+  creation: () => `${fx.twinkles([[12, 22], [50, 46], [30, 62], [56, 14]])}${fx.jump(222, 76, "#f08a4b")}${fx.butterfly(140, 50, "#f5c542", 2)}${fx.shimmer(80, 6, 100)}`,
+  eden: () => `${fx.shimmer(72, 60, 300)}${fx.butterfly(30, 60, "#f08ab0")}${fx.butterfly(280, 52, "#f5c542", 3)}${fx.birds(16, 6)}`,
   fall: () => `${fx.shimmer(72, 60, 300)}${fx.leaves(180, 30)}`,
   ark: () => `${fx.birds(14, 0, 28)}${fx.drift(20, 4)}`,
   rainbow: () => `${fx.birds(20, 3)}${fx.butterfly(120, 64, "#7f6cc8", 1)}${fx.butterfly(250, 60, "#f39c4a", 4)}`,
