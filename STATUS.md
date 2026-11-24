@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Tue Nov 24, 2026, 11:36 AM Central
-**Current version:** v139 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Tue Nov 24, 2026, 11:39 AM Central
+**Current version:** v140 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 

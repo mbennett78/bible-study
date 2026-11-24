@@ -213,17 +213,54 @@
 
       <div class="card setup-card" id="setupCard"></div>
 
+      <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and look</button><button type="button" data-jump="sg-reading">Reading and Bible</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
+
+      <h2 class="settings-group" id="sg-help" tabindex="-1">Help and guide</h2>
+      <div class="card guide-card" id="guideCard">
+        <h2>📘 User guide</h2>
+        <p class="muted small-print">Tap a topic to open it.</p>
+        <div id="guideList"></div>
+        <button type="button" class="small" id="printGuide">🖨 Print the guide</button>
+      </div>
+
       <div class="card tour-card-settings">
         <h2>New here?</h2>
         <p class="muted small-print">A short, friendly tour of everything the app can do. Take it as often as you like.</p>
         <button type="button" class="big-btn" data-tour>🧭 Take the tour</button>
       </div>
 
+      <h2 class="settings-group" id="sg-you" tabindex="-1">You and your account</h2>
       <div class="card" id="accountCard">
         <h2>Account</h2>
         <div id="accountBody"><p class="muted small-print">Family sign-in isn't switched on yet. Once it is, everyone signs in with their own email, and this is where you'll see who's signed in and sign out.</p></div>
       </div>
 
+      <div class="card">
+        <h2>You</h2>
+        <label class="field">Your name
+          <span class="key-row"><input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you" maxlength="40"><button type="button" class="small" id="saveUserName">Save</button></span>
+        </label>
+        <p class="small-print key-status" id="userNameMsg" role="status"></p>
+        <label class="field">My Bible version
+          <select id="myVersion"></select>
+        </label>
+        <p class="muted small-print" id="myVersionNote"></p>
+      </div>
+
+      <div class="card" id="lockCard">
+        <h2>Journal passcode</h2>
+        <p class="small-print lock-status" id="lockStatus" role="status"></p>
+        <label class="field"><span id="lockLabel">New passcode</span>
+          <span class="key-row"><input id="lockCode" type="password" inputmode="numeric" autocomplete="off" placeholder="4 to 8 digits" maxlength="8"><button type="button" class="small" id="lockShow" aria-pressed="false">Show</button></span>
+        </label>
+        <div class="row">
+          <button class="small" id="lockSet">Save passcode</button>
+          <button class="small" id="lockClear">Remove passcode</button>
+        </div>
+        <p class="muted small-print">The passcode hides your journal on screen. It isn't encryption: someone with your unlocked device and technical know-how could still reach the saved text.</p>
+      </div>
+
+      <h2 class="settings-group" id="sg-buddy" tabindex="-1">Buddy and look</h2>
       <div class="card" id="buddyCard">
         <h2>My study buddy</h2>
         <p class="muted small-print">The little stick-figure friend at the side of the screen. Tap him any time to ask the Bible helper anything. Drag him up or down either edge to move him out of the way.</p>
@@ -239,37 +276,42 @@
         <p class="muted small-print" id="lookGraphicsNote"></p>
       </div>
 
-      <div class="card" id="installCard">
-        <h2>Put it on your home screen</h2>
-        <button class="small" id="installBtn" hidden>Install app</button>
-        <p class="muted small-print" id="installIos">On iPhone or iPad: open this page in Safari, tap the Share button, then <strong>Add to Home Screen</strong>.</p>
-        <p class="muted small-print" id="installAndroid">On Android: open this page in Chrome, tap the ⋮ menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</p>
-      </div>
-
+      <h2 class="settings-group" id="sg-reading" tabindex="-1">Reading and Bible</h2>
       <div class="card">
-        <h2>You</h2>
-        <label class="field">Your name
-          <span class="key-row"><input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you" maxlength="40"><button type="button" class="small" id="saveUserName">Save</button></span>
+        <h2>Reading</h2>
+        <label class="field">Text size
+          <input id="textSize" type="range" min="15" max="36" step="1">
         </label>
-        <p class="small-print key-status" id="userNameMsg" role="status"></p>
-        <label class="field">My Bible version
-          <select id="myVersion"></select>
+        <label class="field">Bigger labels and buttons
+          <select id="uiScale">
+            <option value="100">Normal</option>
+            <option value="112">Larger</option>
+            <option value="125">Largest</option>
+          </select>
         </label>
-        <p class="muted small-print" id="myVersionNote"></p>
-      </div>
-
-
-      <div class="card" id="lockCard">
-        <h2>Journal passcode</h2>
-        <p class="small-print lock-status" id="lockStatus" role="status"></p>
-        <label class="field"><span id="lockLabel">New passcode</span>
-          <span class="key-row"><input id="lockCode" type="password" inputmode="numeric" autocomplete="off" placeholder="4 to 8 digits" maxlength="8"><button type="button" class="small" id="lockShow" aria-pressed="false">Show</button></span>
+        <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
+        <label class="switch-row"><span>Full screen while reading on a phone<small>The menus slide out of the way as you scroll down. Scroll up a little, or tap the Menu tab, to bring them back.</small></span><input type="checkbox" role="switch" id="focusRead"></label>
+        <label class="switch-row"><span>Recorded narrator for the ESV<small>With an ESV key, the ESV is read by a real person's recorded voice. Other versions, and times without a signal, use this device's voice.</small></span><input type="checkbox" role="switch" id="humanVoice"></label>
+        <label class="switch-row"><span>Keep my Bible knowledge record<small>After each quiz you always see your score. With this on, the app also keeps your scores so you can see how you're growing, in My Bible. Only you can see it. Turn it off for no record at all.</small></span><input type="checkbox" role="switch" id="knowledgeRecord"></label>
+        <button type="button" class="small" id="clearKnowledge">Clear my knowledge record</button>
+        <label class="switch-row"><span>Follow-along study notes<small>While you read, the study note for the verse you're on shows at the bottom of the page.</small></span><input type="checkbox" role="switch" id="followNotes"></label>
+        <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
+        <label class="switch-row"><span>Dotted line under study words<small>A light line under the names of God and the key words, so you know they're worth tapping.</small></span><input type="checkbox" role="switch" id="studyWords"></label>
+        <label class="field">Bible helper answers
+          <select id="helperStyle">
+            <option value="">Regular</option>
+            <option value="simple">Simple words, short answers</option>
+            <option value="deep">More depth for serious study</option>
+          </select>
         </label>
-        <div class="row">
-          <button class="small" id="lockSet">Save passcode</button>
-          <button class="small" id="lockClear">Remove passcode</button>
-        </div>
-        <p class="muted small-print">The passcode hides your journal on screen. It isn't encryption: someone with your unlocked device and technical know-how could still reach the saved text.</p>
+        <p class="muted small-print">While the app reads aloud, the part being read is highlighted so you can follow along.</p>
+        <label class="field">Appearance
+          <select id="theme">
+            <option value="auto">Match my device</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
       </div>
 
       <div class="card">
@@ -329,43 +371,24 @@
         </details>
       </div>
 
-      <div class="card">
-        <h2>Reading</h2>
-        <label class="field">Text size
-          <input id="textSize" type="range" min="15" max="36" step="1">
-        </label>
-        <label class="field">Bigger labels and buttons
-          <select id="uiScale">
-            <option value="100">Normal</option>
-            <option value="112">Larger</option>
-            <option value="125">Largest</option>
-          </select>
-        </label>
-        <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
-        <label class="switch-row"><span>Full screen while reading on a phone<small>The menus slide out of the way as you scroll down. Scroll up a little, or tap the Menu tab, to bring them back.</small></span><input type="checkbox" role="switch" id="focusRead"></label>
-        <label class="switch-row"><span>Recorded narrator for the ESV<small>With an ESV key, the ESV is read by a real person's recorded voice. Other versions, and times without a signal, use this device's voice.</small></span><input type="checkbox" role="switch" id="humanVoice"></label>
-        <label class="switch-row"><span>Keep my Bible knowledge record<small>After each quiz you always see your score. With this on, the app also keeps your scores so you can see how you're growing, in My Bible. Only you can see it. Turn it off for no record at all.</small></span><input type="checkbox" role="switch" id="knowledgeRecord"></label>
-        <button type="button" class="small" id="clearKnowledge">Clear my knowledge record</button>
-        <label class="switch-row"><span>Follow-along study notes<small>While you read, the study note for the verse you're on shows at the bottom of the page.</small></span><input type="checkbox" role="switch" id="followNotes"></label>
-        <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
-        <label class="switch-row"><span>Dotted line under study words<small>A light line under the names of God and the key words, so you know they're worth tapping.</small></span><input type="checkbox" role="switch" id="studyWords"></label>
-        <label class="field">Bible helper answers
-          <select id="helperStyle">
-            <option value="">Regular</option>
-            <option value="simple">Simple words, short answers</option>
-            <option value="deep">More depth for serious study</option>
-          </select>
-        </label>
-        <p class="muted small-print">While the app reads aloud, the part being read is highlighted so you can follow along.</p>
-        <label class="field">Appearance
-          <select id="theme">
-            <option value="auto">Match my device</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </label>
+      <h2 class="settings-group" id="sg-device" tabindex="-1">This device and backup</h2>
+      <div class="card" id="installCard">
+        <h2>Put it on your home screen</h2>
+        <button class="small" id="installBtn" hidden>Install app</button>
+        <p class="muted small-print" id="installIos">On iPhone or iPad: open this page in Safari, tap the Share button, then <strong>Add to Home Screen</strong>.</p>
+        <p class="muted small-print" id="installAndroid">On Android: open this page in Chrome, tap the ⋮ menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</p>
       </div>
 
+      <div class="card">
+        <h2>Backup</h2>
+        <p class="muted small-print">Save your progress to a file, then open it on your other device. Bible keys come from your family sign-in, not this file.</p>
+        <div class="row">
+          <button class="small" id="exportBtn">Save backup file</button>
+          <label class="small button-like">Restore from file<input id="importFile" type="file" accept="application/json" hidden></label>
+        </div>
+      </div>
+
+      <h2 class="settings-group" id="sg-about" tabindex="-1">About and family</h2>
       <details class="card organizer about-card" id="aboutCard">
         <summary><h2>About this app</h2></summary>
         <p>A free Bible study made for our family, not for sale.</p>
@@ -380,20 +403,12 @@
         </ul>
       </details>
 
-      <div class="card">
-        <h2>Backup</h2>
-        <p class="muted small-print">Save your progress to a file, then open it on your other device. Bible keys come from your family sign-in, not this file.</p>
-        <div class="row">
-          <button class="small" id="exportBtn">Save backup file</button>
-          <label class="small button-like">Restore from file<input id="importFile" type="file" accept="application/json" hidden></label>
-        </div>
-      </div>
-
       <details class="card organizer" id="organizerBox" hidden>
         <summary><h2>Family organizer tools</h2></summary>
         <p class="muted small-print">For the person who set up the app. Everyone else can leave this closed.</p>
         <div id="organizerBody"></div>
       </details>
+
     </section>
   </main>
 

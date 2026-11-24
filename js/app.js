@@ -17,6 +17,7 @@ import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
+import { GUIDE, guideHtml } from "./guide.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -4621,12 +4622,20 @@ document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("clic
 
 
 /* ---------- ❓ Help: tips for the screen you're on, and the tour ---------- */
+// Settings: the user guide at the top, and quick jumps to each group of settings.
+$("#guideList").innerHTML = GUIDE.map((g) => `<details class="guide-topic" data-guide="${g.id}"><summary><span aria-hidden="true">${g.icon}</span> ${esc(g.title)}</summary><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></details>`).join("");
+$("#printGuide").addEventListener("click", () => printPages(guideHtml(esc), "guide", "User Guide"));
+document.querySelectorAll("[data-jump]").forEach((b) => b.addEventListener("click", () => {
+  const to = document.getElementById(b.dataset.jump);
+  to.scrollIntoView({ block: "start" });
+  to.focus({ preventScroll: true });
+}));
 const HELP = {
   home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
   read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
   books: ["My Bible", ["Tap Keep reading to go back to where you were, or tap any book and then a chapter to read it.", "Books shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["Bible study", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
-  settings: ["Settings", ["Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
+  settings: ["Settings", ["The User guide at the top explains every part of the app, and can be printed.", "Tap a section name near the top to jump to it.", "Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
 };
 const helpSheet = document.createElement("dialog");
 helpSheet.className = "welcome-back help-sheet"; helpSheet.setAttribute("aria-label", "Help");
