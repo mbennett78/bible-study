@@ -1,0 +1,359 @@
+// Isaiah chapter notes.
+import { makeBook } from "./make.js";
+
+const sources = {
+  oswalt: "John N. Oswalt, The Book of Isaiah, 2 vols., New International Commentary on the Old Testament (Eerdmans, 1986-98).",
+  motyer: "J. Alec Motyer, Isaiah, Tyndale Old Testament Commentaries (InterVarsity Press, 1999).",
+  childs: "Brevard S. Childs, Isaiah, Old Testament Library (Westminster John Knox, 2001).",
+  smithG: "Gary V. Smith, Isaiah, 2 vols., New American Commentary 15A-B (B&H, 2007-09).",
+  kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
+  halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+};
+
+export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, {
+  1: {
+    intro: "The vision of Isaiah son of Amoz in the days of Uzziah, Jotham, Ahaz and Hezekiah, kings of Judah. \"Sons I have reared, but they have revolted against Me.\" An ox knows its owner, but Israel does not know God. Their sacrifices and feasts are worthless while their hands are full of blood. \"Wash yourselves... learn to do good; seek justice.\" \"Come now, and let us reason together... though your sins are as scarlet, they will be as white as snow.\"",
+    v: [
+      ["1:3", "An ox knows its owner", "Even animals know better."],
+      ["1:13", "Bring your worthless offerings no longer", "Worship without obedience is empty."],
+      ["1:17", "Seek justice, reprove the ruthless, defend the orphan", "True religion."],
+      ["1:18", "Though your sins are as scarlet, they will be as white as snow", "Complete cleansing."],
+    ],
+    bg: [["Isaiah's times", "Isaiah prophesied from about 740 to 700 BC, when Assyria was the superpower. He saw the northern kingdom fall in 722 BC and Jerusalem nearly captured in 701 BC.", "strong", ["oswalt", "kitchen"]]],
+    refs: [["MIC.6", "Micah 6:6-8", "What does the LORD require?"], ["PSA.51", "Psalm 51:7", "Whiter than snow"], ["JAS.1", "James 1:27", "Pure religion"]],
+  },
+  2: {
+    intro: "In the last days the mountain of the LORD's house will be raised above all mountains, and all nations will stream to it. \"Come, let us go up to the mountain of the LORD... that He may teach us His ways.\" \"They will hammer their swords into plowshares... nation will not lift up sword against nation.\" But now the land is full of idols, and the proud will be humbled when the LORD alone is exalted.",
+    v: [
+      ["2:2", "In the last days", "God's future plan for all nations."],
+      ["2:3", "That He may teach us concerning His ways", "The nations come to learn."],
+      ["2:4", "Swords into plowshares", "A world without war."],
+      ["2:11", "The LORD alone will be exalted in that day", "Pride brought low."],
+    ],
+    bg: [["Swords into plowshares", "A sculpture with this theme, a gift from the Soviet Union in 1959, stands in the United Nations garden in New York. The same prophecy appears in Micah 4:1-3.", "strong", ["oswalt"]]],
+    refs: [["MIC.4", "Micah 4:1-4", "The same prophecy"], ["REV.21", "Revelation 21:24-26", "The nations walk by its light"]],
+  },
+  3: {
+    intro: "The LORD is removing Jerusalem's support: its leaders, warriors, judges and prophets. Youths and the inexperienced will rule. \"Say to the righteous that it will go well with them.\" God judges the elders who plundered the poor, and the proud women of Zion who walk with heads held high.",
+    v: [
+      ["3:10", "It will go well with them", "Comfort for the faithful."],
+      ["3:14-15", "Crushing My people", "God defends the poor."],
+    ],
+    refs: [["AMO.4", "Amos 4:1", "Cows of Bashan who oppress the poor"]],
+  },
+  4: {
+    intro: "After judgment, \"the Branch of the LORD will be beautiful and glorious.\" Those left in Zion will be called holy, washed clean. Over Mount Zion God will create a cloud by day and fire by night, a shelter and shade like the wilderness journey.",
+    v: [
+      ["4:2", "The Branch of the LORD", "A title for the coming Messiah."],
+      ["4:5", "A cloud by day... a flaming fire by night", "God's presence as in the exodus."],
+    ],
+    refs: [["JER.23", "Jeremiah 23:5", "A righteous Branch"], ["ZEC.3", "Zechariah 3:8", "My servant the Branch"], ["EXO.13", "Exodus 13:21", "The pillar of cloud and fire"]],
+  },
+  5: {
+    intro: "The Song of the Vineyard: God planted a choice vine, did everything for it, and \"expected it to produce good grapes, but it produced only worthless ones.\" The vineyard is Israel. Six woes follow on those who add house to house, chase strong drink, \"call evil good, and good evil,\" and are wise in their own eyes.",
+    v: [
+      ["5:4", "What more was there to do for My vineyard?", "God's care was complete."],
+      ["5:7", "He looked for justice, but behold, bloodshed", "A wordplay in Hebrew: mishpat and mishpach."],
+      ["5:20", "Woe to those who call evil good", "Moral confusion."],
+    ],
+    refs: [["MAT.21", "Matthew 21:33-43", "Jesus' parable of the vineyard"], ["JHN.15", "John 15:1-8", "The true vine"]],
+  },
+  6: {
+    intro: "\"In the year of King Uzziah's death I saw the Lord sitting on a throne, lofty and exalted.\" Seraphim cry, \"Holy, Holy, Holy, is the LORD of hosts, the whole earth is full of His glory.\" Isaiah cries, \"Woe is me, for I am ruined!\" A seraph touches his lips with a burning coal: \"Your iniquity is taken away.\" God asks, \"Whom shall I send?\" Isaiah answers, \"Here am I. Send me!\"",
+    v: [
+      ["6:1", "In the year of King Uzziah's death", "About 740 BC; an earthly king dies, the true King is seen."],
+      ["6:3", "Holy, Holy, Holy", "God's utter holiness."],
+      ["6:5", "Woe is me, for I am ruined", "Seeing God shows our sin."],
+      ["6:7", "Your iniquity is taken away", "Cleansing before calling."],
+      ["6:8", "Here am I. Send me!", "A willing servant."],
+    ],
+    w: [["קָדוֹשׁ", "qadosh", "H6918", "holy", "Set apart, utterly different and pure. Saying it three times was the strongest way to express \"most holy.\" Isaiah's favorite title for God is \"the Holy One of Israel,\" used about 25 times.", ["halot", "oswalt"]]],
+    refs: [["REV.4", "Revelation 4:8", "Holy, holy, holy"], ["JHN.12", "John 12:39-41", "Isaiah saw His glory"], ["LUK.5", "Luke 5:8", "Depart from me, for I am a sinful man"]],
+  },
+  8: {
+    intro: "Isaiah names a son Maher-shalal-hash-baz, \"swift is the booty,\" a sign that Assyria will soon plunder Damascus and Samaria. Assyria will flood into Judah too, \"Immanuel.\" \"It is the LORD of hosts whom you should regard as holy... He shall become a sanctuary; but to both houses of Israel, a stone to strike and a rock to stumble over.\" \"To the law and to the testimony!\"",
+    v: [
+      ["8:8", "O Immanuel", "God with us, even in judgment."],
+      ["8:13", "It is the LORD of hosts whom you should regard as holy", "Fear God, not conspiracies."],
+      ["8:14", "A stone to strike and a rock to stumble over", "Applied to Christ in 1 Peter 2:8."],
+      ["8:20", "To the law and to the testimony!", "Test everything by God's word."],
+    ],
+    refs: [["1PE.2", "1 Peter 2:8", "A stone of stumbling"], ["1PE.3", "1 Peter 3:14-15", "Do not fear their intimidation"], ["ISA.7", "Isaiah 7:14", "Immanuel"]],
+  },
+  10: {
+    intro: "Woe to those who make unjust laws and rob the poor. Assyria is \"the rod of My anger,\" but Assyria boasts in its own power: \"Is the axe to boast itself over the one who chops with it?\" God will punish Assyria's pride. A remnant of Israel will return to the Mighty God.",
+    v: [
+      ["10:5", "Woe to Assyria, the rod of My anger", "God uses even proud nations."],
+      ["10:15", "Is the axe to boast itself over the one who chops with it?", "The tool is not the master."],
+      ["10:21", "A remnant will return to the Mighty God", "Hope for a faithful few."],
+    ],
+    refs: [["ROM.9", "Romans 9:27", "Paul quotes the remnant promise"], ["HAB.1", "Habakkuk 1:6-11", "God uses Babylon"]],
+  },
+  11: {
+    intro: "\"A shoot will spring from the stem of Jesse, and a branch from his roots will bear fruit. The Spirit of the LORD will rest on Him, the spirit of wisdom and understanding.\" He will judge the poor with righteousness. \"The wolf will dwell with the lamb... and a little boy will lead them.\" \"The earth will be full of the knowledge of the LORD as the waters cover the sea.\"",
+    v: [
+      ["11:1", "A shoot will spring from the stem of Jesse", "From David's family, cut down like a stump."],
+      ["11:2", "The Spirit of the LORD will rest on Him", "Fulfilled at Jesus' baptism."],
+      ["11:6", "The wolf will dwell with the lamb", "Peace in creation."],
+      ["11:9", "As the waters cover the sea", "God known everywhere."],
+    ],
+    refs: [["MAT.3", "Matthew 3:16", "The Spirit descends on Jesus"], ["ROM.15", "Romans 15:12", "The root of Jesse"], ["REV.5", "Revelation 5:5", "The Root of David"]],
+  },
+  12: {
+    intro: "A short song for \"that day.\" \"I will give thanks to You, O LORD; for although You were angry with me, Your anger is turned away, and You comfort me. Behold, God is my salvation, I will trust and not be afraid.\" \"You will joyously draw water from the springs of salvation.\"",
+    v: [
+      ["12:2", "God is my salvation, I will trust and not be afraid", "Echoes Exodus 15:2."],
+      ["12:3", "Draw water from the springs of salvation", "Joy in God's rescue."],
+    ],
+    refs: [["EXO.15", "Exodus 15:2", "The LORD is my strength and song"], ["JHN.7", "John 7:37-38", "Rivers of living water"]],
+  },
+  13: {
+    intro: "The first of the oracles against the nations: Babylon. The LORD musters an army; the day of the LORD comes, cruel with fury. The stars will not shine. God will stir up the Medes against Babylon, and Babylon, the glory of kingdoms, will become like Sodom, never inhabited again.",
+    v: [
+      ["13:6", "The day of the LORD is near", "A day of judgment."],
+      ["13:17", "I will stir up the Medes", "Fulfilled when the Medes and Persians took Babylon in 539 BC."],
+      ["13:19", "Babylon... will be as when God overthrew Sodom", "Babylon's ruins lie empty today."],
+    ],
+    refs: [["JER.50", "Jeremiah 50-51", "Babylon's fall"], ["REV.18", "Revelation 18", "Babylon the great has fallen"]],
+  },
+  14: {
+    intro: "God will have compassion on Jacob. Israel will taunt the king of Babylon: \"How you have fallen from heaven, O star of the morning, son of the dawn!\" He said, \"I will ascend to heaven... I will make myself like the Most High,\" but he is brought down to Sheol. Oracles follow against Assyria and Philistia. \"The LORD has founded Zion, and the afflicted of His people will seek refuge in it.\"",
+    v: [
+      ["14:12", "How you have fallen from heaven, O star of the morning", "Older translations: \"Lucifer.\""],
+      ["14:13-14", "I will make myself like the Most High", "The root of pride."],
+      ["14:27", "His stretched-out hand, who can turn it back?", "God's plans stand."],
+    ],
+    why: "Isaiah 14:12-15 taunts the king of Babylon as a \"star of the morning\" who fell from heaven. Readers discuss whether it also describes Satan.",
+    views: [
+      ["The king of Babylon only", "Many scholars read it strictly as a taunt-song about a proud human king, using poetic images of a star trying to climb above the others.", ["oswalt", "childs"]],
+      ["Also a picture of Satan's fall", "Many early church writers, and teachers since, saw behind the king the pride of Satan, comparing Luke 10:18 and Ezekiel 28, while affirming the passage first addresses Babylon's king.", ["motyer", "smithG"]],
+    ],
+    common: "All agree the passage shows how God brings down pride that tries to take His place.",
+    refs: [["EZK.28", "Ezekiel 28:12-17", "The king of Tyre"], ["LUK.10", "Luke 10:18", "I saw Satan fall like lightning"], ["PRO.16", "Proverbs 16:18", "Pride goes before destruction"]],
+  },
+  15: {
+    intro: "An oracle about Moab. In one night its cities are destroyed. People wail on every rooftop; heads are shaved in mourning. Even God's heart cries out for Moab as refugees flee.",
+    v: [
+      ["15:5", "My heart cries out for Moab", "God grieves even over judgment."],
+    ],
+    refs: [["JER.48", "Jeremiah 48", "Moab's judgment"], ["RUT.1", "Ruth 1", "Ruth the Moabite"]],
+  },
+  16: {
+    intro: "Moab's refugees ask Judah for shelter. Then: \"A throne will even be established in lovingkindness, and a judge will sit on it in faithfulness in the tent of David.\" Moab's pride is famous. Within three years Moab's glory will be brought low.",
+    v: [
+      ["16:5", "A throne established in lovingkindness... in the tent of David", "A promise of a righteous King."],
+      ["16:6", "We have heard of the pride of Moab", "Pride brings ruin."],
+    ],
+    refs: [["AMO.9", "Amos 9:11", "The tent of David restored"]],
+  },
+  17: {
+    intro: "Damascus will become a heap of ruins, and Israel's glory will fade, leaving only a few olives on the tree. In that day people will look to their Maker. \"You have forgotten the God of your salvation.\" The roaring nations will flee like chaff before the wind.",
+    v: [
+      ["17:7", "In that day man will have regard for his Maker", "Judgment turns hearts back."],
+      ["17:10", "You have forgotten the God of your salvation", "The root problem."],
+    ],
+    refs: [["2KI.16", "2 Kings 16:9", "Damascus captured by Assyria"]],
+  },
+  18: {
+    intro: "An oracle to Cush (Ethiopia), a land of tall people sending messengers by papyrus boats. God waits quietly like heat in sunshine. In the end, gifts will be brought from Cush to Mount Zion, the place of the name of the LORD.",
+    v: [
+      ["18:4", "I will look from My dwelling place quietly", "God's timing."],
+      ["18:7", "A gift of homage will be brought to the LORD of hosts", "Distant nations come to God."],
+    ],
+    refs: [["ACT.8", "Acts 8:27-39", "An Ethiopian official believes"]],
+  },
+  19: {
+    intro: "God rides on a swift cloud to Egypt. Egypt's idols tremble, the Nile dries up, its wise men become fools. Then a surprise: \"In that day there will be an altar to the LORD in the midst of the land of Egypt.\" Egypt and Assyria, Israel's great enemies, will worship together. \"Blessed is Egypt My people, and Assyria the work of My hands, and Israel My inheritance.\"",
+    v: [
+      ["19:1", "The LORD is riding on a swift cloud", "God comes in judgment."],
+      ["19:19", "An altar to the LORD in the midst of Egypt", "Enemies become worshipers."],
+      ["19:25", "Blessed is Egypt My people", "An astonishing promise of salvation for the nations."],
+    ],
+    refs: [["EPH.2", "Ephesians 2:14-16", "Two made into one"], ["MAT.2", "Matthew 2:13-15", "Jesus in Egypt"]],
+  },
+  20: {
+    intro: "When Assyria captured the Philistine city of Ashdod, God told Isaiah to walk barefoot and stripped like a captive for three years, a sign that Assyria would lead Egypt and Cush away as captives. Those who trusted in Egypt would be ashamed.",
+    v: [
+      ["20:1", "Sargon the king of Assyria", "Sargon II, once known only from the Bible, was confirmed when his palace was found in 1843."],
+      ["20:3", "As a sign and token", "Isaiah's life became a message."],
+      ["20:6", "Such is our hope", "Trusting Egypt was foolish."],
+    ],
+    bg: [["Sargon found", "For centuries Isaiah 20:1 was the only known mention of Sargon. In 1843 his palace at Khorsabad was excavated, with inscriptions describing his capture of Ashdod in 711 BC.", "strong", ["kitchen", "oswalt"]]],
+    refs: [["EZK.4", "Ezekiel 4", "Another acted-out prophecy"]],
+  },
+  21: {
+    intro: "A vision of judgment on Babylon. A watchman sees riders: \"Fallen, fallen is Babylon; and all the images of her gods are shattered on the ground.\" Short oracles follow for Edom (\"Watchman, how far gone is the night?\") and Arabia.",
+    v: [
+      ["21:9", "Fallen, fallen is Babylon", "Echoed in Revelation 14:8."],
+      ["21:11", "Watchman, how far gone is the night?", "Waiting for dawn."],
+    ],
+    refs: [["REV.14", "Revelation 14:8", "Fallen is Babylon the great"], ["REV.18", "Revelation 18:2", "Babylon has fallen"]],
+  },
+  22: {
+    intro: "Jerusalem celebrates on the rooftops while disaster comes. They check their weapons and water supply \"but you did not depend on Him who made it.\" Instead of repenting they say, \"Let us eat and drink, for tomorrow we may die.\" The proud steward Shebna will be replaced by Eliakim, on whose shoulder God will place the key of the house of David.",
+    v: [
+      ["22:11", "You did not depend on Him who made it", "Preparation without prayer."],
+      ["22:13", "Let us eat and drink, for tomorrow we may die", "Quoted in 1 Corinthians 15:32."],
+      ["22:22", "The key of the house of David", "Applied to Jesus in Revelation 3:7."],
+    ],
+    bg: [["The Siloam tunnel", "Hezekiah's tunnel, carved through rock to bring water into Jerusalem, still exists. An inscription found in it in 1880 describes the two crews meeting. Isaiah 22:9-11 refers to this water work.", "strong", ["kitchen", "oswalt"]]],
+    refs: [["2KI.20", "2 Kings 20:20", "Hezekiah's tunnel"], ["REV.3", "Revelation 3:7", "He who has the key of David"], ["1CO.15", "1 Corinthians 15:32", "Let us eat and drink"]],
+  },
+  23: {
+    intro: "An oracle about Tyre, the great sea-trading city. Ships of Tarshish wail because Tyre is destroyed. \"The LORD of hosts has planned it, to defile the pride of all beauty.\" After seventy years Tyre will trade again, but her profits will be set apart for the LORD.",
+    v: [
+      ["23:9", "The LORD of hosts has planned it", "God humbles the proud and wealthy."],
+      ["23:18", "Her gain will be set apart to the LORD", "Wealth used for God."],
+    ],
+    refs: [["EZK.26", "Ezekiel 26-28", "Tyre's judgment"], ["REV.18", "Revelation 18:11-19", "Merchants weep"]],
+  },
+  24: {
+    intro: "Isaiah 24-27 is sometimes called the \"Little Apocalypse.\" The LORD lays the earth waste because people \"transgressed laws, violated statutes, broke the everlasting covenant.\" Joy is gone. Yet from the ends of the earth come songs: \"Glory to the Righteous One.\" The LORD of hosts will reign on Mount Zion.",
+    v: [
+      ["24:5", "Broke the everlasting covenant", "All humanity accountable."],
+      ["24:16", "Glory to the Righteous One", "Praise in the midst of judgment."],
+      ["24:23", "The LORD of hosts will reign", "God's final kingship."],
+    ],
+    refs: [["REV.6", "Revelation 6:12-17", "Cosmic judgment"], ["GEN.9", "Genesis 9:16", "The everlasting covenant"]],
+  },
+  25: {
+    intro: "\"O LORD, You are my God; I will exalt You.\" God has been a refuge for the poor. On this mountain the LORD will prepare a lavish banquet for all peoples. \"He will swallow up death for all time, and the Lord GOD will wipe tears away from all faces.\" \"Behold, this is our God for whom we have waited.\"",
+    v: [
+      ["25:4", "A defense for the helpless", "God shelters the weak."],
+      ["25:6", "A lavish banquet for all peoples", "God's great feast."],
+      ["25:8", "He will swallow up death for all time", "Quoted in 1 Corinthians 15:54."],
+      ["25:9", "This is our God for whom we have waited", "Joy at God's coming."],
+    ],
+    refs: [["1CO.15", "1 Corinthians 15:54", "Death swallowed up in victory"], ["REV.21", "Revelation 21:4", "He will wipe away every tear"], ["MAT.8", "Matthew 8:11", "Many will come from east and west"]],
+  },
+  26: {
+    intro: "A song: \"We have a strong city; He sets up walls and ramparts for security.\" \"The steadfast of mind You will keep in perfect peace, because he trusts in You. Trust in the LORD forever, for in GOD the LORD, we have an everlasting Rock.\" \"Your dead will live; their corpses will rise. You who lie in the dust, awake and shout for joy.\"",
+    v: [
+      ["26:3", "You will keep in perfect peace", "Hebrew: shalom shalom, peace upon peace."],
+      ["26:4", "An everlasting Rock", "God never shifts."],
+      ["26:19", "Your dead will live", "One of the clearest Old Testament promises of resurrection."],
+    ],
+    refs: [["PHP.4", "Philippians 4:7", "The peace of God guards your hearts"], ["DAN.12", "Daniel 12:2", "Many who sleep will awake"], ["JHN.5", "John 5:28-29", "All in the tombs will hear His voice"]],
+  },
+  27: {
+    intro: "In that day the LORD will punish Leviathan, the fleeing serpent. A new song of the vineyard: \"I, the LORD, am its keeper; I water it every moment.\" Israel will blossom and fill the whole world with fruit. A great trumpet will sound, and the scattered will come and worship on the holy mountain.",
+    v: [
+      ["27:1", "Leviathan the fleeing serpent", "God defeats all evil."],
+      ["27:3", "I water it every moment", "Contrast with the vineyard of chapter 5."],
+      ["27:6", "Fill the whole world with fruit", "Blessing to the world."],
+      ["27:13", "A great trumpet will be blown", "God gathers His people."],
+    ],
+    refs: [["ISA.5", "Isaiah 5:1-7", "The first vineyard song"], ["1TH.4", "1 Thessalonians 4:16", "The trumpet of God"], ["REV.12", "Revelation 12:9", "The serpent of old"]],
+  },
+  28: {
+    intro: "Woe to the drunken leaders of Ephraim. Jerusalem's leaders mock Isaiah's simple teaching: \"Order on order, line on line.\" They have made a covenant with death. But God says, \"Behold, I am laying in Zion a stone, a tested stone, a costly cornerstone... He who believes in it will not be disturbed.\" A farmer knows when to plow and thresh, because God teaches him.",
+    v: [
+      ["28:10", "Order on order, line on line", "Mocking Isaiah as baby talk."],
+      ["28:16", "A costly cornerstone", "Applied to Christ in Romans 9:33 and 1 Peter 2:6."],
+      ["28:29", "Wonderful in counsel and great in wisdom", "God's wise ways."],
+    ],
+    refs: [["1PE.2", "1 Peter 2:6", "A precious cornerstone"], ["ROM.9", "Romans 9:33", "He who believes will not be disappointed"]],
+  },
+  29: {
+    intro: "Woe to Ariel (Jerusalem). The people are spiritually asleep; God's message is like a sealed book. \"This people draw near with their words and honor Me with their lip service, but they remove their hearts far from Me.\" Yet a day is coming when the deaf will hear and the blind will see.",
+    v: [
+      ["29:13", "Honor Me with their lip service", "Jesus quoted this (Mark 7:6-7)."],
+      ["29:16", "Shall the potter be considered as equal with the clay?", "Who is God?"],
+      ["29:18", "The deaf will hear... the blind will see", "Fulfilled in Jesus' ministry."],
+    ],
+    refs: [["MRK.7", "Mark 7:6-7", "This people honors Me with their lips"], ["MAT.11", "Matthew 11:5", "The blind receive sight"]],
+  },
+  30: {
+    intro: "Woe to those who go to Egypt for help without asking God. \"In repentance and rest you will be saved, in quietness and trust is your strength. But you were not willing.\" Yet the LORD longs to be gracious. \"Your ears will hear a word behind you, This is the way, walk in it.\"",
+    v: [
+      ["30:15", "In quietness and trust is your strength", "Rest in God, not alliances."],
+      ["30:18", "The LORD longs to be gracious to you", "God waits to bless."],
+      ["30:21", "This is the way, walk in it", "God's guidance."],
+    ],
+    refs: [["PSA.46", "Psalm 46:10", "Be still and know"], ["JHN.10", "John 10:27", "My sheep hear My voice"]],
+  },
+  31: {
+    intro: "\"Woe to those who go down to Egypt for help and rely on horses.\" The Egyptians are men and not God; their horses are flesh and not spirit. Like a lion over its prey, like birds hovering, the LORD of hosts will protect Jerusalem. \"Return to Him from whom you have deeply defected.\"",
+    v: [
+      ["31:1", "Rely on horses", "Misplaced trust."],
+      ["31:3", "The Egyptians are men and not God", "Human help fails."],
+      ["31:5", "Like flying birds the LORD will protect Jerusalem", "God's tender protection."],
+    ],
+    refs: [["PSA.20", "Psalm 20:7", "Some trust in chariots"]],
+  },
+  32: {
+    intro: "\"Behold, a king will reign righteously.\" Each ruler will be like a shelter from the wind and like streams of water in a dry land. The complacent women of Jerusalem will mourn. But the Spirit will be poured out from on high, and \"the work of righteousness will be peace.\"",
+    v: [
+      ["32:1", "A king will reign righteously", "The coming righteous King."],
+      ["32:2", "Like a shelter from the wind", "Leaders who protect."],
+      ["32:15", "Until the Spirit is poured out upon us from on high", "Renewal by the Spirit."],
+      ["32:17", "The work of righteousness will be peace", "Righteousness brings peace."],
+    ],
+    refs: [["JOL.2", "Joel 2:28", "I will pour out My Spirit"], ["ACT.2", "Acts 2:17", "The Spirit poured out"]],
+  },
+  33: {
+    intro: "\"O LORD, be gracious to us; we have waited for You.\" Sinners in Zion are terrified: \"Who among us can live with the consuming fire?\" The one who walks righteously. \"Your eyes will see the King in His beauty.\" \"For the LORD is our judge, the LORD is our lawgiver, the LORD is our king; He will save us.\"",
+    v: [
+      ["33:2", "Be our strength every morning", "Daily dependence."],
+      ["33:17", "Your eyes will see the King in His beauty", "A future hope."],
+      ["33:22", "The LORD is our judge... lawgiver... king", "God holds every office."],
+    ],
+    refs: [["PSA.15", "Psalm 15", "Who may dwell with God?"], ["HEB.12", "Hebrews 12:29", "Our God is a consuming fire"]],
+  },
+  34: {
+    intro: "God's judgment on the nations, pictured in Edom. The sky will be rolled up like a scroll and the stars will fall. Edom's land will become a desert of thorns where owls and wild animals live. \"Seek from the book of the LORD, and read.\"",
+    v: [
+      ["34:4", "The sky will be rolled up like a scroll", "Echoed in Revelation 6:14."],
+      ["34:16", "Seek from the book of the LORD, and read", "God's word comes true."],
+    ],
+    refs: [["REV.6", "Revelation 6:14", "The sky split like a scroll"], ["OBA.1", "Obadiah", "Edom's judgment"]],
+  },
+  35: {
+    intro: "\"The wilderness and the desert will be glad, and the Arabah will rejoice and blossom.\" \"Say to those with anxious heart, Take courage, fear not. Behold, your God will come.\" \"Then the eyes of the blind will be opened and the ears of the deaf will be unstopped. Then the lame will leap like a deer.\" A highway called the Highway of Holiness. \"The ransomed of the LORD will return and come with joyful shouting to Zion.\"",
+    v: [
+      ["35:1", "The desert will blossom", "Creation renewed."],
+      ["35:4", "Take courage, fear not", "Comfort for anxious hearts."],
+      ["35:5-6", "The blind will see... the lame will leap", "Jesus pointed to these signs (Matthew 11:5)."],
+      ["35:10", "Sorrow and sighing will flee away", "Everlasting joy."],
+    ],
+    refs: [["MAT.11", "Matthew 11:4-5", "Go and report to John"], ["ACT.3", "Acts 3:8", "The lame man leaps"], ["REV.21", "Revelation 21:4", "No more mourning"]],
+  },
+  36: {
+    intro: "Chapters 36-39 are history, nearly the same as 2 Kings 18-20. In 701 BC Sennacherib of Assyria captures Judah's fortified cities. His officer, the Rabshakeh, stands outside Jerusalem and mocks: \"On whom do you rely?\" He tells the people in Hebrew that the LORD cannot save them. The people keep silent as Hezekiah commanded.",
+    v: [
+      ["36:4", "What is this confidence that you have?", "The enemy attacks faith itself."],
+      ["36:18", "Has any one of the gods of the nations delivered his land?", "The Rabshakeh's mistake: the LORD is not like idols."],
+      ["36:21", "They were silent", "No need to argue."],
+    ],
+    bg: [["Sennacherib's account", "Sennacherib's own record on a clay prism (now in museums in Chicago, London and Jerusalem) boasts that he shut up Hezekiah \"like a bird in a cage\" in Jerusalem. It does not claim to have captured the city.", "strong", ["kitchen", "oswalt"]]],
+    refs: [["2KI.18", "2 Kings 18:13-37", "The same story"], ["2CH.32", "2 Chronicles 32", "Hezekiah and Sennacherib"]],
+  },
+  37: {
+    intro: "Hezekiah tears his clothes and sends to Isaiah. When Sennacherib sends a threatening letter, Hezekiah spreads it before the LORD and prays: \"You alone are God.\" Isaiah answers with God's word against Assyria. That night the angel of the LORD strikes 185,000 in the Assyrian camp. Sennacherib returns home and is later killed by his own sons.",
+    v: [
+      ["37:14", "Spread it out before the LORD", "Bringing troubles to God."],
+      ["37:20", "That all the kingdoms of the earth may know that You alone, LORD, are God", "Praying for God's glory."],
+      ["37:36", "The angel of the LORD went out and struck", "God's deliverance."],
+    ],
+    refs: [["2KI.19", "2 Kings 19", "The same story"], ["PSA.46", "Psalm 46", "God is our refuge"]],
+  },
+  38: {
+    intro: "Hezekiah becomes mortally ill. Isaiah tells him to set his house in order. Hezekiah turns his face to the wall, prays and weeps. God answers: \"I have heard your prayer, I have seen your tears; behold, I will add fifteen years to your life.\" As a sign, the shadow on the stairway goes back ten steps. Hezekiah writes a psalm of thanks.",
+    v: [
+      ["38:3", "Remember now, O LORD", "Honest prayer."],
+      ["38:5", "I have heard your prayer, I have seen your tears", "God sees our tears."],
+      ["38:17", "You have cast all my sins behind Your back", "Forgiveness."],
+    ],
+    refs: [["2KI.20", "2 Kings 20:1-11", "The same story"], ["JAS.5", "James 5:15-16", "The prayer of faith"]],
+  },
+  39: {
+    intro: "Envoys from Merodach-baladan, king of Babylon, visit Hezekiah, and he proudly shows them all his treasures. Isaiah announces that one day everything in his house will be carried off to Babylon, and some of his descendants will serve in the palace there. Hezekiah answers, \"The word of the LORD is good... for there will be peace and truth in my days.\"",
+    v: [
+      ["39:2", "Hezekiah... showed them all his treasure house", "Pride after deliverance."],
+      ["39:6", "All that is in your house... will be carried to Babylon", "Fulfilled about a century later."],
+      ["39:8", "There will be peace and truth in my days", "A troubling answer."],
+    ],
+    bg: [["Merodach-baladan", "Merodach-baladan II was a real Babylonian ruler who rebelled against Assyria twice (around 721-710 and 703 BC). His interest in Hezekiah fits his search for allies against Assyria.", "strong", ["kitchen", "oswalt"]]],
+    refs: [["2KI.20", "2 Kings 20:12-19", "The same story"], ["DAN.1", "Daniel 1:3-6", "Judah's young men serve in Babylon"]],
+  },
+});
