@@ -120,3 +120,11 @@ test("the topic finder points at real chapters and finds stories by what they're
   assert.ok(findTopics("baptism")[0].refs.length >= 10);
   for (const [b, list] of Object.entries(OUTLINES)) for (const [r] of list) assert.ok(Number(r.split("-").pop()) <= BOOK_BY_ID[b].chapters, `${b} ${r}`);
 });
+
+test("debated and unknown audiences explain why, with at least two sources", async () => {
+  const { AUDIENCE_NOTES, PATH_BY_ID } = await import("../../js/paths.js");
+  const onPath = new Set(PATH_BY_ID.audience.stages.flatMap((st) => st.readings.map((r) => r.split(" ")[0])));
+  for (const [b, a] of Object.entries(AUDIENCE_NOTES)) {
+    assert.ok(onPath.has(b) && ["debated", "unknown"].includes(a.status) && a.text.length > 120 && a.src.length >= 2, b);
+  }
+});

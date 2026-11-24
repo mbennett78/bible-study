@@ -5,7 +5,7 @@ import { OUTLINES } from "./outlines.js";
 import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
 import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
-import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
+import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG } from "./buddy.js";
 import { createQuest } from "./quest.js";
@@ -845,7 +845,7 @@ function renderPath() {
       const n = chs.filter((c) => store.isPathRead(active, c.book, c.chapter)).length;
       return `<details class="stage${n === chs.length ? " is-done" : ""}" ${next && next.stage === si ? "open" : ""}>
         <summary><strong>${si + 1}. ${esc(s.title)}</strong><span class="count">${n}/${chs.length}</span><span class="about">${esc(s.about)}</span><div class="bar"><span style="width:${(n / chs.length) * 100}%"></span></div></summary>
-        ${s.readings.map((r) => `<p class="reading-label">${esc(readingLabel(r))}</p><div class="chapter-grid">${expandReading(r).map((c) => {
+        ${s.readings.map((r) => `<p class="reading-label">${esc(readingLabel(r))}</p>${active === "audience" ? audienceNoteHtml(r.split(" ")[0]) : ""}<div class="chapter-grid">${expandReading(r).map((c) => {
           const cls = [store.isPathRead(active, c.book, c.chapter) && "is-read", next && next.book === c.book && next.chapter === c.chapter && "is-here"].filter(Boolean).join(" ");
           return `<button class="${cls}" data-b="${c.book}" data-c="${c.chapter}" aria-label="${esc(BOOK_BY_ID[c.book].name)} ${c.chapter}">${c.chapter}</button>`;
         }).join("")}</div>`).join("")}
@@ -2974,7 +2974,7 @@ function whereHtml(book, chapter) {
 }
 function tribesHtml(named = []) {
   const rows = TRIBES.map((t) => `<li class="tribe${named.includes(t) ? " is-named" : ""}"><p class="tribe-head"><strong>${esc(tribeName(t))}</strong>${t[0].startsWith("Joseph") ? " <span class=\"muted\">(Joseph's line)</span>" : ""} <span class="muted small-print">· mother ${esc(t[1])}</span></p>
-    <p>${esc(t[2])}${t[4] ? `. <span class="muted">${esc(t[4])}.</span>` : ""}</p><p class="tribe-refs">${linkRefs(t[3])}</p></li>`).join("");
+    <p>${esc(t[2])}${t[4] ? `. <span class="muted">${esc(t[4])}.</span>` : ""}</p><p class="tribe-refs">${linkRefs(esc(t[3]))}</p></li>`).join("");
   return `<details class="where-tribes" id="whereTribes" open><summary>👑 The tribes of Israel in this chapter${named.length ? ` <span class="rt-sub">${named.length} named</span>` : ""}</summary>
     <p class="muted small-print">Jacob's twelve sons became the twelve tribes. Joseph's line counts as two tribes, Ephraim and Manasseh, and Levi received towns instead of land.</p>
     <ul class="tribes-list">${rows}</ul></details>`;
@@ -3114,6 +3114,13 @@ function bookNumbersHtml(book) {
     <div><b>${ord(pos)}</b><span>of ${sameT.length} ${bk.testament === "OT" ? "Old" : "New"} Testament books</span></div></div>
     <p class="bi-fact">${rank <= 10 ? `📏 The ${ord(rank) === "1st" ? "" : `${ord(rank)} `}longest book of the Bible by verses. ` : rank >= 57 ? `📏 One of the ten shortest books of the Bible. ` : ""}${BOOK_FACTS[book] ? `💡 ${esc(BOOK_FACTS[book])}` : `About ${Math.max(1, Math.round(verses * 26 / 150))} minute${Math.round(verses * 26 / 150) === 1 ? "" : "s"} to read aloud from start to finish.`}</p>`;
 }
+// Who a book was first written to, where that's debated or unknown, with its sources.
+function audienceNoteHtml(book, open = false) {
+  const a = AUDIENCE_NOTES[book];
+  if (!a) return "";
+  return `<details class="aud-note"${open ? " open" : ""}><summary><span class="ev ev-${a.status === "unknown" ? "faith" : "debated"}">${a.status === "unknown" ? "Audience unknown" : "Audience debated"}</span> Who it was written to</summary>
+    <p>${linkRefs(esc(a.text))}</p><p class="read-more"><span>Sources:</span> ${a.src.map((s) => `<a href="${esc(sourceUrl(s))}" target="_blank" rel="noopener">${esc(s.split(" (")[0])} ↗</a>`).join(" · ")}</p></details>`;
+}
 function renderBookIntro(book, chapter) {
   const box = $("#bookIntro");
   if (!box) return;
@@ -3128,7 +3135,7 @@ function renderBookIntro(book, chapter) {
       ${ch ? `<p class="bi-chapter"><strong>In chapter ${chapter}:</strong> ${esc(ch)}</p>` : ""}
       ${b ? `<p class="bi-about">${esc(b.about)}</p>
       <dl class="bi-facts">${row("Written by", b.who)}${row("When", b.when)}${row("First readers", b.to)}${row("Setting", b.setting)}${row("Key verse", b.key)}</dl>
-      ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}` : ""}
+      ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}${audienceNoteHtml(book, true)}` : ""}
       ${b ? bookNumbersHtml(book) : ""}
       ${OUTLINES[book] ? `<h3 class="bi-h">Outline of ${esc(name)}</h3><ol class="bi-outline">${OUTLINES[book].map(([r, what]) => `<li><button type="button" class="bi-ch" data-bi-ch="${parseInt(r, 10)}">${BOOK_BY_ID[book].chapters === 1 ? "" : `${r.includes("-") ? "Chapters" : "Chapter"} ${esc(r)}`}</button> ${esc(what)}</li>`).join("")}</ol>` : ""}
       <a class="bi-video" href="https://www.youtube.com/@bibleproject/search?query=${encodeURIComponent(`${name} overview`)}" target="_blank" rel="noopener">▶ Watch BibleProject's free overview of ${esc(name)} ↗</a>

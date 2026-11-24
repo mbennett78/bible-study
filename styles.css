@@ -2546,3 +2546,6 @@ textarea.nf-big { font-size: 1.25rem; }
 .ee-extra textarea { width: 100%; }
 .ee-add-extra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 4px; }
 .ee-add-extra [hidden], .ee-extra[hidden] { display: none !important; }
+.aud-note { background: var(--accent-soft); border-radius: 12px; padding: 8px 12px; margin: 6px 0 10px; font-size: .92rem; }
+.aud-note summary { cursor: pointer; font-weight: 600; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.aud-note p { margin: 6px 0; }

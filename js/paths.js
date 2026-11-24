@@ -31,7 +31,7 @@ export const PATHS = [
     name: "Study by Audience/Type",
     short: "Audience",
     blurb: "Read the books grouped by who they were first written to, so you hear them the way the first readers did.",
-    note: "Some audiences are debated (for example Hebrews, James and 1 Peter). Study notes will show the main views.",
+    note: "Some audiences are debated (Hebrews, James and 1 Peter) and one is unknown (Job). Tap \"Who it was written to\" beside those books to read why, with sources.",
     stages: [
       { title: "A people being formed", about: "Written for Israel as it became a nation under Moses.", readings: ["GEN", "EXO", "LEV", "NUM", "DEU"] },
       { title: "Israel in the land", about: "Israel's history, told to help the nation remember who God is.", readings: ["JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI"] },
@@ -92,6 +92,20 @@ export const PATHS = [
     ],
   },
 ];
+
+// Books whose first readers are debated or unknown: what scholars say, and why. Shown on the
+// Audience path and in the book's introduction. Sources are standard commentaries.
+const CM = "D. A. Carson and Douglas J. Moo, An Introduction to the New Testament, 2nd ed. (Zondervan, 2005)";
+export const AUDIENCE_NOTES = {
+  HEB: { status: "debated", text: "The letter never names its readers. Most scholars think they were Jewish Christians, because it leans so heavily on the priests, sacrifices and tabernacle of the Old Testament and warns them not to drift back (Hebrews 2:1; 10:32-39). Some think the church included Gentiles too. Where they lived is also debated: \"those from Italy send greetings\" (13:24) leads many to suggest Rome; others suggest Jerusalem.",
+    src: ["F. F. Bruce, The Epistle to the Hebrews, NICNT, rev. ed. (Eerdmans, 1990)", "William L. Lane, Hebrews 1-8, Word Biblical Commentary 47A (Word, 1991)", CM] },
+  JAS: { status: "debated", text: "James writes \"to the twelve tribes who are dispersed abroad\" (1:1). Many scholars take this literally: Jewish Christians scattered outside Israel, perhaps after the persecution in Acts 8:1 and 11:19. Others read \"twelve tribes\" as a picture of the whole church, God's new Israel, scattered through the world (compare 1 Peter 1:1).",
+    src: ["Douglas J. Moo, The Letter of James, Pillar New Testament Commentary (Eerdmans, 2000)", "Peter H. Davids, The Epistle of James, NIGTC (Eerdmans, 1982)", CM] },
+  "1PE": { status: "debated", text: "Peter writes to \"those who reside as aliens, scattered\" in five provinces of what is now Turkey (1:1). Some early writers, and some scholars today, think they were Jewish Christians. Most modern commentators think they were mainly Gentiles, because Peter speaks of their \"former lusts\" in ignorance, the \"futile way of life inherited from your forefathers\" and \"once you were not a people\" (1:14, 18; 2:10; 4:3). Many think the churches were mixed.",
+    src: ["Karen H. Jobes, 1 Peter, Baker Exegetical Commentary (Baker, 2005)", "Peter H. Davids, The First Epistle of Peter, NICNT (Eerdmans, 1990)", CM] },
+  JOB: { status: "unknown", text: "The author, the date of writing and the first readers are all unknown. The story is set in the time of the patriarchs, in the land of Uz, outside Israel, and Job himself is not an Israelite. Because it was kept among Israel's Scriptures and wisdom writings, it is usually read as written for God's people, and for anyone who suffers.",
+    src: ["John E. Hartley, The Book of Job, NICOT (Eerdmans, 1988)", "Tremper Longman III and Raymond B. Dillard, An Introduction to the Old Testament, 2nd ed. (Zondervan, 2006)"] },
+};
 
 export const PATH_ORDER = ["general", "chronological", "themes", "audience"]; // My Bible (id "general") first, then the three self-guided studies
 export const PATH_BY_ID = Object.fromEntries(PATHS.map((p) => [p.id, p]));
