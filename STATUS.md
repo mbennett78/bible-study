@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 12:10 PM: Matthew notes are live (Mark too). The end-of-chapter questions are now called "Quick check"; Bible Spin and the other games stay behind Games. New automatic checks click every menu, button and Games entry on phone and iPad (all go where they should), and play Bible Spin start to finish in every mode: solo, Buddy at all three levels, and a three-player family game. That found and fixed one glitch: after Buddy missed and you tapped "My turn!", the game could jump back to Buddy a moment later.
 - Tue Nov 24, 11:59 AM: The Notes and Journal fix works in every look and every Bible version (it's the same screen underneath; only colors and pictures change). The crucifixion chapters now have their own gentle picture (three empty crosses on a hill at sunset) instead of the empty tomb. Kids' Bible pictures are a recurring update item.
 - Tue Nov 24, 11:57 AM: Fixed Melissa's bug: "My notes" under a chapter opened the locked journal. Notes (study comments and research, never locked) and the Journal (personal reflections, lockable, in the side menu) are now separate everywhere. Added kids' Bible illustrations to the monthly plan and decluttering menus to the device check.
 - Tue Nov 24, 11:43 AM: The user guide is now at the top of Settings (and prints). Settings are in six named groups with quick jumps. Pasted Scripture can become a verse card, and comments can sit in an optional callout box: Plain, Classic, Parchment, Sticky note, Bubble or Floral. Pictures can be pasted into notes and the journal.
@@ -59,6 +60,10 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
 | Gift packet and starter kit finished | Not started | Thu Dec 3 |
 | Print-friendly setup page and user guide saved to the project folder (final) | Not started | Thu Dec 3 |
+| Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Not started | Sun Nov 29 |
+| Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |
+| Every Bible Spin mode played start to finish automatically; glitches fixed | Done (Tue Nov 24), rerun before release | Nov 24 |
+| End-of-chapter questions named "Quick check"; games behind Games | Done (Tue Nov 24) | Nov 24 |
 | User guide inside the app, at the top of Settings | Done (Tue Nov 24) | Nov 24 |
 | Settings in six named groups with quick-jump buttons | Done (Tue Nov 24) | Nov 24 |
 | Paste or drop pictures into notes and the journal | Done (Tue Nov 24) | Nov 24 |
@@ -75,7 +80,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Switch to monthly updates once the deep notes are finished: graphics using newer Claude abilities, navigation, interface, printing, the kids' Bible, headings, looks | Not started | After the deep notes |
 | Looks rotation: keep favorites, retire unused looks from the menu, add new or seasonal ones. Never change the look someone is using. | Not started | Monthly |
 | Buddy keeps learning new tricks, emojis, moods and props; never grows bigger on screen; can always be moved, quieted or turned off | Not started | Monthly |
-| Kids' Bible pictures that match the passage, improved in every update. Big stories get their own scene; chapters with little to draw keep a standard picture for their book. Already matched: Creation, Eden, Noah's ark (Gen 6-9), Moses, Red Sea, Jericho, David and Goliath, fiery furnace, Daniel in the lions' den, Jonah, Jesus' birth, storms on the sea, Peter walking on water, feeding the crowds, fishing scenes (Luke 5, John 21), Zacchaeus, lost sheep, Good Samaritan, the cross (gentle, added Nov 24), the empty tomb and resurrection, Pentecost, Paul's shipwreck. Next: richer art for these, then more stories each month | In progress (recurring) | Every update after release |
+| Kids' Bible pictures that match the passage, improved in every update. Travel through the whole Bible over time: first refresh the best-known stories (Creation and the Garden of Eden first), then reach the rest. Big stories get their own scene; chapters with little to draw keep a standard picture for their book. Already matched: Creation, Eden, Noah's ark (Gen 6-9), Moses, Red Sea, Jericho, David and Goliath, fiery furnace, Daniel in the lions' den, Jonah, Jesus' birth, storms on the sea, Peter walking on water, feeding the crowds, fishing scenes (Luke 5, John 21), Zacchaeus, lost sheep, Good Samaritan, the cross (gentle, added Nov 24), the empty tomb and resurrection, Pentecost, Paul's shipwreck. Next: richer art for these, then more stories each month | In progress (recurring) | Every update after release |
 
 ## Done
 
