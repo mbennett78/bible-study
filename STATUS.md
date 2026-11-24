@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Tue Nov 24, 2026, 11:22 AM Central
-**Current version:** v129 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Tue Nov 24, 2026, 11:24 AM Central
+**Current version:** v130 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:50 AM: Lamentations and Ezekiel are live, a day ahead of plan. Daniel and the minor prophets are next.
 - Tue Nov 24, 11:20 AM: Jeremiah 1-52 notes are live. The Books and music page stays removed (Melissa's decision), and "no shopping or selling" is now a standing rule.
 - Tue Nov 24, 11:15 AM: Made this page the complete tracker. Added every earlier request, the post-release plan and an open question about the Books and music page.
 
@@ -32,8 +33,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 |---|---|---|
 | Study notes for every chapter, with "why scholars debate this" explainers: Genesis through Isaiah | Done | Nov 24 |
 | Study notes: Jeremiah | Done | Nov 24 |
-| Study notes: Lamentations, Ezekiel | Not started | Wed Nov 25 |
-| Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Not started | Thu Nov 26 |
+| Study notes: Lamentations, Ezekiel | Done (early) | Nov 24 |
+| Study notes: Daniel and the twelve minor prophets (Old Testament complete) | In progress | Thu Nov 26 |
 | Study notes: Matthew, Mark, Luke, John, Acts | Not started | Fri Nov 27 |
 | Study notes: Romans through Revelation (New Testament complete) | Not started | Sat Nov 28 |
 | Catch-up day for notes | Not started | Sun Nov 29 |
@@ -75,7 +76,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 **Reading and study**
 - Reader with NASB 2020, extra versions, and ESV when its key is saved. Each person picks their own version; switching keeps your verse. (Nov 22-24)
 - Four study paths (Traditional first), reading tracker, one-year pace, favorites, "back to my place." (Nov 22-24)
-- Study notes: Jeremiah, every chapter. (Nov 24)
+- Study notes: Jeremiah, Lamentations and Ezekiel, every chapter. (Nov 24)
 - Study notes: book intros, verse-by-verse notes, history and culture, original-language words, scholars' views with sources, maps, When and where, reference tiles. Every chapter from Genesis through Isaiah, plus full notes on 30 favorite chapters. (Nov 23-24)
 - Strong's concordance on every chapter, tap-a-word meanings, a dotted line under key words, cross-references and original words on every verse, find a verse, highlights. (Nov 23-24)
 - Explanations of debated and unknown audiences (Hebrews, James, 1 Peter, Job). (Nov 24)
