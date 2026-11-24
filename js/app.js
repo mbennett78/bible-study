@@ -4353,7 +4353,10 @@ async function organizerGate(org) {
       <p class="muted small-print">Whenever you tap Save above, or turn a version on or off, it's saved to your family account automatically. Nothing is sent to anyone: family members never see the key. Their app picks it up by itself when they sign in, and gets it back if a device ever forgets it. Everyone's reading counts toward your 5,000 a month.</p>
       <p class="small-print" id="familyKeyMsg">${store.get("familySyncedAt") ? "Saved for the whole family ✓" : ""}</p>
       <button class="small" id="shareFamilyKey">Save for the family again</button></div>
-      <div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>`;
+      <div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>
+      <div class="card inner" id="familyLooks"><h2>Looks in use</h2>
+        <p class="muted small-print">How many in the family use each look, so you know which ones to improve. Counts only: it never shows who uses which look.</p>
+        <button class="small" id="familyLooksGo">Count the looks</button><div id="familyLooksOut"></div></div>`;
     // 1. The keys, 2. save them for everyone, 3. the family list.
     org.prepend($("#bibleTextCard"));
     $("#bibleTextCard").hidden = false;
@@ -4361,6 +4364,7 @@ async function organizerGate(org) {
     $("#organizerBox").addEventListener("toggle", () => { if ($("#organizerBox").open) { renderFamilyPanel(); loadPlanVersionsOnce(); } });
     if (!$("#view-settings").hidden) loadPlanVersionsOnce();
   }
+  $("#familyLooksGo").addEventListener("click", renderFamilyLooks);
   $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
@@ -4368,6 +4372,25 @@ async function organizerGate(org) {
     const said = await saveForFamily();
     if (!/✓/.test(said)) out.textContent = said.trim().replace(/^\(|\)$/g, "");
   });
+}
+// Family-level look counts: one bar per look, most used first. Counts come from everyone's
+// own backup (the look they chose), added up inside Supabase; no names come back.
+async function renderFamilyLooks() {
+  const out = $("#familyLooksOut");
+  out.innerHTML = `<p class="muted small-print">Counting…</p>`;
+  const r = await familyAdmin("looks");
+  if (!r || r.error || !r.looks) {
+    const old = r?.error === "action";
+    out.innerHTML = `<p class="small-print">${esc(old ? "Your family-admin function in Supabase is from before this feature. Paste the latest supabase/functions/family-admin/index.ts into it and tap Deploy (see docs/SETUP.md), then tap Count the looks again." : adminSays(r))}</p>`;
+    return;
+  }
+  const rows = Object.entries(r.looks).sort((a, b) => b[1] - a[1]);
+  const top = Math.max(1, ...rows.map(([, n]) => n));
+  const name = (v) => (LOOKS.find(([k]) => k === v) || [v, v])[1];
+  const unused = LOOKS.filter(([k]) => !r.looks[k]).map(([, l]) => l);
+  out.innerHTML = rows.length ? `<ul class="looks-count">${rows.map(([k, n]) => `<li><span>${esc(name(k))}</span><span class="bar"><span style="width:${Math.round((n / top) * 100)}%"></span></span><strong>${n}</strong></li>`).join("")}</ul>
+    <p class="muted small-print">Counted ${r.counted} ${r.counted === 1 ? "person" : "people"} with a saved backup.${r.simple ? ` ${r.simple} use${r.simple === 1 ? "s" : ""} simple pictures.` : ""}${unused.length ? ` Not in use right now: ${esc(unused.join(", "))}.` : ""}</p>`
+    : `<p class="muted small-print">No one has a saved backup yet, so there's nothing to count.</p>`;
 }
 // The organizer's family panel: who's in the family, the Bible helper allowance this month,
 // and add / new temporary password / remove.

@@ -128,6 +128,21 @@ Deno.serve(async (req) => {
       return reply(200, { ok: true });
     }
 
+    // Which looks the family uses, as counts only (for choosing which looks to improve). It
+    // never says who uses which look: no names, emails or ids leave this function.
+    if (action === "looks") {
+      const { data, error } = await admin.from("user_backups").select("style:data->>style, graphics:data->>graphics");
+      if (error) throw error;
+      const looks: Record<string, number> = {};
+      let simple = 0;
+      for (const r of (data || []) as { style: string | null; graphics: string | null }[]) {
+        const k = r.style || "classic";
+        looks[k] = (looks[k] || 0) + 1;
+        if (r.graphics === "simple") simple++;
+      }
+      return reply(200, { looks, counted: (data || []).length, simple });
+    }
+
     if (action === "remove") {
       if (id === me) return reply(400, { error: "self" });
       const { error } = await admin.auth.admin.deleteUser(id);

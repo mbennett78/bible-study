@@ -64,6 +64,9 @@ try {
     check("the family organizer sees the organizer tools", await visible(page, "#organizerBox"));
     await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
     check("the organizer's panel lists the family and the Bible helper questions left", /11,960 of 12,000 questions left/.test(await text(page, "#familyPanel")) && (await page.$$("#familyPanel .fam-list li")).length === 2, await text(page, "#familyPanel"));
+    await page.click("#familyLooksGo"); await page.waitForTimeout(500);
+    const looks = await text(page, "#familyLooks");
+    check("the organizer sees family-level look counts, most used first, with no names", /Christmas[^]*3/.test(looks) && /Counted 5 people/.test(looks) && !/@/.test(looks) && (await page.$$("#familyLooks .looks-count li")).length === 3, looks);
     check("the organizer can't remove their own account", (await page.$$("#familyPanel [data-fam-rm]")).length === 1);
     check("the organizer's tools go key box, then save for the family, then the family list", await page.$eval("#organizerBox", (d) => [...d.querySelectorAll("#bibleTextCard, #familyKeyCard, #familyPanel")].map((x) => x.id).join() === "bibleTextCard,familyKeyCard,familyPanel"));
     // If Supabase's own "Verify JWT" check stops the function, say exactly what to switch off.

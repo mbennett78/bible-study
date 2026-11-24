@@ -85,6 +85,7 @@ export function fakeSupabase(people) {
       const p = people.find((x) => x.id === bearer(req));
       if (!p || p.app?.role !== "organizer") return json(403, { error: "not_allowed" });
       if (body.action === "list") return json(200, { people: people.map((x) => ({ id: `0000000${x.id}`.padEnd(36, "0"), email: x.email, name: x.meta?.name || "", organizer: x.app?.role === "organizer", lastSignIn: null, tempPassword: false, asked: 3 })), helper: { used: 40, limit: 12000, left: 11960, cents: 12, centsLimit: 900, pct: 1, perPerson: 100, resets: "2026-12-01T00:00:00Z" } });
+      if (body.action === "looks") return json(200, { looks: { christmas: 3, classic: 1, sage: 1 }, counted: 5, simple: 1 });
       return json(200, { ok: true });
     }
     if (url.pathname.startsWith("/functions/v1/")) return json(200, { status: { ok: true, warn: false, pct: 5, mine: 0, per_person: 100 } });

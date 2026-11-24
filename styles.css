@@ -2736,3 +2736,8 @@ textarea.nf-big { font-size: 1.25rem; }
 @media (prefers-reduced-motion: reduce) { .buddy-point { animation: none; } }
 .chat-show { margin-top: .5em; }
 .welcome-back .wb-season { font-size: 1.05rem; color: var(--accent); }
+/* Organizer: family-level look counts. */
+.looks-count { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
+.looks-count li { display: grid; grid-template-columns: minmax(7em, 1fr) 2fr auto; gap: 8px; align-items: center; }
+.looks-count .bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; }
+.looks-count .bar span { display: block; height: 100%; background: var(--accent); }
