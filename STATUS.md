@@ -2,7 +2,7 @@
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
 **Last updated:** Tue Nov 24, 2026, 11:14 AM Central
-**Current version:** v126 (live at bible.breakoutroom.net; open apps update on their own)
+**Current version:** v127 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:20 AM: Jeremiah 1-52 notes are live. The Books and music page stays removed (Melissa's decision), and "no shopping or selling" is now a standing rule.
 - Tue Nov 24, 11:15 AM: Made this page the complete tracker. Added every earlier request, the post-release plan and an open question about the Books and music page.
 
 ## Needed from Melissa
@@ -18,20 +19,20 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 |---|---|---|
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
 | Redeploy the study-partner function (new `study-partner-function.ts`) | No, optional | Lets Buddy act things out during normal chat and talk about himself. Simple commands already work. |
-| Answer the open question below | No | |
 
 **Blockers:** none.
 
 ## Open questions
 
-- The Books and music page (Amazon searches for Christian books, counseling, kids and music) was removed in the Nov 24 declutter. Should it come back?
+- None right now.
 
 ## Release plan: in progress and not started
 
 | Item | Status | Due |
 |---|---|---|
 | Study notes for every chapter, with "why scholars debate this" explainers: Genesis through Isaiah | Done | Nov 24 |
-| Study notes: Jeremiah, Lamentations, Ezekiel | Not started | Wed Nov 25 |
+| Study notes: Jeremiah | Done | Nov 24 |
+| Study notes: Lamentations, Ezekiel | Not started | Wed Nov 25 |
 | Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Not started | Thu Nov 26 |
 | Study notes: Matthew, Mark, Luke, John, Acts | Not started | Fri Nov 27 |
 | Study notes: Romans through Revelation (New Testament complete) | Not started | Sat Nov 28 |
@@ -74,6 +75,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 **Reading and study**
 - Reader with NASB 2020, extra versions, and ESV when its key is saved. Each person picks their own version; switching keeps your verse. (Nov 22-24)
 - Four study paths (Traditional first), reading tracker, one-year pace, favorites, "back to my place." (Nov 22-24)
+- Study notes: Jeremiah, every chapter. (Nov 24)
 - Study notes: book intros, verse-by-verse notes, history and culture, original-language words, scholars' views with sources, maps, When and where, reference tiles. Every chapter from Genesis through Isaiah, plus full notes on 30 favorite chapters. (Nov 23-24)
 - Strong's concordance on every chapter, tap-a-word meanings, a dotted line under key words, cross-references and original words on every verse, find a verse, highlights. (Nov 23-24)
 - Explanations of debated and unknown audiences (Hebrews, James, 1 Peter, Job). (Nov 24)
@@ -118,6 +120,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 ## Standing rules
 
 - No family reading plan, no tracking each other's reading, no notification reminders.
+- No shopping or selling: no store, product links or Books and music page. The app stays simple, fluid and focused on the Bible.
 - Scholars' debates show fair views with sources and no denomination labels.
 - Buddy can always be quieted or turned off.
 - Updates never lose anyone's place, never force a tour, and keep navigation easy.
