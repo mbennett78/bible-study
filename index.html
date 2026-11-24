@@ -177,6 +177,22 @@
       </div>
     </section>
 
+    <!-- My Notes: always open, even when the journal is locked -->
+    <section id="view-notes" class="view" aria-label="My Notes" hidden>
+      <h1>My Notes</h1>
+      <p class="muted mybible-sub">Church notes, reading notes, study path notes and anything else. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
+      <div class="add-entries notes-new">
+        <button class="add-entry ae-church" data-new-note="church"><span aria-hidden="true">⛪</span><b>＋ Church notes</b></button>
+        <button class="add-entry ae-bible" data-new-note="bible"><span aria-hidden="true">📖</span><b>＋ Reading notes</b></button>
+        <button class="add-entry ae-study" data-new-note="study"><span aria-hidden="true">🧭</span><b>＋ Study path notes</b></button>
+        <button class="add-entry ae-note" data-new-note="note"><span aria-hidden="true">📝</span><b>＋ General notes</b></button>
+      </div>
+      <div class="entry-host" id="notesEditor"></div>
+      <label class="notes-find"><span class="sr-only">Search my notes</span><input id="notesSearch" type="search" placeholder="🔍 Search my notes" autocomplete="off"></label>
+      <div class="journal-filter notes-filter" id="notesFilter" role="group" aria-label="Show"></div>
+      <div id="notesList"></div>
+    </section>
+
     <!-- Study Path -->
     <section id="view-path" class="view" aria-label="Study Path" hidden>
       <div id="pathView"></div>
@@ -399,7 +415,7 @@
       <button class="quiet-link" id="menuClose">Done</button>
     </div>
     <div class="qm-nav">
-      <button data-go-view="home">Home</button><button data-go-view="read">Read</button><button data-go-view="path">Bible study</button><button data-go-view="settings">Settings</button><button type="button" class="games-entry" id="qmGames">🎲 Bible games</button><button data-tour>🧭 Take the tour</button>
+      <button data-go-view="home">Home</button><button data-go-view="read">Read</button><button data-go-view="path">Bible study</button><button data-go-view="notes">📝 My notes</button><button data-go-view="settings">Settings</button><button type="button" class="games-entry" id="qmGames">🎲 Bible games</button><button data-tour>🧭 Take the tour</button>
     </div>
     <p class="muted small-print">To change the look or pictures, go to Settings, under Look.</p>
     <h3 class="qm-h">Show on screen</h3>
@@ -470,6 +486,14 @@
     <button data-view="path">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-6 11-2 14-14M5 19a1.5 1.5 0 1 0 0-.01M19 5a1.5 1.5 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>Bible study</span>
+    </button>
+    <button data-view="notes" class="rail-extra">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h7l4 4v12H7z M14 4v4h4 M10 12h5M10 15h5M10 18h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <span>Notes</span>
+    </button>
+    <button type="button" class="rail-extra" data-open-games>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="9" r="1.3" fill="currentColor"/><circle cx="15" cy="15" r="1.3" fill="currentColor"/><circle cx="15" cy="9" r="1.3" fill="currentColor"/><circle cx="9" cy="15" r="1.3" fill="currentColor"/></svg>
+      <span>Games</span>
     </button>
     <button data-view="settings">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
