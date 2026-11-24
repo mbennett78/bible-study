@@ -1,3 +1,6 @@
+import { STICKERS, BOOK_ART } from "./stickers.js";
+import { BOOK_BY_ID } from "./books.js";
+
 // Hand-drawn style illustrations as inline SVG. Colors come from CSS classes
 // (styles.css, "Illustrations"), so each look (Sage, Feminine, Masculine, Animated)
 // recolors the same drawings. The Classic look swaps in still olive-and-cross art. No image files are needed.
@@ -699,7 +702,7 @@ const STORY_ART = {
   bush: ["The burning bush", () => `<path d="M0 64 C 80 56, 280 56, 360 64 L 360 90 L 0 90 Z" fill="#d9b77a"/><path d="M220 64 L 260 20 L 300 64 Z" fill="#b08a5a"/>
     <g transform="translate(150 70)"><ellipse cx="0" cy="-8" rx="22" ry="12" fill="#6f8a3a"/><g class="sway">${[[-12, -16], [0, -24], [12, -16], [-4, -14], [6, -12]].map(([a, b]) => `<path d="M${a} ${b} C ${a - 6} ${b - 8}, ${a} ${b - 18}, ${a + 2} ${b - 22} C ${a + 4} ${b - 14}, ${a + 8} ${b - 8}, ${a} ${b} Z" fill="#f39c4a"/><path d="M${a} ${b} C ${a - 3} ${b - 5}, ${a} ${b - 11}, ${a + 1} ${b - 13} C ${a + 2} ${b - 8}, ${a + 4} ${b - 5}, ${a} ${b} Z" fill="#f7d35c"/>`).join("")}</g></g>
     ${kid(90, 84, 1, "#8a6a48", "#c9b48a")}`, ["#f6e2b8", "#fbf2dd"]],
-  sea: ["Crossing the Red Sea on dry ground", () => `<path d="M0 10 C 30 6, 70 14, 120 10 L 130 90 L 0 90 Z" fill="#3f8ab8"/><path d="M360 10 C 330 6, 290 14, 240 10 L 230 90 L 360 90 Z" fill="#3f8ab8"/>
+  sea: ["Crossing the Red Sea on dry ground", () => `<g class="kf-part-l"><path d="M0 10 C 30 6, 70 14, 120 10 L 130 90 L 0 90 Z" fill="#3f8ab8"/></g><g class="kf-part-r"><path d="M360 10 C 330 6, 290 14, 240 10 L 230 90 L 360 90 Z" fill="#3f8ab8"/></g>
     <path d="M118 14 C 124 40, 128 66, 132 90 M 242 14 C 236 40, 232 66, 228 90" stroke="#9fd3ec" stroke-width="3" fill="none"/>
     <path d="M130 90 L 150 30 L 210 30 L 230 90 Z" fill="#e3c88f"/>
     ${kid(170, 82, .8, "#a65a6a", "#f1c84b")}${kid(192, 76, .7, "#5b8fb9", "#e9e2d0")}${kid(160, 66, .55, "#7a5a3a", "#c9b48a")}${kid(204, 58, .45, "#6aa06a", "#f1c84b")}
@@ -780,11 +783,74 @@ const STORIES = {
   nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], sheep: ["LUK.15", "PSA.23", "JHN.10"], samaritan: ["LUK.10"],
   tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20", "MAT.27", "MRK.15", "LUK.23", "JHN.19"], pentecost: ["ACT.2"], ship: ["ACT.27"],
 };
+
+/* ---------- Lovely little animations for the kids' pictures ---------- */
+// Small, calm movements layered over each story picture: birds crossing the sky, butterflies,
+// twinkling stars, rain, sparks, falling leaves, a fish leaping. All of it stands still with
+// "reduce motion" or Still pictures (styles.css, "Kids' picture animations").
+const fx = {
+  birds: (y = 18, d = 0, dur = 24) => `<g class="kf-fly" style="--kdur:${dur}s;--kdel:${-d}s"><g transform="translate(0 ${y})">${[[0, 0, 1], [12, 5, .8], [22, -2, .7]].map(([a, b, s]) => `<path class="kf-wing" d="M${a - 5 * s} ${b} Q ${a - 2.5 * s} ${b - 3.5 * s} ${a} ${b} Q ${a + 2.5 * s} ${b - 3.5 * s} ${a + 5 * s} ${b}" stroke="#4a5a6a" stroke-width="1.3" fill="none" stroke-linecap="round"/>`).join("")}</g></g>`,
+  butterfly: (x, y, c = "#f08ab0", d = 0) => `<g transform="translate(${x} ${y})"><g class="kf-wander" style="--kdel:${-d}s"><g class="kf-flutter"><ellipse cx="-2.6" cy="0" rx="2.8" ry="2" fill="${c}" stroke="#3b2b20" stroke-width=".5"/><ellipse cx="2.6" cy="0" rx="2.8" ry="2" fill="${c}" stroke="#3b2b20" stroke-width=".5"/></g><path d="M0 -1.6 L 0 1.8" stroke="#3b2b20" stroke-width=".9"/></g></g>`,
+  twinkles: (pts, c = "#fff6c8") => pts.map(([x, y, r = 1.6], i) => `<path class="kf-twinkle" style="--kdel:${-i * .7}s" d="M${x} ${y - r * 2} L ${x + r * .5} ${y - r * .5} L ${x + r * 2} ${y} L ${x + r * .5} ${y + r * .5} L ${x} ${y + r * 2} L ${x - r * .5} ${y + r * .5} L ${x - r * 2} ${y} L ${x - r * .5} ${y - r * .5} Z" fill="${c}"/>`).join(""),
+  rain: (x0 = 0, x1 = 360, c = "#d6e8f5") => Array.from({ length: 16 }, (_, i) => { const x = x0 + ((i * 37) % (x1 - x0)); return `<path class="kf-rain" style="--kdel:${-(i % 5) * .23}s" d="M${x} -6 l -2 6" stroke="${c}" stroke-width="1.2" stroke-linecap="round"/>`; }).join(""),
+  sparks: (x, y, w = 60, c = "#ffd36b") => Array.from({ length: 8 }, (_, i) => `<circle class="kf-rise" style="--kdel:${-i * .45}s" cx="${x - w / 2 + ((i * 23) % w)}" cy="${y}" r="${1 + (i % 3) * .4}" fill="${c}"/>`).join(""),
+  leaves: (x, y, c = "#86b061") => Array.from({ length: 4 }, (_, i) => `<ellipse class="kf-fall" style="--kdel:${-i * 1.6}s" cx="${x + i * 9 - 12}" cy="${y}" rx="2.6" ry="1.4" fill="${c}"/>`).join(""),
+  jump: (x, y, c = "#f5c542") => `<g transform="translate(${x} ${y})"><g class="kf-jump"><path d="M-6 0 C -2 -4, 4 -4, 6 0 C 4 4, -2 4, -6 0 Z M 6 0 L 10 -3 L 10 3 Z" fill="${c}" stroke="#3b2b20" stroke-width=".6"/></g></g>`,
+  glow: (x, y, r, c = "#fff6c8") => `<circle class="kf-glow" cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`,
+  zz: (x, y) => `<text class="kf-rise slow" x="${x}" y="${y}" font-size="8" fill="#fff6c8" font-family="sans-serif">z</text><text class="kf-rise slow" style="--kdel:-1.4s" x="${x + 6}" y="${y}" font-size="6" fill="#fff6c8" font-family="sans-serif">z</text>`,
+  shimmer: (y, x0 = 0, x1 = 360) => `<g class="kf-shimmer">${Array.from({ length: 6 }, (_, i) => `<path d="M${x0 + ((i * 61) % (x1 - x0))} ${y + (i % 3) * 5} h 8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" style="--kdel:${-i * .5}s"/>`).join("")}</g>`,
+  drift: (y, d = 0) => `<g class="kf-drift" style="--kdel:${-d}s"><path d="M0 ${y} c 0 -6 8 -8 12 -4 c 2 -6 12 -6 14 0 c 6 -2 10 4 6 6 h -30 c -4 0 -4 -2 -2 -2 Z" fill="#fff" opacity=".85"/></g>`,
+};
+const KIDS_FX = {
+  creation: () => `${fx.twinkles([[250, 12], [270, 30], [330, 34], [345, 12], [225, 26]])}${fx.jump(170, 80, "#f08a4b")}${fx.butterfly(100, 56, "#f5c542", 2)}`,
+  eden: () => `${fx.shimmer(72, 60, 300)}${fx.butterfly(60, 56, "#f08ab0")}${fx.butterfly(280, 52, "#f5c542", 3)}${fx.birds(16, 6)}`,
+  fall: () => `${fx.shimmer(72, 60, 300)}${fx.leaves(180, 30)}`,
+  ark: () => `${fx.birds(14, 0, 28)}${fx.drift(20, 4)}`,
+  rainbow: () => `${fx.birds(20, 3)}${fx.butterfly(120, 64, "#7f6cc8", 1)}${fx.butterfly(250, 60, "#f39c4a", 4)}`,
+  basket: () => `${fx.shimmer(60)}${fx.butterfly(90, 34, "#5b8fb9", 2)}`,
+  bush: () => `${fx.glow(150, 50, 20, "#ffe08a")}${fx.sparks(150, 46, 30)}`,
+  sea: () => `${fx.shimmer(30, 10, 110)}${fx.shimmer(30, 250, 350)}<g class="kf-part-l"><path d="M120 10 C 124 40, 128 66, 132 90" stroke="#cfeefc" stroke-width="2" fill="none"/></g><g class="kf-part-r"><path d="M240 10 C 236 40, 232 66, 228 90" stroke="#cfeefc" stroke-width="2" fill="none"/></g>`,
+  tablets: () => fx.sparks(180, 50, 60, "#fff1a8"),
+  walls: () => `${fx.birds(16, 2)}`,
+  giant: () => `${fx.birds(14, 5)}${fx.butterfly(40, 60, "#f5c542")}`,
+  lions: () => fx.zz(190, 46),
+  furnace: () => fx.sparks(180, 70, 140),
+  jonah: () => `${fx.birds(14, 0, 30)}${fx.shimmer(50)}`,
+  manger: () => `${fx.glow(180, 16, 14, "#fff1a8")}${fx.twinkles([[40, 14], [90, 26], [130, 10], [240, 14], [290, 28], [330, 12]])}`,
+  storm: () => fx.rain(),
+  water: () => `${fx.glow(250, 34, 22)}${fx.twinkles([[40, 10], [120, 18], [320, 12]])}`,
+  loaves: () => `${fx.birds(20, 4)}${fx.butterfly(300, 58, "#f08ab0", 1)}`,
+  nets: () => `${fx.jump(220, 62)}${fx.birds(18, 8)}`,
+  zacchaeus: () => fx.leaves(236, 30),
+  sheep: () => `${fx.butterfly(130, 56, "#f5c542")}${fx.birds(16, 3)}`,
+  tomb: () => `${fx.twinkles([[236, 30, 1.4], [268, 24, 1.8], [300, 34, 1.2]], "#fff")}${fx.butterfly(80, 60, "#f5c542", 2)}${fx.butterfly(300, 62, "#f08ab0")}`,
+  pentecost: () => fx.sparks(170, 40, 220, "#ffb347"),
+  ship: () => fx.rain(),
+  samaritan: () => fx.birds(16, 5),
+  joseph: () => `${fx.birds(14, 1)}${fx.butterfly(240, 56, "#7f6cc8", 3)}`,
+};
+
+// Every other chapter: a sticker-style scene for its book, with three of the book's
+// stickers standing in a meadow, clouds drifting, birds and a butterfly.
+const stickerAt = (id, x, y, s, cls) => STICKERS[id] ? `<g transform="translate(${x - 50 * s} ${y - 100 * s}) scale(${s})"><g class="${cls}">${STICKERS[id][2]}</g></g>` : "";
+function bookScene(book) {
+  const ids = BOOK_ART[book] || ["sun", "tree", "lamb"];
+  const nt = (BOOK_BY_ID[book]?.testament || "OT") === "NT";
+  const sky = nt ? ["#bfe3f5", "#eef8fb"] : ["#f6dfb6", "#fbf2dd"];
+  const ground = nt ? ["#9bd06f", "#86c25e"] : ["#d9c08a", "#c9ab6e"];
+  const draw = () => `${fx.drift(22, 0)}${fx.drift(14, 12)}${fx.birds(20, 5)}
+    <path d="M0 58 C 70 48, 130 54, 180 52 C 240 50, 300 46, 360 54 L 360 90 L 0 90 Z" fill="${ground[0]}"/>
+    <path d="M0 70 C 90 64, 270 64, 360 70 L 360 90 L 0 90 Z" fill="${ground[1]}"/>
+    ${stickerAt(ids[0], 88, 84, .46, "kf-bounce")}${stickerAt(ids[1], 180, 86, .6, "kf-sway")}${stickerAt(ids[2], 272, 84, .46, "kf-bounce late")}
+    ${fx.butterfly(136, 50, nt ? "#f08ab0" : "#5b8fb9", 2)}${fx.butterfly(226, 44, "#f5c542", 5)}`;
+  return [`Pictures from ${BOOK_BY_ID[book]?.name || "this book"}`, draw, sky];
+}
+
+// The story picture for a chapter; chapters without a story get their book's sticker scene.
 export function kidsStory(book, chapter) {
   const key = `${book}.${chapter}`;
   const name = Object.keys(STORIES).find((k) => STORIES[k].includes(key));
-  if (!name) return null;
-  const [caption, draw, [a, b]] = STORY_ART[name];
+  const [caption, draw, [a, b]] = name ? STORY_ART[name] : bookScene(book);
   const id = ++uid;
-  return { kind: name, caption, svg: `<svg class="fish-strip passage-art kids-story" viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/>${draw()}</g></svg>` };
+  return { kind: name || "book", caption, svg: `<svg class="fish-strip passage-art kids-story" viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/><g class="kids-ink">${draw()}</g>${name ? (KIDS_FX[name]?.() || "") : ""}</g></svg>` };
 }

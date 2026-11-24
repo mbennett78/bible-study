@@ -2299,3 +2299,47 @@ html { background: var(--page); }
 .bi-art .sticker { width: 24px; height: 24px; }
 .bi-art .sticker:nth-child(2) { width: 32px; height: 32px; margin: 0 -2px; }
 @media (min-width: 700px) { .bi-art .sticker { width: 40px; height: 40px; } .bi-art .sticker:nth-child(2) { width: 50px; height: 50px; } }
+
+/* ---------- Kids' picture animations ---------- */
+/* The story pictures get the stickers' friendly brown outline. */
+.kids-story .kids-ink [fill]:not([stroke]):not(rect):not([opacity]):not(text) { stroke: #3b2b20; stroke-width: .7; stroke-linejoin: round; paint-order: stroke; }
+.kids-story .kids-ink [r="0.6"], .kids-story .kids-ink [r=".6"] { stroke: none; }
+.kids-story .kf-fly { animation: kfFly var(--kdur, 24s) linear var(--kdel, 0s) infinite; }
+.kids-story .kf-wing { animation: kfFlap .5s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+.kids-story .kf-wander { animation: kfWander 9s ease-in-out var(--kdel, 0s) infinite; }
+.kids-story .kf-flutter { animation: kfFlutter .28s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+.kids-story .kf-twinkle { animation: kfTwinkle 2.6s ease-in-out var(--kdel, 0s) infinite; transform-box: fill-box; transform-origin: center; }
+.kids-story .kf-rain { animation: kfRain .9s linear var(--kdel, 0s) infinite; }
+.kids-story .kf-rise { animation: kfRise 3.2s ease-out var(--kdel, 0s) infinite; }
+.kids-story .kf-rise.slow { animation-duration: 4.2s; }
+.kids-story .kf-fall { animation: kfFall 6.4s ease-in var(--kdel, 0s) infinite; }
+.kids-story .kf-jump { animation: kfJump 4s ease-in-out infinite; }
+.kids-story .kf-glow { animation: kfGlow 3.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.kids-story .kf-shimmer path { animation: kfShimmer 3s ease-in-out var(--kdel, 0s) infinite; }
+.kids-story .kf-drift { animation: kfDrift 60s linear var(--kdel, 0s) infinite; }
+.kids-story .kf-part-l { animation: kfPartL 2.6s ease-out both; }
+.kids-story .kf-part-r { animation: kfPartR 2.6s ease-out both; }
+.kids-story .kf-bounce { animation: kfBounce 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.kids-story .kf-bounce.late { animation-delay: -1.4s; }
+.kids-story .kf-sway { animation: kfSway 4.5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes kfFly { from { transform: translateX(-40px); } to { transform: translateX(400px); } }
+@keyframes kfFlap { to { transform: scaleY(.55); } }
+@keyframes kfWander { 25% { transform: translate(10px, -6px); } 50% { transform: translate(18px, 2px); } 75% { transform: translate(6px, -4px); } }
+@keyframes kfFlutter { to { transform: scaleX(.35); } }
+@keyframes kfTwinkle { 0%, 100% { opacity: .25; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.15); } }
+@keyframes kfRain { from { transform: translateY(0); opacity: .9; } to { transform: translateY(96px); opacity: .5; } }
+@keyframes kfRise { from { transform: translateY(0); opacity: .95; } to { transform: translateY(-34px); opacity: 0; } }
+@keyframes kfFall { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(14px, 56px) rotate(160deg); opacity: 0; } }
+@keyframes kfJump { 0%, 55%, 100% { transform: translate(0, 0) rotate(0); opacity: 0; } 60% { opacity: 1; } 70% { transform: translate(8px, -16px) rotate(-30deg); } 82% { transform: translate(16px, -4px) rotate(30deg); opacity: 1; } 88% { transform: translate(18px, 2px); opacity: 0; } }
+@keyframes kfGlow { 0%, 100% { opacity: .25; transform: scale(.9); } 50% { opacity: .6; transform: scale(1.12); } }
+@keyframes kfShimmer { 0%, 100% { opacity: 0; } 50% { opacity: .9; } }
+@keyframes kfDrift { from { transform: translateX(-60px); } to { transform: translateX(420px); } }
+@keyframes kfPartL { from { transform: translateX(46px); } }
+@keyframes kfPartR { from { transform: translateX(-46px); } }
+@keyframes kfBounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-4px); } 55% { transform: translateY(0) scaleY(.96); } }
+@keyframes kfSway { 50% { transform: rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .kids-story [class*="kf-"], .kids-story .kf-shimmer path { animation: none !important; }
+  .kids-story .kf-fly, .kids-story .kf-rain, .kids-story .kf-rise, .kids-story .kf-fall, .kids-story .kf-jump { display: none; }
+}
+:root[data-still]:not([data-graphics="full"]) .kids-story .kf-fly, :root[data-still]:not([data-graphics="full"]) .kids-story .kf-rain { display: none; }
