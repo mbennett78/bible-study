@@ -54,9 +54,14 @@ try {
   check("search with no match says so", (await page.textContent("#notesList")).includes("No notes match"));
   await page.fill("#notesSearch", ""); await page.waitForTimeout(200);
   await page.evaluate(() => { window.print = () => { window.__printed = document.querySelector("#printBook").innerHTML; }; });
-  await page.click("#printNotes"); await page.waitForTimeout(300);
+  await page.click("#printNotes"); await page.waitForTimeout(200); await page.click(".send-sheet [data-how=print]"); await page.waitForTimeout(300);
   const printed = await page.evaluate(() => window.__printed || "");
   check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("My Notes"), printed.slice(0, 100));
+  // Or send a copy to Google Docs or Drive: a document file with the notes in it.
+  await page.click("#printNotes"); await page.waitForTimeout(200);
+  const [dl] = await Promise.all([page.waitForEvent("download"), page.click(".send-sheet [data-how=send]")]);
+  const docText = await (await import("node:fs/promises")).readFile(await dl.path(), "utf8");
+  check("notes can be sent as a document for Google Docs or Word", dl.suggestedFilename() === "My Notes.html" && docText.includes("Wednesday class") && !docText.includes("<svg"), dl.suggestedFilename());
   // A Bible class outline with a shaded box, then print only that one.
   await page.click("[data-new-note=class]"); await page.waitForTimeout(300);
   check("Bible Class Notes have a lesson title and teacher", await page.isVisible("#notesEditor #eeSpeaker") && (await page.textContent("#notesEditor .ee-head")).includes("Bible Class Notes"));
@@ -73,7 +78,7 @@ try {
   await page.check(`[data-pick="${firstPick}"]`); await page.waitForTimeout(100);
   check("choosing notes changes the print button", /Print the 1 I picked/.test(await page.textContent("#printNotes")));
   await page.evaluate(() => { window.__printed = ""; });
-  await page.click("#printNotes"); await page.waitForTimeout(300);
+  await page.click("#printNotes"); await page.waitForTimeout(200); await page.click(".send-sheet [data-how=print]"); await page.waitForTimeout(300);
   const one = await page.evaluate(() => window.__printed || "");
   check("only the chosen note prints", one.includes("The Good Shepherd outline") && !one.includes("Wednesday class") && one.includes("is-box"), one.slice(0, 80));
   check("no page errors", !errors.length, errors.join(" | "));

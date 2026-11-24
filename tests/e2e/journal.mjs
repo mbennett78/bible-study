@@ -72,7 +72,9 @@ try {
 
   // The keepsake book.
   await page.evaluate(() => { window.print = () => { window.__printed = true; }; });
-  await page.click("#makeBook"); await page.waitForTimeout(800);
+  await page.click("#makeBook"); await page.waitForTimeout(300);
+  check("print offers paper or sending to Docs or Drive", await page.isVisible(".send-sheet [data-how=send]"));
+  await page.click(".send-sheet [data-how=print]"); await page.waitForTimeout(600);
   const book = await page.textContent("#printBook");
   check("book: titled My Journey, a journal by Mel", /My Journey/.test(book) && /a journal by Mel/.test(book));
   check("book: entries by day, with the verse of the day", /Grandma's surgery/.test(book) && /The verse for/.test(book) && await page.evaluate(() => window.__printed === true));

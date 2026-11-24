@@ -2036,7 +2036,45 @@ function entrySnippet(e) {
   return `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}${extras.length ? `<span class="entry-extras">${extras.join(" ")}</span>` : ""}`;
 }
 // Prints a little book: only #printBook shows on paper (styles.css, "Printed books").
-function printPages(html, kind = "journal") {
+// Every print button first asks: paper or PDF, or send a copy to Google Docs, Drive, email or Files.
+const PRINT_TITLES = { journal: "My Journal", notes: "My Notes" };
+function printPages(html, kind = "journal", title = PRINT_TITLES[kind] || "Bible Study") {
+  const dlg = document.createElement("dialog");
+  dlg.className = "send-sheet";
+  dlg.setAttribute("aria-label", "Print or send");
+  dlg.innerHTML = `<h2>${esc(title)}</h2>
+    <button type="button" class="send-opt" data-how="print"><span aria-hidden="true">🖨</span><b>Print or save as a PDF</b><small>Pick your printer, or choose Save as PDF.</small></button>
+    <button type="button" class="send-opt" data-how="send"><span aria-hidden="true">📤</span><b>Send to Google Docs, Drive or email</b><small>${navigator.canShare ? "Opens your share list: choose Drive, Docs, Files, Mail or Messages." : "Saves a document you can upload to Google Drive and open with Google Docs, or open in Word."}</small></button>
+    <button type="button" class="quiet-link" data-how="">Cancel</button>`;
+  document.body.append(dlg);
+  dlg.addEventListener("close", () => dlg.remove());
+  dlg.querySelectorAll("[data-how]").forEach((b) => b.addEventListener("click", () => {
+    dlg.close();
+    if (b.dataset.how === "print") printNow(html, kind);
+    else if (b.dataset.how === "send") sendDocument(html, title);
+  }));
+  dlg.showModal();
+}
+// A clean copy as a document file. Google Docs and Word both open .html files with their headings
+// and paragraphs; the pictures drawn for paper are left out.
+async function sendDocument(html, title) {
+  const box = document.createElement("div");
+  box.innerHTML = html;
+  box.querySelectorAll("svg, button, .pb-art, .pb-strip, .pb-blank, script, style").forEach((n) => n.remove());
+  const doc = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
+<style>body{font-family:Georgia,serif;font-size:13pt;line-height:1.5;max-width:42em;margin:2em auto;color:#222}h1,h2,h3{font-family:Arial,sans-serif;color:#333}blockquote,q{display:block;margin:.6em 0;padding-left:1em;border-left:3px solid #bbb;font-style:italic}cite{display:block;font-size:.9em;color:#555}</style></head>
+<body>${box.innerHTML}<p style="color:#777;font-size:10pt">From the Family Bible Study app, ${esc(new Date().toLocaleDateString())}.</p></body></html>`;
+  const name = `${title.replace(/[^\w\s-]/g, "").trim() || "Bible Study"}.html`;
+  const file = new File([doc], name, { type: "text/html" });
+  if (navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file], title }); return; } catch (e) { if (e?.name === "AbortError") return; }
+  }
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(file), download: name });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  mascotSay("Saved! Upload it to Google Drive and choose Open with Google Docs, or open it in Word.");
+}
+function printNow(html, kind) {
   const book = $("#printBook");
   book.className = `print-book pb-${kind}`;
   book.innerHTML = html;
@@ -2101,7 +2139,7 @@ async function makeJournalBook() {
       <div class="pb-blank" aria-hidden="true"></div>
       <footer class="pb-verse"><span class="pb-vlabel">The verse for ${esc(dow)}</span>${verses[day].words ? `<q>${esc(verses[day].words)}</q>` : `<q>${esc(verses[day].theme)}</q>`}<cite>${esc(verses[day].ref)}</cite></footer>
     </article>`; }).join("")}`;
-  printPages(html, "journal");
+  printPages(html, "journal", title);
 }
 // The study notes for a chapter, with your own notes on it, laid out for paper.
 function printNotes(book, chapter) {
@@ -2123,7 +2161,7 @@ function printNotes(book, chapter) {
       ${n.crossRefs ? `<section class="pn-sec"><h2>Cross-references</h2><ul class="pn-x">${n.crossRefs.map(([, r, why]) => `<li><b>${esc(r)}</b> ${esc(why)}</li>`).join("")}</ul></section>` : ""}` : ""}
     ${mine.length ? `<section class="pn-sec pn-mine"><h2>My notes</h2>${mine.map((e) => `<div class="pn-item"><h3>${esc(KIND[e.kind]?.label || "Note")} <span class="pb-time">${esc(dayLabel(dayOf(e.created)))}</span></h3>${e.title ? `<p><b>${esc(e.title)}</b></p>` : ""}${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}${e.text ? `<div class="pb-lines">${esc(e.text).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("")}</div>` : ""}</div>`).join("")}</section>` : ""}
     ${n ? `<section class="pn-sec pn-sources"><h2>Sources</h2><ol>${srcKeys.map((k) => `<li>${esc(sourceText(n.sources[k]))}</li>`).join("")}</ol></section>` : ""}`;
-  printPages(html, "notes");
+  printPages(html, "notes", `Study notes: ${name}`);
 }
 $("#makeBook").addEventListener("click", makeJournalBook);
 
@@ -2315,7 +2353,7 @@ function printNotesBook(list, title = "My Notes") {
       ${list.every((e) => e.kind === "study") && studyPathsLine(list) ? `<p class="pn-path">${esc(studyPathsLine(list).slice(3))}</p>` : ""}
       <p class="pb-by">${name ? esc(name) : ""}</p><p class="pb-range">${list.length} note${list.length === 1 ? "" : "s"} · ${days.length > 1 ? `${esc(dayLabel(days[0]))} to ${esc(dayLabel(days[days.length - 1]))}` : esc(dayLabel(days[0]))}</p></section>
       <article class="pn-book">${[...list].sort((a, b) => a.created.localeCompare(b.created)).map(one).join("")}</article>`;
-  printPages(html, "notes");
+  printPages(html, "notes", title);
 }
 function shownNotes() {
   const q = norm($("#notesSearch")?.value || "");
