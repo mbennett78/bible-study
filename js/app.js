@@ -230,7 +230,18 @@ function versionList() {
   if (store.get("esvKey")) list.push(["ESV", "ESV"]);
   return list;
 }
+// Each person's own favorite version (Settings, under You), from the versions the family has.
+function renderMyVersion() {
+  const sel = $("#myVersion");
+  if (!sel) return;
+  const list = versionList(), cur = store.get("version");
+  sel.innerHTML = list.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("");
+  sel.disabled = list.length < 2;
+  $("#myVersionNote").textContent = list.length < 2 ? "More versions appear here once the family organizer turns them on." : "You can also switch any time at the top of the Read page.";
+}
+$("#myVersion")?.addEventListener("change", (e) => { store.set("version", e.target.value); syncVersionSwitch(); const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); });
 function syncVersionSwitch() {
+  renderMyVersion();
   const list = versionList();
   if (!list.some(([v]) => v === store.get("version"))) store.set("version", "NASB");
   const cur = store.get("version");
@@ -1306,12 +1317,27 @@ function initSettings() {
   if (store.get("nasbBibleId")) {
     sel.add(new Option(store.get("nasbLabel") || "Saved edition", store.get("nasbBibleId"), true, true));
   }
-  apiKey.addEventListener("change", () => {
+  const keyStatus = (t) => { $("#apiKeyStatus").textContent = t; };
+  const saveKey = () => {
     const inv = readInviteCode(apiKey.value);
-    if (inv) { applyInvite(inv); applyAppearance(); return; }
-    store.set("apiBibleKey", apiKey.value.trim());
+    if (inv) { applyInvite(inv); applyAppearance(); return true; }
+    const v = apiKey.value.trim();
+    if (v === store.get("apiBibleKey")) return false;
+    store.set("apiBibleKey", v);
+    return true;
+  };
+  apiKey.addEventListener("change", saveKey);
+  $("#saveApiKey").addEventListener("click", () => {
+    if (!apiKey.value.trim()) { keyStatus("Paste the key into the box first."); apiKey.focus(); return; }
+    saveKey();
+    keyStatus("Saved ✓ Checking which versions it opens…");
+    $("#loadVersions").click();
   });
   esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); });
+  $("#saveEsvKey").addEventListener("click", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); keyStatus(esvKey.value.trim() ? "ESV key saved ✓" : "ESV key removed."); });
+  if (store.get("apiBibleKey")) keyStatus("Key saved on this device ✓");
+  // One device, one family: the invite link is only for a home without accounts.
+  if (authEnabled) $("#shareKeyBox").hidden = true;
   const extrasNow = () => {
     const x = store.get("extraBibles") || [];
     $("#extraVersionsNow").textContent = x.length ? `Also on the switch: ${x.map((b) => b.label).join(", ")}.` : "";
@@ -1335,7 +1361,8 @@ function initSettings() {
   });
   $("#loadVersions").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
-    store.set("apiBibleKey", apiKey.value.trim());
+    if (!apiKey.value.trim()) { keyStatus("Paste the API.Bible key into the box first, then tap Save."); return; }
+    saveKey();
     btn.textContent = "Loading…";
     try {
       const bibles = await listEnglishBibles();
@@ -1349,7 +1376,8 @@ function initSettings() {
         if (picks.length) { store.set("extraBibles", [...new Map(picks.map((b) => [b.id, { id: b.id, label: b.abbr }])).values()].slice(0, MAX_EXTRA_BIBLES)); extrasNow(); syncVersionSwitch(); }
       }
       const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
-      btn.textContent = `${bibles.length} versions loaded${hasNkjv ? "" : " · NKJV isn't on this plan"}`;
+      btn.textContent = "Show the versions on my plan";
+      keyStatus(`Saved ✓ Your key works and opens ${bibles.length} English version${bibles.length === 1 ? "" : "s"}${hasNkjv ? "" : " (the NKJV isn't on this plan)"}. Turn on the ones the family can pick from below, then tap "Save key for the whole family".`);
       const chosen = new Set((store.get("extraBibles") || []).map((b) => b.id));
       $("#extraVersionList").innerHTML = bibles.filter((b) => b.id !== store.get("nasbBibleId")).map((b) => `<label class="switch-row"><span>${esc(b.abbr)}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(b.abbr)}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
       $("#extraVersions").hidden = false;
@@ -1363,7 +1391,8 @@ function initSettings() {
         extrasNow(); syncVersionSwitch();
       }));
     } catch (err) {
-      btn.textContent = err.message || "Couldn't load versions";
+      btn.textContent = "Show the versions on my plan";
+      keyStatus(`That key didn't work: ${err.message || "couldn't load the versions"}. Check that the whole key was pasted, then tap Save again.`);
     }
   });
   $("#exportBtn").addEventListener("click", () => {
@@ -1396,9 +1425,12 @@ let SETUP_STEPS = [
   { id: "password", title: "Your own password", done: () => Boolean(store.get("setup")?.password) },
   { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
   { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
+  { id: "version", title: "Your Bible version", done: () => Boolean(store.get("setup")?.version) },
   { id: "tour", title: "A quick tour", done: () => Boolean(store.get("tourSeen")) },
 ];
-if (!authEnabled) SETUP_STEPS = SETUP_STEPS.filter((st) => st.id !== "password");
+// With accounts, the Bible key comes from the family account (the organizer sets it in
+// Settings), so nobody is asked about keys during setup.
+SETUP_STEPS = SETUP_STEPS.filter((st) => (authEnabled ? st.id !== "key" : st.id !== "password"));
 let setupAt = 0;
 // "new": nothing chosen yet on this device. "started": begun but not finished. "done": finished or put off.
 function setupState() {
@@ -1457,6 +1489,13 @@ function renderSetup() {
       $("#setupKeyStatus").textContent = v ? "Key saved ✓" : "";
       const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false });
     });
+  } else if (step.id === "version") {
+    const list = versionList(), cur = store.get("version");
+    setupSet({ version: true });
+    body.innerHTML = `<h2 class="setup-h">Which Bible do you like to read?</h2>
+      <p class="muted small-print">${list.length > 1 ? "The NASB is chosen for you. Pick your favorite. You can switch any time at the top of the Read page." : "The NASB is ready for you. If the family adds more versions, you can pick one in Settings, under You."}</p>
+      <div class="setup-versions">${list.map(([v, l]) => `<button type="button" class="setup-path" data-s-ver="${esc(v)}" aria-pressed="${v === cur}"><span><strong>${esc(l)}</strong></span></button>`).join("")}</div>`;
+    body.querySelectorAll("[data-s-ver]").forEach((b) => b.addEventListener("click", () => { store.set("version", b.dataset.sVer); syncVersionSwitch(); renderSetup(); }));
   } else if (step.id === "password") {
     body.innerHTML = `<h2 class="setup-h">Make your own password</h2>
       <p class="muted">You signed in with the starter password. Choose your own now, something you'll remember. If you ever forget it, tap "Forgot password?" on the sign-in screen and we'll email you a link.</p>

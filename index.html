@@ -214,6 +214,10 @@
         <label class="field">Your name
           <input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you">
         </label>
+        <label class="field">My Bible version
+          <select id="myVersion"></select>
+        </label>
+        <p class="muted small-print" id="myVersionNote"></p>
       </div>
 
 
@@ -245,20 +249,21 @@
 
       <div class="card" id="bibleTextCard">
         <h2>Bible text</h2>
-        <label class="field">API.Bible key <span class="muted">(for NASB)</span>
-          <input id="apiBibleKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+        <label class="field">API.Bible key
+          <span class="key-row"><input id="apiBibleKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key"><button type="button" class="small" id="saveApiKey">Save</button></span>
         </label>
-        <label class="field">NASB edition
+        <p class="small-print key-status" id="apiKeyStatus" role="status"></p>
+        <label class="field">Main version <span class="muted">(everyone starts here; NASB is best)</span>
           <select id="nasbSelect"><option value="">Pick automatically</option></select>
         </label>
-        <button class="small" id="loadVersions">Load versions on my plan</button>
+        <button class="small" id="loadVersions">Show the versions on my plan</button>
         <div id="extraVersions" class="extra-versions" hidden>
-          <p class="muted small-print">Tick up to 3 more versions to add to the switch at the top of the Read page. Only versions on your plan are listed.</p>
+          <p class="muted small-print">Turn on the other versions the family can choose from. Each person picks their own favorite in Settings, under You.</p>
           <div id="extraVersionList"></div>
         </div>
         <p class="muted small-print" id="extraVersionsNow"></p>
-        <label class="field">ESV key
-          <input id="esvKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+        <label class="field">ESV key <span class="muted">(optional)</span>
+          <span class="key-row"><input id="esvKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key"><button type="button" class="small" id="saveEsvKey">Save</button></span>
         </label>
         <p class="muted small-print">Your key is saved on this device only and is never put in backups.</p>
         <details class="share-key" id="shareKeyBox">
