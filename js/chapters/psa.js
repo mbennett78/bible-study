@@ -89,7 +89,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["9:10", "Those who know Your name will put their trust in You", "Knowing God leads to trusting Him."],
     ],
     bg: [["An acrostic", "Psalms 9 and 10 together form a broken alphabet poem, with sections starting with successive Hebrew letters. Some ancient translations treat them as one psalm, which is why psalm numbers differ in some older Bibles.", "good", ["craigie", "kidner"]]],
-    refs: [["PSA.10", "Psalm 10", "The second half of the acrostic"], ["NAH.1", "Nahum 1:7", "A stronghold in the day of trouble"]],
+    refs: [["PSA.10", "Psalm 10", "The second half of the acrostic"], ["NAM.1", "Nahum 1:7", "A stronghold in the day of trouble"]],
   },
   10: {
     intro: "\"Why do You stand afar off, O LORD?\" The wicked man boasts, preys on the helpless, and says in his heart that God has forgotten. The psalmist pleads, \"Arise, O LORD... do not forget the afflicted.\" He ends with confidence: God hears the humble and defends the orphan.",
