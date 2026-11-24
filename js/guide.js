@@ -1,14 +1,18 @@
 // The user guide: shown at the top of Settings and printed as a booklet. One place for the
 // words, so the screen and the paper always say the same thing. Plain words, short steps.
+// The family's web address, in one place. A family running its own copy puts theirs here
+// (docs/SETUP.md, step 2); the printed gift packet uses it too.
+export const SITE = "bible.breakoutroom.net";
+
 export const GUIDE = [
   { id: "start", icon: "👋", title: "Getting started", tips: [
-    "Open bible.breakoutroom.net in Safari on an iPhone or iPad, or any browser on a computer.",
+    `Open ${SITE || "your family's Bible Study web address"} in Safari on an iPhone or iPad, or any browser on a computer.`,
     "Sign in with the email and starter password from the person who gave you the app, then choose your own password.",
     "To keep it like an app: tap the Share button, then Add to Home Screen.",
     "You never need to type a Bible key. Your family sign-in brings them to every device.",
   ] },
   { id: "around", icon: "🧭", title: "Getting around", tips: [
-    "The buttons along the bottom (or the side, on an iPad or computer) go anywhere: Home, Read, My Bible, Journal, Bible study, Notes, Games and Settings.",
+    "The buttons along the bottom go to Home, Read, My Bible, Journal, Bible study and Settings. Tap ☰ at the top left for the side menu, with My notes, Journal and Games. On an iPad or computer, Notes and Games are down the side too.",
     "Home's top card takes you back to where you left off.",
     "Tap ❓ at the top of any screen for help with that screen, or take the tour.",
   ] },
@@ -18,16 +22,17 @@ export const GUIDE = [
     "Tap any word for its meaning, with the Hebrew or Greek behind it.",
     "Scroll below the chapter for study notes: history, maps, word studies, what scholars say, and cross-references.",
     "Tap Read aloud to hear the chapter. The part being read is highlighted.",
+    "Tap a verse number for more: highlight it, add it to your notes, Compare versions to see it in every version your family has, or Share it as words or a verse picture.",
     "To learn a verse by heart, tap its number and choose Learn by heart. Four steps take you from reading it to saying it with every word hidden.",
   ] },
   { id: "buddy", icon: "🙂", title: "Your study buddy", tips: [
-    "Tap the little stick-figure friend to ask any Bible question.",
+    "Tap the little stick-figure friend and ask him anything. Bible questions are his favorite, but he fully answers any question, like homework, a recipe or how to use your phone, and always keeps it family-friendly.",
     "Ask him simple things too, like \"jump rope,\" \"dance\" or \"do a cartwheel.\"",
     "Ask him where things are, like \"Where is text size?\" or \"How do I lock my journal?\" He answers right away, even with no signal, and can show you the spot.",
     "He remembers where you left off and your study, knows the season (like Advent), and after a long study time he may suggest a stretch.",
     "Teach him things, like \"My favorite verse is John 3:16\" or \"Remember that I love horses.\" Ask \"What do you remember about me?\" any time, or say \"forget that.\" Only you can see what you teach him.",
     "In scary stories (like the lions' den) he gets a little scared. Ask \"Are you okay?\" and he feels better. The more time you spend with him, the more story props he finds, like Zacchaeus' tree.",
-    "In the way? Drag him up or down either edge. In Settings, under My study buddy, you can rename him, make him quieter, or hide him.",
+    "In the way? Drag him up or down either edge. In Settings, under Buddy and look, you can rename him, make him quieter, or hide him.",
     "He tries hard to be accurate but can make mistakes. Check what he says against the Bible.",
   ] },
   { id: "journal", icon: "✍️", title: "Journal and notes", tips: [
@@ -36,6 +41,7 @@ export const GUIDE = [
     "Quote a verse, or paste one, and it becomes a verse card. Add your comment in an optional callout box: Classic, Parchment, Sticky note, Bubble or Floral.",
     "Add verses, pictures, arrows, shaded boxes, maps, charts and tables with the buttons under the writing box.",
     "📷 Photo opens your photo library or camera. You can also paste a picture or words from another app.",
+    "Not sure what to write? Tap 💭 Need an idea? for a gentle prompt. On a date you wrote something in an earlier year, \"On this day\" shows it at the top.",
     "Your words save as you type, even without a signal.",
     "Print your journal or notes as a little book, or send a copy to Google Docs.",
     "Want privacy? Set a journal passcode in Settings.",
@@ -44,7 +50,7 @@ export const GUIDE = [
     "My Bible reads straight through, Genesis to Revelation. Three other studies go through the Bible a different way.",
     "Each study keeps its own place, so you can switch any time.",
     "✅ Quick check: after you read a chapter, a few questions on it, right under the chapter.",
-    "🎲 Games: Bible Spin and the other games are behind the Games button. Your scores are only yours.",
+    "🎲 Games: Bible Spin and the other games are behind the Games button. Bible Spin plays like a game show, with a lamp to fill, jewels to win and a bonus round. Your scores are only yours.",
   ] },
   { id: "offline", icon: "📶", title: "No signal?", tips: [
     "Chapters you opened recently, plus the next two ahead, are saved for reading offline.",
@@ -56,7 +62,9 @@ export const GUIDE = [
     "Sign in on any device and your reading, journal and notes follow you.",
     "The first time you tap a microphone button, your device asks to use the microphone. Tap Allow. It asks only once.",
     "Reading aloud and Buddy's voice need no permission. The app never asks for your location, contacts, camera or notifications.",
-    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings.",
+    "Settings opens with this guide at the top. Everything else sits in groups below it.",
+    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings. On an iPad, Page width there makes the lines narrower or wider. Pick a look under Buddy and look. The For kids look has storybook pictures that gently move, and they hold still if you choose Still pictures or your device has motion turned down.",
+    "There is nothing to buy, ever. The app never sells anything.",
   ] },
 ];
 

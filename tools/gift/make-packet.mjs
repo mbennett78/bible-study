@@ -5,7 +5,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { chromium, serve } from "../../tests/e2e/harness.mjs";
-import { GUIDE } from "../../js/guide.js";
+import { GUIDE, SITE } from "../../js/guide.js";
 
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 const OUT = process.argv[2] || `${HERE}gift-packet.pdf`;
@@ -14,11 +14,14 @@ mkdirSync(SHOTS, { recursive: true });
 
 const iso = (d, h) => `2026-12-${String(d).padStart(2, "0")}T${String(h).padStart(2, "0")}:00:00`;
 const SEED = {
-  apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, newsOff: true, name: "Grandma",
+  // Sage: the calm, light look, which prints well. Setup is finished so no checklist shows.
+  apiBibleKey: "k", nasbBibleId: "x", setup: { done: true, look: true, version: true, password: true }, tourSeen: true, newsOff: true, name: "Grandma", style: "sage",
   last: { book: "JHN", chapter: 3 },
   entries: {
     a: { kind: "church", title: "Joy to the world", speaker: "Christmas Sunday", passage: "Luke 2:8-20", text: "The shepherds went with haste. Do I hurry to Jesus like that?", created: iso(6, 11), updated: iso(6, 11) },
     b: { kind: "prayer", text: "Thank You for my family, every one of them.", created: iso(7, 8), updated: iso(7, 8) },
+    c: { kind: "note", ref: "JHN.3", title: "God so loved the world", text: "Whoever means anyone. Nicodemus came at night, and Jesus still made time for him.", created: iso(7, 9), updated: iso(7, 9),
+      quotes: [{ ref: "JHN.3.16", ver: "NASB", tag: "comment", look: "sticky", text: "For God so loved the world, that He gave His only begotten Son, that whoever believes in Him shall not perish, but have eternal life.", note: "His love is for every one of us, the whole family." }] },
   },
 };
 const PASSAGE = '<p><span class="v" data-number="16">16</span>For God so loved the world, that He gave His only begotten Son, that whoever believes in Him shall not perish, but have eternal life. <span class="v" data-number="17">17</span>For God did not send the Son into the world to judge the world, but that the world might be saved through Him.</p>';
@@ -29,10 +32,10 @@ const SHOW = {
   around: { view: "read", click: "#refButton", cap: "Tap the book name to go anywhere." },
   read: { view: "read", cap: "Read aloud, word meanings and study notes." },
   buddy: { view: "home", chat: true, cap: "Ask your buddy anything." },
-  journal: { view: "journal", scroll: ".seg-journal, #diaryToday, #journalList", cap: "Your journal: days, prayers and thanks." },
+  journal: { view: "notes", open: '[data-note="c"]', focus: "#notesEditor #eeQuotes", cap: "A note with a verse card and a sticky-note callout." },
   study: { view: "path", cap: "Four ways through the Bible." },
-  offline: { view: "notes", cap: "Notes save even with no signal." },
-  devices: { view: "settings", cap: "Settings: bigger words, buttons and more." },
+  offline: { view: "journal", scroll: ".seg-journal, #diaryToday, #journalList", cap: "Your journal saves even with no signal." },
+  devices: { view: "settings", scroll: "#view-settings .settings-jump, #view-settings details.set-group", cap: "Settings: the user guide is right at the top." },
 };
 
 const site = await serve();
@@ -50,6 +53,8 @@ for (const [id, s] of Object.entries(SHOW)) {
   await page.evaluate(() => window.scrollTo(0, 0));
   if (s.scroll) await page.evaluate((q) => { const el = document.querySelector(q); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 70); }, s.scroll);
   if (s.click) { await page.click(s.click); await page.waitForTimeout(700); }
+  if (s.open) { await page.click(s.open); await page.waitForTimeout(700); }
+  if (s.focus) await page.evaluate((q) => { const el = document.querySelector(q); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 90); }, s.focus);
   if (s.chat) {
     await page.tap(".buddy"); await page.waitForTimeout(500);
     await page.fill("#partnerQ", "Where is text size?"); await page.click("#partnerGo"); await page.waitForTimeout(600);
@@ -62,12 +67,17 @@ await ctx.close();
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const img = (id) => `<img src="file://${SHOTS}/${id}.png" alt="">`;
 const html = `<!doctype html><html><head><meta charset="utf-8"><title>Family Bible Study</title><style>
-@page { size: Letter; margin: 0.55in; }
+@page { size: Letter; margin: 0.55in 0.55in 0.75in;
+  @bottom-center { content: "Family Bible Study · " counter(page); font: 9pt Georgia, serif; color: #8a7a60; } }
+@page cover { @bottom-center { content: none; } }
+@page setup { @bottom-center { content: "Need help? Tap ? at the top of any screen, or ask your study buddy."; font: 9pt Georgia, serif; color: #8a7a60; } }
 * { box-sizing: border-box; }
 body { margin: 0; font: 12.5pt/1.5 Georgia, "Times New Roman", serif; color: #2a2620; }
 h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; margin: 0; }
-.page { page-break-after: always; break-after: page; height: 9.75in; overflow: hidden; position: relative; }
+.page { page-break-after: always; break-after: page; position: relative; }
 .page:last-child { page-break-after: auto; }
+.cover { page: cover; height: 9.6in; }
+.setup { page: setup; }
 .cover { text-align: center; padding-top: 1.1in; border: 2px solid #b8955a; border-radius: 10px; }
 .cover .orn { color: #b8955a; font-size: 28pt; }
 .cover h1 { font-size: 34pt; margin: .2in 0 .1in; }
@@ -91,7 +101,6 @@ h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; margin: 0; }
 .sec h2 { font-size: 18pt; margin: 0 0 .06in; }
 .sec ul { margin: 0; padding-left: .2in; }
 .sec li { margin: 0 0 .05in; font-size: 11pt; line-height: 1.42; }
-.foot { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-size: 9pt; color: #8a7a60; }
 </style></head><body>
 <section class="page cover">
   <div class="orn">❦</div>
@@ -104,25 +113,23 @@ h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; margin: 0; }
   <p class="kicker">Start here</p>
   <h1>Setting up, in five minutes</h1>
   <ol class="steps">
-    <li>On an iPhone or iPad, open <b>Safari</b>. On a computer, open any web browser. Go to <b>bible.breakoutroom.net</b></li>
+    <li>On an iPhone or iPad, open <b>Safari</b>. On a computer, open any web browser. Go to ${SITE ? `<b>${esc(SITE)}</b>` : `<span class="blank"></span>`}</li>
     <li>Sign in with your email and the starter password below. The app then asks you to choose your own password.
       <p style="margin:.12in 0 0">Email: <span class="blank"></span></p>
       <p style="margin:.1in 0 0">Starter password: <span class="blank"></span></p></li>
     <li>Make it an app on your Home Screen: tap the <b>Share</b> button (the square with an arrow), then <b>Add to Home Screen</b>, then <b>Add</b>.</li>
-    <li>A short welcome walks you through picking a look and a study. You can skip it, and change anything later in Settings.</li>
-    <li>The first time you tap a 🎤 microphone button, your device asks to use the microphone. Tap <b>Allow</b>. It asks only once.</li>
+    <li>A short welcome walks you through picking a look and a study. You can skip it, and change anything later in Settings, where the user guide sits right at the top.</li>
+    <li>The first time you tap a 🎤 microphone button, your device asks to use the microphone. Tap <b>Allow</b>. It asks only once, and it's the only permission the app ever asks for.</li>
   </ol>
   <div class="note"><b>Good to know.</b> You never need to type a Bible key; your family sign-in brings everything with it. Sign in on another phone, iPad or computer and your reading, journal and notes follow you. Forgot your password? Tap “Forgot your password?” on the sign-in screen and a code comes to your email.</div>
-  <p class="foot">Need help? Tap ❓ at the top of any screen, or ask your study buddy.</p>
+  <div class="note"><b>Your study buddy.</b> Tap the little stick figure at the side of the screen and ask him anything: a Bible question, a word in Hebrew or Greek, or everyday things like homework or a recipe. He answers in full and keeps it family-friendly.</div>
+  <div class="note"><b>No signal?</b> Chapters you read recently stay on your device, and your notes and journal save right away. They catch up on their own when the signal comes back.</div>
+  <div class="note"><b>Nothing to buy, ever.</b> The app never sells anything and never asks for a card.</div>
 </section>
-${(() => {
-  const pages = [];
-  for (let i = 0; i < GUIDE.length; i += 2) pages.push(GUIDE.slice(i, i + 2));
-  return pages.map((two, n) => `<section class="page">${n === 0 ? `<p class="kicker">The user guide</p>` : ""}
-    ${two.map((g) => `<div class="sec"><figure>${img(g.id)}<figcaption>${esc(SHOW[g.id].cap)}</figcaption></figure>
-      <div><h2>${g.icon} ${esc(g.title)}</h2><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div></div>`).join("")}
-    <p class="foot">Family Bible Study · ${n + 3}</p></section>`).join("");
-})()}
+<section class="page guide"><p class="kicker">The user guide</p>
+${GUIDE.map((g) => `<div class="sec"><figure>${img(g.id)}<figcaption>${esc(SHOW[g.id].cap)}</figcaption></figure>
+  <div><h2>${g.icon} ${esc(g.title)}</h2><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div></div>`).join("")}
+</section>
 </body></html>`;
 writeFileSync(`${HERE}gift-packet.html`, html);
 const pdfPage = await browser.newPage();

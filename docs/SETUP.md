@@ -17,7 +17,10 @@ device, with no sign-in, backup or built-in helper.
 1. Repository Settings, Pages: Source "Deploy from a branch", branch `main`, folder `/ (root)`.
 2. Optional custom domain: put it in `CNAME`, add a `CNAME` DNS record pointing to
    `<your-user>.github.io`, then tick "Enforce HTTPS".
-3. Open the site. It should load and ask for a Bible key in Settings.
+3. Put your site's address in `js/guide.js` as `SITE` (for example `"bible.example.com"`).
+   The user guide in Settings and the printed setup page both show it. Left empty, they
+   say "your family's Bible Study web address" and the printed page has a line to write it on.
+4. Open the site. It should load and ask for a Bible key in Settings.
 
 ## 3. Create the Supabase project
 
@@ -60,6 +63,9 @@ edited. To send to family members:
 
 ## 6. The built-in Bible helper (optional)
 
+This is Buddy's chat. He answers any question in full, Bible or everyday (homework,
+recipes, how to use a phone), and keeps every answer family-safe.
+
 1. In the Anthropic Console, create an API key and set a **monthly spend limit** (Settings,
    Limits) as the final backstop.
 2. Install the Supabase CLI, then from the repository root:
@@ -78,8 +84,9 @@ edited. To send to family members:
 ## 6b. The family panel (optional)
 
 The organizer's "My family" panel (Settings, Family organizer tools) lists everyone, shows
-the Bible helper allowance left this month, and can add people, give a new temporary
-password, or remove someone. It runs as a second Edge Function, which only the organizer can
+the Bible helper allowance left this month, and can add a family member, give someone a new
+temporary password, give someone a new email (New email: it keeps the same account, so their
+notes, journal and reading place stay with them), or remove someone. It runs as a second Edge Function, which only the organizer can
 use (it checks the organizer mark from `tools/organizer.sql` on every request):
 
 ```sh
