@@ -24,6 +24,14 @@ try {
   check("tapping a place tells where it is today and how sure scholars are", /Tell Hum/.test(await page.textContent("#whereNote")) && /Location/.test(await page.textContent("#whereNote")) && !!(await page.$('#whereNote a[href*="openbible.info/geo/ancient/capernaum"]')));
   check("the places are credited to OpenBible", /OpenBible\.info/.test(await page.textContent("#wherePlaces")));
   check("the tribes named in the chapter are marked", (await page.$$("#whereTribes .tribe.is-named")).length === 2 && (await page.$$("#whereTribes .tribe")).length === 13);
+  // A chapter that isn't about the tribes doesn't show them.
+  await ctx.unroute(/api\.bible/);
+  await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p><span data-number=\"1\" class=\"v\">1</span>Jesus came to a city of Samaria called Sychar.</p>", copyright: "c" } } }));
+  await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.last = { book: "JHN", chapter: 9 }; localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
+  await page.reload(); await page.waitForTimeout(800);
+  await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(1200);
+  await page.evaluate(() => document.querySelector('#studyNotes [data-tab="where"]').click()); await page.waitForTimeout(1000);
+  check("the tribes stay out of chapters that aren't about them", !(await page.$("#whereTribes .tribe")) && /The life of Jesus/.test(await page.textContent("#refPanel")));
   await page.evaluate(async () => { const m = await import("/js/history.js"); window.__era = m.eraFor("EXO", 14); });
   check("dates scholars debate are marked as debated", await page.evaluate(() => window.__era.debated && /1446/.test(window.__era.dates)));
   // Christmas pictures change from chapter to chapter.

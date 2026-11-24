@@ -181,10 +181,12 @@ export async function setFamilyKey({ k, b = "", l = "", x = [], e = "" }) {
   const c = await sb();
   const row = { id: 1, api_bible_key: k, nasb_bible_id: b, nasb_label: l, updated_at: new Date().toISOString() };
   let { error } = await c.from("family_settings").upsert({ ...row, extra_bibles: x, esv_key: e });
+  let esv = !error;
   // Before the newer columns are added, share what the table can hold.
   if (error && /esv_key/i.test(error.message || "")) ({ error } = await c.from("family_settings").upsert({ ...row, extra_bibles: x }));
   if (error && /extra_bibles/i.test(error.message || "")) ({ error } = await c.from("family_settings").upsert(row));
   if (error) throw new Error(/relation|does not exist|schema cache/i.test(error.message) ? "The family key table isn't set up in Supabase yet." : friendly(error));
+  return { esv };
 }
 
 // The built-in Bible helper (Supabase Edge Function "study-partner"). The AI key stays

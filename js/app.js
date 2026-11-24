@@ -2931,6 +2931,9 @@ function loadPlaces() {
 const placeName = (n) => n.replace(/\s\d+$/, "");
 const SURE = { 3: "Location known", 2: "Location likely", 1: "Location uncertain" };
 const NOT_ON_MAP = new Set(["region", "people group", "special"]);
+// Chapters that are about the twelve tribes as a whole.
+const TRIBE_CHAPTERS = new Set(["GEN.29", "GEN.30", "GEN.35", "GEN.48", "GEN.49", "EXO.1", "EXO.28", "NUM.1", "NUM.2", "NUM.7", "NUM.10", "NUM.13", "NUM.26", "NUM.32", "NUM.34", "DEU.27", "DEU.33",
+  ...[13, 14, 15, 16, 17, 18, 19, 21, 22].map((c) => `JOS.${c}`), "JDG.1", "JDG.5", "1CH.2", "1CH.6", "1CH.12", "1CH.27", "EZK.47", "EZK.48", "REV.7"]);
 let whereMap = null;
 function whereOutline(spots) {
   const { NEAR_EAST: ne, GALILEE: gal } = MAP_OUTLINES;
@@ -2967,12 +2970,12 @@ function whereHtml(book, chapter) {
       ${era.written ? `<p class="where-written"><span class="muted">This book:</span> ${esc(era.written)} ${era.writtenDebated && !era.debated ? debated : ""}</p>` : ""}
       <p class="where-world"><strong>The world around it.</strong> ${esc(era.world)}</p></div>
     <div id="wherePlaces"><p class="muted small-print">Finding the places…</p></div>
-    ${tribesHtml()}`;
+    <div id="whereTribes" hidden></div>`;
 }
 function tribesHtml(named = []) {
   const rows = TRIBES.map((t) => `<li class="tribe${named.includes(t) ? " is-named" : ""}"><p class="tribe-head"><strong>${esc(tribeName(t))}</strong>${t[0].startsWith("Joseph") ? " <span class=\"muted\">(Joseph's line)</span>" : ""} <span class="muted small-print">· mother ${esc(t[1])}</span></p>
     <p>${esc(t[2])}${t[4] ? `. <span class="muted">${esc(t[4])}.</span>` : ""}</p><p class="tribe-refs">${linkRefs(t[3])}</p></li>`).join("");
-  return `<details class="where-tribes" id="whereTribes"${named.length ? " open" : ""}><summary>👑 The twelve tribes of Israel${named.length ? ` <span class="rt-sub">${named.length} named in this chapter</span>` : ""}</summary>
+  return `<details class="where-tribes" id="whereTribes" open><summary>👑 The tribes of Israel in this chapter${named.length ? ` <span class="rt-sub">${named.length} named</span>` : ""}</summary>
     <p class="muted small-print">Jacob's twelve sons became the twelve tribes. Joseph's line counts as two tribes, Ephraim and Manasseh, and Levi received towns instead of land.</p>
     <ul class="tribes-list">${rows}</ul></details>`;
 }
@@ -2982,11 +2985,11 @@ async function fillWhere(el, book, chapter) {
   const key = `${book}.${chapter}`;
   box.dataset.key = key;
   // Tribes named in this chapter, when the chapter speaks of tribes.
+  // Shown only when the chapter is about the tribes: it speaks of a tribe by name, or it's
+  // one of the chapters that lists them (Jacob's blessing, the census, the land divided...).
   const text = $("#reader")?.textContent || "";
-  if (/\btribes?\b/i.test(text)) {
-    const named = TRIBES.filter((t) => new RegExp(`\\b${tribeName(t)}\\b`).test(text));
-    if (named.length) el.querySelector("#whereTribes")?.replaceWith(Object.assign(document.createElement("div"), { innerHTML: tribesHtml(named) }).firstElementChild);
-  }
+  const named = /\btribes?\b/i.test(text) ? TRIBES.filter((t) => new RegExp(`\\b${tribeName(t)}\\b`).test(text)) : [];
+  if (named.length || TRIBE_CHAPTERS.has(key)) el.querySelector("#whereTribes")?.replaceWith(Object.assign(document.createElement("div"), { innerHTML: tribesHtml(named) }).firstElementChild);
   const d = await loadPlaces();
   if (box.dataset.key !== key || !box.isConnected) return;
   if (!d) { box.innerHTML = `<p class="muted small-print">The places couldn't load. Check the internet connection and try again.</p>`; return; }
@@ -4021,9 +4024,10 @@ let organizerHere = false;
 async function saveForFamily() {
   if (!authEnabled || !organizerHere || !store.get("apiBibleKey")) return "";
   try {
-    await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" });
+    const shared = await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" });
     store.set("familySyncedAt", new Date().toISOString());
     const m = $("#familyKeyMsg"); if (m) m.textContent = `Saved for the whole family ✓ ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+    if (store.get("esvKey") && shared && !shared.esv) return " Saved for the whole family ✓, except the ESV key: the family table needs its ESV column. Run the latest supabase-setup.sql in Supabase once, then tap Save again.";
     return " Saved for the whole family ✓";
   } catch (x) {
     return /row-level|policy|permission/i.test(x.message || "") ? " (Only the family organizer's account can save it for the family.)" : ` (Couldn't save it for the family: ${x.message})`;
