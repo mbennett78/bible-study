@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 12:33 PM: James through Revelation notes are live, so every chapter of the Bible now has study notes, four days ahead of plan. Revelation shows the main ways people read it (the thousand years, the 144,000, 666) fairly, with sources. Next: refreshing the Creation and Garden of Eden pictures in the kids' Bible.
 - Tue Nov 24, 12:28 PM: Romans through Hebrews notes are live (Romans, 1 and 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 and 2 Thessalonians, 1 and 2 Timothy, Titus, Philemon, Hebrews). Debated passages, like baptism in Romans 6 and Titus 3, the gifts in 1 Corinthians 12, and the "caught up" passage in 1 Thessalonians 4, show the main views fairly with sources and no church labels. Next: James through Revelation.
 - Tue Nov 24, 12:18 PM: Luke, John and Acts notes are live. Every chapter of Matthew through Acts now has study notes, three days ahead of plan. Starting Romans through Revelation.
 - Tue Nov 24, 12:10 PM: Matthew notes are live (Mark too). The end-of-chapter questions are now called "Quick check"; Bible Spin and the other games stay behind Games. New automatic checks click every menu, button and Games entry on phone and iPad (all go where they should), and play Bible Spin start to finish in every mode: solo, Buddy at all three levels, and a three-player family game. That found and fixed one glitch: after Buddy missed and you tapped "My turn!", the game could jump back to Buddy a moment later.
@@ -46,7 +47,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Study notes: Lamentations, Ezekiel | Done (early) | Nov 24 |
 | Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Done (Tue Nov 24) | Thu Nov 26 |
 | Study notes: Matthew, Mark, Luke, John, Acts | Done (Tue Nov 24) | Fri Nov 27 |
-| Study notes: Romans through Revelation (New Testament complete) | In progress | Sat Nov 28 |
+| Study notes: Romans through Revelation (New Testament complete) | Done (Tue Nov 24) | Sat Nov 28 |
 | Catch-up day for notes | Not started | Sun Nov 29 |
 | Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Not started | Sun Nov 29 |
 | Buddy grows, part 1: built-in app guide that points out and explains features and settings (no AI needed) | Not started | Mon Nov 30 |
