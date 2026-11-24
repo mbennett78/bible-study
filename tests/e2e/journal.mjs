@@ -64,7 +64,7 @@ try {
   await page.click("#makeBook"); await page.waitForTimeout(800);
   const book = await page.textContent("#printBook");
   check("book: titled My Journey, a journal by Mel", /My Journey/.test(book) && /a journal by Mel/.test(book));
-  check("book: entries by day, with the verse of the day", /Grandma's surgery/.test(book) && /Verse of the day/.test(book) && await page.evaluate(() => window.__printed === true));
+  check("book: entries by day, with the verse of the day", /Grandma's surgery/.test(book) && /The verse for/.test(book) && await page.evaluate(() => window.__printed === true));
   check("book: has the picture header", Boolean(await page.$("#printBook .pb-art svg")));
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();

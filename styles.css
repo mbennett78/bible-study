@@ -894,15 +894,6 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
   body.printing > *:not(#printBook) { display: none !important; }
   body.printing { background: #fff; padding: 0; color: #222; }
   body.printing .print-book { display: block !important; font-family: var(--serif); color: #222; }
-  .pb-title { text-align: center; padding: 30vh 0 0; page-break-after: always; }
-  .pb-title h1 { font-size: 2.2rem; font-weight: 500; margin: 0 0 8px; }
-  .pb-orn { font-size: 2rem; color: #8a6d55; margin: 0; }
-  .pb-range { color: #666; font-size: .9rem; }
-  .pb-entry { page-break-inside: avoid; border-top: 1px solid #ddd; padding: 14px 0; }
-  .pb-date { font-family: var(--sans); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: #8a6d55; margin: 0; }
-  .pb-entry h3 { font-weight: 500; font-size: 1.15rem; margin: 2px 0 6px; }
-  .pb-entry h4 { font-family: var(--sans); font-size: .8rem; color: #555; margin: 10px 0 2px; }
-  .pb-entry p { margin: 0 0 8px; line-height: 1.55; }
 }
 .key-help { background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; margin-top: 10px; }
 .key-help summary { font-weight: 600; color: var(--accent); cursor: pointer; }
@@ -1965,21 +1956,6 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
 .kp-msg { min-height: 1.4em; color: #b3402e; font-weight: 600; }
 @media (prefers-reduced-motion: no-preference) { .keypad-wrap.shake .kp-dots { animation: kp-shake .4s; } }
 @keyframes kp-shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
-/* The printed "My Journey" book */
-@media print {
-  .pb-title { padding-top: 8vh !important; }
-  .pb-art .scene { width: 100%; margin: 0 0 24px; border-radius: 12px; }
-  .pb-title h1 { font-size: 3rem !important; letter-spacing: .02em; }
-  .pb-by { font-style: italic; font-size: 1.3rem; margin: 0 0 18px; }
-  .pb-day { position: relative; min-height: 9in; padding-bottom: 1.6in; page-break-after: always; }
-  .pb-head .scene { width: 100%; height: 60px; margin: 0 0 10px; border-radius: 8px; }
-  .pb-day .pb-date { font-size: .9rem !important; }
-  .pb-entry { border-top: 1px solid #ddd; padding: 10px 0; }
-  .pb-time { font-family: var(--sans); font-size: .75rem; color: #888; font-weight: 400; }
-  .pb-answered { color: #6a8a4f; font-family: var(--sans); font-size: .8rem; }
-  .pb-verse { position: absolute; right: 0; bottom: 0; width: 2.8in; padding: 10px 12px; border: 1px solid #c9b8a4; border-radius: 10px; background: #faf6ef; font-size: .8rem; line-height: 1.4; }
-  .pb-verse b { display: block; font-family: var(--sans); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: #8a6d55; }
-  .pb-verse span { display: block; margin: 4px 0; } .pb-verse i { color: #555; }
 }
 
 /* ---------- Buddy's own margin: the page leaves room on his side, so he, his little
@@ -2343,3 +2319,103 @@ html { background: var(--page); }
   .kids-story .kf-fly, .kids-story .kf-rain, .kids-story .kf-rise, .kids-story .kf-fall, .kids-story .kf-jump { display: none; }
 }
 :root[data-still]:not([data-graphics="full"]) .kids-story .kf-fly, :root[data-still]:not([data-graphics="full"]) .kids-story .kf-rain { display: none; }
+
+/* ---------- Classic 3: David Roberts' Holy Land paintings, in stone, sand and sky ---------- */
+:root[data-style="classic3"] {
+  --page: #4a3b2c; --page-deep: #3a2e22; --on-page: #f5ecdc; --on-page-muted: #cdbfa6;
+  --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6e6253; --line: #e6dccb;
+  --accent: #6b5238; --accent-soft: #f3ebdd; --warm: #a0784c; --gold: #c2a06a; --verse: #9a8b76;
+  --sky-top: #dfe5ea; --sky-low: #f6f1e8; --far-hill: #b7a88f;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+:root[data-style="classic3"] .vine { opacity: .45; } :root[data-style="classic3"] .vine .leaf { fill: #a3967f; }
+:root[data-style="classic3"] .cl-cross rect { fill: #6b5238; }
+:root[data-style="classic3"] .cl-leaf { fill: #9a9a7c; stroke: #77775c; }
+:root[data-style="classic3"] .pc-featured, :root[data-style="classic3"] .notes-card { border-color: var(--gold); }
+.painting-scene image, .painting-strip image { filter: saturate(1.05) contrast(1.02); }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="classic3"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6e6253; --line: #e6dccb; --accent: #6b5238; --accent-soft: #f3ebdd; --page: #3a2e22; --page-deep: #2e241a; color-scheme: light; }
+}
+
+/* ---------- Full screen while reading on a phone ---------- */
+.topbar, .tabbar { transition: translate .28s ease; }
+body.bars-away .topbar { translate: 0 -110%; }
+body.bars-away .tabbar { translate: 0 calc(100% + 12px); }
+body.bars-away .follow { bottom: calc(52px + env(safe-area-inset-bottom)); }
+.pull-tab { position: fixed; z-index: 6; left: 50%; bottom: calc(8px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 88px; min-height: 40px; padding: 6px 16px 8px; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--page) 88%, transparent); color: var(--on-page); font: inherit; font-size: .8rem; font-weight: 600; box-shadow: 0 4px 14px rgb(0 0 0 / .22); animation: followIn .25s ease-out; }
+.pull-tab span { width: 28px; height: 4px; border-radius: 4px; background: currentColor; opacity: .7; }
+.pull-tab[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .topbar, .tabbar { transition: none; } .pull-tab { animation: none; } }
+
+/* ---------- Printed books: the journal, prayers, church notes, and chapter notes ---------- */
+@media print {
+  @page { size: letter; margin: .55in .65in .6in; }
+  html.printing, html.printing body { background: #fff !important; }
+  .print-book { font-family: var(--serif); color: #2a2420; font-size: 11.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-book .scene, .print-book svg.scene { display: block; width: 100%; height: auto; margin: 0; border-radius: 10px; }
+  /* Title page */
+  .pb-title { break-after: page; height: 9.35in; display: flex; align-items: stretch; }
+  .pb-frame { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1.5pt solid #b49a78; outline: .5pt solid #b49a78; outline-offset: 4pt; border-radius: 6pt; padding: .45in .5in; }
+  .pb-frame .pb-art { width: 100%; }
+  .pb-orn { font-size: 26pt; color: #9a7b57; margin: 18pt 0 4pt; line-height: 1; }
+  .pb-title h1 { font-size: 40pt; font-weight: 500; letter-spacing: .02em; margin: 0 0 6pt; }
+  .pb-by { font-style: italic; font-size: 15pt; color: #5a4a3a; margin: 0 0 10pt; }
+  .pb-range { font-family: var(--sans); font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; color: #8a7560; margin: 0; }
+  .pb-epi { margin: auto 0 0; padding-top: 18pt; font-style: italic; font-size: 12pt; color: #4a3d30; max-width: 4.6in; }
+  .pb-epi cite { display: block; margin-top: 4pt; font-style: normal; font-family: var(--sans); font-size: 8.5pt; letter-spacing: .08em; text-transform: uppercase; color: #8a7560; }
+  /* One page (or more) per day */
+  .pb-day { display: flex; flex-direction: column; min-height: 9.75in; break-after: page; }
+  .pb-dayhead { position: relative; margin-bottom: 14pt; }
+  .pb-strip .scene { border-radius: 8px; opacity: .9; }
+  .pb-when { display: flex; align-items: baseline; gap: 8pt; margin-top: 8pt; padding-bottom: 6pt; border-bottom: 1pt solid #cdbba2; }
+  .pb-dnum { font-size: 30pt; line-height: 1; color: #6b5238; }
+  .pb-dow { font-size: 15pt; font-style: italic; }
+  .pb-month { margin-left: auto; font-family: var(--sans); font-size: 8.5pt; letter-spacing: .1em; text-transform: uppercase; color: #8a7560; }
+  .pb-entry { break-inside: avoid; margin: 0 0 14pt; }
+  .pb-entry h3 { display: flex; align-items: baseline; gap: 8pt; margin: 0 0 4pt; font-weight: 600; font-size: 12.5pt; }
+  .pb-kind { font-variant: small-caps; letter-spacing: .04em; color: #6b5238; }
+  .pk-prayer .pb-kind { color: #4f6a8f; } .pk-gratitude .pb-kind { color: #a0566a; } .pk-church .pb-kind { color: #6b5a8f; } .pk-bible .pb-kind { color: #5d7a4a; }
+  .pb-time { margin-left: auto; font-family: var(--sans); font-size: 8.5pt; font-weight: 400; color: #9a8a78; }
+  .pb-lesson { margin: 0 0 6pt; } .pb-lesson span::before { content: " · "; color: #9a8a78; }
+  .pb-entry h4 { font-family: var(--sans); font-size: 8.5pt; letter-spacing: .06em; text-transform: uppercase; color: #8a7560; margin: 8pt 0 0; }
+  /* Writing sits on soft ruled lines, like a journal */
+  .pb-lines p { margin: 0; line-height: 22pt; background-image: repeating-linear-gradient(to bottom, transparent 0 21pt, #e3d8c8 21pt 22pt); }
+  .pb-lines p + p { margin-top: 0; text-indent: 1.4em; }
+  .pb-answered { color: #5d7a4a; font-family: var(--sans); font-size: 9pt; margin: 4pt 0 0; }
+  .print-book .ee-quote { background: #f7f1e6; border-left: 3pt solid #b49a78; border-radius: 6pt; padding: 8pt 10pt; margin: 4pt 0 8pt; break-inside: avoid; }
+  .print-book .ee-quote blockquote { margin: 0; font-style: italic; }
+  .print-book .ee-quote cite { display: block; font-family: var(--sans); font-size: 8.5pt; font-style: normal; color: #6b5238; margin-top: 3pt; }
+  .print-book .ee-pics { display: flex; flex-wrap: wrap; gap: 8pt; margin: 4pt 0 8pt; }
+  .print-book .ee-pic { border: 0; break-inside: avoid; }
+  .print-book .ee-pic.is-sticker { width: .8in; height: .8in; }
+  .print-book .ee-pic.is-photo img { max-height: 3in; border-radius: 6pt; }
+  .print-book .ee-pic.is-map, .print-book .ee-pic.is-chart { width: 100%; }
+  /* The day's verse sits at the foot of the page */
+  .pb-blank { flex: 1 1 0; min-height: 0; margin: 6pt 0 10pt; background-image: repeating-linear-gradient(to bottom, transparent 0 21pt, #ece3d6 21pt 22pt); }
+  .pb-verse { margin-top: auto; padding-top: 10pt; border-top: 1pt solid #cdbba2; text-align: center; break-inside: avoid; }
+  .pb-vlabel { display: block; font-family: var(--sans); font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #9a7b57; }
+  .pb-verse q { display: block; margin: 4pt auto 2pt; max-width: 5.6in; font-style: italic; font-size: 12pt; quotes: "“" "”"; }
+  .pb-verse cite { font-style: normal; font-family: var(--sans); font-size: 8.5pt; color: #6b5238; }
+  /* Chapter notes */
+  .pn-cover { text-align: center; margin-bottom: 14pt; }
+  .pn-cover h1 { font-size: 28pt; font-weight: 500; margin: 2pt 0; }
+  .pn-lead { text-align: left; font-size: 12pt; line-height: 1.55; border-top: 1pt solid #cdbba2; border-bottom: 1pt solid #cdbba2; padding: 8pt 0; margin: 10pt 0 0; }
+  .pn-sec { margin-top: 16pt; }
+  .pn-sec h2 { font-size: 15pt; font-weight: 600; color: #6b5238; border-bottom: 1pt solid #cdbba2; padding-bottom: 3pt; margin: 0 0 8pt; break-after: avoid; }
+  .pn-item { break-inside: avoid; margin: 0 0 9pt; }
+  .pn-item h3 { font-size: 11.5pt; margin: 0 0 2pt; }
+  .pn-item p { margin: 0; line-height: 1.5; }
+  .pn-ref { font-family: var(--sans); font-size: 9pt; color: #fff; background: #8a6d4e; border-radius: 99px; padding: 1pt 6pt; }
+  .pn-ev { font-family: var(--sans); font-size: 7.5pt; font-weight: 400; letter-spacing: .05em; text-transform: uppercase; color: #8a7560; border: .5pt solid #cdbba2; border-radius: 99px; padding: 0 5pt; margin-left: 4pt; }
+  .pn-small { font-size: 9pt; color: #6e6253; }
+  .pn-orig { font-size: 13pt; }
+  .pn-map svg { width: 100%; height: auto; }
+  .pn-x { padding-left: 1.1em; margin: 0; } .pn-x li { margin-bottom: 3pt; }
+  .pn-sources ol { font-size: 9pt; padding-left: 1.4em; } .pn-sources li { margin-bottom: 2pt; }
+  .print-book sup { font-family: var(--sans); font-size: 7pt; color: #8a7560; }
+}
+.book-what { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; }
+.book-what select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
+.ref-head { display: flex; align-items: center; gap: 12px; } .ref-head > div { flex: 1; }
+@media print { .ref-print { display: none; } }

@@ -20,6 +20,12 @@ try {
     await page.goto(site.url); await page.waitForTimeout(900);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(600);
     await page.evaluate(() => scrollTo(0, 600)); await page.waitForTimeout(200);
+    // On a phone, reading goes full screen: the menus slide away and a Menu tab brings them back.
+    if (dev === "iPhone 13") {
+      check(`${dev}: scrolling the Bible text slides the menus away, with a Menu tab`, await page.evaluate(() => document.body.classList.contains("bars-away")) && await page.$eval("#pullTab", (t) => !t.hidden));
+      await page.click("#pullTab"); await page.waitForTimeout(400);
+      check(`${dev}: the Menu tab brings them back`, !(await page.evaluate(() => document.body.classList.contains("bars-away"))));
+    } else check(`${dev}: the iPad keeps its menus while reading`, !(await page.evaluate(() => document.body.classList.contains("bars-away"))));
     const rail = dev.startsWith("iPad");
     if (rail) {
       // iPad: the menu is a rail down the left; the page starts after it and nothing sits under it.

@@ -172,7 +172,7 @@
       <div data-seg-panel="favorites" hidden><div id="verseMarksList"></div><div id="favList"></div></div>
       <div data-seg-panel="journal" hidden>
         <div id="diaryToday"></div>
-        <div class="row keepsake-row"><button class="small" id="makeBook">📖 Print my "My Journey" book</button><span class="muted small-print">Every entry by date, with that day's verse, ready to print or save as a PDF.</span></div>
+        <div class="row keepsake-row"><button class="small" id="makeBook">📖 Print my book</button><label class="book-what">of <select id="bookWhat" aria-label="What to print"><option value="all">everything</option><option value="prayer">prayers</option><option value="day">my days</option><option value="gratitude">thankful for</option><option value="bible">Bible thoughts</option><option value="church">church notes</option></select></label><span class="muted small-print">A little book with a title page, one page for each day, and that day's verse at the bottom. Print it, or save it as a PDF.</span></div>
         <div id="journalList"></div>
       </div>
     </section>
@@ -319,6 +319,7 @@
           </select>
         </label>
         <label class="switch-row"><span>High contrast<small>Darker, bolder words that are easier to see</small></span><input type="checkbox" role="switch" id="contrastHigh"></label>
+        <label class="switch-row"><span>Full screen while reading on a phone<small>The menus slide out of the way as you scroll down. Scroll up a little, or tap the Menu tab, to bring them back.</small></span><input type="checkbox" role="switch" id="focusRead"></label>
         <label class="switch-row"><span>Follow-along study notes<small>While you read, the study note for the verse you're on shows at the bottom of the page.</small></span><input type="checkbox" role="switch" id="followNotes"></label>
         <label class="switch-row"><span>Tap a word for its meaning<small>Only when you tap. Shows a plain meaning and the Hebrew or Greek.</small></span><input type="checkbox" role="switch" id="wordTap"></label>
         <label class="switch-row"><span>Dotted line under study words<small>A light line under the names of God and the key words, so you know they're worth tapping.</small></span><input type="checkbox" role="switch" id="studyWords"></label>
@@ -433,6 +434,7 @@
     <div class="art-slot" data-art="strip"></div>
   </div>
 
+  <button type="button" class="pull-tab" id="pullTab" aria-label="Show the menus" hidden><span aria-hidden="true"></span>Menu</button>
   <nav class="tabbar" aria-label="Sections">
     <button data-view="home" aria-current="page">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>

@@ -182,6 +182,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
+  if (style === "classic3") return paintingScene({ height });
   if (style === "classic" || style === "classic2") return classicScene({ height, style });
   if (THEME_LOOKS.includes(style)) return themeScene(style, { height });
   const W = 360, H = height, surf = 58, bottom = H - 8;
@@ -248,6 +249,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
+  if (style === "classic3") return paintingStrip(paintingOfDay());
   if (style === "classic" || style === "classic2") return classicStrip("Olive branches and a cross");
   if (THEME_LOOKS.includes(style)) return themeStrip(style);
   const id = ++uid, W = 360, H = 54;
@@ -303,6 +305,7 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
+  if (style === "classic3") { const p = paintingFor(book, chapter); return { kind: "painting", caption: `${PAINTINGS[p][1]}, by David Roberts (1839)`, svg: paintingStrip(p) }; }
   if (style === "classic" || style === "classic2") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
   if (style === "animated") { const story = kidsStory(book, chapter); if (story) return story; }
   const id = ++uid;
@@ -418,6 +421,50 @@ export function classicFlourish() {
     ${clLeaf(30, 26, -24, .8)}${clLeaf(30, 26, 24, .8)}${clLeaf(48, 26, -24, .8)}${clLeaf(48, 26, 24, .8)}
     ${clLeaf(130, 26, 204, .8)}${clLeaf(130, 26, 156, .8)}${clLeaf(112, 26, 204, .8)}${clLeaf(112, 26, 156, .8)}
     ${cross(80, 40, 30)}</svg>`;
+}
+
+
+/* ---------- Classic 3: hand-colored Holy Land paintings ---------- */
+// David Roberts drew these on his 1839 journey; Louis Haghe made them into lithographs for
+// "The Holy Land" (1842-49). Cleveland Museum of Art, Open Access (public domain, CC0).
+// [file, title, where to center a thin strip (0 top, 1 bottom)]
+export const PAINTINGS = {
+  "jerusalem-south": ["img/roberts-jerusalem-south.jpg", "Jerusalem from the south", .42],
+  jerusalem: ["img/roberts-jerusalem.jpg", "Jerusalem", .42],
+  tiberias: ["img/roberts-tiberias.jpg", "Tiberias on the Sea of Galilee", .55],
+  tabor: ["img/roberts-mount-tabor.jpg", "Mount Tabor from the plain of Esdraelon", .52],
+};
+export const PAINTING_CREDIT = "Paintings by David Roberts, The Holy Land (1842-49). Cleveland Museum of Art, public domain.";
+// Galilee for Jesus' ministry there, Mount Tabor where Deborah's army gathered and for
+// mountaintop chapters, Jerusalem for the city's story; otherwise they take turns.
+const GALILEE_CH = { MAT: [4, 18], MRK: [1, 9], LUK: [4, 9], JHN: [1, 6] };
+const TABOR = ["JDG.4", "JDG.5", "MAT.17", "MRK.9", "LUK.9", "PSA.89", "EXO.19", "EXO.20", "MAT.5", "1KI.18"];
+const JERUSALEM_BOOKS = ["2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "PSA", "ISA", "JER", "LAM", "EZK", "HAG", "ZEC", "MAL", "ACT", "HEB", "REV"];
+export function paintingFor(book, chapter) {
+  const key = `${book}.${chapter}`;
+  if (TABOR.includes(key)) return "tabor";
+  const g = GALILEE_CH[book];
+  if ((g && chapter >= g[0] && chapter <= g[1]) || key === "JHN.21") return "tiberias";
+  if (JERUSALEM_BOOKS.includes(book) || ["MAT", "MRK", "LUK", "JHN"].includes(book)) return chapter % 2 ? "jerusalem" : "jerusalem-south";
+  const ids = Object.keys(PAINTINGS);
+  return ids[(book.charCodeAt(0) + book.charCodeAt(1) + chapter) % ids.length];
+}
+// Home's painting changes each day.
+export function paintingOfDay(d = new Date()) {
+  const ids = Object.keys(PAINTINGS);
+  return ids[Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5) % ids.length];
+}
+export function paintingScene({ height = 170, id = paintingOfDay() } = {}) {
+  const [src, title] = PAINTINGS[id];
+  return `<svg class="scene painting-scene" viewBox="0 0 360 ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}, painted by David Roberts in 1839">
+    <rect width="360" height="${height}" fill="#e8dcc6"/><image href="${src}" width="360" height="${height}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+}
+export function paintingStrip(id) {
+  const [src, title, y] = PAINTINGS[id];
+  // A thin window onto the painting: the image is drawn tall and moved so its middle band shows.
+  const h = 240, top = -(h * y - 27);
+  return `<svg class="fish-strip passage-art painting-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}, by David Roberts">
+    <rect width="360" height="54" fill="#e8dcc6"/><image href="${src}" x="0" y="${top.toFixed(1)}" width="360" height="${h}" preserveAspectRatio="xMidYMid slice"/></svg>`;
 }
 
 /* ---------- Wooden Cross look ---------- */

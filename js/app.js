@@ -73,6 +73,7 @@ function loadPlanVersionsOnce() {
 // Journal has its own button in the menu: it opens My Bible on the Journal page.
 let segment = "progress";
 function showView(name) {
+  setBarsAway(false);
   if (name === "journal") { segment = "journal"; navFromMenu = false; showView("books"); markNav("journal"); return; }
   if (name === "books" && segment === "journal" && navFromMenu) segment = "progress"; // the My Bible button shows the books
   document.querySelectorAll(".view").forEach((v) => { v.hidden = v.id !== `view-${name}`; });
@@ -97,6 +98,24 @@ document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("c
 // On iPad and other wide screens the menu is a rail down the left side instead of a bar.
 const railMedia = matchMedia("(min-width: 700px) and (min-height: 500px)");
 const railMode = () => railMedia.matches;
+/* ---------- Full screen while reading on a phone ---------- */
+// Scrolling down through the Bible text slides the top and bottom menus away; scrolling up a
+// little, or tapping the small Menu tab, brings them back. iPads keep their side menu.
+let lastY = 0, upBy = 0;
+function setBarsAway(away) {
+  document.body.classList.toggle("bars-away", away);
+  const tab = document.getElementById("pullTab");
+  if (tab) tab.hidden = !away;
+}
+window.addEventListener("scroll", () => {
+  const y = window.scrollY, dy = y - lastY;
+  lastY = y;
+  const reading = !document.getElementById("view-read")?.hidden;
+  if (!reading || railMode() || store.get("focusRead") === false || document.documentElement.classList.contains("typing")) { if (document.body.classList.contains("bars-away")) setBarsAway(false); return; }
+  if (dy > 6 && y > 160) { upBy = 0; if (!document.body.classList.contains("bars-away")) setBarsAway(true); }
+  else if (dy < 0) { upBy -= dy; if (upBy > 40 || y < 80) setBarsAway(false); }
+}, { passive: true });
+document.getElementById("pullTab")?.addEventListener("click", () => { upBy = 0; setBarsAway(false); });
 // Keep page content clear of the bottom menu, whatever its real height on this device.
 const measureBar = () => document.documentElement.style.setProperty("--tabbar-total", railMode() ? "0px" : `${Math.ceil(document.querySelector(".tabbar").getBoundingClientRect().height)}px`);
 if ("ResizeObserver" in window) new ResizeObserver(measureBar).observe(document.querySelector(".tabbar"));
@@ -1785,19 +1804,43 @@ function entrySnippet(e) {
   const extras = [e.quotes?.length && `📖 ${e.quotes.length}`, e.pics?.filter((p) => p.t === "photo").length && `📷 ${e.pics.filter((p) => p.t === "photo").length}`, e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join(""), e.pics?.some((p) => p.t === "map") && "🗺️", e.pics?.some((p) => p.t === "chart") && "📊"].filter(Boolean);
   return `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}${extras.length ? `<span class="entry-extras">${extras.join(" ")}</span>` : ""}`;
 }
+// Prints a little book: only #printBook shows on paper (styles.css, "Printed books").
+function printPages(html, kind = "journal") {
+  const book = $("#printBook");
+  book.className = `print-book pb-${kind}`;
+  book.innerHTML = html;
+  book.hidden = false;
+  document.body.classList.add("printing"); document.documentElement.classList.add("printing");
+  const done = () => { document.body.classList.remove("printing"); document.documentElement.classList.remove("printing"); book.hidden = true; window.removeEventListener("afterprint", done); };
+  window.addEventListener("afterprint", done);
+  setTimeout(() => window.print(), 80);
+}
+const BOOK_KINDS = {
+  all: ["My Journey", "a journal"], prayer: ["My Prayers", "prayers"], day: ["My Days", "a daily journal"],
+  gratitude: ["Thankful", "a gratitude journal"], bible: ["Bible Thoughts", "a Bible journal"], church: ["Church Notes", "Sunday notes"],
+};
 async function makeJournalBook() {
   if (journalLocked()) { mascotSay("Unlock your journal first."); return; }
+  const only = $("#bookWhat")?.value || "all";
+  const want = (k) => only === "all" || only === k;
   const name = (store.get("name") || "").trim();
   const para = (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
   // Everything written, by day: new entries, older daily pages, and chapter journals.
   const days = {};
-  const add = (day, item) => { (days[day] ||= []).push(item); };
-  for (const e of store.allEntries()) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", ref: e.ref, parts: [["", e.text]], answered: e.answered,
-    head: e.title ? `<p class="pb-lesson"><b>${esc(e.title)}</b>${e.speaker ? ` · ${esc(e.speaker)}` : ""}${e.passage ? ` · ${esc(e.passage)}` : ""}</p>` : "",
+  const add = (day, item) => { if (item.parts.some(([, t]) => (t || "").trim()) || item.extra || item.head) (days[day] ||= []).push(item); };
+  for (const e of store.allEntries()) if (want(e.kind)) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", k: e.kind, ref: e.ref, parts: [["", e.text]], answered: e.answered,
+    head: e.title || e.speaker || e.passage ? `<p class="pb-lesson">${e.title ? `<b>${esc(e.title)}</b>` : ""}${e.speaker ? `<span>${esc(e.speaker)}</span>` : ""}${e.passage ? `<span>${esc(e.passage)}</span>` : ""}</p>` : "",
     extra: (e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("") + ((e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : "") });
-  for (const d of store.allDiary()) add(d.day, { at: d.created || `${d.day}T12:00:00`, kind: "My day", parts: [["My day", d.text], ["Prayers", d.prayer], ["Gratitude", d.gratitude]], answered: d.answered });
-  for (const j of store.allJournal()) add(dayOf(j.created || j.updated), { at: j.created || j.updated, kind: "Bible thoughts", ref: j.key, parts: [["Thoughts", j.text], ["Prayers", j.prayer], ["Gratitude", j.gratitude]], answered: j.answered });
+  for (const d of store.allDiary()) {
+    const parts = [["My day", d.text, "day"], ["Prayers", d.prayer, "prayer"], ["Thankful for", d.gratitude, "gratitude"]].filter(([, , k]) => want(k));
+    add(d.day, { at: d.created || `${d.day}T12:00:00`, kind: only === "all" ? "My day" : BOOK_KINDS[only][0], k: only === "all" ? "day" : only, parts, answered: d.answered });
+  }
+  for (const j of store.allJournal()) {
+    const parts = [["Thoughts", j.text, "bible"], ["Prayers", j.prayer, "prayer"], ["Thankful for", j.gratitude, "gratitude"]].filter(([, , k]) => want(k));
+    add(dayOf(j.created || j.updated), { at: j.created || j.updated, kind: "Bible thoughts", k: "bible", ref: j.key, parts, answered: j.answered });
+  }
   const order = Object.keys(days).sort();
+  if (!order.length) { mascotSay("There's nothing of that kind to print yet."); return; }
   // That day's verse of the day, in their own version when it can be fetched.
   const verses = {};
   await Promise.all(order.map(async (day) => {
@@ -1807,21 +1850,48 @@ async function makeJournalBook() {
     try { words = verseFromHtml((await getChapter(store.get("version"), v.book, v.chapter)).html, v.verse) || ""; } catch { /* the reference alone */ }
     verses[day] = { ref, words, theme: v.theme };
   }));
-  const book = $("#printBook");
-  book.innerHTML = `<section class="pb-title"><div class="pb-art">${seaScene(store.get("style"))}</div>
-      <h1>My Journey</h1><p class="pb-by">${name ? `a journal by ${esc(name)}` : "a journal"}</p>
-      <p class="pb-range">${order.length > 1 ? `${esc(dayLabel(order[0]))} to ${esc(dayLabel(order[order.length - 1]))}` : order.length ? esc(dayLabel(order[0])) : ""}</p></section>
-    ${order.length ? order.map((day) => `<article class="pb-day"><div class="pb-head">${seaScene(store.get("style"), { height: 60 })}</div><p class="pb-date">${esc(dayLabel(day))}</p>
-      ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => `<div class="pb-entry"><h3>${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""} <span class="pb-time">${esc(timeOf(it.at))}</span></h3>${it.head || ""}${it.extra || ""}
-        ${it.parts.filter(([, t]) => (t || "").trim()).map(([label, t]) => `${label && it.parts.filter(([, x]) => (x || "").trim()).length > 1 ? `<h4>${esc(label)}</h4>` : ""}${para(t)}`).join("")}
-        ${it.answered ? `<p class="pb-answered">Answered ✓ ${esc(fmtDate(it.answered))}</p>` : ""}</div>`).join("")}
-      <aside class="pb-verse"><b>Verse of the day</b>${verses[day].words ? `<span>“${esc(verses[day].words)}”</span>` : `<span>${esc(verses[day].theme)}</span>`}<i>${esc(verses[day].ref)}</i></aside></article>`).join("")
-    : `<p>No entries yet.</p>`}`;
-  book.hidden = false;
-  document.body.classList.add("printing");
-  const done = () => { document.body.classList.remove("printing"); book.hidden = true; window.removeEventListener("afterprint", done); };
-  window.addEventListener("afterprint", done);
-  setTimeout(() => window.print(), 50);
+  const [title, sub] = BOOK_KINDS[only] || BOOK_KINDS.all;
+  const style = store.get("style");
+  const dateParts = (day) => { const d = new Date(`${day}T12:00:00`); return [d.toLocaleDateString([], { weekday: "long" }), d.getDate(), d.toLocaleDateString([], { month: "long", year: "numeric" })]; };
+  const html = `<section class="pb-title"><div class="pb-frame">
+      <div class="pb-art">${seaScene(style)}</div>
+      <p class="pb-orn" aria-hidden="true">❦</p>
+      <h1>${esc(title)}</h1><p class="pb-by">${name ? `${esc(sub)} by ${esc(name)}` : esc(sub)}</p>
+      <p class="pb-range">${order.length > 1 ? `${esc(dayLabel(order[0]))} to ${esc(dayLabel(order[order.length - 1]))}` : esc(dayLabel(order[0]))}</p>
+      <blockquote class="pb-epi">“His compassions fail not. They are new every morning: great is thy faithfulness.”<cite>Lamentations 3:22-23</cite></blockquote>
+    </div></section>
+    ${order.map((day) => { const [dow, dnum, month] = dateParts(day); return `<article class="pb-day">
+      <header class="pb-dayhead"><div class="pb-strip">${seaScene(style, { height: 46 })}</div><div class="pb-when"><span class="pb-dnum">${dnum}</span><span class="pb-dow">${esc(dow)}</span><span class="pb-month">${esc(month)}</span></div></header>
+      ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => { const filled = it.parts.filter(([, t]) => (t || "").trim()); return `<section class="pb-entry pk-${it.k}">
+        <h3><span class="pb-kind">${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""}</span><span class="pb-time">${esc(timeOf(it.at))}</span></h3>${it.head || ""}${it.extra || ""}
+        <div class="pb-lines">${filled.map(([label, t]) => `${label && filled.length > 1 ? `<h4>${esc(label)}</h4>` : ""}${para(t)}`).join("")}</div>
+        ${it.answered ? `<p class="pb-answered">Answered ✓ ${esc(fmtDate(it.answered))}</p>` : ""}</section>`; }).join("")}
+      <div class="pb-blank" aria-hidden="true"></div>
+      <footer class="pb-verse"><span class="pb-vlabel">The verse for ${esc(dow)}</span>${verses[day].words ? `<q>${esc(verses[day].words)}</q>` : `<q>${esc(verses[day].theme)}</q>`}<cite>${esc(verses[day].ref)}</cite></footer>
+    </article>`; }).join("")}`;
+  printPages(html, "journal");
+}
+// The study notes for a chapter, with your own notes on it, laid out for paper.
+function printNotes(book, chapter) {
+  const n = notesFor(book, chapter), key = `${book}.${chapter}`;
+  const name = refName({ book, chapter });
+  const mine = store.allEntries().filter((e) => e.ref === key || (e.quotes || []).some((q) => q.ref.startsWith(`${key}.`)));
+  const srcKeys = n ? Object.keys(n.sources) : [];
+  const cite = (ids) => ids?.length ? `<sup>${ids.map((k) => srcKeys.indexOf(k) + 1).join(",")}</sup>` : "";
+  const ev = (k) => k && EVIDENCE[k] ? `<span class="pn-ev">${esc(EVIDENCE[k].label)}</span>` : "";
+  const intro = INTROS[book];
+  const section = (x) => `<section class="pn-sec"><h2>${esc(x.title)}</h2>${x.items.map((it) => it.word
+      ? `<div class="pn-item"><h3><span class="pn-orig">${esc(it.word)}</span> ${esc(it.say)} · <i>${esc(it.means)}</i></h3><p>${esc(it.text)}${cite(it.src)}</p>${it.strongs ? `<p class="pn-small">Strong's ${esc(it.strongs)}${it.count ? `; used ${esc(it.count)}` : ""}</p>` : ""}</div>`
+      : `<div class="pn-item"><h3>${it.ref ? `<span class="pn-ref">${esc(it.ref)}</span> ` : ""}${esc(it.head)} ${it.who ? `<span class="pn-ev">${esc(it.who)}</span>` : ev(it.ev)}</h3><p>${esc(it.text)}${cite(it.src)}</p>${it.ask ? `<p class="pn-small">${esc(it.ask)}</p>` : ""}</div>`).join("")}</section>`;
+  const html = `<section class="pn-cover"><div class="pb-art">${seaScene(store.get("style"), { height: 120 })}</div>
+      <p class="pb-orn" aria-hidden="true">❦</p><h1>${esc(name)}</h1><p class="pb-by">Study notes${(store.get("name") || "").trim() ? ` · ${esc(store.get("name").trim())}` : ""}</p>
+      ${n ? `<p class="pn-lead">${esc(n.intro)}</p>` : intro ? `<p class="pn-lead">${esc(intro.about || "")}</p>` : ""}</section>
+    ${n ? `${n.sections.map(section).join("")}
+      ${n.map ? `<section class="pn-sec pn-map"><h2>Map</h2>${mapSvg(n.map)}<p class="pn-small">${esc(n.map.caption)}</p></section>` : ""}
+      ${n.crossRefs ? `<section class="pn-sec"><h2>Cross-references</h2><ul class="pn-x">${n.crossRefs.map(([, r, why]) => `<li><b>${esc(r)}</b> ${esc(why)}</li>`).join("")}</ul></section>` : ""}` : ""}
+    ${mine.length ? `<section class="pn-sec pn-mine"><h2>My notes</h2>${mine.map((e) => `<div class="pn-item"><h3>${esc(KIND[e.kind]?.label || "Note")} <span class="pb-time">${esc(dayLabel(dayOf(e.created)))}</span></h3>${e.title ? `<p><b>${esc(e.title)}</b></p>` : ""}${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}${e.text ? `<div class="pb-lines">${esc(e.text).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("")}</div>` : ""}</div>`).join("")}</section>` : ""}
+    ${n ? `<section class="pn-sec pn-sources"><h2>Sources</h2><ol>${srcKeys.map((k) => `<li>${esc(sourceText(n.sources[k]))}</li>`).join("")}</ol></section>` : ""}`;
+  printPages(html, "notes");
 }
 $("#makeBook").addEventListener("click", makeJournalBook);
 
@@ -2105,6 +2175,8 @@ function initSettings() {
   $("#contrastHigh").addEventListener("change", () => { store.set("contrast", $("#contrastHigh").checked); applyAppearance(); });
   $("#wordTap").checked = store.get("wordTap") !== false;
   $("#followNotes").checked = store.get("followNotes") !== false;
+  $("#focusRead").checked = store.get("focusRead") !== false;
+  $("#focusRead").addEventListener("change", (e) => { store.set("focusRead", e.target.checked); if (!e.target.checked) setBarsAway(false); });
   $("#followNotes").addEventListener("change", (e) => { store.set("followNotes", e.target.checked); followKey = ""; });
   $("#wordTap").addEventListener("change", () => { store.set("wordTap", $("#wordTap").checked); syncStudyWords(); });
   $("#studyWords").checked = store.get("studyWords") !== false;
@@ -2351,6 +2423,7 @@ const FEATURES = [
 const LOOKS = [
   ["classic", "Classic 1", "Brown, gray and white, with olive branches, three crosses on a hill, soft sun and clouds. Clouds drift and birds glide in Lively pictures.", ["#3a3430", "#ffffff", "#7d8a6e"]],
   ["classic2", "Classic 2", "Navy, blues and warm browns: olive branches and the five loaves and two fish, softly glowing (John 6). Clouds drift in Lively pictures.", ["#1f2b42", "#dfe7f1", "#7a5a40"]],
+  ["classic3", "Classic 3", "Hand-colored Holy Land paintings by David Roberts (1839): Jerusalem, Mount Tabor and the Sea of Galilee, in stone, sand and sky colors. The painting changes with the passage you read.", ["#4a3b2c", "#efe6d6", "#8aa0b0"]],
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
   ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Birds fly at sunrise in Lively pictures.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
@@ -2361,7 +2434,7 @@ const LOOKS = [
 ];
 // Calm looks: no cartoons and no confetti, and motion only with Lively pictures (birds, breeze, candles). Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
-function isStill(style = store.get("style")) { return ["classic", "classic2", "sage", "easter", "fall"].includes(style); }
+function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "sage", "easter", "fall"].includes(style); }
 // A drop-down of looks with a live picture of the chosen one right beside it, so people can
 // see what they're picking (used in first-time setup and in Settings).
 function lookPickerHtml(id) {
@@ -2799,9 +2872,10 @@ function refTilesHtml(tiles, subs = {}) {
     <span class="rt-icon" aria-hidden="true">${REF_TILES[id][0]}</span><span class="rt-label">${esc(REF_TILES[id][1])}</span>${subs[id] ? `<span class="rt-sub">${esc(subs[id])}</span>` : ""}</button>`).join("")}</div>`;
 }
 function refHead(book, chapter) {
-  return `<div class="ref-head"><span class="ref-icon" aria-hidden="true">📚</span><div><h2>Reference &amp; resources</h2><p class="muted small-print">Study helps for ${esc(refName({ book, chapter }))}. Tap a square to open it.</p></div></div>`;
+  return `<div class="ref-head"><span class="ref-icon" aria-hidden="true">📚</span><div><h2>Reference &amp; resources</h2><p class="muted small-print">Study helps for ${esc(refName({ book, chapter }))}. Tap a square to open it.</p></div><button type="button" class="small ref-print" data-print-notes>🖨 Print</button></div>`;
 }
 function wireRef(el, book, chapter) {
+  el.querySelector("[data-print-notes]")?.addEventListener("click", () => printNotes(book, chapter));
   el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
     notesTab = b.dataset.tab;
     renderNotes(book, chapter);
