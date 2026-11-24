@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 1:05 PM: "What's new this week" is in, five days early. After an update, a short note (three lines, with "2 more" folded away) sits on Home under the greeting. "Got it" puts it away for good, and "Don't show these" turns notes off. It never pops up over anything. Settings > Help and guide has a switch to turn the notes back on, plus every note so far. Brand-new family members don't get old notes. All 558 automatic checks pass. Picture: whats-new-note.png in the project folder.
 - Tue Nov 24, 12:45 PM: Bible Spin got its game-show upgrade, five days early. Each right answer adds oil to a lamp; when it's full you choose any jewel you still need and answer one question to win it. Streaks of 3, 5 and 10 earn bonus coins. Every sixth question brings a bonus round of three quick questions with nothing to lose. The wheel's friends now say something when the wheel lands on them, cheer each new jewel, and Buddy reacts to your answers. All 16 automatic playthrough checks pass (solo, Buddy at every level, a three-player family game). Preview: bible-spin-new-moments.png in the project folder.
 - Tue Nov 24, 12:41 PM: Six New Testament pictures for the kids' Bible: Jesus' baptism with the dove (Matthew 3, Mark 1, Luke 3), water into wine at Cana, Lazarus coming out of the tomb, Palm Sunday, the Last Supper (all four Gospels), and the light on the road to Damascus. Preview: kids-nt-stories.png in the project folder.
 - Tue Nov 24, 12:40 PM: Six more kids' Bible pictures: Abraham and Isaac with the ram in the thicket (gentle), manna and quail in the desert, Gideon's trumpets and torches, Ruth in Boaz's field (all of Ruth), young Samuel hearing God call at night, and fire from heaven on Mount Carmel. Preview: kids-more-ot-stories.png in the project folder.
@@ -54,7 +55,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Study notes: Matthew, Mark, Luke, John, Acts | Done (Tue Nov 24) | Fri Nov 27 |
 | Study notes: Romans through Revelation (New Testament complete) | Done (Tue Nov 24) | Sat Nov 28 |
 | Catch-up day for notes | Not started | Sun Nov 29 |
-| Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Not started | Sun Nov 29 |
+| Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Done (Tue Nov 24) | Sun Nov 29 |
 | Buddy grows, part 1: built-in app guide that points out and explains features and settings (no AI needed) | Not started | Mon Nov 30 |
 | Buddy grows, part 1: remembers where they left off and their last study, and jogs their memory | Not started | Mon Nov 30 |
 | Buddy grows, part 1: knows the date, season and how long they've been studying this session | Not started | Mon Nov 30 |
