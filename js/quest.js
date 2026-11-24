@@ -138,7 +138,7 @@ const RIGHT = ["Right!", "Yes!", "You got it!", "Well done!", "Amen!", "Spot on!
 const WRONG = ["Not quite!", "Good try!", "So close!", "Now you know!"];
 
 /* ---------- The game window ---------- */
-export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy", onWin = null }) {
+export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy", onWin, onBuddyWin = null }) {
   const B = () => buddyName(); // the name each person gave their study buddy (plain text)
   const BH = () => esc(buddyName()); // the same, ready for HTML
   const dlg = document.createElement("dialog");
@@ -361,7 +361,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       ${fresh.length ? `<div class="q-newbadges"><h3>New badge${fresh.length > 1 ? "s" : ""}!</h3>${fresh.map(([, name, icon]) => `<div class="q-badge">${medal(icon, { fresh: true })}<b>${esc(name)}</b></div>`).join("")}</div>` : ""}
       <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Quest</button></div>`);
     if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("cheer"); } else sound("done");
-    if (iWon) onWin?.();
+    if (iWon) onWin?.(game.mode);
+    else if (game.mode === "buddy" && top !== me) onBuddyWin?.();
     const again = { mode: game.mode, names: game.players.filter((p) => p.kind === "person").map((p) => p.name), level: game.level };
     dlg.querySelector("[data-again]").onclick = () => again.mode === "buddy" ? start("buddy", [newPlayer(again.names[0]), newPlayer(B(), "buddy")], again.level) : start(again.mode, again.names.map((n) => newPlayer(n)));
     dlg.querySelector("[data-home]").onclick = home;

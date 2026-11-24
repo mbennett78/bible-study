@@ -20,11 +20,15 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <ellipse class="buddy-mouth" cx="26" cy="26.6" rx="2.8" ry="1.9"/>
     <path class="buddy-frown" d="M23 27.2q3-1.3 6 0"/>
     <path class="buddy-brow" d="M20.3 17.2l3.2-.8M31.7 17.2l-3.2-.8"/>
+    <path class="buddy-mad" d="M20.2 16.3l3.6 1.7M31.8 16.3l-3.6 1.7"/>
+    <path class="buddy-tear" d="M22.3 23.2q-1.3 2.1 0 3.1q1.3-1 0-3.1z"/>
+    <g class="buddy-glasses"><circle cx="22.5" cy="20.6" r="3.1"/><circle cx="29.5" cy="20.6" r="3.1"/><path d="M25.6 20.4h.8M19.4 20.1l-2.6-1.1M32.6 20.1l2.6-1.1"/></g>
     <path class="buddy-line" d="M26 32v22"/>
     <g class="buddy-arm-l"><path class="buddy-line" d="M26 38l-10 9"/></g>
     <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
     <g class="buddy-legs-stand"><path class="buddy-line" d="M26 54l-8 18M26 54l8 18"/></g>
     <g class="buddy-book"><path class="buddy-book-page" d="M17 44.5l9 2.2l9-2.2v9l-9 2.2l-9-2.2z"/><path class="buddy-book-spine" d="M26 46.7v9"/></g>
+    <g class="buddy-paper"><path class="buddy-paper-sheet" d="M17.5 44.5h13v11h-13z"/><path class="buddy-paper-lines" d="M19.5 47.5h9M19.5 50h9M19.5 52.5h5"/><path class="buddy-pencil" d="M37 43.5l-7.5 8.5"/><path class="buddy-pencil-tip" d="M29.5 52l-.9 1.9 1.9-.9z"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
@@ -44,9 +48,9 @@ const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const NO_LINES = ["Okie! 😊", "Sure thing! Just let me know.", "Okay! I'll be right over here.", "No problem! I'm here whenever you need me.", "Okie dokie! Happy reading."];
 const PLAY_LINES = ["Yay! Let's play! 🎲", "Woohoo! Get ready to spin!", "Game on! I'll try my best!"];
 const YES_LINES = ["Oh yeah! I can find something!", "Ooh, yay! What is it?", "Oh good, I love questions!", "Yes! Let's find out together!"];
-let careTimer = 0;
+let careTimer = 0, nerdTimer = 0;
 
-export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right", sayOutLoud = null }) {
+export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right", sayOutLoud = null, sleepy = () => false }) {
   const el = document.createElement("button");
   el.type = "button";
   el.className = "buddy";
@@ -320,11 +324,12 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }
   // A little picture over his head for a few seconds: a cloud for a sad passage, hearts
   // for a happy one, lightning for a dramatic one, a sun or moon for the time of day.
-  const MOODS = { sad: "☁️", happy: "💕", dramatic: "⚡", idea: "💡", morning: "☀️", night: "🌙", sleepy: "🥱", party: "🎉", trophy: "🏆" };
+  const MOODS = { sad: "☁️", happy: "💕", dramatic: "⚡", idea: "💡", morning: "☀️", night: "🌙", sleepy: "🥱", party: "🎉", trophy: "🏆", mad: "😤", cry: "😢", love: "💛" };
   function mood(kind, ms = 6000) {
     if (el.hidden || el.classList.contains("sleeping") || pop.classList.contains("search")) return false;
     popUp(MOODS[kind] || kind, ms);
     if (kind === "sad") { el.classList.add("caring"); setTimeout(() => el.classList.remove("caring"), ms); }
+    if (kind === "mad" || kind === "cry") { el.classList.remove("tucked"); el.classList.add(kind === "mad" ? "pouting" : "teary"); setTimeout(() => el.classList.remove("pouting", "teary"), Math.min(ms, 3500)); }
     return true;
   }
   function nap() {
@@ -343,9 +348,9 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   addEventListener("keydown", active);
   setInterval(() => {
     if (still()) return;
-    if (Date.now() - lastActive > (lateNow() ? LATE_NAP_MS : NAP_AFTER_MS)) { nap(); return; }
+    if (Date.now() - lastActive > (lateNow() || sleepy() ? LATE_NAP_MS : NAP_AFTER_MS)) { nap(); return; }
     if (lateNow() && Math.random() < 0.3) { if (!busy()) mood("sleepy", 2600); return; }
-    if (Math.random() < 0.55) trick(pick(TRICKS));
+    if (Math.random() < (sleepy() ? 0.15 : 0.55)) trick(pick(TRICKS));
   }, TRICK_EVERY_MS);
 
   addEventListener("resize", place);
@@ -392,6 +397,16 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     caring(on) { clearTimeout(careTimer); el.classList.toggle("caring", on); if (on) { wake(); hold(8000); el.classList.remove("tucked"); careTimer = setTimeout(() => el.classList.remove("caring"), 90000); } },
     cheer() { play("cheering", 2600); },     // a great quiz score
     trick,                                    // "cartwheel" | "stroll" | "pondering" | "yay"
+    // Scholarly things (Greek, Hebrew, the scholars' views): on go his nerd glasses.
+    nerd(ms = 6000) { if (el.hidden || el.classList.contains("sleeping") || drag) return false; el.classList.remove("tucked"); el.classList.add("nerdy"); popUp("🤓", 1800); clearTimeout(nerdTimer); nerdTimer = setTimeout(() => el.classList.remove("nerdy"), ms); return true; },
+    // They're writing: he pulls out his own paper and pencil for a bit.
+    writing(ms = 7000) {
+      if (el.hidden || drag || busy() || el.classList.contains("sleeping")) return false;
+      el.classList.remove("tucked", "reading"); el.classList.add("sitting", "writing");
+      trickUntil = Date.now() + ms;
+      setTimeout(() => el.classList.remove("writing"), ms);
+      return true;
+    },
     nap,
     sleeping: () => el.classList.contains("sleeping"),
     // Looking something up: his magnifying glass while he thinks, and a lightbulb when he's got it.

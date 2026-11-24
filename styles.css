@@ -2549,3 +2549,29 @@ textarea.nf-big { font-size: 1.25rem; }
 .aud-note { background: var(--accent-soft); border-radius: 12px; padding: 8px 12px; margin: 6px 0 10px; font-size: .92rem; }
 .aud-note summary { cursor: pointer; font-weight: 600; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .aud-note p { margin: 6px 0; }
+
+/* Buddy's extra looks: nerd glasses, paper and pencil, a pout and a tear (all just for fun) */
+.buddy-glasses, .buddy-paper, .buddy-mad, .buddy-tear { display: none; }
+.buddy-glasses circle, .buddy-glasses path { fill: none; stroke: var(--text); stroke-width: 1.2; stroke-linecap: round; }
+.buddy-glasses circle { fill: rgba(255, 255, 255, .25); }
+.buddy.nerdy .buddy-glasses { display: inline; }
+.buddy-paper-sheet { fill: var(--surface); stroke: var(--accent); stroke-width: 1.4; stroke-linejoin: round; }
+.buddy-paper-lines { fill: none; stroke: var(--verse); stroke-width: .9; stroke-linecap: round; }
+.buddy-pencil { stroke: #e0a83a; stroke-width: 2.2; stroke-linecap: round; }
+.buddy-pencil-tip { fill: var(--text); }
+.buddy.writing .buddy-paper { display: inline; }
+.buddy.writing .buddy-arm-r { transform: rotate(-38deg); }
+.buddy.writing .buddy-arm-l { transform: rotate(38deg); }
+.buddy.writing .buddy-head, .buddy.writing .buddy-eye, .buddy.writing .buddy-smile { transform: translateY(1.5px); transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.writing .buddy-arm-r { animation: buddy-scribble .45s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.pouting .buddy-body { animation: buddy-huff .5s ease-in-out 3; transform-origin: 26px 70px; transform-box: view-box; }
+}
+@keyframes buddy-scribble { from { transform: rotate(-38deg); } to { transform: rotate(-30deg); } }
+@keyframes buddy-huff { 50% { transform: scale(1.04, .97); } }
+.buddy-mad { fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; }
+.buddy.pouting .buddy-mad, .buddy.pouting .buddy-frown { display: inline; }
+.buddy.pouting .buddy-smile, .buddy.teary .buddy-smile { display: none; }
+.buddy-tear { fill: #6fb3e8; }
+.buddy.teary .buddy-tear, .buddy.teary .buddy-frown, .buddy.teary .buddy-brow { display: inline; }
+.bnd-face .buddy-glasses, .bnd-face .buddy-paper, .bnd-face .buddy-mad, .bnd-face .buddy-tear { display: none; }

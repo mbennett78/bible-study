@@ -1261,6 +1261,7 @@ async function askBuiltIn(q) {
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
   buddy.thinking(true);
+  if (/\b(greek|hebrew|aramaic|scholar|commentar|historian|archaeolog|manuscript|translat|original language|strong'?s)\w*/i.test(q)) buddy.nerd(9000);
   const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName() });
   wait.remove();
   buddy.thinking(false);
@@ -1350,7 +1351,15 @@ const quest = createQuest({
   practice: () => game.open(),
   buddyName: () => buddyName(),
   // A win at trivia: he can hardly contain himself (once the game window closes).
-  onWin: () => buddyAfterDialogs(() => buddy.celebrate(pickOne([`You WON! 🏆 That was amazing, ${store.get("name")?.trim() || "friend"}!`, "Woohoo! You're a trivia champion! 🎉", "YES! I knew you could do it! 🏆"]), "trophy")),
+  onWin: (mode) => buddyAfterDialogs(() => {
+    if (mode === "buddy") {
+      // Beaten! A little pout... then a good sport.
+      buddy.mood("mad", 2600);
+      setTimeout(() => buddy.celebrate(pickOne(["Hmph! 😤 ...okay, okay. You beat me fair and square. Great game! 🏆", "Nooo! I was SO close! 😢 Just kidding. You earned it. Good game! 🤝", "You got me! I demand a rematch... later. 😄 Great playing!"]), "trophy"), 2800);
+    } else buddy.celebrate(pickOne([`You WON! 🏆 That was amazing, ${store.get("name")?.trim() || "friend"}!`, "Woohoo! You're a trivia champion! 🎉", "YES! I knew you could do it! 🏆"]), "trophy");
+  }),
+  // He won: a happy little victory dance, and then he's a good sport about it.
+  onBuddyWin: () => buddyAfterDialogs(() => buddy.celebrate(pickOne(["I WON! 🎉 *victory dance* ...good game though. You almost had me!", "Woohoo, I won! 🏆 You were awesome too. Rematch sometime?", "Yay me! 😄 Okay, okay, I'll stop cheering. Good game, friend!"]), "party")),
 });
 // He says his little lines out loud too, when the family turns that on (Settings, Study buddy).
 // Never over the Bible reading, and off by default so he's never a surprise in church.
@@ -1359,7 +1368,19 @@ function buddyOutLoud(text) {
   const plain = String(text).replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, "").trim();
   if (plain) sayAloud(plain, { voiceName: store.get("voiceName") || "", rate: Math.min(1.15, (store.get("voiceRate") || 1) * 1.05), pitch: 1.35 });
 }
-const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right"), sayOutLoud: (t) => buddyOutLoud(t) });
+const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right"), sayOutLoud: (t) => buddyOutLoud(t), sleepy: () => (store.get("show") || {}).buddysleepy === true });
+// Scholarly things (Strong's, Greek and Hebrew, the scholars, sources): on go his nerd glasses,
+// now and then, never more than once every couple of minutes.
+let nerdAt = 0;
+function buddyNerd() { if (Date.now() - nerdAt < 120e3 || Math.random() < 0.4) return; if (buddy.nerd()) nerdAt = Date.now(); }
+// When they write, sometimes he pulls out his own paper and pencil. Not every time.
+let writeAt = Date.now();
+document.addEventListener("input", (e) => {
+  if (!e.target.closest?.("#entryEditor, #notesEditor, #chapterEntryHost")) return;
+  if (Date.now() - writeAt < 180e3) return;
+  writeAt = Date.now();
+  if (Math.random() < 0.5) buddy.writing();
+});
 // Tapping him opens the chat right where you are, on any page, in a sheet over the page.
 // It's the same chat as under each chapter (moved into the sheet while it's open).
 const chatSheet = document.createElement("dialog");
@@ -1443,6 +1464,17 @@ const BUDDY_CHAT = [
   "I've been practicing my trivia. Watch out! 😄",
   "Sometimes I just like sitting here with you. 💛",
   "Did you know the Bible has 66 books? I'm reading them one by one too! 📖",
+  "I tried to read all the \"begats\" in one go. I fell asleep. 😴",
+  "Don't tell anyone, but I peeked at the end of Revelation. Spoiler: Jesus wins! 🎉",
+  "I tried a cartwheel earlier and landed on my head. I'm fine! 😅",
+  "Shh... I'm hiding. Okay, I'm bad at hiding. 🙈",
+  "If I had a camel I'd name it Humphrey. 🐪",
+];
+// Now and then (every few days at most) he says he loves them, the casual way a kid would.
+const BUDDY_LOVE = [
+  (n) => `Hey${n ? ` ${n}` : ""}... love ya! 💛 Okay, back to being cool. 😎`,
+  () => "Just so you know, you're my favorite. Don't tell the others. 💛",
+  (n) => `Love you${n ? `, ${n}` : ""}! That's all. Carry on! 😊`,
 ];
 // Gentle check-ins, with his own answers.
 const BUDDY_CHECKINS = [
@@ -1524,6 +1556,25 @@ setInterval(() => {
   // Never named yet (set up before he could be): his first visit asks what to call him.
   if (!store.get("buddyName") && (store.get("setup") || {}).done) {
     if (buddy.askName(`Hi${store.get("name")?.trim() ? ` ${store.get("name").trim()}` : ""}! 👋 I'm your study buddy, and I don't have a name yet. What would you like to call me?`, (n) => setBuddyName(n))) {
+      store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+      buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+    }
+    return;
+  }
+  // Near Christmas, Easter or Thanksgiving: would they like the Bible to look like the season?
+  const season = seasonOffer();
+  if (season) {
+    const yesLine = { label: "Yes, please!", go: () => { setStyle(season.look); setTimeout(() => buddy.celebrate(`Ta-da! ${season.icon} So pretty!`), 600); } };
+    if (buddy.ask(season.ask, yesLine, { label: "No thanks", line: "Okie! Maybe another time. 😊" })) {
+      store.set("seasonAsked", { ...(store.get("seasonAsked") || {}), [season.key]: true });
+      store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+      buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
+    }
+    return;
+  }
+  if (Date.now() - (store.get("buddyLoveAt") || 0) > 3 * 864e5 && Math.random() > 0.88) {
+    if (buddy.visit(pickOne(BUDDY_LOVE)(store.get("name")?.trim() || ""), 7000, false)) {
+      store.set("buddyLoveAt", Date.now());
       store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
       buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
     }
@@ -2845,8 +2896,8 @@ function setBuddyName(v) {
 }
 function renderBuddyToggles() {
   const shown = store.get("show") || {};
-  const on = (id) => (id === "buddyvoice" ? shown[id] === true : shown[id] !== false);
-  $("#buddyToggles").innerHTML = `<label class="field buddy-name-field">His name<input id="buddyNameInput" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label>` + [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"], ...(canSpeak ? [["buddyvoice", "He talks out loud (uses the read-aloud voice)"]] : [])].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${on(id) ? "checked" : ""}></label>`).join("");
+  const on = (id) => (id === "buddyvoice" || id === "buddysleepy" ? shown[id] === true : shown[id] !== false);
+  $("#buddyToggles").innerHTML = `<label class="field buddy-name-field">His name<input id="buddyNameInput" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label>` + [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"], ["buddysleepy", "He naps more and plays less (quieter)"], ...(canSpeak ? [["buddyvoice", "He talks out loud (uses the read-aloud voice)"]] : [])].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${on(id) ? "checked" : ""}></label>`).join("");
   $("#buddyNameInput").addEventListener("input", (e) => setBuddyName(e.target.value));
   $("#buddyToggles").querySelectorAll("[data-buddy-feat]").forEach((i) => i.addEventListener("change", () => {
     store.set("show", { ...(store.get("show") || {}), [i.dataset.buddyFeat]: i.checked });
@@ -3358,6 +3409,7 @@ function wireRef(el, book, chapter) {
   el.querySelector("[data-print-notes]")?.addEventListener("click", () => printNotes(book, chapter));
   el.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
     notesTab = b.dataset.tab;
+    if (["strongs", "words", "views", "sources", "history", "where"].includes(notesTab)) buddyNerd();
     renderNotes(book, chapter);
     $("#refPanel")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }));
@@ -3707,6 +3759,28 @@ function seasonPrayerHtml() {
   return `<div class="season-prayer"><h2>${esc(s.title)}</h2><p>${esc(text)}</p><small>${esc(ref)}</small></div>`;
 }
 
+// Easter Sunday (Western), by the anonymous Gregorian method.
+function easterOf(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(y, month - 1, day);
+}
+// The season coming up, if they aren't already in its look and he hasn't asked this year.
+function seasonFor(now = new Date()) {
+  const y = now.getFullYear(), day = 864e5;
+  const easter = easterOf(y);
+  const thanks = new Date(y, 10, 1); thanks.setDate(1 + ((11 - thanks.getDay()) % 7) + 21); // fourth Thursday of November
+  if (now >= new Date(y, 11, 1) && now < new Date(y, 11, 27)) return { key: `christmas-${y}`, look: "christmas", looks: ["christmas", "nativity"], icon: "🎄", ask: "It's almost Christmas! 🎄 Want me to make your Bible look Christmasy?" };
+  if (now >= new Date(easter - 14 * day) && now < new Date(+easter + 2 * day)) return { key: `easter-${y}`, look: "easter", looks: ["easter"], icon: "🌷", ask: "Easter is coming! 🌷 Want your Bible to look like spring and Easter?" };
+  if (now >= new Date(y, 10, 1) && now < new Date(+thanks + day)) return { key: `fall-${y}`, look: "fall", looks: ["fall"], icon: "🍂", ask: "It's Thanksgiving time! 🍂 Want your Bible to look like fall?" };
+  return null;
+}
+function seasonOffer() {
+  const s = seasonFor();
+  if (!s || s.looks.includes(store.get("style")) || (store.get("seasonAsked") || {})[s.key]) return null;
+  return s;
+}
 function setStyle(v) {
   store.set("style", v);
   applyAppearance();

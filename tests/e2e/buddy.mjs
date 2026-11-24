@@ -22,7 +22,7 @@ try {
       window.SpeechSynthesisUtterance = function (t) { this.text = t; };
     });
     const page = await ctx.newPage();
-    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
+    await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(site.url); await page.waitForTimeout(900);
@@ -105,7 +105,7 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel" })); });
     const page = await ctx.newPage();
-    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
+    await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     for (let i = 0; i < 300 && !(await page.$("dialog.buddy-name-dialog[open]")); i++) await page.clock.runFor(2000);
     check("naming: his first visit asks what to call him, in a big window", /What would you like to call me/.test(await page.textContent(".buddy-name-dialog")));
@@ -127,7 +127,7 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { Math.random = () => 0.1; if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Pip" })); });
     const page = await ctx.newPage();
-    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
+    await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
     check("play: now and then he asks them to play Bible Quest", /Bible Quest|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
@@ -143,7 +143,7 @@ try {
     await ctx.addInitScript(() => { Math.random = () => 0.1; if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", buddyVisitLog: { day: new Date().toISOString().slice(0, 10), n: 9 } })); });
     const page = await ctx.newPage();
     const errs = []; page.on("pageerror", (e) => errs.push(e.message));
-    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
+    await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     const seen = new Set();
     for (let i = 0; i < 40; i++) {
@@ -176,7 +176,7 @@ try {
       await page.goto(site.url); await page.waitForTimeout(900);
       return { ctx, page, errs };
     };
-    let { ctx, page, errs } = await open("2026-11-24T08:00:00");
+    let { ctx, page, errs } = await open("2026-10-20T08:00:00");
     for (let i = 0; i < 30 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
     check("time: he says good morning", /Good morning, Mel/.test(await page.textContent(".buddy-say")), await page.textContent(".buddy-say"));
     // A sad chapter: a little cloud over his head.
@@ -190,7 +190,7 @@ try {
     check("thanks: a thank-you gets hearts", /💕/.test(await page.textContent(".buddy-pop")));
     check("moods: no page errors", !errs.length, errs.join(" | "));
     await ctx.close();
-    ({ ctx, page, errs } = await open("2026-11-24T22:30:00"));
+    ({ ctx, page, errs } = await open("2026-10-20T22:30:00"));
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click());
     for (let i = 0; i < 30 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
     check("time: late at night he says it's time for bed", /bed|Goodnight/.test(await page.textContent(".buddy-say")), await page.textContent(".buddy-say"));
@@ -199,7 +199,7 @@ try {
     check("time: late at night he falls asleep quickly", await page.$eval(".buddy", (b) => b.classList.contains("sleeping")));
     await ctx.close();
     // A check-in, with his own answers.
-    ({ ctx, page, errs } = await open("2026-11-24T14:00:00", { show: { games: false } }, "<p>Text</p>"));
+    ({ ctx, page, errs } = await open("2026-10-20T14:00:00", { show: { games: false } }, "<p>Text</p>"));
     await page.evaluate(() => { Math.random = () => 0.05; });
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click());
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
@@ -212,6 +212,15 @@ try {
     await page.evaluate(() => window.__bud = 1);
     check("check-ins: no page errors", !errs.length, errs.join(" | "));
     await ctx.close();
+    // Near Christmas he asks if they'd like the Christmas look, and takes "no" for an answer.
+    ({ ctx, page, errs } = await open("2026-12-08T14:00:00", { show: { games: false } }, "<p>Text</p>"));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click());
+    for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
+    check("season: near Christmas he offers the Christmas look", /Christmas/.test(await page.textContent(".buddy-say .bs-words")) && /No thanks/.test(await page.textContent(".bs-no")));
+    await page.click(".bs-no"); await page.clock.runFor(300);
+    check("season: no means no, and he won't ask again this year", /Okie/.test(await page.textContent(".buddy-say")) && await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).seasonAsked["christmas-2026"] === true && JSON.parse(localStorage.getItem("bible-study:v1")).style !== "christmas"));
+    check("season: no page errors", !errs.length, errs.join(" | "));
+    await ctx.close();
   }
   // While reading, his words never pop up over the Bible; they wait for another screen.
   {
@@ -220,7 +229,7 @@ try {
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
     await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy" })); });
     const page = await ctx.newPage();
-    await page.clock.install({ time: new Date("2026-11-24T14:00:00") });
+    await page.clock.install({ time: new Date("2026-10-20T14:00:00") });
     await page.goto(site.url); await page.waitForTimeout(900);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click());
     let popped = false;
