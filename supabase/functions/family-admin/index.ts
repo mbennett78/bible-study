@@ -128,6 +128,16 @@ Deno.serve(async (req) => {
       return reply(200, { ok: true });
     }
 
+    // A new email for someone (say Mom gets a new address). Same account, so their notes,
+    // journal and reading place stay with them; they sign in with the new email from now on.
+    if (action === "email") {
+      const email = String(body.email || "").trim().toLowerCase();
+      if (!EMAIL.test(email)) return reply(400, { error: "email" });
+      const { error } = await admin.auth.admin.updateUserById(id, { email, email_confirm: true });
+      if (error) return reply(400, { error: /already|exists|registered/i.test(error.message) ? "exists" : "email" });
+      return reply(200, { ok: true });
+    }
+
     // Which looks the family uses, as counts only (for choosing which looks to improve). It
     // never says who uses which look: no names, emails or ids leave this function.
     if (action === "looks") {

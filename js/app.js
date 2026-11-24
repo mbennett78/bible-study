@@ -4480,6 +4480,7 @@ const ADMIN_SAYS = {
   password: "Temporary passwords need at least 6 characters.",
   exists: "Someone with that email is already in the family.",
   self: "You can't remove your own account here.",
+  action: "This needs the newest family-admin function. In Supabase, open Edge Functions, family-admin, and paste in the new code from the project folder (family-admin-function.ts), then Deploy.",
 };
 const adminSays = (r) => ADMIN_SAYS[r?.error] || "Something went wrong. Please try again in a minute.";
 const when = (iso) => iso ? new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "never";
@@ -4500,7 +4501,7 @@ async function renderFamilyPanel() {
     <ul class="fam-list">${people.map((p) => `<li data-id="${p.id}">
       <div class="fam-who"><strong>${esc(p.name || String(p.email || "").split("@")[0])}</strong>${p.organizer ? ` <span class="pc-badge">Organizer</span>` : ""}
         <small>${esc(p.email)} · last signed in ${esc(when(p.lastSignIn))}${typeof p.asked === "number" ? ` · ${p.asked} helper question${p.asked === 1 ? "" : "s"} this month` : ""}${p.tempPassword ? " · has a temporary password" : ""}</small></div>
-      <div class="fam-acts"><button class="small" data-fam-pw>New password</button>${p.organizer ? "" : `<button class="small danger" data-fam-rm>Remove</button>`}</div>
+      <div class="fam-acts"><button class="small" data-fam-pw>New password</button><button class="small" data-fam-email>New email</button>${p.organizer ? "" : `<button class="small danger" data-fam-rm>Remove</button>`}</div>
       <div class="fam-form" hidden></div></li>`).join("")}</ul>
     <details class="fam-add"><summary>Add a family member</summary>
       <label class="field">Name<input id="famName" type="text" autocomplete="off" maxlength="40"></label>
@@ -4519,6 +4520,20 @@ async function renderFamilyPanel() {
       out.textContent = "Saving…";
       const res = await familyAdmin("password", { id: li.dataset.id, password: f.querySelector(".fam-newpw").value });
       out.textContent = res?.ok ? "Saved ✓ Tell them this password. They'll choose their own when they sign in." : adminSays(res);
+    };
+  }));
+  body.querySelectorAll("[data-fam-email]").forEach((b) => b.addEventListener("click", () => {
+    const li = b.closest("li"), f = li.querySelector(".fam-form");
+    f.hidden = false;
+    f.innerHTML = `<label class="field">Their new email<input type="email" class="fam-newemail" autocomplete="off"></label>
+      <p class="muted small-print">Same account: their notes, journal and place stay with them. They sign in with the new email from now on, with the same password.</p>
+      <button class="small" data-go>Save</button> <button class="quiet-link" data-cancel>Cancel</button><p class="small-print" data-msg></p>`;
+    f.querySelector("[data-cancel]").onclick = () => { f.hidden = true; };
+    f.querySelector("[data-go]").onclick = async () => {
+      const out = f.querySelector("[data-msg]");
+      out.textContent = "Saving…";
+      const res = await familyAdmin("email", { id: li.dataset.id, email: f.querySelector(".fam-newemail").value });
+      if (res?.ok) { out.textContent = "Saved ✓ Tell them to sign in with the new email."; setTimeout(renderFamilyPanel, 1800); } else out.textContent = adminSays(res);
     };
   }));
   body.querySelectorAll("[data-fam-rm]").forEach((b) => b.addEventListener("click", async () => {

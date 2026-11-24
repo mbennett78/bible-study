@@ -68,6 +68,9 @@ try {
     const looks = await text(page, "#familyLooks");
     check("the organizer sees family-level look counts, most used first, with no names", /Christmas[^]*3/.test(looks) && /Counted 5 people/.test(looks) && !/@/.test(looks) && (await page.$$("#familyLooks .looks-count li")).length === 3, looks);
     check("the organizer can't remove their own account", (await page.$$("#familyPanel [data-fam-rm]")).length === 1);
+    await page.click("#familyPanel .fam-list li:nth-child(2) [data-fam-email]"); await page.fill("#familyPanel .fam-newemail", "mom.new@example.com");
+    await page.click("#familyPanel .fam-list li:nth-child(2) .fam-form [data-go]"); await page.waitForTimeout(500);
+    check("the organizer can give someone a new email", /Saved ✓/.test(await text(page, "#familyPanel .fam-list li:nth-child(2) .fam-form")), await text(page, "#familyPanel .fam-list li:nth-child(2)"));
     check("the organizer's tools go key box, then save for the family, then the family list", await page.$eval("#organizerBox", (d) => [...d.querySelectorAll("#bibleTextCard, #familyKeyCard, #familyPanel")].map((x) => x.id).join() === "bibleTextCard,familyKeyCard,familyPanel"));
     // If Supabase's own "Verify JWT" check stops the function, say exactly what to switch off.
     const gate = /functions\/v1\/family-admin/;
