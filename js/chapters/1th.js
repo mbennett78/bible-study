@@ -70,12 +70,11 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["5:5", "You are all sons of light and sons of day", "Children of light."],
       ["5:9", "God has not destined us for wrath, but for obtaining salvation", "Destined for salvation."],
       ["5:11", "Encourage one another and build up one another", "Build each other up."],
-      ["5:16", "Rejoice always", "Always joy."],
+      ["5:16", "Rejoice always", "Always joy. Verses 16-18 are three short commands that even young children can memorize: rejoice, pray, give thanks."],
       ["5:17", "Pray without ceasing", "Always prayer."],
       ["5:18", "In everything give thanks", "Always thanks."],
       ["5:21", "Examine everything carefully; hold fast to that which is good", "Test and keep the good."],
     ],
-    why: "Verses 16-18 are three short commands that even young children can memorize: rejoice, pray, give thanks.",
     refs: [["MAT.24", "Matthew 24:42-44", "Like a thief"], ["EPH.6", "Ephesians 6:14-17", "Breastplate and helmet"], ["PHP.4", "Philippians 4:4-6", "Rejoice and pray"]],
   },
 });

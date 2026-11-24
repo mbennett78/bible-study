@@ -138,7 +138,7 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "obrienH"] }, {
   11: {
     intro: "\"Faith is the assurance of things hoped for, the conviction of things not seen.\" \"Without faith it is impossible to please Him, for he who comes to God must believe that He is and that He is a rewarder of those who seek Him.\" Then the great hall of faith: by faith Abel offered a better sacrifice; Enoch walked with God; Noah built an ark; Abraham went out not knowing where he was going and offered Isaac; Sarah received strength to conceive; Isaac, Jacob and Joseph looked ahead; Moses' parents hid him; Moses chose to suffer with God's people; Israel crossed the Red Sea; Jericho's walls fell; Rahab welcomed the spies. And many more conquered kingdoms, shut lions' mouths, or suffered and died, \"men of whom the world was not worthy.\"",
     v: [
-      ["11:1", "Faith is the assurance of things hoped for, the conviction of things not seen", "What faith is."],
+      ["11:1", "Faith is the assurance of things hoped for, the conviction of things not seen", "What faith is. Hebrews 11 is a tour through the Old Testament. Families can trace each name back to its story and see faith in action."],
       ["11:3", "By faith we understand that the worlds were prepared by the word of God", "Faith and creation."],
       ["11:6", "Without faith it is impossible to please Him", "Faith pleases God."],
       ["11:8", "By faith Abraham... went out, not knowing where he was going", "Going without knowing."],
@@ -146,7 +146,6 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "obrienH"] }, {
       ["11:31", "By faith Rahab the harlot did not perish", "Rahab's faith."],
       ["11:38", "Men of whom the world was not worthy", "Faithful heroes."],
     ],
-    why: "Hebrews 11 is a tour through the Old Testament. Families can trace each name back to its story and see faith in action.",
     refs: [["GEN.4", "Genesis 4:4", "Abel's offering"], ["GEN.6", "Genesis 6:13-22", "Noah builds the ark"], ["GEN.12", "Genesis 12:1-4", "Abraham goes"], ["JOS.6", "Joshua 6", "Jericho's walls"], ["DAN.6", "Daniel 6:22", "Lions' mouths shut"]],
   },
   12: {

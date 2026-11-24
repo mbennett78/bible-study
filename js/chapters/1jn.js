@@ -58,9 +58,8 @@ export default makeBook({ lang: "Greek", sources, use: ["yarbrough", "kruseJ"] }
       ["4:10", "Not that we loved God, but that He loved us", "He loved first."],
       ["4:11", "If God so loved us, we also ought to love one another", "Pass it on."],
       ["4:18", "Perfect love casts out fear", "No fear."],
-      ["4:19", "We love, because He first loved us", "Why we love."],
+      ["4:19", "We love, because He first loved us", "Why we love. \"God is love\" (4:8) and \"We love, because He first loved us\" (4:19) are short enough for the youngest in the family to memorize."],
     ],
-    why: "\"God is love\" (4:8) and \"We love, because He first loved us\" (4:19) are short enough for the youngest in the family to memorize.",
     refs: [["JHN.3", "John 3:16", "God so loved the world"], ["DEU.13", "Deuteronomy 13:1-4", "Testing prophets"], ["ROM.5", "Romans 5:8", "While we were sinners"]],
   },
   5: {

@@ -26,7 +26,7 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
   2: {
     intro: "Teach what fits sound doctrine. Older men should be dignified, sensible and sound in faith, love and perseverance. Older women should be reverent and teach what is good, so they can encourage the young women to love their husbands and children. Young men should be sensible, and Titus himself should be an example of good deeds. Servants should be trustworthy, \"so that they will adorn the doctrine of God our Savior in every respect.\" \"For the grace of God has appeared, bringing salvation to all men, instructing us to deny ungodliness... and to live sensibly, righteously and godly in the present age, looking for the blessed hope and the appearing of the glory of our great God and Savior, Christ Jesus.\"",
     v: [
-      ["2:2", "Older men are to be temperate, dignified, sensible, sound in faith", "For grandfathers."],
+      ["2:2", "Older men are to be temperate, dignified, sensible, sound in faith", "For grandfathers. Titus 2 is a picture of a whole church family, every age teaching and helping the next. It fits a family that spans 10 to 89."],
       ["2:3", "Older women likewise are to be reverent... teaching what is good", "For grandmothers."],
       ["2:7", "In all things show yourself to be an example of good deeds", "Be an example."],
       ["2:10", "So that they will adorn the doctrine of God our Savior in every respect", "Making the gospel beautiful."],
@@ -34,7 +34,6 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["2:13", "Looking for the blessed hope and the appearing of the glory of our great God and Savior, Christ Jesus", "The blessed hope."],
       ["2:14", "Zealous for good deeds", "Eager to do good."],
     ],
-    why: "Titus 2 is a picture of a whole church family, every age teaching and helping the next. It fits a family that spans 10 to 89.",
     w: [["adorn", "kosmeō", "G2885", "to decorate, make attractive", "Our word \"cosmetic\" comes from it. A faithful life makes the gospel look beautiful to others.", ["bdag"]]],
     refs: [["1TI.5", "1 Timothy 5:1-2", "Treat each age as family"], ["PRO.31", "Proverbs 31", "A woman of strength"], ["1PE.2", "1 Peter 2:9", "A people for God's own possession"]],
   },

@@ -56,11 +56,10 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["4:4", "Everything created by God is good", "Receive with thanks."],
       ["4:7", "Discipline yourself for the purpose of godliness", "Spiritual training."],
       ["4:8", "Godliness is profitable for all things", "What lasts."],
-      ["4:12", "Let no one look down on your youthfulness", "Young people can lead."],
+      ["4:12", "Let no one look down on your youthfulness", "Young people can lead. 1 Timothy 4:12 speaks straight to the youngest readers: kids and teens can be examples of faith for everyone."],
       ["4:13", "Give attention to the public reading of Scripture", "Read it aloud."],
       ["4:16", "Pay close attention to yourself and to your teaching", "Life and teaching."],
     ],
-    why: "1 Timothy 4:12 speaks straight to the youngest readers: kids and teens can be examples of faith for everyone.",
     refs: [["GEN.1", "Genesis 1:31", "Everything was very good"], ["1CO.9", "1 Corinthians 9:25-27", "Training like an athlete"], ["2TI.1", "2 Timothy 1:6", "Kindle the gift"]],
   },
   5: {
@@ -80,13 +79,12 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
     v: [
       ["6:6", "Godliness actually is a means of great gain when accompanied by contentment", "Contentment."],
       ["6:7", "We have brought nothing into the world, so we cannot take anything out of it", "Can't take it with you."],
-      ["6:10", "The love of money is a root of all sorts of evil", "Loving money."],
+      ["6:10", "The love of money is a root of all sorts of evil", "Loving money. Paul does not say money is the root of all evil, but that the love of money is a root of all sorts of evil."],
       ["6:11", "Pursue righteousness, godliness, faith, love, perseverance and gentleness", "Run toward good."],
       ["6:12", "Fight the good fight of faith", "Keep fighting."],
       ["6:17", "God, who richly supplies us with all things to enjoy", "God gives."],
       ["6:20", "Guard what has been entrusted to you", "Keep the faith."],
     ],
-    common: "Paul does not say money is the root of all evil, but that the love of money is a root of all sorts of evil.",
     refs: [["JOB.1", "Job 1:21", "Naked I came"], ["MAT.6", "Matthew 6:19-24", "You cannot serve God and money"], ["HEB.13", "Hebrews 13:5", "Be content"], ["LUK.12", "Luke 12:15-21", "The rich fool"]],
   },
 });

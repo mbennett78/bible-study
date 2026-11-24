@@ -13,7 +13,7 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
   1: {
     intro: "Paul writes from prison to Timothy, \"my beloved son,\" remembering his tears and the sincere faith that first lived in his grandmother Lois and his mother Eunice. \"Kindle afresh the gift of God which is in you... For God has not given us a spirit of timidity, but of power and love and discipline.\" Do not be ashamed of the testimony of our Lord or of Paul His prisoner. Christ \"abolished death and brought life and immortality to light through the gospel.\" \"I know whom I have believed and I am convinced that He is able to guard what I have entrusted to Him.\" Onesiphorus was not ashamed of Paul's chains and searched Rome to find him.",
     v: [
-      ["1:5", "The sincere faith within you, which first dwelt in your grandmother Lois and your mother Eunice", "Faith passed down."],
+      ["1:5", "The sincere faith within you, which first dwelt in your grandmother Lois and your mother Eunice", "Faith passed down. Grandparents and parents in this family can see themselves in Lois and Eunice: faith handed down through the generations."],
       ["1:6", "Kindle afresh the gift of God which is in you", "Fan the flame."],
       ["1:7", "God has not given us a spirit of timidity, but of power and love and discipline", "Courage."],
       ["1:8", "Do not be ashamed of the testimony of our Lord", "Unashamed."],
@@ -21,7 +21,6 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["1:12", "I know whom I have believed", "Confidence in Jesus."],
     ],
     bg: [["Paul's last letter", "Most scholars think this is Paul's final letter, written from a Roman prison shortly before his execution under Nero, around AD 64-67. Unlike his earlier house arrest, he is now in chains, cold and mostly alone.", "strong", ["towner", "stott2T"]]],
-    why: "Grandparents and parents in this family can see themselves in Lois and Eunice: faith handed down through the generations.",
     refs: [["ACT.16", "Acts 16:1", "Timothy's mother"], ["DEU.6", "Deuteronomy 6:6-7", "Teach your children"], ["ROM.1", "Romans 1:16", "Not ashamed of the gospel"]],
   },
   2: {

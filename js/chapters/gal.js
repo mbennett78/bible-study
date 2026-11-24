@@ -70,11 +70,10 @@ export default makeBook({ lang: "Greek", sources, use: ["mooG", "bruceG"] }, {
       ["5:13", "Through love serve one another", "Freedom to serve."],
       ["5:14", "You shall love your neighbor as yourself", "The whole Law in one word."],
       ["5:16", "Walk by the Spirit, and you will not carry out the desire of the flesh", "Led by the Spirit."],
-      ["5:22", "The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness", "The fruit of the Spirit."],
+      ["5:22", "The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness", "The fruit of the Spirit. Kids can memorize the fruit of the Spirit as a list of nine, and families can pick one each week to practice together."],
       ["5:25", "If we live by the Spirit, let us also walk by the Spirit", "Keep in step."],
     ],
     w: [["fruit", "karpos", "G2590", "fruit", "Singular: one fruit with nine flavors. Fruit grows naturally from a healthy tree; the Spirit grows these qualities in a believer's life over time.", ["bdag", "stottG"]]],
-    why: "Kids can memorize the fruit of the Spirit as a list of nine, and families can pick one each week to practice together.",
     refs: [["JHN.15", "John 15:1-8", "Abide and bear fruit"], ["ROM.8", "Romans 8:4-14", "Walking by the Spirit"], ["LEV.19", "Leviticus 19:18", "Love your neighbor"]],
   },
   6: {

@@ -42,11 +42,10 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["3:1", "Pray for us that the word of the Lord will spread rapidly", "Praying for the gospel."],
       ["3:3", "The Lord is faithful, and He will strengthen and protect you", "God protects."],
       ["3:5", "May the Lord direct your hearts into the love of God", "Hearts directed."],
-      ["3:10", "If anyone is not willing to work, then he is not to eat", "Work matters."],
+      ["3:10", "If anyone is not willing to work, then he is not to eat", "Work matters. \"If anyone is not willing to work\" is about people who can work but refuse, not those who cannot work or cannot find work. The same letters call believers to help the weak (1 Thessalonians 5:14)."],
       ["3:13", "Do not grow weary of doing good", "Keep doing good."],
       ["3:16", "May the Lord of peace Himself continually grant you peace in every circumstance", "Peace always."],
     ],
-    common: "\"If anyone is not willing to work\" is about people who can work but refuse, not those who cannot work or cannot find work. The same letters call believers to help the weak (1 Thessalonians 5:14).",
     refs: [["1TH.4", "1 Thessalonians 4:11-12", "Work with your hands"], ["GAL.6", "Galatians 6:9", "Do not lose heart"], ["PRO.6", "Proverbs 6:6-11", "Learn from the ant"]],
   },
 });

@@ -17,11 +17,10 @@ export default makeBook({ lang: "Greek", sources, use: ["mooC", "wrightC"] }, {
       ["1:10", "I appeal to you for my child Onesimus, whom I have begotten in my imprisonment", "A new son in the faith."],
       ["1:11", "Who formerly was useless to you, but now is useful", "A play on his name."],
       ["1:16", "No longer as a slave, but more than a slave, a beloved brother", "Brothers in Christ."],
-      ["1:18", "If he has wronged you in any way or owes you anything, charge that to my account", "Paul pays the debt."],
+      ["1:18", "If he has wronged you in any way or owes you anything, charge that to my account", "Paul pays the debt. Paul offers to pay Onesimus's debt himself, a small picture of what Christ did for us: \"charge that to my account.\""],
       ["1:21", "Knowing that you will do even more than what I say", "Going beyond."],
     ],
     bg: [["Onesimus means \"useful\"", "The name Onesimus was common for slaves and means \"useful\" or \"profitable.\" Paul jokes that the formerly useless man is now truly useful. Many early Christian writers believed this same Onesimus later became a leader of the church in Ephesus.", "debated", ["mooC", "bruceC"]]],
-    why: "Paul offers to pay Onesimus's debt himself, a small picture of what Christ did for us: \"charge that to my account.\"",
     refs: [["COL.4", "Colossians 4:7-9", "Onesimus returns with Tychicus"], ["GAL.3", "Galatians 3:28", "Neither slave nor free"], ["2CO.5", "2 Corinthians 5:19-21", "Not counting trespasses"]],
   },
 });

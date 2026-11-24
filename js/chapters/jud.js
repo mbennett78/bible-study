@@ -18,10 +18,9 @@ export default makeBook({ lang: "Greek", sources, use: ["bauckham", "schreinerP"
       ["1:20", "Building yourselves up on your most holy faith, praying in the Holy Spirit", "Build up."],
       ["1:21", "Keep yourselves in the love of God", "Stay in His love."],
       ["1:22", "Have mercy on some, who are doubting", "Mercy for doubters."],
-      ["1:24", "Now to Him who is able to keep you from stumbling", "He keeps us."],
+      ["1:24", "Now to Him who is able to keep you from stumbling", "He keeps us. Jude's closing blessing (verses 24-25) is often sung or spoken at the end of worship. It reminds anxious believers that God Himself keeps them."],
     ],
     bg: [["Jude, brother of James", "Jude (Judas in Greek) is most likely another half-brother of Jesus (Mark 6:3), like James. Like James, he does not call himself Jesus' brother, only His servant. He quotes from Jewish writings his readers knew, such as 1 Enoch, to make his point.", "strong", ["bauckham", "green2P"]]],
-    why: "Jude's closing blessing (verses 24-25) is often sung or spoken at the end of worship. It reminds anxious believers that God Himself keeps them.",
     refs: [["MRK.6", "Mark 6:3", "Jesus' brothers"], ["NUM.16", "Numbers 16", "Korah's rebellion"], ["2PE.2", "2 Peter 2", "Peter's warning"], ["GEN.19", "Genesis 19", "Sodom"]],
   },
 });

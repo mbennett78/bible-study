@@ -70,11 +70,10 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
       ["5:2", "Shepherd the flock of God among you", "Caring leaders."],
       ["5:4", "When the Chief Shepherd appears, you will receive the unfading crown of glory", "The Chief Shepherd."],
       ["5:5", "Clothe yourselves with humility toward one another", "Humble clothes."],
-      ["5:7", "Casting all your anxiety on Him, because He cares for you", "He cares for you."],
+      ["5:7", "Casting all your anxiety on Him, because He cares for you", "He cares for you. 1 Peter 5:7 is a verse worth memorizing at any age: throw your worries on God, because He cares."],
       ["5:8", "Your adversary, the devil, prowls around like a roaring lion", "Stay alert."],
       ["5:10", "The God of all grace... will Himself perfect, confirm, strengthen and establish you", "God will restore."],
     ],
-    why: "1 Peter 5:7 is a verse worth memorizing at any age: throw your worries on God, because He cares.",
     refs: [["JHN.21", "John 21:15-17", "Tend My sheep"], ["PSA.55", "Psalm 55:22", "Cast your burden on the LORD"], ["JAS.4", "James 4:6-10", "Grace to the humble"], ["ACT.12", "Acts 12:12", "Mark's family home"]],
   },
 });
