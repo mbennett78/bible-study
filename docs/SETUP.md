@@ -96,7 +96,7 @@ secrets: Supabase gives Edge Functions their own admin access, which never leave
    its key. Licensed versions such as the NASB need to be requested on your plan.
 2. **ESV** (optional): request a non-commercial key at api.esv.org.
 3. In the app: sign in as the organizer, open Settings, "Family organizer tools", paste the
-   keys, choose versions and tap "Share this key with the family". Everyone else picks them up
+   keys, choose versions and tap "Save key for the whole family". Everyone else picks them up
    the next time they open the app. Keys are typed into the app only; never commit them.
 
 ## 8. Releasing changes

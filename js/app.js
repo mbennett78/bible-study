@@ -2410,9 +2410,9 @@ async function organizerGate(org) {
   {
     org.dataset.ready = "1";
     org.innerHTML = `<div class="card inner" id="familyPanel"><h2>My family</h2><div id="familyPanelBody"><p class="muted small-print">Loading…</p></div></div>
-      <div class="card inner" id="familyKeyCard"><h2>Share the Bible key with the family</h2>
-      <p class="muted small-print">Saves this device's API.Bible key to your family account. Anyone you've added gets it automatically when they sign in, without seeing it. Everyone's reading counts toward your 5,000 a month.</p>
-      <button class="small" id="shareFamilyKey">Share this key with the family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
+      <div class="card inner" id="familyKeyCard"><h2>Save the Bible key for the whole family</h2>
+      <p class="muted small-print">Saves this device's API.Bible key to your family account, so the Bible text works for everyone. Nothing is sent to anyone: family members never see the key. Their app picks it up by itself when they sign in, and gets it back if a device ever forgets it. Everyone's reading counts toward your 5,000 a month.</p>
+      <button class="small" id="shareFamilyKey">Save key for the whole family</button><p class="small-print" id="familyKeyMsg"></p></div>`;
     org.append($("#bibleTextCard"));
     $("#bibleTextCard").hidden = false;
     $("#organizerBox").hidden = false;
@@ -2421,8 +2421,8 @@ async function organizerGate(org) {
   $("#shareFamilyKey").addEventListener("click", async () => {
     const out = $("#familyKeyMsg");
     if (!store.get("apiBibleKey")) { out.textContent = "Add your API.Bible key under Bible text first."; return; }
-    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Shared ✓ Family members will get it, and these versions, the next time they open the app."; }
-    catch (x) { out.textContent = /row-level|policy|permission/i.test(x.message || "") ? "Only the family organizer's account can share the Bible key." : x.message; }
+    try { await setFamilyKey({ k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], e: store.get("esvKey") || "" }); store.set("familySyncedAt", new Date().toISOString()); out.textContent = "Saved ✓ Everyone in the family gets it, and these versions, the next time they open the app."; }
+    catch (x) { out.textContent = /row-level|policy|permission/i.test(x.message || "") ? "Only the family organizer's account can save the Bible key for the family." : x.message; }
   });
 }
 // The organizer's family panel: who's in the family, the Bible helper allowance this month,
