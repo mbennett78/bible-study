@@ -4463,6 +4463,8 @@ if (authEnabled) {
     // Back on this device: pick up anything saved on another one (at most once a minute).
     else if (document.visibilityState === "visible" && Date.now() - lastPull > 60000) { lastPull = Date.now(); backupNow(); }
   });
+  // Signal back after time offline: send what was saved meanwhile right away.
+  window.addEventListener("online", () => { clearTimeout(backupTimer); lastPull = Date.now(); backupNow(); });
   backupNow();
 }
 renderAccount();
