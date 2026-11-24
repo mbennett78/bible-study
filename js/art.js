@@ -304,6 +304,7 @@ const tent = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><
 
 export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
+  if (style === "christmas" || style === "nativity") return christmasStrip(book, chapter, style);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
   if (style === "classic3") { const p = paintingFor(book, chapter); return { kind: "painting", caption: `${PAINTINGS[p][1]}, by David Roberts (1839)`, svg: paintingStrip(p) }; }
   if (style === "classic" || style === "classic2") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
@@ -665,6 +666,54 @@ export function themeScene(theme, { height = 170 } = {}) {
   }
   return `<svg class="scene theme-scene theme-${theme}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="xMidYMid slice" aria-label="${SCENE_LABELS[theme] || ""}">
     <defs>${defs}</defs><rect width="${W}" height="${H}" fill="url(#tg${id})"/>${art}<path class="cl-rule" d="M0 ${H - .5} H ${W}"/></svg>`;
+}
+/* ---------- Christmas pictures that change as you read ---------- */
+// The Christmas looks show a different Christmas picture with each chapter: angels with
+// trumpets, the shepherds, the wise men, the manger, the inn, Bethlehem at night, candles
+// and "Silent Night", Noel, the gifts, and a Christmas tree (not lit up).
+const gold = "#e8c060", cream = "#f6efdc", skinX = "#e9c4a0";
+const angelT = (x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">
+  <path d="M-1 -20 C -15 -32, -21 -14, -9 -8 Z M 1 -20 C -6 -34, -16 -26, -10 -12 Z" fill="#fdf8ea" opacity=".85"/>
+  <path d="M-7 0 C -6 -10, -4 -18, 0 -20 C 4 -18, 6 -10, 7 0 Z" fill="${cream}"/>
+  <circle cx="0" cy="-23" r="3.4" fill="${skinX}"/><ellipse cx="0" cy="-27.6" rx="4.2" ry="1.3" fill="none" stroke="${gold}" stroke-width="1.1"/>
+  <path d="M2 -20.5 L 15 -27" stroke="${gold}" stroke-width="1.6" stroke-linecap="round"/><path d="M14 -29.5 L 20.5 -31 L 18 -24.5 Z" fill="${gold}"/></g>`;
+const candle = (x, y, h = 20, w = 6) => `<g transform="translate(${x} ${y})"><circle cx="0" cy="${-h - 6}" r="7" fill="#ffe7a0" opacity=".25"/>
+  <rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" rx="1.4" fill="${cream}"/><path d="M0 ${-h} L 0 ${-h - 2.5}" stroke="#3b2b20" stroke-width=".8"/>
+  <path class="m-flicker" d="M0 ${-h - 9} C 2.6 ${-h - 5}, 2.4 ${-h - 2.6}, 0 ${-h - 2.2} C -2.4 ${-h - 2.6}, -2.6 ${-h - 5}, 0 ${-h - 9} Z" fill="#ffd36b"/></g>`;
+const house = (x, y, w, h, lit = true) => `<g transform="translate(${x} ${y})"><rect x="0" y="${-h}" width="${w}" height="${h}" fill="#6e5a46"/><rect x="-1" y="${-h - 2}" width="${w + 2}" height="2.5" fill="#5a4838"/>
+  ${lit ? `<rect x="${w * .35}" y="${-h * .62}" width="${Math.max(3, w * .22)}" height="${Math.max(3, h * .24)}" fill="#f5d27a"/>` : ""}</g>`;
+const kingCamel = (x, y, robeC, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M-16 -14 C -14 -24, -6 -26, -2 -20 C 2 -28, 10 -27, 12 -18 C 15 -18, 18 -22, 20 -28 C 21 -32, 26 -33, 27 -29 L 25 -27 C 23 -22, 21 -15, 17 -12 C 14 -10, 10 -9, 6 -9 L -12 -9 C -15 -9, -17 -11, -16 -14 Z" fill="#b88a52"/>
+  <path d="M-12 -10 L -13 0 M -8 -10 L -7 0 M 6 -10 L 5 0 M 10 -10 L 12 0" stroke="#b88a52" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M-6 -22 C -7 -32, 3 -32, 2 -22 Z" fill="${robeC}"/><circle cx="-2" cy="-34" r="2.8" fill="${skinX}"/><path d="M-4.6 -36 L -4.6 -40 L -3 -38 L -2 -41 L -1 -38 L 0.6 -40 L 0.6 -36 Z" fill="${gold}"/></g>`;
+const bell = (x, y, s = 1, r = 0) => `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M-8 6 C -8 -4, -6 -10, 0 -10 C 6 -10, 8 -4, 8 6 Z" fill="${gold}"/><rect x="-9.5" y="5" width="19" height="2.4" rx="1.2" fill="#c99a3a"/><circle cx="0" cy="9" r="2" fill="#c99a3a"/></g>`;
+const chest = (x, y, c, lid = gold) => `<g transform="translate(${x} ${y})"><rect x="-9" y="-10" width="18" height="10" rx="1.5" fill="${c}"/><path d="M-9.5 -10 C -9 -16, 9 -16, 9.5 -10 Z" fill="${lid}"/><rect x="-1.5" y="-8" width="3" height="4" fill="${gold}"/></g>`;
+const pine = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-2" y="-6" width="4" height="6" fill="#6b4a30"/>
+  <path d="M-16 -6 L 0 -22 L 16 -6 Z M -13 -16 L 0 -32 L 13 -16 Z M -9 -27 L 0 -41 L 9 -27 Z" fill="#2f6a45"/>
+  ${[[-8, -9, "#c94c4c"], [6, -11, gold], [-4, -20, gold], [5, -24, "#c94c4c"], [0, -33, "#c94c4c"]].map(([a, b, c]) => `<circle cx="${a}" cy="${b}" r="1.6" fill="${c}"/>`).join("")}
+  <path d="M0 -48 L 1.6 -44 L 6 -43.6 L 2.6 -41 L 3.6 -36.6 L 0 -39 L -3.6 -36.6 L -2.6 -41 L -6 -43.6 L -1.6 -44 Z" fill="${gold}"/></g>`;
+const script = (x, y, text, size = 15) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="${size}" fill="#f3e3b5" letter-spacing=".5">${text}</text>`;
+const CHRISTMAS = [
+  ["Angels with trumpets: “Glory to God in the highest” (Luke 2:14)", () => `${sky(16)}${star(180, 14, 4)}${angelT(120, 50, 1.15)}${angelT(240, 50, 1.15, true)}${angelT(70, 44, .8)}${angelT(290, 44, .8, true)}`],
+  ["Shepherds keeping watch over their flock by night (Luke 2:8)", () => `${sky(18)}${angelT(186, 34, .9)}<path d="M0 54 C 90 44, 270 44, 360 54 Z" fill="#26402f"/>${kneelShepherd(118, 52, .62)}${sheep(150, 52, .55)}${sheep(214, 52, .55, true)}${sheep(242, 52, .5, true)}`],
+  ["Wise men from the east followed the star (Matthew 2:1-2)", () => `${sky(18)}${star(300, 14, 5)}<path d="M0 54 C 80 44, 200 48, 360 52 L 360 54 Z" fill="#3a3326"/>${kingCamel(110, 52, "#7a4ea0", .8)}${kingCamel(160, 52, "#b0574a", .78)}${kingCamel(208, 52, "#3f7f8a", .76)}`],
+  ["She laid Him in a manger (Luke 2:7)", () => `${sky(12)}${star(180, 8, 3.5)}${ox(118, 52, .6)}${nativityBig(180, 54, .42)}${donkey2(244, 52, .6)}${sheep(282, 52, .55, true)}`],
+  ["There was no room for them in the inn (Luke 2:7)", () => `${sky(14)}${house(120, 54, 70, 30)}${house(196, 54, 26, 20)}<rect x="138" y="44" width="16" height="10" fill="#4a3a2a"/><text x="166" y="22" font-size="6.5" font-family="Georgia, serif" fill="#f3e3b5">INN</text>${donkey2(258, 52, .55)}${star(320, 12, 3.5)}`],
+  ["Bethlehem, the little town of Micah 5:2", () => `${sky(20)}${star(250, 12, 5)}<path class="star-beam" d="M250 12 L 236 40 L 264 40 Z" opacity=".5"/>${[[60, 26, 16], [88, 20, 22], [112, 30, 14], [146, 24, 26], [174, 18, 20], [196, 28, 30], [230, 22, 18], [256, 30, 24], [284, 20, 16], [304, 26, 20]].map(([x, w, h], i) => house(x, 54, w, h, i % 3 !== 1)).join("")}`],
+  ["Silent night, holy night (Joseph Mohr, 1818)", () => `${sky(10)}${candle(70, 52, 22)}${candle(86, 52, 16)}${script(180, 32, "Silent night, holy night", 15)}${candle(274, 52, 16)}${candle(290, 52, 22)}`],
+  ["Noel: an old word for Christmas, from the Latin natalis, “birth”", () => `${sky(8)}${holly(70, 44, .9)}${bell(110, 26, 1, -12)}${script(180, 36, "Noel", 26)}${bell(250, 26, 1, 12)}${holly(290, 44, .9, true)}`],
+  ["Gold, frankincense and myrrh (Matthew 2:11)", () => `${sky(12)}${star(180, 10, 4)}${chest(140, 50, "#8a5a2e")}${chest(180, 50, "#b0574a")}<g transform="translate(220 50)"><path d="M-6 0 C -9 -8, -6 -14, 0 -14 C 6 -14, 9 -8, 6 0 Z" fill="#7a6aa0"/><rect x="-3" y="-17" width="6" height="3" fill="${gold}"/></g>${candle(100, 52, 14, 5)}${candle(260, 52, 14, 5)}`],
+  ["A Christmas tree, crowned with the star", () => `${sky(12)}${pine(180, 52, .95)}${chest(150, 52, "#b0574a", "#2f6a45")}${chest(212, 52, "#2f6a45", "#c94c4c")}${holly(80, 46, .8)}${holly(280, 46, .8, true)}`],
+];
+export function christmasStrip(book, chapter, style = "christmas") {
+  let h = 0;
+  for (const ch of `${book}.${chapter}`) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const [caption, draw] = CHRISTMAS[h % CHRISTMAS.length];
+  const id = ++uid;
+  const svg = `<svg class="fish-strip passage-art theme-strip theme-${style === "nativity" ? "christmas" : style} xmas-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/[“”"]/g, "")}">
+    <defs><clipPath id="xs${id}"><rect width="360" height="54" rx="14"/></clipPath></defs>
+    <g clip-path="url(#xs${id})"><rect width="360" height="54" class="band-dark"/>${draw()}</g></svg>`;
+  return { kind: "christmas", caption, svg };
 }
 export function themeStrip(theme) {
   const id = ++uid;

@@ -21,6 +21,7 @@ export const ABOUT = {
   xref: "Cross-references: other passages on the same subject. Scripture is the best explainer of Scripture.",
   search: "Find a verse: type what it's about (a story, or a topic like baptism or worry) or the words you remember. You'll get a list of passages, and your Bible helper can find the rest.",
   sources: "Sources: the commentaries, lexicons and studies behind these notes. Tap Look it up to open the source, or to find the book in a library.",
+  where: "When and where: the time period of this chapter, the world around it, the regions and places it names, and the tribes of Israel. Places and their locations come from OpenBible.info, which weighs the identifications made by scholars and archaeologists. Dates are approximate; where careful scholars differ, it says so.",
   mine: "My notes: what you've written in your journal about this chapter. Only you can see these.",
 };
 export const sourceText = (s) => (typeof s === "string" ? s : s.text);
@@ -123,6 +124,9 @@ const SINAI = {
     { lat: 27.78, lon: 34.95, then: "Red Sea", now: "Red Sea" },
   ],
 };
+
+// The coastlines and rivers, for the When and where map of any chapter.
+export const MAP_OUTLINES = { NEAR_EAST, SINAI, GALILEE };
 
 export const NOTES = {
   "LUK.2": {

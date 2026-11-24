@@ -56,7 +56,26 @@ try {
   await page.evaluate(() => { window.print = () => { window.__printed = document.querySelector("#printBook").innerHTML; }; });
   await page.click("#printNotes"); await page.waitForTimeout(300);
   const printed = await page.evaluate(() => window.__printed || "");
-  check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("General notes"), printed.slice(0, 100));
+  check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("My Notes"), printed.slice(0, 100));
+  // A Bible class outline with a shaded box, then print only that one.
+  await page.click("[data-new-note=class]"); await page.waitForTimeout(300);
+  check("Bible Class Notes have a lesson title and teacher", await page.isVisible("#notesEditor #eeSpeaker") && (await page.textContent("#notesEditor .ee-head")).includes("Bible Class Notes"));
+  await page.fill("#eeTitle", "The Good Shepherd outline");
+  await page.click("[data-tool=box]"); await page.waitForTimeout(200);
+  await page.click("[data-tone=question]"); await page.fill("#boxText", "Who are the sheep in John 10:16?");
+  await page.click("#bDone"); await page.waitForTimeout(200);
+  check("a shaded box can be added", await page.isVisible("#eePics .is-box.tone-question"));
+  await page.click("#entrySave"); await page.waitForTimeout(400);
+  check("the filters use the new names", (await page.textContent("#notesFilter")).includes("Bible Class Notes") && (await page.textContent("#notesFilter")).includes("My Study Path"));
+  check("the date range of the notes is shown", /notes · /.test(await page.textContent("#notesRange")));
+  await page.click("#chooseNotes"); await page.waitForTimeout(200);
+  const firstPick = await page.$eval("[data-pick]", (c) => c.dataset.pick);
+  await page.check(`[data-pick="${firstPick}"]`); await page.waitForTimeout(100);
+  check("choosing notes changes the print button", /Print the 1 I picked/.test(await page.textContent("#printNotes")));
+  await page.evaluate(() => { window.__printed = ""; });
+  await page.click("#printNotes"); await page.waitForTimeout(300);
+  const one = await page.evaluate(() => window.__printed || "");
+  check("only the chosen note prints", one.includes("The Good Shepherd outline") && !one.includes("Wednesday class") && one.includes("is-box"), one.slice(0, 80));
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
   // Phone: the bottom bar stays the same; Notes is in the ☰ menu.

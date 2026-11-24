@@ -180,17 +180,18 @@
     <!-- My Notes: always open, even when the journal is locked -->
     <section id="view-notes" class="view" aria-label="My Notes" hidden>
       <h1>My Notes</h1>
-      <p class="muted mybible-sub">Church notes, reading notes, study path notes and anything else. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
+      <p class="muted mybible-sub">Bible class notes, church notes, your own notes, and notes on your study path. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
       <div class="add-entries notes-new">
-        <button class="add-entry ae-church" data-new-note="church"><span aria-hidden="true">⛪</span><b>＋ Church notes</b></button>
-        <button class="add-entry ae-bible" data-new-note="bible"><span aria-hidden="true">📖</span><b>＋ Reading notes</b></button>
-        <button class="add-entry ae-study" data-new-note="study"><span aria-hidden="true">🧭</span><b>＋ Study path notes</b></button>
-        <button class="add-entry ae-note" data-new-note="note"><span aria-hidden="true">📝</span><b>＋ General notes</b></button>
+        <button class="add-entry ae-class" data-new-note="class"><span aria-hidden="true">🏫</span><b>＋ Bible Class Notes</b></button>
+        <button class="add-entry ae-church" data-new-note="church"><span aria-hidden="true">⛪</span><b>＋ Church Notes</b></button>
+        <button class="add-entry ae-note" data-new-note="note"><span aria-hidden="true">📝</span><b>＋ My Notes</b></button>
+        <button class="add-entry ae-study" data-new-note="study"><span aria-hidden="true">🧭</span><b>＋ My Study Path</b></button>
       </div>
       <div class="entry-host" id="notesEditor"></div>
       <label class="notes-find"><span class="sr-only">Search my notes</span><input id="notesSearch" type="search" placeholder="🔍 Search my notes" autocomplete="off"></label>
       <div class="journal-filter notes-filter" id="notesFilter" role="group" aria-label="Show"></div>
-      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print my notes</button><span class="muted small-print">Prints what's shown: pick a kind or search first to print just those.</span></div>
+      <p class="notes-range muted small-print" id="notesRange"></p>
+      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print all my notes</button><button type="button" class="small" id="chooseNotes" hidden>☑ Choose which to print</button><span class="muted small-print">Print, or choose Save as PDF to keep a copy. Pick a kind, search, or choose notes to print just those, like a class outline before you teach.</span></div>
       <div id="notesList"></div>
     </section>
 
@@ -368,7 +369,7 @@
           <li><b>Recorded ESV narration</b> is © Crossway.</li>
           <li><b>The study buddy</b> answers with AI (Claude, by Anthropic). It tries hard to be accurate, but it can make mistakes. Check what it says against the Bible, and ask a pastor or teacher about anything important.</li>
           <li><b>The study notes</b> show what respected Bible scholars have written, with their sources listed. Where scholars differ, more than one view is shown. They aren't any church's official teaching.</li>
-          <li><b>Cross-references</b> come from OpenBible.info (CC BY). <b>Greek and Hebrew word tagging</b> comes from STEPBible.org, Tyndale House Cambridge (CC BY), with definitions from James Strong (1890).</li>
+          <li><b>Cross-references</b> and <b>Bible places</b> (where each place was, how sure scholars are, and its name today) come from OpenBible.info (CC BY). <b>Greek and Hebrew word tagging</b> comes from STEPBible.org, Tyndale House Cambridge (CC BY), with definitions from James Strong (1890).</li>
           <li><b>Paintings</b> in Classic 3 are by David Roberts (1839), from the Cleveland Museum of Art's open collection.</li>
           <li><b>Your privacy:</b> your journal and notes stay on your device and in our family's own account. Keys are never put in backups.</li>
         </ul>

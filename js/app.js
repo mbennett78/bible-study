@@ -12,7 +12,8 @@ import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
 import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
-import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl } from "./notes.js";
+import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl, MAP_OUTLINES } from "./notes.js";
+import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
@@ -1618,20 +1619,30 @@ const DIARY_BOXES = [
    Save button, and listed below to read again. "Make my journal book" prints them all as a
    keepsake titled "My Journey". */
 const ENTRY_KINDS = [
-  { kind: "day", label: "My day", add: "My day", icon: "✎", ph: "What's going on in your life today? What would you want your family to know someday?" },
+  { kind: "day", label: "Journal entry", add: "Journal entry", icon: "✎", ph: "What's going on in your life today? What would you want your family to know someday?" },
   { kind: "prayer", label: "Prayer", add: "A prayer", icon: "🙏", ph: "Who and what are you praying for?" },
   { kind: "gratitude", label: "Gratitude", add: "Thankful for", icon: "❀", ph: "What are you thankful for today?" },
   { kind: "bible", label: "Bible thoughts", add: "Bible thoughts", icon: "📖", ph: "What is this chapter saying to you? How does it make you feel?" },
   { kind: "church", label: "Church notes", add: "Church notes", icon: "⛪", ph: "Main points from the lesson, verses mentioned, and one thing to remember this week..." },
-  { kind: "study", label: "Study path notes", add: "Study path notes", icon: "🧭", ph: "What you're learning on this study path. Type a verse like John 3:16 and it becomes a link.", notesOnly: true },
-  { kind: "note", label: "General notes", add: "General notes", icon: "📝", ph: "Anything you want to keep: a class outline, a list, ideas. Type a verse like Romans 8:28 and it becomes a link.", notesOnly: true },
+  { kind: "class", label: "Bible Class Notes", add: "Bible Class Notes", icon: "🏫", ph: "Your outline or notes for the class: main points, verses to read, questions to ask. Type a verse like John 3:16 and it becomes a link.", notesOnly: true },
+  { kind: "study", label: "My Study Path", add: "My Study Path", icon: "🧭", ph: "What you're learning on this study path. Type a verse like John 3:16 and it becomes a link.", notesOnly: true },
+  { kind: "note", label: "My Notes", add: "My Notes", icon: "📝", ph: "Anything you want to keep: a class outline, a list, ideas. Type a verse like Romans 8:28 and it becomes a link.", notesOnly: true },
 ];
 // Notes (church, reading, study path and general) live on their own page and are always open.
 // The journal's passcode locks only the private journal: days, prayers and thanks.
-const NOTE_KINDS = ["church", "bible", "study", "note"];
-const NOTE_LABEL = { church: "Church notes", bible: "Reading notes", study: "Study path notes", note: "General notes" };
+const NOTE_KINDS = ["class", "church", "note", "study", "bible"];
+const NOTE_LABEL = { class: "Bible Class Notes", church: "Church Notes", note: "My Notes", bible: "My Notes", study: "My Study Path" };
+const NOTE_FILTERS = ["class", "church", "note", "study"];
+const noteGroup = (k) => (k === "bible" ? "note" : k); // notes written on a chapter count as My Notes
+const BOX_TONES = [["key", "🔑", "Key point"], ["remember", "💡", "Remember"], ["question", "❓", "Question"], ["prayer", "🙏", "Prayer"]];
 const NOTE_FONTS = [["classic", "Classic"], ["clean", "Clean"], ["hand", "Handwritten"], ["big", "Big print"]];
 const KIND = Object.fromEntries(ENTRY_KINDS.map((k) => [k.kind, k]));
+// How a journal entry starts. They pick one each time.
+const OPENERS = ["Today", "My Day", "This Week", "My Reflection", "Lately"];
+const openerOf = (e) => (e?.kind === "day" ? e.opener || "My Day" : "");
+const entryLabel = (e) => openerOf(e) || KIND[e.kind]?.label || "Journal";
+// The date an entry is filed under: the day they chose, at the time it was written.
+const onDay = (day, from = new Date()) => { const d = new Date(from); const [y, m, dd] = day.split("-").map(Number); d.setFullYear(y, m - 1, dd); return d.toISOString(); };
 const dayOf = (iso) => { const d = new Date(iso); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
 const timeOf = (iso) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 let editing = null; // { id, kind, ref } while the editor is open
@@ -1658,7 +1669,7 @@ let entryHost = null;
 // a comment, thought or question), stickers, photos, maps and simple charts. Church notes add
 // the lesson title, the teacher and the passage.
 const QUOTE_TAGS = [["comment", "💬", "Comment"], ["thought", "💭", "Thought"], ["question", "❓", "Question"]];
-const entryHasContent = (f) => Boolean((f.text || "").trim() || f.title?.trim() || f.quotes?.length || f.pics?.length);
+const entryHasContent = (f) => Boolean((f.text || "").trim() || f.title?.trim() || f.prayer?.trim() || f.gratitude?.trim() || f.quotes?.length || f.pics?.length);
 function quoteCardHtml(q, i, editable = true) {
   return `<div class="ee-quote" data-q="${i}"><blockquote>“${esc(q.text)}”</blockquote><cite>${esc(refKeyName(q.ref))}${q.ver ? ` (${esc(q.ver)})` : ""}</cite>
     ${editable ? `<div class="qtags" role="group" aria-label="What kind of note">${QUOTE_TAGS.map(([t, ic, l]) => `<button type="button" data-qtag="${t}" aria-pressed="${(q.tag || "comment") === t}">${ic} ${l}</button>`).join("")}</div>
@@ -1684,6 +1695,7 @@ function picHtml(p, i, editable = true) {
   if (p.t === "sticker") return `<div class="ee-pic is-sticker">${stickerSvg(p.id)}${x}</div>`;
   if (p.t === "photo") return `<div class="ee-pic is-photo"><img src="${p.src}" alt="${esc(p.alt || "Photo")}">${x}</div>`;
   if (p.t === "map") { const n = notesFor(...p.key.split(".").map((v, k) => (k ? Number(v) : v))); return n?.map ? `<div class="ee-pic is-map">${mapSvg(n.map)}<p class="muted small-print">Map: ${esc(refKeyName(p.key))}</p>${x}</div>` : ""; }
+  if (p.t === "box") { const [, ic, l] = BOX_TONES.find(([v]) => v === p.tone) || BOX_TONES[0]; return `<div class="ee-pic is-box tone-${esc(p.tone || "key")}"><p class="nb-label">${ic} ${esc(l)}</p><p class="nb-text">${linkRefs(esc(p.text || "")).replace(/\n/g, "<br>")}</p>${editable ? `<button type="button" class="small chart-edit" data-bedit="${i}">Change</button>` : ""}${x}</div>`; }
   if (p.t === "table") return `<div class="ee-pic is-table"><table class="note-table">${(p.rows || []).map((r, ri) => `<tr>${r.map((c) => (ri ? `<td>${linkRefs(esc(c))}</td>` : `<th>${esc(c)}</th>`)).join("")}</tr>`).join("")}</table>${editable ? `<button type="button" class="small chart-edit" data-tedit="${i}">Change</button>` : ""}${x}</div>`;
   if (p.t === "chart") return `<div class="ee-pic is-chart"${editable ? ` data-chart="${i}"` : ""}>${chartHtml(p)}${editable ? `<button type="button" class="small chart-edit" data-cedit="${i}">Change</button>` : ""}${x}</div>`;
   return "";
@@ -1730,29 +1742,35 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   ref = ref || e?.ref || null;
   const newId = id || `e${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   editing = { id: newId, kind, ref };
-  const draft = { quotes: [...(e?.quotes || [])], pics: [...(e?.pics || [])], font: e?.font || "classic" };
+  const draft = { quotes: [...(e?.quotes || [])], pics: [...(e?.pics || [])], font: e?.font || "classic", opener: e?.opener || "My Day" };
+  const wroteAt = e?.created ? new Date(e.created) : new Date();
+  const isDay = kind === "day";
   const path = kind === "study" ? (e?.path || store.get("activePath") || "") : "";
   if (kind === "study" && !ref && path) { const { book, chapter } = store.get("last"); ref = `${book}.${chapter}`; }
   const noteKind = NOTE_KINDS.includes(kind);
   if (addQuote) draft.quotes.push({ tag: "comment", note: "", ...addQuote });
   const k = KIND[kind] || KIND.day;
   const when = e ? `${stampNow(new Date(e.created))}${e.updated && dayOf(e.updated) !== dayOf(e.created) ? ` · changed ${fmtDate(e.updated)}` : ""}` : stampNow();
-  const church = kind === "church";
+  const church = kind === "church" || kind === "class";
   box.innerHTML = `<div class="entry-editor ee-${kind}">
-      <p class="ee-head"><span aria-hidden="true">${k.icon}</span> <b>${esc(noteKind ? NOTE_LABEL[kind] : k.label)}</b>${path && PATH_BY_ID[path] ? ` <span class="muted">· ${esc(PATH_BY_ID[path].name || "")}</span>` : ""}${ref && !church ? ` <span class="muted">· ${esc(keyRef(ref).name)}</span>` : ""}</p>
-      <p class="ee-when">🕒 ${esc(when)}</p>
-      ${church ? `<div class="ee-church"><label class="field">Lesson or sermon title<input id="eeTitle" type="text" autocomplete="off" value="${esc(e?.title || "")}" placeholder="For example: The Good Shepherd"></label>
-        <label class="field">Teacher or preacher<input id="eeSpeaker" type="text" autocomplete="off" value="${esc(e?.speaker || "")}"></label>
+      <p class="ee-head"><span aria-hidden="true">${k.icon}</span> <b id="eeKindLabel">${esc(noteKind ? NOTE_LABEL[kind] : isDay ? draft.opener : k.label)}</b>${path && PATH_BY_ID[path] ? ` <span class="muted">· ${esc(PATH_BY_ID[path].name || "")}</span>` : ""}${ref && !church ? ` <span class="muted">· ${esc(keyRef(ref).name)}</span>` : ""}</p>
+      <div class="ee-when-row"><p class="ee-when">🕒 ${esc(when)}</p><label class="ee-date">📅 Date <input type="date" id="eeDate" value="${dayOf(wroteAt.toISOString())}" max="${todayKey()}"></label></div>
+      ${isDay ? `<div class="ee-openers" role="group" aria-label="How this entry starts"><span class="muted small-print">Start with:</span> ${OPENERS.map((o) => `<button type="button" data-opener="${o}" aria-pressed="${draft.opener === o}">${o}</button>`).join("")}</div>` : ""}
+      ${church ? `<div class="ee-church"><label class="field">${kind === "class" ? "Lesson title" : "Lesson or sermon title"}<input id="eeTitle" type="text" autocomplete="off" value="${esc(e?.title || "")}" placeholder="For example: The Good Shepherd"></label>
+        <label class="field">${kind === "class" ? "Teacher (or me, if I'm teaching)" : "Teacher or preacher"}<input id="eeSpeaker" type="text" autocomplete="off" value="${esc(e?.speaker || "")}"></label>
         <label class="field">Passage<input id="eePassage" type="text" autocomplete="off" value="${esc(e?.passage || "")}" placeholder="For example: John 10:1-18"></label></div>`
         : noteKind ? `<label class="field ee-heading">Heading<input id="eeTitle" type="text" autocomplete="off" value="${esc(e?.title || "")}" placeholder="${esc(defaultHeading({ kind, ref }))}"></label>` : ""}
       <div class="ee-quotes" id="eeQuotes"></div>
-      <label class="ee-label" for="entryText">${church ? "Notes" : "Write here"}</label>
+      <label class="ee-label" for="entryText" id="eeTextLabel">${church ? "Notes" : isDay ? `${esc(draft.opener)}…` : "Write here"}</label>
       ${noteKind ? `<div class="ee-fonts" role="group" aria-label="Writing style">${NOTE_FONTS.map(([f, l]) => `<button type="button" class="nf-${f}" data-font="${f}" aria-pressed="${draft.font === f}">${l}</button>`).join("")}</div>` : ""}
       <textarea id="entryText" class="nf-${esc(draft.font)}" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
       <div class="ee-refs" id="eeRefs" aria-live="polite"></div>
+      ${isDay ? `<div class="ee-extra" id="eePrayerBox" ${(e?.prayer || "").trim() ? "" : "hidden"}><label class="ee-label" for="eePrayer">🙏 Prayer</label><textarea id="eePrayer" rows="3" placeholder="Who and what are you praying for?">${esc(e?.prayer || "")}</textarea></div>
+      <div class="ee-extra" id="eeGratBox" ${(e?.gratitude || "").trim() ? "" : "hidden"}><label class="ee-label" for="eeGrat">❀ Thankful for</label><textarea id="eeGrat" rows="3" placeholder="What are you thankful for today?">${esc(e?.gratitude || "")}</textarea></div>
+      <div class="ee-add-extra"><button type="button" class="small" data-extra="eePrayerBox" ${(e?.prayer || "").trim() ? "hidden" : ""}>＋ Add a prayer</button><button type="button" class="small" data-extra="eeGratBox" ${(e?.gratitude || "").trim() ? "hidden" : ""}>＋ Add what I'm thankful for</button><span class="muted small-print">Only if you want to.</span></div>` : ""}
       <div class="ee-pics" id="eePics"></div>
       <div class="ee-tools" role="group" aria-label="Add to this entry">
-        <button type="button" data-tool="verse">📖 Verse</button><button type="button" data-tool="sticker">🐑 Sticker</button>
+        <button type="button" data-tool="verse">📖 Quote a verse</button><button type="button" data-tool="sticker">🎨 Pictures &amp; arrows</button><button type="button" data-tool="box">▭ Shaded box</button>
         <button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button><button type="button" data-tool="table">▦ Table</button>
         <input type="file" id="eePhoto" accept="image/*" hidden>
       </div>
@@ -1763,6 +1781,8 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   const ta = $("#entryText"), panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
   addMic(box.querySelector(".entry-editor"), ta);
   const fields = () => ({ kind, text: ta.value.trim(), ...(ref ? { ref } : {}), quotes: draft.quotes, pics: draft.pics,
+    created: onDay($("#eeDate")?.value || dayOf(wroteAt.toISOString()), wroteAt),
+    ...(isDay ? { opener: draft.opener, prayer: ($("#eePrayer")?.value || "").trim(), gratitude: ($("#eeGrat")?.value || "").trim() } : {}),
     ...(noteKind ? { font: draft.font } : {}), ...(path ? { path } : {}),
     ...(church ? { title: $("#eeTitle").value.trim(), speaker: $("#eeSpeaker").value.trim(), passage: $("#eePassage").value.trim() } : noteKind ? { title: $("#eeTitle").value.trim() } : {}) });
   // Verses typed in the note become buttons that open the passage, without leaving the note.
@@ -1789,6 +1809,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     el.querySelectorAll("[data-px]").forEach((b) => b.addEventListener("click", () => { draft.pics.splice(Number(b.dataset.px), 1); drawPics(); keep(); }));
     el.querySelectorAll("[data-cedit]").forEach((b) => b.addEventListener("click", () => chartForm(Number(b.dataset.cedit))));
     el.querySelectorAll("[data-tedit]").forEach((b) => b.addEventListener("click", () => tableForm(Number(b.dataset.tedit))));
+    el.querySelectorAll("[data-bedit]").forEach((b) => b.addEventListener("click", () => boxForm(Number(b.dataset.bedit))));
   };
   const addPic = (pic) => { draft.pics.push(pic); drawPics(); keep(); msg("Added ✓"); };
   const closePanel = () => { panel.hidden = true; panel.innerHTML = ""; };
@@ -1835,12 +1856,30 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     draw();
     panel.querySelector("[data-cell]")?.focus();
   }
+  // A shaded box: a key point, something to remember, a question or a prayer.
+  function boxForm(editAt = -1) {
+    const b = editAt >= 0 ? { ...draft.pics[editAt] } : { tone: "key", text: "" };
+    panel.hidden = false;
+    panel.innerHTML = `<div class="chart-kinds" role="group">${BOX_TONES.map(([v, ic, l]) => `<button type="button" data-tone="${v}" aria-pressed="${b.tone === v}">${ic} ${l}</button>`).join("")}</div>
+      <label class="field">What goes in the box<textarea id="boxText" rows="3">${esc(b.text || "")}</textarea></label>
+      <div class="ee-acts"><button type="button" class="small" id="bDone">${editAt >= 0 ? "Update box" : "Add box"}</button><button type="button" class="small" id="bCancel">Cancel</button></div>`;
+    panel.querySelectorAll("[data-tone]").forEach((x) => x.addEventListener("click", () => { b.tone = x.dataset.tone; panel.querySelectorAll("[data-tone]").forEach((y) => y.setAttribute("aria-pressed", String(y === x))); }));
+    $("#bCancel").addEventListener("click", closePanel);
+    $("#bDone").addEventListener("click", () => {
+      const box = { t: "box", tone: b.tone, text: $("#boxText").value.trim() };
+      if (!box.text) { $("#boxText").focus(); return; }
+      if (editAt >= 0) { draft.pics[editAt] = box; drawPics(); keep(); } else addPic(box);
+      closePanel();
+    });
+    $("#boxText").focus();
+  }
   const tools = {
+    box() { boxForm(); },
     table() { tableForm(); },
     verse() {
       panel.hidden = false;
       panel.innerHTML = `<form class="jump-row" id="eeVerseForm"><input id="eeVerseIn" type="text" placeholder="John 3:16, or Psalm 23:1-3" autocomplete="off"><button class="small" type="submit">Add</button></form>
-        <p class="muted small-print">Or, while you read, tap a verse number and choose Add to notes.</p>`;
+        <p class="muted small-print">Type where it is, and its words are copied into your entry from your Bible. Or, while you read, tap a verse number and choose Add to notes.</p>`;
       $("#eeVerseIn").focus();
       $("#eeVerseForm").addEventListener("submit", async (ev) => {
         ev.preventDefault();
@@ -1886,7 +1925,15 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   if (addQuote) keep();
   let rt = 0;
   ta.addEventListener("input", () => { keepSoon(); clearTimeout(rt); rt = setTimeout(drawRefs, 500); });
-  box.querySelectorAll("#eeTitle, #eeSpeaker, #eePassage").forEach((i) => i.addEventListener("input", () => { keepSoon(); if (i.id === "eePassage") drawRefs(); }));
+  box.querySelectorAll("#eeTitle, #eeSpeaker, #eePassage, #eePrayer, #eeGrat").forEach((i) => i.addEventListener("input", () => { keepSoon(); if (i.id === "eePassage") drawRefs(); }));
+  $("#eeDate")?.addEventListener("change", () => { if ($("#eeDate").value > todayKey()) $("#eeDate").value = todayKey(); keep(); });
+  box.querySelectorAll("[data-opener]").forEach((b) => b.addEventListener("click", () => {
+    draft.opener = b.dataset.opener;
+    box.querySelectorAll("[data-opener]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    $("#eeKindLabel").textContent = draft.opener; $("#eeTextLabel").textContent = `${draft.opener}…`;
+    keep();
+  }));
+  box.querySelectorAll("[data-extra]").forEach((b) => b.addEventListener("click", () => { const x = $(`#${b.dataset.extra}`); x.hidden = false; b.hidden = true; x.querySelector("textarea").focus(); }));
   box.querySelectorAll("[data-font]").forEach((b) => b.addEventListener("click", () => {
     draft.font = b.dataset.font;
     box.querySelectorAll("[data-font]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
@@ -1955,7 +2002,8 @@ async function makeJournalBook() {
   // Everything written, by day: new entries, older daily pages, and chapter journals.
   const days = {};
   const add = (day, item) => { if (item.parts.some(([, t]) => (t || "").trim()) || item.extra || item.head) (days[day] ||= []).push(item); };
-  for (const e of store.allEntries()) if (want(e.kind)) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", k: e.kind, ref: e.ref, parts: [["", e.text]], answered: e.answered,
+  for (const e of store.allEntries()) if (want(e.kind) || (only === "prayer" && e.prayer?.trim()) || (only === "gratitude" && e.gratitude?.trim())) add(dayOf(e.created), { at: e.created, kind: entryLabel(e), k: e.kind, ref: e.ref,
+    parts: e.kind === "day" ? [[openerOf(e), want("day") ? e.text : ""], ["Prayer", want("prayer") ? e.prayer : ""], ["Thankful for", want("gratitude") ? e.gratitude : ""]] : [["", e.text]], answered: e.answered,
     head: e.title || e.speaker || e.passage ? `<p class="pb-lesson">${e.title ? `<b>${esc(e.title)}</b>` : ""}${e.speaker ? `<span>${esc(e.speaker)}</span>` : ""}${e.passage ? `<span>${esc(e.passage)}</span>` : ""}</p>` : "",
     extra: (e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("") + ((e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : "") });
   for (const d of store.allDiary()) {
@@ -2042,7 +2090,7 @@ function renderJournalList(justSaved = null) {
   const lockRow = store.get("journalLock") ? lockNowButton(renderJournalList) : null;
   const snip = (t) => `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}`;
   const items = [
-    ...store.allEntries().map((e) => ({ type: "entry", at: e.created, kinds: [e.kind], e })),
+    ...store.allEntries().map((e) => ({ type: "entry", at: e.created, kinds: [e.kind, ...(e.prayer?.trim() ? ["prayer"] : []), ...(e.gratitude?.trim() ? ["gratitude"] : [])], e })),
     ...store.allDiary().map((d) => ({ type: "diary", at: d.updated, kinds: ["day", ...(d.prayer?.trim() ? ["prayer"] : []), ...(d.gratitude?.trim() ? ["gratitude"] : [])], d })),
     ...store.allJournal().map((j) => ({ type: "chapter", at: j.updated, kinds: ["bible", ...(j.prayer?.trim() ? ["prayer"] : []), ...(j.gratitude?.trim() ? ["gratitude"] : [])], j })),
   ].filter((it) => journalFilter === "all" || it.kinds.includes(journalFilter)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
@@ -2050,7 +2098,7 @@ function renderJournalList(justSaved = null) {
   const row = (it) => {
     if (it.type === "entry") {
       const e = it.e, k = KIND[e.kind] || KIND.day;
-      return `<button class="log-row entry-row er-${e.kind}${e.id === justSaved ? " just-saved" : ""}" data-entry="${e.id}"><strong>${k.icon} ${esc(k.label)}${e.ref ? ` · ${esc(keyRef(e.ref).name)}` : ""}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span></button>`;
+      return `<button class="log-row entry-row er-${e.kind}${e.id === justSaved ? " just-saved" : ""}" data-entry="${e.id}"><strong>${k.icon} ${esc(entryLabel(e))}${e.ref ? ` · ${esc(keyRef(e.ref).name)}` : ""}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span>${e.prayer?.trim() ? `<span class="log-dates"><em>Prayer:</em> ${snip(e.prayer)}</span>` : ""}${e.gratitude?.trim() ? `<span class="log-dates"><em>Thankful for:</em> ${snip(e.gratitude)}</span>` : ""}</button>`;
     }
     if (it.type === "diary") return `<button class="log-row is-daily" data-day="${it.d.day}"><strong>✎ My day</strong><small>${esc(dayLabel(it.d.day))}</small>${DIARY_BOXES.filter((b) => (it.d[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(it.d[b.field])}</span>`).join("")}</button>`;
     const j = it.j;
@@ -2137,6 +2185,7 @@ document.addEventListener("click", (e) => {
 }, true);
 function defaultHeading(e) {
   if (e.kind === "church") return "Church notes";
+  if (e.kind === "class") return "Bible class";
   if (e.kind === "study" && e.path && PATH_BY_ID[e.path]) return `${PATH_BY_ID[e.path].name}${e.ref ? `: ${keyRef(e.ref).name}` : ""}`;
   if (e.ref) return `Notes on ${keyRef(e.ref).name}`;
   return e.created ? `Note, ${fmtDate(e.created)}` : "A short heading, like Sunday school outline";
@@ -2147,9 +2196,9 @@ function renderNotesList(justSaved = null) {
   if (!el) return;
   const all = store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind));
   const list = shownNotes();
-  const pb = $("#printNotes");
-  if (pb) { pb.hidden = !list.length; pb.textContent = list.length === all.length ? "🖨 Print my notes" : `🖨 Print these ${list.length} note${list.length === 1 ? "" : "s"}`; }
-  $("#notesFilter").innerHTML = [["all", "All"], ...NOTE_KINDS.map((k) => [k, NOTE_LABEL[k]])].map(([v, l]) => `<button type="button" data-nf="${v}" aria-pressed="${notesFilter === v}">${esc(l)}${v === "all" ? "" : ` <span class="muted">${all.filter((e) => e.kind === v).length}</span>`}</button>`).join("");
+
+  $("#notesFilter").innerHTML = [["all", "All"], ...NOTE_FILTERS.map((k) => [k, NOTE_LABEL[k]])].map(([v, l]) => `<button type="button" data-nf="${v}" aria-pressed="${notesFilter === v}">${esc(l)}${v === "all" ? "" : ` <span class="muted">${all.filter((e) => noteGroup(e.kind) === v).length}</span>`}</button>`).join("");
+  $("#notesRange").textContent = list.length ? `${list.length} note${list.length === 1 ? "" : "s"} · ${noteRange(list)}${notesFilter === "study" ? studyPathsLine(list) : ""}` : "";
   $("#notesFilter").querySelectorAll("[data-nf]").forEach((b) => b.addEventListener("click", () => { notesFilter = b.dataset.nf; renderNotesList(); }));
   if (!list.length) { el.innerHTML = `<p class="empty">${all.length ? "No notes match." : "No notes yet. Tap one of the buttons above to start one. Every note is dated, and you can give it a heading so it's easy to find."}</p>`; return; }
   let lastDay = "";
@@ -2160,16 +2209,34 @@ function renderNotesList(justSaved = null) {
     const k = KIND[e.kind];
     const words = (e.text || "").trim();
     const snip = words.length > 220 ? `${words.slice(0, 220)}…` : words;
-    const refs = scanRefs(`${e.passage || ""}`).concat(e.ref && e.kind !== "church" ? [{ ...keyRef(e.ref), verse: 0, end: 0, name: keyRef(e.ref).name }] : []);
+    const refs = scanRefs(`${e.passage || ""}`).concat(e.ref && e.kind !== "church" && e.kind !== "class" ? [{ ...keyRef(e.ref), verse: 0, end: 0, name: keyRef(e.ref).name }] : []);
     return `${head}<article class="note-card nk-${e.kind}${e.id === justSaved ? " just-saved" : ""}">
-      <button type="button" class="nc-open" data-note="${e.id}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}<span class="go" aria-hidden="true">›</span></button>
+      ${choosing ? `<label class="nc-pick"><input type="checkbox" data-pick="${e.id}" ${picked.has(e.id) ? "checked" : ""}> Print this one</label>` : ""}
+      <button type="button" class="nc-open" data-note="${e.id}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}${e.kind === "study" && PATH_BY_ID[e.path] ? `<small class="nc-path">${esc(PATH_BY_ID[e.path].name)} path</small>` : ""}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}<span class="go" aria-hidden="true">›</span></button>
       ${refs.length ? `<p class="nc-refs">${refs.map((r) => refButton(r)).join(" ")}</p>` : ""}
       ${snip ? `<p class="nc-snip nf-${esc(e.font || "classic")}">${linkRefs(esc(snip)).replace(/\n/g, "<br>")}</p>` : ""}
       ${(e.quotes?.length || e.pics?.length) ? `<p class="nc-extras">${[e.quotes?.length && `📖 ${e.quotes.length} verse${e.quotes.length === 1 ? "" : "s"}`, e.pics?.some((p) => p.t === "table") && "▦ table", e.pics?.some((p) => p.t === "chart") && "📊 chart", e.pics?.some((p) => p.t === "photo") && "📷 photo", e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join("")].filter(Boolean).join(" · ")}</p>` : ""}
     </article>`;
   }).join("");
   el.querySelectorAll("[data-note]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.note }, $("#notesEditor"))));
+  el.querySelectorAll("[data-pick]").forEach((c) => c.addEventListener("change", () => { if (c.checked) picked.add(c.dataset.pick); else picked.delete(c.dataset.pick); syncPrintButtons(); }));
+  syncPrintButtons();
 }
+// Choosing which notes to print: tick the ones you want, then print them (or save as a PDF).
+let choosing = false;
+const picked = new Set();
+function syncPrintButtons() {
+  const all = shownNotes();
+  const pb = $("#printNotes"), cb = $("#chooseNotes");
+  if (!pb || !cb) return;
+  pb.hidden = !all.length; cb.hidden = !all.length;
+  const n = [...picked].filter((id) => all.some((e) => e.id === id)).length;
+  pb.textContent = choosing ? (n ? `🖨 Print the ${n} I picked` : "Tick the notes to print") : all.length === store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind)).length ? "🖨 Print all my notes" : `🖨 Print these ${all.length}`;
+  pb.disabled = choosing && !n;
+  cb.textContent = choosing ? "Done choosing" : "☑ Choose which to print";
+}
+const noteRange = (list) => { const d = list.map((e) => dayOf(e.created)).sort(); const f = (x) => new Date(`${x}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }); return d[0] === d[d.length - 1] ? f(d[0]) : `${f(d[0])} to ${f(d[d.length - 1])}`; };
+const studyPathsLine = (list) => { const p = [...new Set(list.map((e) => PATH_BY_ID[e.path]?.name).filter(Boolean))]; return p.length ? ` · ${p.join(", ")} path${p.length > 1 ? "s" : ""}` : ""; };
 // Notes on paper: each note with its heading, date, passage, verses, tables and pictures.
 function printNotesBook(list, title = "My Notes") {
   if (!list.length) { mascotSay("There are no notes to print here yet."); return; }
@@ -2179,7 +2246,8 @@ function printNotesBook(list, title = "My Notes") {
   const one = (e) => `<section class="pn-note nk-${e.kind}">
       <p class="pn-meta">${esc(NOTE_LABEL[e.kind] || "Note")} · ${esc(stampNow(new Date(e.created)))}</p>
       <h2>${esc(e.title || defaultHeading(e))}</h2>
-      ${e.speaker || e.passage || (e.ref && e.kind !== "church") ? `<p class="pn-sub">${[e.speaker, e.passage, e.ref && e.kind !== "church" ? keyRef(e.ref).name : ""].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
+      ${e.kind === "study" && PATH_BY_ID[e.path] ? `<p class="pn-path">${esc(PATH_BY_ID[e.path].name)} path</p>` : ""}
+      ${e.speaker || e.passage || (e.ref && e.kind !== "church" && e.kind !== "class") ? `<p class="pn-sub">${[e.speaker, e.passage, e.ref && e.kind !== "church" && e.kind !== "class" ? keyRef(e.ref).name : ""].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
       ${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}
       ${e.text ? `<div class="pb-lines nf-${esc(e.font || "classic")}">${para(e.text)}</div>` : ""}
       ${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
@@ -2187,16 +2255,21 @@ function printNotesBook(list, title = "My Notes") {
     </section>`;
   const html = list.length === 1 ? `<article class="pn-book">${one(list[0])}</article>`
     : `<section class="pn-cover"><div class="pb-art">${seaScene(store.get("style"), { height: 120 })}</div><p class="pb-orn" aria-hidden="true">❦</p><h1>${esc(title)}</h1>
-      <p class="pb-by">${name ? esc(name) : ""}</p><p class="pb-range">${days.length > 1 ? `${esc(dayLabel(days[0]))} to ${esc(dayLabel(days[days.length - 1]))}` : esc(dayLabel(days[0]))}</p></section>
+      ${list.every((e) => e.kind === "study") && studyPathsLine(list) ? `<p class="pn-path">${esc(studyPathsLine(list).slice(3))}</p>` : ""}
+      <p class="pb-by">${name ? esc(name) : ""}</p><p class="pb-range">${list.length} note${list.length === 1 ? "" : "s"} · ${days.length > 1 ? `${esc(dayLabel(days[0]))} to ${esc(dayLabel(days[days.length - 1]))}` : esc(dayLabel(days[0]))}</p></section>
       <article class="pn-book">${[...list].sort((a, b) => a.created.localeCompare(b.created)).map(one).join("")}</article>`;
   printPages(html, "notes");
 }
 function shownNotes() {
   const q = norm($("#notesSearch")?.value || "");
-  return store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (notesFilter === "all" || e.kind === notesFilter)
+  return store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (notesFilter === "all" || noteGroup(e.kind) === notesFilter)
     && (!q || norm(`${e.title || ""} ${e.text || ""} ${e.speaker || ""} ${e.passage || ""} ${e.ref ? keyRef(e.ref).name : ""} ${(e.quotes || []).map((x) => x.text).join(" ")} ${(e.pics || []).filter((p) => p.t === "table").map((p) => p.rows.flat().join(" ")).join(" ")}`).includes(q)));
 }
-$("#printNotes")?.addEventListener("click", () => printNotesBook(shownNotes(), notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]));
+$("#printNotes")?.addEventListener("click", () => {
+  const list = shownNotes().filter((e) => !choosing || picked.has(e.id));
+  printNotesBook(list, notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]);
+});
+$("#chooseNotes")?.addEventListener("click", () => { choosing = !choosing; if (!choosing) picked.clear(); renderNotesList(); });
 document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
 $("#notesSearch")?.addEventListener("input", () => renderNotesList());
 document.querySelectorAll("[data-open-games]").forEach((b) => b.addEventListener("click", () => quest.open()));
@@ -2816,8 +2889,18 @@ function mapSvg(map) {
     return `<text class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}"${rot}>${then ? `<tspan class="${same ? "nm-both" : "nm-then"}">${esc(then)}</tspan>` : ""}${!same || !then ? `<tspan class="nm-now" x="${x.toFixed(1)}" dy="${then ? "1.1em" : 0}">${esc(now)}</tspan>` : ""}</text>`;
   };
   const hasEden = map.places.some((p) => p.kind === "eden");
+  const used = [];
   const places = map.places.map((p, i) => {
-    const x = X(p.lon), y = Y(p.lat), right = p.side ? p.side === "right" : x < W * 0.62;
+    const x = X(p.lon), y = Y(p.lat);
+    let right = p.side ? p.side === "right" : x < W * 0.62;
+    if (map.auto) {
+      // Close places: put the label on the other side, or move it down, so names don't overlap.
+      const hit = (r2, yy) => used.some((u) => u.right === r2 && Math.abs(u.y - yy) < 26 && Math.abs(u.x - x) < 90);
+      let dy = 0;
+      if (hit(right, y)) { if (!hit(!right, y)) right = !right; else while (hit(right, y + dy) && dy < 66) dy += 11; }
+      p = { ...p, dy };
+      used.push({ x, y: y + dy, right });
+    }
     const eden = p.kind === "eden";
     const dot = eden ? `<circle class="map-eden-ring" cx="${x}" cy="${y}" r="7"/><circle class="map-dot map-eden" cx="${x}" cy="${y}" r="4.2"/>` : `<circle class="map-dot" cx="${x}" cy="${y}" r="4"/>`;
     return `<g class="map-place${eden ? " is-eden" : ""}" data-place="${i}" tabindex="0" role="button" aria-label="${esc(p.then)}${p.now !== p.then ? `, today ${esc(p.now)}` : ""}">
@@ -2838,6 +2921,102 @@ function mapSvg(map) {
     ${waterLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-water-label", l.angle)).join("")}
     ${riverLabels.map((l) => twoNames(l.then, l.now, X(l.lon), Y(l.lat), "middle", "map-river-label", l.angle)).join("")}
     ${places}${key}</g></svg>`;
+}
+/* ---------- When and where: the time period, regions, a places map and the tribes ---------- */
+let placesData = null;
+function loadPlaces() {
+  if (!placesData) placesData = fetch("data/places.json").then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) placesData = null; return d; });
+  return placesData;
+}
+const placeName = (n) => n.replace(/\s\d+$/, "");
+const SURE = { 3: "Location known", 2: "Location likely", 1: "Location uncertain" };
+const NOT_ON_MAP = new Set(["region", "people group", "special"]);
+let whereMap = null;
+function whereOutline(spots) {
+  const { NEAR_EAST: ne, GALILEE: gal } = MAP_OUTLINES;
+  const inside = spots.filter((p) => p.lat >= ne.bounds.lat[0] && p.lat <= ne.bounds.lat[1] && p.lon >= ne.bounds.lon[0] && p.lon <= ne.bounds.lon[1]);
+  if (!inside.length) return { inside };
+  let la = [Math.min(...inside.map((p) => p.lat)), Math.max(...inside.map((p) => p.lat))];
+  let lo = [Math.min(...inside.map((p) => p.lon)), Math.max(...inside.map((p) => p.lon))];
+  const grow = (r, want) => { const m = (r[0] + r[1]) / 2, h = Math.max(r[1] - r[0], want) / 2; return [m - h, m + h]; };
+  la = grow(la, (la[1] - la[0]) * 1.3 + 0.12); lo = grow(lo, (lo[1] - lo[0]) * 1.25 + 0.12);
+  la = grow(la, 0.8); lo = grow(lo, 0.7);
+  // Keep the map a comfortable shape, neither a ribbon nor a tower.
+  const cos = Math.cos(((la[0] + la[1]) / 2) * Math.PI / 180);
+  const tall = (la[1] - la[0]) / ((lo[1] - lo[0]) * cos);
+  if (tall > 1.35) lo = grow(lo, (la[1] - la[0]) / (1.35 * cos));
+  if (tall < 0.62) la = grow(la, (lo[1] - lo[0]) * cos * 0.62);
+  const clamp = (r, b) => { const span = Math.min(r[1] - r[0], b[1] - b[0]); let a = Math.max(b[0], r[0]); if (a + span > b[1]) a = b[1] - span; return [a, a + span]; };
+  const bounds = { lat: clamp(la, ne.bounds.lat), lon: clamp(lo, ne.bounds.lon) };
+  const inB = (l) => l.lat > bounds.lat[0] && l.lat < bounds.lat[1] && l.lon > bounds.lon[0] && l.lon < bounds.lon[1];
+  const small = bounds.lat[1] - bounds.lat[0] < 3;
+  const galLabel = { ...gal.waterLabel, then: gal.waterLabel.text, now: gal.waterLabel.text };
+  return {
+    inside,
+    outline: {
+      bounds, water: [...ne.water, ...gal.water], rivers: [...ne.rivers, ...(small ? gal.rivers : [])], dryRivers: ne.dryRivers, islands: ne.islands,
+      riverLabels: ne.riverLabels.filter(inB), waterLabels: [...ne.waterLabels, ...(small ? [galLabel] : [])].filter(inB),
+    },
+  };
+}
+function whereHtml(book, chapter) {
+  const era = eraFor(book, chapter);
+  const debated = `<span class="ev ev-debated" title="Careful scholars date this differently">Debated</span>`;
+  return `<div class="where-era"><h4>🏛️ The time</h4><p class="where-title"><strong>${esc(era.title)}</strong></p>
+      ${era.dates ? `<p class="where-dates">${esc(era.dates)} ${era.debated ? debated : ""}</p>` : ""}
+      ${era.written ? `<p class="where-written"><span class="muted">This book:</span> ${esc(era.written)} ${era.writtenDebated && !era.debated ? debated : ""}</p>` : ""}
+      <p class="where-world"><strong>The world around it.</strong> ${esc(era.world)}</p></div>
+    <div id="wherePlaces"><p class="muted small-print">Finding the places…</p></div>
+    ${tribesHtml()}`;
+}
+function tribesHtml(named = []) {
+  const rows = TRIBES.map((t) => `<li class="tribe${named.includes(t) ? " is-named" : ""}"><p class="tribe-head"><strong>${esc(tribeName(t))}</strong>${t[0].startsWith("Joseph") ? " <span class=\"muted\">(Joseph's line)</span>" : ""} <span class="muted small-print">· mother ${esc(t[1])}</span></p>
+    <p>${esc(t[2])}${t[4] ? `. <span class="muted">${esc(t[4])}.</span>` : ""}</p><p class="tribe-refs">${linkRefs(t[3])}</p></li>`).join("");
+  return `<details class="where-tribes" id="whereTribes"${named.length ? " open" : ""}><summary>👑 The twelve tribes of Israel${named.length ? ` <span class="rt-sub">${named.length} named in this chapter</span>` : ""}</summary>
+    <p class="muted small-print">Jacob's twelve sons became the twelve tribes. Joseph's line counts as two tribes, Ephraim and Manasseh, and Levi received towns instead of land.</p>
+    <ul class="tribes-list">${rows}</ul></details>`;
+}
+async function fillWhere(el, book, chapter) {
+  const box = el.querySelector("#wherePlaces");
+  if (!box) return;
+  const key = `${book}.${chapter}`;
+  box.dataset.key = key;
+  // Tribes named in this chapter, when the chapter speaks of tribes.
+  const text = $("#reader")?.textContent || "";
+  if (/\btribes?\b/i.test(text)) {
+    const named = TRIBES.filter((t) => new RegExp(`\\b${tribeName(t)}\\b`).test(text));
+    if (named.length) el.querySelector("#whereTribes")?.replaceWith(Object.assign(document.createElement("div"), { innerHTML: tribesHtml(named) }).firstElementChild);
+  }
+  const d = await loadPlaces();
+  if (box.dataset.key !== key || !box.isConnected) return;
+  if (!d) { box.innerHTML = `<p class="muted small-print">The places couldn't load. Check the internet connection and try again.</p>`; return; }
+  const all = (d.chapters[key] || []).map((i) => { const [name, lat, lon, conf, modern, type, ids, slug] = d.places[i]; return { name: placeName(name), lat, lon, conf, modern, type, ids, slug }; });
+  const regionsNamed = all.filter((p) => p.type === "region");
+  const spots = all.filter((p) => !NOT_ON_MAP.has(p.type));
+  const regions = [...new Set([...spots.map((p) => regionOf(p.lat, p.lon)).filter(Boolean).map((r) => `${r.then}|${r.now}`)])].map((s) => s.split("|"));
+  const chosen = [...spots].sort((a, b) => b.conf - a.conf).slice(0, 12);
+  const { inside, outline } = whereOutline(chosen);
+  const far = spots.filter((p) => !inside.some((q) => q.slug === p.slug));
+  whereMap = inside.map((p) => ({ ...p, then: p.name, now: p.modern && !/^(another name|near|possibly|probably)/i.test(p.modern) ? p.modern : p.name }));
+  const credit = `<p class="muted small-print">Places: <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> (CC BY), from scholars' and archaeologists' identifications. Coastlines simplified from standard atlases.</p>`;
+  if (!all.length) { box.innerHTML = `<h4>🧭 The places</h4><p class="muted small-print">This chapter doesn't name a place on the map.</p>${credit}`; return; }
+  const chip = (p) => `<a class="where-chip" href="https://www.openbible.info/geo/ancient/${encodeURIComponent(p.slug)}" target="_blank" rel="noopener">${esc(p.name)}${p.modern ? ` <span class="muted">· ${esc(shortNow(p.modern))}</span>` : ""}</a>`;
+  box.innerHTML = `<h4>🧭 The places</h4>
+    ${regions.length || regionsNamed.length ? `<p class="where-regions"><span class="muted">Regions:</span> ${[...regions.map(([then, now]) => `<span class="where-region"><strong>${esc(then)}</strong> <span class="muted">· today ${esc(now)}</span></span>`), ...regionsNamed.filter((r) => !regions.some(([t]) => t.startsWith(r.name))).map((r) => `<span class="where-region"><strong>${esc(r.name)}</strong></span>`)].join("")}</p>` : ""}
+    ${whereMap.length ? `<div class="map-scroll">${mapSvg({ auto: true, outline, places: whereMap, caption: `Places in ${refName({ book, chapter })}` })}</div><p class="map-swipe muted small-print">Swipe sideways to see the whole map.</p>
+    <p class="map-note" id="whereNote">Tap a place on the map to see where it is today and how sure scholars are.</p>` : ""}
+    ${spots.length > chosen.length ? `<p class="muted small-print">The map shows ${chosen.length} of the ${spots.length} places named here. All of them:</p><div class="where-chips">${spots.map(chip).join("")}</div>` : ""}
+    ${far.length && spots.length <= chosen.length ? `<p class="muted small-print">Farther away, beyond this map:</p><div class="where-chips">${far.map(chip).join("")}</div>` : ""}
+    ${credit}`;
+  box.querySelectorAll("[data-place]").forEach((g) => {
+    const show = () => {
+      const p = whereMap[Number(g.dataset.place)];
+      box.querySelectorAll(".map-place").forEach((x) => x.classList.toggle("is-on", x === g));
+      box.querySelector("#whereNote").innerHTML = `<strong class="nm-then">${esc(p.name)}</strong>${p.modern ? ` <span class="nm-now">· today: ${esc(p.modern)}</span>` : ""}<br>${esc(SURE[p.conf])}${p.ids > 1 ? `; scholars have suggested ${p.ids} sites` : ""}. <a href="https://www.openbible.info/geo/ancient/${encodeURIComponent(p.slug)}" target="_blank" rel="noopener">More about ${esc(p.name)} ↗</a>`;
+    };
+    g.addEventListener("click", show);
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
 }
 /* ---------- Strong's concordance for every chapter ---------- */
 const strongsCache = {}, lexCache = {};
@@ -3144,7 +3323,7 @@ function wireOpenIn(el) {
 const REF_TILES = {
   verses: ["📖", "Verse by verse"], strongs: ["א", "Strong's concordance"], map: ["🗺️", "Map"],
   history: ["🏛️", "Background"], geography: ["⛰️", "Geography"], words: ["✍️", "Key words"],
-  views: ["🎓", "Scholars and views"], xref: ["🔗", "Cross-references"], search: ["🔍", "Find a verse"],
+  views: ["🎓", "Scholars and views"], xref: ["🔗", "Cross-references"], where: ["🧭", "When and where"], search: ["🔍", "Find a verse"],
   sources: ["📚", "Sources"], mine: ["📝", "My notes"],
 };
 function journalHome() {
@@ -3176,6 +3355,7 @@ function wireRef(el, book, chapter) {
   wireWordSearch(el);
   wireOpenIn(el);
   fillStrongs(el, book, chapter);
+  fillWhere(el, book, chapter);
   const slot = el.querySelector("#refJournalSlot");
   if (slot) {
     const ji = $("#journalInner"), jb = $("#journalBox");
@@ -3193,10 +3373,10 @@ function renderNotes(book, chapter) {
   const mineSub = mineN ? `${mineN} entr${mineN === 1 ? "y" : "ies"}` : "Write one";
   el.className = "notes-card ref-section";
   if (!n) {
-    const tiles = ["strongs", "search", "mine"];
+    const tiles = ["strongs", "where", "search", "mine"];
     if (!tiles.includes(notesTab)) notesTab = "strongs";
-    el.innerHTML = `${refHead(book, chapter)}${refTilesHtml(tiles, { mine: mineSub })}
-      <div class="notes-panel" id="refPanel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : notesTab === "mine" ? mineHtml(book, chapter) : wordSearchHtml()}</div>
+    el.innerHTML = `${refHead(book, chapter)}${refTilesHtml(tiles, { mine: mineSub, where: "Time, places, tribes" })}
+      <div class="notes-panel" id="refPanel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : notesTab === "mine" ? mineHtml(book, chapter) : notesTab === "where" ? whereHtml(book, chapter) : wordSearchHtml()}</div>
       <p class="muted small-print" style="margin-top:14px">Full study notes (verse by verse, background, maps, key words, scholars' views and sources) are written for these chapters so far, with more on the way:</p>
       <div class="row">${sampleChapters().map((k) => { const r = keyRef(k); return `<button class="small" data-go="${k}">${esc(r.name)}</button>`; }).join("")}</div>
       ${openInHtml(book, chapter)}`;
@@ -3211,9 +3391,9 @@ function renderNotes(book, chapter) {
   const paras = (t) => String(t).split("\n\n").map((x) => `<p>${esc(x)}</p>`);
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
   const sec = (id) => n.sections.find((x) => x.id === id);
-  const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...(n.map ? ["map"] : []), ...n.sections.filter((x) => x.id !== "verses").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), ...(n.crossRefs ? ["xref"] : []), "search", "sources", "mine"];
+  const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...(n.map ? ["map"] : []), "where", ...n.sections.filter((x) => x.id !== "verses").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), ...(n.crossRefs ? ["xref"] : []), "search", "sources", "mine"];
   const secFor = (id) => id === "words" ? n.sections.find((x) => x.lang) : sec(id);
-  const subs = { mine: mineSub, sources: `${srcKeys.length} sources` };
+  const subs = { mine: mineSub, where: "Time, places, tribes", sources: `${srcKeys.length} sources` };
   for (const id of tiles) { const x = secFor(id); if (x) subs[id] = id === "views" ? `${x.items.filter((it) => it.who !== "Common ground" && !it.extra).length} views` : `${x.items.length} notes`; }
   if (n.map) subs.map = `${n.map.places.length} places`;
   if (n.crossRefs) subs.xref = `${n.crossRefs.length} passages`;
@@ -3225,6 +3405,8 @@ function renderNotes(book, chapter) {
     body = mineHtml(book, chapter);
   } else if (notesTab === "map") {
     body = `<div class="map-scroll">${mapSvg(n.map)}</div><p class="map-swipe muted small-print">Swipe sideways to see the whole map.</p><p class="map-note" id="mapNote">Tap a place on the map to read about it.</p><p class="muted small-print">${esc(n.map.caption)} Simplified from standard Bible atlases; not drawn to survey scale.</p>`;
+  } else if (notesTab === "where") {
+    body = whereHtml(book, chapter);
   } else if (notesTab === "xref") {
     body = `<div class="xrefs">${n.crossRefs.map(([k, ref, why]) => `<button class="xref" data-go="${k}"><strong>${esc(ref)}</strong><span>${esc(why)}</span></button>`).join("")}</div>`;
   } else if (notesTab === "search") {
@@ -3250,7 +3432,7 @@ function renderNotes(book, chapter) {
   el.querySelectorAll("[data-verse]").forEach((b) => b.addEventListener("click", () => { const v = parseInt(String(b.dataset.verse).split(":")[1], 10); if (v) goToVerse(v); }));
   wireRef(el, book, chapter);
   el.querySelectorAll("[data-cite]").forEach((b) => b.addEventListener("click", () => { notesTab = "sources"; renderNotes(book, chapter); $(`#src-${b.dataset.cite}`)?.classList.add("hi"); }));
-  el.querySelectorAll("[data-place]").forEach((g) => {
+  if (notesTab === "map") el.querySelectorAll("[data-place]").forEach((g) => {
     const show = () => {
       const p = n.map.places[Number(g.dataset.place)];
       el.querySelectorAll(".map-place").forEach((x) => x.classList.toggle("is-on", x === g));

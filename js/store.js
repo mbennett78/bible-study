@@ -209,7 +209,7 @@ export const store = {
     state.entries = { ...(state.entries || {}), [id]: { deleted: true, updated: new Date().toISOString() } };
     save();
   },
-  allEntries: () => Object.entries(state.entries || {}).filter(([, v]) => !v.deleted && ((v.text || "").trim() || (v.title || "").trim() || v.quotes?.length || v.pics?.length)).map(([id, v]) => ({ id, ...v })).sort((a, b) => b.created.localeCompare(a.created)),
+  allEntries: () => Object.entries(state.entries || {}).filter(([, v]) => !v.deleted && ((v.text || "").trim() || (v.title || "").trim() || (v.prayer || "").trim() || (v.gratitude || "").trim() || v.quotes?.length || v.pics?.length)).map(([id, v]) => ({ id, ...v })).sort((a, b) => b.created.localeCompare(a.created)),
   allDiary: () => Object.entries(state.diary || {}).map(([day, v]) => ({ day, ...v })).sort((a, b) => b.day.localeCompare(a.day)),
   allJournal: () => Object.entries(state.journal).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.updated.localeCompare(a.updated)),
   // Which questions were asked is always kept, so rounds stay fresh. The score history (the

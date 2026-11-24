@@ -20,7 +20,7 @@ try {
   };
   await openJournal();
   check("the journal is called My Journey", /My Journey/.test(await page.textContent("#diaryToday")) && /A journal by Mel/.test(await page.textContent("#diaryToday")));
-  check("big Add buttons for My day, prayer, thanks, Bible thoughts and Church notes", (await page.$$("#diaryToday .add-entry")).length === 5);
+  check("big Add buttons for a journal entry, prayer, thanks, Bible thoughts and Church notes", (await page.$$("#diaryToday .add-entry")).length === 5);
   await page.click('#diaryToday [data-add="prayer"]'); await page.waitForTimeout(300);
   check("a new entry shows today's date and time", /🕒/.test(await page.textContent(".entry-editor")) && /\d:\d\d/.test(await page.textContent(".ee-when")));
   await page.fill("#entryText", "For Grandma's surgery on Friday.");
@@ -31,7 +31,18 @@ try {
   await page.click('#diaryToday [data-add="day"]'); await page.waitForTimeout(200);
   await page.fill("#entryText", "We decorated the tree."); await page.waitForTimeout(1200);
   check("words are kept as they type", await page.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("bible-study:v1")).entries).includes("decorated the tree")));
-  await page.click("#entryCancel"); await page.waitForTimeout(200);
+  // They choose how it starts and which day it's for; prayer and thanks are optional.
+  check("a journal entry has no prayer or thanks box until they ask", await page.$eval("#eePrayerBox", (b) => b.hidden) && await page.$eval("#eeGratBox", (b) => b.hidden));
+  await page.click('[data-opener="This Week"]');
+  check("they choose the opening words", (await page.textContent("#eeKindLabel")) === "This Week" && /This Week…/.test(await page.textContent("#eeTextLabel")));
+  await page.click('[data-extra="eeGratBox"]');
+  await page.fill("#eeGrat", "Family at the table.");
+  const yday = await page.evaluate(() => { const d = new Date(Date.now() - 2 * 864e5); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; });
+  await page.fill("#eeDate", yday); await page.dispatchEvent("#eeDate", "change");
+  await page.click("#entrySave"); await page.waitForTimeout(300);
+  const saved = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem("bible-study:v1")).entries).find((e) => /decorated/.test(e.text || "")));
+  check("the entry keeps its opening words, thanks and chosen date", saved.opener === "This Week" && saved.gratitude === "Family at the table." && !saved.prayer && new Date(saved.created).getDate() === Number(yday.slice(8)));
+  check("the list shows the opening words and the thanks", /This Week/.test(await page.textContent("#journalList")) && /Thankful for: Family at the table/.test(await page.textContent("#journalList")));
   // Tapping an entry opens it; it can be changed and saved.
   await page.click('#journalList [data-entry]:has-text("Grandma")'); await page.waitForTimeout(300);
   await page.check("#entryAnswered"); await page.click("#entrySave"); await page.waitForTimeout(300);

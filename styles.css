@@ -2497,3 +2497,52 @@ textarea.nf-big { font-size: 1.25rem; }
   .print-book .nf-hand p { font-family: "Bradley Hand", "Segoe Print", "Chalkboard SE", cursive; }
   .print-book .nf-big p { font-size: 14pt; }
 }
+
+/* Christmas pictures that change as you read */
+@keyframes flicker { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(.92, 1.08); } 70% { transform: scale(1.06, .94); } }
+.xmas-strip .m-flicker { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1.8s ease-in-out infinite; }
+:root[data-still] .xmas-strip .m-flicker { animation: none; }
+@media (prefers-reduced-motion: reduce) { .xmas-strip .m-flicker { animation: none; } }
+
+/* Shaded boxes, the study path line, and choosing notes to print */
+.ee-pic.is-box { width: 100%; box-sizing: border-box; border-radius: 12px; padding: 10px 14px; border-left: 5px solid; }
+.is-box.tone-key { background: #fbf1d6; border-color: #d9a93a; } .is-box.tone-remember { background: #e6f2e3; border-color: #5d9a55; }
+.is-box.tone-question { background: #e4eef8; border-color: #4f7fb8; } .is-box.tone-prayer { background: #f8e6ec; border-color: #b8637e; }
+.is-box .nb-label { margin: 0 0 4px; font-size: .8rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: #4a3d30; }
+.is-box .nb-text { margin: 0; color: #2a2420; line-height: 1.5; }
+.nc-path { display: block; font-size: .78rem; color: var(--muted); margin-top: 1px; }
+.notes-range { margin: 2px 0 6px; }
+.nc-pick { display: flex; align-items: center; gap: 8px; padding: 8px 0 0; font-size: .9rem; font-weight: 600; min-height: 36px; }
+.nc-pick input { width: 22px; height: 22px; }
+@media print {
+  .pn-path { font-family: var(--sans); font-size: 9pt; color: #8a7560; margin: 0 0 4pt; letter-spacing: .03em; }
+  .print-book .ee-pic.is-box { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 6pt 0; }
+}
+
+/* When and where */
+.where-era, #wherePlaces, .where-tribes { background: var(--accent-soft); border-radius: 14px; padding: 12px 14px; margin: 10px 0; }
+.where-era h4, #wherePlaces h4 { margin: 0 0 6px; }
+.where-era p, #wherePlaces p { margin: 4px 0; }
+.where-title { font-size: 1.05rem; }
+.where-regions { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.where-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.where-chip { font-size: .85rem; padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line, #ddd); text-decoration: none; color: inherit; }
+.where-tribes summary { cursor: pointer; font-weight: 600; }
+.tribes-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.tribe { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; font-size: .9rem; }
+.tribe p { margin: 2px 0; }
+.tribe.is-named { border-color: var(--gold); box-shadow: inset 4px 0 0 var(--gold); }
+.tribe-refs { font-size: .85rem; }
+
+/* Journal: the date, how an entry starts, and the optional prayer and thanks */
+.ee-when-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.ee-when-row .ee-when { margin: 0; }
+.ee-date { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--muted); }
+.ee-date input { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 4px 8px; min-height: 36px; }
+.ee-openers { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+.ee-openers button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .9rem; color: var(--text); cursor: pointer; }
+.ee-openers button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.ee-extra { margin-top: 10px; }
+.ee-extra textarea { width: 100%; }
+.ee-add-extra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 4px; }
+.ee-add-extra [hidden], .ee-extra[hidden] { display: none !important; }
