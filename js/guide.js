@@ -38,7 +38,8 @@ export const GUIDE = [
   { id: "study", icon: "🗺️", title: "Bible studies and games", tips: [
     "My Bible reads straight through, Genesis to Revelation. Three other studies go through the Bible a different way.",
     "Each study keeps its own place, so you can switch any time.",
-    "Games has Bible quizzes and challenges for every age. Your scores are only yours.",
+    "✅ Quick check: after you read a chapter, a few questions on it, right under the chapter.",
+    "🎲 Games: Bible Spin and the other games are behind the Games button. Your scores are only yours.",
   ] },
   { id: "offline", icon: "📶", title: "No signal?", tips: [
     "Chapters you opened recently, plus the next two ahead, are saved for reading offline.",

@@ -308,9 +308,9 @@ function toggleRead() {
   updateDrive();
   renderMargin();
   if (on && store.readCount(book) === BOOK_BY_ID[book].chapters) {
-    $("#triviaHint").textContent = `You finished ${BOOK_BY_ID[book].name}! Play ${BOOK_BY_ID[book].name} trivia`;
+    $("#triviaHint").textContent = `You finished ${BOOK_BY_ID[book].name}! Take a quick check on ${BOOK_BY_ID[book].name}`;
     $("#triviaBtn").classList.add("glow");
-    mascotSay(`You finished ${BOOK_BY_ID[book].name}! Want to try some trivia?`);
+    mascotSay(`You finished ${BOOK_BY_ID[book].name}! Want a quick check? For bigger games, tap 🎲 Games.`);
     buddy.celebrate(`You finished ${BOOK_BY_ID[book].name}! I'm SO proud of you! 🎉`);
   } else if (on) mascotSay(pick(["Well done today.", "Another chapter hidden in your heart.", "Keep going, you're doing great."]));
   if (on) celebrate(store.readCount(book) === BOOK_BY_ID[book].chapters ? "big" : "small");
@@ -2484,7 +2484,7 @@ function updateTriviaHint() {
   const { book, chapter } = store.get("last");
   $("#triviaBtn").classList.remove("glow");
   const n = pickQuestions({ isRead: (k) => isReadKey(k), current: { book, chapter }, count: 99 }).length;
-  $("#triviaHint").textContent = n ? `Test what you remember · ${Math.min(5, n)} questions` : "Trivia for this chapter is coming soon";
+  $("#triviaHint").textContent = n ? `${Math.min(5, n)} quick questions on what you just read` : "A quick check for this chapter is coming soon";
 }
 function isReadKey(k) { const [b, c] = k.split("."); return store.isRead(b, Number(c)); }
 function startTrivia() {
@@ -2492,7 +2492,7 @@ function startTrivia() {
   const qs = pickQuestions({ isRead: isReadKey, current, pathId: store.get("activePath"), recent: store.get("trivia").recent, seen: store.get("trivia").seen || {} });
   const results = [];
   let i = 0;
-  $("#triviaTitle").textContent = "Bible trivia";
+  $("#triviaTitle").textContent = "Quick check";
   const body = $("#triviaBody");
   const kindLabel = { fact: "From your reading", connection: "Connecting passages", geography: "Places then and now", history: "History" };
   function showQ() {
@@ -2574,7 +2574,7 @@ function renderKnowledge() {
       <circle cx="27" cy="27" r="22" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(r.pct / 100) * C} ${C}" transform="rotate(-90 27 27)"/>
     </svg>
     <strong>Bible knowledge: ${esc(r.level)}</strong>
-    <small>${t.answered ? `${r.pct}% correct over ${t.answered} trivia questions${last ? ` · last round ${last.score}/${last.total} on ${fmtDate(last.at)}` : ""}` : "Play chapter trivia to see your rating grow."}</small>
+    <small>${t.answered ? `${r.pct}% correct over ${t.answered} trivia questions${last ? ` · last round ${last.score}/${last.total} on ${fmtDate(last.at)}` : ""}` : "Take a quick check after reading to see your rating grow."}</small>
     ${growthHtml(t)}`;
 }
 
