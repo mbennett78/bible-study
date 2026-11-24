@@ -1016,4 +1016,419 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     ],
     refs: [["EXO.32", "Exodus 32", "The golden calf"], ["NUM.25", "Numbers 25", "Baal of Peor"], ["NEH.9", "Nehemiah 9", "A similar confession"]],
   },
+  107: {
+    intro: "Book Five opens: \"Oh give thanks to the LORD, for He is good... let the redeemed of the LORD say so.\" Four groups cry out in trouble and are rescued: wanderers in the desert, prisoners in darkness, the sick near death, and sailors in a storm. Each time: \"They cried out to the LORD in their trouble, and He delivered them.\" \"Let them give thanks to the LORD for His lovingkindness.\"",
+    v: [
+      ["107:2", "Let the redeemed of the LORD say so", "Tell your story."],
+      ["107:9", "He has satisfied the thirsty soul", "God fills the empty."],
+      ["107:20", "He sent His word and healed them", "Healing by God's word."],
+      ["107:29", "He caused the storm to be still", "As Jesus did on the sea."],
+    ],
+    refs: [["MRK.4", "Mark 4:39", "Hush, be still"], ["LUK.4", "Luke 4:18", "Release to the captives"]],
+  },
+  108: {
+    intro: "David combines parts of two earlier psalms (57:7-11 and 60:5-12). \"My heart is steadfast, O God; I will sing.\" \"Be exalted, O God, above the heavens.\" \"Through God we will do valiantly.\"",
+    v: [
+      ["108:1", "My heart is steadfast", "Settled praise."],
+      ["108:13", "Through God we will do valiantly", "Victory through God."],
+    ],
+    refs: [["PSA.57", "Psalm 57:7-11", "The first half"], ["PSA.60", "Psalm 60:5-12", "The second half"]],
+  },
+  109: {
+    intro: "David is attacked by lying tongues: \"In return for my love they act as my accusers; but I am in prayer.\" He asks God to judge his accuser severely. \"Let another take his office.\" He is poor and needy, his heart wounded. \"Help me, O LORD my God; save me according to Your lovingkindness.\"",
+    v: [
+      ["109:4", "But I am in prayer", "Answering hatred with prayer."],
+      ["109:8", "Let another take his office", "Peter applied this to Judas (Acts 1:20)."],
+      ["109:26", "Save me according to Your lovingkindness", "Trust in God's love."],
+    ],
+    refs: [["ACT.1", "Acts 1:20", "Let another man take his office"], ["PSA.58", "Psalm 58", "Another imprecatory psalm"], ["LUK.6", "Luke 6:28", "Pray for those who mistreat you"]],
+  },
+  110: {
+    intro: "\"The LORD says to my Lord: Sit at My right hand until I make Your enemies a footstool for Your feet.\" The LORD will stretch out His scepter from Zion. \"The LORD has sworn and will not change His mind, You are a priest forever according to the order of Melchizedek.\" The New Testament quotes this psalm more than any other.",
+    v: [
+      ["110:1", "The LORD says to my Lord", "Jesus used this to show the Messiah is greater than David (Matthew 22:41-45)."],
+      ["110:1", "Sit at My right hand", "Fulfilled when Jesus ascended."],
+      ["110:4", "A priest forever according to the order of Melchizedek", "Explained in Hebrews 5-7."],
+    ],
+    w: [["אֲדֹנִי", "adoni", "H113", "my lord, my master", "David calls the one God speaks to \"my lord.\" Jesus asked how the Messiah could be David's son if David called him Lord.", ["halot", "allen"]]],
+    refs: [["MAT.22", "Matthew 22:41-46", "Jesus asks about Psalm 110"], ["ACT.2", "Acts 2:34-36", "Peter preaches Psalm 110"], ["HEB.7", "Hebrews 7", "A priest like Melchizedek"], ["GEN.14", "Genesis 14:18-20", "Melchizedek"]],
+  },
+  111: {
+    intro: "An alphabet psalm of praise. \"Great are the works of the LORD; they are studied by all who delight in them.\" He has made His wonders to be remembered; He is gracious and compassionate. He sent redemption to His people. \"The fear of the LORD is the beginning of wisdom.\"",
+    v: [
+      ["111:2", "Studied by all who delight in them", "Delight leads to study."],
+      ["111:4", "He has made His wonders to be remembered", "God wants us to remember."],
+      ["111:10", "The fear of the LORD is the beginning of wisdom", "The foundation of wisdom."],
+    ],
+    refs: [["PRO.9", "Proverbs 9:10", "The beginning of wisdom"], ["PSA.112", "Psalm 112", "The companion psalm"]],
+  },
+  112: {
+    intro: "A companion to Psalm 111, describing the person who fears the LORD. He delights in God's commands; his children will be mighty. He is gracious, lends generously and conducts his affairs with justice. \"He will not fear evil tidings; his heart is steadfast, trusting in the LORD.\"",
+    v: [
+      ["112:1", "Who greatly delights in His commandments", "Joy in obedience."],
+      ["112:7", "He will not fear evil tidings", "Steady in bad news."],
+      ["112:9", "He has given freely to the poor", "Paul quotes this in 2 Corinthians 9:9."],
+    ],
+    refs: [["2CO.9", "2 Corinthians 9:9", "He scattered abroad, he gave to the poor"], ["PSA.1", "Psalm 1", "The blessed man"]],
+  },
+  113: {
+    intro: "The first of the Hallel psalms (113-118), sung at Passover. \"From the rising of the sun to its setting the name of the LORD is to be praised.\" God is high above the nations, yet He humbles Himself to look on heaven and earth. He raises the poor from the dust and makes the barren woman a joyful mother of children.",
+    v: [
+      ["113:3", "From the rising of the sun to its setting", "All day, everywhere."],
+      ["113:6", "Who humbles Himself to behold", "The high God stoops down."],
+      ["113:7-9", "He raises the poor from the dust", "Echoed in Hannah's and Mary's songs."],
+    ],
+    bg: [["The Hallel", "Psalms 113-118 are called the Egyptian Hallel (\"praise\") and were sung at Passover. The hymn Jesus and His disciples sang after the Last Supper was probably Psalms 115-118 (Matthew 26:30).", "strong", ["allen", "kidner"]]],
+    refs: [["1SA.2", "1 Samuel 2:8", "Hannah's song"], ["LUK.1", "Luke 1:52-53", "Mary's song"], ["PHP.2", "Philippians 2:6-8", "Christ humbled Himself"]],
+  },
+  114: {
+    intro: "When Israel went out of Egypt, the sea looked and fled, the Jordan turned back, the mountains skipped like rams. \"What ails you, O sea?\" \"Tremble, O earth, before the Lord... who turned the rock into a pool of water.\"",
+    v: [
+      ["114:3", "The sea looked and fled", "Creation responds to God."],
+      ["114:7", "Tremble, O earth, before the Lord", "The proper response."],
+      ["114:8", "Who turned the rock into a pool of water", "God's provision."],
+    ],
+    refs: [["EXO.14", "Exodus 14", "The Red Sea"], ["JOS.3", "Joshua 3", "The Jordan stopped"], ["1CO.10", "1 Corinthians 10:4", "The rock was Christ"]],
+  },
+  115: {
+    intro: "\"Not to us, O LORD, not to us, but to Your name give glory.\" The nations ask, \"Where is their God?\" Our God is in the heavens and does whatever He pleases. Idols have mouths but cannot speak, eyes but cannot see, \"those who make them will become like them.\" \"O Israel, trust in the LORD; He is their help and their shield.\"",
+    v: [
+      ["115:1", "Not to us, O LORD, but to Your name give glory", "Humble worship."],
+      ["115:4-7", "They have mouths, but they cannot speak", "Idols are powerless."],
+      ["115:8", "Those who make them will become like them", "We become like what we worship."],
+    ],
+    refs: [["ISA.44", "Isaiah 44:9-20", "The folly of idols"], ["1CO.10", "1 Corinthians 10:31", "Do all to the glory of God"]],
+  },
+  116: {
+    intro: "\"I love the LORD, because He hears my voice.\" The cords of death surrounded him; he called on God and was saved. \"Return to your rest, O my soul.\" \"What shall I render to the LORD for all His benefits?\" He will lift up the cup of salvation. \"Precious in the sight of the LORD is the death of His godly ones.\"",
+    v: [
+      ["116:1", "I love the LORD, because He hears", "Love answers love."],
+      ["116:7", "Return to your rest, O my soul", "Peace after danger."],
+      ["116:12-13", "What shall I render to the LORD?", "Gratitude in action."],
+      ["116:15", "Precious in the sight of the LORD is the death of His godly ones", "God cares about His people's deaths."],
+    ],
+    refs: [["2CO.4", "2 Corinthians 4:13", "I believed, therefore I spoke"], ["MAT.11", "Matthew 11:28-29", "Rest for your souls"]],
+  },
+  117: {
+    intro: "The shortest chapter in the Bible, two verses. \"Praise the LORD, all nations; laud Him, all peoples! For His lovingkindness is great toward us, and the truth of the LORD is everlasting. Praise the LORD!\"",
+    v: [
+      ["117:1", "Praise the LORD, all nations", "Paul quotes this in Romans 15:11."],
+      ["117:2", "His lovingkindness is great toward us", "Two reasons: love and faithfulness."],
+    ],
+    refs: [["ROM.15", "Romans 15:11", "Gentiles praising God"], ["REV.7", "Revelation 7:9-10", "Every nation praising"]],
+  },
+  118: {
+    intro: "\"Give thanks to the LORD, for He is good; for His lovingkindness is everlasting.\" In distress the psalmist called, and God set him free. \"It is better to take refuge in the LORD than to trust in man.\" \"Open to me the gates of righteousness.\" \"The stone which the builders rejected has become the chief corner stone.\" \"This is the day which the LORD has made.\" \"Blessed is the one who comes in the name of the LORD.\"",
+    v: [
+      ["118:6", "The LORD is for me; I will not fear", "Quoted in Hebrews 13:6."],
+      ["118:8", "Better to take refuge in the LORD than to trust in man", "Where to put trust."],
+      ["118:22", "The stone which the builders rejected", "Jesus applied this to Himself."],
+      ["118:24", "This is the day which the LORD has made", "The day of God's salvation."],
+      ["118:26", "Blessed is the one who comes in the name of the LORD", "The crowds shouted this on Palm Sunday."],
+    ],
+    w: [["הוֹשִׁיעָה נָּא", "hoshi'ah na", "H3467, H4994", "save now, please", "The cry in 118:25. It became the word Hosanna, shouted when Jesus entered Jerusalem.", ["halot", "allen"]]],
+    refs: [["MAT.21", "Matthew 21:9, 42", "Hosanna and the cornerstone"], ["ACT.4", "Acts 4:11", "The stone rejected by you builders"], ["1PE.2", "1 Peter 2:7", "The precious cornerstone"]],
+  },
+  119: {
+    intro: "The longest chapter in the Bible, 176 verses: an alphabet poem in 22 sections of eight verses, one section for each Hebrew letter. Almost every verse speaks of God's word, using words like law, testimonies, precepts, statutes, commandments and judgments. \"How can a young man keep his way pure? By keeping it according to Your word.\" \"Your word is a lamp to my feet and a light to my path.\"",
+    v: [
+      ["119:9", "How can a young man keep his way pure?", "God's word guides youth."],
+      ["119:11", "Your word I have treasured in my heart", "Memorizing Scripture."],
+      ["119:18", "Open my eyes, that I may behold wonderful things", "A prayer before reading the Bible."],
+      ["119:71", "It is good for me that I was afflicted", "Learning through hardship."],
+      ["119:105", "Your word is a lamp to my feet", "Light for the next step."],
+    ],
+    bg: [["An alphabet of the word", "Each of the 22 sections begins every one of its eight lines with the same Hebrew letter: Aleph, Beth, Gimel and so on. Many Bibles print the letter names as section headings. The form suggests the psalm covers God's word \"from A to Z.\"", "strong", ["allen", "kidner"]]],
+    w: [["תּוֹרָה", "torah", "H8451", "law, instruction", "More than rules: God's teaching and direction for life. The word appears 25 times in Psalm 119.", ["halot", "allen"]]],
+    refs: [["PSA.19", "Psalm 19:7-11", "The law of the LORD is perfect"], ["2TI.3", "2 Timothy 3:16-17", "All Scripture is inspired"], ["JOS.1", "Joshua 1:8", "Meditate on it day and night"]],
+  },
+  120: {
+    intro: "The first of fifteen Songs of Ascents (120-134), sung by pilgrims going up to Jerusalem. The pilgrim lives far away among liars and people who hate peace. \"I am for peace, but when I speak, they are for war.\"",
+    v: [
+      ["120:1", "In my trouble I cried to the LORD, and He answered me", "Starting the journey with prayer."],
+      ["120:7", "I am for peace", "Longing for a better home."],
+    ],
+    bg: [["Songs of Ascents", "Psalms 120-134 are titled \"A Song of Ascents.\" Most scholars think pilgrims sang them on the way up to Jerusalem for the three yearly feasts; Jerusalem sits high in the hills, so every road goes up.", "good", ["allen", "kidner"]]],
+    refs: [["LUK.2", "Luke 2:41-42", "Jesus' family goes up to Jerusalem"], ["HEB.11", "Hebrews 11:13-16", "Strangers seeking a homeland"]],
+  },
+  121: {
+    intro: "\"I will lift up my eyes to the mountains; from where shall my help come? My help comes from the LORD, who made heaven and earth.\" He who keeps you will not slumber. \"The LORD is your keeper... The sun will not smite you by day, nor the moon by night. The LORD will guard your going out and your coming in from this time forth and forever.\"",
+    v: [
+      ["121:1-2", "My help comes from the LORD", "The Creator is our helper."],
+      ["121:4", "He who keeps Israel will neither slumber nor sleep", "God never stops watching."],
+      ["121:8", "Your going out and your coming in", "A traveler's blessing."],
+    ],
+    w: [["שָׁמַר", "shamar", "H8104", "to keep, guard, watch over", "A shepherd's or watchman's word. It appears six times in these eight verses.", ["halot", "allen"]]],
+    refs: [["PSA.124", "Psalm 124:8", "Our help is in the name of the LORD"], ["JHN.17", "John 17:11-12", "Jesus keeps His disciples"]],
+  },
+  122: {
+    intro: "\"I was glad when they said to me, Let us go to the house of the LORD.\" Pilgrims arrive and stand within Jerusalem's gates, the city where the tribes go up to give thanks. \"Pray for the peace of Jerusalem: May they prosper who love you.\"",
+    v: [
+      ["122:1", "I was glad when they said to me", "Joy in going to worship."],
+      ["122:6", "Pray for the peace of Jerusalem", "Shalom: wholeness, not only no war."],
+    ],
+    refs: [["HEB.10", "Hebrews 10:25", "Not forsaking our assembling together"]],
+  },
+  123: {
+    intro: "\"To You I lift up my eyes, O You who are enthroned in the heavens!\" As servants watch their master's hand, so we look to the LORD until He is gracious. \"Be gracious to us, O LORD, for we are greatly filled with contempt.\"",
+    v: [
+      ["123:2", "As the eyes of servants look to the hand of their master", "Watching for God's help."],
+      ["123:3", "Be gracious to us", "A prayer under scorn."],
+    ],
+    refs: [["HEB.12", "Hebrews 12:2", "Fixing our eyes on Jesus"]],
+  },
+  124: {
+    intro: "\"Had it not been the LORD who was on our side, let Israel now say.\" The enemies would have swallowed them, the flood would have swept them away. \"Our soul has escaped as a bird out of the snare.\" \"Our help is in the name of the LORD, who made heaven and earth.\"",
+    v: [
+      ["124:1", "Had it not been the LORD who was on our side", "Remembering rescue."],
+      ["124:7", "As a bird out of the snare", "Escape."],
+      ["124:8", "Our help is in the name of the LORD", "Often said at the start of worship."],
+    ],
+    refs: [["ROM.8", "Romans 8:31", "If God is for us"]],
+  },
+  125: {
+    intro: "\"Those who trust in the LORD are as Mount Zion, which cannot be moved but abides forever. As the mountains surround Jerusalem, so the LORD surrounds His people.\" Do good, O LORD, to those who are upright. \"Peace be upon Israel.\"",
+    v: [
+      ["125:1", "As Mount Zion, which cannot be moved", "Steady trust."],
+      ["125:2", "As the mountains surround Jerusalem", "Pilgrims could see the hills around the city."],
+    ],
+    refs: [["PRO.10", "Proverbs 10:25", "The righteous has an everlasting foundation"]],
+  },
+  126: {
+    intro: "\"When the LORD brought back the captive ones of Zion, we were like those who dream.\" Their mouths filled with laughter. \"The LORD has done great things for us; we are glad.\" Now they pray again: \"Restore our fortunes.\" \"Those who sow in tears shall reap with joyful shouting.\"",
+    v: [
+      ["126:1", "We were like those who dream", "Joy too good to believe."],
+      ["126:3", "The LORD has done great things for us", "Remembering answered prayer."],
+      ["126:5", "Those who sow in tears shall reap with joyful shouting", "Hope for hard seasons."],
+    ],
+    refs: [["EZR.1", "Ezra 1", "The return from exile"], ["GAL.6", "Galatians 6:9", "In due time we will reap"]],
+  },
+  127: {
+    intro: "A psalm of Solomon. \"Unless the LORD builds the house, they labor in vain who build it.\" It is vain to rise early and stay up late, for \"He gives to His beloved even in his sleep.\" \"Children are a gift of the LORD... like arrows in the hand of a warrior.\"",
+    v: [
+      ["127:1", "Unless the LORD builds the house", "God's blessing makes the work count."],
+      ["127:2", "He gives to His beloved even in his sleep", "Rest is a gift."],
+      ["127:3", "Children are a gift of the LORD", "A blessing, not a burden."],
+    ],
+    refs: [["MAT.6", "Matthew 6:25-34", "Do not be anxious"], ["PSA.128", "Psalm 128", "Blessings on the home"]],
+  },
+  128: {
+    intro: "\"How blessed is everyone who fears the LORD, who walks in His ways.\" He will eat the fruit of his work. \"Your wife shall be like a fruitful vine within your house, your children like olive plants around your table.\" May you see your children's children.",
+    v: [
+      ["128:1", "Who walks in His ways", "Fear of God shown in daily life."],
+      ["128:3", "Your children like olive plants around your table", "A picture of family blessing."],
+      ["128:6", "May you see your children's children", "A blessing for grandparents."],
+    ],
+    refs: [["PRO.17", "Proverbs 17:6", "Grandchildren are the crown of old men"]],
+  },
+  129: {
+    intro: "\"Many times they have persecuted me from my youth up, let Israel now say.\" The plowers plowed on Israel's back, but the LORD is righteous and has cut the cords of the wicked. Those who hate Zion will be like grass on the rooftops that withers before it grows.",
+    v: [
+      ["129:2", "Yet they have not prevailed against me", "Survival by God's grace."],
+      ["129:4", "The LORD is righteous; He has cut in two the cords", "God sets free."],
+    ],
+    refs: [["2CO.4", "2 Corinthians 4:8-9", "Persecuted, but not forsaken"]],
+  },
+  130: {
+    intro: "\"Out of the depths I have cried to You, O LORD.\" \"If You, LORD, should mark iniquities, O Lord, who could stand? But there is forgiveness with You, that You may be feared.\" \"My soul waits for the Lord more than the watchmen for the morning.\" With the LORD there is abundant redemption.",
+    v: [
+      ["130:1", "Out of the depths", "Prayer from the lowest place."],
+      ["130:3-4", "There is forgiveness with You", "Forgiveness leads to reverence."],
+      ["130:6", "More than the watchmen for the morning", "Eager waiting."],
+      ["130:7", "With Him is abundant redemption", "More than enough grace."],
+    ],
+    refs: [["ROM.3", "Romans 3:23-24", "Justified by His grace"], ["1JN.1", "1 John 1:9", "He is faithful to forgive"]],
+  },
+  131: {
+    intro: "A short psalm of humble trust. \"O LORD, my heart is not proud, nor my eyes haughty.\" David does not busy himself with things too great for him. \"Surely I have composed and quieted my soul; like a weaned child rests against his mother.\" \"O Israel, hope in the LORD.\"",
+    v: [
+      ["131:1", "Nor do I involve myself in great matters", "Content not to know everything."],
+      ["131:2", "Like a weaned child rests against his mother", "Calm trust, not demanding."],
+    ],
+    refs: [["MAT.18", "Matthew 18:3-4", "Become like children"], ["MAT.11", "Matthew 11:29", "Gentle and humble in heart"]],
+  },
+  132: {
+    intro: "A psalm remembering David's vow not to rest until he found a dwelling place for the LORD, and God's answering promise: \"Of the fruit of your body I will set upon your throne.\" God has chosen Zion as His resting place forever. \"There I will cause the horn of David to spring forth.\"",
+    v: [
+      ["132:5", "Until I find a place for the LORD", "David's passion for God's house."],
+      ["132:11", "The LORD has sworn to David a truth", "God's oath."],
+      ["132:17", "There I will cause the horn of David to spring forth", "A messianic hope (Luke 1:69)."],
+    ],
+    refs: [["2SA.7", "2 Samuel 7", "God's covenant with David"], ["LUK.1", "Luke 1:69", "A horn of salvation in the house of David"]],
+  },
+  133: {
+    intro: "\"Behold, how good and how pleasant it is for brothers to dwell together in unity!\" It is like the precious oil poured on Aaron's head, running down his beard, like the dew of Hermon falling on Zion. \"For there the LORD commanded the blessing, life forever.\"",
+    v: [
+      ["133:1", "How good and how pleasant", "Unity is a blessing."],
+      ["133:2", "Like the precious oil upon the head", "Unity is holy and refreshing."],
+      ["133:3", "There the LORD commanded the blessing", "God blesses unity."],
+    ],
+    refs: [["JHN.17", "John 17:21", "That they may all be one"], ["EPH.4", "Ephesians 4:3", "Preserve the unity of the Spirit"]],
+  },
+  134: {
+    intro: "The last Song of Ascents, a night blessing. \"Behold, bless the LORD, all servants of the LORD, who serve by night in the house of the LORD! Lift up your hands to the sanctuary and bless the LORD.\" The priests answer: \"May the LORD bless you from Zion, He who made heaven and earth.\"",
+    v: [
+      ["134:1", "Who serve by night in the house of the LORD", "Faithful night watch."],
+      ["134:3", "May the LORD bless you from Zion", "A blessing to take home."],
+    ],
+    refs: [["1CH.9", "1 Chronicles 9:33", "Singers on duty day and night"], ["NUM.6", "Numbers 6:24", "The LORD bless you"]],
+  },
+  135: {
+    intro: "\"Praise the name of the LORD; praise Him, O servants of the LORD.\" The LORD has chosen Jacob as His own possession. Whatever He pleases He does, in heaven and earth. He struck Egypt and the kings of Canaan and gave their land to Israel. Idols are silver and gold that cannot speak. \"Bless the LORD, O house of Israel.\"",
+    v: [
+      ["135:4", "Israel for His own possession", "A treasured people."],
+      ["135:6", "Whatever the LORD pleases, He does", "God's sovereignty."],
+      ["135:15-18", "The idols of the nations", "Echoes Psalm 115."],
+    ],
+    refs: [["EXO.19", "Exodus 19:5", "My own possession"], ["PSA.115", "Psalm 115:4-8", "Idols that cannot speak"]],
+  },
+  136: {
+    intro: "A responsive song: every one of 26 verses ends, \"For His lovingkindness is everlasting.\" It thanks God for who He is, for creation (the heavens, the earth, the sun and moon), for the exodus, for the wilderness, for the land, and for food for all flesh.",
+    v: [
+      ["136:1", "Give thanks to the LORD, for He is good", "The heart of worship."],
+      ["136:13", "Who divided the Red Sea", "Remembering the exodus."],
+      ["136:23", "Who remembered us in our low estate", "God's personal care."],
+      ["136:25", "Who gives food to all flesh", "Daily provision."],
+    ],
+    bg: [["Sung in response", "The repeated line suggests a leader sang each first half and the congregation answered with the refrain, as at the dedication of Solomon's temple (2 Chronicles 7:3).", "good", ["allen", "kidner"]]],
+    refs: [["2CH.7", "2 Chronicles 7:3", "His lovingkindness is everlasting"], ["EZR.3", "Ezra 3:11", "Sung at the new temple's foundation"]],
+  },
+  137: {
+    intro: "\"By the rivers of Babylon, there we sat down and wept, when we remembered Zion.\" Their captors asked for songs of Zion. \"How can we sing the LORD's song in a foreign land?\" \"If I forget you, O Jerusalem, may my right hand forget her skill.\" The psalm ends with raw, bitter cries against Edom and Babylon.",
+    v: [
+      ["137:1", "By the rivers of Babylon", "Grief in exile."],
+      ["137:4", "How can we sing the LORD's song in a foreign land?", "Faith far from home."],
+      ["137:5", "If I forget you, O Jerusalem", "Refusing to forget."],
+      ["137:9", "How blessed will be the one who seizes your little ones", "Shocking words of grief and anger."],
+    ],
+    why: "The last verses of Psalm 137 are among the hardest in the Bible. Scholars and teachers weigh how believers should read them.",
+    views: [
+      ["Honest grief handed to God", "Many read these lines as the raw cry of people who had seen their own children killed, asking God to repay Babylon as the prophets foretold (Isaiah 13:16), rather than taking revenge themselves.", ["kidner", "allen"]],
+      ["Recorded, not commanded", "Others stress that Scripture faithfully records these feelings without approving them as models, and that Jesus teaches love for enemies, so the psalm shows how deep the wound was.", ["wilson", "vangemeren"]],
+    ],
+    common: "All agree the psalm shows the deep pain of exile, and that Christians bring such anger to God and read it in light of the cross.",
+    refs: [["JER.51", "Jeremiah 51:24", "Babylon repaid"], ["OBA.1", "Obadiah 10-14", "Edom's cruelty"], ["MAT.5", "Matthew 5:44", "Love your enemies"]],
+  },
+  138: {
+    intro: "\"I will give You thanks with all my heart.\" God answered on the day David called, and made him bold with strength. All the kings of the earth will praise Him. \"Though the LORD is exalted, yet He regards the lowly.\" \"The LORD will accomplish what concerns me.\"",
+    v: [
+      ["138:3", "On the day I called, You answered me", "Answered prayer."],
+      ["138:6", "He regards the lowly", "God sees the humble."],
+      ["138:8", "The LORD will accomplish what concerns me", "God finishes His work."],
+    ],
+    refs: [["PHP.1", "Philippians 1:6", "He who began a good work will perfect it"], ["JAS.4", "James 4:6", "Grace to the humble"]],
+  },
+  139: {
+    intro: "\"O LORD, You have searched me and known me.\" God knows when David sits and stands, his thoughts and words before he speaks. \"Where can I go from Your Spirit?\" Even darkness is light to God. \"You formed my inward parts; You wove me in my mother's womb. I will give thanks to You, for I am fearfully and wonderfully made.\" \"Search me, O God, and know my heart.\"",
+    v: [
+      ["139:1", "You have searched me and known me", "Fully known."],
+      ["139:7", "Where can I go from Your Spirit?", "God is everywhere."],
+      ["139:13-14", "Fearfully and wonderfully made", "God made each person with care."],
+      ["139:16", "Your eyes have seen my unformed substance", "God knows us before birth."],
+      ["139:23-24", "Search me, O God", "An open heart."],
+    ],
+    refs: [["JER.1", "Jeremiah 1:5", "Before I formed you in the womb, I knew you"], ["HEB.4", "Hebrews 4:13", "All things are open to His eyes"], ["MAT.10", "Matthew 10:30", "The hairs of your head are numbered"]],
+  },
+  140: {
+    intro: "\"Rescue me, O LORD, from evil men.\" They sharpen their tongues like a serpent; poison of a viper is under their lips. They set traps. \"You are my God; give ear, O LORD.\" \"I know that the LORD will maintain the cause of the afflicted.\"",
+    v: [
+      ["140:3", "Poison of a viper is under their lips", "Paul quotes this in Romans 3:13."],
+      ["140:7", "You have covered my head in the day of battle", "God as helmet."],
+      ["140:12", "The LORD will maintain the cause of the afflicted", "Justice for the weak."],
+    ],
+    refs: [["ROM.3", "Romans 3:13", "The poison of asps"], ["EPH.6", "Ephesians 6:17", "The helmet of salvation"]],
+  },
+  141: {
+    intro: "An evening prayer. \"May my prayer be counted as incense before You; the lifting up of my hands as the evening offering.\" \"Set a guard, O LORD, over my mouth.\" David asks not to be drawn to evil or to eat the delicacies of the wicked. \"Let the righteous smite me in kindness and reprove me.\"",
+    v: [
+      ["141:2", "May my prayer be counted as incense", "Prayer rising to God."],
+      ["141:3", "Set a guard over my mouth", "Help to speak well."],
+      ["141:5", "Let the righteous smite me in kindness", "Welcoming correction."],
+    ],
+    refs: [["REV.8", "Revelation 8:3-4", "The prayers of the saints like incense"], ["JAS.3", "James 3:2-10", "Taming the tongue"], ["PRO.27", "Proverbs 27:6", "Faithful are the wounds of a friend"]],
+  },
+  142: {
+    intro: "A prayer of David in the cave. \"I pour out my complaint before Him; I declare my trouble before Him.\" No one cares for his soul. \"You are my refuge, my portion in the land of the living.\" \"Bring my soul out of prison, so that I may give thanks to Your name.\"",
+    v: [
+      ["142:2", "I pour out my complaint before Him", "God welcomes honest prayer."],
+      ["142:4", "No one cares for my soul", "Feeling alone."],
+      ["142:5", "You are my refuge, my portion", "God is enough."],
+    ],
+    refs: [["1SA.22", "1 Samuel 22:1", "David in the cave of Adullam"], ["1PE.5", "1 Peter 5:7", "He cares for you"]],
+  },
+  143: {
+    intro: "The last penitential psalm. \"Do not enter into judgment with Your servant, for in Your sight no man living is righteous.\" David remembers the days of old and stretches out his hands, thirsty like a parched land. \"Let me hear Your lovingkindness in the morning... teach me the way in which I should walk.\" \"Teach me to do Your will, for You are my God; let Your good Spirit lead me.\"",
+    v: [
+      ["143:2", "In Your sight no man living is righteous", "Paul echoes this in Romans 3:20."],
+      ["143:8", "Let me hear Your lovingkindness in the morning", "A morning prayer."],
+      ["143:10", "Teach me to do Your will", "Asking to be led."],
+    ],
+    refs: [["ROM.3", "Romans 3:20", "No flesh justified by works of the law"], ["GAL.5", "Galatians 5:25", "Walk by the Spirit"]],
+  },
+  144: {
+    intro: "\"Blessed be the LORD, my rock, who trains my hands for war.\" \"O LORD, what is man, that You take knowledge of him?\" David asks God to bow the heavens and rescue him. He sings a new song and pictures a blessed land: sons like grown plants, daughters like corner pillars, full barns and flocks. \"How blessed are the people whose God is the LORD!\"",
+    v: [
+      ["144:3", "What is man, that You take knowledge of him?", "Echoes Psalm 8."],
+      ["144:9", "I will sing a new song to You", "Fresh praise."],
+      ["144:15", "How blessed are the people whose God is the LORD", "True blessing."],
+    ],
+    refs: [["PSA.18", "Psalm 18", "Similar words"], ["PSA.8", "Psalm 8:4", "What is man?"]],
+  },
+  145: {
+    intro: "David's alphabet hymn of praise. \"I will extol You, my God, O King, and I will bless Your name forever.\" \"One generation shall praise Your works to another.\" \"The LORD is gracious and merciful; slow to anger and great in lovingkindness. The LORD is good to all.\" \"The LORD is near to all who call upon Him.\"",
+    v: [
+      ["145:3", "His greatness is unsearchable", "No end to God."],
+      ["145:4", "One generation shall praise Your works to another", "Grandparents to grandchildren."],
+      ["145:9", "The LORD is good to all", "God's goodness to everyone."],
+      ["145:18", "The LORD is near to all who call upon Him", "God draws near."],
+    ],
+    refs: [["EXO.34", "Exodus 34:6", "Gracious and merciful"], ["ACT.17", "Acts 17:27", "He is not far from each one of us"]],
+  },
+  146: {
+    intro: "The first of five Hallelujah psalms that close the book (146-150). \"Praise the LORD, O my soul! I will praise the LORD while I live.\" \"Do not trust in princes.\" Blessed is the one whose help is the God of Jacob, who made heaven and earth, keeps faith forever, feeds the hungry, frees prisoners, opens blind eyes, and protects strangers, orphans and widows. \"The LORD will reign forever.\"",
+    v: [
+      ["146:3", "Do not trust in princes", "People are mortal."],
+      ["146:5", "Whose help is the God of Jacob", "True help."],
+      ["146:7-9", "The LORD sets the prisoners free", "Jesus' ministry fulfilled these words."],
+    ],
+    refs: [["LUK.4", "Luke 4:18-19", "Jesus' mission"], ["LUK.7", "Luke 7:22", "The blind receive sight"]],
+  },
+  147: {
+    intro: "\"Praise the LORD! For it is good to sing praises to our God.\" The LORD builds up Jerusalem and gathers the outcasts. \"He heals the brokenhearted and binds up their wounds. He counts the number of the stars; He gives names to all of them.\" He gives snow like wool and sends His word to melt it. He does not delight in a horse's strength but in those who fear Him.",
+    v: [
+      ["147:3", "He heals the brokenhearted", "God's tender care."],
+      ["147:4", "He counts the number of the stars", "God's vast power."],
+      ["147:11", "The LORD favors those who fear Him", "God delights in trust, not strength."],
+    ],
+    refs: [["ISA.61", "Isaiah 61:1", "To bind up the brokenhearted"], ["ISA.40", "Isaiah 40:26", "He calls them all by name"]],
+  },
+  148: {
+    intro: "All creation is called to praise. From the heavens: angels, sun and moon, shining stars. From the earth: sea creatures, fire and hail, snow and wind, mountains and fruit trees, wild animals and birds, kings and all peoples, young men and young women, old men and children. \"Let them praise the name of the LORD, for His name alone is exalted.\"",
+    v: [
+      ["148:2", "Praise Him, all His angels", "Heaven's choir."],
+      ["148:7-10", "Sea monsters... fire and hail... creeping things", "Everything God made."],
+      ["148:12", "Both young men and virgins; old men and children", "Every age praising together."],
+    ],
+    refs: [["REV.5", "Revelation 5:13", "Every created thing praising"], ["GEN.1", "Genesis 1", "Creation"]],
+  },
+  149: {
+    intro: "\"Sing to the LORD a new song, and His praise in the congregation of the godly ones.\" Let Israel be glad in their Maker. Let them praise His name with dancing, timbrel and lyre. \"For the LORD takes pleasure in His people; He will beautify the afflicted ones with salvation.\"",
+    v: [
+      ["149:1", "Sing to the LORD a new song", "Fresh praise."],
+      ["149:3", "Praise His name with dancing", "Joyful worship."],
+      ["149:4", "The LORD takes pleasure in His people", "God delights in us."],
+    ],
+    refs: [["ZEP.3", "Zephaniah 3:17", "He will rejoice over you with shouts of joy"]],
+  },
+  150: {
+    intro: "The final psalm is pure praise. \"Praise God in His sanctuary; praise Him in His mighty expanse.\" Praise Him for His mighty deeds and His excellent greatness. Praise Him with trumpet, harp and lyre, timbrel and dancing, strings and pipe, loud and resounding cymbals. \"Let everything that has breath praise the LORD. Praise the LORD!\"",
+    v: [
+      ["150:1", "Praise God in His sanctuary", "Where to praise."],
+      ["150:2", "For His mighty deeds", "Why to praise."],
+      ["150:3-5", "Trumpet, harp, lyre, timbrel, cymbals", "How to praise."],
+      ["150:6", "Let everything that has breath praise the LORD", "Who should praise: everyone."],
+    ],
+    bg: [["The Psalms end in praise", "The book moves from lament toward praise. Its Hebrew name, Tehillim, means \"praises,\" and the last five psalms all begin and end with Hallelujah, \"Praise the LORD.\"", "strong", ["wilson", "allen"]]],
+    refs: [["REV.19", "Revelation 19:1-6", "Hallelujah in heaven"], ["PSA.1", "Psalm 1", "The book's beginning"]],
+  },
 });
