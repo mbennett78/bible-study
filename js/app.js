@@ -4,7 +4,7 @@ import { findTopics } from "./topics.js";
 import { OUTLINES } from "./outlines.js";
 import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
 import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
-import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl } from "./text.js";
+import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG } from "./buddy.js";
@@ -233,6 +233,15 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     applyVerseMarks(book, chapter);
     followKey = ""; setTimeout(updateFollow, 60);
     markStudyWords(readerEl, book, chapter, token);
+    // Save the next two chapters (on their path, if they're following one) for reading with no signal.
+    if (!result.offline) setTimeout(() => {
+      if (token !== loadToken) return;
+      const ahead = [];
+      const path = store.get("activePath");
+      if (path) { const list = pathChapters(path); const at = pathIndex(path, book, chapter); if (at >= 0) ahead.push(...list.slice(at + 1, at + 3)); }
+      if (!ahead.length) { let n = neighbors(book, chapter).next; if (n) { ahead.push(n); n = neighbors(n.book, n.chapter).next; if (n) ahead.push(n); } }
+      saveAhead(version, ahead);
+    }, 2500);
     // Read to me: once it's on and started, every chapter opened is read aloud.
     if (autoplayNext || (readArmed && driveOn() && !$("#view-read").hidden)) { autoplayNext = false; reader.play(); }
   } catch (e) {

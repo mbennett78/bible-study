@@ -6,21 +6,23 @@ import { BOOK_BY_ID } from "./books.js";
 // API.Bible moved hosts in 2025; try the current one first, then the older one.
 const API_BIBLE_HOSTS = ["https://rest.api.bible/v1", "https://api.scripture.api.bible/v1"];
 
-// A small recent-chapters cache. Rereading a recent chapter (or flipping back to it)
-// opens from here without using another request from the monthly allowance, and it
-// still opens offline. Kept small and fresh on purpose: API.Bible asks apps to cache
-// fewer than 500 consecutive verses and refresh within 14 days.
+// Saved chapters: the ones opened recently, plus the next couple ahead (see saveAhead), so
+// reading carries on with no signal. API.Bible allows caching as long as copies are
+// refreshed within 30 days: a copy is refreshed after 14 days when online, and one older
+// than 30 days is thrown away. The ESV has tighter limits (withinEsvLimits).
+// Kept to about a megabyte so it never crowds out the journal.
 const CACHE_KEY = "bible-study:recent";
-const CACHE_MAX = 10;
+const CACHE_MAX = 40;
 const CACHE_FRESH_MS = 14 * 24 * 60 * 60 * 1000;
+const CACHE_LIMIT_MS = 30 * 24 * 60 * 60 * 1000;
+const cacheAll = () => { try { return (JSON.parse(localStorage.getItem(CACHE_KEY)) || []).filter((c) => c.at && Date.now() - c.at < CACHE_LIMIT_MS); } catch { return []; } };
 
 function cacheGet(id) {
-  try { return (JSON.parse(localStorage.getItem(CACHE_KEY)) || []).find((c) => c.id === id) || null; }
-  catch { return null; }
+  return cacheAll().find((c) => c.id === id) || null;
 }
 function cachePut(entry) {
   try {
-    const list = (JSON.parse(localStorage.getItem(CACHE_KEY)) || []).filter((c) => c.id !== entry.id);
+    const list = cacheAll().filter((c) => c.id !== entry.id);
     list.unshift(entry);
     localStorage.setItem(CACHE_KEY, JSON.stringify(withinEsvLimits(list).slice(0, CACHE_MAX)));
   } catch { /* ignore */ }
@@ -187,6 +189,18 @@ export async function getChapter(version, book, ch) {
     const cached = cacheGet(id);
     if (cached && e.kind === "network") return { ...cached, offline: true };
     throw e;
+  }
+}
+
+// Quietly saves chapters ahead of the reader (not the ESV, whose limits are tight), so the
+// next ones open instantly and still open with no signal.
+export async function saveAhead(version, list) {
+  if (version === "ESV" || !navigator.onLine) return;
+  for (const { book, chapter } of list) {
+    const id = `${version === "NASB" ? `NASB-${store.get("nasbBibleId") || "auto"}` : version}:${book}.${chapter}`;
+    const have = cacheGet(id);
+    if (have && Date.now() - have.at < CACHE_FRESH_MS) continue;
+    try { await getChapter(version, book, chapter); } catch { return; }
   }
 }
 
