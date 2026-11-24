@@ -2722,3 +2722,10 @@ textarea.nf-big { font-size: 1.25rem; }
   .print-book .co-sticky { transform: rotate(-.6deg); }
   .print-book .ee-quote:has(.q-callout:not(.co-plain)) { padding-bottom: 10pt; }
 }
+
+/* What's new: a short note on Home after updates (js/whatsnew.js) */
+.news-card { border-left: 5px solid var(--accent, #c9a35a); }
+.news-card h2 { margin: 0 0 6px; font-size: 1.1rem; } .news-card ul { margin: 0 0 10px; padding-left: 1.1em; } .news-card li { margin: 4px 0; }
+.news-btns { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.news-off { background: none; border: 0; padding: 6px 2px; font: inherit; font-size: .9rem; color: inherit; opacity: .75; text-decoration: underline; cursor: pointer; }
+.news-more { margin: -4px 0 10px; } .news-more summary { cursor: pointer; font-size: .92rem; opacity: .8; } .news-more ul { margin: 6px 0 0; }

@@ -18,6 +18,7 @@ import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
+import { NEWS, newsToShow, newsHtml } from "./whatsnew.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -3774,6 +3775,9 @@ function wirePathCards(root) {
 }
 function renderHome() {
   const view = $("#homeView");
+  // A brand-new person starts with nothing to catch up on: only notes after they join show.
+  if (setupState() !== "done" && store.get("newsSeen") !== NEWS[0].id) store.set("newsSeen", NEWS[0].id);
+  const news = newsToShow({ seen: store.get("newsSeen"), off: store.get("newsOff"), setupDone: setupState() === "done" });
   const last = store.get("last");
   const active = store.get("activePath");
   const next = active ? nextUnread(active) : null;
@@ -3785,6 +3789,7 @@ function renderHome() {
     <p class="home-hello">${esc(greeting())}</p>
     <p class="home-sub">How would you like to walk through the Bible today?</p>
     ${seasonPrayerHtml()}
+    ${news ? newsHtml(news, esc) : ""}
     ${setupState() === "started" ? `<div class="card setup-resume" id="homeSetup"><h2>Welcome back${store.get("name").trim() ? `, ${esc(store.get("name").trim())}` : ""}!</h2>
       <p class="muted">Setup isn't finished yet: ${SETUP_STEPS.filter((st) => !st.done()).length || 1} quick step${SETUP_STEPS.filter((st) => !st.done()).length === 1 ? "" : "s"} left.</p>
       <div class="setup-resume-btns"><button class="big-btn" id="homeSetupGo">Continue to setup</button><button class="wb-new" id="homeSetupLater">Not now, keep reading</button></div></div>` : ""}
@@ -3805,6 +3810,8 @@ function renderHome() {
   wireArchive(view);
   $("#homeBrowse").addEventListener("click", openPicker);
   $("#homeGames").addEventListener("click", () => quest.open());
+  $("#newsOk")?.addEventListener("click", () => { store.set("newsSeen", news.id); $("#newsCard").remove(); });
+  $("#newsOff")?.addEventListener("click", () => { store.set("newsSeen", news.id); store.set("newsOff", true); $("#newsCard").innerHTML = `<p class="muted small-print">What's new notes are off. You can turn them back on in Settings, under Help and guide.</p>`; syncNewsSetting(); });
   $("#homeSetupGo")?.addEventListener("click", () => openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => !st.done()))));
   // Continue: put setup away for now (it stays in Settings, under Set up app) and go back to reading.
   $("#homeSetupLater")?.addEventListener("click", () => { setupSet({ skipped: true }); const l = store.get("last"); showView("read"); openChapter(l.book, l.chapter); });
@@ -4668,6 +4675,11 @@ document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("clic
 // Settings: the user guide at the top, and quick jumps to each group of settings.
 $("#guideList").innerHTML = GUIDE.map((g) => `<details class="guide-topic" data-guide="${g.id}"><summary><span aria-hidden="true">${g.icon}</span> ${esc(g.title)}</summary><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></details>`).join("");
 $("#printGuide").addEventListener("click", () => printPages(guideHtml(esc), "guide", "User Guide"));
+// What's new: every note so far, and a switch for the short note on Home after updates.
+$("#newsList").innerHTML = NEWS.map((n) => `<details class="guide-topic"><summary><span aria-hidden="true">✨</span> ${esc(n.title)} <small class="muted">(${esc(new Date(`${n.id}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric" }))})</small></summary><ul>${n.items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></details>`).join("");
+function syncNewsSetting() { $("#newsShow").checked = !store.get("newsOff"); }
+syncNewsSetting();
+$("#newsShow").addEventListener("change", (e) => { store.set("newsOff", !e.target.checked); if (!$("#view-home").hidden) renderHome(); });
 document.querySelectorAll("[data-jump]").forEach((b) => b.addEventListener("click", () => {
   const to = document.getElementById(b.dataset.jump);
   to.scrollIntoView({ block: "start" });
