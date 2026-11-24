@@ -1050,8 +1050,11 @@ main { padding-left: calc(26px + env(safe-area-inset-left)); padding-right: calc
 /* A slim colored border (about a quarter to half an inch) so the bright page fills the screen. */
 @media (min-width: 760px) { main { max-width: none; padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } .vine { width: 38px; } }
 /* iPad landscape and bigger: Bible text on the left, the study section beside it */
-@media (min-width: 1100px) {
-  main { max-width: 1400px; }
+@media (min-width: 1100px) { main { max-width: 1400px; } }
+/* Side by side only when the page itself has room (the iPad menu, the path list and Buddy's
+   chat all take some), so the Bible text never gets squeezed into a thin column. */
+main { container-type: inline-size; }
+@container (min-width: 960px) {
   #view-read:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 38%); column-gap: 28px; align-items: start; }
   #view-read > * { grid-column: 1; min-width: 0; }
   #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-total) - env(safe-area-inset-top)); padding-bottom: 24px; overflow-y: auto; margin-top: 0; }
@@ -1986,10 +1989,8 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
   :root { --buddy-gutter: 64px; }
   .buddy { width: 58px; height: 68px; }
 }
-@media (max-width: 940px) {
-  body.buddy-right main { padding-right: calc(var(--buddy-gutter) + env(safe-area-inset-right)); }
-  body.buddy-left main { padding-left: calc(var(--buddy-gutter) + env(safe-area-inset-left)); }
-}
+body.buddy-right main { padding-right: calc(var(--buddy-gutter) + env(safe-area-inset-right)); }
+body.buddy-left main { padding-left: calc(var(--buddy-gutter) + env(safe-area-inset-left)); }
 @media (max-width: 600px) {
   body.buddy-right main { padding-left: calc(10px + env(safe-area-inset-left)); }
   body.buddy-left main { padding-right: calc(10px + env(safe-area-inset-right)); }
@@ -2061,3 +2062,11 @@ body.plain-reading #flourish, body.plain-reading .visit-line, body.plain-reading
 .read-mode button { white-space: nowrap; }
 @media (max-width: 600px) { .read-mode button { font-size: .92rem; } }
 @media not ((min-width: 700px) and (min-height: 500px)) { .tabbar button span { white-space: nowrap; font-size: .66rem; } .tabbar { padding-left: 2px; padding-right: 2px; } }
+@media (min-width: 700px) and (min-height: 500px) { body.margin-open .tabbar { margin-left: 0; } }
+/* The study path list beside the page belongs with reading and Bible study, not Home or Settings. */
+@media (min-width: 1000px) {
+  body.margin-open:not([data-view="read"]):not([data-view="path"]) .margin { display: none; }
+  body.margin-open:not([data-view="read"]):not([data-view="path"]) main,
+  body.margin-open:not([data-view="read"]):not([data-view="path"]) .topbar { margin-left: auto; }
+  body.margin-open:not([data-view="read"]):not([data-view="path"]) .topbar { margin-left: 0; }
+}
