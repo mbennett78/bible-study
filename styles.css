@@ -2600,3 +2600,49 @@ textarea.nf-big { font-size: 1.25rem; }
 .send-opt small { color: var(--muted); }
 .send-opt:hover { border-color: var(--accent); }
 .send-sheet .quiet-link { display: block; margin: 4px auto 0; }
+
+/* Things people can ask Buddy to do: jump, jump rope, dance, spin, laugh, pray, bow, toss a
+   ball with his little mitt, and hug. Each one is short; with reduced motion he holds a pose. */
+.buddy-rope { display: none; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; transform-box: view-box; transform-origin: 26px 47px; }
+.buddy-mitt { display: none; fill: #b7793e; stroke: var(--accent); stroke-width: 1; }
+.buddy.roping .buddy-rope { display: inline; }
+.buddy.roping .buddy-arm-r { transform: rotate(-8deg); }
+.buddy.roping .buddy-arm-l { transform: rotate(8deg); }
+.buddy.tossing .buddy-mitt { display: inline; }
+.buddy.tossing .buddy-arm-r { transform: rotate(-20deg); }
+.buddy.praying .buddy-arm-r { transform: rotate(-58deg); }
+.buddy.praying .buddy-arm-l { transform: rotate(58deg); }
+.buddy.praying .buddy-head, .buddy.praying .buddy-eye, .buddy.praying .buddy-smile { transform: translateY(2px); transform-box: view-box; }
+.buddy.praying .buddy-eye { display: none; }
+.buddy.praying .buddy-shut { display: inline; }
+.buddy.hugging .buddy-arm-r { transform: rotate(-150deg); }
+.buddy.hugging .buddy-arm-l { transform: rotate(150deg); }
+.buddy.laughing .buddy-eye { display: none; }
+.buddy.laughing .buddy-shut { display: inline; transform: translateY(-1px); }
+.buddy.laughing .buddy-smile { display: none; }
+.buddy.laughing .buddy-mouth { display: inline; }
+.buddy.laughing .buddy-body { transform: translate(-6px, 6px) rotate(90deg); transform-origin: 26px 66px; }
+.buddy.bowing .buddy-body { transform: rotate(-28deg); transform-origin: 26px 62px; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.jumping .buddy-body { animation: buddy-jump .45s cubic-bezier(.3, .7, .4, 1) 4 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.jumping .buddy-arm-r { animation: buddy-wave .45s ease-in-out 4 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.jumping .buddy-arm-l { animation: buddy-wave-l .45s ease-in-out 4 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.roping .buddy-rope { animation: buddy-rope .5s linear 7; }
+  :root:not([data-graphics="simple"]) .buddy.roping .buddy-body { animation: buddy-skip .5s linear 7; }
+  :root:not([data-graphics="simple"]) .buddy.dancing .buddy-body { animation: buddy-sway .4s ease-in-out 8 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.dancing .buddy-arm-r { animation: buddy-wave .4s ease-in-out 8 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.dancing .buddy-arm-l { animation: buddy-wave-l .4s ease-in-out 8 alternate-reverse; }
+  :root:not([data-graphics="simple"]) .buddy.spinning .buddy-body { animation: buddy-spin .7s ease-in-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.laughing .buddy-body { animation: buddy-roll .35s ease-in-out 9 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.bowing .buddy-body { animation: buddy-bow 1.8s ease-in-out; }
+  :root:not([data-graphics="simple"]) .buddy.hugging .buddy-body { animation: buddy-huff .6s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.tossing .buddy-pop { animation: buddy-toss .9s ease-in-out 4; }
+}
+@keyframes buddy-jump { from { transform: translateY(0) scale(1.04, .94); } to { transform: translateY(-20px) scale(.97, 1.03); } }
+@keyframes buddy-rope { 0% { transform: scaleY(1); } 50% { transform: scaleY(-1.05); } 100% { transform: scaleY(1); } }
+@keyframes buddy-skip { 0%, 100% { transform: translateY(-9px); } 40%, 60% { transform: translateY(0); } }
+@keyframes buddy-sway { from { transform: rotate(-12deg) translateX(-3px); } to { transform: rotate(12deg) translateX(3px); } }
+@keyframes buddy-spin { from { transform: scaleX(1); } 50% { transform: scaleX(-1); } to { transform: scaleX(1); } }
+@keyframes buddy-roll { from { transform: translate(-6px, 6px) rotate(80deg); } to { transform: translate(-4px, 6px) rotate(100deg); } }
+@keyframes buddy-bow { 0%, 100% { transform: rotate(0); } 35%, 70% { transform: rotate(-32deg); } }
+@keyframes buddy-toss { 0%, 100% { transform: translate(10px, 26px); } 50% { transform: translate(10px, -22px); } }

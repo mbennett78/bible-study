@@ -7,7 +7,7 @@ import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
-import { createBuddy, BUDDY_SVG } from "./buddy.js";
+import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand } from "./buddy.js";
 import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
@@ -1233,6 +1233,9 @@ function addMic(wrap, ta) {
 const TALK_ICON = `<svg class="talk-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 20c10 1 18 8 18 17 0 4-1.5 7.5-4 10.5l2 7-8-3c-2.5 1-5 1.5-8 1.5-8 0-15-4-17.5-10" class="ti-back"/><path d="M27 8C15 8 6 16 6 26c0 4.5 2 8.5 5 11.5L8 46l10-4c3 1.3 6 2 9 2 12 0 21-8 21-18S39 8 27 8z" class="ti-front"/><circle cx="17" cy="26" r="3" class="ti-dot"/><circle cx="27" cy="26" r="3" class="ti-dot"/><circle cx="37" cy="26" r="3" class="ti-dot"/></svg>`;
 // Only the family's shared Bible helper; nobody is sent off to other AI sites.
 const PARTNERS = [["", "Bible helper", TALK_ICON, null]];
+// A couple of playful ones too, so people find out he can really do things.
+const BUDDY_FUN = ["Do a trick!", "Can you jump rope?", "Dance for me!", "Tell me about yourself", "Do a cartwheel!", "Play catch with me!"];
+const pickTwo = (list) => { const a = [...list].sort(() => Math.random() - 0.5); return a.slice(0, 2); };
 const CHAT_IDEAS = ["What's the main point of this chapter?", "What was happening when this was written?", "How does this point to Jesus?", "What does a key word mean in the original language?", "How can I live this out this week?", "How would I explain this to a friend who isn't a believer?"];
 const currentPartner = () => PARTNERS[0];
 const builtIn = (p) => p && p[0] === "";
@@ -1273,7 +1276,10 @@ async function askBuiltIn(q) {
   buddy.thinking(false);
   chatBusy = false; $("#partnerGo").disabled = false;
   if (r && r.text) {
-    const text = String(r.text).replace(/\*\*|__/g, "").replace(/^#+\s*/gm, "");
+    // The helper can ask him to act something out: [[do:dance]] at the end of its answer.
+    let doIt = null;
+    const text = String(r.text).replace(/\[\[do:([a-z]+)\]\]/gi, (m, a) => { doIt ||= a.toLowerCase(); return ""; }).trim().replace(/\*\*|__/g, "").replace(/^#+\s*/gm, "");
+    if (doIt && BUDDY_ACTIONS[doIt]) setTimeout(() => buddyAct(doIt), 300);
     chatTurns.push({ role: "assistant", content: text });
     chatBubble("them", text);
     buddySpeak(text);
@@ -1305,8 +1311,15 @@ function resetChat() {
   const { book, chapter } = store.get("last");
   $("#chatLog").innerHTML = "";
   chatTurns = [];
-  chatBubble("them", `Hi${store.get("name") ? ` ${store.get("name")}` : ""}! I'm your Bible helper. Ask me anything about ${BOOK_BY_ID[book].name} ${chapter}: what it means, the history and culture behind it, or how to live it out.`);
-  $("#chatSuggest").innerHTML = CHAT_IDEAS.map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
+  const hi = `Hi${store.get("name") ? ` ${store.get("name")}` : ""}!`, ref = `${BOOK_BY_ID[book].name} ${chapter}`;
+  chatBubble("them", pickOne([
+    `${hi} Ask me about anything! 😊`,
+    `${hi} Want help with ${ref}? I'd love to dig in with you.`,
+    `${hi} Get to know me! Ask me anything about me, or about ${ref}.`,
+    `${hi} Ask me about ${ref}, Bible people and places, or anything you're wondering.`,
+    `${hi} Want help with ${ref}? Or just tell me to do something fun, like "jump rope"! 🪢`,
+  ]));
+  $("#chatSuggest").innerHTML = [...CHAT_IDEAS, ...pickTwo(BUDDY_FUN)].map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
   $("#chatSuggest").querySelectorAll(".chat-idea").forEach((b) => b.addEventListener("click", () => { $("#partnerQ").value = b.textContent; sendChat(); }));
 }
 // Buddy's heart: excited to help, and gentle when the question is about something sad.
@@ -1321,6 +1334,16 @@ function buddyFeels(q) {
   face.classList.toggle("caring", sad);
   if (!sad) { buddy.excite(); face.classList.remove("excited"); void face.offsetWidth; face.classList.add("excited"); setTimeout(() => face.classList.remove("excited"), 1400); }
 }
+// Does an action on the screen, and in the chat's own little picture of him when it's open.
+function buddyAct(name) {
+  const face = chatSheet.open ? chatSheet.querySelector(".buddy-inline") : null;
+  const did = buddy.act(name, face);
+  if (did && did !== "nap" && did !== "wake") {
+    // A private, per-person tally of what they've asked him to do (for his growing later).
+    const c = store.get("buddyDid") || {}; c[did] = (c[did] || 0) + 1; store.set("buddyDid", c);
+  }
+  return did;
+}
 async function sendChat() {
   const q = $("#partnerQ").value.trim();
   if (!q) { $("#partnerQ").focus(); return; }
@@ -1331,6 +1354,19 @@ async function sendChat() {
   if (/^[\s\p{P}]*(thank(s| you)( so much| very much)?|thx|ty|love you)([\s,]+\p{L}+){0,3}[\s\p{P}\p{Extended_Pictographic}]*$/iu.test(q)) {
     buddy.love();
     chatBubble("them", pickOne(["You're so welcome! 💕", "Anytime, friend! 😊", "Aww, you're welcome! I love helping you. 💕"]));
+    return;
+  }
+  // "Jump rope!", "Can you dance?": he just does it, right away (no need to look anything up).
+  const cmd = buddyCommand(q, buddyName());
+  if (cmd) {
+    // On a phone or tablet the chat covers the screen, so it steps aside and he does it out
+    // in the open, saying his line in his own bubble. Tap him to keep chatting.
+    const hidden = buddy.el.hidden;
+    if (!hidden && chatSheet.open && !chatSheet.classList.contains("side")) { chatSheet.close(); await new Promise((r) => setTimeout(r, 350)); }
+    const did = buddyAct(cmd);
+    const line = did ? pickOne(BUDDY_ACTIONS[did].say) : "I'd love to, but I'm turned off right now. You can turn me back on in Settings. 😊";
+    chatBubble("them", line);
+    if (did && !chatSheet.open) buddy.says(line, Math.max(4000, BUDDY_ACTIONS[did].ms + 1500));
     return;
   }
   buddyFeels(q);
@@ -1457,6 +1493,10 @@ const BUDDY_LINES = [
   () => `I'm ${buddyName()}, your study buddy! I'm so glad we get to do this together.`,
   () => "Curious what life was like back then? Tap me and ask!",
   (n, ref) => `Any questions about ${ref}? I'd love to help.`,
+  (n, ref) => `Want help with ${ref}? Tap me!`,
+  () => "Get to know me! Tap me and ask me anything about me. 😊",
+  () => "Psst! Tap me and tell me to \"jump rope\" or \"dance.\" I've been practicing! 🪢",
+  () => "Ask me about anything! I mean it. 😄",
   () => "Want to know what a word means in Hebrew or Greek? Ask me!",
   () => "I know lots about Bible people and places. Try me!",
   (n) => `Can I look anything up for you${n ? `, ${n}` : ""}? I'm happy to help.`,

@@ -29,6 +29,8 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-legs-stand"><path class="buddy-line" d="M26 54l-8 18M26 54l8 18"/></g>
     <g class="buddy-book"><path class="buddy-book-page" d="M17 44.5l9 2.2l9-2.2v9l-9 2.2l-9-2.2z"/><path class="buddy-book-spine" d="M26 46.7v9"/></g>
     <g class="buddy-paper"><path class="buddy-paper-sheet" d="M17.5 44.5h13v11h-13z"/><path class="buddy-paper-lines" d="M19.5 47.5h9M19.5 50h9M19.5 52.5h5"/><path class="buddy-pencil" d="M37 43.5l-7.5 8.5"/><path class="buddy-pencil-tip" d="M29.5 52l-.9 1.9 1.9-.9z"/></g>
+    <path class="buddy-rope" d="M16 47Q26 88 36 47"/>
+    <g class="buddy-mitt"><ellipse cx="37.5" cy="48" rx="3.6" ry="3.1"/><path d="M35.2 46.4l-1.8-2.2"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
@@ -49,6 +51,50 @@ const NO_LINES = ["Okie! 😊", "Sure thing! Just let me know.", "Okay! I'll be 
 const PLAY_LINES = ["Yay! Let's play! 🎲", "Woohoo! Get ready to spin!", "Game on! I'll try my best!"];
 const YES_LINES = ["Oh yeah! I can find something!", "Ooh, yay! What is it?", "Oh good, I love questions!", "Yes! Let's find out together!"];
 let careTimer = 0, nerdTimer = 0;
+
+// Things people can ask him to do ("jump rope!", "dance", "do a cartwheel"). Each is a real
+// little animation; the chat answers with a line from `say`. The AI helper can ask for one
+// too, with a tag like [[do:dance]] at the end of its answer.
+export const BUDDY_ACTIONS = {
+  jump: { ms: 1800, pop: "⬆️", say: ["Boing! Boing! 🦘", "Up I go! Whee!", "How high was that? 😄"] },
+  jumprope: { ms: 3600, pop: "🪢", say: ["Jump rope time! One, two, three... 🪢", "Skip, skip, skip! I never trip. Well, almost never. 😄", "Watch my feet! 🪢"] },
+  dance: { ms: 3200, pop: "🎵", say: ["Dance party! 🎶", "Check out my moves! 💃🕺", "Like David danced before the Lord! 🎵"] },
+  wave: { ms: 1600, pop: "👋", say: ["Hi hi hi! 👋", "*waves both arms* Hello! 👋"] },
+  cartwheel: { ms: 1700, pop: "🤸", say: ["Cartwheel! 🤸 Did you see that?", "Wheee! 🤸", "Ta-da! 🤸 Nailed it!"] },
+  spin: { ms: 1500, pop: "🌀", say: ["Spinny spin! 🌀 Whoa, I'm dizzy.", "Round and round! 🌀"] },
+  cheer: { ms: 2600, pop: "🎉", say: ["Yay! 🎉", "Hooray! Woohoo! 🎉", "Let's gooo! 🎉"] },
+  laugh: { ms: 3200, pop: "🤣", say: ["Hahaha! I'm rolling on the floor! 🤣", "Hehe! You're so funny! 🤣"] },
+  pray: { ms: 4000, pop: "🙏", say: ["Let's pray together. 🙏", "Talking to God is my favorite. 🙏"] },
+  bow: { ms: 1800, pop: "🙇", say: ["*takes a bow* Thank you, thank you! 🙇", "A bow, just for you! 🙇"] },
+  ball: { ms: 3600, pop: "⚾", say: ["Toss... and catch! ⚾ Got it!", "Up it goes! ⚾ I've been practicing with my mitt!"] },
+  hug: { ms: 2600, pop: "💕", say: ["Big hug! 🤗💕", "Sending you the biggest hug! 💕"] },
+  read: { ms: 9000, pop: "📖", say: ["Reading time! 📖 I love this part.", "Let me read my little Bible with you. 📖"] },
+  think: { ms: 5000, pop: "💭", say: ["Hmm, let me think... 🤔", "*thinking hard* 💭"] },
+  write: { ms: 7000, pop: "✏️", say: ["Taking notes! ✏️", "Writing this down so I remember. ✏️"] },
+  nap: { ms: 0, pop: "", say: ["Okay... yawn... nap time. 😴 Tap me to wake me up!", "Just a little nap... 💤"] },
+  wake: { ms: 2000, pop: "☀️", say: ["I'm up! I'm up! ☀️", "Good morning! Did I miss anything? ☀️"] },
+};
+const ACTION_WORDS = [
+  [/jump ?rope|skip(ping)? ?rope/, "jumprope"], [/jumping jacks?|jump|hop/, "jump"], [/dance|dancing|boogie|groove/, "dance"],
+  [/wave|say (hi|hello)/, "wave"], [/cartwheels?|flips?|backflips?|somersaults?|tumble/, "cartwheel"], [/spin|twirl|turn around/, "spin"],
+  [/cheer|celebrate|yay|hooray/, "cheer"], [/laugh|roll on the floor|giggle|lol/, "laugh"], [/take a bow|bow/, "bow"],
+  [/play (ball|catch)|toss (a |the )?ball|throw (a |the )?ball|catch/, "ball"], [/hug( me)?|give me a hug/, "hug"],
+  [/read( your bible)?/, "read"], [/think/, "think"], [/write|take notes/, "write"],
+  [/(take a |go to )?(nap|sleep)/, "nap"], [/wake up/, "wake"], [/(a |some )?tricks?|something (fun|cool)/, "trick"],
+];
+// "Can you jump rope?", "Buddy, dance!", "do a cartwheel please": a short request to do one
+// of his actions. Questions about the Bible ("Why did David dance?") are left for the helper.
+export function buddyCommand(text, name = "buddy") {
+  const n = name.toLowerCase().replace(/[^a-z ]/g, "");
+  let t = ` ${text.toLowerCase().replace(/[^a-z' ]+/g, " ").replace(/\s+/g, " ").trim()} `;
+  t = t.replace(new RegExp(` (hey|hi|ok|okay|yo)? ?(buddy|${n || "buddy"}) `, "g"), " ").trim();
+  t = t.replace(/^(can|could|will|would) you (please )?|^please |^(let'?s see|i want to see|show me|i wanna see)( you)? |^i want you to |^(go|try to|try|now) /, "");
+  t = t.replace(/^(do|show me|give me) /, "").replace(/^(a|an|the|some|your|another) /, "");
+  t = t.replace(/ (please|for me|again|now|buddy|too|real quick|for us|with me)$/g, "").replace(/ (please|for me|again|now)$/g, "").trim();
+  for (const [re, act] of ACTION_WORDS) if (new RegExp(`^(${re.source})$`).test(t)) return act;
+  return null;
+}
+
 
 export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right", sayOutLoud = null, sleepy = () => false }) {
   const el = document.createElement("button");
@@ -332,8 +378,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     if (kind === "mad" || kind === "cry") { el.classList.remove("tucked"); el.classList.add(kind === "mad" ? "pouting" : "teary"); setTimeout(() => el.classList.remove("pouting", "teary"), Math.min(ms, 3500)); }
     return true;
   }
-  function nap() {
-    if (busy() || el.classList.contains("sleeping")) return;
+  function nap(force = false) {
+    if ((!force && busy()) || el.classList.contains("sleeping")) return;
     el.classList.remove("sitting", "tucked", "thinking", "talking");
     el.classList.add("sleeping");
     pop.textContent = "z z z"; pop.classList.add("on", "snore");
@@ -352,6 +398,28 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     if (lateNow() && Math.random() < 0.3) { if (!busy()) mood("sleepy", 2600); return; }
     if (Math.random() < (sleepy() ? 0.15 : 0.55)) trick(pick(TRICKS));
   }, TRICK_EVERY_MS);
+
+  // Asked to do something: he does it right away, even while the chat is open.
+  const ACT_CLASSES = ["jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging"];
+  function act(name, also = null) {
+    if (name === "trick") name = pick(["cartwheel", "jumprope", "dance", "spin", "ball", "jump"]);
+    const a = BUDDY_ACTIONS[name];
+    if (!a || (el.hidden && !also)) return null;
+    const both = (fn) => { fn(el); if (also) fn(also); };
+    if (name === "nap") { nap(true); return name; }
+    rouse();
+    if (name === "wake") { play("excited", 1400); popUp(a.pop, 1800); return name; }
+    const ms = a.ms;
+    trickUntil = Date.now() + ms + 400; hold(ms + 400);
+    el.classList.remove("tucked", "sitting");
+    both((x) => x.classList.remove("sitting", ...ACT_CLASSES));
+    const cls = { jump: "jumping", jumprope: "roping", dance: "dancing", spin: "spinning", laugh: "laughing", pray: "praying", bow: "bowing", ball: "tossing", hug: "hugging",
+      wave: "waving", cartwheel: "cartwheel", cheer: "cheering", read: "reading", think: "pondering", write: "writing" }[name];
+    both((x) => { void x.offsetWidth; x.classList.add(cls); setTimeout(() => x.classList.remove(cls), ms); });
+    if (a.pop) popUp(a.pop, Math.min(ms, 3000));
+    if (!keepStanding) sitSoon(ms + 2500);
+    return name;
+  }
 
   addEventListener("resize", place);
   // While someone scrolls through the reading he sits and fades a little, so he never
@@ -387,6 +455,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
       play("cheering", 2600); popUp(MOODS[icon] || icon, 3200);
       if (text) setTimeout(() => { if (say.hidden && !document.querySelector("dialog[open]")) { speak(text, false); clearTimeout(visitTimer); visitTimer = setTimeout(goBack, 6000); } }, 400);
     },
+    // A line in his own talk bubble, from where he is (after doing something he was asked).
+    says(text, ms = 5000) { if (el.hidden || !text) return; speak(text, false); clearTimeout(visitTimer); visitTimer = setTimeout(goBack, ms); },
     visiting: () => !say.hidden || el.classList.contains("visiting"),
     // Stands while the chat is open; sits again when it closes.
     chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },
@@ -397,6 +467,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     caring(on) { clearTimeout(careTimer); el.classList.toggle("caring", on); if (on) { wake(); hold(8000); el.classList.remove("tucked"); careTimer = setTimeout(() => el.classList.remove("caring"), 90000); } },
     cheer() { play("cheering", 2600); },     // a great quiz score
     trick,                                    // "cartwheel" | "stroll" | "pondering" | "yay"
+    act,                                      // a BUDDY_ACTIONS name someone asked for; returns it, or null
     // Scholarly things (Greek, Hebrew, the scholars' views): on go his nerd glasses.
     nerd(ms = 6000) { if (el.hidden || el.classList.contains("sleeping") || drag) return false; el.classList.remove("tucked"); el.classList.add("nerdy"); popUp("🤓", 1800); clearTimeout(nerdTimer); nerdTimer = setTimeout(() => el.classList.remove("nerdy"), ms); return true; },
     // They're writing: he pulls out his own paper and pencil for a bit.

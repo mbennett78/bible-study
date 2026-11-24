@@ -82,6 +82,26 @@ try {
     await page.fill("#partnerQ", "My grandma died last week. Where is she now?");
     await page.click("#partnerGo"); await page.waitForTimeout(100);
     check(`${tag}: a sad question gets a caring face, not a happy hop`, await page.$eval(".buddy", (el) => el.classList.contains("caring") && !el.classList.contains("excited")) && await page.$eval("#chatSheet .buddy-inline", (el) => el.classList.contains("caring")));
+    // Tell him to do something and he really does it, right away, out where you can see him.
+    await page.clock.runFor(9000); await page.waitForTimeout(200);
+    const before = await page.$$eval("#chatLog .chat-row.them", (r) => r.length);
+    await page.fill("#partnerQ", "Can you jump rope?");
+    await page.click("#partnerGo"); await page.clock.runFor(400); await page.waitForTimeout(100);
+    check(`${tag}: asked to jump rope, he does it`, await page.$eval(".buddy", (el) => el.classList.contains("roping")));
+    const side = await page.$eval("#chatSheet", (d) => d.classList.contains("side"));
+    const lastLine = () => page.$eval("#chatLog .chat-row.them:last-child", (r) => r.textContent);
+    if (side) check(`${tag}: beside the chat, he does it there too`, await page.$eval("#chatSheet", (d) => d.open) && await page.$eval("#chatSheet .buddy-inline", (el) => el.classList.contains("roping")));
+    else check(`${tag}: the chat steps aside so he can be seen`, await page.$eval("#chatSheet", (d) => !d.open));
+    check(`${tag}: he says so, without asking the helper`, /rope|skip|feet/i.test(side ? await lastLine() : await page.$eval(".buddy-say", (el) => el.textContent)) && await page.$$eval("#chatLog .chat-row.them", (r) => r.length) === before + 1);
+    await page.clock.runFor(5000); await page.waitForTimeout(100);
+    check(`${tag}: then he stops`, await page.$eval(".buddy", (el) => !el.classList.contains("roping")));
+    await page.clock.runFor(3000);
+    if (!side) { await page.tap(".buddy"); await page.waitForTimeout(500); }
+    await page.fill("#partnerQ", "Buddy, dance!");
+    await page.click("#partnerGo"); await page.clock.runFor(400); await page.waitForTimeout(100);
+    check(`${tag}: he dances when asked`, await page.$eval(".buddy", (el) => el.classList.contains("dancing")));
+    await page.clock.runFor(6000);
+    if (!side) { await page.tap(".buddy"); await page.waitForTimeout(500); }
     // The read-aloud switch beside the chat box.
     await page.click("#partnerSpeak");
     check(`${tag}: read answers aloud turns on`, (await page.getAttribute("#partnerSpeak", "aria-pressed")) === "true");

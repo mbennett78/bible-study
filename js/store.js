@@ -45,6 +45,7 @@ const defaults = {
   contrast: false,          // high contrast words
   wordTap: true,            // tap a word in the Bible text for its meaning
   helperSpeak: false,       // the study buddy reads his answers aloud
+  buddyDid: {},             // how often this person asked Buddy to do each action (stays on this device and in their own backup)
   micExplained: false,      // the "why the microphone?" note has been shown
   helperStyle: "",          // "" | "simple" | "deep": how the Bible helper answers
   daily: {},                // which parts of Today show on Home: { verse, readings, devotion } (all on by default)
