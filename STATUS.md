@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:43 AM: The user guide is now at the top of Settings (and prints). Settings are in six named groups with quick jumps. Pasted Scripture can become a verse card, and comments can sit in an optional callout box: Plain, Classic, Parchment, Sticky note, Bubble or Floral. Pictures can be pasted into notes and the journal.
 - Tue Nov 24, 11:35 AM: Mark 1-16 notes are live. Offline changes now sync the moment the signal returns. Started the family setup guide draft (microphone Allow prompt, offline use) for the gift packet.
 - Tue Nov 24, 11:32 AM: Zechariah is live. Every Old Testament chapter now has study notes, two days ahead of plan. Starting Matthew through Acts.
 - Tue Nov 24, 11:31 AM: Micah, Nahum, Habakkuk, Zephaniah, Haggai and Malachi notes are live; only Zechariah is left for the Old Testament. Settings > Backup now says "Bible keys come from your family sign-in, not this file."
@@ -55,6 +56,11 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Siblings' starter kit: code plus setup checklist (draft) | Not started | Wed Dec 2 |
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
 | Gift packet and starter kit finished | Not started | Thu Dec 3 |
+| Print-friendly setup page and user guide saved to the project folder (final) | Not started | Thu Dec 3 |
+| User guide inside the app, at the top of Settings | Done (Tue Nov 24) | Nov 24 |
+| Settings in six named groups with quick-jump buttons | Done (Tue Nov 24) | Nov 24 |
+| Paste or drop pictures into notes and the journal | Done (Tue Nov 24) | Nov 24 |
+| Pasted Scripture becomes a verse card; optional callout boxes (six styles) that print | Done (Tue Nov 24) | Nov 24 |
 | Saturday-night weekly update schedule set up | Not started | Thu Dec 3 |
 | Family-level count of which looks are in use (no individual tracking), for the monthly look reviews | Not started | Thu Dec 3 |
 | Release | Not started | Fri Dec 4 |
