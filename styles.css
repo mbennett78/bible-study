@@ -2371,6 +2371,15 @@ html { background: var(--page); }
 .storybook .sb-sunrise { animation: sbSunrise 8s ease-out infinite alternate; }
 .storybook .sb-bubble { animation: sbBubble 4s ease-in var(--sdl, 0s) infinite; }
 .storybook .sb-tear { animation: sbTear 3.2s ease-in infinite; }
+.storybook .sb-shake { animation: sbShake .5s ease-in-out infinite; }
+.storybook .sb-sweat { animation: sbTear 2.4s ease-in var(--sdl, 0s) infinite; }
+.storybook .sb-dizzy { animation: sbSpin 3s linear infinite; }
+.storybook .sb-queasy { animation: sbQueasy 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.storybook .sb-surge { animation: sbSurge 2.6s ease-in-out infinite; }
+.storybook .sb-surge.r { animation-delay: -1.3s; }
+.storybook .sb-foam { animation: sbFoam 1.6s linear var(--sdl, 0s) infinite; }
+.storybook .sb-splash { animation: sbSplash 1.8s ease-out var(--sdl, 0s) infinite; }
+.storybook .sb-crash { animation: sbCrash 2.6s ease-in-out infinite; }
 .storybook .sb-sling { animation: sbSling 1.6s ease-in-out infinite; }
 .storybook .sb-spout { animation: sbSpout 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
 .storybook .sb-rain { animation: sbRain 1s linear infinite; }
@@ -2395,6 +2404,12 @@ html { background: var(--page); }
 @keyframes sbSunrise { from { transform: translateY(22px); } to { transform: translateY(0); } }
 @keyframes sbBubble { from { transform: translateY(0); opacity: .9; } to { transform: translateY(-60px); opacity: 0; } }
 @keyframes sbTear { 0%, 30% { transform: translateY(0); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(6px); opacity: 0; } }
+@keyframes sbShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-.8px); } 75% { transform: translateX(.8px); } }
+@keyframes sbQueasy { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-3px); } }
+@keyframes sbSurge { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(1.04); } }
+@keyframes sbFoam { to { stroke-dashoffset: -44; } }
+@keyframes sbSplash { 0% { transform: translate(0, 6px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(var(--sx, 6px), -16px); opacity: 0; } }
+@keyframes sbCrash { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes sbSling { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-40deg); } }
 @keyframes sbSpout { 0%, 100% { transform: scaleY(.7); opacity: .6; } 50% { transform: scaleY(1.1); opacity: 1; } }
 @keyframes sbRain { from { transform: translateY(-6px); opacity: .9; } to { transform: translateY(14px); opacity: .3; } }

@@ -51,6 +51,7 @@ const BROWS = {
   joy: "M-7 -85.4 Q -4.6 -87.8 -2.4 -86 M 2.4 -86 Q 4.6 -87.8 7 -85.4",
   worried: "M-7.4 -84.4 Q -5 -85.6 -2.2 -87.4 M 2.2 -87.4 Q 5 -85.6 7.4 -84.4",
   sad: "M-7.4 -84.2 Q -5 -85.2 -2.2 -87 M 2.2 -87 Q 5 -85.2 7.4 -84.2",
+  terrified: "M-8 -85.6 Q -5.4 -88 -2.4 -89.8 M 2.4 -89.8 Q 5.4 -88 8 -85.6",
   scared: "M-7.4 -84.8 Q -5 -86.4 -2.2 -88.2 M 2.2 -88.2 Q 5 -86.4 7.4 -84.8",
   firm: "M-7.4 -85.6 L -2.2 -84.8 M 2.2 -84.8 L 7.4 -85.6",
   angry: "M-7.6 -86.8 L -2.2 -84.4 M 2.2 -84.4 L 7.6 -86.8",
@@ -59,6 +60,8 @@ function mouth(mood, y0) {
   const m = (d, w = 1.4) => `<path d="${d}" stroke="#7a3b2a" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
   if (mood === "worried") return m(`M-3 ${y0 + .6} Q -1.5 ${y0 - .8} 0 ${y0 + .4} Q 1.5 ${y0 + 1.4} 3 ${y0}`);
   if (mood === "sad") return m(`M-3 ${y0 + 1.6} Q 0 ${y0 - .8} 3 ${y0 + 1.6}`) + `<path class="sb-tear" d="M-6.4 -75.4 C -7.4 -73.4, -7.6 -72, -6.4 -71.4 C -5.2 -72, -5.4 -73.4, -6.4 -75.4 Z" fill="#8fd0f2" stroke="#3a2a1f" stroke-width=".6"/>`;
+  if (mood === "terrified") return `<ellipse cx="0" cy="${y0 + 1.2}" rx="2.8" ry="3.6" fill="#7a3b2a" stroke="#3a2a1f" stroke-width=".8"/><ellipse cx="0" cy="${y0 + 2.6}" rx="1.6" ry="1.2" fill="#e57a7a"/>`
+    + [[-11, -88], [12, -86]].map(([x, y], i) => `<path class="sb-sweat" style="--sdl:${-i * .8}s" d="M${x} ${y} C ${x - 1.4} ${y + 2.6}, ${x - 1.2} ${y + 4.4}, ${x} ${y + 4.6} C ${x + 1.2} ${y + 4.4}, ${x + 1.4} ${y + 2.6}, ${x} ${y} Z" fill="#8fd0f2" stroke="#3a2a1f" stroke-width=".6"/>`).join("");
   if (mood === "scared") return `<ellipse cx="0" cy="${y0 + .6}" rx="1.9" ry="2.4" fill="#7a3b2a"/>`;
   if (mood === "firm") return m(`M-3 ${y0 + .4} L 3 ${y0 + .4}`);
   if (mood === "angry") return m(`M-3.4 ${y0 + 1.4} Q 0 ${y0 - 1} 3.4 ${y0 + 1.4}`);
@@ -80,6 +83,7 @@ function head(o) {
     ${mouth(o.mood, -67.8)}`
     : mouth(o.mood, -71.5);
   const eyes = o.sleep ? `<path d="M-7 -79 Q -4.6 -77 -2.4 -79 M 2.4 -79 Q 4.6 -77 7 -79" stroke="#2b1d14" stroke-width="1.4" fill="none" stroke-linecap="round"/>`
+    : o.mood === "terrified" ? blink([-4.8, 4.8].map((x) => `<ellipse cx="${x}" cy="-79.4" rx="3.2" ry="3.8" fill="#fff" stroke="#2b1d14" stroke-width="1.1"/><circle cx="${x}" cy="-80.6" r="1.4" fill="#2b1d14"/>`).join(""))
     : blink([-4.6, 4.6].map((x) => { const up = o.lookUp ? -1.2 : 0; return `<ellipse cx="${x}" cy="${-79 + up}" rx="1.9" ry="2.5" fill="#2b1d14"/><circle cx="${x + .7}" cy="${-80 + up}" r=".8" fill="#fff"/>`; }).join(""));
   return `${backCloth}<rect x="-3.5" y="-68" width="7" height="7" fill="${SKIN_D}"/>
     <ellipse cx="-11.6" cy="-77" rx="2.2" ry="3" fill="${SKIN}" ${L2}/><ellipse cx="11.6" cy="-77" rx="2.2" ry="3" fill="${SKIN}" ${L2}/>
@@ -90,6 +94,7 @@ function head(o) {
 }
 const wings = () => [1, -1].map((d) => `<g transform="scale(${d} 1)"><g class="sb-wing" style="transform-origin:8px -62px"><path d="M8 -62 C 26 -80, 46 -78, 50 -64 C 44 -62, 46 -54, 38 -52 C 36 -44, 26 -42, 20 -44 C 16 -50, 12 -56, 8 -62 Z" fill="#fffdf6" ${L}/><path d="M18 -64 C 28 -70, 38 -70, 44 -66 M 18 -56 C 26 -60, 34 -60, 38 -56" stroke="#d9d2c2" stroke-width="1.2" fill="none"/></g></g>`).join("");
 export function person(o) {
+  if (o.mood === "terrified" && !o.shaking) return `<g class="sb-shake">${person({ ...o, shaking: true })}</g>`;
   if (o.angel) return `${wings()}${person({ ...o, angel: false })}<ellipse cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="${INK}" stroke-width="3.6"/><ellipse class="sb-twinkle" cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="#f6cf55" stroke-width="2"/>`;
   const robe = o.robe || "#5b8fb9", dark = shade(robe, .75);
   const [la, ra] = o.arms || ["down", "down"];
@@ -108,7 +113,7 @@ export function person(o) {
     ${o.mantle ? `<path d="M-14 -63 C -19 -48, -23 -22, -25 -3 Q -19 -.5 -12 0 C -12 -20, -9 -44, -5 -63.5 Z" fill="${o.mantle}" ${L}/><path d="M14 -63 C 19 -48, 23 -22, 25 -3 Q 19 -.5 12 0 C 12 -20, 9 -44, 5 -63.5 Z" fill="${o.mantle}" ${L}/><path d="M12 -50 C 16 -34, 18 -18, 19 -2" stroke="#000" stroke-width="3" opacity=".1"/>` : ""}
     <path d="M-17.6 -38 Q 0 -34 17.6 -38 L 18.3 -32 Q 0 -28 -18.3 -32 Z" fill="${o.sash || "#e1b04a"}" ${L2}/><path d="M5 -31 L 3 -21 L 8.5 -22.5 Z" fill="${o.sash || "#e1b04a"}" ${L2}/>
     <ellipse cx="-8" cy="-.5" rx="6.4" ry="2.8" fill="#8a5a36" ${L2}/><ellipse cx="8" cy="-.5" rx="6.4" ry="2.8" fill="#8a5a36" ${L2}/>`;
-  return `${staff}${body}${flip(arm(la, robe))}${arm(ra, robe)}${la === "pray" ? `<path d="M-3.2 -46 C -4 -52, -1.2 -58.5, 0 -58.5 C 1.2 -58.5, 4 -52, 3.2 -46 Z" fill="${SKIN}" ${L2}/>` : ""}${head(o)}`;
+  return `${staff}${body}${flip(arm(la, robe))}${arm(ra, robe)}${head(o)}${la === "pray" ? `<path d="M-3.2 -44 C -4 -50, -1.2 -56.5, 0 -56.5 C 1.2 -56.5, 4 -50, 3.2 -44 Z" fill="${SKIN}" ${L2}/>` : ""}`;
 }
 
 /* ---------- Animals ---------- */
@@ -166,12 +171,14 @@ const grassTuft = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:$
 
 const spear = (x, top) => `<path d="M${x} 2 L ${x} ${top}" stroke="${INK}" stroke-width="5.4" stroke-linecap="round"/><path d="M${x} 2 L ${x} ${top}" stroke="#9a6438" stroke-width="3" stroke-linecap="round"/><path d="M${x} ${top - 16} L ${x + 5} ${top - 2} L ${x} ${top + 2} L ${x - 5} ${top - 2} Z" fill="#c9d0d6" ${L2}/>`;
 const shield = () => `<ellipse cx="0" cy="0" rx="17" ry="21" fill="#c79a3e" ${L}/><ellipse cx="0" cy="0" rx="11" ry="14" fill="none" stroke="#a37a2a" stroke-width="2"/><circle r="4" fill="#e6c766" ${L2}/>`;
-const whale = (spout = true) => `<path d="M-70 -10 C -70 -44, -20 -58, 26 -50 C 62 -44, 80 -22, 76 2 C 72 18, 40 26, 0 24 C -40 22, -70 14, -70 -10 Z" fill="#5b8fcb" ${L}/>
+const whale = (spout = true, queasy = false) => `<path d="M-70 -10 C -70 -44, -20 -58, 26 -50 C 62 -44, 80 -22, 76 2 C 72 18, 40 26, 0 24 C -40 22, -70 14, -70 -10 Z" fill="#5b8fcb" ${L}/>
   <path d="M-62 4 C -40 18, 30 22, 70 6 C 66 18, 40 26, 0 24 C -40 22, -60 14, -62 4 Z" fill="#cfe3f5" ${L2}/>${[-40, -24, -8, 8, 24, 40].map((x) => `<path d="M${x} ${14 + Math.abs(x) * .05} L ${x + 3} ${22 - Math.abs(x) * .06}" stroke="#a9c6e2" stroke-width="1.2"/>`).join("")}
   <path d="M74 -8 C 92 -24, 104 -22, 108 -30 C 110 -16, 102 -2, 88 2 C 100 6, 108 18, 106 28 C 98 18, 88 12, 74 6 Z" fill="#5b8fcb" ${L}/>
   <path d="M-40 -36 C -30 -46, -10 -50, 4 -50" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".45"/>
-  ${blink(`<ellipse cx="-40" cy="-16" rx="3.4" ry="4.4" fill="#1f1612"/><circle cx="-38.8" cy="-17.6" r="1.3" fill="#fff"/>`)}<ellipse cx="-46" cy="-6" rx="5" ry="2.6" fill="#f08f7e" opacity=".55"/>
-  <path d="M-66 0 Q -56 8 -46 4" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  ${queasy ? `<ellipse cx="-48" cy="-8" rx="12" ry="8" fill="#9fdc8a" opacity=".45" filter="url(#soft0)"/><ellipse cx="-48" cy="-8" rx="9" ry="5.5" fill="#9fdc8a" opacity=".4"/><g class="sb-dizzy" style="transform-origin:-40px -16px"><path d="M-40 -16 m -1 0 a 1 1 0 1 1 2 0 a 2.2 2.2 0 1 1 -4.4 0 a 3.4 3.4 0 1 1 6.8 0" stroke="#1f1612" stroke-width="1.4" fill="none"/></g>
+    <path d="M-66 2 Q -62 -2 -58 2 Q -54 6 -50 2 Q -47 -1 -44 2" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="sb-sweat" d="M-30 -34 C -31.6 -31, -31.4 -29, -30 -28.6 C -28.6 -29, -28.4 -31, -30 -34 Z" fill="#8fd0f2" stroke="${INK}" stroke-width=".7"/>`
+  : `${blink(`<ellipse cx="-40" cy="-16" rx="3.4" ry="4.4" fill="#1f1612"/><circle cx="-38.8" cy="-17.6" r="1.3" fill="#fff"/>`)}<ellipse cx="-46" cy="-6" rx="5" ry="2.6" fill="#f08f7e" opacity=".55"/>
+  <path d="M-66 0 Q -56 8 -46 4" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`}
   ${spout ? `<g class="sb-spout"><path d="M-18 -54 C -20 -64, -24 -70, -32 -74 M -18 -54 C -16 -66, -12 -72, -4 -76 M -18 -54 L -18 -78" stroke="#8fc6ea" stroke-width="3" fill="none" stroke-linecap="round"/>${[[-32, -76], [-4, -78], [-18, -81]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="2.4" fill="#bfe0f5"/>`).join("")}</g>` : ""}`;
 const boat = () => `<path d="M-78 -16 L 78 -16 C 72 0, 56 10, 36 12 L -36 12 C -56 10, -72 0, -78 -16 Z" fill="#b5793f" ${L}/>${plankLines(-72, 72, [-8, 1], "#7e4f27")}<path d="M-80 -17 L 80 -17" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M-80 -17 L 80 -17" stroke="#8a5530" stroke-width="2"/>
   <path d="M-60 -10 C -30 6, 30 6, 66 -10 C 60 2, 46 10, 36 12 L -36 12 C -50 10, -58 2, -60 -10 Z" fill="#000" opacity=".12"/>`;
@@ -179,8 +186,20 @@ const tomb = () => `<path d="M-80 0 C -86 -40, -60 -76, -10 -80 C 44 -84, 84 -50
   <path d="M-34 0 C -36 -30, -20 -46, 0 -46 C 20 -46, 34 -30, 32 0 Z" fill="#2e2219" ${L}/><path d="M-24 0 C -24 -20, -14 -32, 0 -32 C 6 -32, 12 -30, 16 -26" stroke="#fff3c4" stroke-width="2" fill="none" opacity=".35"/>
   <path d="M-60 -50 C -50 -56, -40 -58, -30 -58 M 30 -66 C 40 -62, 52 -56, 58 -48" stroke="#9c907e" stroke-width="1.4" fill="none"/>`;
 const stone = () => `<circle r="30" fill="#c9bfb0" ${L}/><circle r="30" fill="none" stroke="#a89c8a" stroke-width="2" transform="scale(.7)"/><path d="M10 -26 C 24 -18, 30 -2, 24 14" stroke="#000" stroke-width="5" fill="none" opacity=".08"/>`;
-const lily = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:${-(x % 6) * .5}s"><path d="M0 0 C 1 -10, -1 -20, 0 -28" stroke="#5e8a3a" stroke-width="2" fill="none"/><path d="M0 -6 C -8 -10, -12 -16, -12 -20 C -6 -18, -2 -12, 0 -6 Z" fill="#7cb85a" ${L2}/>
+export const lily = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:${-(x % 6) * .5}s"><path d="M0 0 C 1 -10, -1 -20, 0 -28" stroke="#5e8a3a" stroke-width="2" fill="none"/><path d="M0 -6 C -8 -10, -12 -16, -12 -20 C -6 -18, -2 -12, 0 -6 Z" fill="#7cb85a" ${L2}/>
   <path d="M0 -26 C -8 -30, -12 -38, -9 -44 C -6 -38, -3 -36, 0 -36 C 3 -36, 6 -38, 9 -44 C 12 -38, 8 -30, 0 -26 Z" fill="#fffdf6" ${L2}/><path d="M0 -28 C -2 -36, -1 -42, 0 -46 C 1 -42, 2 -36, 0 -28 Z" fill="#fffdf6" ${L2}/><circle cx="0" cy="-30" r="1.6" fill="#f6c14e"/></g>`);
+
+const oliveTree = (x, y, s = 1) => g(x, y, s, `<path d="M-6 0 C -4 -10, -10 -18, -4 -28 C 0 -34, -6 -40, -2 -46 L 4 -46 C 2 -38, 8 -32, 4 -24 C 0 -16, 6 -8, 6 0 Z" fill="#8a7a66" ${L}/><path d="M-1 -20 C 1 -14, 0 -8, 1 0" stroke="#6b5c4b" stroke-width="1.2" fill="none"/>
+  <g class="sb-sway" style="--sdl:${-(x % 5) * .6}s">${[[-16, -50, 14, 10], [0, -60, 16, 11], [16, -50, 14, 10], [-6, -44, 12, 8], [10, -42, 12, 8]].map(([a, b, rx, ry]) => `<ellipse cx="${a}" cy="${b}" rx="${rx}" ry="${ry}" fill="#9aa97a" ${L2}/>`).join("")}
+  ${[[-14, -52], [4, -62], [16, -48], [-4, -44], [8, -54]].map(([a, b]) => `<path d="M${a - 4} ${b} l 7 -2" stroke="#c9d3ae" stroke-width="1.6" stroke-linecap="round"/>`).join("")}${[[-10, -46], [6, -56], [14, -44]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="1.6" fill="#4e5a34"/>`).join("")}</g>`);
+const datePalm = (x, y, s = 1) => g(x, y, s, `<path d="M-4 0 C -2 -30, 0 -56, 4 -80 L 9 -80 C 6 -56, 4 -30, 4 0 Z" fill="#a37a4e" ${L}/>${Array.from({ length: 8 }, (_, i) => `<path d="M${-2 + (i % 2) * 2} ${-8 - i * 9} l 8 -3" stroke="#7e5a36" stroke-width="1.2"/>`).join("")}
+  <g class="sb-sway" style="--sdl:${-(x % 4) * .7}s;transform-origin:6px -80px">${[-150, -120, -95, -70, -40, -15].map((r) => `<path d="M6 -80 C ${6 + 18 * Math.cos(r * Math.PI / 180)} ${-80 + 18 * Math.sin(r * Math.PI / 180) - 6}, ${6 + 34 * Math.cos(r * Math.PI / 180)} ${-80 + 34 * Math.sin(r * Math.PI / 180)}, ${6 + 40 * Math.cos((r + 20) * Math.PI / 180)} ${-80 + 40 * Math.sin((r + 20) * Math.PI / 180) + 12}" stroke="${INK}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M6 -80 C ${6 + 18 * Math.cos(r * Math.PI / 180)} ${-80 + 18 * Math.sin(r * Math.PI / 180) - 6}, ${6 + 34 * Math.cos(r * Math.PI / 180)} ${-80 + 34 * Math.sin(r * Math.PI / 180)}, ${6 + 40 * Math.cos((r + 20) * Math.PI / 180)} ${-80 + 40 * Math.sin((r + 20) * Math.PI / 180) + 12}" stroke="#6f9a4a" stroke-width="3.6" fill="none" stroke-linecap="round"/>`).join("")}
+  ${[[0, -74], [10, -73], [5, -70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="2.6" fill="#d9822f" ${L2}/>`).join("")}</g>`);
+const scrub = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:${-(x % 6) * .4}s"><path d="M-14 0 C -18 -8, -10 -16, -2 -14 C 2 -20, 12 -18, 12 -10 C 18 -8, 16 0, 12 0 Z" fill="#a3ad84" ${L2}/><path d="M-8 -6 l 3 -4 M 2 -10 l 2 -4 M 8 -5 l 3 -3" stroke="#7f8a62" stroke-width="1.1" stroke-linecap="round"/></g>`);
+const anemone = (x, y, c = "#d9363e") => `<g transform="translate(${x} ${y})"><g class="sb-sway" style="--sdl:${-(x % 7) * .4}s"><path d="M0 0 C 1 -5, -1 -9, 0 -12" stroke="#5e7a3a" stroke-width="1.6" fill="none"/>${[0, 60, 120, 180, 240, 300].map((r) => `<ellipse cx="0" cy="-17" rx="2.8" ry="4" fill="${c}" ${L2} transform="rotate(${r} 0 -13)"/>`).join("")}<circle cy="-13" r="2.2" fill="#231a24"/></g></g>`;
+const rocks = (x, y, s = 1) => g(x, y, s, `<path d="M-16 0 C -18 -8, -10 -12, -4 -10 C 0 -16, 10 -14, 12 -8 C 18 -6, 18 0, 16 0 Z" fill="#c9b48e" ${L2}/><path d="M-4 -10 C -2 -6, -4 -2, -6 0 M 12 -8 C 10 -5, 10 -2, 11 0" stroke="#a8936d" stroke-width="1.1" fill="none"/>`);
+const stoneHouse = (x, y, w = 30, h = 22, lit = false) => `<g transform="translate(${x} ${y})"><rect x="0" y="${-h}" width="${w}" height="${h}" fill="#d8c39a" ${L2}/><rect x="-1.5" y="${-h - 3}" width="${w + 3}" height="3.6" fill="#b9a073" ${L2}/><rect x="${w * .2}" y="${-h * .62}" width="5" height="6" rx="2.4" fill="${lit ? "#ffd98a" : "#5a4632"}"/><rect x="${w * .62}" y="${-h * .5}" width="6" height="${h * .5}" rx="3" fill="#6b5236"/></g>`;
+const hills = (id, a, b) => wash(id, `<path d="M0 130 C 50 104, 110 100, 160 116 C 210 96, 290 92, 360 112 L 360 200 L 0 200 Z" fill="${a}"/><path d="M0 150 C 80 134, 170 140, 240 146 C 290 140, 330 138, 360 144 L 360 200 L 0 200 Z" fill="${b}"/>`);
 
 /* ---------- The scenes ---------- */
 export const STORYBOOK = {
@@ -193,14 +212,17 @@ export const STORYBOOK = {
   sea: { caption: "Moses and the Red Sea", draw: (id) => `${sky(id, "#f8d9a8", "#fdf0d8")}${cloud(id, 180, 34, 1, "#fff6e6")}
     <path d="M150 112 L 210 112 L 280 200 L 80 200 Z" fill="#e8cf98"/><path d="M150 112 L 210 112 L 230 140 L 130 140 Z" fill="#dcc083"/>
     ${[[168, 124, .2, "#b4613f"], [186, 122, .2, "#5b8fb9"], [176, 132, .25, "#6aa06a"], [196, 131, .24, "#c08a3e"]].map(([x, y, s, c]) => g(x, y, s, person({ robe: c, cloth: "#efe6d2" })) ).join("")}
-    ${wash(id, `<path d="M-10 200 L -10 30 C 30 20, 70 34, 100 28 C 120 24, 136 40, 140 60 C 150 100, 140 150, 96 200 Z" fill="#3f8fc0"/><path d="M-10 200 L -10 50 C 40 44, 80 60, 110 56 C 124 90, 110 150, 70 200 Z" fill="#5fa8d4"/>
-      <path d="M370 200 L 370 30 C 330 20, 290 34, 260 28 C 240 24, 224 40, 220 60 C 210 100, 220 150, 264 200 Z" fill="#3f8fc0"/><path d="M370 200 L 370 50 C 320 44, 280 60, 250 56 C 236 90, 250 150, 290 200 Z" fill="#5fa8d4"/>`)}
-    <g class="sb-wave">${[[100, 30, 1], [258, 30, -1]].map(([x, y, d]) => `<g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-30 4 C -20 -10, 6 -16, 18 -4 C 26 4, 22 16, 12 16 C 4 16, 2 8, 8 6" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-60 8 C -50 -2, -38 -4, -28 2" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8"/></g>`).join("")}</g>
+    <g class="sb-surge" style="transform-origin:0 120px">${wash(id, `<path d="M-10 200 L -10 30 C 30 20, 70 34, 100 28 C 120 24, 136 40, 140 60 C 150 100, 140 150, 96 200 Z" fill="#2f7bb0"/><path d="M-10 200 L -10 50 C 40 44, 80 60, 110 56 C 124 90, 110 150, 70 200 Z" fill="#4f9cca"/>`)}
+      ${[[118, 64, 132, 96, 124, 140], [100, 80, 112, 120, 92, 170], [80, 60, 92, 100, 70, 150]].map(([a, b, c, d, e, f], i) => `<path class="sb-foam" style="--sdl:${-i * .5}s" d="M${a} ${b} C ${c} ${d}, ${c} ${d + 20}, ${e} ${f}" stroke="#e6f5fc" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-dasharray="10 12" opacity=".8"/>`).join("")}</g>
+    <g class="sb-surge r" style="transform-origin:360px 120px">${wash(id, `<path d="M370 200 L 370 30 C 330 20, 290 34, 260 28 C 240 24, 224 40, 220 60 C 210 100, 220 150, 264 200 Z" fill="#2f7bb0"/><path d="M370 200 L 370 50 C 320 44, 280 60, 250 56 C 236 90, 250 150, 290 200 Z" fill="#4f9cca"/>`)}
+      ${[[242, 64, 228, 96, 236, 140], [260, 80, 248, 120, 268, 170], [280, 60, 268, 100, 290, 150]].map(([a, b, c, d, e, f], i) => `<path class="sb-foam" style="--sdl:${-i * .5}s" d="M${a} ${b} C ${c} ${d}, ${c} ${d + 20}, ${e} ${f}" stroke="#e6f5fc" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-dasharray="10 12" opacity=".8"/>`).join("")}</g>
+    ${[[128, 26], [140, 40], [116, 18], [232, 26], [220, 40], [244, 18], [104, 30], [256, 30]].map(([x, y], i) => `<circle class="sb-splash" style="--sdl:${-i * .35}s;--sx:${x < 180 ? 8 : -8}px" cx="${x}" cy="${y}" r="${1.8 + (i % 3) * .8}" fill="#e6f5fc" stroke="#2f7bb0" stroke-width=".6"/>`).join("")}
+    <g class="sb-crash">${[[100, 30, 1], [258, 30, -1]].map(([x, y, d]) => `<g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-30 4 C -20 -10, 6 -16, 18 -4 C 26 4, 22 16, 12 16 C 4 16, 2 8, 8 6" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-60 8 C -50 -2, -38 -4, -28 2" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8"/></g>`).join("")}</g>
     ${[[40, 100, 1], [60, 150, -1], [310, 110, -1], [300, 160, 1]].map(([x, y, d], i) => `<g class="sb-swim" style="--sdl:${-i * 1.3}s"><g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-8 0 C -4 -5, 4 -5, 8 0 C 4 5, -4 5, -8 0 Z M 8 0 L 13 -4 L 13 4 Z" fill="#f4a259" ${L2}/><circle cx="-4" cy="-1" r=".9" fill="${INK}"/></g></g>`).join("")}
     ${stick(id, g(182, 198, .95, person({ robe: "#c99a62", mantle: "#a63f35", cloth: "#f4efe4", band: "#a63f35", beard: "#f4f1ea", sash: "#5b7fa6", mood: "firm", arms: ["out", "up"], staff: "right", staffTop: -122 })))}` },
   manger: { caption: "Jesus is born in Bethlehem", draw: (id) => `${sky(id, "#24345e", "#55618c")}${smallStars([[30, 30, 3], [70, 60, 2], [110, 24, 2.6], [250, 26, 2.4], [300, 64, 2], [338, 30, 3], [200, 50, 1.8]])}
     <g transform="translate(180 30)">${starBig(id)}</g><path d="M180 44 L 120 150 L 240 150 Z" fill="#fff3c4" opacity=".12"/>
-    ${wash(id, `<path d="M0 160 C 60 150, 120 156, 180 152 C 250 148, 310 156, 360 150 L 360 200 L 0 200 Z" fill="#6f8f5a"/>`)}
+    ${wash(id, `<path d="M-10 120 C 30 96, 70 92, 110 110 L 110 160 L -10 160 Z" fill="#6a6a6a" opacity=".35"/>`)}${stoneHouse(4, 128, 26, 20, true)}${stoneHouse(30, 122, 30, 24)}${stoneHouse(62, 130, 24, 18, true)}${datePalm(322, 160, .9)}${wash(id, `<path d="M0 160 C 60 150, 120 156, 180 152 C 250 148, 310 156, 360 150 L 360 200 L 0 200 Z" fill="#8c7d58"/>`)}${rocks(20, 192, .8)}${rocks(346, 194, .7)}
     ${stick(id, `<g transform="translate(180 168)"><path d="M-96 0 L -96 -84 M 96 0 L 96 -84" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><path d="M-96 0 L -96 -84 M 96 0 L 96 -84" stroke="#9a6438" stroke-width="6" stroke-linecap="round"/>
       <path d="M-116 -78 L 0 -116 L 116 -78 L 108 -70 L 0 -104 L -108 -70 Z" fill="#8a5432" ${L}/><path d="M-60 -95 L -56 -88 M -30 -105 L -27 -97 M 30 -105 L 27 -97 M 60 -95 L 56 -88" stroke="#e8c45a" stroke-width="2.4" stroke-linecap="round"/></g>`)}
     <ellipse cx="180" cy="152" rx="40" ry="14" fill="#fff3c4" opacity=".5" filter="url(#soft${id})"/>
@@ -208,32 +230,33 @@ export const STORYBOOK = {
       ${g(180, 182, .95, manger())}
       ${g(250, 186, .8, person({ robe: "#8a6a48", mantle: "#c99a62", cloth: "#e9e2d0", band: "#8a6a48", beard: "#6b4528", sash: "#5b7fa6", arms: ["down", "down"], staff: "right" }))}
       ${g(318, 182, .78, flip(sheep()))}${g(40, 182, .7, sheep({ down: true }))}`)}` },
-  giant: { caption: "David and Goliath", draw: (id) => `${sky(id, "#bfe3f5", "#f4f6e6")}${cloud(id, 80, 34, .9)}${cloud(id, 280, 26, .7)}${sunW(id, 40, 36, 14)}
-    ${wash(id, `<path d="M0 120 C 60 100, 120 110, 180 104 C 250 98, 310 112, 360 104 L 360 200 L 0 200 Z" fill="#a9cf7a"/><path d="M0 160 C 90 150, 270 150, 360 160 L 360 200 L 0 200 Z" fill="#8dbf5e"/>`)}
+  giant: { caption: "David faces Goliath in the Valley of Elah", draw: (id) => `${sky(id, "#bfe3f5", "#f4f6e6")}${cloud(id, 80, 34, .9)}${cloud(id, 280, 26, .7)}${sunW(id, 40, 36, 14)}
+    ${hills(id, "#d9c27e", "#c7ad6a")}${wash(id, `<path d="M0 178 C 60 170, 140 176, 200 172 C 260 168, 320 176, 360 172 L 360 184 C 300 188, 220 182, 160 186 C 100 190, 40 184, 0 188 Z" fill="#7fb6d6"/>`)}${oliveTree(176, 150, .8)}${scrub(150, 168, .8)}
     ${stick(id, `${g(258, 190, 1.45, `${spear(26, -150)}${person({ robe: "#8a8f96", mantle: "#6f5a45", helmet: true, beard: "#3a2a1f", brow: "#2b1d14", mood: "angry", sash: "#c79a3e", arms: ["out", "down"] })}${g(-22, -40, 1, shield())}`)}
       ${g(104, 192, .78, `${person({ robe: "#d9b77a", sash: "#6aa06a", hair: "#7a4a2a", mood: "firm", arms: ["down", "up"] })}<g class="sb-sling" style="transform-origin:23px -93px"><path d="M23.5 -93 C 30 -108, 44 -110, 46 -100 C 44 -92, 32 -92, 23.5 -93" stroke="#7a5230" stroke-width="1.6" fill="none"/><circle cx="45" cy="-101" r="3.4" fill="#9a948c" ${L2}/></g>`)}
       ${g(40, 188, .55, sheep())}`)}
-    ${flower(150, 190, "#f6a5c0")}${flower(170, 194, "#f9d266")}${grassTuft(330, 198, .8)}` },
+    ${rocks(150, 198, .7)}${rocks(178, 196, .5)}${anemone(70, 196)}${scrub(336, 198, .9)}` },
   jonah: { caption: "Jonah prays inside the big fish", draw: (id) => `${sky(id, "#6fb4dc", "#1d5a86")}
     ${[60, 130, 200, 270].map((x, i) => `<path d="M${x} 0 L ${x + 30} 0 L ${x + 60} 200 L ${x + 20} 200 Z" fill="#fff" opacity=".07" class="sb-glow" style="animation-delay:${-i}s"/>`).join("")}
     ${[[30, 200, 60], [52, 200, 44], [318, 200, 66], [340, 200, 48]].map(([x, y, h], i) => `<g class="sb-sway" style="--sdl:${-i * .7}s"><path d="M${x} ${y} C ${x - 10} ${y - h * .3}, ${x + 10} ${y - h * .6}, ${x} ${y - h}" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M${x} ${y} C ${x - 10} ${y - h * .3}, ${x + 10} ${y - h * .6}, ${x} ${y - h}" stroke="#5e9a4a" stroke-width="4.6" fill="none" stroke-linecap="round"/></g>`).join("")}
     ${wash(id, `<path d="M0 186 C 80 178, 280 178, 360 186 L 360 200 L 0 200 Z" fill="#d9c08a"/>`)}
     ${[[96, 150], [104, 120], [262, 140], [274, 106], [180, 40]].map(([x, y], i) => `<circle class="sb-bubble" style="--sdl:${-i * .9}s" cx="${x}" cy="${y}" r="${2 + (i % 3)}" fill="none" stroke="#dff2fb" stroke-width="1.4"/>`).join("")}
-    <g class="sb-bob">${stick(id, g(184, 118, 1.45, `${whale(false)}<ellipse cx="6" cy="-6" rx="34" ry="21" fill="#8a3d4c" ${L}/><path d="M-22 -16 C -10 -24, 22 -24, 34 -14 M -26 2 C -10 10, 22 10, 36 0" stroke="#a85a68" stroke-width="2" fill="none"/><ellipse cx="6" cy="-6" rx="34" ry="21" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/>
-      ${g(6, 14, .34, `${person({ robe: "#c9853c", mantle: "#6aa06a", hair: "#5a3a24", beard: "#5a3a24", sash: "#5b8fcb", mood: "sad", lookUp: true, arms: ["pray", "pray"] })}<path d="M-14 -94 C -4 -100, 8 -98, 16 -90 C 20 -80, 26 -74, 30 -64" stroke="#5e9a4a" stroke-width="3.4" fill="none" stroke-linecap="round"/>`)}`))}</g>
+    <g class="sb-queasy">${stick(id, g(184, 118, 1.45, `${whale(false, true)}<ellipse cx="8" cy="-8" rx="40" ry="26" fill="#8a3d4c" ${L}/><path d="M-22 -16 C -10 -24, 22 -24, 34 -14 M -26 2 C -10 10, 22 10, 36 0" stroke="#a85a68" stroke-width="2" fill="none"/><ellipse cx="8" cy="-8" rx="40" ry="26" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/>
+      ${g(8, 15, .44, `${person({ robe: "#c9853c", mantle: "#6aa06a", hair: "#5a3a24", beard: "#5a3a24", sash: "#5b8fcb", mood: "terrified", arms: ["pray", "pray"] })}<path d="M-14 -94 C -4 -100, 8 -98, 16 -90 C 20 -80, 26 -74, 30 -64" stroke="#5e9a4a" stroke-width="3.4" fill="none" stroke-linecap="round"/>`)}`))}</g>
     ${[[40, 70, 1], [330, 60, -1]].map(([x, y, d], i) => `<g class="sb-swim" style="--sdl:${-i * 2}s"><g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-8 0 C -4 -5, 4 -5, 8 0 C 4 5, -4 5, -8 0 Z M 8 0 L 13 -4 L 13 4 Z" fill="#f4a259" ${L2}/><circle cx="-4" cy="-1" r=".9" fill="${INK}"/></g></g>`).join("")}` },
   storm: { caption: "Jesus calms the storm", draw: (id) => `${sky(id, "#8fa3b8", "#e4ecf0")}<circle cx="300" cy="40" r="60" fill="#fff6d6" opacity=".7" filter="url(#soft${id})"/>
     ${cloud(id, 60, 34, 1.6, "#6f7f92", .95)}${cloud(id, 150, 24, 1.2, "#7f8fa2", .9)}${cloud(id, 300, 30, 1, "#fff", .9)}
     <path class="sb-flash" d="M118 20 L 108 44 L 116 44 L 104 70 L 126 38 L 117 38 L 126 20 Z" fill="#fff6c4" stroke="#f6cf55" stroke-width="1.2"/><g class="sb-rain">${Array.from({ length: 14 }, (_, i) => `<path d="M${20 + i * 12} ${40 + (i % 3) * 8} l -4 10" stroke="#c9d6e2" stroke-width="1.6" stroke-linecap="round"/>`).join("")}</g>
+    ${wash(id, `<path d="M0 124 C 50 100, 120 98, 170 112 C 230 96, 300 96, 360 108 L 360 130 L 0 130 Z" fill="#9c8a6a" opacity=".8"/>`)}
     ${wash(id, `<path d="M0 128 C 50 116, 100 132, 150 122 C 210 112, 270 126, 360 118 L 360 200 L 0 200 Z" fill="#5f9cc4"/>`)}
     <g class="sb-bob">${stick(id, g(180, 160, .95, `${g(-40, -16, .7, person({ robe: "#6aa06a", hair: "#3a2a1f", beard: "#3a2a1f", sash: "#e1b04a", mood: "scared", arms: ["down", "down"] }))}${g(44, -16, .7, person({ robe: "#c08a3e", cloth: "#efe6d2", beard: "#7a4a2a", sash: "#5b8fcb", mood: "worried", arms: ["down", "down"] }))}${boat()}${g(2, -16, .92, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "firm", arms: ["out", "up"] }))}`))}</g>
     ${wash(id, `<g class="sb-wave"><path d="M-40 176 ${Array.from({ length: 12 }, () => "c 10 -12, 24 -12, 34 0").join(" ")} L 400 200 L -40 200 Z" fill="#3f86b4"/></g>`)}
     <g class="sb-wave2">${Array.from({ length: 9 }, (_, i) => `<path d="M${i * 46 - 4} 178 c 6 -6, 14 -6, 18 -1 c -4 -2, -9 -1, -11 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".85"/>`).join("")}</g>` },
   tomb: { caption: "He is risen!", draw: (id) => `${sky(id, "#f9c99b", "#fdf0dc")}<g class="sb-sunrise"><g transform="translate(250 116)"><circle r="70" fill="#ffe7a3" opacity=".7" filter="url(#soft${id})"/><g class="sb-spin">${Array.from({ length: 16 }, (_, i) => `<path d="M0 -40 L 4 -120 L -4 -120 Z" fill="#fff3c4" opacity=".35" transform="rotate(${i * 22.5})"/>`).join("")}</g></g></g>
-    ${cloud(id, 70, 36, .9)}${wash(id, `<path d="M0 130 C 70 116, 160 120, 220 126 C 280 132, 320 124, 360 128 L 360 200 L 0 200 Z" fill="#9fcf72"/><path d="M0 170 C 90 160, 270 160, 360 170 L 360 200 L 0 200 Z" fill="#86c25e"/>`)}
+    ${cloud(id, 70, 36, .9)}${wash(id, `<path d="M0 130 C 70 116, 160 120, 220 126 C 280 132, 320 124, 360 128 L 360 200 L 0 200 Z" fill="#c4bb86"/><path d="M0 170 C 90 160, 270 160, 360 170 L 360 200 L 0 200 Z" fill="#a9a56e"/>`)}${oliveTree(42, 170, 1.1)}${oliveTree(334, 168, .9)}
     ${stick(id, `${g(150, 172, 1, tomb())}${g(246, 172, .9, stone())}${g(246, 146, .62, person({ robe: "#fffdf6", angel: true, hair: "#e2b04a", sash: "#f6cf55", mood: "joy", arms: ["out", "up"] }))}`)}
-    ${lily(40, 190, 1)}${lily(66, 194, .8)}${lily(316, 192, .9)}${flower(96, 192, "#f6a5c0")}${flower(290, 194, "#f9d266")}${flower(340, 196, "#b9a3e3")}
-    <g class="sb-fly">${g(60, 70, 1, `<g class="sb-flap" style="transform-origin:0 0"><path d="M0 0 C -6 -10, -14 -8, -12 0 C -14 8, -6 8, 0 0 Z M 0 0 C 6 -10, 14 -8, 12 0 C 14 8, 6 8, 0 0 Z" fill="#f6a5c0" ${L2}/></g>`)}</g>` },
+    ${rocks(80, 194, 1)}${rocks(300, 196, .8)}${anemone(100, 194)}${anemone(116, 198, "#e9e2f2")}${anemone(282, 196)}${anemone(352, 198, "#c23a6a")}${scrub(70, 198, .9)}
+    <g class="sb-fly">${g(60, 70, 1, `<g class="sb-flap" style="transform-origin:0 0"><path d="M0 0 C -6 -10, -14 -8, -12 0 C -14 8, -6 8, 0 0 Z M 0 0 C 6 -10, 14 -8, 12 0 C 14 8, 6 8, 0 0 Z" fill="#f2c45a" ${L2}/></g>`)}</g>` },
   lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
     ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
       ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}
