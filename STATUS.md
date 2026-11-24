@@ -168,3 +168,4 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 - Buddy can always be quieted or turned off.
 - Updates never lose anyone's place, never force a tour, and keep navigation easy.
 - Keys and passwords never go in this repository or in chat.
+- Looks: only retire or replace a look after its season is over, or when a non-seasonal look is never used (check the family looks count first). Never change the look someone is using.
