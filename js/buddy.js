@@ -29,7 +29,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
   </g>
 </svg>`;
 
-const SPOT_KEY = "bible-study:buddy-spot";
+const SPOT_KEY = "bible-study:buddy-spot2"; // 2: on iPad he starts in the side menu
 // His little tricks while nobody needs him, and when he naps.
 const TRICK_EVERY_MS = 25000;
 const NAP_AFTER_MS = 150000;
@@ -102,16 +102,30 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     const tr = tabs && getComputedStyle(tabs).display !== "none" ? tabs.getBoundingClientRect() : null;
     // A side rail (iPad) doesn't take the bottom of the screen; a bottom bar does.
     const bottom = (tr && tr.height < innerHeight * 0.5 ? tr.top : innerHeight) - 8;
-    const left = tr && tr.height >= innerHeight * 0.5 ? tr.right : 0; // beside the iPad side menu
-    return { top, bottom: Math.max(top + el.offsetHeight, bottom), left };
+    const isRail = Boolean(tr && tr.height >= innerHeight * 0.5);
+    const left = isRail ? tr.right : 0; // beside the iPad side menu
+    // In the side menu he rests in the empty space below the last button.
+    const lastBtn = isRail ? [...tabs.querySelectorAll("button")].pop()?.getBoundingClientRect().bottom || 0 : 0;
+    const rail = isRail ? { right: tr.right, top: lastBtn + 12, bottom: innerHeight - 10 } : null;
+    return { top, bottom: Math.max(top + el.offsetHeight, bottom), left, rail };
   }
   function place() {
-    if (!saved) spot = { side: defaultSide(), y: wanderY ?? 1 };
     const b = bounds(), h = el.offsetHeight || 84;
-    el.style.top = `${b.top + clamp(spot.y, 0, 1) * (b.bottom - b.top - h)}px`;
-    el.style.left = spot.side === "left" ? `${b.left + 4}px` : "";
-    el.style.right = spot.side === "right" ? "4px" : "";
-    el.classList.toggle("on-right", spot.side === "right");
+    if (!saved) spot = { side: b.rail ? "rail" : defaultSide(), y: wanderY ?? 1 };
+    // On iPad he lives in the side menu (out of the page entirely), unless he's been moved.
+    const side = spot.side === "rail" && !b.rail ? defaultSide() : spot.side;
+    if (side === "rail") {
+      const span = Math.max(0, b.rail.bottom - b.rail.top - h);
+      el.style.top = `${b.rail.top + clamp(spot.y, 0, 1) * span}px`;
+      el.style.left = `${Math.max(2, (b.rail.right - el.offsetWidth) / 2)}px`;
+      el.style.right = "";
+    } else {
+      el.style.top = `${b.top + clamp(spot.y, 0, 1) * (b.bottom - b.top - h)}px`;
+      el.style.left = side === "left" ? `${b.left + 4}px` : "";
+      el.style.right = side === "right" ? "4px" : "";
+    }
+    el.classList.toggle("in-rail", side === "rail");
+    el.classList.toggle("on-right", side === "right");
     document.body.classList.toggle("buddy-right", !el.hidden && spot.side === "right");
     document.body.classList.toggle("buddy-left", !el.hidden && spot.side === "left");
     placeSay();
@@ -120,9 +134,10 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     if (say.hidden) return;
     const r = el.getBoundingClientRect();
     say.style.top = `${Math.max(8, r.top - say.offsetHeight + 10)}px`;
-    say.style.left = spot.side === "left" ? `${Math.max(6, r.right - 6)}px` : "";
-    say.style.right = spot.side === "right" ? `${Math.max(6, innerWidth - r.left - 6)}px` : "";
-    say.classList.toggle("on-right", spot.side === "right");
+    const right = el.classList.contains("on-right");
+    say.style.left = !right ? `${Math.max(6, r.right - 6)}px` : "";
+    say.style.right = right ? `${Math.max(6, innerWidth - r.left - 6)}px` : "";
+    say.classList.toggle("on-right", right);
   }
 
   // He stands while he's busy (chatting, visiting, cheering), then sits back down.
@@ -145,8 +160,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     drag.moved = true;
     el.classList.add("dragging");
     const b = bounds();
-    el.style.top = `${clamp(drag.top + e.clientY - drag.y, b.top, b.bottom - el.offsetHeight)}px`;
-    el.style.left = `${clamp(e.clientX - el.offsetWidth / 2, b.left, innerWidth - el.offsetWidth)}px`;
+    el.style.top = `${clamp(drag.top + e.clientY - drag.y, b.rail ? 0 : b.top, (b.rail ? innerHeight : b.bottom) - el.offsetHeight)}px`;
+    el.style.left = `${clamp(e.clientX - el.offsetWidth / 2, 0, innerWidth - el.offsetWidth)}px`;
     el.style.right = "";
   });
   const drop = (e) => {
@@ -155,7 +170,10 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.remove("dragging");
     if (!was.moved) { if (e.type === "pointerup") tapped(); return; }
     const b = bounds(), r = el.getBoundingClientRect();
-    spot = { side: r.left + r.width / 2 < (b.left + innerWidth) / 2 ? "left" : "right", y: clamp((r.top - b.top) / Math.max(1, b.bottom - b.top - r.height), 0, 1) };
+    const mid = r.left + r.width / 2;
+    spot = b.rail && mid < b.rail.right + 20
+      ? { side: "rail", y: clamp((r.top - b.rail.top) / Math.max(1, b.rail.bottom - b.rail.top - r.height), 0, 1) }
+      : { side: mid < (b.left + innerWidth) / 2 ? "left" : "right", y: clamp((r.top - b.top) / Math.max(1, b.bottom - b.top - r.height), 0, 1) };
     saved = spot;
     try { localStorage.setItem(SPOT_KEY, JSON.stringify(spot)); } catch { /* not saved */ }
     place();

@@ -6,6 +6,7 @@ import { createRequire } from "node:module";
 const { devices } = createRequire(import.meta.url)("playwright");
 
 const site = await serve();
+const innerWidthOf = (dev) => devices[dev].viewport.width;
 const browser = await chromium.launch();
 let stopped = null;
 try {
@@ -28,8 +29,9 @@ try {
       check(`${dev}: the page can't slide sideways`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       // Buddy's chat opens beside the reading.
       await page.evaluate(() => document.querySelector(".buddy").click()); await page.waitForTimeout(400);
-      const c = await page.evaluate(() => { const s = document.querySelector("#chatSheet").getBoundingClientRect(), r = document.querySelector("#reader").getBoundingClientRect(); return { sl: s.left, rr: r.right, open: document.querySelector("#chatSheet").open }; });
-      check(`${dev}: the chat opens beside the reading, not over it`, c.open && c.rr <= c.sl + 1, JSON.stringify(c));
+      const c = await page.evaluate(() => { const s = document.querySelector("#chatSheet").getBoundingClientRect(), r = document.querySelector("#reader").getBoundingClientRect(); return { sl: s.left, sw: s.width, rw: r.width, rail: document.querySelector(".tabbar").getBoundingClientRect().right, open: document.querySelector("#chatSheet").open }; });
+      check(`${dev}: the chat pops up over the page as a side panel`, c.open && c.sl > c.rail + 100 && c.sw <= 441, JSON.stringify(c));
+      check(`${dev}: the Bible text keeps (nearly) the full width`, c.rw >= innerWidthOf(dev) - c.rail - 120, JSON.stringify(c));
       await page.click("#chatSheetClose"); await page.waitForTimeout(200);
     }
     const where = () => page.evaluate(() => { const r = document.querySelector(".tabbar").getBoundingClientRect(); return { bar: Math.round(r.bottom), screen: Math.round(visualViewport.offsetTop + visualViewport.height) }; });

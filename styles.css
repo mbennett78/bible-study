@@ -1989,12 +1989,10 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
   :root { --buddy-gutter: 64px; }
   .buddy { width: 58px; height: 68px; }
 }
-body.buddy-right main { padding-right: calc(var(--buddy-gutter) + env(safe-area-inset-right)); }
-body.buddy-left main { padding-left: calc(var(--buddy-gutter) + env(safe-area-inset-left)); }
-@media (max-width: 600px) {
-  body.buddy-right main { padding-left: calc(10px + env(safe-area-inset-left)); }
-  body.buddy-left main { padding-right: calc(10px + env(safe-area-inset-right)); }
-}
+/* While reading, the Bible text gets the whole width: Buddy shrinks into the corner, a
+   little see-through, and never speaks over the words (his little pictures still show). */
+body[data-view="read"] .buddy:not(.buddy-inline):not(.dragging) { width: 50px; height: 60px; opacity: .75; }
+body[data-view="read"] .buddy.tucked { opacity: .45; }
 /* Reading his own little Bible as he strolls along his margin. */
 .buddy-book { display: none; }
 .buddy-book-page { fill: var(--surface); stroke: var(--accent); stroke-width: 1.6; stroke-linejoin: round; }
@@ -2044,14 +2042,12 @@ html { touch-action: pan-y; }
 .version-switch select { font-size: 16px; }
 
 /* ---------- Buddy's chat as a side panel on iPad: the page moves over to make room ---------- */
-:root { --chat-w: min(400px, 44vw); }
+:root { --chat-w: min(440px, 92vw); }
 .chat-sheet.side { position: fixed; inset: 0 0 auto auto; margin: 0; width: var(--chat-w); height: 100dvh; max-height: none; border-radius: 0; z-index: 20;
   display: flex; flex-direction: column; padding: calc(12px + env(safe-area-inset-top)) 14px calc(10px + env(safe-area-inset-bottom)); box-shadow: -8px 0 28px rgb(0 0 0 / .22); border-left: 1px solid var(--line); }
 .chat-sheet.side .chat { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .chat-sheet.side .chat-log { flex: 1; max-height: none; min-height: 0; overflow-y: auto; }
-body.chat-side main, body.chat-side .topbar { margin-right: var(--chat-w); }
-body.chat-side main { padding-right: calc(16px + env(safe-area-inset-right)) !important; }
-body.chat-side .buddy:not(.buddy-inline), body.chat-side .buddy-say { display: none; }
+.chat-sheet.side::backdrop { background: rgb(0 0 0 / .18); }
 
 /* ---------- Just the Bible / Study Bible ---------- */
 .read-mode { display: flex; gap: 4px; padding: 4px; margin: 0 0 14px; border-radius: 999px; background: var(--accent-soft); }
@@ -2070,3 +2066,20 @@ body.plain-reading #flourish, body.plain-reading .visit-line, body.plain-reading
   body.margin-open:not([data-view="read"]):not([data-view="path"]) .topbar { margin-left: auto; }
   body.margin-open:not([data-view="read"]):not([data-view="path"]) .topbar { margin-left: 0; }
 }
+
+/* iPad: the page fills the screen beside the menu, with just a slim edge. */
+@media (min-width: 700px) and (min-height: 500px) {
+  main { padding-left: calc(12px + env(safe-area-inset-left)); padding-right: calc(12px + env(safe-area-inset-right)); max-width: none; }
+  .vine { display: none; }
+  #view-read.view { padding-left: 28px; padding-right: 28px; }
+}
+.chat-sheet.side { border-radius: 22px 0 0 22px; }
+@media (prefers-reduced-motion: no-preference) { .chat-sheet.side[open] { animation: chatIn .25s ease-out; } }
+@keyframes chatIn { from { transform: translateX(40px); opacity: 0; } }
+
+/* iPad: Buddy rests in the side menu, below the buttons. Above the menu, so he can be picked up. */
+.buddy { z-index: 9; }
+.buddy-say { z-index: 10; }
+.buddy.in-rail { --surface: var(--page); --accent: var(--on-page); --accent-soft: color-mix(in srgb, var(--on-page) 18%, transparent); }
+.buddy.in-rail.visiting { transform: translateX(6px); }
+body[data-view="read"] .buddy.in-rail:not(.dragging) { width: 64px; height: 76px; opacity: .9; }

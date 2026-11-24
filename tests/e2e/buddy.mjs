@@ -31,11 +31,16 @@ try {
     let b = await box();
     check(`${tag}: buddy is showing`, b.shown);
     // Phones: above the bottom bar. iPad: the menu is a rail on the left, so he has the full height.
-    check(`${tag}: buddy never sits on the menu`, tag === "phone" ? b.b <= tabTop : b.l >= await page.$eval(".tabbar", (t) => t.getBoundingClientRect().right) && b.b <= 1180, `${JSON.stringify(b)} vs ${tabTop}`);
+    const lastBtn = await page.$eval(".tabbar", (t) => [...t.querySelectorAll("button")].pop().getBoundingClientRect().bottom);
+    const railR = await page.$eval(".tabbar", (t) => t.getBoundingClientRect().right);
+    check(`${tag}: buddy never sits on the menu buttons`, tag === "phone" ? b.b <= tabTop : b.t >= lastBtn && b.b <= 1180, `${JSON.stringify(b)} vs ${tabTop}`);
+    if (tag === "iPad") check("iPad: he rests in the side menu, off the page", b.r <= railR + 1, `${JSON.stringify(b)} rail ${railR}`);
     check(`${tag}: buddy is easy to see but not in the way`, tag === "phone" ? b.r - b.l <= 64 && b.r - b.l >= 56 : b.r - b.l <= 84 && b.r - b.l >= 76, `${b.r - b.l}`);
-    // His own margin: the page's cards end before he begins, so he never covers words or typing.
-    const cardRight = await page.$eval("#view-home", (v) => v.getBoundingClientRect().right);
-    check(`${tag}: the page leaves a margin for him`, cardRight <= b.l + 2, `card ends ${cardRight}, he starts ${b.l}`);
+    // While reading he shrinks into the corner, so the Bible text keeps the whole width.
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(400);
+    const small = await box();
+    check(`${tag}: while reading he stays out of the text`, tag === "phone" ? small.r - small.l <= 52 : small.r <= railR + 1, JSON.stringify(small));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=home]").click()); await page.waitForTimeout(400);
     check(`${tag}: he sits quietly until someone talks to him`, await page.$eval(".buddy", (el) => el.classList.contains("sitting")));
     // Now and then he walks over to say hi.
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
@@ -48,16 +53,18 @@ try {
     // Tap him on Home: he stands up and the chat opens right here, without leaving the page.
     await page.tap(".buddy"); await page.waitForTimeout(600);
     check(`${tag}: tapping him opens the chat right where you are`, await page.$eval("#chatSheet", (d) => d.open) && await page.$eval("#view-read", (v) => v.hidden) && Boolean(await page.$("#chatSheet #partnerQ")));
+    check(`${tag}: the tap that opened it doesn't press anything inside`, (await page.$$("dialog[open]")).length === 1);
     check(`${tag}: he stands up while chatting`, await page.$eval(".buddy", (el) => !el.classList.contains("sitting")));
-    await page.click("#chatSheetClose"); await page.waitForTimeout(300);
+    await page.$eval("#chatSheetClose", (b) => b.click()); await page.waitForTimeout(300);
     check(`${tag}: closing puts the chat back under the chapter`, Boolean(await page.$("#partnerBox #partnerQ")));
     // Drag him to the left side; he stays there after reopening.
     const s = await box();
     await page.mouse.move(s.l + 20, s.t + 30); await page.mouse.down();
-    await page.mouse.move(60, s.t - 150, { steps: 8 }); await page.mouse.up(); await page.waitForTimeout(400);
+    // Phone: to the left edge. iPad: out of the menu onto the page's left edge.
+    const railRight = tag === "phone" ? 0 : railR;
+    await page.mouse.move(railRight + 60, s.t - 150, { steps: 8 }); await page.mouse.up(); await page.waitForTimeout(400);
     b = await box();
-    const railRight = tag === "phone" ? 0 : await page.$eval(".tabbar", (t) => t.getBoundingClientRect().right);
-    check(`${tag}: dragged to the left edge (beside the side menu on iPad)`, b.l >= railRight && b.l < railRight + 20, `left ${b.l}`);
+    check(`${tag}: dragged to the left edge of the page`, b.l >= railRight && b.l < railRight + 20, `left ${b.l}`);
     check(`${tag}: dragging doesn't open anything`, !(await page.$("dialog[open]")));
     await page.reload(); await page.waitForTimeout(900);
     b = await box();

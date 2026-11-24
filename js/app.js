@@ -1074,6 +1074,9 @@ chatSheet.querySelector(".buddy-inline").innerHTML = BUDDY_SVG;
 $("#chatSheetClose").addEventListener("click", () => chatSheet.close());
 // A tap outside the sheet closes it (but not the tap that opened it).
 let chatSheetOpenedAt = 0;
+// The tap that opened the chat must not "fall through" onto a button inside it (on iPad
+// the panel's microphone button sits right where Buddy was tapped).
+chatSheet.addEventListener("click", (e) => { if (Date.now() - chatSheetOpenedAt < 450) { e.preventDefault(); e.stopPropagation(); } }, true);
 chatSheet.addEventListener("click", (e) => {
   if (e.target !== chatSheet || Date.now() - chatSheetOpenedAt < 500) return;
   const r = chatSheet.getBoundingClientRect();
@@ -1081,11 +1084,11 @@ chatSheet.addEventListener("click", (e) => {
 });
 chatSheet.addEventListener("close", () => {
   const chat = chatSheet.querySelector(".chat"); if (chat) $("#partnerBox").append(chat);
-  document.body.classList.remove("chat-side"); chatSheet.classList.remove("side");
+  chatSheet.classList.remove("side");
   buddy.chatting(false); buddy.place();
 });
-// On iPad the chat opens as a panel down the right side, and the page makes room for it,
-// so the reading is never covered. On phones it's a sheet over the page (there's no room).
+// On iPad the chat slides in as a panel over the right side of the page (the reading keeps
+// its full width underneath). On phones it's a sheet over the page.
 chatSheet.addEventListener("keydown", (e) => { if (e.key === "Escape" && chatSheet.classList.contains("side")) chatSheet.close(); });
 function fitChatPanel() {
   if (!chatSheet.classList.contains("side") || !window.visualViewport) return;
@@ -1100,8 +1103,10 @@ function openBuddyChat() {
   if (chat) chatSheet.append(chat);
   if (!chatSheet.open) {
     chatSheetOpenedAt = Date.now();
-    if (railMode()) { chatSheet.classList.add("side"); document.body.classList.add("chat-side"); chatSheet.show(); fitChatPanel(); }
-    else chatSheet.showModal();
+    // iPad: a panel that slides in over the right side of the page, so the Bible text keeps
+    // its full width underneath; tap outside it (or ×) to close. Phones: a sheet over the page.
+    if (railMode()) chatSheet.classList.add("side");
+    chatSheet.showModal(); fitChatPanel();
   }
   buddy.chatting(true);
   if (!$("#chatLog").childElementCount) resetChat();
