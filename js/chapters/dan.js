@@ -1,0 +1,161 @@
+// Daniel chapter notes.
+import { makeBook } from "./make.js";
+
+const sources = {
+  baldwinD: "Joyce G. Baldwin, Daniel, Tyndale Old Testament Commentaries (InterVarsity Press, 1978).",
+  miller: "Stephen R. Miller, Daniel, New American Commentary 18 (Broadman & Holman, 1994).",
+  longmanD: "Tremper Longman III, Daniel, NIV Application Commentary (Zondervan, 1999).",
+  goldingayD: "John E. Goldingay, Daniel, Word Biblical Commentary 30 (Word, 1989).",
+  kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
+  halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+};
+
+export default makeBook({ lang: "Hebrew and Aramaic", sources, use: ["baldwinD", "miller"] }, {
+  1: {
+    intro: "In 605 BC Nebuchadnezzar besieges Jerusalem and takes some temple vessels and young nobles to Babylon, including Daniel, Hananiah, Mishael and Azariah. They are renamed Belteshazzar, Shadrach, Meshach and Abed-nego and trained for three years. \"Daniel made up his mind that he would not defile himself with the king's choice food.\" He asks for a ten-day test of vegetables and water, and they look healthier than the others. God gives them knowledge and wisdom, and the king finds them ten times better than all his magicians.",
+    v: [
+      ["1:2", "The Lord gave Jehoiakim king of Judah into his hand", "God is in control even in defeat."],
+      ["1:8", "Daniel made up his mind", "Faithfulness decided ahead of time."],
+      ["1:12", "Please test your servants for ten days", "A respectful, creative request."],
+      ["1:17", "God gave them knowledge and intelligence", "Their wisdom came from God."],
+    ],
+    bg: [["New names", "Their Hebrew names honored God (Daniel: \"God is my judge\"); their new names honored Babylonian gods (Belteshazzar: \"Bel, protect his life\"). They accepted the names but not the idolatry.", "good", ["miller", "baldwinD"]]],
+    why: "Scholars discuss when the book of Daniel was written.",
+    views: [
+      ["In the 500s BC by Daniel", "Many hold that Daniel wrote it in Babylon and Persia in the sixth century BC, noting Jesus' reference to \"Daniel the prophet\" (Matthew 24:15), the book's knowledge of Babylonian and Persian life, and Dead Sea Scroll copies that show it was already treated as Scripture by the 100s BC.", ["miller", "baldwinD", "kitchen"]],
+      ["Completed in the 160s BC", "Others think the book took its final form during the persecution under Antiochus IV in the 160s BC, using stories about Daniel to encourage faithful Jews, and reading the detailed prophecies of chapter 11 as written close to those events.", ["goldingayD", "longmanD"]],
+    ],
+    common: "All agree the book teaches that God rules over earthly kingdoms and calls His people to faithfulness under pressure, and that its hope looks beyond history to God's everlasting kingdom.",
+    refs: [["2KI.24", "2 Kings 24:1", "Nebuchadnezzar comes against Jehoiakim"], ["ISA.39", "Isaiah 39:7", "Some of your sons will serve in Babylon"], ["ROM.12", "Romans 12:2", "Do not be conformed to this world"]],
+  },
+  2: {
+    intro: "Nebuchadnezzar has a troubling dream and demands that his wise men tell him both the dream and its meaning or die. Daniel and his friends pray, and God reveals the mystery. Daniel tells the king of a great statue: head of gold, chest and arms of silver, belly and thighs of bronze, legs of iron, feet of iron mixed with clay. A stone cut without hands strikes the feet, crushes the statue, and becomes a great mountain filling the whole earth. \"The God of heaven will set up a kingdom which will never be destroyed.\"",
+    v: [
+      ["2:18", "Request compassion from the God of heaven", "Prayer with friends in a crisis."],
+      ["2:21", "He removes kings and establishes kings", "God rules history."],
+      ["2:28", "There is a God in heaven who reveals mysteries", "Daniel gives God the credit."],
+      ["2:44", "A kingdom which will never be destroyed", "God's everlasting kingdom."],
+    ],
+    bg: [["Aramaic chapters", "From 2:4 to the end of chapter 7, Daniel is written in Aramaic, the international language of the empire. The rest is in Hebrew.", "strong", ["miller", "goldingayD"]]],
+    why: "Daniel 2 and 7 describe four kingdoms followed by God's kingdom. Scholars identify the kingdoms in different ways.",
+    views: [
+      ["Babylon, Medo-Persia, Greece, Rome", "Many identify the four as Babylon, Medo-Persia, Greece and Rome, with the stone as Christ's kingdom that began in the Roman era and will fill the earth.", ["miller", "baldwinD"]],
+      ["Babylon, Media, Persia, Greece", "Others count Media and Persia separately, making Greece and its successor kingdoms the fourth, so the vision focuses on the time up to Antiochus IV.", ["goldingayD"]],
+    ],
+    common: "All agree the point is that every human empire passes away and God's kingdom will stand forever.",
+    refs: [["DAN.7", "Daniel 7", "Four beasts and the Son of Man"], ["LUK.20", "Luke 20:17-18", "The stone that crushes"], ["REV.11", "Revelation 11:15", "The kingdom of our Lord"]],
+  },
+  3: {
+    intro: "Nebuchadnezzar sets up a golden image ninety feet tall and commands everyone to bow when the music plays. Shadrach, Meshach and Abed-nego refuse. \"Our God whom we serve is able to deliver us from the furnace... But even if He does not, let it be known to you, O king, that we are not going to serve your gods.\" The furnace is heated seven times hotter, but the king sees four men walking in the fire, \"and the appearance of the fourth is like a son of the gods!\" They come out without even the smell of smoke.",
+    v: [
+      ["3:17", "Our God is able to deliver us", "Confident faith."],
+      ["3:18", "But even if He does not", "Faith that does not depend on the outcome."],
+      ["3:25", "Four men loosed and walking about in the midst of the fire", "God is with His people in the fire."],
+      ["3:27", "The smell of fire had not even come upon them", "Complete rescue."],
+    ],
+    refs: [["ISA.43", "Isaiah 43:2", "When you walk through the fire"], ["HEB.11", "Hebrews 11:34", "Quenched the power of fire"], ["EXO.20", "Exodus 20:4-5", "You shall not worship them"]],
+  },
+  4: {
+    intro: "Nebuchadnezzar himself tells this story. He dreams of a great tree that is cut down to a stump. Daniel interprets: the king will be driven from people and live like an animal for seven periods of time \"until you recognize that the Most High is ruler over the realm of mankind.\" A year later, as he boasts, \"Is this not Babylon the great, which I myself have built?\" he is struck. When he lifts his eyes to heaven, his reason returns, and he praises the King of heaven.",
+    v: [
+      ["4:27", "Break away now from your sins by doing righteousness", "Daniel urges repentance."],
+      ["4:30", "Is this not Babylon the great, which I myself have built?", "Pride."],
+      ["4:34", "I raised my eyes toward heaven and my reason returned", "Humility restores."],
+      ["4:37", "He is able to humble those who walk in pride", "The king's own testimony."],
+    ],
+    bg: [["Babylon the great", "Nebuchadnezzar's building inscriptions boast of his work on Babylon's walls, palaces and the Ishtar Gate (now rebuilt in Berlin's Pergamon Museum), matching his boast in 4:30.", "strong", ["kitchen", "miller"]]],
+    refs: [["PRO.16", "Proverbs 16:18", "Pride goes before destruction"], ["JAS.4", "James 4:6, 10", "God gives grace to the humble"], ["EZK.31", "Ezekiel 31", "The great tree cut down"]],
+  },
+  5: {
+    intro: "King Belshazzar throws a feast and drinks from the gold vessels taken from God's temple while praising idols. Suddenly a hand writes on the wall. Daniel, now old, reads it: MENE (God has numbered your kingdom), TEKEL (you have been weighed and found wanting), PERES (your kingdom is divided and given to the Medes and Persians). That night Belshazzar is killed, and Darius the Mede receives the kingdom.",
+    v: [
+      ["5:2", "The gold and silver vessels... from the temple", "Mocking God."],
+      ["5:23", "The God in whose hand are your life-breath and your ways, you have not glorified", "Daniel's rebuke."],
+      ["5:27", "You have been weighed on the scales and found deficient", "God's verdict."],
+      ["5:30", "That same night Belshazzar was slain", "Babylon fell in 539 BC."],
+    ],
+    bg: [["Belshazzar found", "Critics once said Belshazzar never existed, since Nabonidus was Babylon's last king. Cuneiform texts later showed Belshazzar was Nabonidus's son and co-regent, ruling in Babylon while his father was away. That is why he could offer Daniel only \"third ruler\" (5:16).", "strong", ["kitchen", "miller"]]],
+    refs: [["ISA.21", "Isaiah 21:9", "Fallen is Babylon"], ["JER.51", "Jeremiah 51:39", "Their feast"]],
+  },
+  6: {
+    intro: "Under King Darius, Daniel is so distinguished that jealous officials look for a charge against him but find none, \"because he was faithful.\" They trick the king into a decree: no one may pray to anyone but the king for thirty days. Daniel goes home and prays three times a day with his windows open toward Jerusalem, as before. He is thrown into the lions' den. In the morning: \"My God sent His angel and shut the lions' mouths.\" Darius proclaims that Daniel's God is the living God.",
+    v: [
+      ["6:4", "They could find no ground of accusation", "A blameless life."],
+      ["6:10", "He continued kneeling... three times a day", "Steady habits of prayer."],
+      ["6:16", "Your God whom you constantly serve will Himself deliver you", "Even the king hopes."],
+      ["6:22", "My God sent His angel and shut the lions' mouths", "God protects."],
+      ["6:26", "He is the living God and enduring forever", "A pagan king's confession."],
+    ],
+    refs: [["HEB.11", "Hebrews 11:33", "Shut the mouths of lions"], ["PSA.55", "Psalm 55:17", "Evening, morning and noon I pray"], ["ACT.5", "Acts 5:29", "We must obey God rather than men"]],
+  },
+  7: {
+    intro: "Daniel's first vision. Four great beasts rise from the sea: a lion with eagle's wings, a bear, a leopard with four heads, and a terrifying fourth beast with iron teeth and ten horns, from which a boastful little horn grows. Then thrones are set up, and the Ancient of Days takes His seat. \"One like a Son of Man\" comes with the clouds of heaven and is given everlasting dominion, glory and a kingdom. \"The saints of the Highest One will receive the kingdom.\"",
+    v: [
+      ["7:9", "The Ancient of Days took His seat", "God the eternal Judge."],
+      ["7:13", "One like a Son of Man was coming with the clouds of heaven", "Jesus' favorite title for Himself."],
+      ["7:14", "His dominion is an everlasting dominion", "A kingdom that will not pass away."],
+      ["7:27", "Given to the people of the saints of the Highest One", "God's people share His kingdom."],
+    ],
+    refs: [["MRK.14", "Mark 14:61-62", "You will see the Son of Man coming with the clouds"], ["REV.1", "Revelation 1:13-14", "One like a son of man"], ["REV.13", "Revelation 13:1-2", "A beast from the sea"]],
+  },
+  8: {
+    intro: "A vision of a ram with two horns (Media and Persia) charging west, north and south, until a male goat with one great horn (Greece) comes from the west and shatters it. The great horn breaks and four horns replace it. From one of them grows a small horn that exalts itself, stops the daily sacrifice, and throws truth to the ground. Gabriel explains the vision. Daniel is exhausted and sick for days.",
+    v: [
+      ["8:20", "The ram... the kings of Media and Persia", "Named in the text."],
+      ["8:21", "The shaggy goat represents the kingdom of Greece", "Alexander the Great."],
+      ["8:22", "Four kingdoms will arise", "Alexander's empire split among four generals."],
+      ["8:25", "He will be broken without human agency", "God brings down the proud."],
+    ],
+    bg: [["Antiochus IV", "Most interpreters identify the small horn of chapter 8 with Antiochus IV Epiphanes, who outlawed Jewish worship and set up a pagan altar in the temple in 167 BC. Jews remember the temple's rededication at Hanukkah.", "strong", ["baldwinD", "goldingayD"]]],
+    refs: [["JHN.10", "John 10:22", "The Feast of the Dedication (Hanukkah)"], ["DAN.11", "Daniel 11:21-35", "More on this king"]],
+  },
+  9: {
+    intro: "Reading Jeremiah, Daniel understands that the desolation of Jerusalem would last seventy years. He prays a great prayer of confession: \"We have sinned... Righteousness belongs to You, O Lord, but to us open shame.\" \"We are not presenting our supplications before You on account of any merits of our own, but on account of Your great compassion.\" Gabriel comes swiftly with an answer: seventy \"weeks\" are decreed to finish transgression, make atonement and bring in everlasting righteousness, and Messiah the Prince will be cut off.",
+    v: [
+      ["9:2", "I, Daniel, observed in the books", "Daniel studied Scripture."],
+      ["9:18", "On account of Your great compassion", "Prayer based on God's mercy."],
+      ["9:23", "You are highly esteemed", "God loves Daniel."],
+      ["9:24", "Seventy weeks", "Literally \"seventy sevens.\""],
+      ["9:26", "The Messiah will be cut off", "Many see Jesus' death here."],
+    ],
+    why: "The \"seventy weeks\" (9:24-27) is one of the most debated passages in the Bible.",
+    views: [
+      ["Fulfilled in Christ", "Many count 490 years from a decree to rebuild Jerusalem (often Artaxerxes' decree in 458 or 445 BC) to the time of Jesus, with \"Messiah cut off\" pointing to His death and the new covenant.", ["miller", "baldwinD"]],
+      ["A gap before the last week", "Some see a gap between the 69th and 70th weeks, placing the final \"week\" in a future time of tribulation.", ["miller"]],
+      ["Symbolic, reaching to Antiochus", "Others read the numbers as symbolic periods ending in the crisis under Antiochus IV, with the \"anointed one\" cut off as the high priest Onias III in 171 BC.", ["goldingayD", "longmanD"]],
+    ],
+    common: "All agree that God has a set timetable for history, that He will deal fully with sin, and that His people can trust Him in the meantime.",
+    refs: [["JER.25", "Jeremiah 25:11-12", "Seventy years"], ["JER.29", "Jeremiah 29:10", "After seventy years"], ["MAT.24", "Matthew 24:15", "The abomination of desolation"], ["NEH.9", "Nehemiah 9", "Another prayer of confession"]],
+  },
+  10: {
+    intro: "In the third year of Cyrus, Daniel mourns and fasts for three weeks. By the Tigris he sees a man dressed in linen, with a face like lightning and eyes like flaming torches. Daniel's strength leaves him. The messenger touches him: \"O man of high esteem, do not be afraid. Peace be with you; take courage.\" He explains that the prince of Persia withstood him twenty-one days until Michael came to help.",
+    v: [
+      ["10:12", "From the first day... your words were heard", "Prayer is heard even when the answer is delayed."],
+      ["10:13", "The prince of the kingdom of Persia was withstanding me", "A glimpse of spiritual conflict."],
+      ["10:19", "Do not be afraid. Peace be with you; take courage", "Comfort for the weak."],
+    ],
+    refs: [["EPH.6", "Ephesians 6:12", "Our struggle is against spiritual forces"], ["REV.1", "Revelation 1:13-17", "A similar vision"], ["JUD.1", "Jude 9", "Michael the archangel"]],
+  },
+  11: {
+    intro: "A detailed prophecy of kings: Persian kings, then a mighty king of Greece whose kingdom is divided; then long wars between the \"king of the South\" (the Ptolemies of Egypt) and the \"king of the North\" (the Seleucids of Syria), with marriages, betrayals and battles. A contemptible king arises, profanes the sanctuary and sets up \"the abomination of desolation.\" \"But the people who know their God will display strength and take action.\"",
+    v: [
+      ["11:2", "Three more kings are going to arise in Persia", "History told ahead."],
+      ["11:3", "A mighty king will arise", "Alexander the Great."],
+      ["11:31", "The abomination of desolation", "Antiochus IV's pagan altar in 167 BC; Jesus spoke of another."],
+      ["11:32", "The people who know their God will display strength", "Courage in persecution."],
+      ["11:35", "Some of those who have insight will fall, in order to refine", "Suffering refines."],
+    ],
+    bg: [["History in advance", "Verses 2-35 match the history of the Persian, Greek, Ptolemaic and Seleucid kings closely, including the marriage of Berenice to Antiochus II (11:6) and Rome's turning back of Antiochus IV in Egypt (11:30). Interpreters differ on whether verses 36-45 continue with Antiochus or look to a final antichrist.", "debated", ["baldwinD", "miller", "goldingayD"]]],
+    refs: [["MAT.24", "Matthew 24:15", "When you see the abomination of desolation"], ["2TH.2", "2 Thessalonians 2:3-4", "The man of lawlessness"]],
+  },
+  12: {
+    intro: "\"At that time Michael, the great prince who stands guard over the sons of your people, will arise. And there will be a time of distress.\" Everyone found written in the book will be rescued. \"Many of those who sleep in the dust of the ground will awake, these to everlasting life, but the others to disgrace and everlasting contempt. Those who have insight will shine brightly like the brightness of the expanse of heaven, and those who lead the many to righteousness, like the stars forever and ever.\" Daniel is told to seal the book. \"But as for you, go your way to the end; then you will enter into rest and rise again for your allotted portion at the end of the age.\"",
+    v: [
+      ["12:1", "Everyone who is found written in the book", "God knows His own."],
+      ["12:2", "Many who sleep in the dust will awake", "The clearest Old Testament promise of resurrection."],
+      ["12:3", "Like the stars forever and ever", "Those who lead others to God."],
+      ["12:13", "You will rise again for your allotted portion", "A personal promise to Daniel."],
+    ],
+    refs: [["JHN.5", "John 5:28-29", "All in the tombs will hear His voice"], ["REV.20", "Revelation 20:12", "The books were opened"], ["MAT.13", "Matthew 13:43", "The righteous will shine like the sun"]],
+  },
+});
