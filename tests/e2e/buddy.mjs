@@ -35,7 +35,10 @@ try {
     // Now and then he walks over to say hi.
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
     check(`${tag}: now and then he walks over and asks if they're wondering anything`, await page.$eval(".buddy-say", (el) => !el.hidden && el.textContent.length > 5), await page.$eval(".buddy-say", (el) => el.textContent));
-    await page.clock.runFor(10000); await page.waitForTimeout(200);
+    check(`${tag}: they can answer him yes or not now`, await page.$eval(".buddy-say .bs-yes", (b) => b.offsetParent !== null) && await page.$eval(".buddy-say .bs-no", (b) => b.offsetParent !== null));
+    await page.$eval(".buddy-say .bs-no", (b) => b.click()); await page.clock.runFor(300);
+    check(`${tag}: "not now" gets a cheerful okay`, /Okie|Sure thing|Okay|No problem/.test(await page.$eval(".buddy-say", (el) => el.textContent)) && await page.$eval(".buddy-say .bs-acts", (a) => a.hidden), await page.$eval(".buddy-say", (el) => el.textContent));
+    await page.clock.runFor(4000); await page.waitForTimeout(200);
     check(`${tag}: then he goes back and the bubble goes away`, await page.$eval(".buddy-say", (el) => el.hidden));
     // Tap him on Home: he stands up and the chat opens right here, without leaving the page.
     await page.tap(".buddy"); await page.waitForTimeout(600);
@@ -58,8 +61,14 @@ try {
     await page.tap(".buddy"); await page.waitForTimeout(500);
     await page.fill("#partnerQ", "What does Word mean here?");
     await page.evaluate(() => { window.open = () => null; });
+    await page.evaluate(() => { window.__waits = []; new MutationObserver((m) => m.forEach((x) => x.addedNodes.forEach((n) => n.classList?.contains("typing") && window.__waits.push(n.textContent)))).observe(document.querySelector("#chatLog"), { childList: true }); });
     await page.click("#partnerGo"); await page.waitForTimeout(100);
     check(`${tag}: he gets excited when asked`, await page.$eval(".buddy", (el) => el.classList.contains("excited")));
+    check(`${tag}: he says he can find something`, /find|look|know where/i.test(await page.evaluate(() => window.__waits.join(" "))), await page.evaluate(() => window.__waits.join(" ")));
+    await page.clock.runFor(3000); await page.waitForTimeout(300);
+    await page.fill("#partnerQ", "My grandma died last week. Where is she now?");
+    await page.click("#partnerGo"); await page.waitForTimeout(100);
+    check(`${tag}: a sad question gets a caring face, not a happy hop`, await page.$eval(".buddy", (el) => el.classList.contains("caring") && !el.classList.contains("excited")) && await page.$eval("#chatSheet .buddy-inline", (el) => el.classList.contains("caring")));
     // The read-aloud switch beside the chat box.
     await page.click("#partnerSpeak");
     check(`${tag}: read answers aloud turns on`, (await page.getAttribute("#partnerSpeak", "aria-pressed")) === "true");

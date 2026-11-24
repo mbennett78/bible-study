@@ -1452,6 +1452,17 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .buddy-say { position: fixed; z-index: 7; max-width: min(250px, 70vw); padding: 10px 14px; border-radius: 16px 16px 16px 4px; background: var(--surface); color: var(--text); border: 2px solid var(--accent); font: inherit; font-size: 1rem; font-weight: 600; text-align: left; box-shadow: 0 6px 18px rgb(0 0 0 / .18); cursor: pointer; animation: buddy-say-in .35s ease-out; }
 .buddy-say.on-right { border-radius: 16px 16px 4px 16px; }
 .buddy-say[hidden] { display: none; }
+.buddy-say { cursor: default; }
+.bs-words { display: block; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: inherit; cursor: pointer; }
+.bs-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.bs-acts[hidden] { display: none; }
+.bs-acts button { min-height: 36px; padding: 4px 12px; border-radius: 999px; border: 2px solid var(--accent); background: var(--surface); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
+.bs-acts .bs-yes { background: var(--accent); color: var(--surface); }
+/* Caring face: soft brows and a gentle mouth when someone asks about something sad. */
+.buddy-frown, .buddy-brow { display: none; fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; }
+.buddy.caring .buddy-smile { display: none; }
+.buddy.caring .buddy-frown, .buddy.caring .buddy-brow { display: inline; }
+.buddy.caring .buddy-head, .buddy.caring .buddy-eye, .buddy.caring .buddy-frown, .buddy.caring .buddy-brow { transform: rotate(-8deg); transform-origin: 26px 30px; transform-box: view-box; }
 @keyframes buddy-say-in { from { opacity: 0; transform: translateY(6px) scale(.96); } }
 @media (prefers-reduced-motion: reduce) { .buddy.visiting, .buddy.visiting:not(.on-right) { transform: none; } .buddy-say { animation: none; } }
 .buddy-svg { width: 100%; height: 100%; overflow: visible; }

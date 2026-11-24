@@ -1,7 +1,9 @@
 // The study buddy: a small stick figure with a talk bubble who opens the Bible helper chat.
 // He sits quietly at the side of the screen until someone taps him; then he stands up,
 // waves and opens the chat. Now and then (the app decides when) he walks in a few steps to
-// say hi or ask if they're wondering anything, then goes back and sits down. He can be
+// say hi, check on them, or ask if they're wondering anything. They can answer him: "Not
+// now" gets a cheerful "Okie!", and "Yes" gets an excited "Oh yeah, I can find something!"
+// before the chat opens. He looks caring when someone asks about something sad. He can be
 // dragged anywhere along either edge, and remembers where he was put. He never covers the
 // bottom buttons, and he stays still for anyone who has asked their device for less motion.
 
@@ -14,6 +16,8 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <circle class="buddy-head" cx="26" cy="22" r="10"/>
     <circle class="buddy-eye" cx="22.5" cy="20.5" r="1.6"/><circle class="buddy-eye" cx="29.5" cy="20.5" r="1.6"/>
     <path class="buddy-smile" d="M21.5 25.5q4.5 4 9 0"/>
+    <path class="buddy-frown" d="M23 27.2q3-1.3 6 0"/>
+    <path class="buddy-brow" d="M20.3 17.2l3.2-.8M31.7 17.2l-3.2-.8"/>
     <path class="buddy-line" d="M26 32v22"/>
     <path class="buddy-line buddy-arm-l" d="M26 38l-10 9"/>
     <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
@@ -25,6 +29,11 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
 const SPOT_KEY = "bible-study:buddy-spot";
 const SIT_AFTER_MS = 12000;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+// What he says back, so it never sounds the same twice in a row.
+const NO_LINES = ["Okie! 😊", "Sure thing! Just let me know.", "Okay! I'll be right over here.", "No problem! I'm here whenever you need me.", "Okie dokie! Happy reading."];
+const YES_LINES = ["Oh yeah! I can find something!", "Ooh, yay! What is it?", "Oh good, I love questions!", "Yes! Let's find out together!"];
+let careTimer = 0;
 
 export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right" }) {
   const el = document.createElement("button");
@@ -34,11 +43,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.innerHTML = BUDDY_SVG;
   el.classList.add("sitting");
   document.body.append(el);
-  // His little speech bubble for visits ("Hi! Wondering anything?").
-  const say = document.createElement("button");
-  say.type = "button";
+  // His little speech bubble for visits ("Hi! Wondering anything?"), with two ways to answer him.
+  const say = document.createElement("div");
   say.className = "buddy-say";
+  say.setAttribute("role", "status");
   say.hidden = true;
+  say.innerHTML = `<button type="button" class="bs-words"></button><span class="bs-acts"><button type="button" class="bs-yes">Yes, I have a question</button><button type="button" class="bs-no">Not now</button></span>`;
+  const words = say.querySelector(".bs-words"), acts = say.querySelector(".bs-acts");
   document.body.append(say);
 
   // Where he stands: which edge, and how far down (0 = top of the free space, 1 = bottom).
@@ -111,8 +122,28 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   el.addEventListener("pointercancel", drop);
   // Keyboard and screen readers: Enter or Space opens the chat (the pointer handlers cover taps).
   el.addEventListener("click", (e) => { if (e.detail === 0) tapped(); });
-  say.addEventListener("click", () => tapped());
+  words.addEventListener("click", () => tapped());
+  // "Yes": he's thrilled, then the chat opens.
+  say.querySelector(".bs-yes").addEventListener("click", () => {
+    clearTimeout(visitTimer);
+    speak(pick(YES_LINES), false);
+    play("excited", 1400);
+    visitTimer = setTimeout(() => { endVisit(); onTap(); }, 1100);
+  });
+  // "Not now": a happy "Okie!" and back he goes.
+  say.querySelector(".bs-no").addEventListener("click", () => {
+    clearTimeout(visitTimer);
+    speak(pick(NO_LINES), false);
+    play("waving", 1200);
+    visitTimer = setTimeout(goBack, 2400);
+  });
   function tapped() { endVisit(); play("excited", 1400); onTap(); }
+  function speak(text, ask) {
+    words.textContent = text;
+    acts.hidden = !ask;
+    say.hidden = false;
+    placeSay();
+  }
 
   // A visit: he stands, walks a few steps into the screen, says something short, then
   // walks back and sits. Tapping him or his bubble opens the chat.
@@ -123,7 +154,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.remove("visiting", "walking");
     sitSoon(4000);
   }
-  function visit(text, ms = 7000) {
+  const goBack = () => { say.hidden = true; el.classList.add("walking"); el.classList.remove("visiting"); setTimeout(endVisit, 900); };
+  function visit(text, ms = 12000) {
     if (el.hidden || drag || !say.hidden) return false;
     el.classList.remove("tucked", "sitting");
     el.classList.add("walking", "visiting");
@@ -131,11 +163,9 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     setTimeout(() => {
       el.classList.remove("walking");
       play("waving", 1200);
-      say.textContent = text;
-      say.hidden = false;
-      placeSay();
+      speak(text, true);
     }, 900);
-    visitTimer = setTimeout(() => { say.hidden = true; el.classList.add("walking"); el.classList.remove("visiting"); setTimeout(endVisit, 900); }, ms);
+    visitTimer = setTimeout(goBack, ms);
     return true;
   }
 
@@ -155,6 +185,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     // Stands while the chat is open; sits again when it closes.
     chatting(on) { keepStanding = on; if (on) { el.classList.remove("sitting", "tucked"); } else sitSoon(3000); },
     excite() { play("excited", 1400); },     // someone asked him something
+    // Someone asked about something sad: a gentle, caring face for a while.
+    caring(on) { clearTimeout(careTimer); el.classList.toggle("caring", on); if (on) { wake(); hold(8000); el.classList.remove("tucked"); careTimer = setTimeout(() => el.classList.remove("caring"), 90000); } },
     cheer() { play("cheering", 2600); },     // a great quiz score
     thinking(on) { wake(); hold(); if (on) el.classList.remove("tucked"); el.classList.toggle("thinking", on); },
     talking(on) { wake(); if (on) { hold(60000); el.classList.remove("tucked"); } else hold(); el.classList.toggle("talking", on); },

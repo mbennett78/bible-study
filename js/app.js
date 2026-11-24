@@ -842,7 +842,7 @@ async function askBuiltIn(q) {
   const ver = (versionList().find(([v]) => v === store.get("version")) || ["", "NASB"])[1];
   chatTurns.push({ role: "user", content: q });
   chatBusy = true; $("#partnerGo").disabled = true;
-  const wait = chatBubble("them", "Thinking", "typing");
+  const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
   buddy.thinking(true);
   const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "" });
   wait.remove();
@@ -885,13 +885,25 @@ function resetChat() {
   $("#chatSuggest").innerHTML = CHAT_IDEAS.map((q) => `<button type="button" class="chat-idea">${esc(q)}</button>`).join("");
   $("#chatSuggest").querySelectorAll(".chat-idea").forEach((b) => b.addEventListener("click", () => { $("#partnerQ").value = b.textContent; sendChat(); }));
 }
+// Buddy's heart: excited to help, and gentle when the question is about something sad.
+const pickOne = (list) => list[Math.floor(Math.random() * list.length)];
+const SAD_WORDS = /\b(died|dies|dying|death|dead|passed away|funeral|grie(f|ving)|mourn\w*|sad|sadness|cry|crying|lonely|alone|depress\w*|anxious|anxiety|afraid|scared|fear|worried|worry|sick|cancer|hospital|illness|divorce|hurt\w*|pain|suffer\w*|lost (my|a|our)|miss (my|him|her|them)|heartbroken|broken|hopeless|ashamed|guilt\w*|forgive me)\b/i;
+const sadAsk = (q) => SAD_WORDS.test(q);
+const HAPPY_WAIT = ["Oh yeah, I can find something", "Ooh, good question! Let me look", "Ooh, I love this one! Finding it now", "Oh! I know where to look"];
+const CARE_WAIT = ["I'm so sorry. Let me find something that might help", "That sounds hard. I'm right here with you. Let me look", "Oh, friend. Let me find some comfort in God's Word for you"];
+function buddyFeels(q) {
+  const sad = sadAsk(q), face = chatSheet.querySelector(".buddy-inline");
+  buddy.caring(sad);
+  face.classList.toggle("caring", sad);
+  if (!sad) { buddy.excite(); face.classList.remove("excited"); void face.offsetWidth; face.classList.add("excited"); setTimeout(() => face.classList.remove("excited"), 1400); }
+}
 async function sendChat() {
   const q = $("#partnerQ").value.trim();
   if (!q) { $("#partnerQ").focus(); return; }
   if (chatBusy) return;
   chatBubble("me", q);
   $("#partnerQ").value = "";
-  buddy.excite();
+  buddyFeels(q);
   await askBuiltIn(q);
 }
 /* ---------- Games: Bible Quest, plus the older practice quiz ---------- */
@@ -945,6 +957,11 @@ function openBuddyChat() {
 // most three times a day, and never if turned off.
 const BUDDY_LINES = [
   (n) => `Hi${n ? ` ${n}` : ""}! 👋 Wondering anything? Ask me!`,
+  // Now and then he just checks on them, because he's their friend.
+  (n) => `I hope you're doing okay today${n ? `, ${n}` : ""}. I care about you and think about you. You can ask me anything you're wondering.`,
+  (n) => `Just checking on you${n ? `, ${n}` : ""}. 💛 I'm glad you're here. Anything on your mind?`,
+  () => "I was thinking about you! Hope your day is going well. Want to ask me anything?",
+  (n) => `You matter so much${n ? `, ${n}` : ""}. If you're wondering about anything at all, I'm right here.`,
   () => "Curious what life was like back then? Tap me and ask!",
   (n, ref) => `Any questions about ${ref}? I'd love to help.`,
   () => "Want to know what a word means in Hebrew or Greek? Ask me!",
