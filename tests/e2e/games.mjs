@@ -48,7 +48,7 @@ try {
   check("buddy cheers at 80% or more", Boolean(await g(".buddy-inline.cheering")));
   check("confetti in the look's colors", Boolean(await g(".g-confetti")));
   const notes = await txt(".g-mine-notes");
-  check("stars earned are shown", /15\s*stars earned/.test(await txt(".g-won-stars")), await txt(".g-won-stars"));
+  check("stars earned are shown (the golden 4th question counts double)", /18\s*stars earned/.test(await txt(".g-won-stars")), await txt(".g-won-stars"));
   check("new badges are celebrated", /First game/.test(await txt(".g-new-badges")) && /Perfect score/.test(await txt(".g-new-badges")), await txt(".g-new-badges"));
   check("the first level-up is celebrated", /now a Sprout/.test(await txt(".g-levelup")), await txt(".g-levelup"));
   check("solo results show progress in that part of the Bible", /Gospels: 5 of \d+ questions answered right \(5 new today\)/.test(notes), notes);
@@ -58,7 +58,7 @@ try {
   await page.click("#gChange"); await page.waitForTimeout(100);
   const mine = await txt(".g-mine");
   check("my progress shows when quizzing myself", /Gospels:.*5 of \d+.*best score 100%/.test(mine), mine);
-  check("quick answers earned stars and a level", /Level 2 · Sprout/.test(mine) && /15 stars/.test(mine), mine);
+  check("quick answers earned stars and a level", /Level 2 · Sprout/.test(mine) && /18 stars/.test(mine), mine);
   check("badges earned are shown, the rest locked", (await page.$$("dialog.game .g-badges li.won")).length >= 3 && (await page.$$("dialog.game .medal.locked")).length >= 5);
   await page.click("dialog.game .g-mine details:last-of-type summary");
   await page.click('dialog.game [data-goal="10"]'); await page.waitForTimeout(100);

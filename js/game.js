@@ -7,6 +7,9 @@ import { TRIVIA } from "./trivia-bank.js";
 import { BUDDY_SVG } from "./buddy.js";
 
 export const MAX_PLAYERS = 20;
+const BOOK_NAME = Object.fromEntries(BOOKS.map((b) => [b.id, b.name]));
+// Every fourth question is golden: worth double stars.
+export const isGolden = (turn) => turn % 4 === 3;
 const bookAt = Object.fromEntries(BOOKS.map((b, i) => [b.id, i]));
 const range = (from, to) => (b) => bookAt[b] >= bookAt[from] && bookAt[b] <= bookAt[to];
 export const SCOPES = [
@@ -173,7 +176,7 @@ export function recordSolo(mine, scopeId, results, now = new Date(), game = {}) 
     stars: was.stars + stars,
     answered: was.answered + results.length,
     perfect: was.perfect + (results.length && right === results.length ? 1 : 0),
-    swift: was.swift + (results.length >= 5 && results.every((r) => r.stars === 3) ? 1 : 0),
+    swift: was.swift + (results.length >= 5 && results.every((r) => (r.speed ?? r.stars) === 3) ? 1 : 0),
     goals: was.goals + (goalReached ? 1 : 0),
     bestStreak: Math.max(was.bestStreak, game.longest || 0),
     scopes: [...new Set([...was.scopes, scopeId])],
@@ -228,6 +231,7 @@ export const SOUNDS = {
   right: () => tone([784, 1047], { type: "triangle" }),
   wrong: () => tone([220, 196], { type: "sine", gap: 0.15, length: 0.25, volume: 0.12 }),
   tick: () => tone([880], { length: 0.05, volume: 0.05 }),
+  tap: () => tone([660, 990], { type: "triangle", gap: 0.06, length: 0.12, volume: 0.12 }),
   streak: () => tone([659, 784, 988, 1319], { type: "triangle", gap: 0.08, length: 0.2 }),
   cheer: () => tone([523, 659, 784, 1047, 784, 1047, 1319], { type: "triangle", gap: 0.11, length: 0.3 }),
   done: () => tone([523, 659, 784], { type: "triangle", gap: 0.14, length: 0.3, volume: 0.14 }),
@@ -412,7 +416,7 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     const players = [...new Set([...names, ...s.players])].slice(0, 60);
     save({ players: setup.mode === "group" ? players : s.players, last: { mode: setup.mode, players: setup.mode === "group" ? names : [], scope: setup.scope, topic: setup.topic, count: setup.count, timer: setup.timer } });
     const perPlayer = Math.max(1, Math.floor(deck.length / names.length));
-    play = { players: names.map((name) => ({ name, right: 0, asked: 0, stars: 0, streak: 0, longest: 0 })), deck: deck.slice(0, perPlayer * names.length), turn: 0, short: deck.length < need, results: [] };
+    play = { players: names.map((name) => ({ name, right: 0, asked: 0, stars: 0, streak: 0, longest: 0, fifty: 1, hint: 1 })), deck: deck.slice(0, perPlayer * names.length), turn: 0, short: deck.length < need, results: [] };
     showQuestion();
   }
 
@@ -422,12 +426,18 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     const who = play.players[play.turn % play.players.length];
     const solo = play.players.length === 1;
     const topicIcon = (TOPICS.find(([id]) => id === topicOf(q)) || TOPICS[0])[2];
+    const golden = isGolden(play.turn);
     paint(`<div class="g-head">${miniBuddy("sitting")}<h2>${solo ? `Question ${play.turn + 1} of ${play.deck.length}` : `${esc(who.name)}'s turn`}</h2><button type="button" class="g-x" data-close aria-label="Stop the game">✕</button></div>
       <div class="g-body g-play">
         <div class="g-meta">${solo ? `<span class="g-dots" aria-hidden="true">${play.deck.map((_, i) => `<i class="${i < play.turn ? (play.results[i]?.right ? "r" : "w") : i === play.turn ? "now" : ""}"></i>`).join("")}</span>` : `<span class="muted small-print">Question ${play.turn + 1} of ${play.deck.length}</span>`}
           <span class="g-speed" title="Answer quickly for more stars">${starRow(3)}</span></div>
         ${setup.timer ? `<div class="g-timer" aria-hidden="true"><i></i></div>` : ""}
-        <div class="g-card"><span class="g-topic" aria-hidden="true">${topicIcon}</span><p class="g-q">${esc(q.q)}</p></div>
+        ${golden ? `<p class="g-golden-tag">✨ Golden question: double stars!</p>` : ""}
+        <div class="g-card${golden ? " is-golden" : ""}"><span class="g-topic" aria-hidden="true">${topicIcon}</span><p class="g-q">${esc(q.q)}</p></div>
+        <div class="g-helps" role="group" aria-label="Helpers, one of each per game">
+          <button type="button" class="g-help" data-help="fifty" ${who.fifty ? "" : "disabled"}>✂️ 50:50<small>${who.fifty ? "Take away two" : "Used"}</small></button>
+          <button type="button" class="g-help" data-help="hint" ${who.hint ? "" : "disabled"}>${miniBuddy("sitting")} Ask Pip<small>${who.hint ? "Where to look" : "Used"}</small></button>
+        </div>
         <div class="g-choices">${q.choices.map((c, i) => `<button type="button" data-pick="${i}" style="--i:${i}"><span class="g-letter" aria-hidden="true">${"ABCD"[i]}</span><span class="g-choice">${esc(c)}</span></button>`).join("")}</div>
         <p class="g-why" role="status"></p>
         <button type="button" class="big-btn" id="gNext" hidden></button>
@@ -435,6 +445,26 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
       </div>`);
     dlg.querySelector("[data-close]").onclick = () => { if (play.turn === 0 || confirm("Stop this game? Scores so far won't be saved.")) { stopTimer(); renderSetup(); } };
     dlg.querySelectorAll("[data-pick]").forEach((b) => (b.onclick = () => answer(Number(b.dataset.pick))));
+    // Helpers: 50:50 takes away two wrong answers; Pip tells you which chapter it's from.
+    dlg.querySelectorAll("[data-help]").forEach((b) => (b.onclick = () => {
+      if (dlg.querySelector("[data-pick][disabled]:not(.gone)")) return;
+      if (b.dataset.help === "fifty" && who.fifty) {
+        who.fifty = 0;
+        const wrong = [...dlg.querySelectorAll("[data-pick]")].filter((x) => Number(x.dataset.pick) !== q.a);
+        wrong.sort(() => Math.random() - 0.5).slice(0, Math.max(0, wrong.length - 1)).forEach((x) => { x.disabled = true; x.classList.add("gone"); });
+      }
+      if (b.dataset.help === "hint" && who.hint) {
+        who.hint = 0;
+        const where = [...new Set(q.refs.map((r) => { const [bk, ch] = r.split("."); return `${BOOK_NAME[bk]} ${ch}`; }))].join(" or ");
+        // When the question already names the chapter, Pip gives the answer's first letter instead.
+        const named = q.refs.some((r) => q.q.includes(BOOK_NAME[r.split(".")[0]]));
+        const first = String(q.choices[q.a]).replace(/^[^A-Za-z0-9]+/, "")[0] || "";
+        dlg.querySelector(".g-why").innerHTML = `<strong>Pip says:</strong> <span>${named ? `The answer starts with "${esc(first.toUpperCase())}".` : `Think about ${esc(where)}.`}</span>`;
+      }
+      b.disabled = true; b.querySelector("small").textContent = "Used";
+      sound("tap");
+    }));
+    if (golden) sound("streak");
     play.shownAt = Date.now();
     const bar = dlg.querySelector(".g-timer i"), speed = dlg.querySelectorAll(".g-speed i");
     const end = play.shownAt + setup.timer * 1000;
@@ -454,16 +484,18 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
   }
 
   function answer(pick) {
-    if (dlg.querySelector("[data-pick][disabled]")) return;
+    if (dlg.querySelector("[data-pick][disabled]:not(.gone)")) return;
     stopTimer();
+    dlg.querySelectorAll("[data-help]").forEach((b) => { b.disabled = true; });
     const q = play.deck[play.turn];
     const who = play.players[play.turn % play.players.length];
     const right = pick === q.a;
-    const stars = starsFor(right, Date.now() - play.shownAt, setup.timer);
+    const golden = isGolden(play.turn);
+    const stars = starsFor(right, Date.now() - play.shownAt, setup.timer) * (golden ? 2 : 1);
     who.asked += 1; if (right) who.right += 1;
     who.stars += stars;
     who.streak = right ? who.streak + 1 : 0; who.longest = Math.max(who.longest, who.streak);
-    play.results.push({ id: q.id, right, stars });
+    play.results.push({ id: q.id, right, stars, speed: golden ? stars / 2 : stars, golden });
     const shout = right ? streakShout(who.streak) : "";
     dlg.querySelectorAll("[data-pick]").forEach((b) => {
       b.disabled = true;
@@ -475,8 +507,9 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     const mini = dlg.querySelector(".buddy-inline");
     if (mini) { mini.classList.remove("sitting"); mini.classList.add(shout ? "cheering" : right ? "excited" : "waving"); }
     if (shout && who.streak >= 5 && lively()) confetti(dlg, lookColors(), 60);
-    dlg.querySelector(".g-speed").innerHTML = right ? starRow(stars, 3, "won") : "";
-    dlg.querySelector(".g-why").innerHTML = `${shout ? `<strong class="g-streak">${shout}</strong> ` : ""}${pick === -1 ? "⏰ Time's up! " : right ? `✓ ${pickOne(CHEERS)} ${stars === 3 ? "Speedy! " : ""}` : `${pickOne(KIND)} `}<span>${esc(q.why)}</span>`;
+    dlg.querySelector(".g-speed").innerHTML = right ? starRow(Math.min(stars, 6), golden ? 6 : 3, "won") : "";
+    if (right && golden && lively()) confetti(dlg, ["#f6c445", "#ffd970", "#e0a82e", "#fff3c4"], 50);
+    dlg.querySelector(".g-why").innerHTML = `${shout ? `<strong class="g-streak">${shout}</strong> ` : ""}${pick === -1 ? "⏰ Time's up! " : right ? `✓ ${pickOne(CHEERS)} ${golden ? "Double stars! " : stars === 3 ? "Speedy! " : ""}` : `${pickOne(KIND)} `}<span>${esc(q.why)}</span>`;
     const next = dlg.querySelector("#gNext");
     const last = play.turn + 1 >= play.deck.length;
     const nextWho = play.players[(play.turn + 1) % play.players.length];

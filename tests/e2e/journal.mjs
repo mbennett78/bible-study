@@ -20,7 +20,7 @@ try {
   };
   await openJournal();
   check("the journal is called My Journey", /My Journey/.test(await page.textContent("#diaryToday")) && /A journal by Mel/.test(await page.textContent("#diaryToday")));
-  check("big Add buttons for My day, prayer, thanks and Bible thoughts", (await page.$$("#diaryToday .add-entry")).length === 4);
+  check("big Add buttons for My day, prayer, thanks, Bible thoughts and Church notes", (await page.$$("#diaryToday .add-entry")).length === 5);
   await page.click('#diaryToday [data-add="prayer"]'); await page.waitForTimeout(300);
   check("a new entry shows today's date and time", /🕒/.test(await page.textContent(".entry-editor")) && /\d:\d\d/.test(await page.textContent(".ee-when")));
   await page.fill("#entryText", "For Grandma's surgery on Friday.");

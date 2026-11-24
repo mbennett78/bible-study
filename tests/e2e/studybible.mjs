@@ -51,8 +51,18 @@ try {
   // A note on a verse goes in this chapter's journal, inside the Reference section
   await page.$eval('#reader [data-number="1"]', (b) => b.click()); await page.waitForTimeout(200);
   await page.$eval('.verse-sheet [data-act="note"]', (b) => b.click()); await page.waitForTimeout(500);
-  check("a verse note starts with the reference", /^Genesis 2:1: /.test(await page.$eval("#refPanel #entryText", (t) => t.value)));
-  await page.fill("#refPanel #entryText", "Genesis 2:1: God finished His work."); await page.$eval("#entrySave", (b) => b.click()); await page.waitForTimeout(400);
+  check("the verse is quoted in the note", /heavens and the earth were completed/.test(await page.textContent("#refPanel .ee-quote")) && /Genesis 2:1/.test(await page.textContent("#refPanel .ee-quote")));
+  await page.$eval('#refPanel [data-qtag="question"]', (b) => b.click());
+  check("a quote can be a comment, thought or question", await page.$eval('#refPanel [data-qtag="question"]', (b) => b.getAttribute("aria-pressed")) === "true");
+  await page.fill("#refPanel .q-note", "Why rest?");
+  await page.$eval('#refPanel [data-tool="sticker"]', (b) => b.click()); await page.$eval('#refPanel [data-sg="animals"]', (b) => b.click()); await page.$eval('#refPanel [data-sid="lamb"]', (b) => b.click());
+  check("a sticker can be added", (await page.$$("#refPanel .ee-pic.is-sticker")).length === 1);
+  await page.$eval('#refPanel [data-tool="chart"]', (b) => b.click());
+  await page.fill("#cA", "Day 6"); await page.fill("#cB", "Day 7"); await page.fill("#cBoth", "God saw it"); await page.$eval("#cDone", (b) => b.click());
+  check("a chart can be added", (await page.$$("#refPanel .ee-pic.is-chart svg.chart-venn")).length === 1);
+  await page.fill("#refPanel #entryText", "God finished His work."); await page.$eval("#entrySave", (b) => b.click()); await page.waitForTimeout(400);
+  const ent = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem("bible-study:v1")).entries || {}));
+  check("the quote, its question, sticker and chart are saved", ent.some((e) => e.quotes?.[0]?.tag === "question" && e.quotes[0].note === "Why rest?" && e.pics?.length === 2));
   check("it's listed with this passage's notes", /God finished His work/.test(await page.textContent("#refPanel")));
   check("My notes tile counts it", /1 entry/.test(await page.textContent('.ref-tile[data-tab="mine"]')));
 

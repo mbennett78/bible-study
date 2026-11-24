@@ -2,6 +2,8 @@ import { BOOKS, BOOK_BY_ID, TOTAL_CHAPTERS } from "./books.js";
 import { store, onSave } from "./store.js";
 import { findTopics } from "./topics.js";
 import { OUTLINES } from "./outlines.js";
+import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
+import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
@@ -207,6 +209,7 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
     if (!$("#drive").hidden) $("#driveText").innerHTML = readerEl.innerHTML;
     reader.load(chunksFrom(readerEl), `${BOOK_BY_ID[book].name}, chapter ${chapter}.`);
     applyVerseMarks(book, chapter);
+    followKey = ""; setTimeout(updateFollow, 60);
     markStudyWords(readerEl, book, chapter, token);
     // Read to me: once it's on and started, every chapter opened is read aloud.
     if (autoplayNext || (readArmed && driveOn() && !$("#view-read").hidden)) { autoplayNext = false; reader.play(); }
@@ -454,7 +457,15 @@ function applyVerseMarks(book, chapter) {
   const readerEl = $("#reader");
   if (!readerEl) return;
   readerEl.querySelectorAll("mark.hl").forEach((m) => m.replaceWith(...m.childNodes));
-  readerEl.querySelectorAll(".is-bookmarked").forEach((m) => m.classList.remove("is-bookmarked"));
+  readerEl.querySelectorAll(".is-bookmarked, .has-note, .has-mine").forEach((m) => m.classList.remove("is-bookmarked", "has-note", "has-mine"));
+  // A small dot after a verse number: blue-green for a study note, gold for one of your own notes.
+  const mine = new Set(store.allEntries().flatMap((e) => (e.quotes || []).map((q) => q.ref)));
+  for (const el of verseMarkEls()) {
+    const v = markNum(el);
+    if (!v) continue;
+    if (verseNoteFor(book, chapter, v)?.start === v) el.classList.add("has-note");
+    if (mine.has(`${book}.${chapter}.${v}`)) el.classList.add("has-mine");
+  }
   const marks = store.chapterMarks(book, chapter);
   if (!Object.keys(marks).length) return;
   const nodes = verseTextNodes(readerEl);
@@ -467,6 +478,64 @@ function applyVerseMarks(book, chapter) {
     if (m.bookmark) verseMarkEls().find((x) => markNum(x) === Number(v))?.classList.add("is-bookmarked");
   }
 }
+// The verse-by-verse study note that covers a verse ("2:7", "2:1-3" or "2:1, 5"), if any.
+function verseNoteFor(book, chapter, v) {
+  const sec = notesFor(book, chapter)?.sections?.find((x) => x.id === "verses");
+  if (!sec) return null;
+  let best = null;
+  for (const it of sec.items) {
+    const m = String(it.ref || "").match(/^(\d+):(\d+)(?:\s*[-–]\s*(\d+))?/);
+    if (!m || Number(m[1]) !== Number(chapter)) continue;
+    const start = Number(m[2]), end = Number(m[3] || m[2]);
+    if (v >= start && v <= end) return { ...it, start, end };
+    if (start <= v && (!best || start > best.start) && v - start <= 3) best = { ...it, start, end, near: true };
+  }
+  return best;
+}
+/* ---------- Follow along: the study note for the verse you're reading travels with you ---------- */
+// On a phone or portrait iPad, a small card rides at the bottom of the Scripture and changes as you
+// scroll. With the notes beside the text (wide iPad), the notes column scrolls to the same verse.
+const follow = document.createElement("div");
+follow.id = "follow"; follow.className = "follow"; follow.hidden = true;
+follow.setAttribute("role", "region"); follow.setAttribute("aria-label", "Study note for the verse you're reading");
+let followKey = "", followOpen = false;
+function updateFollow() {
+  const view = $("#view-read");
+  if (!view || view.hidden || !$("#reader")) { follow.hidden = true; return; }
+  if (!follow.isConnected) $("#reader").after(follow);
+  const { book, chapter } = store.get("last");
+  const notes = notesFor(book, chapter);
+  if (!notes || store.get("followNotes") === false) { follow.hidden = true; return; }
+  const v = verseInView();
+  const it = verseNoteFor(book, chapter, v);
+  const side = getComputedStyle($("#studyNotes")).position === "sticky";
+  if (side) {
+    follow.hidden = true;
+    // Wide screen: the Verse by verse notes sit beside the text; keep the matching one in view.
+    const col = $("#studyNotes"), items = [...col.querySelectorAll(".verse-note")];
+    items.forEach((x) => x.classList.toggle("is-now", Boolean(it) && x.dataset.start === String(it.start)));
+    const now = col.querySelector(".verse-note.is-now");
+    if (now && followKey !== `${book}.${chapter}.${it.start}`) col.scrollTo({ top: now.offsetTop - col.clientHeight / 3, behavior: "smooth" });
+    followKey = it ? `${book}.${chapter}.${it.start}` : "";
+    return;
+  }
+  if (!it) { follow.hidden = true; followKey = ""; return; }
+  const key = `${book}.${chapter}.${it.start}`;
+  follow.hidden = false;
+  if (key === followKey) return;
+  followKey = key;
+  const ref = it.end > it.start ? `${chapter}:${it.start}-${it.end}` : `${chapter}:${it.start}`;
+  follow.innerHTML = `<button type="button" class="fl-bar" aria-expanded="${followOpen}"><span class="fl-ref">${esc(ref)}</span><span class="fl-head">${esc(it.head)}</span><span class="fl-more" aria-hidden="true">${followOpen ? "▾" : "▸"}</span></button>
+    <div class="fl-body"${followOpen ? "" : " hidden"}><p>${esc(it.text)}</p><div class="fl-acts"><button type="button" class="small" data-fl="all">All verse notes</button><button type="button" class="small" data-fl="note">Add to my notes</button><button type="button" class="small quiet-link" data-fl="off">Hide these</button></div></div>`;
+  follow.querySelector(".fl-bar").addEventListener("click", () => { followOpen = !followOpen; followKey = ""; updateFollow(); });
+  follow.querySelectorAll("[data-fl]").forEach((b) => b.addEventListener("click", () => {
+    if (b.dataset.fl === "all") { notesTab = "verses"; renderNotes(book, chapter); $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" }); }
+    if (b.dataset.fl === "note") openVerseSheet(it.start);
+    if (b.dataset.fl === "off") { store.set("followNotes", false); follow.hidden = true; mascotSay("Okay. Turn follow-along notes back on in Settings."); }
+  }));
+}
+let followTick = 0;
+window.addEventListener("scroll", () => { if (!followTick) followTick = requestAnimationFrame(() => { followTick = 0; updateFollow(); }); }, { passive: true, capture: true });
 const verseSheet = document.createElement("dialog");
 verseSheet.className = "word-sheet verse-sheet"; verseSheet.setAttribute("aria-label", "Verse");
 verseSheet.addEventListener("click", (e) => { if (e.target === verseSheet) verseSheet.close(); });
@@ -475,15 +544,17 @@ function openVerseSheet(v) {
   const ref = `${BOOK_BY_ID[book].name} ${chapter}:${v}`;
   const text = verseText(v);
   const m = store.verseMark(book, chapter, v) || {};
+  const vNote = verseNoteFor(book, chapter, v);
   const ver = (versionList().find(([x]) => x === store.get("version")) || ["", "NASB"])[1];
   verseSheet.innerHTML = `<div class="ws-head"><h2>${esc(ref)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
     ${text ? `<p class="vs-text">${esc(text.length > 260 ? `${text.slice(0, 260)}…` : text)}</p>` : ""}
+    ${vNote && !vNote.near ? `<div class="vs-note"><p class="vs-label">Study note</p><strong>${esc(vNote.head)}</strong><p>${esc(vNote.text.length > 420 ? `${vNote.text.slice(0, 420)}…` : vNote.text)}</p><button type="button" class="small" data-act="notes">All verse notes</button></div>` : ""}
     <p class="vs-label">Highlight</p>
     <div class="vs-colors">${HL_COLORS.map(([c, label]) => `<button type="button" class="vs-color hl-${c}" data-color="${c}" aria-pressed="${m.color === c}" aria-label="${label}">${m.color === c ? "✓" : ""}</button>`).join("")}
       <button type="button" class="vs-clear" data-color="" ${m.color ? "" : "disabled"}>No color</button></div>
     <div class="vs-acts">
       <button type="button" class="vs-act" data-act="bookmark" aria-pressed="${Boolean(m.bookmark)}"><span aria-hidden="true">🔖</span>${m.bookmark ? "Bookmarked ✓" : "Bookmark"}</button>
-      <button type="button" class="vs-act" data-act="note"><span aria-hidden="true">📝</span>Write a note</button>
+      <button type="button" class="vs-act" data-act="note"><span aria-hidden="true">📝</span>Add to notes</button>
       <button type="button" class="vs-act" data-act="copy"><span aria-hidden="true">📋</span>Copy</button>
       ${navigator.share ? `<button type="button" class="vs-act" data-act="share"><span aria-hidden="true">↗</span>Share</button>` : ""}
     </div>
@@ -500,14 +571,27 @@ function openVerseSheet(v) {
   verseSheet.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", async () => {
     const act = b.dataset.act;
     if (act === "bookmark") { store.setVerseMark(book, chapter, v, { bookmark: !m.bookmark }); applyVerseMarks(book, chapter); verseSheet.close(); }
+    else if (act === "notes") { verseSheet.close(); notesTab = "verses"; renderNotes(book, chapter); $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" }); }
     else if (act === "note") {
-      verseSheet.close();
-      notesTab = "mine"; renderNotes(book, chapter);
-      $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" });
-      if (journalLocked()) return;
-      openEntry({ kind: "bible", ref: `${book}.${chapter}` }, $("#chapterEntryHost"));
-      const ta = $("#entryText");
-      if (ta && !ta.value) { ta.value = `${ref}: `; ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); }
+      const quote = { ref: `${book}.${chapter}.${v}`, text, ver };
+      // Writing church notes (or any entry) right now? Offer to add it there.
+      const open = editing && entryHost?.isConnected && entryHost.querySelector(".entry-editor") ? editing : null;
+      const today = store.allEntries().find((x) => x.kind === "church" && dayOf(x.created) === todayKey());
+      const choices = [open && ["open", "The note I'm writing"], today && (!open || open.id !== today.id) && ["church", `Today's church notes${today.title ? `: ${today.title}` : ""}`], ["new", `A new note on ${BOOK_BY_ID[book].name} ${chapter}`]].filter(Boolean);
+      const go = (where) => {
+        verseSheet.close();
+        if (journalLocked()) { notesTab = "mine"; renderNotes(book, chapter); return; }
+        if (where === "open") { openEntry({ id: open.id, kind: open.kind, ref: open.ref, addQuote: quote }, entryHost); return; }
+        if (where === "church") { showView("journal"); setTimeout(() => openEntry({ id: today.id, addQuote: quote }), 150); return; }
+        notesTab = "mine"; renderNotes(book, chapter);
+        $("#refPanel")?.scrollIntoView({ block: "start", behavior: "smooth" });
+        openEntry({ kind: "bible", ref: `${book}.${chapter}`, addQuote: quote }, $("#chapterEntryHost"));
+      };
+      if (choices.length === 1) go("new");
+      else {
+        msg.innerHTML = `<span class="vs-where">Add it to:</span> ${choices.map(([w, l]) => `<button type="button" class="small" data-where="${w}">${esc(l)}</button>`).join(" ")}`;
+        msg.querySelectorAll("[data-where]").forEach((b) => b.addEventListener("click", () => go(b.dataset.where)));
+      }
     } else if (act === "copy") {
       try { await navigator.clipboard.writeText(quote); msg.textContent = "Copied ✓"; } catch { msg.textContent = "Copying isn't allowed here. Press and hold the verse to copy it instead."; }
     } else if (act === "share") {
@@ -571,7 +655,7 @@ function renderProgress() {
   }));
 }
 
-/* ---------- My study: history & favorites ---------- */
+/* ---------- My Bible: history & favorites ---------- */
 document.querySelectorAll(".segments button").forEach((b) => b.addEventListener("click", () => { segment = b.dataset.seg; renderMyStudy(); }));
 $("#myBibleGo").addEventListener("click", () => { const { book, chapter } = store.get("last"); showView("read"); openChapter(book, chapter); });
 function renderMyStudy() {
@@ -1015,7 +1099,7 @@ function renderJournal() {
   const top = document.createElement("div");
   top.innerHTML = `<div class="add-entries">${[["bible", "Bible thoughts"], ["prayer", "A prayer"], ["gratitude", "Thankful for"]].map(([k, l]) => `<button class="add-entry ae-${k}" data-add="${k}"><span aria-hidden="true">${KIND[k].icon}</span><b>＋ ${l}</b></button>`).join("")}</div>
     <div class="entry-host" id="chapterEntryHost"></div>
-    ${mine.length ? `<div class="chapter-entries">${mine.map((e) => `<button class="log-row entry-row er-${e.kind}" data-entry="${e.id}"><strong>${KIND[e.kind]?.icon || ""} ${esc(KIND[e.kind]?.label || "")}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${esc(e.text.slice(0, 160))}${e.text.length > 160 ? "…" : ""}</span></button>`).join("")}</div>` : ""}
+    ${mine.length ? `<div class="chapter-entries">${mine.map((e) => `<button class="log-row entry-row er-${e.kind}" data-entry="${e.id}"><strong>${KIND[e.kind]?.icon || ""} ${esc(KIND[e.kind]?.label || "")}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span></button>`).join("")}</div>` : ""}
     <p class="muted small-print">Everything you write here is also in My Bible, under Journal.</p>`;
   inner.append(top);
   top.querySelectorAll("[data-add]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.add, ref: key }, $("#chapterEntryHost"))));
@@ -1449,6 +1533,7 @@ const ENTRY_KINDS = [
   { kind: "prayer", label: "Prayer", add: "A prayer", icon: "🙏", ph: "Who and what are you praying for?" },
   { kind: "gratitude", label: "Gratitude", add: "Thankful for", icon: "❀", ph: "What are you thankful for today?" },
   { kind: "bible", label: "Bible thoughts", add: "Bible thoughts", icon: "📖", ph: "What is this chapter saying to you? How does it make you feel?" },
+  { kind: "church", label: "Church notes", add: "Church notes", icon: "⛪", ph: "Main points from the lesson, verses mentioned, and one thing to remember this week..." },
 ];
 const KIND = Object.fromEntries(ENTRY_KINDS.map((k) => [k.kind, k]));
 const dayOf = (iso) => { const d = new Date(iso); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
@@ -1473,54 +1558,212 @@ function renderDiaryToday() {
 }
 // The writing box for a new entry, or for one they tapped to read or change.
 let entryHost = null;
-function openEntry({ id = null, kind = "day", ref = null } = {}, box = $("#entryEditor")) {
+// The writing page for an entry. Besides the words, an entry can hold quoted verses (each with
+// a comment, thought or question), stickers, photos, maps and simple charts. Church notes add
+// the lesson title, the teacher and the passage.
+const QUOTE_TAGS = [["comment", "💬", "Comment"], ["thought", "💭", "Thought"], ["question", "❓", "Question"]];
+const entryHasContent = (f) => Boolean((f.text || "").trim() || f.title?.trim() || f.quotes?.length || f.pics?.length);
+function quoteCardHtml(q, i, editable = true) {
+  return `<div class="ee-quote" data-q="${i}"><blockquote>“${esc(q.text)}”</blockquote><cite>${esc(refKeyName(q.ref))}${q.ver ? ` (${esc(q.ver)})` : ""}</cite>
+    ${editable ? `<div class="qtags" role="group" aria-label="What kind of note">${QUOTE_TAGS.map(([t, ic, l]) => `<button type="button" data-qtag="${t}" aria-pressed="${(q.tag || "comment") === t}">${ic} ${l}</button>`).join("")}</div>
+    <textarea class="q-note" rows="1" placeholder="${q.tag === "question" ? "Your question about this verse…" : q.tag === "thought" ? "Your thought…" : "Your comment…"}">${esc(q.note || "")}</textarea>
+    <button type="button" class="pic-x" data-qx="${i}" aria-label="Remove this verse">✕</button>`
+    : q.note ? `<p class="q-note-read">${(QUOTE_TAGS.find(([t]) => t === (q.tag || "comment")) || QUOTE_TAGS[0])[1]} ${esc(q.note)}</p>` : ""}</div>`;
+}
+function chartHtml(c) {
+  const lines = (t) => String(t || "").split(/\n|,/).map((x) => x.trim()).filter(Boolean);
+  if (c.kind === "venn") {
+    // Wrap each item to the width of its region, so words never run into the next circle.
+    const wrap = (t, w) => { const out = []; let cur = ""; for (const word of t.split(/\s+/)) { if (cur && (cur + " " + word).length > w) { out.push(cur); cur = word; } else cur = cur ? `${cur} ${word}` : word; } if (cur) out.push(cur); return out; };
+    const col = (items, x, w) => items.slice(0, 5).flatMap((t) => wrap(t, w).slice(0, 2)).slice(0, 8).map((t, i) => `<text x="${x}" y="${104 + i * 15}" text-anchor="middle">${esc(t.slice(0, w + 2))}</text>`).join("");
+    return `<svg class="chart-venn" viewBox="0 0 440 250" role="img" aria-label="Venn diagram: ${esc(c.a || "")} and ${esc(c.b || "")}"><circle cx="160" cy="135" r="110" class="v1"/><circle cx="280" cy="135" r="110" class="v2"/>
+      <text x="110" y="20" text-anchor="middle" class="vh">${esc(c.a || "")}</text><text x="330" y="20" text-anchor="middle" class="vh">${esc(c.b || "")}</text><text x="220" y="78" text-anchor="middle" class="vh">Both</text>
+      ${col(lines(c.left), 105, 13)}${col(lines(c.both), 220, 11)}${col(lines(c.right), 335, 13)}</svg>`;
+  }
+  if (c.kind === "timeline") return `<ol class="chart-timeline">${lines(c.items).map((t) => `<li><span class="tl-dot"></span>${esc(t)}</li>`).join("")}</ol>`;
+  return `<table class="chart-compare"><thead><tr><th>${esc(c.a || "")}</th><th>${esc(c.b || "")}</th></tr></thead><tbody>${Array.from({ length: Math.max(lines(c.left).length, lines(c.right).length) }, (_, i) => `<tr><td>${esc(lines(c.left)[i] || "")}</td><td>${esc(lines(c.right)[i] || "")}</td></tr>`).join("")}</tbody></table>`;
+}
+function picHtml(p, i, editable = true) {
+  const x = editable ? `<button type="button" class="pic-x" data-px="${i}" aria-label="Remove">✕</button>` : "";
+  if (p.t === "sticker") return `<div class="ee-pic is-sticker">${stickerSvg(p.id)}${x}</div>`;
+  if (p.t === "photo") return `<div class="ee-pic is-photo"><img src="${p.src}" alt="${esc(p.alt || "Photo")}">${x}</div>`;
+  if (p.t === "map") { const n = notesFor(...p.key.split(".").map((v, k) => (k ? Number(v) : v))); return n?.map ? `<div class="ee-pic is-map">${mapSvg(n.map)}<p class="muted small-print">Map: ${esc(refKeyName(p.key))}</p>${x}</div>` : ""; }
+  if (p.t === "chart") return `<div class="ee-pic is-chart"${editable ? ` data-chart="${i}"` : ""}>${chartHtml(p)}${editable ? `<button type="button" class="small chart-edit" data-cedit="${i}">Change</button>` : ""}${x}</div>`;
+  return "";
+}
+// Make a photo small enough to keep and sync: at most 720 pixels across.
+function shrinkPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, 720 / Math.max(img.width, img.height));
+      const c = Object.assign(document.createElement("canvas"), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", 0.68));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("That picture couldn't be opened.")); };
+    img.src = url;
+  });
+}
+// The text of a verse or verses ("John 3:16-18"), from the chosen version.
+async function fetchVerses(text) {
+  const r = findRefs(text)[0];
+  if (!r || !r.chapter) throw new Error("Type a book, chapter and verse, like John 3:16.");
+  const m = text.match(/:\s*(\d+)\s*(?:[-–]\s*(\d+))?/);
+  const from = m ? Number(m[1]) : 1, to = m?.[2] ? Math.max(Number(m[2]), from) : from;
+  const res = await getChapter(store.get("version"), r.book, r.chapter);
+  const div = document.createElement("div");
+  div.innerHTML = sanitize(res.html);
+  const nodes = verseTextNodes(div);
+  const out = [];
+  for (let v = from; v <= Math.min(to, from + 9); v++) out.push((nodes.get(v) || []).map((n) => n.textContent).join(""));
+  const quote = out.join(" ").replace(/\s+/g, " ").trim();
+  if (!quote) throw new Error("That verse couldn't be found. Check the chapter and verse.");
+  return { ref: `${r.book}.${r.chapter}.${from}${to > from ? `-${Math.min(to, from + 9)}` : ""}`, text: quote };
+}
+const verLabel = () => (versionList().find(([x]) => x === store.get("version")) || ["", "NASB"])[1];
+function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}, box = $("#entryEditor")) {
   if (!box) return;
   if (entryHost && entryHost !== box) entryHost.innerHTML = "";
   entryHost = box;
   const e = id ? store.entry(id) : null;
   kind = e?.kind || kind;
   if (kind === "bible" && !ref) ref = e?.ref || (() => { const { book, chapter } = store.get("last"); return `${book}.${chapter}`; })();
-  editing = { id, kind, ref };
+  ref = ref || e?.ref || null;
+  const newId = id || `e${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  editing = { id: newId, kind, ref };
+  const draft = { quotes: [...(e?.quotes || [])], pics: [...(e?.pics || [])] };
+  if (addQuote) draft.quotes.push({ tag: "comment", note: "", ...addQuote });
   const k = KIND[kind] || KIND.day;
   const when = e ? `${stampNow(new Date(e.created))}${e.updated && dayOf(e.updated) !== dayOf(e.created) ? ` · changed ${fmtDate(e.updated)}` : ""}` : stampNow();
+  const church = kind === "church";
   box.innerHTML = `<div class="entry-editor ee-${kind}">
-      <p class="ee-head"><span aria-hidden="true">${k.icon}</span> <b>${esc(k.label)}</b>${ref ? ` <span class="muted">· ${esc(keyRef(ref).name)}</span>` : ""}</p>
+      <p class="ee-head"><span aria-hidden="true">${k.icon}</span> <b>${esc(k.label)}</b>${ref && !church ? ` <span class="muted">· ${esc(keyRef(ref).name)}</span>` : ""}</p>
       <p class="ee-when">🕒 ${esc(when)}</p>
-      <label class="ee-label" for="entryText">Write here</label>
+      ${church ? `<div class="ee-church"><label class="field">Lesson or sermon title<input id="eeTitle" type="text" autocomplete="off" value="${esc(e?.title || "")}" placeholder="For example: The Good Shepherd"></label>
+        <label class="field">Teacher or preacher<input id="eeSpeaker" type="text" autocomplete="off" value="${esc(e?.speaker || "")}"></label>
+        <label class="field">Passage<input id="eePassage" type="text" autocomplete="off" value="${esc(e?.passage || "")}" placeholder="For example: John 10:1-18"></label></div>` : ""}
+      <div class="ee-quotes" id="eeQuotes"></div>
+      <label class="ee-label" for="entryText">${church ? "Notes" : "Write here"}</label>
       <textarea id="entryText" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
+      <div class="ee-pics" id="eePics"></div>
+      <div class="ee-tools" role="group" aria-label="Add to this entry">
+        <button type="button" data-tool="verse">📖 Verse</button><button type="button" data-tool="sticker">🐑 Sticker</button>
+        <button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button>
+        <input type="file" id="eePhoto" accept="image/*" hidden>
+      </div>
+      <div class="ee-panel" id="eePanel" hidden></div>
       ${kind === "prayer" ? `<label class="answered"><input type="checkbox" id="entryAnswered" ${e?.answered ? "checked" : ""}> God answered this prayer${e?.answered ? ` <span class="muted">· ${fmtDate(e.answered)}</span>` : ""}</label>` : ""}
       <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
       <p class="ee-msg" id="entryMsg" role="status"></p></div>`;
-  const ta = $("#entryText");
+  const ta = $("#entryText"), panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
   addMic(box.querySelector(".entry-editor"), ta);
-  // Words are never lost: what they type is kept as they go, and Save finishes the entry.
-  const newId = id || `e${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const fields = () => ({ kind, text: ta.value.trim(), ...(ref ? { ref } : {}), quotes: draft.quotes, pics: draft.pics,
+    ...(church ? { title: $("#eeTitle").value.trim(), speaker: $("#eeSpeaker").value.trim(), passage: $("#eePassage").value.trim() } : {}) });
+  // Words are never lost: everything is kept as they go, and Save finishes the entry.
+  const keep = () => { const f = fields(); if (!entryHasContent(f)) return false; store.saveEntry(newId, f); return true; };
   let t = 0;
-  ta.addEventListener("input", () => {
-    clearTimeout(t);
-    t = setTimeout(() => {
-      if (!ta.value.trim()) return;
-      store.saveEntry(newId, { kind, text: ta.value.trim(), ...(ref ? { ref } : {}) });
-      editing = { id: newId, kind, ref };
-      $("#entryMsg").textContent = "Kept as you type. Tap Save when you're done.";
-    }, 700);
+  const keepSoon = () => { clearTimeout(t); t = setTimeout(() => { if (keep()) msg("Kept as you go. Tap Save when you're done."); }, 700); };
+  const drawQuotes = () => {
+    const q = $("#eeQuotes");
+    q.innerHTML = draft.quotes.map((x, i) => quoteCardHtml(x, i)).join("");
+    q.querySelectorAll("[data-qtag]").forEach((b) => b.addEventListener("click", () => { const i = Number(b.closest("[data-q]").dataset.q); draft.quotes[i].tag = b.dataset.qtag; drawQuotes(); keep(); }));
+    q.querySelectorAll(".q-note").forEach((n) => n.addEventListener("input", () => { draft.quotes[Number(n.closest("[data-q]").dataset.q)].note = n.value; keepSoon(); }));
+    q.querySelectorAll("[data-qx]").forEach((b) => b.addEventListener("click", () => { draft.quotes.splice(Number(b.dataset.qx), 1); drawQuotes(); keep(); }));
+  };
+  const drawPics = () => {
+    const el = $("#eePics");
+    el.innerHTML = draft.pics.map((x, i) => picHtml(x, i)).join("");
+    el.querySelectorAll("[data-px]").forEach((b) => b.addEventListener("click", () => { draft.pics.splice(Number(b.dataset.px), 1); drawPics(); keep(); }));
+    el.querySelectorAll("[data-cedit]").forEach((b) => b.addEventListener("click", () => chartForm(Number(b.dataset.cedit))));
+  };
+  const addPic = (pic) => { draft.pics.push(pic); drawPics(); keep(); msg("Added ✓"); };
+  const closePanel = () => { panel.hidden = true; panel.innerHTML = ""; };
+  function chartForm(editAt = -1) {
+    const c = editAt >= 0 ? draft.pics[editAt] : { kind: "venn" };
+    const f = (id, label, v, multi, ph = "") => multi ? `<label class="field">${label}<textarea id="${id}" rows="3" placeholder="${esc(ph)}">${esc(v || "")}</textarea></label>` : `<label class="field">${label}<input id="${id}" type="text" value="${esc(v || "")}" placeholder="${esc(ph)}"></label>`;
+    const body = (kd) => kd === "venn" ? `${f("cA", "Left circle", c.a, false, "Moses")}${f("cB", "Right circle", c.b, false, "Jesus")}${f("cL", "Only on the left (one per line)", c.left, true)}${f("cBoth", "In both", c.both, true)}${f("cR", "Only on the right", c.right, true)}`
+      : kd === "timeline" ? f("cItems", "Events in order (one per line)", c.items, true, "Creation\nThe flood\nAbraham's call")
+      : `${f("cA", "Left heading", c.a, false, "Law")}${f("cB", "Right heading", c.b, false, "Grace")}${f("cL", "Left points (one per line)", c.left, true)}${f("cR", "Right points", c.right, true)}`;
+    panel.hidden = false;
+    panel.innerHTML = `<div class="chart-kinds" role="group">${[["venn", "◎ Venn circles"], ["timeline", "➝ Timeline"], ["compare", "▥ Compare"]].map(([v, l]) => `<button type="button" data-ck="${v}" aria-pressed="${c.kind === v}">${l}</button>`).join("")}</div>
+      <div id="cBody">${body(c.kind)}</div><div class="ee-acts"><button type="button" class="small" id="cDone">${editAt >= 0 ? "Update chart" : "Add chart"}</button><button type="button" class="small" id="cCancel">Cancel</button></div>`;
+    panel.querySelectorAll("[data-ck]").forEach((b) => b.addEventListener("click", () => { c.kind = b.dataset.ck; panel.querySelectorAll("[data-ck]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); $("#cBody").innerHTML = body(c.kind); }));
+    $("#cCancel").addEventListener("click", closePanel);
+    $("#cDone").addEventListener("click", () => {
+      const v = (id) => panel.querySelector(`#${id}`)?.value ?? "";
+      const chart = c.kind === "timeline" ? { t: "chart", kind: "timeline", items: v("cItems") } : { t: "chart", kind: c.kind, a: v("cA"), b: v("cB"), left: v("cL"), right: v("cR"), ...(c.kind === "venn" ? { both: v("cBoth") } : {}) };
+      if (editAt >= 0) { draft.pics[editAt] = chart; drawPics(); keep(); } else addPic(chart);
+      closePanel();
+    });
+  }
+  const tools = {
+    verse() {
+      panel.hidden = false;
+      panel.innerHTML = `<form class="jump-row" id="eeVerseForm"><input id="eeVerseIn" type="text" placeholder="John 3:16, or Psalm 23:1-3" autocomplete="off"><button class="small" type="submit">Add</button></form>
+        <p class="muted small-print">Or, while you read, tap a verse number and choose Add to notes.</p>`;
+      $("#eeVerseIn").focus();
+      $("#eeVerseForm").addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        msg("Looking up the verse…");
+        try { const q = await fetchVerses($("#eeVerseIn").value); draft.quotes.push({ ...q, ver: verLabel(), tag: "comment", note: "" }); drawQuotes(); keep(); closePanel(); msg("Verse added ✓"); }
+        catch (err) { msg(err.message || "That verse couldn't be found."); }
+      });
+    },
+    sticker() {
+      panel.hidden = false;
+      let grp = "people";
+      const draw = () => {
+        panel.innerHTML = `<div class="sticker-tabs" role="tablist">${STICKER_GROUPS.map(([g, l]) => `<button type="button" role="tab" data-sg="${g}" aria-selected="${g === grp}">${l}</button>`).join("")}</div>
+          <div class="sticker-grid">${Object.entries(STICKERS).filter(([, v]) => v[0] === grp).map(([sid, v]) => `<button type="button" class="sticker-pick" data-sid="${sid}" title="${esc(v[1])}">${stickerSvg(sid)}<span>${esc(v[1])}</span></button>`).join("")}</div>
+          <button type="button" class="small" id="stDone">Done</button>`;
+        panel.querySelectorAll("[data-sg]").forEach((b) => b.addEventListener("click", () => { grp = b.dataset.sg; draw(); }));
+        panel.querySelectorAll("[data-sid]").forEach((b) => b.addEventListener("click", () => addPic({ t: "sticker", id: b.dataset.sid })));
+        $("#stDone").addEventListener("click", closePanel);
+      };
+      draw();
+    },
+    photo() { $("#eePhoto").click(); },
+    map() {
+      panel.hidden = false;
+      const maps = sampleChapters().filter((key) => keyRef(key) && notesFor(keyRef(key).book, keyRef(key).chapter)?.map);
+      panel.innerHTML = `<p class="muted small-print">Add a study map to this entry:</p><div class="row">${maps.map((key) => `<button type="button" class="small" data-mapkey="${key}">${esc(keyRef(key).name)}</button>`).join("")}</div>`;
+      panel.querySelectorAll("[data-mapkey]").forEach((b) => b.addEventListener("click", () => { addPic({ t: "map", key: b.dataset.mapkey }); closePanel(); }));
+    },
+    chart() { chartForm(); },
+  };
+  box.querySelectorAll("[data-tool]").forEach((b) => b.addEventListener("click", () => { if (!panel.hidden && panel.dataset.tool === b.dataset.tool) { closePanel(); return; } panel.dataset.tool = b.dataset.tool; tools[b.dataset.tool](); }));
+  $("#eePhoto").addEventListener("change", async (ev) => {
+    const file = ev.target.files?.[0];
+    ev.target.value = "";
+    if (!file) return;
+    const photos = store.allEntries().reduce((n, x) => n + (x.pics || []).filter((p) => p.t === "photo").length, 0);
+    if (photos >= 60) { msg("You've added 60 photos to your journal, the most it can keep and sync. Remove an older one to add more."); return; }
+    msg("Adding the photo…");
+    try { addPic({ t: "photo", src: await shrinkPhoto(file), alt: file.name.replace(/\.[^.]+$/, "") }); }
+    catch (err) { msg(err.message); }
   });
+  drawQuotes(); drawPics();
+  if (addQuote) keep();
+  ta.addEventListener("input", keepSoon);
+  box.querySelectorAll("#eeTitle, #eeSpeaker, #eePassage").forEach((i) => i.addEventListener("input", keepSoon));
   $("#entrySave").addEventListener("click", () => {
     clearTimeout(t);
-    const text = ta.value.trim();
-    if (!text) { $("#entryMsg").textContent = "Write something first, then tap Save."; ta.focus(); return; }
+    const f = fields();
+    if (!entryHasContent(f)) { msg("Write something first, then tap Save."); ta.focus(); return; }
     const ans = $("#entryAnswered");
     const was = store.entry(newId);
-    store.saveEntry(newId, { kind, text, ...(ref ? { ref } : {}), ...(ans ? { answered: ans.checked ? (was?.answered || new Date().toISOString()) : "" } : {}) });
+    store.saveEntry(newId, { ...f, ...(ans ? { answered: ans.checked ? (was?.answered || new Date().toISOString()) : "" } : {}) });
     if (ans?.checked && !was?.answered) celebrate("small");
     editing = null;
     box.innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's in your journal below.</p>`;
     renderJournalList(newId);
-    if (box.id === "chapterEntryHost") { renderJournal(); $("#chapterEntryHost").innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's listed below, and in My Bible, under Journal.</p>`; }
+    if (box.id === "chapterEntryHost") { renderJournal(); $("#chapterEntryHost").innerHTML = `<p class="ee-saved" role="status">Saved ✓ ${esc(stampNow())}. It's listed below, and in Journal.</p>`; }
   });
   $("#entryCancel").addEventListener("click", () => {
     clearTimeout(t);
-    if (ta.value.trim()) store.saveEntry(newId, { kind, text: ta.value.trim(), ...(ref ? { ref } : {}) });
+    keep();
     editing = null; box.innerHTML = ""; renderJournalList();
     if (box.id === "chapterEntryHost") renderJournal();
   });
@@ -1533,9 +1776,15 @@ function openEntry({ id = null, kind = "day", ref = null } = {}, box = $("#entry
     if (box.id === "chapterEntryHost") renderJournal();
   });
   box.scrollIntoView({ block: "start", behavior: "smooth" });
-  if (!e) ta.focus();
+  if (!e && !addQuote) (church ? $("#eeTitle") : ta).focus();
+  if (addQuote) setTimeout(() => box.querySelector(".q-note")?.focus({ preventScroll: true }), 300);
 }
-/* ---------- The keepsake book: "My Journey, a journal by…" (print or save as PDF) ---------- */
+// A short line for an entry in a list: its words, or its first verse, plus what's attached.
+function entrySnippet(e) {
+  const t = (e.title ? `${e.title}${e.speaker ? ` (${e.speaker})` : ""}. ` : "") + (e.text || (e.quotes?.[0] ? `“${e.quotes[0].text}” ${refKeyName(e.quotes[0].ref)}` : ""));
+  const extras = [e.quotes?.length && `📖 ${e.quotes.length}`, e.pics?.filter((p) => p.t === "photo").length && `📷 ${e.pics.filter((p) => p.t === "photo").length}`, e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join(""), e.pics?.some((p) => p.t === "map") && "🗺️", e.pics?.some((p) => p.t === "chart") && "📊"].filter(Boolean);
+  return `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}${extras.length ? `<span class="entry-extras">${extras.join(" ")}</span>` : ""}`;
+}
 async function makeJournalBook() {
   if (journalLocked()) { mascotSay("Unlock your journal first."); return; }
   const name = (store.get("name") || "").trim();
@@ -1543,7 +1792,9 @@ async function makeJournalBook() {
   // Everything written, by day: new entries, older daily pages, and chapter journals.
   const days = {};
   const add = (day, item) => { (days[day] ||= []).push(item); };
-  for (const e of store.allEntries()) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", ref: e.ref, parts: [["", e.text]], answered: e.answered });
+  for (const e of store.allEntries()) add(dayOf(e.created), { at: e.created, kind: KIND[e.kind]?.label || "Journal", ref: e.ref, parts: [["", e.text]], answered: e.answered,
+    head: e.title ? `<p class="pb-lesson"><b>${esc(e.title)}</b>${e.speaker ? ` · ${esc(e.speaker)}` : ""}${e.passage ? ` · ${esc(e.passage)}` : ""}</p>` : "",
+    extra: (e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("") + ((e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : "") });
   for (const d of store.allDiary()) add(d.day, { at: d.created || `${d.day}T12:00:00`, kind: "My day", parts: [["My day", d.text], ["Prayers", d.prayer], ["Gratitude", d.gratitude]], answered: d.answered });
   for (const j of store.allJournal()) add(dayOf(j.created || j.updated), { at: j.created || j.updated, kind: "Bible thoughts", ref: j.key, parts: [["Thoughts", j.text], ["Prayers", j.prayer], ["Gratitude", j.gratitude]], answered: j.answered });
   const order = Object.keys(days).sort();
@@ -1561,7 +1812,7 @@ async function makeJournalBook() {
       <h1>My Journey</h1><p class="pb-by">${name ? `a journal by ${esc(name)}` : "a journal"}</p>
       <p class="pb-range">${order.length > 1 ? `${esc(dayLabel(order[0]))} to ${esc(dayLabel(order[order.length - 1]))}` : order.length ? esc(dayLabel(order[0])) : ""}</p></section>
     ${order.length ? order.map((day) => `<article class="pb-day"><div class="pb-head">${seaScene(store.get("style"), { height: 60 })}</div><p class="pb-date">${esc(dayLabel(day))}</p>
-      ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => `<div class="pb-entry"><h3>${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""} <span class="pb-time">${esc(timeOf(it.at))}</span></h3>
+      ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => `<div class="pb-entry"><h3>${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""} <span class="pb-time">${esc(timeOf(it.at))}</span></h3>${it.head || ""}${it.extra || ""}
         ${it.parts.filter(([, t]) => (t || "").trim()).map(([label, t]) => `${label && it.parts.filter(([, x]) => (x || "").trim()).length > 1 ? `<h4>${esc(label)}</h4>` : ""}${para(t)}`).join("")}
         ${it.answered ? `<p class="pb-answered">Answered ✓ ${esc(fmtDate(it.answered))}</p>` : ""}</div>`).join("")}
       <aside class="pb-verse"><b>Verse of the day</b>${verses[day].words ? `<span>“${esc(verses[day].words)}”</span>` : `<span>${esc(verses[day].theme)}</span>`}<i>${esc(verses[day].ref)}</i></aside></article>`).join("")
@@ -1602,7 +1853,7 @@ function renderJournalList(justSaved = null) {
   const row = (it) => {
     if (it.type === "entry") {
       const e = it.e, k = KIND[e.kind] || KIND.day;
-      return `<button class="log-row entry-row er-${e.kind}${e.id === justSaved ? " just-saved" : ""}" data-entry="${e.id}"><strong>${k.icon} ${esc(k.label)}${e.ref ? ` · ${esc(keyRef(e.ref).name)}` : ""}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${snip(e.text)}</span></button>`;
+      return `<button class="log-row entry-row er-${e.kind}${e.id === justSaved ? " just-saved" : ""}" data-entry="${e.id}"><strong>${k.icon} ${esc(k.label)}${e.ref ? ` · ${esc(keyRef(e.ref).name)}` : ""}${e.answered ? " · answered ✓" : ""}</strong><small>${esc(stampNow(new Date(e.created)))}</small><span class="log-dates">${entrySnippet(e)}</span></button>`;
     }
     if (it.type === "diary") return `<button class="log-row is-daily" data-day="${it.d.day}"><strong>✎ My day</strong><small>${esc(dayLabel(it.d.day))}</small>${DIARY_BOXES.filter((b) => (it.d[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(it.d[b.field])}</span>`).join("")}</button>`;
     const j = it.j;
@@ -1853,6 +2104,8 @@ function initSettings() {
   $("#contrastHigh").checked = Boolean(store.get("contrast"));
   $("#contrastHigh").addEventListener("change", () => { store.set("contrast", $("#contrastHigh").checked); applyAppearance(); });
   $("#wordTap").checked = store.get("wordTap") !== false;
+  $("#followNotes").checked = store.get("followNotes") !== false;
+  $("#followNotes").addEventListener("change", (e) => { store.set("followNotes", e.target.checked); followKey = ""; });
   $("#wordTap").addEventListener("change", () => { store.set("wordTap", $("#wordTap").checked); syncStudyWords(); });
   $("#studyWords").checked = store.get("studyWords") !== false;
   $("#studyWords").addEventListener("change", () => { store.set("studyWords", $("#studyWords").checked); syncStudyWords(); });
@@ -2085,7 +2338,7 @@ const FEATURES = [
   { id: "trivia", label: "Trivia", hint: "Questions after each chapter" },
   { id: "games", label: "Bible games", hint: "Quiz yourself or play together, on Home and in this menu" },
   { id: "journal", label: "Chapter journal", hint: "Thoughts, prayers and gratitude under each chapter" },
-  { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in My study" },
+  { id: "diary", label: "Daily life journal", hint: "A dated page for each day, and the keepsake journal book, in Journal" },
   { id: "buddy", label: "Study buddy", hint: "The little stick-figure friend at the side. Tap him to ask anything. Drag him anywhere along the edge" },
   { id: "buddyvisits", label: "Study buddy says hi now and then", hint: "Once in a while he walks over to ask if you're wondering anything. A few times a day at most" },
   { id: "mascot", label: "Corner friend", hint: "The lamb or donkey in the Animated look" },
@@ -2210,7 +2463,7 @@ function mapSvg(map) {
   const KH = 22; // the key, in a band under the map
   const key = `<g class="map-key" transform="translate(0 ${H})"><rect class="map-key-band" width="${W}" height="${KH}"/>
     <text x="10" y="15"><tspan class="nm-then">Brown</tspan><tspan class="nm-key"> = Bible times</tspan><tspan class="nm-now" dx="10">Blue</tspan><tspan class="nm-key"> = today</tspan></text>
-    ${hasEden ? `<circle class="map-dot map-eden" cx="${W - 112}" cy="11" r="4"/><text class="nm-key" x="${W - 104}" y="15">Possible site of Eden</text>` : ""}</g>`;
+    ${hasEden ? `<circle class="map-dot map-eden" cx="${W - 112}" cy="11" r="4"/><text class="nm-key" x="${W - 104}" y="15">${esc(map.maybe || "Possible site of Eden")}</text>` : ""}</g>`;
   return `<svg class="notes-map" viewBox="0 0 ${W} ${H + KH}" role="img" aria-label="Map: ${esc(map.caption)}">
     <defs><clipPath id="mapClip"><rect width="${W}" height="${H + KH}" rx="14"/></clipPath></defs>
     <g clip-path="url(#mapClip)"><rect class="map-land" width="${W}" height="${H}"/>
@@ -2301,6 +2554,20 @@ async function fillStrongs(el, book, chapter) {
 
 /* ---------- Setting the stage: book introduction (and this chapter, where written) ---------- */
 // Open on a book's first chapter; a tap away on every other chapter.
+// "By the numbers": chapters, verses, its share of the Bible, and a fact worth knowing.
+function bookNumbersHtml(book) {
+  const bk = BOOK_BY_ID[book], verses = VERSES[book];
+  const sameT = BOOKS.filter((x) => x.testament === bk.testament), pos = sameT.findIndex((x) => x.id === book) + 1;
+  const ord = (n) => `${n}${["th", "st", "nd", "rd"][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10] || "th"}`;
+  const pct = (verses / TOTAL_VERSES) * 100;
+  const byLen = [...BOOKS].sort((a, c) => VERSES[c.id] - VERSES[a.id]), rank = byLen.findIndex((x) => x.id === book) + 1;
+  return `<h3 class="bi-h">By the numbers</h3><div class="bi-stats">
+    <div><b>${bk.chapters}</b><span>chapter${bk.chapters === 1 ? "" : "s"}</span></div>
+    <div><b>${verses.toLocaleString()}</b><span>verses</span></div>
+    <div><b>${pct < 0.1 ? "<0.1" : pct.toFixed(pct < 1 ? 2 : 1)}%</b><span>of the Bible</span></div>
+    <div><b>${ord(pos)}</b><span>of ${sameT.length} ${bk.testament === "OT" ? "Old" : "New"} Testament books</span></div></div>
+    <p class="bi-fact">${rank <= 10 ? `📏 The ${ord(rank) === "1st" ? "" : `${ord(rank)} `}longest book of the Bible by verses. ` : rank >= 57 ? `📏 One of the ten shortest books of the Bible. ` : ""}${BOOK_FACTS[book] ? `💡 ${esc(BOOK_FACTS[book])}` : `About ${Math.max(1, Math.round(verses * 26 / 150))} minute${Math.round(verses * 26 / 150) === 1 ? "" : "s"} to read aloud from start to finish.`}</p>`;
+}
 function renderBookIntro(book, chapter) {
   const box = $("#bookIntro");
   if (!box) return;
@@ -2310,18 +2577,21 @@ function renderBookIntro(book, chapter) {
   const row = (label, text) => (text ? `<div class="bi-row"><dt>${label}</dt><dd>${esc(text)}</dd></div>` : "");
   // Closed by default so the Bible text comes first; a one-line taste shows what's inside.
   const teaser = (ch || b.about || "").replace(/^(.{0,80}\S)\s.*$/s, (m, a) => (m.length > 82 ? `${a}…` : m));
-  box.innerHTML = `<summary><span class="bi-icon" aria-hidden="true">📜</span><span><strong>Setting the stage: ${esc(name)}${ch ? ` ${chapter}` : ""}</strong><small>${esc(teaser)}</small></span></summary>
+  box.innerHTML = `<summary>${BOOK_ART[book] ? `<span class="bi-art" aria-hidden="true">${BOOK_ART[book].map((id) => stickerSvg(id)).join("")}</span>` : `<span class="bi-icon" aria-hidden="true">📜</span>`}<span><strong>Setting the stage: ${esc(name)}${ch ? ` ${chapter}` : ""}</strong><small>${esc(teaser)}</small></span></summary>
     <div class="bi-body">
       ${ch ? `<p class="bi-chapter"><strong>In chapter ${chapter}:</strong> ${esc(ch)}</p>` : ""}
       ${b ? `<p class="bi-about">${esc(b.about)}</p>
       <dl class="bi-facts">${row("Written by", b.who)}${row("When", b.when)}${row("First readers", b.to)}${row("Setting", b.setting)}${row("Key verse", b.key)}</dl>
       ${b.views ? `<p class="bi-views"><strong>Where views differ:</strong> ${esc(b.views)}</p>` : ""}` : ""}
+      ${b ? bookNumbersHtml(book) : ""}
       ${OUTLINES[book] ? `<h3 class="bi-h">Outline of ${esc(name)}</h3><ol class="bi-outline">${OUTLINES[book].map(([r, what]) => `<li><button type="button" class="bi-ch" data-bi-ch="${parseInt(r, 10)}">${BOOK_BY_ID[book].chapters === 1 ? "" : `${r.includes("-") ? "Chapters" : "Chapter"} ${esc(r)}`}</button> ${esc(what)}</li>`).join("")}</ol>` : ""}
       <a class="bi-video" href="https://www.youtube.com/@bibleproject/search?query=${encodeURIComponent(`${name} overview`)}" target="_blank" rel="noopener">▶ Watch BibleProject's free overview of ${esc(name)} ↗</a>
       <p class="muted small-print">Introductions give the traditional view first and say where scholars differ. Scripture itself is the guide.</p>
     </div>`;
   box.querySelectorAll("[data-bi-ch]").forEach((x) => x.addEventListener("click", () => openChapter(book, Number(x.dataset.biCh))));
-  box.open = false;
+  // The start of every book opens with its synopsis, like the first page of a book in a study Bible.
+  box.open = chapter === 1 && Boolean(b);
+  box.classList.toggle("bi-start", chapter === 1);
   box.hidden = false;
 }
 
@@ -2601,7 +2871,7 @@ function renderNotes(book, chapter) {
     const s2 = secFor(notesTab);
     const kinds = s2.id === "views" ? s2.items.filter((it) => it.who !== "Common ground" && !it.extra).length : 0;
     body = (kinds > 1 ? `<p class="views-count">There are ${kinds} main views here.</p>` : "") + s2.items.map((it) => it.ref
-      ? `<div class="note-item verse-note"><div class="note-head"><button class="vref" data-verse="${esc(it.ref)}" aria-label="Go to verse ${esc(it.ref)}">${esc(it.ref)}</button><strong>${esc(it.head)}</strong>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
+      ? `<div class="note-item verse-note" data-start="${esc(String(it.ref).split(":")[1]?.match(/\d+/)?.[0] || "")}"><div class="note-head"><button class="vref" data-verse="${esc(it.ref)}" aria-label="Go to verse ${esc(it.ref)}">${esc(it.ref)}</button><strong>${esc(it.head)}</strong>${ev(it.ev)}</div><p>${esc(it.text)}${cite(it.src)}</p></div>`
       : it.word
       ? `<div class="note-item word-item"><div class="word-line"><span class="orig" lang="${s2.lang === "Hebrew" ? "he" : "el"}" dir="${s2.lang === "Hebrew" ? "rtl" : "ltr"}">${esc(it.word)}</span><span class="say">${esc(it.say)}</span><span class="means">“${esc(it.means)}”</span>${ev(it.ev)}</div>
         ${it.strongs ? `<p class="strongs"><span class="strongs-num">Strong's ${esc(it.strongs)}</span>${it.count ? ` Used ${esc(it.count)} in the ${s2.lang === "Hebrew" ? "Hebrew Old Testament" : "Greek New Testament"}.` : ""}</p>` : ""}

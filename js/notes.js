@@ -1,7 +1,9 @@
+import { BOOKS } from "./books.js";
 // Study notes for each chapter: a map with Bible-times and present-day names, history and
 // culture, geography, original-language words, scholars' views, and sources.
 // Every note carries an evidence label so it's clear what is firm and what is debated.
-// Full notes so far: Genesis 1 and 2, Psalm 23, Luke 2, Luke 5, John 1 and John 3. More are added book by book.
+// Full notes so far: Genesis 1-3, Exodus 14, Psalms 1 and 23, Isaiah 53, Matthew 5, Luke 2, 5 and 15,
+// John 1, 3 and 11, Acts 2, Romans 8, 1 Corinthians 13 and Revelation 21. More are added book by book.
 //
 // A source is a plain citation, or { text, url } when there's a page to open. Every source
 // gets a "Look it up" link either way (a library search when there's no page of its own).
@@ -90,6 +92,34 @@ const NEAR_EAST = {
     { lat: 26.6, lon: 35.0, then: "Red Sea", now: "Red Sea", angle: -55 },
     { lat: 27.5, lon: 50.0, then: "", now: "Persian Gulf", angle: -40 },
     { lat: 37.9, lon: 49.9, then: "", now: "Caspian Sea" },
+  ],
+};
+
+// Egypt's eastern delta and the Sinai, for the exodus (simplified from standard atlases).
+const SINAI = {
+  bounds: { lat: [27.6, 31.95], lon: [30.9, 35.62] },
+  water: [
+    // Mediterranean coast from the Nile mouths to Gaza
+    [[31.95, 30.9], [31.55, 30.9], [31.5, 31.5], [31.42, 31.81], [31.3, 32.1], [31.26, 32.3], [31.1, 32.6], [31.1, 33.0], [31.13, 33.8], [31.28, 34.24], [31.52, 34.45], [31.95, 34.7]],
+    // Gulf of Suez, the Red Sea and the Gulf of Aqaba
+    [[29.97, 32.55], [29.6, 32.35], [29.0, 32.62], [28.3, 33.05], [27.6, 33.75], [27.6, 35.5], [27.95, 35.2], [28.1, 34.82], [29.0, 34.86], [29.53, 35.0], [29.4, 34.9], [28.97, 34.68], [28.5, 34.52], [27.92, 34.32], [27.73, 34.25], [28.2, 33.62], [28.7, 33.2], [29.2, 32.9], [29.7, 32.7], [29.97, 32.58]],
+    // Lake Timsah, the Bitter Lakes, Lake Manzala, Lake Bardawil, the Dead Sea
+    [[30.6, 32.25], [30.59, 32.33], [30.55, 32.31], [30.56, 32.24]],
+    [[30.44, 32.3], [30.36, 32.45], [30.2, 32.5], [30.25, 32.36]],
+    [[31.42, 31.85], [31.25, 32.25], [31.14, 32.15], [31.3, 31.8]],
+    [[31.18, 32.85], [31.18, 33.3], [31.08, 33.25], [31.07, 32.9]],
+    [[31.78, 35.57], [31.5, 35.48], [31.1, 35.4], [31.05, 35.45], [31.5, 35.58]],
+  ],
+  rivers: [
+    [[27.6, 30.93], [28.3, 30.92], [29.07, 31.1], [29.6, 31.25], [30.05, 31.23], [30.2, 31.15], [30.6, 31.3], [31.0, 31.6], [31.42, 31.81]],
+    [[30.2, 31.15], [30.6, 30.97], [30.9, 30.9]],
+  ],
+  riverLabels: [{ lat: 28.55, lon: 31.2, then: "", now: "Nile", angle: -78 }],
+  waterLabels: [
+    { lat: 31.7, lon: 32.9, then: "The Great Sea", now: "Mediterranean Sea" },
+    { lat: 28.75, lon: 32.75, then: "", now: "Gulf of Suez", angle: -52 },
+    { lat: 28.5, lon: 34.93, then: "", now: "Gulf of Aqaba", angle: -76 },
+    { lat: 27.78, lon: 34.95, then: "Red Sea", now: "Red Sea" },
   ],
 };
 
@@ -528,10 +558,489 @@ export const NOTES = {
       brown: "Raymond E. Brown, The Gospel According to John XIII-XXI, Anchor Bible (Doubleday, 1970).",
     },
   },
+
+  "GEN.3": {
+    crossRefs: [
+      ["ROM.5", "Romans 5:12-19", "Through one man sin entered the world; through one Man, the gift of life"],
+      ["1CO.15", "1 Corinthians 15:21-22", "As in Adam all die, so in Christ all will be made alive"],
+      ["GAL.4", "Galatians 4:4", "God sent forth His Son, born of a woman"],
+      ["HEB.2", "Hebrews 2:14", "Through death He rendered powerless him who had the power of death"],
+      ["REV.12", "Revelation 12:9", "The serpent of old who is called the devil and Satan"],
+      ["REV.22", "Revelation 22:2-3", "The tree of life again, and no longer any curse"],
+    ],
+    intro: "The saddest chapter in Genesis, and one of the most hopeful. A cunning serpent questions God's word, the man and the woman eat from the one forbidden tree, and they hide. Yet God comes looking for them, clothes them, and speaks the Bible's first promise that evil will one day be crushed.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "3:1", head: "More crafty than any beast", ev: "strong", src: ["wenham", "mathews"], text: "A wordplay links the chapters: the man and woman were arummim, \"naked\" (2:25), and the serpent was arum, \"crafty\" (3:1). In Proverbs the same word can mean prudent (Proverbs 12:16), so it is cleverness that can go either way. The serpent's first move is a question that twists God's generous \"from any tree you may eat freely\" (2:16) into \"you shall not eat from any tree.\"" },
+        { ref: "3:4", head: "\"You surely will not die!\"", ev: "scripture", src: ["wenham"], text: "The serpent contradicts God word for word, the first lie in the Bible. Jesus later calls the devil \"a liar and the father of lies\" who \"was a murderer from the beginning\" (John 8:44)." },
+        { ref: "3:6", head: "Good for food, a delight, desirable", ev: "good", src: ["mathews", "collins"], text: "Three steps of temptation: the fruit looked good to eat, lovely to see, and promised wisdom. Many readers hear an echo in 1 John 2:16, \"the lust of the flesh and the lust of the eyes and the boastful pride of life,\" and in the three temptations of Jesus in the wilderness, where He answered each one with Scripture (Matthew 4:1-11)." },
+        { ref: "3:8", head: "The sound of the LORD God walking", ev: "debated", src: ["niehaus", "wenham"], text: "Most translations say God walked \"in the cool of the day,\" literally \"at the wind (ruach) of the day,\" the breezy evening. Hebrew scholar Jeffrey Niehaus argued in a peer-reviewed article that the phrase can mean \"in the wind of the storm,\" a mighty approach of God like the thunder at Sinai. Either way, the guilty pair hid from the God who once walked with them." },
+        { ref: "3:9", head: "\"Where are you?\"", ev: "scripture", src: ["wenham", "walton"], text: "The first question God asks in the Bible. The all-knowing God doesn't need the answer; He is inviting the man to come out and speak. The questions continue: \"Who told you?\" \"What is this you have done?\" God seeks before He judges." },
+        { ref: "3:15", head: "He shall bruise you on the head", ev: "debated", src: ["collins2", "irenaeus", "wenham"], text: "Often called the protoevangelium, the \"first gospel.\" Since at least Irenaeus (about AD 180), Christians have read it as a promise of one descendant of the woman who would crush the serpent while being wounded Himself. Linguist C. John Collins showed in a peer-reviewed study that when the Hebrew word \"seed\" takes singular pronouns, as \"he\" does here, it usually points to one person. Other scholars read it as the long struggle between humanity and evil." },
+        { ref: "3:21", head: "Garments of skin", ev: "good", src: ["wenham", "mathews"], text: "Fig leaves were their own idea; God makes them lasting clothes. The first thing God does after the judgment is an act of care. Many readers note that it cost an animal its life, the first hint of the sacrifices to come." },
+        { ref: "3:24", head: "Cherubim and the flaming sword", ev: "good", src: ["wenham2", "walton"], text: "Cherubim guard the way back to the tree of life, on the east side. Later, cherubim were woven into the tabernacle veil (Exodus 26:31) that closed off the Most Holy Place. When Jesus died, that veil was torn from top to bottom (Matthew 27:51), and the tree of life stands open again in Revelation 22:2." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Serpents in the ancient world", ev: "good", src: ["walton", "hoffmeier"], text: "Neighboring peoples feared and honored snakes. Egypt's pharaohs wore a rearing cobra, the uraeus, on their crowns, and Egyptian texts are full of spells against serpents. In the Babylonian Epic of Gilgamesh, a snake steals the plant that would have made the hero young again. Genesis turns this around: the serpent is only a creature God made (3:1), and it is put under a curse." },
+        { head: "Why \"apple\"?", ev: "good", src: ["mathews"], text: "Genesis never names the fruit. The apple came from European art and a pun in Latin, where malum means both \"evil\" and \"apple.\" Jewish teachers guessed a fig, grapes, wheat or a citron." },
+        { head: "Three thousand years of readers", ev: "good", src: ["irenaeus", "collins"], text: "Genesis 3 is one of the most discussed chapters ever written. Paul builds Romans 5 on it, John Milton's Paradise Lost (1667) retold it in more than 10,000 lines of poetry, and its words \"by the sweat of your face\" are still a common saying." },
+      ] },
+      { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
+        { word: "נָחָשׁ", say: "nachash", strongs: "H5175", count: "about 31 times", means: "serpent, snake", ev: "strong", src: ["halot"], text: "The ordinary word for a snake. It is also the bronze serpent Moses lifted up (Numbers 21:9), which Jesus compared to His own lifting up on the cross (John 3:14)." },
+        { word: "אַיֶּכָּה", say: "ayyekkah", strongs: "H335", count: "once in this form", means: "where are you?", ev: "strong", src: ["halot", "wenham"], text: "One short word in Hebrew. Jewish and Christian writers have long heard it as God's question to every person who hides." },
+        { word: "זֶרַע", say: "zera", strongs: "H2233", count: "about 229 times", means: "seed, offspring", ev: "strong", src: ["halot", "collins2"], text: "Like the English word \"offspring,\" it can mean one child or many descendants. Paul makes a point of this in Galatians 3:16: \"to your seed,\" that is, Christ." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "A real first couple in history", who: "Historical reading", src: ["collins", "mathews"], text: "Many scholars read Adam and Eve as real people whose choice brought sin and death into the world. They point to the family line from Adam to Abraham (Genesis 5; 11), and to Jesus and Paul, who speak of Adam as a real person (Matthew 19:4; Romans 5:14)." },
+        { head: "History told in picture language", who: "Literary-historical reading", src: ["wenham", "walton"], text: "Others say Genesis 3 tells something that truly happened using symbols ancient readers knew well: a talking serpent, sacred trees and guardian cherubim. The point is real: people turned from God and the world was changed. The details are painted, not photographed." },
+        { head: "Every person's story", who: "Representative reading", src: ["walton"], text: "Some scholars stress that \"Adam\" means \"human,\" so the chapter is also the story of every one of us: tempted, doubting God's goodness, hiding, blaming. Most who hold this still see a real beginning to human sin behind it." },
+      ] },
+    ],
+    sources: {
+      wenham: "Gordon J. Wenham, Genesis 1-15, Word Biblical Commentary 1 (Word, 1987).",
+      wenham2: "Gordon J. Wenham, \"Sanctuary Symbolism in the Garden of Eden Story,\" Proceedings of the Ninth World Congress of Jewish Studies (1986): 19-25.",
+      mathews: "Kenneth A. Mathews, Genesis 1-11:26, New American Commentary (Broadman & Holman, 1996).",
+      collins: "C. John Collins, Genesis 1-4: A Linguistic, Literary, and Theological Commentary (P&R, 2006).",
+      collins2: "C. John Collins, \"A Syntactical Note (Genesis 3:15): Is the Woman's Seed Singular or Plural?\" Tyndale Bulletin 48, no. 1 (1997): 139-148.",
+      niehaus: "Jeffrey J. Niehaus, \"In the Wind of the Storm: Another Look at Genesis III 8,\" Vetus Testamentum 44, no. 2 (1994): 263-267.",
+      walton: "John H. Walton, Genesis, NIV Application Commentary (Zondervan, 2001).",
+      halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+      irenaeus: "Irenaeus of Lyon, Against Heresies 5.21 (about AD 180).",
+      hoffmeier: "James K. Hoffmeier, Israel in Egypt: The Evidence for the Authenticity of the Exodus Tradition (Oxford University Press, 1997).",
+    },
+  },
+
+  "EXO.14": {
+    crossRefs: [
+      ["EXO.15", "Exodus 15:1-21", "The Song of the Sea, one of the oldest poems in the Bible"],
+      ["PSA.77", "Psalm 77:16-20", "Your way was in the sea, though Your footprints were not seen"],
+      ["ISA.43", "Isaiah 43:16-19", "The LORD who makes a way through the sea will do a new thing"],
+      ["1CO.10", "1 Corinthians 10:1-2", "Our fathers all passed through the sea"],
+      ["HEB.11", "Hebrews 11:29", "By faith they passed through the Red Sea as though on dry land"],
+      ["JOS.4", "Joshua 4:23", "The Jordan dried up as the Red Sea was dried up"],
+    ],
+    intro: "Trapped between the sea and Pharaoh's chariots, Israel panics. Moses answers, \"The LORD will fight for you while you keep silent.\" An east wind blows all night, the waters part, and a nation of former slaves walks through on dry ground. It is the Old Testament's great picture of rescue.",
+    map: {
+      outline: SINAI,
+      maybe: "Possible crossing site",
+      caption: "The exact crossing point is not known, and scholars suggest several. The main proposals are marked. Exodus gives names (Pi-hahiroth, Migdol, Baal-zephon) that have not been located for certain.",
+      places: [
+        { lat: 30.8, lon: 31.83, side: "left", then: "Rameses", now: "Qantir, Egypt", note: "Israel set out from Rameses (12:37). Excavations at Qantir found the great city Pi-Ramesses, built under Ramesses II in the 1200s BC." },
+        { lat: 30.55, lon: 32.1, side: "left", dy: 12, then: "Succoth", now: "Tell el-Maskhuta", note: "The first stop (12:37). Many identify it with the region of Tjeku in the Wadi Tumilat, a natural route east out of Egypt." },
+        { lat: 30.4, lon: 32.38, kind: "eden", side: "right", dy: -8, then: "Crossing? (lakes view)", now: "Lake Timsah / Bitter Lakes", note: "Many scholars, including James Hoffmeier, favor the lakes and marshes along today's Suez Canal. Yam suph can mean \"Sea of Reeds,\" and reeds grow in fresh or brackish water like these." },
+        { lat: 29.9, lon: 32.6, kind: "eden", side: "right", dy: 4, then: "Crossing? (Gulf of Suez)", now: "Head of the Gulf of Suez", note: "Others place the crossing at the northern tip of the Red Sea's western arm, deep water that fits \"the waters were a wall to them.\"" },
+        { lat: 28.97, lon: 34.65, kind: "eden", side: "left", then: "Crossing? (Gulf of Aqaba)", now: "Nuweiba, Egypt", note: "A smaller group places it across the Gulf of Aqaba, with Mount Sinai in Arabia. Most archaeologists find little support for this view." },
+        { lat: 28.54, lon: 33.97, side: "left", then: "Mount Sinai?", now: "Jebel Musa", note: "The traditional Mount Sinai, honored since at least the 300s AD, where St. Catherine's Monastery stands today." },
+      ],
+    },
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "14:2", head: "Turn back and camp by the sea", ev: "good", src: ["hoffmeier", "stuart"], text: "God leads Israel into what looks like a trap on purpose, so that Pharaoh will think they are lost and \"shut in by the wilderness\" (14:3). Migdol is an Egyptian word for a watchtower, and Baal-zephon was the name of a god, so these were likely a border fort and a shrine on Egypt's eastern frontier." },
+        { ref: "14:7", head: "Six hundred select chariots", ev: "strong", src: ["kitchen"], text: "Egypt's two-man chariots were the tanks of the ancient world, light and fast on flat ground. Egyptian reliefs of Ramesses II at the Battle of Kadesh (about 1274 BC) show hundreds of them in action. In mud or sand their wheels were a weakness, as 14:25 notes." },
+        { ref: "14:13", head: "Do not fear! Stand by and see", ev: "scripture", src: ["durham"], text: "Three commands to a terrified crowd: do not fear, stand firm, see. Then the line many have taken to heart in hard times: \"The LORD will fight for you while you keep silent\" (14:14)." },
+        { ref: "14:19", head: "The angel and the pillar", ev: "scripture", src: ["stuart"], text: "The pillar of cloud moves from the front of Israel to the back, standing between the two camps. It is dark to Egypt and light to Israel all night (14:20), the same cloud that would later fill the tabernacle (40:34)." },
+        { ref: "14:21", head: "A strong east wind all night", ev: "good", src: ["drews", "stuart"], text: "The Bible says God used a wind, and it took all night. A 2010 peer-reviewed study in PLoS ONE by Carl Drews and Weiqing Han modeled a steady wind of about 63 miles per hour blowing for 12 hours over a shallow lagoon in the eastern Nile Delta. It could push the water back and open a land bridge about 2.5 miles long and 3 miles wide for about four hours. Science can describe how a wind moves water; Exodus tells us who sent it, and when." },
+        { ref: "14:22", head: "The waters were like a wall", ev: "scripture", src: ["durham"], text: "\"Wall\" is the ordinary Hebrew word for a city wall (chomah). The poem in the next chapter says the waters \"stood up like a heap\" (15:8). The writers want us to see a way made where there was none." },
+        { ref: "14:31", head: "They believed in the LORD and in Moses", ev: "scripture", src: ["stuart"], text: "The chapter ends with fear turned to faith: the people \"feared the LORD\" in a new way, with awe instead of panic. The first time Israel is said to believe the LORD in Exodus was in 4:31; here it is tested and made firm." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Israel in Egyptian records", ev: "strong", src: ["kitchen", "hoffmeier"], text: "The Merneptah Stele, carved about 1208 BC and now in the Cairo Museum, is the oldest mention of Israel outside the Bible: \"Israel is laid waste, his seed is not.\" It shows Israel was already a people in Canaan by then. Egyptian texts never mention the exodus; ancient kings rarely recorded their defeats." },
+        { head: "When did it happen?", ev: "debated", src: ["kitchen", "hoffmeier", "stuart"], text: "Scholars propose two main dates. An earlier date, about 1446 BC, comes from 1 Kings 6:1 (480 years before Solomon's temple). A later date, about 1260 BC, fits the city name Rameses (Exodus 1:11) and building in the time of Ramesses II. Both views are held by careful scholars who accept the event as historical." },
+        { head: "Remembered every year", ev: "good", src: ["durham"], text: "For more than three thousand years, Jewish families have retold this night at Passover. Israel's poets sing of it again and again (Psalms 66, 77, 78, 106, 114, 136), and Paul sees in it a picture of baptism (1 Corinthians 10:1-2)." },
+      ] },
+      { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
+        { word: "יַם־סוּף", say: "yam suph", strongs: "H3220 + H5488", count: "about 24 times", means: "Sea of Reeds; the Red Sea", ev: "debated", src: ["halot", "hoffmeier"], text: "Suph is the word for the reeds where baby Moses' basket was placed (2:3). So many scholars translate \"Sea of Reeds.\" Yet the same name is used for the Gulf of Aqaba (1 Kings 9:26), so it can mean the Red Sea and its gulfs too. The ancient Greek translation called it the Red Sea, and most English Bibles follow." },
+        { word: "יְשׁוּעָה", say: "yeshuah", strongs: "H3444", count: "about 78 times", means: "salvation, rescue", ev: "strong", src: ["halot"], text: "\"See the salvation of the LORD\" (14:13) uses the word that gives us the name Yeshua, Jesus: \"the LORD saves.\"" },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "A miracle that used nature", who: "Providential view", src: ["stuart", "drews"], text: "Many scholars stress that the text itself names the means: a strong east wind all night (14:21). The miracle is in the timing, the place and the outcome: the sea opens when Moses lifts his staff and closes on the army at dawn." },
+        { head: "A miracle beyond nature", who: "Supernatural view", src: ["durham", "kitchen"], text: "Others point out that walls of water standing on both sides (14:22) go beyond what any wind alone could do. On this view, the wind is part of the story, but the event is a direct act of God that cannot be explained by natural forces." },
+        { head: "Where it happened", who: "Location debate", src: ["hoffmeier", "kitchen"], text: "Scholars who accept the event still disagree on the place: the lakes along today's Suez Canal, the Gulf of Suez, or less often the Gulf of Aqaba. The map shows each. Exodus gives local place names that were clear to its first readers but have not been found for certain." },
+      ] },
+    ],
+    sources: {
+      hoffmeier: "James K. Hoffmeier, Israel in Egypt: The Evidence for the Authenticity of the Exodus Tradition (Oxford University Press, 1997).",
+      kitchen: "K. A. Kitchen, On the Reliability of the Old Testament (Eerdmans, 2003).",
+      stuart: "Douglas K. Stuart, Exodus, New American Commentary (B&H, 2006).",
+      durham: "John I. Durham, Exodus, Word Biblical Commentary 3 (Word, 1987).",
+      halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+      drews: { text: "Carl Drews and Weiqing Han, \"Dynamics of Wind Setdown at Suez and the Eastern Nile Delta,\" PLoS ONE 5, no. 8 (2010): e12481.", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2932978/" },
+    },
+  },
+
+  "PSA.1": {
+    crossRefs: [
+      ["JER.17", "Jeremiah 17:7-8", "Blessed is the man who trusts in the LORD; he will be like a tree planted by the water"],
+      ["JOS.1", "Joshua 1:8", "Meditate on it day and night"],
+      ["PSA.2", "Psalm 2:12", "How blessed are all who take refuge in Him: the other half of the doorway"],
+      ["PSA.119", "Psalm 119:97", "O how I love Your law! It is my meditation all the day"],
+      ["MAT.7", "Matthew 7:24-27", "Two builders, two foundations, two endings"],
+      ["MAT.3", "Matthew 3:12", "He will gather His wheat, but the chaff He will burn"],
+    ],
+    intro: "Six verses that open the whole book of Psalms. Two ways of life, two pictures (a fruitful tree and blowing chaff), and two endings. Happiness, the psalm says, grows from delighting in God's word.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "1:1", head: "How blessed is the man", ev: "strong", src: ["craigie", "halot"], text: "The first word of the Psalms is ashre, \"oh, the happiness of!\" It is an exclamation more than a rule. The verse describes a slow slide: walking with the wicked, then standing with sinners, then sitting with scoffers. Walk, stand, sit: bad company becomes a home." },
+        { ref: "1:2", head: "His delight is in the law of the LORD", ev: "good", src: ["craigie", "wilson"], text: "\"Law\" is torah, which means instruction or teaching, all that God has revealed, not only commands. \"Meditates\" (hagah) means to murmur or speak softly; ancient readers read aloud, so meditation meant saying God's words over and over, \"day and night.\"" },
+        { ref: "1:3", head: "Like a tree firmly planted", ev: "good", src: ["craigie", "goldingay"], text: "In a dry land, a tree beside irrigation channels (\"streams\" is the word for canals) stays green when the rains fail. Jeremiah 17:8 adds that such a tree \"will not fear when the heat comes.\" Its fruit comes \"in its season\": growth that is steady, not instant." },
+        { ref: "1:4", head: "Like chaff which the wind drives away", ev: "strong", src: ["craigie"], text: "At harvest, farmers tossed grain into the air with a winnowing fork on a hilltop threshing floor. The heavy grain fell back down; the light husks blew away. The wicked are not described as evil-looking, only as weightless." },
+        { ref: "1:6", head: "The LORD knows the way of the righteous", ev: "scripture", src: ["goldingay"], text: "\"Knows\" here means cares for and watches over, as in a close relationship. The psalm ends on the word \"perish\" (to'bed), but it begins with \"blessed\": a choice set before every reader." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The doorway to the Psalms", ev: "good", src: ["wilson", "craigie"], text: "Psalm 1 has no title and no author named. Many scholars think it was placed first on purpose, with Psalm 2, as an introduction to all 150 psalms. Psalm 1 begins with \"blessed\" and Psalm 2 ends with \"blessed\" (2:12), framing the doorway. Some early manuscripts of Acts 13:33 even count Psalm 2 as \"the first psalm.\"" },
+        { head: "By the numbers", ev: "strong", src: ["craigie"], text: "Psalms is the longest book in the Bible: 150 psalms and 2,461 verses, divided into five books (1-41, 42-72, 73-89, 90-106, 107-150). Psalm 1 has just 6 verses; Psalm 117 has 2 and Psalm 119 has 176." },
+      ] },
+      { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
+        { word: "אַשְׁרֵי", say: "ashre", strongs: "H835", count: "45 times, 26 of them in the Psalms", means: "how blessed, how happy", ev: "strong", src: ["halot"], text: "Always in the plural, as if to say \"oh, the many joys of.\" Jesus' Beatitudes in Matthew 5 use the Greek word that the ancient Greek Bible used for ashre." },
+        { word: "הָגָה", say: "hagah", strongs: "H1897", count: "about 25 times", means: "to meditate, murmur, growl", ev: "strong", src: ["halot"], text: "The same verb describes a lion growling over its prey (Isaiah 31:4) and a dove moaning (Isaiah 38:14). Meditation, in the Bible, is not emptying the mind but chewing on God's word out loud." },
+      ] },
+    ],
+    sources: {
+      craigie: "Peter C. Craigie, Psalms 1-50, Word Biblical Commentary 19 (Word, 1983).",
+      goldingay: "John Goldingay, Psalms 1-41, Baker Commentary on the Old Testament (Baker, 2006).",
+      wilson: "Gerald H. Wilson, The Editing of the Hebrew Psalter, SBL Dissertation Series 76 (Scholars Press, 1985).",
+      halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+    },
+  },
+
+  "ISA.53": {
+    crossRefs: [
+      ["ISA.52", "Isaiah 52:13-15", "The song begins: My servant will prosper and be high and lifted up"],
+      ["ACT.8", "Acts 8:30-35", "Philip explains this chapter to an Ethiopian official"],
+      ["1PE.2", "1 Peter 2:22-25", "By His wounds you were healed"],
+      ["MAT.8", "Matthew 8:16-17", "He Himself took our infirmities"],
+      ["LUK.22", "Luke 22:37", "He was numbered with transgressors"],
+      ["MRK.15", "Mark 15:27-28", "Crucified between two robbers"],
+    ],
+    intro: "The fourth and best-known Servant Song (52:13-53:12). A servant of the LORD is despised, wounded and silent like a lamb, and dies for the sins of others. Then, astonishingly, he sees light and is raised high. The New Testament quotes or echoes this chapter more than any other passage in Isaiah.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "53:1", head: "Who has believed our message?", ev: "scripture", src: ["oswalt"], text: "The speakers seem to be those who once misjudged the servant and now confess their mistake. John 12:38 and Romans 10:16 both quote this verse about people who did not believe the good news about Jesus." },
+        { ref: "53:2", head: "A root out of parched ground", ev: "good", src: ["motyer", "oswalt"], text: "A small shoot pushing up through dry, hard soil, with nothing about his looks to draw a crowd. Isaiah used the same picture of a shoot from the stump of Jesse, David's father (11:1)." },
+        { ref: "53:5", head: "Pierced through for our transgressions", ev: "strong", src: ["oswalt", "halot"], text: "\"Pierced\" (mecholal) means wounded through, often fatally. Notice the small words: he was wounded for \"our\" sins, and by \"his\" wounds \"we\" are healed. Scholars call this substitution: one suffers in the place of many. Peter quotes it in 1 Peter 2:24." },
+        { ref: "53:7", head: "Like a lamb led to slaughter", ev: "scripture", src: ["oswalt"], text: "Silent before his accusers, as Jesus was before the high priest and Pilate (Mark 14:61; 15:5). This is the very verse the Ethiopian official was reading when Philip ran up to his chariot (Acts 8:32)." },
+        { ref: "53:9", head: "His grave with the rich", ev: "debated", src: ["motyer", "oswalt"], text: "He was assigned a grave with the wicked, \"yet with a rich man in his death.\" The Hebrew is hard, and translators differ. Christian readers have long seen it fulfilled when Joseph of Arimathea, \"a rich man,\" laid Jesus in his own new tomb (Matthew 27:57-60)." },
+        { ref: "53:11", head: "He will see light", ev: "strong", src: ["dss", "oswalt"], text: "The traditional Hebrew text says \"he will see\" with no object. The Great Isaiah Scroll from Qumran, copied about 125 BC, and the ancient Greek translation both read \"he will see light.\" Many modern Bibles now follow them. After death, the servant sees light: words that sound like resurrection." },
+        { ref: "53:12", head: "He poured out Himself to death", ev: "scripture", src: ["motyer"], text: "The servant is \"numbered with the transgressors,\" a line Jesus applied to Himself the night before He died (Luke 22:37), yet He \"interceded for the transgressors,\" as Jesus prayed for those who crucified Him (Luke 23:34)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The Great Isaiah Scroll", ev: "strong", src: ["dss", "oswalt"], text: "Found in a cave near Qumran in 1947, the Great Isaiah Scroll is the only complete book of the Bible among the Dead Sea Scrolls: all 66 chapters on 17 sheets of leather sewn together, about 24 feet long. It is about 1,000 years older than the earlier Hebrew manuscripts we had, and it reads almost word for word the same in Isaiah 53. It is on display at the Shrine of the Book in Jerusalem and can be viewed online." },
+        { head: "Quoted across the New Testament", ev: "scripture", src: ["motyer"], text: "Verses from Isaiah 52:13-53:12 appear in Matthew, Mark, Luke, John, Acts, Romans, Hebrews and 1 Peter. When Philip was asked, \"Of whom does the prophet say this?\" he \"began from this Scripture and preached Jesus\" (Acts 8:34-35)." },
+      ] },
+      { id: "words", title: "Hebrew words", lang: "Hebrew", items: [
+        { word: "עֶבֶד", say: 'eved', strongs: "H5650", count: "about 800 times", means: "servant, slave", ev: "strong", src: ["halot"], text: "Moses, David and the prophets are all called God's servant. In Isaiah 40-55 the word becomes a title: \"My Servant,\" sometimes the nation of Israel (41:8), and in the four songs an individual who restores Israel itself (49:5-6)." },
+        { word: "אָשָׁם", say: "asham", strongs: "H817", count: "about 46 times", means: "guilt offering", ev: "strong", src: ["halot", "oswalt"], text: "In 53:10 the servant's life is made \"a guilt offering,\" the sacrifice in Leviticus 5-7 that paid for a wrong done. The chapter speaks in the language of the temple." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "One person, the coming Messiah", who: "Messianic reading", src: ["motyer", "oswalt"], text: "Many scholars read the servant as one individual. He suffers for \"my people\" (53:8), is innocent (53:9), and is silent in his suffering, things the prophets never say of the nation. Some ancient Jewish writings, such as the Aramaic Targum of Isaiah, also applied parts of this song to the Messiah. The New Testament writers read it as fulfilled in Jesus." },
+        { head: "The people of Israel", who: "Corporate reading", src: ["oswalt"], text: "Other interpreters, including the medieval Jewish scholar Rashi and many modern scholars, read the servant as Israel, the faithful nation suffering in exile among the nations, who will one day see that Israel suffered for them." },
+        { head: "Both at once", who: "Combined reading", src: ["motyer"], text: "Some see a pattern in Isaiah: the servant begins as the nation (41:8), but Israel fails, so one true Israelite fulfills Israel's calling. On this view, the servant is the One who embodies His people." },
+      ] },
+    ],
+    sources: {
+      oswalt: "John N. Oswalt, The Book of Isaiah, Chapters 40-66, New International Commentary on the Old Testament (Eerdmans, 1998).",
+      motyer: "J. Alec Motyer, The Prophecy of Isaiah (InterVarsity Press, 1993).",
+      halot: "Koehler and Baumgartner, The Hebrew and Aramaic Lexicon of the Old Testament (Brill, 1994-2000).",
+      dss: { text: "The Great Isaiah Scroll (1QIsa-a), Israel Museum, Jerusalem; put online with Google in 2011.", url: "https://www.npr.org/sections/thetwo-way/2011/09/26/140817335/dead-sea-scrolls-are-now-online" },
+    },
+  },
+
+  "MAT.5": {
+    crossRefs: [
+      ["LUK.6", "Luke 6:20-36", "Luke's shorter Sermon on the Plain"],
+      ["PSA.37", "Psalm 37:11", "The humble will inherit the land"],
+      ["ISA.61", "Isaiah 61:1-3", "To comfort all who mourn"],
+      ["EXO.20", "Exodus 20:13-14", "You shall not murder; you shall not commit adultery"],
+      ["LEV.19", "Leviticus 19:18", "You shall love your neighbor as yourself"],
+      ["ROM.12", "Romans 12:14-21", "Bless those who persecute you; overcome evil with good"],
+    ],
+    intro: "The opening of the Sermon on the Mount, the longest block of Jesus' teaching in the Gospels. It begins with eight blessings that turn the world's values upside down, calls His followers salt and light, and shows that God's law reaches the heart: anger, desire, honesty, and love even for enemies.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "5:1", head: "He went up on the mountain and sat down", ev: "good", src: ["france", "keener"], text: "Teachers in Jesus' day sat to teach. Matthew, writing for readers who knew their Scriptures, may want us to remember Moses, who received the law on a mountain. Here a greater Teacher gives its true meaning." },
+        { ref: "5:3", head: "Blessed are the poor in spirit", ev: "good", src: ["davies", "bdag"], text: "\"Blessed\" (makarios) describes the deep well-being of those God has favored, not a passing mood. The \"poor in spirit\" are those who know they have nothing to offer God. The first and eighth blessings both end with \"theirs is the kingdom of heaven,\" framing all eight." },
+        { ref: "5:5", head: "The gentle will inherit the earth", ev: "scripture", src: ["france"], text: "Almost word for word from Psalm 37:11. \"Gentle\" (praus) is strength under control; Jesus uses the same word of Himself: \"I am gentle and humble in heart\" (11:29)." },
+        { ref: "5:13", head: "You are the salt of the earth", ev: "debated", src: ["keener", "france"], text: "Salt preserved food and added flavor. Pure salt cannot lose its saltiness, but the salt people gathered from the Dead Sea area was mixed with other minerals; when the salt washed out, what was left was useless. Scholars debate the exact picture, but the point is plain: disciples who lose their difference are good for nothing." },
+        { ref: "5:18", head: "Not the smallest letter or stroke", ev: "strong", src: ["bdag", "france"], text: "The \"smallest letter\" (KJV \"jot\") is the Hebrew yod (י), about the size of an apostrophe. The \"stroke\" (\"tittle\") is a tiny hook that tells one Hebrew letter from another. Jesus says even these matter until all is accomplished." },
+        { ref: "5:22", head: "Guilty enough to go into the fiery hell", ev: "good", src: ["keener"], text: "\"Hell\" here is Gehenna, the Valley of Hinnom just southwest of Jerusalem, where some kings of Judah once sacrificed children (Jeremiah 7:31). It became a picture of final judgment. Visitors can still walk the valley today." },
+        { ref: "5:41", head: "Go with him two", ev: "strong", src: ["keener", "bdag"], text: "Roman soldiers could force a civilian to carry gear for one mile (the Greek word is angareuo, the same used when Simon of Cyrene was made to carry Jesus' cross, 27:32). A Roman mile was a thousand paces, about 1,620 yards. Jesus says: carry it a second mile, by choice." },
+        { ref: "5:44", head: "Love your enemies", ev: "scripture", src: ["france", "davies"], text: "The law said love your neighbor (Leviticus 19:18); some had added \"and hate your enemy.\" Jesus' command has no known exact parallel in earlier Jewish or Greek teaching. The reason He gives: this is what God is like, who sends rain on the just and the unjust." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The Mount of Beatitudes", ev: "good", src: ["keener"], text: "Tradition places the sermon on a hillside near Capernaum above the Sea of Galilee. A church was built near Tabgha by the 300s, and the present Church of the Beatitudes (1938) has eight sides, one for each blessing. The gentle slope forms a natural amphitheater where a speaking voice carries well." },
+        { head: "By the numbers", ev: "strong", src: ["france"], text: "The Sermon on the Mount fills three chapters (5-7) and 111 verses. It takes about fifteen minutes to read aloud. It contains the Lord's Prayer, the Golden Rule (7:12), and six \"You have heard... but I say to you\" teachings in this chapter alone." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "μακάριος", say: "makarios", strongs: "G3107", count: "50 times", means: "blessed, happy, fortunate", ev: "strong", src: ["bdag"], text: "Used in Greek for the gods and the very fortunate. Jesus gives it to the poor, the mourners and the persecuted." },
+        { word: "πραΰς", say: "praus", strongs: "G4239", count: "4 times", means: "gentle, meek, humble", ev: "strong", src: ["bdag"], text: "Used of a horse that has been tamed: still strong, but responsive. Three of its four uses are in Matthew (5:5; 11:29; 21:5)." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "A way of life for every follower", who: "Discipleship reading", src: ["france", "keener"], text: "Most scholars read the sermon as Jesus' description of life in God's kingdom for all His disciples now: hard, but meant to be lived, with God's help and forgiveness when we fall short." },
+        { head: "A mirror that shows our need", who: "Law-and-grace reading", src: ["davies"], text: "Others stress that no one keeps these words perfectly (who has never been angry?), so the sermon also shows our need for grace and points us to Jesus, who fulfilled the law (5:17)." },
+        { head: "Taken word for word", who: "Literal-ethics reading", src: ["davies"], text: "Some read commands like \"do not resist an evildoer\" and \"turn the other cheek\" as strict rules, refusing all violence. Others read them as vivid sayings about giving up revenge, while still allowing just government and self-defense." },
+      ] },
+    ],
+    sources: {
+      france: "R. T. France, The Gospel of Matthew, New International Commentary on the New Testament (Eerdmans, 2007).",
+      davies: "W. D. Davies and Dale C. Allison, The Gospel According to Saint Matthew, vol. 1, International Critical Commentary (T&T Clark, 1988).",
+      keener: "Craig S. Keener, The Gospel of Matthew: A Socio-Rhetorical Commentary (Eerdmans, 2009).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "LUK.15": {
+    crossRefs: [
+      ["MAT.18", "Matthew 18:12-14", "The shepherd who leaves the ninety-nine"],
+      ["EZK.34", "Ezekiel 34:11-16", "I Myself will search for My sheep"],
+      ["PSA.23", "Psalm 23:1-3", "The LORD is my shepherd; He restores my soul"],
+      ["LUK.19", "Luke 19:10", "The Son of Man came to seek and to save the lost"],
+      ["DEU.21", "Deuteronomy 21:17", "The firstborn receives a double share"],
+      ["ISA.53", "Isaiah 53:6", "All of us like sheep have gone astray"],
+    ],
+    intro: "Religious leaders grumble that Jesus eats with sinners, so He tells three stories: a lost sheep, a lost coin and a lost son. Each ends with a party. The last one leaves the older brother standing outside, and the story stops without telling us if he went in.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "15:2", head: "This man receives sinners and eats with them", ev: "good", src: ["bock2", "green"], text: "Sharing a meal meant welcome and friendship. To the Pharisees, eating with tax collectors and sinners made a teacher unclean. Jesus' three stories are His answer to this complaint." },
+        { ref: "15:4", head: "A hundred sheep", ev: "good", src: ["bailey"], text: "A hundred sheep was a fair-sized flock for one family, likely shared among relatives. The shepherd leaves the ninety-nine \"in the open pasture,\" probably with other shepherds, and carries the lost one home on his shoulders: a heavy load for a long walk." },
+        { ref: "15:8", head: "Ten silver coins", ev: "good", src: ["bock2", "green"], text: "A drachma was about a day's wage for a laborer. Village homes had small windows and dirt or stone floors, so she lights a lamp and sweeps. Some think the coins were part of her savings or wedding headdress." },
+        { ref: "15:12", head: "Give me the share of the estate", ev: "good", src: ["bailey", "bock2"], text: "The law gave a firstborn son a double share (Deuteronomy 21:17), so the younger of two sons would receive one third. Asking for it while his father was alive was shocking. Kenneth Bailey, who spent decades in Middle Eastern villages, said listeners there heard it as \"I wish you were dead.\"" },
+        { ref: "15:16", head: "The pods the swine were eating", ev: "strong", src: ["bock2"], text: "Carob pods, food for animals and the very poor. For a Jewish listener, tending pigs (unclean animals, Leviticus 11:7) was as low as a person could fall." },
+        { ref: "15:20", head: "His father ran", ev: "good", src: ["bailey", "green"], text: "Older men in that culture did not run; it meant hitching up a long robe and losing dignity in public. The father runs anyway and kisses his son before he can finish his speech. The robe, ring and sandals restore him as a son, not a hired man." },
+        { ref: "15:28", head: "He became angry and was not willing to go in", ev: "scripture", src: ["green"], text: "The father goes out to the older son too, and pleads with him. The story ends with an invitation hanging in the air, aimed at the grumblers of verse 2, and at anyone who thinks they have earned their place." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Three stories, one pattern", ev: "good", src: ["green"], text: "One sheep in a hundred, one coin in ten, one son in two: the stakes rise each time. Each story has something lost, a search or a waiting, finding, and a celebration with friends. Jesus says the same joy happens in heaven over one sinner who repents (15:7, 10)." },
+        { head: "One of the best-known stories ever told", ev: "good", src: ["bailey"], text: "The Prodigal Son has been painted by Rembrandt (about 1669, now in the Hermitage in St. Petersburg), set to music, and retold in countless forms. \"Prodigal\" means wastefully extravagant; some suggest the father, lavish in his love, is the most prodigal of all." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "ἀπόλλυμι", say: "apollymi", strongs: "G622", count: "about 90 times", means: "to lose; to be lost; to perish", ev: "strong", src: ["bdag"], text: "Used 8 times in this chapter. The same word is \"perish\" in John 3:16. Being lost, in Jesus' stories, means being away from the One who owns you and loves you." },
+        { word: "σπλαγχνίζομαι", say: "splanchnizomai", strongs: "G4697", count: "12 times, only in the Gospels", means: "to be moved with compassion", ev: "strong", src: ["bdag"], text: "From the word for the inner organs: a feeling deep in the gut. In the Gospels it describes Jesus, and three times characters in His stories: the forgiving master, the Good Samaritan, and this father (15:20)." },
+      ] },
+    ],
+    sources: {
+      bock2: "Darrell L. Bock, Luke 9:51-24:53, Baker Exegetical Commentary on the New Testament (Baker, 1996).",
+      green: "Joel B. Green, The Gospel of Luke, New International Commentary on the New Testament (Eerdmans, 1997).",
+      bailey: "Kenneth E. Bailey, The Cross and the Prodigal, 2nd ed. (InterVarsity Press, 2005).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "JHN.11": {
+    crossRefs: [
+      ["JHN.5", "John 5:25-29", "An hour is coming when the dead will hear the voice of the Son of God"],
+      ["LUK.10", "Luke 10:38-42", "Martha and Mary welcome Jesus"],
+      ["JHN.12", "John 12:1-11", "Dinner at Bethany, with Lazarus at the table"],
+      ["1TH.4", "1 Thessalonians 4:13-14", "We do not grieve as those who have no hope"],
+      ["1CO.15", "1 Corinthians 15:54-55", "O death, where is your victory?"],
+      ["HEB.4", "Hebrews 4:15", "We have a high priest who can sympathize with our weaknesses"],
+    ],
+    intro: "The seventh and greatest sign in John's Gospel. Jesus waits two days, arrives after Lazarus has been in the tomb four days, weeps with his sisters, and calls him out alive. The miracle that gives life sets in motion the plot to take Jesus' life.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "11:6", head: "He stayed two days longer", ev: "scripture", src: ["carson"], text: "The love in verse 5 and the delay in verse 6 are joined by \"so\": because He loved them, He waited. The delay will show something greater than a healing. Many readers find comfort here when God's timing seems slow." },
+        { ref: "11:17", head: "Four days in the tomb", ev: "good", src: ["keener", "carson"], text: "Burial happened the same day as death in that warm climate. Some later Jewish writings say the soul stayed near the body for three days; by the fourth there was no hope. Martha's \"by this time there will be a stench\" (11:39) makes the same point: Lazarus was truly dead." },
+        { ref: "11:18", head: "Fifteen stadia from Jerusalem", ev: "strong", src: ["carson"], text: "About 1.7 miles, on the eastern slope of the Mount of Olives. Close enough that many mourners came out from the city, which is how word of the miracle reached the leaders so fast." },
+        { ref: "11:25", head: "I am the resurrection and the life", ev: "scripture", src: ["carson", "keener"], text: "The fifth of seven \"I am\" sayings in John. Martha believed in a resurrection \"on the last day\" (11:24). Jesus says the resurrection is not only an event; it is a Person, standing in front of her." },
+        { ref: "11:33", head: "Deeply moved in spirit", ev: "debated", src: ["bdag", "carson"], text: "The Greek word (embrimaomai) usually means to snort with anger or indignation. Scholars debate what Jesus was angry at: most suggest death itself and the grief it causes, or the unbelief around Him. It is not anger at Mary." },
+        { ref: "11:35", head: "Jesus wept", ev: "strong", src: ["carson"], text: "The shortest verse in most English Bibles. Jesus knew He would raise Lazarus in minutes, yet He still wept with those who wept. The word (dakryo) means shedding tears quietly, different from the loud wailing of the mourners (11:33)." },
+        { ref: "11:44", head: "Unbind him, and let him go", ev: "good", src: ["keener"], text: "Bodies were wrapped in strips of linen with spices, and the face covered with a cloth. Lazarus comes out still bound and will die again someday. When Jesus rises, the linen is left lying in the tomb (20:6-7), because He will never die again." },
+        { ref: "11:50", head: "One man should die for the people", ev: "strong", src: ["carson", "caiaphas"], text: "Caiaphas meant it as cold politics. John says he spoke more truly than he knew (11:51-52). Caiaphas was high priest from about AD 18 to 36, and a decorated bone box inscribed \"Joseph son of Caiaphas\" was found in Jerusalem in 1990." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Bethany today", ev: "good", src: ["keener"], text: "The village is now called al-Eizariya, from the name Lazarus. Around AD 330 the historian Eusebius mentioned a place there pointed out as Lazarus' tomb, and visitors still climb down its steep steps today." },
+        { head: "Seven signs", ev: "good", src: ["carson"], text: "John chooses seven miracles he calls signs: water into wine, a healed official's son, a lame man, feeding the 5,000, walking on water, a man born blind, and Lazarus. Each points to who Jesus is, \"so that you may believe\" (20:31)." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "ἀνάστασις", say: "anastasis", strongs: "G386", count: "42 times", means: "resurrection, rising up", ev: "strong", src: ["bdag"], text: "Literally a \"standing up again.\" The word gives us the name Anastasia." },
+        { word: "δακρύω", say: "dakryo", strongs: "G1145", count: "once, John 11:35", means: "to shed tears", ev: "strong", src: ["bdag"], text: "Used only here in the New Testament. The mourners' loud weeping is klaio; Jesus' quiet tears are dakryo." },
+      ] },
+    ],
+    sources: {
+      carson: "D. A. Carson, The Gospel According to John, Pillar New Testament Commentary (Eerdmans, 1991).",
+      keener: "Craig S. Keener, The Gospel of John: A Commentary, 2 vols. (Hendrickson, 2003).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+      caiaphas: "Zvi Greenhut, \"Burial Cave of the Caiaphas Family,\" Biblical Archaeology Review 18, no. 5 (1992): 28-36.",
+    },
+  },
+
+  "ACT.2": {
+    crossRefs: [
+      ["JOL.2", "Joel 2:28-32", "I will pour out My Spirit on all mankind"],
+      ["LEV.23", "Leviticus 23:15-21", "The Feast of Weeks, fifty days after Passover"],
+      ["GEN.11", "Genesis 11:1-9", "At Babel the languages were confused; at Pentecost they were understood"],
+      ["PSA.16", "Psalm 16:8-11", "You will not abandon my soul to Hades"],
+      ["PSA.110", "Psalm 110:1", "Sit at My right hand"],
+      ["ACT.1", "Acts 1:8", "You will receive power when the Holy Spirit has come upon you"],
+    ],
+    intro: "Fifty days after Passover, the Holy Spirit comes with a sound like wind and tongues like fire. Galileans speak in the languages of pilgrims from across the world, Peter preaches the first Christian sermon, about 3,000 are baptized, and the first church gathers to learn, share, eat and pray.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "2:1", head: "The day of Pentecost", ev: "strong", src: ["bruce", "keener"], text: "Pentecost is Greek for \"fiftieth\": the Feast of Weeks (Shavuot), fifty days after Passover (Leviticus 23:15-16). It celebrated the wheat harvest, and later Jewish tradition linked it with the giving of the law at Sinai. Jerusalem's population swelled with pilgrims." },
+        { ref: "2:3", head: "Tongues as of fire", ev: "scripture", src: ["bock"], text: "Wind and fire are signs of God's presence: the burning bush, the fire on Sinai, the pillar of fire. John the Baptist had said Jesus would baptize \"with the Holy Spirit and fire\" (Luke 3:16)." },
+        { ref: "2:9", head: "Parthians, Medes and Elamites", ev: "good", src: ["keener", "bruce"], text: "The list moves from the east (modern Iran and Iraq) through Asia Minor (Turkey) to Egypt, Libya and Rome, then Crete and Arabia: fifteen peoples. It sketches the whole world of the Jewish dispersion, and many think it deliberately reverses the scattering at Babel." },
+        { ref: "2:15", head: "Only the third hour of the day", ev: "strong", src: ["bruce"], text: "Counting from sunrise, about 9 in the morning. On a feast day, devout Jews would not eat or drink until after the morning prayers, so Peter's reply was common sense." },
+        { ref: "2:24", head: "Impossible for Him to be held", ev: "scripture", src: ["bock"], text: "Peter's sermon quotes three passages: Joel 2, Psalm 16 and Psalm 110. His argument: David died and his tomb is still here (2:29), so Psalm 16 must speak of Someone else, whom God raised. \"We are all witnesses\" (2:32)." },
+        { ref: "2:38", head: "Repent, and each of you be baptized", ev: "debated", src: ["bock", "mantey", "marcus"], text: "Peter's answer joins repentance, baptism in the name of Jesus Christ, forgiveness of sins, and the gift of the Spirit. How these fit together is one of the most discussed verses in Acts; see Scholars and views." },
+        { ref: "2:41", head: "About three thousand souls", ev: "good", src: ["reich", "keener"], text: "Baptizing so many in one day needed a lot of water. Archaeologists have uncovered dozens of Jewish ritual immersion pools (mikvaot) near the southern steps of the Temple Mount, used by worshipers before entering the temple, along with the large pools of Siloam and Bethesda." },
+        { ref: "2:42", head: "Devoted to the apostles' teaching", ev: "scripture", src: ["bruce"], text: "Four marks of the first church: the apostles' teaching, fellowship, the breaking of bread, and prayer. \"Fellowship\" (koinonia) means sharing in common, and they did, even selling property to help those in need (2:44-45)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "The temple steps", ev: "strong", src: ["reich"], text: "The broad Southern Steps of the Temple Mount, excavated after 1967, can still be climbed today. Worshipers entered the temple from here, and many think it is a likely setting for a crowd of thousands hearing Peter." },
+        { head: "Jews from every nation", ev: "strong", src: ["keener"], text: "By the first century, more Jews lived outside the land of Israel than in it, in large communities in Alexandria, Babylon, Antioch and Rome. Pilgrims came for the feasts, and some settled in Jerusalem." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "πνεῦμα", say: "pneuma", strongs: "G4151", count: "about 380 times", means: "spirit, breath, wind", ev: "strong", src: ["bdag"], text: "One word for spirit, breath and wind, like Hebrew ruach. That is why the Spirit's coming sounds like a violent rushing wind (2:2), and why Jesus breathed on His disciples (John 20:22)." },
+        { word: "κοινωνία", say: "koinonia", strongs: "G2842", count: "19 times", means: "fellowship, sharing, partnership", ev: "strong", src: ["bdag"], text: "From koinos, \"common.\" It is used of sharing in Christ, in the Lord's Supper (1 Corinthians 10:16), and in giving money to the poor (Romans 15:26)." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "Baptism as the appointed meeting place", who: "Instrumental reading", src: ["bock", "marcus"], text: "Many scholars read \"for the forgiveness of sins\" (Greek eis) as purpose: be baptized in order to receive forgiveness. Classicist Ralph Marcus argued in the Journal of Biblical Literature (1951-52) that the Greek evidence for a \"because of\" meaning is weak. On this reading, God gives forgiveness to those who repent and are baptized, as the promised response of faith." },
+        { head: "Baptism as the response to forgiveness", who: "Declarative reading", src: ["mantey", "bock"], text: "Greek scholar Julius Mantey argued in the same journal (1951) that eis can sometimes mean \"because of\" or \"with reference to\": be baptized because your sins are forgiven. Others note that \"repent\" and \"forgiveness\" are linked elsewhere without baptism (Acts 3:19; 10:43). On this reading, forgiveness comes through faith and repentance, and baptism is the public sign of it." },
+        { head: "What both agree on", who: "Common ground", src: ["bruce"], text: "Both readings agree that the first Christians were baptized right away, that baptism was in Jesus' name, that it was joined with repentance and faith, and that it was never treated as optional in Acts. The question is how the parts fit together, not whether baptism matters." },
+      ] },
+    ],
+    sources: {
+      bruce: "F. F. Bruce, The Book of the Acts, rev. ed., New International Commentary on the New Testament (Eerdmans, 1988).",
+      bock: "Darrell L. Bock, Acts, Baker Exegetical Commentary on the New Testament (Baker, 2007).",
+      keener: "Craig S. Keener, Acts: An Exegetical Commentary, vol. 1 (Baker, 2012).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+      mantey: "Julius R. Mantey, \"The Causal Use of Eis in the New Testament,\" Journal of Biblical Literature 70 (1951): 45-48.",
+      marcus: "Ralph Marcus, \"On Causal Eis,\" Journal of Biblical Literature 70 (1951): 129-130; and \"The Elusive Causal Eis,\" Journal of Biblical Literature 71 (1952): 43-44.",
+      reich: "Ronny Reich, \"Ritual Baths,\" in The Oxford Encyclopedia of Archaeology in the Near East, vol. 4 (Oxford University Press, 1997).",
+    },
+  },
+
+  "ROM.8": {
+    crossRefs: [
+      ["ROM.5", "Romans 5:1-5", "Peace with God, and hope that does not disappoint"],
+      ["GAL.4", "Galatians 4:6-7", "God sent the Spirit of His Son into our hearts, crying, Abba! Father!"],
+      ["GEN.3", "Genesis 3:17-19", "The ground cursed: the groaning creation"],
+      ["PSA.44", "Psalm 44:22", "For Your sake we are killed all day long"],
+      ["2CO.4", "2 Corinthians 4:16-18", "Momentary, light affliction and an eternal weight of glory"],
+      ["REV.21", "Revelation 21:1-5", "Behold, I am making all things new"],
+    ],
+    intro: "Many call it the greatest chapter in Paul's letters. It begins with \"no condemnation\" and ends with \"no separation.\" In between: life in the Spirit, being God's children, a whole creation groaning for renewal, and the promise that nothing in all creation can separate us from God's love.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "8:1", head: "No condemnation", ev: "scripture", src: ["moo"], text: "\"Condemnation\" (katakrima) is a courtroom word for the sentence that follows a guilty verdict. After the struggle of chapter 7, Paul announces that for those \"in Christ Jesus\" the sentence has been carried out on Another (8:3)." },
+        { ref: "8:15", head: "Abba! Father!", ev: "strong", src: ["dunn", "bdag"], text: "Abba is Aramaic, the language Jesus spoke at home. It is what children and grown children called their fathers, warm but respectful. Jesus prayed this way in Gethsemane (Mark 14:36), and Paul keeps the Aramaic word even when writing in Greek to Rome." },
+        { ref: "8:17", head: "Heirs of God and fellow heirs with Christ", ev: "good", src: ["moo"], text: "In Roman law an adopted son received the full legal rights of a natural son, including inheritance. Paul says that through the Spirit of adoption (8:15) we share Christ's inheritance, \"if indeed we suffer with Him.\"" },
+        { ref: "8:22", head: "The whole creation groans", ev: "good", src: ["moo", "schreiner"], text: "Paul pictures creation like a woman in labor: real pain, but pain that leads to new life. The world was \"subjected to futility\" (8:20), recalling Genesis 3, and waits to be set free when God's children are revealed." },
+        { ref: "8:26", head: "The Spirit Himself intercedes", ev: "scripture", src: ["moo"], text: "Three groans in this passage: creation groans (8:22), we groan (8:23), and the Spirit prays for us \"with groanings too deep for words.\" When we don't know how to pray, we are not left alone." },
+        { ref: "8:28", head: "God causes all things to work together for good", ev: "scripture", src: ["moo", "schreiner"], text: "Not that everything is good, but that God works in everything for the good of those who love Him. The \"good\" is defined in the next verse: being made like Christ." },
+        { ref: "8:29", head: "Foreknew... predestined... called", ev: "debated", src: ["moo", "schreiner", "dunn"], text: "Five links in one golden chain: foreknown, predestined, called, justified, glorified. How God's choosing relates to human response has been debated for centuries; see Scholars and views." },
+        { ref: "8:37", head: "More than conquerors", ev: "strong", src: ["bdag"], text: "One word in Greek, hypernikao, \"super-conquer.\" Paul has just listed seven hardships, from tribulation to the sword, and concludes with ten things that cannot separate us from the love of God in Christ (8:38-39)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "A letter to a church Paul had never visited", ev: "strong", src: ["moo"], text: "Paul wrote Romans from Corinth about AD 57, to introduce himself before visiting. Christians in Rome had been through hard times: Emperor Claudius expelled Jews from Rome about AD 49 (Acts 18:2), and within a decade of this letter, Nero's persecution would make 8:36 painfully real." },
+        { head: "The Spirit chapter", ev: "strong", src: ["dunn"], text: "The word \"Spirit\" (pneuma) appears about 21 times in Romans 8, more than in any other chapter of Paul's letters, and only a few times in chapters 1-7." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "υἱοθεσία", say: "huiothesia", strongs: "G5206", count: "5 times, all in Paul", means: "adoption as a son", ev: "strong", src: ["bdag"], text: "A legal term from the Roman world: \"placing as a son.\" Used in Romans 8:15, 23; 9:4; Galatians 4:5; Ephesians 1:5." },
+        { word: "ὑπερνικάω", say: "hypernikao", strongs: "G5245", count: "once, Romans 8:37", means: "to be more than a conqueror", ev: "strong", src: ["bdag"], text: "Nike means victory. Paul adds hyper, \"beyond\": an overwhelming win, not just survival." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "God chooses individuals for salvation", who: "Individual election", src: ["schreiner"], text: "Some scholars read \"foreknew\" as God's loving choice of particular people beforehand (as in Amos 3:2, \"you only have I known\"). Those He chose He also calls, justifies and glorifies, and none drop out of the chain." },
+        { head: "God foresees who will trust Him", who: "Foreknowledge view", src: ["dunn", "moo"], text: "Others read \"foreknew\" as God knowing in advance who would freely respond in faith, and predestining them to be made like Christ. On this view the chain describes God's plan for believers, while each person's response remains real." },
+        { head: "God chooses a people in Christ", who: "Corporate election", src: ["dunn", "moo"], text: "Others note that Paul's \"you\" and \"we\" are plural, and that chapters 9-11 are about Israel and the nations. On this view God has chosen a people, those in Christ, and individuals share in that choice by being joined to Christ through faith." },
+      ] },
+    ],
+    sources: {
+      moo: "Douglas J. Moo, The Epistle to the Romans, New International Commentary on the New Testament (Eerdmans, 1996).",
+      schreiner: "Thomas R. Schreiner, Romans, Baker Exegetical Commentary on the New Testament (Baker, 1998).",
+      dunn: "James D. G. Dunn, Romans 1-8, Word Biblical Commentary 38A (Word, 1988).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "1CO.13": {
+    crossRefs: [
+      ["1CO.12", "1 Corinthians 12:27-31", "The body of Christ, and a still more excellent way"],
+      ["1JN.4", "1 John 4:7-12", "God is love"],
+      ["JHN.13", "John 13:34-35", "A new commandment: love one another"],
+      ["ROM.13", "Romans 13:8-10", "Love is the fulfillment of the law"],
+      ["COL.3", "Colossians 3:14", "Put on love, the perfect bond of unity"],
+      ["1CO.14", "1 Corinthians 14:1", "Pursue love, yet desire spiritual gifts"],
+    ],
+    intro: "The love chapter, read at countless weddings, was first written to a church that was gifted, proud and divided. Placed between two chapters about spiritual gifts, it says that without love the greatest gifts are noise, describes love in fifteen verbs, and promises that love outlasts everything.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "13:1", head: "A noisy gong or a clanging cymbal", ev: "good", src: ["fee", "thiselton"], text: "Corinth was famous for its bronze. Pagan worship used gongs and cymbals, and bronze sounding jars may have been used in theaters to carry sound. Gifted speech without love, Paul says, is just loud metal." },
+        { ref: "13:3", head: "If I give all my possessions", ev: "debated", src: ["metzger", "fee"], text: "Some ancient manuscripts read \"if I surrender my body to be burned,\" others \"so that I may boast.\" The two Greek words differ by one letter. Either way, even the greatest sacrifice is worth nothing without love." },
+        { ref: "13:4", head: "Love is patient, love is kind", ev: "strong", src: ["thiselton"], text: "In Greek, love is described with verbs, not adjectives: love waits patiently, love acts kindly. Fifteen actions in verses 4-7, eight of them negative. Many of them are the opposite of what Paul has already corrected in Corinth: jealousy (3:3), arrogance (4:18; 5:2), and seeking one's own (10:24)." },
+        { ref: "13:7", head: "Bears all things", ev: "good", src: ["fee"], text: "\"Bears\" (stego) can mean to cover, as a roof covers a house, or to endure. Love keeps a lid on others' faults (1 Peter 4:8) and holds on through hard times. \"All things\" four times: love never gives up." },
+        { ref: "13:10", head: "When the perfect comes", ev: "debated", src: ["fee", "thiselton"], text: "\"Perfect\" (teleion) means complete or mature. What it refers to is one of the chapter's most discussed questions; see Scholars and views." },
+        { ref: "13:12", head: "In a mirror dimly", ev: "strong", src: ["thiselton"], text: "Ancient mirrors were polished bronze, and Corinth made some of the best. Even a good one gave a soft, slightly dark reflection. Now we know God truly but partly; then we will see \"face to face,\" as God once spoke with Moses (Numbers 12:8)." },
+        { ref: "13:13", head: "The greatest of these is love", ev: "scripture", src: ["fee"], text: "Faith, hope and love appear together often in Paul (1 Thessalonians 1:3; 5:8; Colossians 1:4-5). Love is greatest because it lasts: in God's presence faith becomes sight and hope is fulfilled, but love goes on forever." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "Corinth", ev: "strong", src: ["thiselton"], text: "A wealthy Roman colony on the narrow isthmus between two seas, with two harbors. Ships were dragged across the land on a paved trackway, the Diolkos, parts of which can still be seen. The city hosted the Isthmian Games every two years. Paul lived there 18 months (Acts 18:11)." },
+        { head: "Three Greek words for love", ev: "good", src: ["bdag"], text: "Greek had eros (romantic desire), philia (friendship) and agape. Agape was a rather plain word before the Bible; the Greek Old Testament and then the New Testament filled it with the meaning of God's self-giving love. It appears 116 times in the New Testament, 9 times in this chapter." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "ἀγάπη", say: "agape", strongs: "G26", count: "116 times", means: "love", ev: "strong", src: ["bdag"], text: "Love that seeks the other's good, shown supremely in the cross: \"God demonstrates His own love toward us, in that while we were yet sinners, Christ died for us\" (Romans 5:8)." },
+        { word: "μακροθυμέω", say: "makrothymeo", strongs: "G3114", count: "10 times", means: "to be patient, long-tempered", ev: "strong", src: ["bdag"], text: "Literally \"long-tempered,\" the opposite of short-tempered. It is the first thing Paul says about love." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "When Christ returns", who: "Eschatological view", src: ["fee", "thiselton"], text: "Most commentators read \"the perfect\" as the end of the age, when Christ returns. Verse 12 says that then we will see \"face to face\" and know fully, which sounds like heaven. On this view, gifts like prophecy and tongues serve the church until then." },
+        { head: "When the New Testament was complete", who: "Completed-revelation view", src: ["thiselton"], text: "Other interpreters read \"the perfect\" as the completed revelation of the New Testament. Partial gifts of revelation like prophecy and tongues would stop once God's written word was complete; love continues." },
+        { head: "When the church is mature", who: "Maturity view", src: ["thiselton"], text: "Some point to Paul's picture of a child growing up (13:11) and read \"the perfect\" as the maturity of the church. A few combine this with one of the other views." },
+      ] },
+    ],
+    sources: {
+      fee: "Gordon D. Fee, The First Epistle to the Corinthians, rev. ed., New International Commentary on the New Testament (Eerdmans, 2014).",
+      thiselton: "Anthony C. Thiselton, The First Epistle to the Corinthians, New International Greek Testament Commentary (Eerdmans, 2000).",
+      metzger: "Bruce M. Metzger, A Textual Commentary on the Greek New Testament, 2nd ed. (German Bible Society, 1994).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
+
+  "REV.21": {
+    crossRefs: [
+      ["ISA.65", "Isaiah 65:17-19", "I create new heavens and a new earth"],
+      ["ISA.25", "Isaiah 25:8", "He will wipe tears away from all faces"],
+      ["EZK.48", "Ezekiel 48:30-35", "A city with twelve gates, named for the tribes: The LORD is there"],
+      ["EXO.28", "Exodus 28:17-21", "Twelve stones on the high priest's breastplate"],
+      ["2PE.3", "2 Peter 3:13", "New heavens and a new earth, in which righteousness dwells"],
+      ["GEN.2", "Genesis 2:8-10", "The first garden, with a river and the tree of life"],
+    ],
+    intro: "The Bible ends where it began, with heaven and earth, but now made new. God comes to live with His people, wipes away every tear, and ends death and pain. The New Jerusalem descends as a bride, a perfect cube of gold and jewels whose light is the glory of God.",
+    sections: [
+      { id: "verses", title: "Verse by verse", items: [
+        { ref: "21:1", head: "There is no longer any sea", ev: "good", src: ["bauckham", "beale"], text: "To ancient Israel, the sea was a place of chaos and danger, and in Revelation the beast rises from it (13:1). Its absence means nothing threatening is left. It also meant something to John, exiled on the island of Patmos and cut off from his churches by water." },
+        { ref: "21:3", head: "The tabernacle of God is among men", ev: "scripture", src: ["beale"], text: "\"Tabernacle\" (skene) is the tent where God lived among Israel in the wilderness. John's Gospel used the same word: the Word \"dwelt\" (tabernacled) among us (John 1:14). Now God's promise from Leviticus 26:11-12 is fulfilled completely: \"I will be their God, and they shall be My people.\"" },
+        { ref: "21:4", head: "He will wipe away every tear", ev: "scripture", src: ["mounce"], text: "A promise from Isaiah 25:8. Death, mourning, crying and pain, the four sorrows of life since Genesis 3, are listed and then cancelled: \"the first things have passed away.\"" },
+        { ref: "21:5", head: "Behold, I am making all things new", ev: "good", src: ["bauckham"], text: "Not \"all new things\" but \"all things new.\" Many scholars note this suggests renewal of this creation rather than replacing it, the way a resurrection body is the same person made new." },
+        { ref: "21:16", head: "Twelve thousand stadia", ev: "good", src: ["beale", "mounce"], text: "About 1,400 miles in length, width and height: roughly the distance from Maine to Florida, and as high. The only perfect cube in the Old Testament is the Most Holy Place in Solomon's temple (1 Kings 6:20). The whole city has become the place where God dwells." },
+        { ref: "21:19", head: "Adorned with every kind of precious stone", ev: "good", src: ["beale"], text: "Twelve foundation stones, closely matching the twelve stones on the high priest's breastplate (Exodus 28:17-20), which carried the names of the tribes. Now all God's people stand in His presence." },
+        { ref: "21:21", head: "Each gate a single pearl", ev: "good", src: ["mounce"], text: "In the ancient world pearls were among the most valuable things anyone could own (Matthew 13:45-46). Pliny the Elder wrote that Cleopatra owned two pearls worth millions. Here each gate is one enormous pearl." },
+        { ref: "21:22", head: "I saw no temple in it", ev: "scripture", src: ["bauckham"], text: "For a Jewish reader, a holy city without a temple was startling. The reason: \"the Lord God the Almighty and the Lamb are its temple.\" No sun is needed either, \"for the glory of God has illumined it\" (21:23)." },
+      ] },
+      { id: "history", title: "History and culture", items: [
+        { head: "A book of symbols", ev: "good", src: ["bauckham"], text: "Revelation is apocalyptic writing, a style that uses vivid symbols, numbers and visions, like parts of Daniel and Ezekiel. Twelve (tribes, apostles) and its multiples appear again and again in this chapter: 12 gates, 12 angels, 12 foundations, 12,000 stadia, 144 cubits." },
+        { head: "A tale of two cities", ev: "good", src: ["bauckham", "beale"], text: "Revelation contrasts Babylon the great, a harlot dressed in gold and jewels (chapter 17), with the New Jerusalem, a bride adorned for her husband. Many scholars see Babylon as a picture of Rome and every proud power after it." },
+      ] },
+      { id: "words", title: "Greek words", lang: "Greek", items: [
+        { word: "καινός", say: "kainos", strongs: "G2537", count: "42 times", means: "new, fresh in kind", ev: "good", src: ["bdag"], text: "Greek has two words for new: neos (new in time, recent) and kainos (new in quality). Revelation uses kainos: a new heaven, new earth, new Jerusalem, a new song and a new name." },
+        { word: "σκηνή", say: "skene", strongs: "G4633", count: "20 times", means: "tent, tabernacle, dwelling", ev: "strong", src: ["bdag"], text: "The word behind the English \"scene\": originally the tent or stage building of a Greek theater." },
+      ] },
+      { id: "views", title: "Scholars and views", items: [
+        { head: "Future events, described in symbols", who: "Futurist approach", src: ["mounce", "beale"], text: "Many read Revelation 21 as describing the final state after Christ's return. The city may be described in symbols, but it points to a real future home for God's people." },
+        { head: "The story of every age", who: "Idealist approach", src: ["beale"], text: "Others read Revelation's visions as pictures of the ongoing struggle between God and evil in every age, ending in God's victory. On this view the New Jerusalem is the people of God themselves, the bride, seen in their final glory." },
+        { head: "Written for the first readers", who: "Historical approach", src: ["bauckham"], text: "Others stress what the visions meant to churches under Roman pressure in the first century, who needed to know that Rome's \"Babylon\" would fall and God's city would last. Most scholars combine this with one of the other views." },
+      ] },
+    ],
+    sources: {
+      bauckham: "Richard Bauckham, The Theology of the Book of Revelation (Cambridge University Press, 1993).",
+      beale: "G. K. Beale, The Book of Revelation, New International Greek Testament Commentary (Eerdmans, 1999).",
+      mounce: "Robert H. Mounce, The Book of Revelation, rev. ed., New International Commentary on the New Testament (Eerdmans, 1998).",
+      bdag: "Bauer, Danker, Arndt and Gingrich, A Greek-English Lexicon of the New Testament, 3rd ed. (University of Chicago Press, 2000).",
+    },
+  },
 };
 
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
-const ORDER = ["GEN", "PSA", "MAT", "MRK", "LUK", "JHN"];
+// In Bible order.
+const ORDER = BOOKS.map((b) => b.id);
 export const sampleChapters = () => Object.keys(NOTES).sort((a, b) => {
   const [ba, ca] = a.split("."), [bb, cb] = b.split(".");
   return (ORDER.indexOf(ba) - ORDER.indexOf(bb)) || (Number(ca) - Number(cb));
