@@ -3467,7 +3467,7 @@ function renderNotes(book, chapter) {
   const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...(n.map ? ["map"] : []), "where", ...n.sections.filter((x) => x.id !== "verses").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), ...(n.crossRefs ? ["xref"] : []), "search", "sources", "mine"];
   const secFor = (id) => id === "words" ? n.sections.find((x) => x.lang) : sec(id);
   const subs = { mine: mineSub, where: "Time, places, tribes", sources: `${srcKeys.length} sources` };
-  for (const id of tiles) { const x = secFor(id); if (x) subs[id] = id === "views" ? `${x.items.filter((it) => it.who !== "Common ground" && !it.extra).length} views` : `${x.items.length} notes`; }
+  for (const id of tiles) { const x = secFor(id); if (x) { const c = id === "views" ? x.items.filter((it) => it.who !== "Common ground" && !it.extra).length : x.items.length; subs[id] = `${c} ${id === "views" ? "view" : "note"}${c === 1 ? "" : "s"}`; } }
   if (n.map) subs.map = `${n.map.places.length} places`;
   if (n.crossRefs) subs.xref = `${n.crossRefs.length} passages`;
   if (!tiles.includes(notesTab)) notesTab = tiles[0];
