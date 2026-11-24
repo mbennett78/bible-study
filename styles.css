@@ -2380,6 +2380,7 @@ html { background: var(--page); }
 .storybook .sb-foam { animation: sbFoam 1.6s linear var(--sdl, 0s) infinite; }
 .storybook .sb-splash { animation: sbSplash 1.8s ease-out var(--sdl, 0s) infinite; }
 .storybook .sb-crash { animation: sbCrash 2.6s ease-in-out infinite; }
+.storybook .sb-whirl { animation: sbSpin .9s linear infinite; }
 .storybook .sb-sling { animation: sbSling 1.6s ease-in-out infinite; }
 .storybook .sb-spout { animation: sbSpout 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
 .storybook .sb-rain { animation: sbRain 1s linear infinite; }
