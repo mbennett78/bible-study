@@ -28,7 +28,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     </button>
     <span class="top-title" id="topTitle"></span>
-    <span class="read-only top-ref">
+    <span class="top-ref">
     <button class="step-btn" id="topPrev" aria-label="Previous chapter">‹</button>
     <button class="ref-button" id="refButton" aria-label="Choose book and chapter">
       <span id="refLabel">John 1</span>
@@ -41,7 +41,7 @@
     <button class="icon-btn" id="listenBtn" aria-label="Read aloud">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <div class="version-switch read-only" role="group" aria-label="Bible version">
+    <div class="version-switch" role="group" aria-label="Bible version">
       <button data-version="NASB" aria-pressed="true">NASB</button>
     </div>
     <button class="help-btn" id="helpBtn" aria-label="Help with this screen">?</button>
@@ -139,9 +139,11 @@
     <!-- Books / tracker -->
     <section id="view-books" class="view" aria-label="Books" hidden>
       <div id="studyScene"></div>
-      <h1>My study</h1>
+      <h1>My Bible</h1>
+      <p class="muted mybible-sub">Tap any book, then a chapter, to read it. Chapters you finish are checked off here.</p>
+      <button class="mybible-go" id="myBibleGo"><span class="mbg-icon" aria-hidden="true">📖</span><span><strong>Keep reading</strong><small id="myBibleGoRef">John 1</small></span><span aria-hidden="true">›</span></button>
       <div class="segments" role="tablist">
-        <button data-seg="progress" aria-selected="true">Progress</button>
+        <button data-seg="progress" aria-selected="true">Books</button>
         <button data-seg="history" aria-selected="false">History</button>
         <button data-seg="favorites" aria-selected="false">Favorites</button>
         <button data-seg="journal" aria-selected="false">Journal</button>
@@ -346,7 +348,7 @@
       <h2 id="pickerTitle">Books</h2>
       <button class="quiet-link" id="pickerClose">Done</button>
     </div>
-    <input class="picker-search" id="pickerSearch" type="search" placeholder="Type a book, like Romans 8" autocomplete="off" aria-label="Find a book and chapter">
+    <input class="picker-search" id="pickerSearch" type="search" placeholder="Type where to go, like Romans 8:28" autocomplete="off" aria-label="Find a book and chapter">
     <div id="pickerBody"></div>
   </dialog>
 
@@ -427,7 +429,7 @@
     </button>
     <button data-view="books">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M10 19V5M15 19v-7M20 19V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <span>My study</span>
+      <span>My Bible</span>
     </button>
     <button data-view="path">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-6 11-2 14-14M5 19a1.5 1.5 0 1 0 0-.01M19 5a1.5 1.5 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>

@@ -807,6 +807,18 @@ main { position: relative; z-index: 1; padding-left: 26px; padding-right: 26px; 
 .top-title { font-family: var(--serif); font-size: 1.2rem; padding: 6px 4px; display: none; }
 body:not([data-view="read"]) .top-title { display: inline; }
 body:not([data-view="read"]) .read-only { display: none !important; }
+.mybible-sub { margin: -4px 0 12px; }
+.mybible-go { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0 0 16px; padding: 14px 16px; border: 0; border-radius: 16px; background: var(--accent); color: var(--surface); font: inherit; text-align: left; cursor: pointer; }
+.mybible-go > span:nth-child(2) { flex: 1; display: flex; flex-direction: column; }
+.mybible-go strong { font-size: 1.1rem; } .mybible-go small { opacity: .85; }
+.mybible-go .mbg-icon { font-size: 1.6rem; } .mybible-go > span:last-child { font-size: 1.6rem; }
+/* Outside Read, the chapter button looks like what it is: a way into the Bible. */
+body:not([data-view="read"]) .ref-button { margin-right: 6px; background: var(--page-deep, rgb(255 255 255 / .12)); border-radius: 999px; padding: 6px 12px; }
+body:not([data-view="read"]) .ref-button::before { content: "📖"; margin-right: 6px; font-size: .95em; }
+/* The Bible is one tap away on every screen: the book-and-chapter button and the version
+   switch stay at the top, so anyone can follow along with a sermon from anywhere. */
+body:not([data-view="read"]) .top-ref .step-btn { display: none; }
+@media (max-width: 760px) { body:not([data-view="read"]) .top-title { display: none; } }
 .top-ref { display: inline-flex; align-items: center; }
 #listenBtn { display: none; }
 .menu-btn { color: var(--on-page); }
@@ -1459,7 +1471,7 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .pw-sheet input { font-size: 1.15rem; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line, #ccc); background: var(--bg); color: var(--text); }
 
 /* ---------- Study buddy: a little stick figure who opens the chat ---------- */
-.buddy { position: fixed; z-index: 6; width: 68px; height: 80px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; filter: drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 2px 3px rgb(0 0 0 / .2)); }
+.buddy { position: fixed; z-index: 6; width: 80px; height: 94px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; filter: drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 0 1.5px var(--surface)) drop-shadow(0 2px 3px rgb(0 0 0 / .2)); }
 .buddy[hidden] { display: none; }
 .buddy:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
 .buddy.dragging { cursor: grabbing; transition: none; }
@@ -1472,11 +1484,13 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .buddy-say.on-right { border-radius: 16px 16px 4px 16px; }
 .buddy-say[hidden] { display: none; }
 .buddy-say { cursor: default; }
+.buddy-name-field input[type="text"] { font-size: 1.25rem; min-height: 52px; }
 .bs-words { display: block; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: inherit; cursor: pointer; }
 .bs-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .bs-acts[hidden], .bs-name[hidden] { display: none; }
-.bs-name { display: flex; gap: 6px; margin-top: 8px; }
-.bs-name input { flex: 1; min-width: 0; min-height: 40px; padding: 4px 10px; border: 2px solid var(--accent); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; }
+.buddy-say:has(.bs-name:not([hidden])) { max-width: min(330px, 86vw); width: min(330px, 86vw); }
+.bs-name { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.bs-name input { width: 100%; min-height: 52px; font-size: 1.25rem !important; padding: 6px 12px; border: 2px solid var(--accent); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; }
 .bs-name button { min-height: 40px; padding: 4px 12px; border: 0; border-radius: 999px; background: var(--accent); color: var(--surface); font: inherit; font-weight: 700; }
 .bs-acts button { min-height: 36px; padding: 4px 12px; border-radius: 999px; border: 2px solid var(--accent); background: var(--surface); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
 .bs-acts .bs-yes { background: var(--accent); color: var(--surface); }
@@ -1525,6 +1539,31 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 @keyframes buddy-talk { from { transform: scaleY(1); } to { transform: scaleY(1.8); } }
 html.touring .buddy, body.hide-buddy .buddy, html[data-graphics="none"] .buddy, html.auth-wait .buddy,
 html.touring .buddy-say, body.hide-buddy .buddy-say, html[data-graphics="none"] .buddy-say, html.auth-wait .buddy-say { display: none; }
+/* His tricks: cartwheels, a stroll, thinking with his hand on his chin, "Yay!" with both arms
+   up, and napping on the ground. The word over his head (Yay!, ?, z z z) is never mirrored. */
+.buddy-shut { display: none; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
+.buddy-arm-l { transform-origin: 26px 38px; transform-box: view-box; }
+.buddy-pop { position: absolute; left: 0; right: 0; top: -6px; text-align: center; font-weight: 800; font-size: 1rem; color: var(--accent); opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; pointer-events: none; text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface); }
+.buddy-pop.on { opacity: 1; transform: none; }
+.buddy.pondering .buddy-arm-r { transform: rotate(-100deg); }
+.buddy.pondering .buddy-head, .buddy.pondering .buddy-eye { transform: rotate(-6deg); transform-origin: 26px 30px; transform-box: view-box; }
+.buddy.yay .buddy-arm-r { transform: rotate(-72deg); }
+.buddy.yay .buddy-arm-l { transform: rotate(72deg); }
+.buddy.sleeping .buddy-body { transform: translate(-6px, 6px) rotate(90deg); transform-origin: 26px 66px; }
+.buddy.sleeping .buddy-eye, .buddy.sleeping .buddy-smile, .buddy.sleeping .buddy-bubble { display: none; }
+.buddy.sleeping .buddy-shut { display: inline; }
+.buddy.sleeping { opacity: .85; }
+.buddy.strolling { transform: translateX(-44px); }
+.buddy.strolling:not(.on-right) { transform: translateX(44px); }
+.buddy.strolling { transition: transform 1.4s ease-in-out; }
+@media (prefers-reduced-motion: no-preference) {
+  .buddy.cartwheel .buddy-body { animation: buddy-cartwheel 1.6s ease-in-out; transform-origin: 26px 46px; }
+  .buddy.yay .buddy-body { animation: buddy-hop .3s ease-out 6 alternate; }
+  .buddy.pondering .buddy-bubble .ti-dot { animation: buddy-dot .9s ease-in-out infinite; }
+  .buddy-pop.snore { animation: buddy-snore 2.4s ease-in-out infinite; }
+}
+@keyframes buddy-cartwheel { 0% { transform: translateX(0) rotate(0); } 50% { transform: translateX(34px) rotate(360deg); } 100% { transform: translateX(0) rotate(720deg); } }
+@keyframes buddy-snore { 0%, 100% { opacity: .35; transform: translateY(4px); } 50% { opacity: 1; transform: translateY(-4px); } }
 /* Walking: little steps while he moves. */
 @media (prefers-reduced-motion: no-preference) {
   .buddy.walking .buddy-legs-stand { animation: buddy-walk .3s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
@@ -1775,6 +1814,21 @@ dialog.quest::before { content: ""; position: absolute; inset: -50% 0 0; pointer
 @media (min-width: 700px) { dialog.quest { font-size: 1.2rem; } .q-card { font-size: 1.55rem !important; min-height: 160px !important; } .q-choice { min-height: 72px !important; font-size: 1.3rem !important; } .q-hero { width: 240px !important; } .q-wheel { width: 380px !important; } .q-candle svg { height: 130px !important; width: 56px !important; } .q-candle { width: 56px !important; } }
 .q-body h2 { margin: 4px 0; font-size: 1.6rem; }
 .q-tag { margin: 0; color: #dbe4ff; }
+/* The category characters */
+.q-critter { position: relative; display: inline-block; width: 46px; height: 46px; flex: none; }
+.q-critter svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 3px 0 rgb(0 0 0 / .22)); }
+.q-critter .qcr-body > * { fill: var(--cc); stroke: #fff; stroke-width: 4; }
+.q-critter .qcr-eye { fill: #fff; }
+.q-critter .qcr-hat { position: absolute; left: 50%; top: -6px; transform: translateX(-50%) rotate(-8deg); font-size: 1.05em; line-height: 1; filter: drop-shadow(0 1px 0 rgb(0 0 0 / .25)); }
+.q-critter.big { width: 76px; height: 76px; margin-top: 4px; font-size: 1.5rem; }
+.q-critter.big .qcr-hat { top: -10px; }
+.q-crew { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 2px 0 6px; font-size: 1.1rem; }
+@media (prefers-reduced-motion: no-preference) {
+  dialog.quest:not(.still) .q-crew .q-critter { animation: q-bob 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * .2s); }
+  dialog.quest:not(.still) .q-critter.big { animation: q-boing .7s cubic-bezier(.3,1.6,.5,1) both .1s; }
+}
+@keyframes q-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes q-boing { from { transform: scale(.3) translateY(20px); } to { transform: none; } }
 .q-big { width: 100%; display: grid; grid-template-columns: 56px 1fr; grid-template-rows: auto auto; align-items: center; column-gap: 12px; text-align: left; padding: 14px 18px; border: 0; border-radius: 20px; color: #22305e; background: #fff; box-shadow: 0 6px 0 rgb(0 0 0 / .25); font: inherit; cursor: pointer; transition: transform .1s; }
 .q-big:active { transform: translateY(3px); box-shadow: 0 3px 0 rgb(0 0 0 / .25); }
 .q-big > span:first-child, .q-big > .buddy { grid-row: 1 / span 2; font-size: 2rem; text-align: center; }

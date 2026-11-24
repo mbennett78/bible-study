@@ -36,7 +36,7 @@ try {
 
   // Solo
   await tap('[data-mode="solo"]'); await page.clock.runFor(300);
-  check("solo shows six jewels to win and three hearts", (await page.$$(".q-pl .q-jewel")).length === 6 && /❤️❤️❤️/.test(await text(".q-hearts")));
+  check("solo shows a jewel for every category and three hearts", (await page.$$(".q-pl .q-jewel")).length === 7 && /❤️❤️❤️/.test(await text(".q-hearts")));
   await spin();
   check("a question flies in with a category, a candle and four choices", Boolean(await page.$(".q-cat")) && Boolean(await page.$(".q-candle")) && (await page.$$(".q-choice")).length === 4);
   const before = await coins();
@@ -60,7 +60,7 @@ try {
   await answerIt(false); await page.clock.runFor(1500); await tap("[data-next]"); await page.clock.runFor(300);
   await spin(); await answerIt(false); await page.clock.runFor(1500);
   await tap("[data-next]"); await page.clock.runFor(500);
-  check("three misses end a solo game", /of 6 jewels/.test(await text(".q-end h2")), await text(".q-end h2"));
+  check("three misses end a solo game", /of 7 jewels/.test(await text(".q-end h2")), await text(".q-end h2"));
   await tap("[data-home]"); await page.clock.runFor(300);
 
   // Challenge Buddy

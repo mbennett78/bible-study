@@ -72,7 +72,7 @@ function showView(name) {
     else b.removeAttribute("aria-current");
   });
   document.body.dataset.view = name;
-  $("#topTitle").textContent = { home: "Home", books: "My study", path: "My path", settings: "Settings" }[name] || "";
+  $("#topTitle").textContent = { home: "Home", books: "My Bible", path: "My path", settings: "Settings" }[name] || "";
   if (name === "home") renderHome();
   if (name === "books") renderMyStudy();
   if (name === "path") renderPath();
@@ -393,7 +393,9 @@ function renderProgress() {
 /* ---------- My study: history & favorites ---------- */
 let segment = "progress";
 document.querySelectorAll(".segments button").forEach((b) => b.addEventListener("click", () => { segment = b.dataset.seg; renderMyStudy(); }));
+$("#myBibleGo").addEventListener("click", () => { const { book, chapter } = store.get("last"); showView("read"); openChapter(book, chapter); });
 function renderMyStudy() {
+  { const { book, chapter } = store.get("last"); $("#myBibleGoRef").textContent = `${BOOK_BY_ID[book]?.name || "John"} ${chapter || 1}`; }
   document.querySelectorAll(".segments button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.seg === segment)));
   document.querySelectorAll("[data-seg-panel]").forEach((p) => { p.hidden = p.dataset.segPanel !== segment; });
   if (segment === "progress") { renderProgress(); renderKnowledge(); }
@@ -956,7 +958,14 @@ const quest = createQuest({
   practice: () => game.open(),
   buddyName: () => buddyName(),
 });
-const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right") });
+// He says his little lines out loud too, when the family turns that on (Settings, Study buddy).
+// Never over the Bible reading, and off by default so he's never a surprise in church.
+function buddyOutLoud(text) {
+  if ((store.get("show") || {}).buddyvoice !== true || !canSpeak || reader.playing) return;
+  const plain = String(text).replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, "").trim();
+  if (plain) sayAloud(plain, { voiceName: store.get("voiceName") || "", rate: Math.min(1.15, (store.get("voiceRate") || 1) * 1.05), pitch: 1.35 });
+}
+const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right"), sayOutLoud: (t) => buddyOutLoud(t) });
 // Tapping him opens the chat right where you are, on any page, in a sheet over the page.
 // It's the same chat as under each chapter (moved into the sheet while it's open).
 const chatSheet = document.createElement("dialog");
@@ -1534,7 +1543,7 @@ function renderSetup() {
       <p class="muted">A few quick steps make the app yours. This only happens the first time. You can change any of it later in Settings.</p>
       <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>
       <div class="setup-buddy"><span class="buddy buddy-inline" aria-hidden="true">${BUDDY_SVG}</span>
-        <label class="field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
+        <label class="field buddy-name-field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
       <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
     $("#setupBuddyName").addEventListener("input", (e) => setBuddyName(e.target.value));
@@ -1694,7 +1703,8 @@ function setBuddyName(v) {
 }
 function renderBuddyToggles() {
   const shown = store.get("show") || {};
-  $("#buddyToggles").innerHTML = `<label class="field">His name<input id="buddyNameInput" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label>` + [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"]].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${shown[id] === false ? "" : "checked"}></label>`).join("");
+  const on = (id) => (id === "buddyvoice" ? shown[id] === true : shown[id] !== false);
+  $("#buddyToggles").innerHTML = `<label class="field buddy-name-field">His name<input id="buddyNameInput" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label>` + [["buddy", "Show my study buddy"], ["buddyvisits", "He says hi now and then"], ...(canSpeak ? [["buddyvoice", "He talks out loud (uses the read-aloud voice)"]] : [])].map(([id, l]) => `<label class="switch-row"><span>${l}</span><input type="checkbox" role="switch" data-buddy-feat="${id}" ${on(id) ? "checked" : ""}></label>`).join("");
   $("#buddyNameInput").addEventListener("input", (e) => setBuddyName(e.target.value));
   $("#buddyToggles").querySelectorAll("[data-buddy-feat]").forEach((i) => i.addEventListener("change", () => {
     store.set("show", { ...(store.get("show") || {}), [i.dataset.buddyFeat]: i.checked });
@@ -2262,14 +2272,15 @@ const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]/g, "");
 const ALIASES = { psalm: "PSA", ps: "PSA", song: "SNG", songofsolomon: "SNG", canticles: "SNG", jn: "JHN", mt: "MAT", mk: "MRK", lk: "LUK", rev: "REV", revelations: "REV", phil: "PHP", philemon: "PHM" };
 // "rom 8", "1 john 3", "psalm 23", "gen" -> matching books, with the chapter if one was typed.
 function findRefs(text) {
-  const m = text.trim().match(/^(.*?)(?:\s+(\d+))?(?::\d+.*)?$/);
+  const m = text.trim().match(/^(.*?)(?:\s+(\d+))?(?:\s*:\s*(\d+).*)?$/);
   if (!m || !m[1].trim()) return [];
   const q = norm(m[1]);
   const ch = m[2] ? Number(m[2]) : null;
   let books = BOOKS.filter((b) => norm(b.name).startsWith(q) || b.id.toLowerCase() === q);
   if (ALIASES[q]) books = [BOOK_BY_ID[ALIASES[q]], ...books.filter((b) => b.id !== ALIASES[q])];
   if (!books.length && q.length >= 3) books = BOOKS.filter((b) => norm(b.name).includes(q));
-  return books.slice(0, 6).map((b) => ({ book: b.id, chapter: ch ? Math.min(Math.max(ch, 1), b.chapters) : null, name: b.name }));
+  const verse = m[3] ? Number(m[3]) : 0;
+  return books.slice(0, 6).map((b) => ({ book: b.id, chapter: ch ? Math.min(Math.max(ch, 1), b.chapters) : null, verse, name: b.name }));
 }
 function wireJump(input, out, go) {
   const hint = out.innerHTML;
@@ -2303,11 +2314,11 @@ $("#pickerSearch").addEventListener("input", () => {
   $("#pickerTitle").textContent = "Find";
   $("#pickerBack").hidden = false;
   $("#pickerBody").innerHTML = refs.length
-    ? `<div class="picker-books">${refs.map((r, i) => `<button data-i="${i}">${esc(r.name)}${r.chapter ? ` ${r.chapter}` : ""}<small>${r.chapter ? "Open" : `${BOOK_BY_ID[r.book].chapters} chapters`}</small></button>`).join("")}</div>`
+    ? `<div class="picker-books">${refs.map((r, i) => `<button data-i="${i}">${esc(r.name)}${r.chapter ? ` ${r.chapter}${r.verse ? `:${r.verse}` : ""}` : ""}<small>${r.chapter ? "Open" : `${BOOK_BY_ID[r.book].chapters} chapters`}</small></button>`).join("")}</div>`
     : `<p class="muted">No book matches that yet.</p>`;
   $("#pickerBody").querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => {
     const r = refs[Number(b.dataset.i)];
-    if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) { picker.close(); showView("read"); openChapter(r.book, r.chapter || 1); }
+    if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) jumpTo(r);
     else pickerChapters(r.book);
   }));
 });
@@ -2316,9 +2327,15 @@ $("#pickerSearch").addEventListener("keydown", (e) => {
   const r = findRefs($("#pickerSearch").value)[0];
   if (!r) return;
   e.preventDefault();
-  if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) { picker.close(); showView("read"); openChapter(r.book, r.chapter || 1); }
+  if (r.chapter || BOOK_BY_ID[r.book].chapters === 1) jumpTo(r);
   else pickerChapters(r.book);
 });
+// Straight to a chapter (and verse, like "Romans 8:28"), from any screen: quick for following a sermon.
+async function jumpTo(r) {
+  picker.close(); showView("read");
+  await openChapter(r.book, r.chapter || 1);
+  if (r.verse > 1) goToVerse(r.verse);
+}
 $("#topPrev").addEventListener("click", () => { const { book, chapter } = store.get("last"); const p = neighbors(book, chapter).prev; if (p) openChapter(p.book, p.chapter); });
 $("#topNext").addEventListener("click", () => { const { book, chapter } = store.get("last"); const n = neighbors(book, chapter).next; if (n) openChapter(n.book, n.chapter); });
 
@@ -2929,7 +2946,7 @@ document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("clic
 const HELP = {
   home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
   read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
-  books: ["My study", ["Progress shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
+  books: ["My Bible", ["Tap Keep reading to go back to where you were, or tap any book and then a chapter to read it.", "Books shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["My path", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
   settings: ["Settings", ["Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],
 };

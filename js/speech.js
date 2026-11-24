@@ -125,13 +125,14 @@ export function dictateInto(field, button, { before, onError } = {}) {
 }
 
 // Says one short piece of text aloud (an answer from the study buddy), in the chosen voice.
-export function sayAloud(text, { voiceName = "", rate = 1, onDone } = {}) {
+export function sayAloud(text, { voiceName = "", rate = 1, pitch = 1, onDone } = {}) {
   if (!canSpeak) { onDone?.(); return; }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   const voice = pickVoice(voiceName);
   if (voice) u.voice = voice;
   u.rate = rate;
+  u.pitch = pitch;
   u.onend = u.onerror = () => onDone?.();
   speechSynthesis.speak(u);
 }

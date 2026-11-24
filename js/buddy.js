@@ -15,12 +15,13 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
   <g class="buddy-body">
     <circle class="buddy-head" cx="26" cy="22" r="10"/>
     <circle class="buddy-eye" cx="22.5" cy="20.5" r="1.6"/><circle class="buddy-eye" cx="29.5" cy="20.5" r="1.6"/>
+    <path class="buddy-shut" d="M20.8 21q1.7 1.2 3.4 0M27.8 21q1.7 1.2 3.4 0"/>
     <path class="buddy-smile" d="M21.5 25.5q4.5 4 9 0"/>
     <ellipse class="buddy-mouth" cx="26" cy="26.6" rx="2.8" ry="1.9"/>
     <path class="buddy-frown" d="M23 27.2q3-1.3 6 0"/>
     <path class="buddy-brow" d="M20.3 17.2l3.2-.8M31.7 17.2l-3.2-.8"/>
     <path class="buddy-line" d="M26 32v22"/>
-    <path class="buddy-line buddy-arm-l" d="M26 38l-10 9"/>
+    <g class="buddy-arm-l"><path class="buddy-line" d="M26 38l-10 9"/></g>
     <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
     <g class="buddy-legs-stand"><path class="buddy-line" d="M26 54l-8 18M26 54l8 18"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
@@ -28,6 +29,10 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
 </svg>`;
 
 const SPOT_KEY = "bible-study:buddy-spot";
+// His little tricks while nobody needs him, and when he naps.
+const TRICK_EVERY_MS = 25000;
+const NAP_AFTER_MS = 150000;
+const TRICKS = ["cartwheel", "stroll", "pondering", "yay", "stroll", "pondering", "yay", "cartwheel"];
 const SIT_AFTER_MS = 12000;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
@@ -37,12 +42,13 @@ const PLAY_LINES = ["Yay! Let's play! 🎲", "Woohoo! Get ready to spin!", "Game
 const YES_LINES = ["Oh yeah! I can find something!", "Ooh, yay! What is it?", "Oh good, I love questions!", "Yes! Let's find out together!"];
 let careTimer = 0;
 
-export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right" }) {
+export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right", sayOutLoud = null }) {
   const el = document.createElement("button");
   el.type = "button";
   el.className = "buddy";
   el.setAttribute("aria-label", label);
-  el.innerHTML = BUDDY_SVG;
+  el.innerHTML = BUDDY_SVG + `<span class="buddy-pop" aria-hidden="true"></span>`;
+  const pop = el.querySelector(".buddy-pop");
   el.classList.add("sitting");
   document.body.append(el);
   // His little speech bubble for visits ("Hi! Wondering anything?"), with two ways to answer him.
@@ -155,7 +161,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     play("waving", 1200);
     visitTimer = setTimeout(goBack, 2400);
   });
-  function tapped() { endVisit(); play("excited", 1400); onTap(); }
+  function tapped() { rouse(); endVisit(); play("excited", 1400); onTap(); }
   // He "says" each line: his mouth moves for a moment, about as long as the words.
   let talkTimer = 0;
   function speak(text, ask) {
@@ -164,6 +170,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.add("speaking");
     talkTimer = setTimeout(() => el.classList.remove("speaking"), Math.min(3200, 600 + text.length * 35));
     words.textContent = text;
+    sayOutLoud?.(text);
     acts.hidden = ask !== true;
     if (ask === "name") nameForm.hidden = false;
     say.hidden = false;
@@ -197,6 +204,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     onYes = null;
     yesBtn.textContent = "Yes, I have a question";
     if (el.hidden || drag || !say.hidden) return false;
+    rouse();
     el.classList.remove("tucked", "sitting");
     el.classList.add("walking", "visiting");
     hold(ms + 1500);
@@ -208,6 +216,50 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     visitTimer = setTimeout(goBack, ms);
     return true;
   }
+
+  // Little things he does on his own: cartwheels, a stroll, a think, a "Yay!", and a nap on
+  // the ground when nobody has touched the app for a while. Any tap or key wakes him.
+  let lastActive = Date.now(), trickUntil = 0;
+  const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.graphics === "simple";
+  const busy = () => el.hidden || drag || !say.hidden || keepStanding || el.classList.contains("visiting") || Date.now() < holdUntil || Date.now() < trickUntil || document.hidden;
+  const popUp = (text, ms) => { pop.textContent = text; pop.classList.add("on"); setTimeout(() => pop.classList.remove("on"), ms); };
+  function trick(name) {
+    if (busy() || el.classList.contains("sleeping")) return false;
+    const ms = { cartwheel: 1700, stroll: 3200, pondering: 5000, yay: 2000 }[name] || 2000;
+    trickUntil = Date.now() + ms + 400;
+    el.classList.remove("tucked", "sitting");
+    if (name === "stroll") {
+      el.classList.add("walking", "strolling");
+      setTimeout(() => el.classList.remove("strolling"), 1500);
+      setTimeout(() => el.classList.remove("walking"), ms);
+    } else {
+      el.classList.add(name);
+      setTimeout(() => el.classList.remove(name), ms);
+    }
+    if (name === "yay") popUp("Yay!", ms);
+    if (name === "pondering") popUp("?", ms);
+    sitSoon(ms + 2500);
+    return true;
+  }
+  function nap() {
+    if (busy() || el.classList.contains("sleeping")) return;
+    el.classList.remove("sitting", "tucked", "thinking", "talking");
+    el.classList.add("sleeping");
+    pop.textContent = "z z z"; pop.classList.add("on", "snore");
+  }
+  function rouse() {
+    if (!el.classList.contains("sleeping")) return;
+    el.classList.remove("sleeping"); pop.classList.remove("on", "snore");
+    el.classList.add("sitting");
+  }
+  const active = () => { lastActive = Date.now(); if (el.classList.contains("sleeping")) { rouse(); trick("yay"); } };
+  addEventListener("pointerdown", active, { passive: true });
+  addEventListener("keydown", active);
+  setInterval(() => {
+    if (still()) return;
+    if (Date.now() - lastActive > NAP_AFTER_MS) { nap(); return; }
+    if (Math.random() < 0.55) trick(pick(TRICKS));
+  }, TRICK_EVERY_MS);
 
   addEventListener("resize", place);
   // While someone scrolls through the reading he sits and fades a little, so he never
@@ -232,6 +284,9 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     // Someone asked about something sad: a gentle, caring face for a while.
     caring(on) { clearTimeout(careTimer); el.classList.toggle("caring", on); if (on) { wake(); hold(8000); el.classList.remove("tucked"); careTimer = setTimeout(() => el.classList.remove("caring"), 90000); } },
     cheer() { play("cheering", 2600); },     // a great quiz score
+    trick,                                    // "cartwheel" | "stroll" | "pondering" | "yay"
+    nap,
+    sleeping: () => el.classList.contains("sleeping"),
     thinking(on) { wake(); hold(); if (on) el.classList.remove("tucked"); el.classList.toggle("thinking", on); },
     talking(on) { wake(); if (on) { hold(60000); el.classList.remove("tucked"); } else hold(); el.classList.toggle("talking", on); },
   };

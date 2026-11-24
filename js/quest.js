@@ -1,11 +1,11 @@
 // Bible Quest: the main Bible game. Spin the wheel, answer before the candle burns down,
 // collect coins, and win a jewel for each kind of question (like the jewels on the high
-// priest's breastplate, Exodus 28:15-21). Collect all six to win.
+// priest's breastplate, Exodus 28:15-21). Collect them all to win.
 //
 // Ways to play:
 //   - Solo: three hearts. A wrong answer (or the candle going out) costs a heart.
 //   - Family: two to four people pass the device. Right answers keep your turn; a wrong one
-//     passes it on. First to six jewels wins.
+//     passes it on. First to collect every jewel wins.
 //   - Challenge Buddy: the study buddy plays fair, like a person. He takes a few seconds to
 //     think, he gets some wrong (how many depends on Easy, Fair or Tough), and he has no
 //     power-ups. He can be beaten.
@@ -23,6 +23,7 @@ export const CATEGORIES = [
   { id: "stem", name: "STEM", icon: "🔬", color: "#f2a516", topics: ["science", "numbers"] },
   { id: "books", name: "Books & Verses", icon: "📜", color: "#9b5fc7", topics: ["books", "connections"] },
   { id: "history", name: "History", icon: "🏛️", color: "#e0457b", topics: ["history"] },
+  { id: "arts", name: "Arts & Music", icon: "🎨", color: "#15b3a6", topics: ["arts"] },
 ];
 export const NEED_PER_JEWEL = 2;   // right answers in a category to win its jewel
 export const CANDLE_SECS = 20;
@@ -33,7 +34,7 @@ export const HELPS = { half: { cost: 30, label: "Take away 2", icon: "✂️" },
 export const QUEST_BADGES = [
   ["firstJewel", "First jewel", "💎", "Win your first jewel"],
   ["firstWin", "Winner", "🏆", "Win a game"],
-  ["breastplate", "The full breastplate", "🛡️", "Collect all six jewels in one game"],
+  ["breastplate", "The full breastplate", "🛡️", "Collect every jewel in one game"],
   ["beatBuddy", "Beat your buddy", "🤝", "Win against your study buddy"],
   ["beatTough", "Beat Tough buddy", "🦁", "Win against your study buddy on Tough"],
   ["streak5", "On fire", "🔥", "5 right in a row"],
@@ -111,6 +112,26 @@ function wheelSvg() {
   <path d="M110 2 L98 -14 H122 Z" class="q-pointer" transform="translate(0 16)"/></svg>`;
 }
 const candle = () => `<span class="q-candle" aria-hidden="true"><svg viewBox="0 0 40 90"><ellipse class="qc-glow" cx="20" cy="18" rx="16" ry="16"/><path class="qc-flame" d="M20 4 C 25 12, 25 18, 20 22 C 15 18, 15 12, 20 4 Z"/><rect class="qc-wick" x="19.2" y="21" width="1.6" height="5"/><rect class="qc-wax" x="11" y="26" width="18" height="58" rx="3"/><rect class="qc-dish" x="4" y="83" width="32" height="5" rx="2.5"/></svg></span>`;
+// A cute little character for each category: a round friend in the category's color,
+// wearing its emblem. Each one has its own shape so they're easy to tell apart.
+const CRITTER_BODY = {
+  people: '<circle cx="50" cy="58" r="34"/>',
+  places: '<rect x="18" y="26" width="64" height="66" rx="26"/>',
+  stories: '<path d="M50 20 C78 20 86 46 84 66 C82 86 66 94 50 94 C34 94 18 86 16 66 C14 46 22 20 50 20Z"/>',
+  stem: '<path d="M50 22 C72 22 86 40 86 60 C86 80 70 94 50 94 C30 94 14 80 14 60 C14 40 28 22 50 22Z"/>',
+  books: '<rect x="16" y="30" width="68" height="62" rx="20"/>',
+  history: '<ellipse cx="50" cy="60" rx="36" ry="32"/>',
+  arts: '<path d="M50 24 C74 24 86 42 84 62 C82 84 68 94 50 94 C32 94 16 84 16 62 C14 42 26 24 50 24Z"/>',
+};
+export const critter = (c, cls = "", i = 0) => `<span class="q-critter ${cls}" style="--cc:${c.color};--i:${i}" aria-hidden="true">
+  <svg viewBox="0 0 100 100"><g class="qcr-body">${CRITTER_BODY[c.id] || CRITTER_BODY.people}</g>
+    <ellipse cx="38" cy="42" rx="10" ry="5" fill="#fff" opacity=".35"/>
+    <ellipse class="qcr-eye" cx="39" cy="58" rx="7" ry="8.5"/><ellipse class="qcr-eye" cx="61" cy="58" rx="7" ry="8.5"/>
+    <circle cx="41" cy="60" r="3.6" fill="#1d2550"/><circle cx="63" cy="60" r="3.6" fill="#1d2550"/>
+    <circle cx="42.4" cy="58.3" r="1.3" fill="#fff"/><circle cx="64.4" cy="58.3" r="1.3" fill="#fff"/>
+    <ellipse cx="29" cy="70" rx="5" ry="3" fill="#ff7aa8" opacity=".55"/><ellipse cx="71" cy="70" rx="5" ry="3" fill="#ff7aa8" opacity=".55"/>
+    <path d="M42 73 Q50 81 58 73" fill="none" stroke="#1d2550" stroke-width="3" stroke-linecap="round"/></svg>
+  <b class="qcr-hat">${c.icon}</b></span>`;
 const buddyFace = (cls = "") => `<span class="buddy buddy-inline ${cls}" aria-hidden="true">${BUDDY_SVG}</span>`;
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const RIGHT = ["Right!", "Yes!", "You got it!", "Well done!", "Amen!", "Spot on!"];
@@ -148,7 +169,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const m = mine(), earned = QUEST_BADGES.filter(([id]) => m.badges[id]).length;
     paint(`<div class="q-home">
       <div class="q-hero">${wheelSvg()}</div>
-      <p class="q-tag">Spin, answer before the candle burns down, and collect all six jewels!</p>
+      <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "", i)).join("")}</div>
+      <p class="q-tag">Spin, answer before the candle burns down, and collect all ${CATEGORIES.length} jewels!</p>
       <button class="q-big q-solo" data-mode="solo"><span>🎯</span><b>Play solo</b><small>Three hearts. How many jewels can you win?</small></button>
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
       <button class="q-big q-buddy" data-mode="buddy">${buddyFace()}<b>Challenge ${BH()}</b><small>He plays fair, so you can beat him!</small></button>
@@ -242,7 +264,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const owned = p.jewels[cat.id];
     const helps = game.mode !== "family" && !buddyPlays;
     paint(`<div class="q-ask" style="--cc:${cat.color}">
-      <div class="q-cat"><span>${cat.icon}</span>${esc(cat.name)}${owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
+      <div class="q-cat">${critter(cat, "big")}${esc(cat.name)}${owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
       <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
       <div class="q-choices">${order.map((k, n) => `<button class="q-choice" data-k="${k}" style="--d:${0.25 + n * 0.08}s" ${buddyPlays ? "disabled" : ""}><span class="q-letter">${"ABCD"[n]}</span>${esc(q.choices[k])}</button>`).join("")}</div>
       ${buddyPlays ? `<p class="q-turn">${buddyFace("q-mini thinking")} ${BH()} is thinking…</p>` : helps ? `<div class="q-helps">${Object.entries(HELPS).map(([id, h]) => `<button class="q-help" data-help="${id}" ${m.coins < h.cost ? "disabled" : ""}>${h.icon} ${h.label} <small>🪙 ${h.cost}</small></button>`).join("")}</div>` : ""}
@@ -329,7 +351,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     add("coins500", earned >= 500); add("coins2000", earned >= 2000); add("games10", stats.played >= 10);
     const fresh = QUEST_BADGES.filter(([id]) => badgesNow[id] && !m.badges[id]);
     save({ ...stats, badges: badgesNow, coins: m.coins + winBonus, earned });
-    const title = game.mode === "solo" ? (iWon ? "You collected all six jewels!" : `You won ${jewelCount(me)} of 6 jewels!`)
+    const title = game.mode === "solo" ? (iWon ? "You collected every jewel!" : `You won ${jewelCount(me)} of ${CATEGORIES.length} jewels!`)
       : game.mode === "buddy" ? (top === me ? `You beat ${B()}!` : `${B()} won this time!`) : `${top.name} wins!`;
     paint(`<div class="q-end">
       ${game.mode === "buddy" ? buddyFace(top === me ? "" : "excited") : `<span class="q-fb-icon">🏆</span>`}<h2>${esc(title)}</h2>

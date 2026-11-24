@@ -18,7 +18,7 @@ test("questions don't repeat until the wedge's questions are used up", () => {
   assert.ok(pickQuestion("people", all.map((q) => q.id)));
 });
 
-test("a jewel takes two right answers in its wedge, and six jewels win", () => {
+test("a jewel takes two right answers in its wedge, and every jewel wins", () => {
   const game = { mode: "family", players: [] }, p = newPlayer("Anna");
   let r = answer(game, p, "people", true, 10);
   assert.equal(r.jewel, false);
@@ -27,7 +27,7 @@ test("a jewel takes two right answers in its wedge, and six jewels win", () => {
   assert.equal(NEED_PER_JEWEL, 2);
   assert.equal(p.coins, 45); // 10 + 10 + 25 for the jewel
   for (const c of CATEGORIES.slice(1)) { answer(game, p, c.id, true); r = answer(game, p, c.id, true); }
-  assert.equal(jewelCount(p), 6);
+  assert.equal(jewelCount(p), CATEGORIES.length);
   assert.equal(r.won, true);
   assert.equal(r.over, true);
 });

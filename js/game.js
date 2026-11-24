@@ -38,6 +38,7 @@ export const TOPICS = [
   ["books", "Books of the Bible", "📚"],
   ["history", "History and the world", "🏛️"],
   ["science", "Science and the Bible", "🔭"],
+  ["arts", "Music, poetry and crafts", "🎨"],
   ["connections", "Old and New connections", "🔗"],
 ];
 export function topicOf(q) {

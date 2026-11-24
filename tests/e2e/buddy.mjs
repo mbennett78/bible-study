@@ -30,7 +30,7 @@ try {
     let b = await box();
     check(`${tag}: buddy is showing`, b.shown);
     check(`${tag}: buddy sits above the bottom buttons`, b.b <= tabTop, `${b.b} vs ${tabTop}`);
-    check(`${tag}: buddy is small (a touch bigger than before)`, b.r - b.l <= 72 && b.r - b.l >= 64);
+    check(`${tag}: buddy is easy to see but not in the way`, b.r - b.l <= 84 && b.r - b.l >= 76);
     check(`${tag}: he sits quietly until someone talks to him`, await page.$eval(".buddy", (el) => el.classList.contains("sitting")));
     // Now and then he walks over to say hi.
     for (let i = 0; i < 300 && await page.$eval(".buddy-say", (el) => el.hidden); i++) await page.clock.runFor(2000);
@@ -79,7 +79,7 @@ try {
     await page.reload(); await page.waitForTimeout(800);
     check(`${tag}: can be turned off`, !(await box()).shown);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
-    check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input[type=checkbox]")).length === 2);
+    check(`${tag}: Settings has his on and off switches`, (await page.$$("#buddyToggles input[type=checkbox]")).length >= 2 && Boolean(await page.$("[data-buddy-feat=buddy]")) && Boolean(await page.$("[data-buddy-feat=buddyvisits]")));
     await page.fill("#buddyNameInput", "Sparky");
     check(`${tag}: each person can name their buddy`, /Ask Sparky anything/.test(await page.textContent("#chatSheet h2")));
     check(`${tag}: no page errors`, !errors.length, errors.join(" | "));
@@ -115,6 +115,33 @@ try {
     check("play: now and then he asks them to play Bible Quest", /Bible Quest|play|Spin/i.test(await page.textContent(".buddy-say .bs-words")) && /Let's play/.test(await page.textContent(".buddy-say .bs-yes")));
     await page.$eval(".buddy-say .bs-yes", (b) => b.click()); await page.clock.runFor(1500);
     check("play: yes takes them straight to choosing how tough he plays", await page.$eval("dialog.quest", (d) => d.open) && Boolean(await page.$("dialog.quest [data-lv]")) && /How tough should Pip be/.test(await page.textContent("dialog.quest")));
+    await ctx.close();
+  }
+  // His tricks, his nap when nobody's around, and his voice switch.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
+    await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
+    await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", buddyVisitLog: { day: new Date().toISOString().slice(0, 10), n: 9 } })); });
+    const page = await ctx.newPage();
+    const errs = []; page.on("pageerror", (e) => errs.push(e.message));
+    await page.clock.install();
+    await page.goto(site.url); await page.waitForTimeout(900);
+    const seen = new Set();
+    for (let i = 0; i < 40; i++) {
+      await page.clock.runFor(5000);
+      for (const c of await page.$eval(".buddy", (b) => [...b.classList])) seen.add(c);
+      if (seen.has("sleeping")) break;
+    }
+    check("tricks: he does things on his own (cartwheels, strolls, thinking, Yay!)", ["cartwheel", "strolling", "pondering", "yay"].filter((c) => seen.has(c)).length >= 2, [...seen].join(" "));
+    for (let i = 0; i < 40 && !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))); i++) await page.clock.runFor(5000);
+    check("nap: he lies down for a nap when nobody's been around", await page.$eval(".buddy", (b) => b.classList.contains("sleeping")) && /z z z/.test(await page.textContent(".buddy-pop")));
+    await page.mouse.click(200, 400); await page.clock.runFor(300);
+    check("nap: a tap anywhere wakes him up", !(await page.$eval(".buddy", (b) => b.classList.contains("sleeping"))));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.clock.runFor(500);
+    check("voice: a switch to have him talk out loud, off to start", await page.$eval('[data-buddy-feat="buddyvoice"]', (i) => !i.checked));
+    check("name box: big and easy to type in", await page.$eval("#buddyNameInput", (i) => i.getBoundingClientRect().height >= 48 && i.getBoundingClientRect().width >= 250));
+    check("tricks: no page errors", !errs.length, errs.join(" | "));
     await ctx.close();
   }
   // Microphone: explained before the device asks, and a kind way back if it was refused.
