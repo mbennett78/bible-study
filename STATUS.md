@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:32 AM: Zechariah is live. Every Old Testament chapter now has study notes, two days ahead of plan. Starting Matthew through Acts.
 - Tue Nov 24, 11:31 AM: Micah, Nahum, Habakkuk, Zephaniah, Haggai and Malachi notes are live; only Zechariah is left for the Old Testament. Settings > Backup now says "Bible keys come from your family sign-in, not this file."
 - Tue Nov 24, 11:28 AM: Daniel, Hosea, Joel, Amos, Obadiah and Jonah notes are live. Micah through Malachi are next.
 - Tue Nov 24, 11:24 AM: Lamentations and Ezekiel are live, a day ahead of plan. Daniel and the minor prophets are next.
@@ -36,8 +37,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Study notes for every chapter, with "why scholars debate this" explainers: Genesis through Isaiah | Done | Nov 24 |
 | Study notes: Jeremiah | Done | Nov 24 |
 | Study notes: Lamentations, Ezekiel | Done (early) | Nov 24 |
-| Study notes: Daniel and the twelve minor prophets (Old Testament complete) | In progress | Thu Nov 26 |
-| Study notes: Matthew, Mark, Luke, John, Acts | Not started | Fri Nov 27 |
+| Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Done (Tue Nov 24) | Thu Nov 26 |
+| Study notes: Matthew, Mark, Luke, John, Acts | In progress | Fri Nov 27 |
 | Study notes: Romans through Revelation (New Testament complete) | Not started | Sat Nov 28 |
 | Catch-up day for notes | Not started | Sun Nov 29 |
 | Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Not started | Sun Nov 29 |
