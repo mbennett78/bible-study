@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Tue Nov 24, 11:57 AM: Fixed Melissa's bug: "My notes" under a chapter opened the locked journal. Notes (study comments and research, never locked) and the Journal (personal reflections, lockable, in the side menu) are now separate everywhere. Added kids' Bible illustrations to the monthly plan and decluttering menus to the device check.
 - Tue Nov 24, 11:43 AM: The user guide is now at the top of Settings (and prints). Settings are in six named groups with quick jumps. Pasted Scripture can become a verse card, and comments can sit in an optional callout box: Plain, Classic, Parchment, Sticky note, Bubble or Floral. Pictures can be pasted into notes and the journal.
 - Tue Nov 24, 11:35 AM: Mark 1-16 notes are live. Offline changes now sync the moment the signal returns. Started the family setup guide draft (microphone Allow prompt, offline use) for the gift packet.
 - Tue Nov 24, 11:32 AM: Zechariah is live. Every Old Testament chapter now has study notes, two days ahead of plan. Starting Matthew through Acts.
@@ -51,7 +52,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Buddy grows, part 2: small story props (a tree to climb at Zacchaeus, and more), unlocked as they include him | Not started | Tue Dec 1 |
 | Buddy grows, part 2: remembers what each person teaches him (private, per person) and grows warmer with attention | Not started | Tue Dec 1 |
 | Deeper notes on the most-read chapters (first to be trimmed if notes run late; the rest continues after release) | Not started | Tue Dec 1 |
-| Check every screen on phone, iPad and computer, including read-aloud, voice and printing | Not started | Wed Dec 2 |
+| Check every screen on phone, iPad and computer, including read-aloud, voice and printing. Keep menus short and clean: fold long lists into dropdowns or categories | Not started | Wed Dec 2 |
 | Christmas gift packet: setup page and illustrated user guide (draft) | In progress | Wed Dec 2 |
 | Siblings' starter kit: code plus setup checklist (draft) | Not started | Wed Dec 2 |
 | Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
@@ -73,6 +74,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Switch to monthly updates once the deep notes are finished: graphics using newer Claude abilities, navigation, interface, printing, the kids' Bible, headings, looks | Not started | After the deep notes |
 | Looks rotation: keep favorites, retire unused looks from the menu, add new or seasonal ones. Never change the look someone is using. | Not started | Monthly |
 | Buddy keeps learning new tricks, emojis, moods and props; never grows bigger on screen; can always be moved, quieted or turned off | Not started | Monthly |
+| Illustrate the kids' Bible passage by passage: a picture for each story, a few books each month | Not started | Monthly, after release |
 
 ## Done
 
