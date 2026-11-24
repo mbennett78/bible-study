@@ -19,26 +19,50 @@ try {
     await page.goto(site.url); await page.waitForTimeout(900);
     await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(600);
     await page.evaluate(() => scrollTo(0, 600)); await page.waitForTimeout(200);
+    const rail = dev.startsWith("iPad");
+    if (rail) {
+      // iPad: the menu is a rail down the left; the page starts after it and nothing sits under it.
+      const m = await page.evaluate(() => { const t = document.querySelector(".tabbar").getBoundingClientRect(), v = document.querySelector("#view-read").getBoundingClientRect(); return { tl: t.left, tr: t.right, th: t.height, vl: v.left, ih: innerHeight }; });
+      check(`${dev}: the menu is a side rail on the left`, m.tl === 0 && m.th >= m.ih - 1 && m.tr < 120, JSON.stringify(m));
+      check(`${dev}: the reading starts after the rail, never under it`, m.vl >= m.tr, JSON.stringify(m));
+      check(`${dev}: the page can't slide sideways`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      // Buddy's chat opens beside the reading.
+      await page.evaluate(() => document.querySelector(".buddy").click()); await page.waitForTimeout(400);
+      const c = await page.evaluate(() => { const s = document.querySelector("#chatSheet").getBoundingClientRect(), r = document.querySelector("#reader").getBoundingClientRect(); return { sl: s.left, rr: r.right, open: document.querySelector("#chatSheet").open }; });
+      check(`${dev}: the chat opens beside the reading, not over it`, c.open && c.rr <= c.sl + 1, JSON.stringify(c));
+      await page.click("#chatSheetClose"); await page.waitForTimeout(200);
+    }
     const where = () => page.evaluate(() => { const r = document.querySelector(".tabbar").getBoundingClientRect(); return { bar: Math.round(r.bottom), screen: Math.round(visualViewport.offsetTop + visualViewport.height) }; });
     let w = await where();
-    check(`${dev}: the bar sits on the bottom edge`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
-    check(`${dev}: the very bottom of the screen is the bar, never the reading`, await page.evaluate(() => [2, innerWidth / 2, innerWidth - 3].every((x) => Boolean(document.elementFromPoint(x, innerHeight - 1)?.closest(".tabbar")))));
+    if (!rail) check(`${dev}: the bar sits on the bottom edge`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
+    if (!rail) check(`${dev}: the very bottom of the screen is the bar, never the reading`, await page.evaluate(() => [2, innerWidth / 2, innerWidth - 3].every((x) => Boolean(document.elementFromPoint(x, innerHeight - 1)?.closest(".tabbar")))));
     // Address bar collapsed: the visible area grows taller than where bottom:0 lands.
     await page.evaluate(() => { const H = visualViewport.height; Object.defineProperty(VisualViewport.prototype, "height", { get: () => H + 150, configurable: true }); visualViewport.dispatchEvent(new Event("resize")); });
     await page.waitForTimeout(150); w = await where();
-    check(`${dev}: still on the bottom edge when the visible area grows`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
+    if (!rail) check(`${dev}: still on the bottom edge when the visible area grows`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
     // Page left shifted after the keyboard closes.
     await page.evaluate(() => { Object.defineProperty(VisualViewport.prototype, "offsetTop", { get: () => 40, configurable: true }); visualViewport.dispatchEvent(new Event("scroll")); });
     await page.waitForTimeout(150); w = await where();
-    check(`${dev}: still on the bottom edge when the page is shifted`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
+    if (!rail) check(`${dev}: still on the bottom edge when the page is shifted`, Math.abs(w.bar - w.screen) <= 1, JSON.stringify(w));
     // Typing: the bar steps aside for the keyboard.
     await page.evaluate(() => { delete VisualViewport.prototype.height; delete VisualViewport.prototype.offsetTop; });
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
     await page.focus("#userName").catch(() => page.focus("input[type=text]"));
     await page.waitForTimeout(150);
-    check(`${dev}: while typing, the bar steps aside for the keyboard`, await page.$eval(".tabbar", (t) => getComputedStyle(t).visibility === "hidden"));
+    if (!rail) check(`${dev}: while typing, the bar steps aside for the keyboard`, await page.$eval(".tabbar", (t) => getComputedStyle(t).visibility === "hidden"));
     await page.evaluate(() => document.activeElement.blur()); await page.waitForTimeout(400);
     check(`${dev}: and comes back after`, await page.$eval(".tabbar", (t) => getComputedStyle(t).visibility === "visible"));
+    // The Journal button, and the two ways to read.
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=journal]").click()); await page.waitForTimeout(300);
+    check(`${dev}: the Journal button opens My Journey`, /My Journey/.test(await page.textContent("#diaryToday")) && await page.$eval(".tabbar [data-view=journal]", (b) => b.getAttribute("aria-current") === "page"));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=books]").click()); await page.waitForTimeout(200);
+    check(`${dev}: My Bible goes back to the books`, await page.$eval('[data-seg="progress"]', (b) => b.getAttribute("aria-selected") === "true"));
+    await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(300);
+    await page.click('[data-readmode="plain"]');
+    check(`${dev}: "Bible only" hides the study notes and tools`, await page.$eval("#studyNotes", (n) => getComputedStyle(n).display === "none") && await page.$eval(".study-tools", (n) => getComputedStyle(n).display === "none") && await page.$eval("#reader", (n) => getComputedStyle(n).display !== "none"));
+    await page.click('[data-readmode="study"]');
+    check(`${dev}: "Study Bible" brings them back`, await page.$eval(".study-tools", (n) => getComputedStyle(n).display !== "none"));
+    check(`${dev}: no stuck zoom (zoom is held at the screen's size)`, /maximum-scale=1/.test(await page.getAttribute('meta[name="viewport"]', "content")));
     check(`${dev}: the tab says Bible study`, /Bible study/.test(await page.textContent(".tabbar")) && !/My path/.test(await page.textContent(".tabbar")));
     check(`${dev}: no page errors`, !errors.length, errors.join(" | "));
     await ctx.close();

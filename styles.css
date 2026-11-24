@@ -1929,7 +1929,7 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
 .src-link { white-space: nowrap; font-weight: 600; color: var(--accent); }
 /* ---------- My Journey: the journal ---------- */
 .journey h2 { font-family: var(--serif); font-size: 1.6rem; margin: 2px 0 4px; }
-.add-entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
+.add-entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 10px; margin: 12px 0; }
 .add-entry { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; min-height: 76px; padding: 10px 8px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); font: inherit; font-size: 1.02rem; text-align: left; cursor: pointer; }
 .add-entry span { font-size: 1.5rem; line-height: 1; }
 .add-entry b { text-align: center; line-height: 1.25; }
@@ -2017,3 +2017,47 @@ dialog.quest.still *, dialog.quest.still *::before { animation: none !important;
 .bnd-acts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .bnd-acts button { min-height: 52px; padding: 8px 22px; border-radius: 999px; font-size: 1.1rem; font-weight: 700; border: 2px solid var(--accent); background: var(--surface); color: var(--text); }
 .bnd-acts .bnd-save { background: var(--accent); color: var(--surface); }
+
+/* ---------- iPad and wide screens: the menu is a rail down the left side ---------- */
+@media (min-width: 700px) and (min-height: 500px) {
+  body { padding-left: calc(var(--rail-w, 92px) + env(safe-area-inset-left)); padding-bottom: 24px; }
+  :root { --rail-w: 92px; }
+  .tabbar {
+    inset: 0 auto 0 0; width: calc(var(--rail-w) + env(safe-area-inset-left));
+    flex-direction: column; justify-content: flex-start; align-items: stretch; gap: 4px;
+    padding: calc(12px + env(safe-area-inset-top)) 6px calc(12px + env(safe-area-inset-bottom)) calc(6px + env(safe-area-inset-left));
+    border-top: 0; border-right: 1px solid color-mix(in srgb, var(--on-page) 12%, transparent);
+    overflow-y: auto; transform: none !important; visibility: visible !important; z-index: 8;
+  }
+  .tabbar::after { display: none; }
+  .tabbar button { flex: none; max-width: none; width: 100%; padding: 10px 2px 8px; font-size: .8rem; border-radius: 14px; gap: 4px; }
+  .tabbar svg { width: 28px; height: 28px; }
+  .tabbar button[aria-current="page"] { background: color-mix(in srgb, var(--on-page) 14%, transparent); }
+  .margin { left: calc(var(--rail-w) + env(safe-area-inset-left)); }
+  .update-bar { left: calc(50% + var(--rail-w) / 2); }
+}
+/* ---------- The page always fits the screen: no sideways sliding, no stuck zoom ---------- */
+html, body { overflow-x: clip; max-width: 100%; }
+html { touch-action: pan-y; }
+/* iPad and iPhone zoom in on any box with text smaller than 16px, and stay zoomed. */
+.version-switch select { font-size: 16px; }
+
+/* ---------- Buddy's chat as a side panel on iPad: the page moves over to make room ---------- */
+:root { --chat-w: min(400px, 44vw); }
+.chat-sheet.side { position: fixed; inset: 0 0 auto auto; margin: 0; width: var(--chat-w); height: 100dvh; max-height: none; border-radius: 0; z-index: 20;
+  display: flex; flex-direction: column; padding: calc(12px + env(safe-area-inset-top)) 14px calc(10px + env(safe-area-inset-bottom)); box-shadow: -8px 0 28px rgb(0 0 0 / .22); border-left: 1px solid var(--line); }
+.chat-sheet.side .chat { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.chat-sheet.side .chat-log { flex: 1; max-height: none; min-height: 0; overflow-y: auto; }
+body.chat-side main, body.chat-side .topbar { margin-right: var(--chat-w); }
+body.chat-side main { padding-right: calc(16px + env(safe-area-inset-right)) !important; }
+body.chat-side .buddy:not(.buddy-inline), body.chat-side .buddy-say { display: none; }
+
+/* ---------- Just the Bible / Study Bible ---------- */
+.read-mode { display: flex; gap: 4px; padding: 4px; margin: 0 0 14px; border-radius: 999px; background: var(--accent-soft); }
+.read-mode button { flex: 1; min-height: 44px; border: 0; border-radius: 999px; background: none; color: var(--muted); font-size: 1rem; font-weight: 700; }
+.read-mode button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgb(0 0 0 / .15); }
+body.plain-reading #passageArt, body.plain-reading #bookIntro, body.plain-reading #studyNotes, body.plain-reading .study-tools,
+body.plain-reading #flourish, body.plain-reading .visit-line, body.plain-reading .word-tip { display: none !important; }
+.read-mode button { white-space: nowrap; }
+@media (max-width: 600px) { .read-mode button { font-size: .92rem; } }
+@media not ((min-width: 700px) and (min-height: 500px)) { .tabbar button span { white-space: nowrap; font-size: .66rem; } .tabbar { padding-left: 2px; padding-right: 2px; } }

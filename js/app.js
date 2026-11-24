@@ -66,12 +66,13 @@ function loadPlanVersionsOnce() {
   $("#loadVersions").dataset.quiet = "1";
   $("#loadVersions").click();
 }
+// Journal has its own button in the menu: it opens My Bible on the Journal page.
+let segment = "progress";
 function showView(name) {
+  if (name === "journal") { segment = "journal"; navFromMenu = false; showView("books"); markNav("journal"); return; }
+  if (name === "books" && segment === "journal" && navFromMenu) segment = "progress"; // the My Bible button shows the books
   document.querySelectorAll(".view").forEach((v) => { v.hidden = v.id !== `view-${name}`; });
-  document.querySelectorAll(".tabbar button").forEach((b) => {
-    if (b.dataset.view === name) b.setAttribute("aria-current", "page");
-    else b.removeAttribute("aria-current");
-  });
+  markNav(name);
   document.body.dataset.view = name;
   $("#topTitle").textContent = { home: "Home", books: "My Bible", path: "Bible study", settings: "Settings" }[name] || "";
   if (name === "read") showPassageMood();
@@ -81,9 +82,21 @@ function showView(name) {
   if (name === "settings") { renderSetupCard(); loadPlanVersionsOnce(); }
   window.scrollTo(0, 0);
 }
-document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
+function markNav(name) {
+  document.querySelectorAll(".tabbar button").forEach((b) => {
+    if (b.dataset.view === name) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
+}
+let navFromMenu = false;
+document.querySelectorAll(".tabbar button").forEach((b) => b.addEventListener("click", () => { navFromMenu = true; showView(b.dataset.view); navFromMenu = false; }));
+// On iPad and other wide screens the menu is a rail down the left side instead of a bar.
+const railMedia = matchMedia("(min-width: 700px) and (min-height: 500px)");
+const railMode = () => railMedia.matches;
 // Keep page content clear of the bottom menu, whatever its real height on this device.
-if ("ResizeObserver" in window) new ResizeObserver(([e]) => document.documentElement.style.setProperty("--tabbar-total", `${Math.ceil(e.target.getBoundingClientRect().height)}px`)).observe(document.querySelector(".tabbar"));
+const measureBar = () => document.documentElement.style.setProperty("--tabbar-total", railMode() ? "0px" : `${Math.ceil(document.querySelector(".tabbar").getBoundingClientRect().height)}px`);
+if ("ResizeObserver" in window) new ResizeObserver(measureBar).observe(document.querySelector(".tabbar"));
+railMedia.addEventListener?.("change", () => { measureBar(); pinTabbar(); buddy?.place(); });
 // The bottom buttons stay pinned to the bottom edge of what's on screen. iPad and iPhone
 // Safari sometimes leave a "fixed" bar floating above the bottom (after the keyboard closes,
 // or as the address bar grows and shrinks), with the page showing underneath it. So we
@@ -98,7 +111,7 @@ function pinTabbar() {
   const typing = typingField();
   document.documentElement.classList.toggle("typing", typing);
   const vv = window.visualViewport;
-  if (!vv || typing || vv.scale > 1.05) { tabbarEl.style.transform = ""; return; } // zoomed in: leave it be
+  if (!vv || typing || vv.scale > 1.05 || railMode()) { tabbarEl.style.transform = ""; return; } // zoomed in, or the side rail: leave it be
   // Where "bottom: 0" lands, and where the visible screen really ends (same coordinates).
   const shift = Math.round(vv.offsetTop + vv.height - barProbe.getBoundingClientRect().top);
   tabbarEl.style.transform = shift && Math.abs(shift) < 800 ? `translateY(${shift}px)` : "";
@@ -119,6 +132,10 @@ document.addEventListener("focusout", () => setTimeout(() => {
   [0, 250, 700].forEach((ms) => setTimeout(pinTabbar, ms));
 }, 60));
 setInterval(() => { if (!document.hidden) pinTabbar(); }, 1500);
+// No pinch zoom: the app has its own text size (Settings). A stuck zoom is hard to undo.
+["gesturestart", "gesturechange"].forEach((t) => document.addEventListener(t, (e) => e.preventDefault(), { passive: false }));
+// If the page was ever left zoomed or slid sideways, put it back.
+addEventListener("orientationchange", () => setTimeout(() => { if (window.scrollX) window.scrollTo(0, window.scrollY); }, 300));
 pinTabbar();
 
 /* ---------- Reading ---------- */
@@ -252,6 +269,15 @@ function toggleRead() {
   if (on) celebrate(store.readCount(book) === BOOK_BY_ID[book].chapters ? "big" : "small");
 }
 $("#markRead").addEventListener("click", toggleRead);
+// Two ways to read: "Just the Bible" (the words, read-aloud and Mark read, nothing else) or
+// "Study Bible" (study notes, the book introduction, pictures, trivia, journal and helper).
+function setReadMode(mode) {
+  store.set("readMode", mode);
+  document.body.classList.toggle("plain-reading", mode === "plain");
+  document.querySelectorAll("[data-readmode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.readmode === mode)));
+}
+document.querySelectorAll("[data-readmode]").forEach((b) => b.addEventListener("click", () => setReadMode(b.dataset.readmode)));
+setReadMode(store.get("readMode") === "plain" ? "plain" : "study");
 
 /* ---------- Favorites & visit history ---------- */
 const fmtDate = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? "" : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }); };
@@ -431,12 +457,12 @@ function renderProgress() {
 }
 
 /* ---------- My study: history & favorites ---------- */
-let segment = "progress";
 document.querySelectorAll(".segments button").forEach((b) => b.addEventListener("click", () => { segment = b.dataset.seg; renderMyStudy(); }));
 $("#myBibleGo").addEventListener("click", () => { const { book, chapter } = store.get("last"); showView("read"); openChapter(book, chapter); });
 function renderMyStudy() {
   { const { book, chapter } = store.get("last"); $("#myBibleGoRef").textContent = `${BOOK_BY_ID[book]?.name || "John"} ${chapter || 1}`; }
   document.querySelectorAll(".segments button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.seg === segment)));
+  if (document.body.dataset.view === "books") markNav(segment === "journal" ? "journal" : "books");
   document.querySelectorAll("[data-seg-panel]").forEach((p) => { p.hidden = p.dataset.segPanel !== segment; });
   if (segment === "progress") { renderProgress(); renderKnowledge(); }
   if (segment === "journal") { renderDiaryToday(); renderJournalList(); }
@@ -1053,11 +1079,30 @@ chatSheet.addEventListener("click", (e) => {
   const r = chatSheet.getBoundingClientRect();
   if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) chatSheet.close();
 });
-chatSheet.addEventListener("close", () => { const chat = chatSheet.querySelector(".chat"); if (chat) $("#partnerBox").append(chat); buddy.chatting(false); });
+chatSheet.addEventListener("close", () => {
+  const chat = chatSheet.querySelector(".chat"); if (chat) $("#partnerBox").append(chat);
+  document.body.classList.remove("chat-side"); chatSheet.classList.remove("side");
+  buddy.chatting(false); buddy.place();
+});
+// On iPad the chat opens as a panel down the right side, and the page makes room for it,
+// so the reading is never covered. On phones it's a sheet over the page (there's no room).
+chatSheet.addEventListener("keydown", (e) => { if (e.key === "Escape" && chatSheet.classList.contains("side")) chatSheet.close(); });
+function fitChatPanel() {
+  if (!chatSheet.classList.contains("side") || !window.visualViewport) return;
+  // Keep the panel inside what's visible, so the keyboard never covers the typing box.
+  chatSheet.style.top = `${Math.max(0, visualViewport.offsetTop)}px`;
+  chatSheet.style.height = `${visualViewport.height}px`;
+}
+window.visualViewport?.addEventListener("resize", fitChatPanel);
+window.visualViewport?.addEventListener("scroll", fitChatPanel);
 function openBuddyChat() {
   const chat = $("#partnerBox .chat");
   if (chat) chatSheet.append(chat);
-  if (!chatSheet.open) { chatSheetOpenedAt = Date.now(); chatSheet.showModal(); }
+  if (!chatSheet.open) {
+    chatSheetOpenedAt = Date.now();
+    if (railMode()) { chatSheet.classList.add("side"); document.body.classList.add("chat-side"); chatSheet.show(); fitChatPanel(); }
+    else chatSheet.showModal();
+  }
   buddy.chatting(true);
   if (!$("#chatLog").childElementCount) resetChat();
   checkHelperStanding();
@@ -1107,7 +1152,7 @@ const BUDDY_CHECKINS = [
 function openMyJourney() {
   showView("books");
   document.querySelector('[data-seg="journal"]')?.click();
-  setTimeout(() => openEntry({ kind: "day" }), 150);
+  openEntry({ kind: "day" }); // right away, so the keyboard comes up on iPad and iPhone
 }
 // Run something once no window (like the game) is open over the page.
 function buddyAfterDialogs(fn, tries = 600) {
@@ -2493,7 +2538,7 @@ function wireDaily(root) {
   $("#dailyWrite")?.addEventListener("click", () => {
     showView("books");
     document.querySelector('[data-seg="journal"]')?.click();
-    setTimeout(() => openEntry({ kind: "day" }), 150);
+    openEntry({ kind: "day" }); // right away, so the keyboard comes up on iPad and iPhone
   });
   $("#dailyCustom").addEventListener("click", () => { $("#dailyCustomBox").hidden = !$("#dailyCustomBox").hidden; });
   root.querySelectorAll("[data-dpart]").forEach((c) => c.addEventListener("change", () => {

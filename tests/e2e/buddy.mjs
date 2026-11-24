@@ -30,7 +30,8 @@ try {
     const tabTop = await page.$eval(".tabbar", (t) => t.getBoundingClientRect().top);
     let b = await box();
     check(`${tag}: buddy is showing`, b.shown);
-    check(`${tag}: buddy sits above the bottom buttons`, b.b <= tabTop, `${b.b} vs ${tabTop}`);
+    // Phones: above the bottom bar. iPad: the menu is a rail on the left, so he has the full height.
+    check(`${tag}: buddy never sits on the menu`, tag === "phone" ? b.b <= tabTop : b.l >= await page.$eval(".tabbar", (t) => t.getBoundingClientRect().right) && b.b <= 1180, `${JSON.stringify(b)} vs ${tabTop}`);
     check(`${tag}: buddy is easy to see but not in the way`, tag === "phone" ? b.r - b.l <= 64 && b.r - b.l >= 56 : b.r - b.l <= 84 && b.r - b.l >= 76, `${b.r - b.l}`);
     // His own margin: the page's cards end before he begins, so he never covers words or typing.
     const cardRight = await page.$eval("#view-home", (v) => v.getBoundingClientRect().right);
@@ -55,11 +56,12 @@ try {
     await page.mouse.move(s.l + 20, s.t + 30); await page.mouse.down();
     await page.mouse.move(60, s.t - 150, { steps: 8 }); await page.mouse.up(); await page.waitForTimeout(400);
     b = await box();
-    check(`${tag}: dragged to the left edge`, b.l < 20, `left ${b.l}`);
+    const railRight = tag === "phone" ? 0 : await page.$eval(".tabbar", (t) => t.getBoundingClientRect().right);
+    check(`${tag}: dragged to the left edge (beside the side menu on iPad)`, b.l >= railRight && b.l < railRight + 20, `left ${b.l}`);
     check(`${tag}: dragging doesn't open anything`, !(await page.$("dialog[open]")));
     await page.reload(); await page.waitForTimeout(900);
     b = await box();
-    check(`${tag}: remembers where he was put`, b.l < 20 && Math.abs(b.t - (s.t - 150)) < 60, `left ${b.l} top ${b.t}`);
+    check(`${tag}: remembers where he was put`, b.l < railRight + 20 && Math.abs(b.t - (s.t - 150)) < 60, `left ${b.l} top ${b.t}`);
     // Ask something: he gets excited.
     await page.clock.runFor(1000);
     await page.tap(".buddy"); await page.waitForTimeout(500);
@@ -131,7 +133,7 @@ try {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
     await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
     await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p>Text</p>" } } }));
-    await ctx.addInitScript(() => { if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", buddyVisitLog: { day: new Date().toISOString().slice(0, 10), n: 9 } })); });
+    await ctx.addInitScript(() => { Math.random = () => 0.1; if (!localStorage.getItem("bible-study:v1")) localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", buddyName: "Buddy", buddyVisitLog: { day: new Date().toISOString().slice(0, 10), n: 9 } })); });
     const page = await ctx.newPage();
     const errs = []; page.on("pageerror", (e) => errs.push(e.message));
     await page.clock.install({ time: new Date("2026-11-24T14:00:00") });

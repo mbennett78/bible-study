@@ -99,14 +99,17 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   function bounds() {
     const top = (document.querySelector(".topbar")?.getBoundingClientRect().bottom || 0) + 8;
     const tabs = document.querySelector(".tabbar");
-    const bottom = (tabs && getComputedStyle(tabs).display !== "none" ? tabs.getBoundingClientRect().top : innerHeight) - 8;
-    return { top, bottom: Math.max(top + el.offsetHeight, bottom) };
+    const tr = tabs && getComputedStyle(tabs).display !== "none" ? tabs.getBoundingClientRect() : null;
+    // A side rail (iPad) doesn't take the bottom of the screen; a bottom bar does.
+    const bottom = (tr && tr.height < innerHeight * 0.5 ? tr.top : innerHeight) - 8;
+    const left = tr && tr.height >= innerHeight * 0.5 ? tr.right : 0; // beside the iPad side menu
+    return { top, bottom: Math.max(top + el.offsetHeight, bottom), left };
   }
   function place() {
     if (!saved) spot = { side: defaultSide(), y: wanderY ?? 1 };
     const b = bounds(), h = el.offsetHeight || 84;
     el.style.top = `${b.top + clamp(spot.y, 0, 1) * (b.bottom - b.top - h)}px`;
-    el.style.left = spot.side === "left" ? "4px" : "";
+    el.style.left = spot.side === "left" ? `${b.left + 4}px` : "";
     el.style.right = spot.side === "right" ? "4px" : "";
     el.classList.toggle("on-right", spot.side === "right");
     document.body.classList.toggle("buddy-right", !el.hidden && spot.side === "right");
@@ -143,7 +146,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.add("dragging");
     const b = bounds();
     el.style.top = `${clamp(drag.top + e.clientY - drag.y, b.top, b.bottom - el.offsetHeight)}px`;
-    el.style.left = `${clamp(e.clientX - el.offsetWidth / 2, 0, innerWidth - el.offsetWidth)}px`;
+    el.style.left = `${clamp(e.clientX - el.offsetWidth / 2, b.left, innerWidth - el.offsetWidth)}px`;
     el.style.right = "";
   });
   const drop = (e) => {
@@ -152,7 +155,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.remove("dragging");
     if (!was.moved) { if (e.type === "pointerup") tapped(); return; }
     const b = bounds(), r = el.getBoundingClientRect();
-    spot = { side: r.left + r.width / 2 < innerWidth / 2 ? "left" : "right", y: clamp((r.top - b.top) / Math.max(1, b.bottom - b.top - r.height), 0, 1) };
+    spot = { side: r.left + r.width / 2 < (b.left + innerWidth) / 2 ? "left" : "right", y: clamp((r.top - b.top) / Math.max(1, b.bottom - b.top - r.height), 0, 1) };
     saved = spot;
     try { localStorage.setItem(SPOT_KEY, JSON.stringify(spot)); } catch { /* not saved */ }
     place();
@@ -167,7 +170,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   let onYes = null;
   yesBtn.addEventListener("click", () => {
     clearTimeout(visitTimer);
-    if (onAnswer) { const a = onAnswer.yes; onAnswer = null; speak(a.line, false); play(a.go ? "excited" : "yay", 1600); visitTimer = setTimeout(() => { if (a.go) { endVisit(); a.go(); } else goBack(); }, a.go ? 1300 : 3200); return; }
+    if (onAnswer) {
+      const a = onAnswer.yes; onAnswer = null;
+      // Opening something (like the journal) happens right away, inside the tap, so the
+      // keyboard can come up on iPad and iPhone.
+      if (a.go) { endVisit(); play("excited", 1600); a.go(); return; }
+      speak(a.line, false); play("yay", 1600); visitTimer = setTimeout(goBack, 3200); return;
+    }
     const then = onYes || onTap;
     speak(onYes ? pick(PLAY_LINES) : pick(YES_LINES), false);
     play("excited", 1400);

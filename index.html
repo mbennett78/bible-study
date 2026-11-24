@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <title>Bible Study</title>
   <meta name="description" content="A calm personal Bible study app.">
   <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
@@ -69,6 +69,10 @@
 
     <!-- Read -->
     <section id="view-read" class="view" aria-label="Read">
+      <div class="read-mode" role="group" aria-label="How to read">
+        <button type="button" data-readmode="plain" aria-pressed="false">📖 Bible only</button>
+        <button type="button" data-readmode="study" aria-pressed="true">🎓 Study Bible</button>
+      </div>
       <div id="passageArt"></div>
       <div class="path-banner" id="pathBanner" hidden></div>
       <div class="listen-bar" id="listenBar">
@@ -431,6 +435,10 @@
     <button data-view="books">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M10 19V5M15 19v-7M20 19V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       <span>My Bible</span>
+    </button>
+    <button data-view="journal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h10a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2z M6 18a2 2 0 0 1 2-2h10 M10 8h5M10 11h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Journal</span>
     </button>
     <button data-view="path">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-6 11-2 14-14M5 19a1.5 1.5 0 1 0 0-.01M19 5a1.5 1.5 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
