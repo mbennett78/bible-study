@@ -10,6 +10,8 @@ import { BOOKS } from "./books.js";
 // gets a "Look it up" link either way (a library search when there's no page of its own).
 
 // What each part of the study section is, in one line, so nobody wonders what they're reading.
+import { MORE_NOTES } from "./notes-more.js";
+
 export const ABOUT = {
   verses: "Verse by verse: notes on key verses, the way a study Bible explains them at the bottom of the page. Tap a verse number to jump to it.",
   strongs: "Strong's concordance: every Hebrew or Greek word in this chapter, numbered as in James Strong's concordance (1890). Tap a word to see what it means and where else it's used.",
@@ -1218,6 +1220,8 @@ export const NOTES = {
     },
   },
 };
+
+Object.assign(NOTES, MORE_NOTES);
 
 export const notesFor = (book, chapter) => NOTES[`${book}.${chapter}`] || null;
 // In Bible order.
