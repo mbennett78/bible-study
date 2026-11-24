@@ -1460,16 +1460,15 @@ function renderSetup() {
   } else if (step.id === "password") {
     body.innerHTML = `<h2 class="setup-h">Make your own password</h2>
       <p class="muted">You signed in with the starter password. Choose your own now, something you'll remember. If you ever forget it, tap "Forgot password?" on the sign-in screen and we'll email you a link.</p>
-      <label class="field">New password<input id="setupPw" type="password" autocomplete="new-password" placeholder="At least 6 letters or numbers"></label>
-      <label class="field">Type it again<input id="setupPw2" type="password" autocomplete="new-password"></label>
+      <label class="field">New password<span class="pw-wrap"><input id="setupPw" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="setupPw" aria-label="Hide password" aria-pressed="true">Hide</button></span></label>
       <button type="button" class="big-btn" id="setupPwSave">Save my password</button>
       <p class="setup-key-status" id="setupPwMsg" role="status">${store.get("setup")?.password ? "Your own password is saved ✓" : ""}</p>
       <p class="muted small-print">You'll stay signed in on this device. You can change your password any time in Settings, under Account.</p>`;
     $("#setupPwSave").addEventListener("click", async () => {
-      const a = $("#setupPw").value, b = $("#setupPw2").value, msg = $("#setupPwMsg"), problem = passwordProblem(a, b);
+      const a = $("#setupPw").value, msg = $("#setupPwMsg"), problem = passwordProblem(a);
       if (problem) { msg.textContent = problem; return; }
       $("#setupPwSave").disabled = true; msg.textContent = "Saving…";
-      try { await changePassword(a); setupSet({ password: true }); flag(STARTER_KEY, false); flag(RESET_KEY, false); msg.textContent = "Your own password is saved ✓ Tap Next."; $("#setupPw").value = $("#setupPw2").value = ""; renderSetupDots(); }
+      try { await changePassword(a); setupSet({ password: true }); flag(STARTER_KEY, false); flag(RESET_KEY, false); msg.textContent = "Your own password is saved ✓ Tap Next."; $("#setupPw").value = ""; renderSetupDots(); }
       catch (x) { msg.textContent = x.message || "That didn't save. Check your internet and try again."; }
       $("#setupPwSave").disabled = false;
     });
@@ -2273,7 +2272,7 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest?.(".pw-show");
   if (!b) return;
   const input = document.getElementById(b.dataset.show), on = input.type === "password";
-  input.type = on ? "text" : "password"; b.textContent = on ? "Hide" : "Show"; b.setAttribute("aria-pressed", String(on));
+  input.type = on ? "text" : "password"; b.textContent = on ? "Hide" : "Show"; b.setAttribute("aria-pressed", String(on)); b.setAttribute("aria-label", on ? "Hide password" : "Show password");
 });
 function showGate(note = "") {
   return new Promise((resolve) => {
@@ -2338,15 +2337,14 @@ function askNewPassword(reason) {
   pwSheet.innerHTML = `<div class="wb-icon" aria-hidden="true">🔑</div>
     <h2>Choose a new password</h2>
     <p class="muted">${reason === "reset" ? "You're signed in from the email. Now choose a new password you'll remember." : "You signed in with the starter password. Please choose your own."}</p>
-    <label class="field">New password<span class="pw-wrap"><input id="pwNew" type="password" autocomplete="new-password" placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="pwNew" aria-label="Show password" aria-pressed="false">Show</button></span></label>
-    <label class="field">Type it again<input id="pwNew2" type="password" autocomplete="new-password"></label>
+    <label class="field">New password<span class="pw-wrap"><input id="pwNew" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="pwNew" aria-label="Hide password" aria-pressed="true">Hide</button></span></label>
     <button type="button" class="big-btn" id="pwSave">Save my password</button>
     <p class="setup-key-status" id="pwSheetMsg" role="status"></p>
     <button type="button" class="wb-new" id="pwLater">Not now</button>`;
   pwSheet.showModal();
   $("#pwLater").onclick = () => pwSheet.close();
   $("#pwSave").onclick = async () => {
-    const out = $("#pwSheetMsg"), problem = passwordProblem($("#pwNew").value, $("#pwNew2").value);
+    const out = $("#pwSheetMsg"), problem = passwordProblem($("#pwNew").value);
     if (problem) { out.textContent = problem; return; }
     $("#pwSave").disabled = true; out.textContent = "Saving…";
     try {
@@ -2359,6 +2357,7 @@ function askNewPassword(reason) {
 }
 // The same rules everywhere a password is chosen.
 function passwordProblem(a, b) {
+  if (!a.trim()) return "Type the password you'd like in the box first.";
   if (a.length < 6) return "Please use at least 6 letters or numbers.";
   if (b !== undefined && a !== b) return "Those two don't match. Please type them again.";
   if (a.trim().toLowerCase() === STARTER_PASSWORD) return "Please choose something different from the starter password.";
@@ -2374,8 +2373,7 @@ function renderAccount() {
        <p class="muted small-print">Your reading, notes and journal are saved on this device and backed up to your account, so an update or a new phone never loses your place. <span id="backupStatus"></span></p>
        <button class="small" id="mergeBackup">Bring in progress from my other devices</button><p class="small-print" id="mergeMsg"></p>
        <details class="share-key"><summary>Change my password</summary>
-         <label class="field">New password<span class="pw-wrap"><input id="newPassword" type="password" autocomplete="new-password" minlength="6"><button type="button" class="pw-show" data-show="newPassword" aria-label="Show password" aria-pressed="false">Show</button></span></label>
-         <label class="field">Type it again<input id="newPassword2" type="password" autocomplete="new-password"></label>
+         <label class="field">New password<span class="pw-wrap"><input id="newPassword" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="newPassword" aria-label="Hide password" aria-pressed="true">Hide</button></span></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
@@ -2390,10 +2388,10 @@ function renderAccount() {
     updatePathBits(); if (!$("#view-home").hidden) renderHome();
   });
   $("#savePassword")?.addEventListener("click", async () => {
-    const v = $("#newPassword").value, out = $("#pwMsg"), problem = passwordProblem(v, $("#newPassword2").value);
+    const v = $("#newPassword").value, out = $("#pwMsg"), problem = passwordProblem(v);
     if (problem) { out.textContent = problem; return; }
     $("#savePassword").disabled = true; out.textContent = "Saving…";
-    try { await changePassword(v); flag(STARTER_KEY, false); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = $("#newPassword2").value = ""; }
+    try { await changePassword(v); flag(STARTER_KEY, false); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
     catch (x) { out.textContent = x.message; }
     $("#savePassword").disabled = false;
   });

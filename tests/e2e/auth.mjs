@@ -43,11 +43,14 @@ try {
       await page.click("#setupNext"); await page.waitForTimeout(200);
     }
     check("setup asks for their own password", Boolean(await page.$("#setupPw")));
-    await page.fill("#setupPw", "biblestudy"); await page.fill("#setupPw2", "biblestudy"); await page.click("#setupPwSave");
+    check("the password box shows what they type, so Safari's strong-password sheet can't take over", await page.$eval("#setupPw", (i) => i.type === "text" && i.autocomplete === "off") && !(await page.$("#setupPw2")));
+    await page.click("#setupPwSave");
+    check("an empty box says to type a password, not that it's too short", /Type the password/.test(await text(page, "#setupPwMsg")));
+    await page.fill("#setupPw", "biblestudy"); await page.click("#setupPwSave");
     check("the starter password is refused as a new one", /different from the starter/.test(await text(page, "#setupPwMsg")));
-    await page.fill("#setupPw", "grace-2026"); await page.fill("#setupPw2", "grace-2025"); await page.click("#setupPwSave");
-    check("mismatched passwords are caught", /don't match/.test(await text(page, "#setupPwMsg")));
-    await page.fill("#setupPw2", "grace-2026"); await page.fill("#setupPw", "grace-2026"); await page.click("#setupPwSave"); await page.waitForTimeout(500);
+    await page.fill("#setupPw", "grace"); await page.click("#setupPwSave");
+    check("a short password is caught", /at least 6/.test(await text(page, "#setupPwMsg")));
+    await page.fill("#setupPw", "grace-2026"); await page.click("#setupPwSave"); await page.waitForTimeout(500);
     check("new password saved", /saved/.test(await text(page, "#setupPwMsg")), await text(page, "#setupPwMsg"));
     const put = fake.calls.findLast((c) => c.method === "PUT" && c.path === "/auth/v1/user");
     check("the account is marked as having its own password", put?.body?.data?.own_password === true);
@@ -107,9 +110,9 @@ try {
     await page.fill("#gateCode", "123456"); await page.click("#gateCodeForm button[type=submit]"); await page.waitForTimeout(1000);
     check("the right code signs in", !(await visible(page, "#gate")));
     check("asked to choose a new password", Boolean(await page.$(".pw-sheet[open]")));
-    await page.fill("#pwNew", "grace-2026"); await page.fill("#pwNew2", "grace-2026"); await page.click("#pwSave"); await page.waitForTimeout(400);
+    await page.fill("#pwNew", "grace-2026"); await page.click("#pwSave"); await page.waitForTimeout(400);
     check("reusing the current password is explained", /already have/.test(await text(page, "#pwSheetMsg")), await text(page, "#pwSheetMsg"));
-    await page.fill("#pwNew", "mercy-2026"); await page.fill("#pwNew2", "mercy-2026"); await page.click("#pwSave"); await page.waitForTimeout(1800);
+    await page.fill("#pwNew", "mercy-2026"); await page.click("#pwSave"); await page.waitForTimeout(1800);
     check("new password saved after reset", !(await page.$(".pw-sheet[open]")) && people[0].password === "mercy-2026");
     await page.reload(); await page.waitForTimeout(900);
     check("not asked again after the reset", !(await page.$(".pw-sheet[open]")));
