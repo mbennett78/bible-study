@@ -2773,7 +2773,7 @@ details.set-group[open] > summary { padding-left: 6px; }
 .listen-repeat { min-height: 40px; padding: 8px 14px; font-size: .92rem; }
 .bi-ch { display: inline-block; padding: 6px 0; min-height: 32px; }
 @media (min-width: 700px) {
-  .view > .art-slot > .scene, .view > .art-slot > svg.scene, #homeView > div > .scene:first-child, #homeView > .scene { max-height: 320px; }
-  .view > .art-slot > figure.scene { max-height: 320px; overflow: hidden; }
+  .view .scene:not(.look-preview .scene):not(.print-book .scene) { max-height: min(320px, 38vh); }
+  .view > .art-slot > figure.scene { max-height: min(320px, 38vh); overflow: hidden; }
 
 }
