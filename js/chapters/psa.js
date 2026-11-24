@@ -89,7 +89,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["9:10", "Those who know Your name will put their trust in You", "Knowing God leads to trusting Him."],
     ],
     bg: [["An acrostic", "Psalms 9 and 10 together form a broken alphabet poem, with sections starting with successive Hebrew letters. Some ancient translations treat them as one psalm, which is why psalm numbers differ in some older Bibles.", "good", ["craigie", "kidner"]]],
-    refs: [["PSA.10", "Psalm 10", "The second half of the acrostic"], ["NAM.1", "Nahum 1:7", "A stronghold in the day of trouble"]],
+    refs: [["PSA.10", "Psalm 10", "The second half of the acrostic"], ["NAH.1", "Nahum 1:7", "A stronghold in the day of trouble"]],
   },
   10: {
     intro: "\"Why do You stand afar off, O LORD?\" The wicked man boasts, preys on the helpless, and says in his heart that God has forgotten. The psalmist pleads, \"Arise, O LORD... do not forget the afflicted.\" He ends with confidence: God hears the humble and defends the orphan.",
@@ -692,5 +692,328 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["72:19", "May the whole earth be filled with His glory", "The close of Book Two."],
     ],
     refs: [["ISA.11", "Isaiah 11:1-5", "The righteous King"], ["MAT.2", "Matthew 2:11", "The wise men bring gifts"], ["HAB.2", "Habakkuk 2:14", "The earth filled with the knowledge of His glory"]],
+  },
+  73: {
+    intro: "Book Three opens with Asaph's honest struggle. \"Surely God is good to Israel... but as for me, my feet came close to stumbling,\" because he envied the prosperity of the wicked. It troubled him \"until I came into the sanctuary of God; then I perceived their end.\" \"Whom have I in heaven but You? And besides You, I desire nothing on earth.\"",
+    v: [
+      ["73:3", "I was envious of the arrogant", "Honest about jealousy."],
+      ["73:17", "Until I came into the sanctuary of God", "Worship changed his view."],
+      ["73:25", "Whom have I in heaven but You?", "God is enough."],
+      ["73:26", "God is the strength of my heart and my portion forever", "When body fails, God remains."],
+    ],
+    bg: [["Asaph", "Asaph was one of David's chief musicians (1 Chronicles 16:5). Psalms 50 and 73-83 bear his name, likely written by him and the guild of singers who carried on his name.", "good", ["tate", "kidner"]]],
+    refs: [["PSA.37", "Psalm 37", "Do not fret over the wicked"], ["JOB.21", "Job 21:7", "Why do the wicked live?"], ["PHP.3", "Philippians 3:8", "Knowing Christ above all"]],
+  },
+  74: {
+    intro: "A lament after enemies destroyed the temple. \"O God, why have You rejected us forever?\" They smashed the carvings and burned the sanctuary. \"There is no longer any prophet.\" Yet God is King from of old, who divided the sea and set the boundaries of the earth. \"Arise, O God, and plead Your own cause.\"",
+    v: [
+      ["74:1", "Why have You rejected us forever?", "Grief over ruin."],
+      ["74:7", "They have burned Your sanctuary to the ground", "Likely the Babylonian destruction in 586 BC."],
+      ["74:12", "Yet God is my king from of old", "Faith remembers God's past power."],
+    ],
+    refs: [["LAM.2", "Lamentations 2", "The temple destroyed"], ["2KI.25", "2 Kings 25:9", "The house of the LORD burned"]],
+  },
+  75: {
+    intro: "\"We give thanks to You, O God.\" God says, \"When I select an appointed time, it is I who judge with equity.\" Exaltation does not come from east or west, but God puts down one and exalts another. The wicked drink from the cup in the LORD's hand.",
+    v: [
+      ["75:2", "It is I who judge with equity", "God sets the time."],
+      ["75:6-7", "God is the Judge; He puts down one and exalts another", "Promotion comes from God."],
+    ],
+    refs: [["LUK.1", "Luke 1:52", "He has brought down rulers"], ["1SA.2", "1 Samuel 2:7", "The LORD brings low and exalts"]],
+  },
+  76: {
+    intro: "God is known in Judah; His dwelling is in Zion. There He broke the flaming arrows and the weapons of war. The warriors slept their final sleep. \"You, even You, are to be feared.\" Even human wrath will praise Him.",
+    v: [
+      ["76:3", "There He broke the flaming arrows", "God ends war."],
+      ["76:10", "The wrath of man shall praise You", "God turns opposition into praise."],
+    ],
+    bg: [["Sennacherib's army", "The ancient Greek translation adds \"concerning the Assyrian\" to this psalm's title, linking it to the night the Assyrian army died outside Jerusalem (2 Kings 19:35).", "good", ["tate", "kidner"]]],
+    refs: [["2KI.19", "2 Kings 19:35", "The angel of the LORD strikes the Assyrian camp"]],
+  },
+  77: {
+    intro: "In the day of trouble the psalmist seeks the Lord, but his soul refuses comfort. \"Will the Lord reject forever?... Has His lovingkindness ceased forever?\" Then he decides, \"I shall remember the deeds of the LORD.\" He recalls the exodus: \"Your way was in the sea... and Your footprints may not be known. You led Your people like a flock.\"",
+    v: [
+      ["77:7-9", "Has God forgotten to be gracious?", "Six honest questions."],
+      ["77:11", "I shall remember the deeds of the LORD", "The turning point is memory."],
+      ["77:19", "Your footprints may not be known", "God leads even when we can't see how."],
+    ],
+    refs: [["EXO.14", "Exodus 14", "The way through the sea"], ["LAM.3", "Lamentations 3:21-23", "This I recall, therefore I have hope"]],
+  },
+  78: {
+    intro: "Asaph opens his mouth in a parable to tell the next generation the praises of the LORD, so they will set their hope in God and not forget His works. He retells Israel's history: the exodus, manna, water from the rock, and Israel's repeated rebellion in the wilderness and in the land. Yet God was compassionate. He chose David to shepherd His people \"with integrity of heart.\"",
+    v: [
+      ["78:2", "I will open my mouth in a parable", "Matthew 13:35 applies this to Jesus' teaching."],
+      ["78:4", "Telling to the generation to come", "Passing faith to children."],
+      ["78:38", "But He, being compassionate, forgave", "God's patience."],
+      ["78:72", "He shepherded them according to the integrity of his heart", "David's leadership."],
+    ],
+    refs: [["DEU.6", "Deuteronomy 6:6-7", "Teach them diligently to your sons"], ["MAT.13", "Matthew 13:35", "I will open My mouth in parables"], ["1CO.10", "1 Corinthians 10:1-11", "These things were written as examples"]],
+  },
+  79: {
+    intro: "\"O God, the nations have invaded Your inheritance; they have defiled Your holy temple; they have laid Jerusalem in ruins.\" The dead lie unburied. \"Help us, O God of our salvation, for the glory of Your name; and deliver us and forgive our sins for Your name's sake.\" The people are the sheep of His pasture.",
+    v: [
+      ["79:1", "They have laid Jerusalem in ruins", "Lament for the city."],
+      ["79:9", "For the glory of Your name", "Prayer rooted in God's honor."],
+      ["79:13", "We Your people and the sheep of Your pasture", "Still His flock."],
+    ],
+    refs: [["PSA.74", "Psalm 74", "Another lament for the temple"], ["JER.10", "Jeremiah 10:25", "Pour out Your wrath on the nations"]],
+  },
+  80: {
+    intro: "\"O Shepherd of Israel... You who are enthroned above the cherubim, shine forth!\" Three times the refrain prays, \"O God, restore us and cause Your face to shine upon us, and we will be saved.\" Israel is a vine God brought out of Egypt and planted, now broken down and burned. \"Let Your hand be upon the man of Your right hand.\"",
+    v: [
+      ["80:3", "Cause Your face to shine upon us", "A refrain of hope."],
+      ["80:8", "You removed a vine from Egypt", "Israel as God's vine."],
+      ["80:17", "The son of man whom You made strong for Yourself", "A hope for God's chosen king."],
+    ],
+    refs: [["ISA.5", "Isaiah 5:1-7", "The song of the vineyard"], ["JHN.15", "John 15:1-5", "I am the true vine"]],
+  },
+  81: {
+    intro: "\"Sing for joy to God our strength!\" Blow the trumpet at the new moon and the full moon on the feast day. God speaks: \"I relieved his shoulder of the burden... Open your mouth wide and I will fill it.\" But His people would not listen. \"Oh that My people would listen to Me!\" He would feed them with the finest wheat and honey from the rock.",
+    v: [
+      ["81:10", "Open your mouth wide and I will fill it", "God wants to give generously."],
+      ["81:13", "Oh that My people would listen to Me", "God's longing."],
+      ["81:16", "With honey from the rock I would satisfy you", "The blessing they missed."],
+    ],
+    refs: [["LEV.23", "Leviticus 23:24", "The Feast of Trumpets"], ["MAT.23", "Matthew 23:37", "You were unwilling"]],
+  },
+  82: {
+    intro: "God takes His stand in the divine assembly and judges among the \"gods.\" \"How long will you judge unjustly?\" He commands, \"Vindicate the weak and fatherless; do justice to the afflicted.\" \"I said, You are gods... nevertheless you will die like men.\" \"Arise, O God, judge the earth!\"",
+    v: [
+      ["82:3", "Vindicate the weak and fatherless", "God's concern for justice."],
+      ["82:6", "I said, You are gods", "Jesus quoted this in John 10:34."],
+      ["82:8", "Arise, O God, judge the earth", "Hope for true justice."],
+    ],
+    why: "Psalm 82 speaks of God judging \"gods\" in His assembly. Scholars discuss who these \"gods\" are.",
+    views: [
+      ["Human judges", "Many read the \"gods\" as Israel's rulers and judges, who stood in God's place to give justice; Jesus' use in John 10:34-35 fits this reading.", ["kidner", "vangemeren"]],
+      ["Heavenly beings", "Others see them as spiritual powers in God's heavenly council who were given authority over nations and abused it, comparing Deuteronomy 32:8 and Daniel 10.", ["tate"]],
+    ],
+    common: "All agree the psalm shows God as the supreme Judge who demands justice for the weak and will judge all who rule unjustly.",
+    refs: [["JHN.10", "John 10:34-36", "Jesus quotes Psalm 82"], ["ISA.1", "Isaiah 1:17", "Defend the orphan"]],
+  },
+  83: {
+    intro: "\"O God, do not remain quiet.\" A coalition of nations, Edom, Moab, Ammon, Philistia, Tyre and Assyria, plots to wipe Israel out. The psalmist asks God to deal with them as with Midian and Sisera, \"that they may know that You alone, whose name is the LORD, are the Most High over all the earth.\"",
+    v: [
+      ["83:4", "Let us wipe them out as a nation", "A real threat."],
+      ["83:9", "Deal with them as with Midian", "Remembering Gideon's victory."],
+      ["83:18", "That they may know that You alone are the Most High", "The goal is God's name known."],
+    ],
+    refs: [["JDG.7", "Judges 7", "Gideon defeats Midian"], ["2CH.20", "2 Chronicles 20", "An alliance against Jehoshaphat"]],
+  },
+  84: {
+    intro: "\"How lovely are Your dwelling places, O LORD of hosts!\" Even the sparrow has found a home near God's altars. \"How blessed are those who dwell in Your house.\" Pilgrims passing through the valley of Baca make it a spring. \"A day in Your courts is better than a thousand outside. I would rather stand at the threshold of the house of my God.\"",
+    v: [
+      ["84:2", "My soul longed and even yearned", "Longing for worship."],
+      ["84:5", "In whose heart are the highways to Zion", "Pilgrims at heart."],
+      ["84:10", "A day in Your courts is better than a thousand", "The value of God's presence."],
+      ["84:11", "The LORD God is a sun and shield", "Light and protection."],
+    ],
+    refs: [["PSA.27", "Psalm 27:4", "One thing I have asked"], ["HEB.13", "Hebrews 13:14", "We seek the city to come"]],
+  },
+  85: {
+    intro: "God showed favor before and restored His people. Now the psalmist asks, \"Will You not Yourself revive us again, that Your people may rejoice in You?\" He listens for God's word of peace. \"Lovingkindness and truth have met together; righteousness and peace have kissed each other.\"",
+    v: [
+      ["85:6", "Will You not revive us again?", "A prayer for renewal."],
+      ["85:8", "He will speak peace to His people", "Listening for God."],
+      ["85:10", "Righteousness and peace have kissed", "A beautiful picture, often linked to the cross."],
+    ],
+    refs: [["HAB.3", "Habakkuk 3:2", "Revive Your work"], ["ROM.5", "Romans 5:1", "Peace with God"]],
+  },
+  86: {
+    intro: "\"Incline Your ear, O LORD, and answer me; for I am afflicted and needy.\" God is good, ready to forgive, abundant in lovingkindness. \"Teach me Your way, O LORD; I will walk in Your truth; unite my heart to fear Your name.\" All nations will come and worship. \"Turn to me and be gracious to me.\"",
+    v: [
+      ["86:5", "Ready to forgive", "God's eager mercy."],
+      ["86:11", "Unite my heart to fear Your name", "An undivided heart."],
+      ["86:15", "Slow to anger and abundant in lovingkindness", "Quoting Exodus 34:6."],
+    ],
+    refs: [["EXO.34", "Exodus 34:6", "Compassionate and gracious"], ["JAS.1", "James 1:8", "A double-minded man"]],
+  },
+  87: {
+    intro: "A short song about Zion, the city God loves. Surprising nations are listed as born there: Egypt (Rahab), Babylon, Philistia, Tyre and Ethiopia. \"This one and that one were born in her.\" The LORD records the peoples as citizens of Zion. \"All my springs of joy are in you.\"",
+    v: [
+      ["87:4", "This one was born there", "Former enemies become citizens."],
+      ["87:6", "The LORD shall count when He registers the peoples", "God's book of citizens."],
+    ],
+    refs: [["GAL.4", "Galatians 4:26", "The Jerusalem above is our mother"], ["EPH.2", "Ephesians 2:19", "Fellow citizens with the saints"], ["REV.7", "Revelation 7:9", "From every nation"]],
+  },
+  88: {
+    intro: "The darkest psalm. \"O LORD, the God of my salvation, I have cried out by day and in the night.\" The psalmist feels near death, cut off, abandoned by friends. \"Will Your wonders be made known in the darkness?\" It ends without resolution: \"You have removed lover and friend far from me; my acquaintances are in darkness.\"",
+    v: [
+      ["88:1", "God of my salvation", "Even here, he speaks to his Savior."],
+      ["88:13", "In the morning my prayer comes before You", "He keeps praying."],
+      ["88:18", "My acquaintances are in darkness", "No happy ending."],
+    ],
+    bg: [["A psalm for the darkest days", "Psalm 88 is the only lament that does not turn to praise. Many teachers note its gift: it shows that faith can keep praying even when there is no feeling of answer, and that such prayers belong in the Bible.", "good", ["tate", "kidner"]]],
+    refs: [["JOB.30", "Job 30:20", "I cry out, but You do not answer"], ["MAT.26", "Matthew 26:38", "My soul is deeply grieved"]],
+  },
+  89: {
+    intro: "\"I will sing of the lovingkindness of the LORD forever.\" God made a covenant with David: \"I will establish your seed forever and build up your throne to all generations.\" God rules the raging sea. Even if David's sons sin, God will not break His covenant. But now the crown is in the dust, and the psalmist asks, \"How long, O LORD?\" Book Three ends: \"Blessed be the LORD forever! Amen and Amen.\"",
+    v: [
+      ["89:1", "I will sing of the lovingkindness of the LORD forever", "Faithfulness praised."],
+      ["89:3-4", "I have made a covenant with My chosen", "The promise to David."],
+      ["89:34", "My covenant I will not violate", "God keeps His word."],
+      ["89:46", "How long, O LORD?", "Waiting for the promise."],
+    ],
+    refs: [["2SA.7", "2 Samuel 7:12-16", "God's covenant with David"], ["LUK.1", "Luke 1:32-33", "The throne of His father David"], ["ACT.13", "Acts 13:22-23", "From David's offspring, a Savior"]],
+  },
+  90: {
+    intro: "Book Four opens with the only psalm credited to Moses. \"Lord, You have been our dwelling place in all generations... from everlasting to everlasting, You are God.\" A thousand years are like yesterday to Him. Our lives are like grass, seventy or eighty years. \"Teach us to number our days, that we may present to You a heart of wisdom.\" \"Confirm for us the work of our hands.\"",
+    v: [
+      ["90:1", "You have been our dwelling place", "God is home."],
+      ["90:4", "A thousand years in Your sight are like yesterday", "Peter echoes this (2 Peter 3:8)."],
+      ["90:12", "Teach us to number our days", "Living wisely because life is short."],
+      ["90:17", "Confirm the work of our hands", "Asking God to make our work last."],
+    ],
+    refs: [["2PE.3", "2 Peter 3:8", "With the Lord one day is like a thousand years"], ["JAS.4", "James 4:14", "Life is a vapor"], ["DEU.33", "Deuteronomy 33:27", "The eternal God is a dwelling place"]],
+  },
+  91: {
+    intro: "\"He who dwells in the shelter of the Most High will abide in the shadow of the Almighty.\" God covers His people with His feathers. \"You will not be afraid of the terror by night, or of the arrow that flies by day.\" He gives His angels charge over them. God says, \"Because he has loved Me, I will deliver him... I will be with him in trouble.\"",
+    v: [
+      ["91:1", "In the shadow of the Almighty", "Safe in God."],
+      ["91:4", "Under His wings you may seek refuge", "A mother bird's care."],
+      ["91:11-12", "He will give His angels charge concerning you", "Satan misused this verse to tempt Jesus."],
+      ["91:15", "I will be with him in trouble", "God's presence in hardship."],
+    ],
+    refs: [["MAT.4", "Matthew 4:5-7", "Satan quotes Psalm 91"], ["HEB.1", "Hebrews 1:14", "Ministering spirits"]],
+  },
+  92: {
+    intro: "A song for the Sabbath. \"It is good to give thanks to the LORD... to declare Your lovingkindness in the morning and Your faithfulness by night.\" The wicked sprout like grass but are destroyed. \"The righteous man will flourish like the palm tree... They will still yield fruit in old age; they shall be full of sap and very green.\"",
+    v: [
+      ["92:1-2", "Morning and night", "Thanks all day long."],
+      ["92:12", "Flourish like the palm tree", "Strong and lasting."],
+      ["92:14", "They will still yield fruit in old age", "A promise for older believers."],
+    ],
+    refs: [["PSA.1", "Psalm 1:3", "A tree firmly planted"], ["ISA.40", "Isaiah 40:29-31", "Renewed strength"]],
+  },
+  93: {
+    intro: "\"The LORD reigns, He is clothed with majesty.\" His throne is established from of old. The floods have lifted up their roaring, but \"more than the sounds of many waters... the LORD on high is mighty.\" His testimonies are sure, and holiness befits His house forever.",
+    v: [
+      ["93:1", "The LORD reigns", "The theme of Psalms 93-99."],
+      ["93:4", "More than the sounds of many waters", "God is stronger than chaos."],
+    ],
+    refs: [["REV.19", "Revelation 19:6", "The Lord our God, the Almighty, reigns"]],
+  },
+  94: {
+    intro: "\"O LORD, God of vengeance, shine forth!\" The wicked crush God's people and say the LORD does not see. \"He who planted the ear, does He not hear?\" \"Blessed is the man whom You chasten.\" \"If I should say, My foot has slipped, Your lovingkindness, O LORD, will hold me up. When my anxious thoughts multiply within me, Your consolations delight my soul.\"",
+    v: [
+      ["94:9", "He who planted the ear, does He not hear?", "God sees and hears."],
+      ["94:18", "Your lovingkindness will hold me up", "God catches us when we slip."],
+      ["94:19", "When my anxious thoughts multiply", "God's comfort in anxiety."],
+    ],
+    refs: [["ROM.12", "Romans 12:19", "Vengeance is Mine"], ["PHP.4", "Philippians 4:6-7", "Be anxious for nothing"]],
+  },
+  95: {
+    intro: "\"O come, let us sing for joy to the LORD.\" He is a great King; the depths of the earth and the peaks of the mountains are His. \"Come, let us worship and bow down, let us kneel before the LORD our Maker.\" Then a warning: \"Today, if you would hear His voice, do not harden your hearts\" as Israel did at Meribah.",
+    v: [
+      ["95:1", "Let us sing for joy to the LORD", "A call to worship."],
+      ["95:6", "Let us worship and bow down", "Humble worship."],
+      ["95:7-8", "Today, if you would hear His voice", "Hebrews 3-4 builds on this."],
+    ],
+    refs: [["HEB.3", "Hebrews 3:7-15", "Do not harden your hearts"], ["EXO.17", "Exodus 17:1-7", "Meribah"]],
+  },
+  96: {
+    intro: "\"Sing to the LORD a new song; sing to the LORD, all the earth.\" Tell of His glory among the nations. The gods of the peoples are idols, but the LORD made the heavens. \"Worship the LORD in holy attire.\" Let the heavens be glad and the trees of the forest sing, for He is coming to judge the world in righteousness.",
+    v: [
+      ["96:3", "Tell of His glory among the nations", "A call to share God's fame."],
+      ["96:9", "In the splendor of holiness", "Worship in reverence."],
+      ["96:12-13", "All the trees of the forest will sing for joy", "Creation celebrates God's coming."],
+    ],
+    refs: [["1CH.16", "1 Chronicles 16:23-33", "Sung when the ark came to Jerusalem"], ["ROM.8", "Romans 8:19-21", "Creation waits"]],
+  },
+  97: {
+    intro: "\"The LORD reigns, let the earth rejoice.\" Clouds and darkness surround Him; righteousness and justice are His throne. Fire goes before Him; mountains melt like wax. \"Hate evil, you who love the LORD.\" \"Light is sown like seed for the righteous.\"",
+    v: [
+      ["97:2", "Righteousness and justice are the foundation of His throne", "God rules rightly."],
+      ["97:10", "Hate evil, you who love the LORD", "Love for God means turning from evil."],
+      ["97:11", "Light is sown like seed for the righteous", "Joy will grow."],
+    ],
+    refs: [["EXO.19", "Exodus 19:16-18", "God on Sinai"], ["ROM.12", "Romans 12:9", "Abhor what is evil"]],
+  },
+  98: {
+    intro: "\"O sing to the LORD a new song, for He has done wonderful things.\" He has made known His salvation to the nations and remembered His lovingkindness to Israel. \"Shout joyfully to the LORD, all the earth.\" Let the sea roar, the rivers clap their hands, and the mountains sing, for He is coming to judge the earth.",
+    v: [
+      ["98:1", "His right hand has gained the victory", "God's saving power."],
+      ["98:3", "All the ends of the earth have seen the salvation of our God", "Salvation for the world."],
+      ["98:8", "Let the rivers clap their hands", "Creation praises."],
+    ],
+    bg: [["Joy to the World", "Isaac Watts based the Christmas hymn \"Joy to the World\" (1719) on Psalm 98, reading it as celebrating Christ's coming.", "strong", ["kidner"]]],
+    refs: [["LUK.2", "Luke 2:30-32", "My eyes have seen Your salvation"], ["ISA.52", "Isaiah 52:10", "All the ends of the earth will see"]],
+  },
+  99: {
+    intro: "\"The LORD reigns, let the peoples tremble.\" Three times the psalm declares, \"Holy is He.\" Moses, Aaron and Samuel called on Him and He answered. He was a forgiving God to them, yet He also disciplined their deeds. \"Exalt the LORD our God and worship at His holy hill.\"",
+    v: [
+      ["99:3", "Holy is He", "A refrain of holiness."],
+      ["99:6", "Moses and Aaron... Samuel", "Leaders who prayed."],
+      ["99:8", "A forgiving God, and yet an avenger of their evil deeds", "Mercy and justice together."],
+    ],
+    refs: [["ISA.6", "Isaiah 6:3", "Holy, holy, holy"], ["REV.4", "Revelation 4:8", "Holy, holy, holy"]],
+  },
+  100: {
+    intro: "A psalm for giving thanks. \"Shout joyfully to the LORD, all the earth. Serve the LORD with gladness; come before Him with joyful singing. Know that the LORD Himself is God; it is He who has made us, and not we ourselves; we are His people and the sheep of His pasture.\" \"Enter His gates with thanksgiving.\" For the LORD is good; His lovingkindness is everlasting.",
+    v: [
+      ["100:2", "Serve the LORD with gladness", "Joyful service."],
+      ["100:3", "It is He who has made us", "We belong to God."],
+      ["100:4", "Enter His gates with thanksgiving", "The way into worship."],
+      ["100:5", "His faithfulness to all generations", "A promise for families."],
+    ],
+    bg: [["The Old Hundredth", "The hymn \"All People That on Earth Do Dwell\" (1561) set this psalm to a tune called \"Old Hundredth,\" the same tune often used for the Doxology, \"Praise God from Whom All Blessings Flow.\"", "strong", ["kidner"]]],
+    refs: [["PSA.95", "Psalm 95:6-7", "The sheep of His hand"], ["JHN.10", "John 10:14-16", "I am the good shepherd"]],
+  },
+  101: {
+    intro: "David's pledge as king. \"I will sing of lovingkindness and justice.\" \"I will walk within my house in the integrity of my heart. I will set no worthless thing before my eyes.\" He will not keep company with slanderers or the proud, but will look for the faithful of the land to serve him.",
+    v: [
+      ["101:2", "I will walk within my house in integrity", "Faithfulness at home first."],
+      ["101:3", "I will set no worthless thing before my eyes", "Guarding what we look at."],
+      ["101:6", "My eyes shall be upon the faithful", "Choosing good companions."],
+    ],
+    refs: [["PHP.4", "Philippians 4:8", "Whatever is true, honorable, pure"], ["PRO.4", "Proverbs 4:23", "Guard your heart"]],
+  },
+  102: {
+    intro: "\"A prayer of the afflicted when he is faint.\" His days vanish like smoke, he is like a lonely bird on a housetop. But the LORD abides forever and will have compassion on Zion. \"This will be written for the generation to come.\" The heavens will wear out like clothing, \"but You are the same, and Your years will not come to an end.\"",
+    v: [
+      ["102:7", "Like a lonely bird on a housetop", "Isolation."],
+      ["102:18", "Written for the generation to come", "Prayers that help later believers."],
+      ["102:25-27", "You are the same", "Hebrews 1:10-12 applies this to the Son."],
+    ],
+    refs: [["HEB.1", "Hebrews 1:10-12", "You remain"], ["HEB.13", "Hebrews 13:8", "Jesus Christ is the same"]],
+  },
+  103: {
+    intro: "\"Bless the LORD, O my soul, and all that is within me, bless His holy name... and forget none of His benefits.\" He pardons, heals, redeems, crowns with lovingkindness. \"As far as the east is from the west, so far has He removed our transgressions from us.\" \"Just as a father has compassion on his children, so the LORD has compassion on those who fear Him.\"",
+    v: [
+      ["103:2", "Forget none of His benefits", "Remembering God's gifts."],
+      ["103:8", "Compassionate and gracious, slow to anger", "From Exodus 34:6."],
+      ["103:12", "As far as the east is from the west", "Complete forgiveness."],
+      ["103:13", "Just as a father has compassion on his children", "God's fatherly heart."],
+    ],
+    refs: [["EXO.34", "Exodus 34:6-7", "God's name"], ["MIC.7", "Micah 7:19", "Sins cast into the sea"], ["LUK.15", "Luke 15:20", "The father ran"]],
+  },
+  104: {
+    intro: "\"Bless the LORD, O my soul! O LORD my God, You are very great.\" A hymn to God as Creator following the days of creation: light like a cloak, the earth set on foundations, springs for wild donkeys, trees for birds, wine to gladden hearts, the moon for seasons, lions seeking food from God, the sea with Leviathan at play. \"O LORD, how many are Your works! In wisdom You have made them all.\"",
+    v: [
+      ["104:2", "Covering Yourself with light as with a cloak", "God's glory."],
+      ["104:15", "Wine which makes man's heart glad", "God's good gifts."],
+      ["104:24", "In wisdom You have made them all", "Creation shows God's wisdom."],
+      ["104:30", "You send forth Your Spirit, they are created", "God renews life."],
+    ],
+    refs: [["GEN.1", "Genesis 1", "Creation"], ["JOB.38", "Job 38-39", "God's wisdom in creation"], ["MAT.6", "Matthew 6:26", "Your Father feeds them"]],
+  },
+  105: {
+    intro: "\"Oh give thanks to the LORD, call upon His name; make known His deeds among the peoples.\" Remember His covenant with Abraham, Isaac and Jacob. God protected the patriarchs, sent Joseph ahead into Egypt, sent Moses, struck Egypt with plagues, brought Israel out with silver and gold, and fed them in the wilderness, \"so that they might keep His statutes.\"",
+    v: [
+      ["105:8", "He has remembered His covenant forever", "God keeps promises."],
+      ["105:17", "He sent a man before them, Joseph", "God's plan in hardship."],
+      ["105:45", "So that they might keep His statutes", "Grace leads to obedience."],
+    ],
+    refs: [["GEN.15", "Genesis 15", "The covenant with Abraham"], ["GEN.50", "Genesis 50:20", "God meant it for good"], ["1CH.16", "1 Chronicles 16:8-22", "Sung when the ark came"]],
+  },
+  106: {
+    intro: "\"Praise the LORD! Oh give thanks to the LORD, for He is good.\" The companion to Psalm 105 tells Israel's side: \"We have sinned like our fathers.\" They forgot God at the sea, craved meat, made the golden calf, refused the land, worshiped Baal of Peor and mixed with the nations. Yet again and again God remembered His covenant. Book Four ends: \"Blessed be the LORD... And let all the people say, Amen.\"",
+    v: [
+      ["106:6", "We have sinned like our fathers", "Honest confession."],
+      ["106:13", "They quickly forgot His works", "The danger of forgetting."],
+      ["106:23", "Had not Moses His chosen one stood in the breach", "A praying mediator."],
+      ["106:45", "He remembered His covenant", "God's faithfulness beats our failure."],
+    ],
+    refs: [["EXO.32", "Exodus 32", "The golden calf"], ["NUM.25", "Numbers 25", "Baal of Peor"], ["NEH.9", "Nehemiah 9", "A similar confession"]],
   },
 });
