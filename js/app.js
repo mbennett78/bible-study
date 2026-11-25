@@ -2741,6 +2741,8 @@ function startTrivia() {
     next.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.graphics !== "full" ? "auto" : "smooth" });
   }
   function showScore() {
+    // Start the score at the top, so the header picture isn't half scrolled away.
+    requestAnimationFrame(() => { for (let el = body; el; el = el.parentElement) { if (el.scrollTop) el.scrollTop = 0; if (el.tagName === "DIALOG") break; } });
     const keepRec = keepingRecord();
     store.recordTrivia(results, `${BOOK_BY_ID[current.book].name} ${current.chapter}`, keepRec);
     const score = results.filter((r) => r.right).length;
