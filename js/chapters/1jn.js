@@ -13,12 +13,12 @@ export default makeBook({ lang: "Greek", sources, use: ["yarbrough", "kruseJ"] }
   1: {
     intro: "John writes about \"what was from the beginning, what we have heard, what we have seen with our eyes, what we have looked at and touched with our hands, concerning the Word of Life.\" He shares it so his readers can have fellowship with the apostles and with the Father and the Son, and so their joy may be complete. \"God is Light, and in Him there is no darkness at all.\" If we walk in the light, we have fellowship with one another, and the blood of Jesus cleanses us from all sin. \"If we say that we have no sin, we are deceiving ourselves... If we confess our sins, He is faithful and righteous to forgive us our sins and to cleanse us from all unrighteousness.\"",
     v: [
-      ["1:1", "What we have looked at and touched with our hands", "Real eyewitnesses."],
-      ["1:3", "Our fellowship is with the Father, and with His Son Jesus Christ", "Fellowship."],
-      ["1:4", "So that our joy may be made complete", "Full joy."],
-      ["1:5", "God is Light, and in Him there is no darkness at all", "Pure light."],
-      ["1:7", "The blood of Jesus His Son cleanses us from all sin", "Cleansed."],
-      ["1:9", "If we confess our sins, He is faithful and righteous to forgive us", "Confess and be forgiven."],
+      ["1:1", "What we have looked at and touched with our hands", "John heard, saw and touched Jesus. The faith rests on real eyewitnesses of a real person, not on a story or an idea."],
+      ["1:3", "Our fellowship is with the Father, and with His Son Jesus Christ", "John shares what he saw so that readers can share in the same friendship with God the apostles enjoy."],
+      ["1:4", "So that our joy may be made complete", "Sharing the good news makes joy complete, both for the one telling and for those who hear."],
+      ["1:5", "God is Light, and in Him there is no darkness at all", "God is completely pure and true. There is nothing dark or deceptive in Him at all."],
+      ["1:7", "The blood of Jesus His Son cleanses us from all sin", "Walking in the light does not mean never sinning; it means living openly before God, and Jesus' blood keeps cleansing us."],
+      ["1:9", "If we confess our sins, He is faithful and righteous to forgive us", "Confessing means agreeing with God about our sin. He forgives because He is faithful to His promise and just, since Jesus paid for it."],
     ],
     bg: [["Why John wrote", "The apostle John wrote late in the first century, probably from Ephesus. Some people had left the church teaching that Jesus did not truly come in the flesh and that sin did not matter. John writes to reassure believers and help them know they have eternal life (5:13).", "strong", ["yarbrough", "stottJ"]]],
     refs: [["JHN.1", "John 1:1-14", "The Word was from the beginning"], ["PSA.32", "Psalm 32:5", "I acknowledged my sin"], ["JHN.8", "John 8:12", "The Light of the world"]],
