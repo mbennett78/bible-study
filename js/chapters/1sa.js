@@ -114,7 +114,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["bergen", "baldwin"] },
   11: {
     intro: "Nahash the Ammonite threatens to gouge out the right eye of every man in Jabesh-gilead. The Spirit of God comes on Saul, he rallies Israel by sending pieces of oxen through the land, and he rescues the city. Saul refuses to punish those who had doubted him, and the kingdom is renewed at Gilgal.",
     v: [
-      ["11:6", "The Spirit of God came upon Saul mightily", "Like the judges before him."],
+      ["11:6", "The Spirit of God came upon Saul mightily", "The Spirit came on Saul as He had on judges like Othniel, Gideon and Samson (Judges 3:10; 6:34; 14:6), giving him courage to rescue Jabesh-gilead."],
       ["11:13", "Not a man shall be put to death this day", "Saul's best moment: mercy and credit to God."],
       ["11:1", "Nahash the Ammonite", "Nahash means \"snake.\" Ammon lay east of the Jordan, not far from Jabesh-gilead."],
       ["11:2", "I will gouge out the right eye of every one of you", "The historian Josephus explains that a soldier behind his shield looks out with his right eye, so this would leave the men useless in battle as well as shamed."],

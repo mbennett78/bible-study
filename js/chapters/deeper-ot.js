@@ -291,7 +291,7 @@ const chapters = {
       ["22:2", "Take now your son, your only son, whom you love, Isaac", "The first time the word \"love\" appears in the Bible. Each phrase makes the test harder. Christians hear an echo in John 3:16.", "scripture", ["wenham2", "waltkeG"]],
       ["22:6", "Abraham took the wood of the burnt offering and laid it on Isaac his son", "Isaac carries the wood up the mountain, as Jesus later carried His cross.", "good", ["kidnerG"]],
       ["22:11-12", "Abraham, Abraham!... Do not stretch out your hand against the lad", "God stops the sacrifice. The test showed that Abraham trusted God more than anything, even the promise itself.", "scripture", ["waltkeG"]],
-      ["22:13", "Behold, behind him a ram caught in the thicket by his horns", "A substitute dies in Isaac's place.", "scripture", ["wenham2"]],
+      ["22:13", "Behold, behind him a ram caught in the thicket by his horns", "God provides a ram to die in Isaac's place. Abraham names the place \"The LORD Will Provide\" (22:14), and Christians see a picture of Jesus, the Lamb of God, dying in our place (John 1:29).", "scripture", ["wenham2"]],
     ],
     w: [["nasah", "nah-SAH", "H5254", "test, prove", "To test something to show what it is made of. God tests to strengthen and reveal faith, never to make someone fall.", ["halot"]],
       ["ra'ah", "rah-AH", "H7200", "see, provide", "\"God will provide\" (22:8, 14) is literally \"God will see to it.\" The God who sees our need also meets it.", ["halot", "waltkeG"]]],
