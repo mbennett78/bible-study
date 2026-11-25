@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 11:11 AM Central
-**Current version:** v225 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 11:13 AM Central
+**Current version:** v226 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 11:15 AM CT: More of Buddy's personality from Melissa added for Sun Nov 29: waves hello, good sport in games, glasses, sports and a baseball cap, loves to talk.
 - Wed Nov 25, 11:15 AM CT: Melissa's picture of Buddy added to the Sun Nov 29 Buddy work: a quiet stick-figure friend living his own life in the app (sleeping, reading, writing, fishing, hiking, juggling, eating at a table), never in the way.
 - Wed Nov 25, 11:20 AM CT: Update notes never overwhelm: the "new version ready" banner is gone (updates arrive quietly), What's new shows at most once a month and can be swiped away or turned off, and Settings shows the updates from the last 30 days. Settings clean-up added to Sat Nov 28 so it is clear and easy to follow.
 - Wed Nov 25, 11:05 AM CT: Melissa's update schedule is now a standing rule: frequent updates until Christmas, every Saturday through February, then monthly on the last Saturday; glitch fixes right away; announcements at most monthly. Games get a bigger celebration sound and a sound switch at the top (with trivia polish, Fri Nov 27).
@@ -158,6 +159,7 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sat Nov 28 (moved up from Sun Nov 29) |
 | Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Sun Nov 29 (moved up from Mon Nov 30) |
 | Buddy lives his own life in the app (Melissa, Nov 25): when you come back after time away you may catch him sleeping, reading his Bible, writing with crumpled paper at his feet then tossing it in the trash, searching for something, juggling, jumping rope, eating at a little table, putting on a backpack to go hiking, or fishing. He sits and waits quietly, keeps to himself unless someone engages him, never interrupts; gentle, light motion, still when motion is turned down | Not started | Sun Nov 29 |
+| Buddy's personality (Melissa, Nov 25): waves when he sees you; in games he celebrates his own wins but is a good sport and cheers his friend's wins too; a little sad when he loses, then perks right up; puts on glasses to be a happy nerd; loves basketball, football and baseball and wears a baseball cap; loves to talk and answer questions | Not started | Sun Nov 29 |
 | Seasonal changes: Melissa's review changes made | Round 2 done (Wed Nov 25); waiting for any more notes | Tue Dec 1 |
 | Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Not started | Tue Dec 1 (moved up from Wed Dec 2) |
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
