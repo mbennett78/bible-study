@@ -32,6 +32,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["3:16", "On the basis of faith in His name", "Peter makes sure no one credits him. It was faith in Jesus' name that made the man strong and whole."],
       ["3:19", "Repent and return, so that your sins may be wiped away", "Turn back to God, and your sins will be wiped away like writing erased from a slate, and times of refreshing will come from the Lord."],
     ],
+    bg: [["Solomon's portico", "Solomon's portico was a long covered colonnade along the east side of the temple's outer court. Jesus taught there (John 10:23), and the early believers met there daily (5:12). The crowd ran there after the lame man was healed.", "good", ["bruce", "keenerA"]]],
+    w: [["ὄνομα", "onoma", "G3686", "name", "In the Bible a name stands for the person and their authority. Peter heals \"in the name of Jesus Christ\" (3:6), and says it was not his own power (3:12, 16).", ["bdag", "bockA"]]],
     refs: [["ISA.35", "Isaiah 35:6", "The lame will leap like a deer"], ["DEU.18", "Deuteronomy 18:15", "A prophet like Moses"], ["LUK.5", "Luke 5:17-26", "Jesus heals a paralyzed man"]],
   },
   4: {
@@ -43,6 +45,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["4:29", "Grant that Your bond-servants may speak Your word with all confidence", "Threatened, the church did not pray for safety. They prayed for boldness to keep speaking God's word."],
       ["4:32", "The congregation of those who believed were of one heart and soul", "The believers were united in heart and mind. No one claimed their things as only their own, so no one among them was in need (4:34)."],
     ],
+    bg: [["The Council", "The Council, or Sanhedrin, was Jerusalem's highest Jewish court, about seventy members led by the high priest. It was the same body that had condemned Jesus only weeks before.", "strong", ["bruce", "marshallA"]]],
+    w: [["παρρησία", "parrēsia", "G3954", "boldness, confidence", "Freedom to speak openly without fear. The Council was amazed at the boldness of these untrained men, and the believers prayed for still more of it (4:13, 29, 31).", ["bdag", "keenerA"]]],
     refs: [["PSA.118", "Psalm 118:22", "The rejected stone"], ["PSA.2", "Psalm 2:1-2", "Why do the nations rage?"], ["JHN.14", "John 14:6", "The way, the truth, the life"]],
   },
   5: {
@@ -54,6 +58,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["5:39", "If it is of God, you will not be able to overthrow them", "Gamaliel, a respected teacher, warned the council: if this movement is from God, you cannot stop it, and you may find yourselves fighting God."],
       ["5:41", "Rejoicing that they had been considered worthy to suffer shame for His name", "After being beaten, the apostles left rejoicing that God counted them worthy to suffer shame for Jesus' name."],
     ],
+    bg: [["Gamaliel, Theudas and Judas", "Gamaliel was a leading Pharisee teacher, honored for generations, and Paul had studied under him (22:3). Josephus also tells of a rebel named Judas the Galilean at the time of the census in AD 6, and of a Theudas. Scholars differ on whether Josephus's Theudas, dated about AD 45, is the same man Gamaliel mentions.", "good", ["bruce", "hemer"]]],
+    w: [["ἐκκλησία", "ekklēsia", "G1577", "church, assembly", "Acts first uses this word in 5:11. It means a gathering called together. The church is not a building but the people God has called.", ["bdag", "bockA"]]],
     refs: [["JOS.7", "Joshua 7", "Achan's hidden sin"], ["MAT.5", "Matthew 5:10-12", "Blessed are the persecuted"], ["ACT.22", "Acts 22:3", "Paul studied under Gamaliel"]],
   },
   6: {
@@ -76,6 +82,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["7:56", "I see the heavens opened up and the Son of Man standing at the right hand of God", "Elsewhere Jesus is seated at God's right hand. Here Stephen sees Him standing, as if rising to welcome His first martyr."],
       ["7:60", "Lord, do not hold this sin against them!", "Like Jesus on the cross (Luke 23:34), Stephen prays for those killing him. A young man named Saul was watching (7:58)."],
     ],
+    bg: [["Stephen's sermon", "Stephen retells Israel's history to show that God was at work long before the temple and far from the land: with Abraham in Mesopotamia, Joseph in Egypt and Moses in the desert. God is not limited to one building (7:48).", "good", ["marshallA", "bockA"]]],
+    w: [["μάρτυς", "martys", "G3144", "witness", "Someone who tells what they have seen. Because so many witnesses for Jesus died for it, beginning with Stephen (22:20), the word gave us \"martyr.\"", ["bdag", "bruce"]]],
     refs: [["GEN.12", "Genesis 12:1", "Abraham called"], ["EXO.3", "Exodus 3", "The burning bush"], ["LUK.23", "Luke 23:34, 46", "Jesus' prayers on the cross"], ["ISA.66", "Isaiah 66:1-2", "Heaven is My throne"]],
   },
   8: {
@@ -88,6 +96,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["8:35", "Beginning from this Scripture he preached Jesus to him", "The man was reading Isaiah 53:7-8 about a lamb led to slaughter. Philip began right there and told him about Jesus."],
       ["8:39", "He went on his way rejoicing", "The Ethiopian, a court official to the queen of Ethiopia (8:27), went home rejoicing, carrying the good news toward Africa."],
     ],
+    bg: [["The queen of the Ethiopians", "\"Ethiopia\" here is the ancient kingdom of Kush, along the Nile in today's Sudan. Candace was not a personal name but the title of its queen mother, known from ancient writers. This official in charge of her treasury had come a very long way to worship.", "strong", ["keenerA", "bruce"]]],
+    w: [["εὐνοῦχος", "eunouchos", "G2135", "eunuch, court official", "A man who could not father children, often trusted with a royal court's household and treasury. The Law kept eunuchs out of the assembly (Deuteronomy 23:1), but Isaiah promised them a place in God's house (Isaiah 56:3-5).", ["bdag", "bockA"]]],
     refs: [["ISA.53", "Isaiah 53:7-8", "Led like a lamb"], ["JHN.4", "John 4", "Jesus in Samaria"], ["PSA.68", "Psalm 68:31", "Ethiopia will stretch out her hands"]],
   },
   9: {
@@ -99,6 +109,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["9:27", "Barnabas took hold of him and brought him to the apostles", "The disciples in Jerusalem were afraid of Saul. Barnabas, whose name means son of encouragement, stood up for him."],
       ["9:36", "Abounding with deeds of kindness and charity", "Tabitha, also called Dorcas, was always doing good and helping the poor. The widows showed Peter the clothes she had made (9:39)."],
     ],
+    bg: [["The street called Straight", "Damascus, one of the oldest cities in the world, still has a long main street running east to west through its old city, known today as Straight Street. Ananias found Saul at a house there.", "good", ["bruce", "keenerA"]]],
+    w: [["ὁδός", "hodos", "G3598", "way, road", "The first followers of Jesus called their faith \"the Way\" (9:2; 19:9; 24:14), a way of life following the One who said, \"I am the way\" (John 14:6).", ["bdag", "marshallA"]]],
     refs: [["ACT.22", "Acts 22:6-16", "Paul tells his story"], ["ACT.26", "Acts 26:12-18", "And again before Agrippa"], ["GAL.1", "Galatians 1:13-17", "Paul's own account"], ["1TI.1", "1 Timothy 1:12-16", "The worst of sinners shown mercy"]],
   },
   10: {
@@ -110,6 +122,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["10:34", "God is not one to show partiality", "Peter now understands that God does not play favorites. Anyone from any nation who fears Him is welcome."],
       ["10:44", "The Holy Spirit fell upon all those who were listening", "While Peter was still speaking, the Holy Spirit came on the Gentile listeners, just as He had on the apostles at Pentecost."],
     ],
+    bg: [["Caesarea and Joppa", "Caesarea was the Roman capital of Judea, a showy port city built by Herod the Great, where the governor and his troops lived. Peter was staying in Joppa with a tanner, a trade many Jews avoided because it meant handling dead animals. He was already crossing lines before his vision.", "good", ["bruce", "bockA"]]],
+    w: [["προσωπολήμπτης", "prosōpolēmptēs", "G4381", "one who shows favoritism", "Literally \"one who receives a face,\" judging by how someone looks. Peter now understands that God is not like that (10:34).", ["bdag", "keenerA"]]],
     refs: [["ACT.11", "Acts 11:1-18", "Peter explains"], ["MRK.7", "Mark 7:19", "All foods clean"], ["GAL.3", "Galatians 3:28", "All one in Christ"], ["ISA.56", "Isaiah 56:3-8", "Foreigners welcomed"]],
   },
   11: {
@@ -121,6 +135,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["11:26", "The disciples were first called Christians in Antioch", "Barnabas brought Saul to Antioch, and they taught for a year. There the disciples were first called Christians, meaning Christ's people."],
       ["11:29", "Each of them determined to send a contribution", "When a famine was predicted, the believers at Antioch each gave what they could to help believers in Judea."],
     ],
+    bg: [["Antioch", "Antioch in Syria was the third largest city of the Roman Empire, after Rome and Alexandria. It was a crossroads of peoples, and it became the base for Paul's missionary journeys.", "strong", ["bruce", "keenerA"]]],
+    w: [["Χριστιανός", "Christianos", "G5546", "Christian", "\"Christ's people.\" Outsiders first used the name at Antioch (11:26). It appears only three times in the New Testament (also 26:28; 1 Peter 4:16).", ["bdag", "bockA"]]],
     refs: [["ACT.10", "Acts 10", "Cornelius"], ["ACT.4", "Acts 4:36", "Barnabas, son of encouragement"], ["1PE.4", "1 Peter 4:16", "Suffering as a Christian"]],
   },
   12: {
@@ -157,6 +173,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["14:22", "Through many tribulations we must enter the kingdom of God", "Paul did not promise new believers an easy road. He strengthened them by telling them the truth: hardship is part of the way into God's kingdom."],
       ["14:27", "He had opened a door of faith to the Gentiles", "Back home in Antioch, Paul and Barnabas reported all God had done, and how He had opened a door of faith to the Gentiles."],
     ],
+    bg: [["Zeus and Hermes at Lystra", "A local legend, retold by the Roman poet Ovid, said Zeus and Hermes once visited this region in disguise and were turned away by everyone except one old couple. Inscriptions found near Lystra honor Zeus and Hermes together. The crowd did not want to miss the gods a second time.", "strong", ["bruce", "hemer"]]],
     refs: [["PSA.19", "Psalm 19:1", "The heavens declare"], ["2TI.3", "2 Timothy 3:10-11", "Paul remembers Lystra"], ["2CO.11", "2 Corinthians 11:25", "Once I was stoned"]],
   },
   15: {
@@ -168,6 +185,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["15:28", "It seemed good to the Holy Spirit and to us", "The leaders' letter says the decision seemed good to the Holy Spirit and to them. They sought God's mind together."],
       ["15:31", "They rejoiced because of its encouragement", "When the letter was read in Antioch, the Gentile believers rejoiced at its encouraging message."],
     ],
+    bg: [["The Jerusalem council", "About AD 49 the apostles and elders met in Jerusalem to decide whether Gentile believers must be circumcised and keep the Law of Moses. James, the brother of Jesus, led the church there and summed up the decision (15:13-21).", "good", ["marshallA", "bockA"]]],
+    w: [["χάρις", "charis", "G5485", "grace, favor", "Kindness given freely, not earned. Peter's conclusion: \"We are saved through the grace of the Lord Jesus, in the same way as they also are\" (15:11).", ["bdag", "bruce"]]],
     refs: [["GAL.2", "Galatians 2", "Paul on the same question"], ["AMO.9", "Amos 9:11-12", "Rebuilding David's tent"], ["EPH.2", "Ephesians 2:8-9", "Saved by grace through faith"]],
   },
   16: {
@@ -180,6 +199,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["16:31", "Believe in the Lord Jesus, and you will be saved", "Paul's answer is simple: believe in the Lord Jesus. The promise reaches the jailer's household too, and Paul shares the word with all of them (16:32)."],
       ["16:34", "Having believed in God with his whole household", "That same night the jailer washed their wounds, he and his household were baptized, and he set food before them, full of joy that they had come to believe in God."],
     ],
+    bg: [["Philippi and Lydia", "Philippi was a Roman colony, a little Rome where retired soldiers had been settled, which is why the charge was about Roman customs (16:21). Lydia came from Thyatira, a city known for purple dye, a costly luxury. In 16:10 the story begins to say \"we,\" suggesting the writer, Luke, had joined Paul.", "strong", ["hemer", "bruce"]]],
     refs: [["PHP.1", "Philippians 1:3-11", "Paul's later letter to Philippi"], ["PHP.4", "Philippians 4:4", "Rejoice always"], ["ACT.2", "Acts 2:38-39", "For you and your children"], ["PSA.42", "Psalm 42:8", "His song is with me in the night"]],
   },
   17: {
@@ -192,6 +212,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["17:28", "In Him we live and move and exist", "Paul quotes Greek poets the Athenians knew: \"In Him we live and move and exist\" and \"we also are His children.\""],
       ["17:31", "Having furnished proof to all men by raising Him from the dead", "God has set a day to judge the world through Jesus, and He gave proof to everyone by raising Him from the dead."],
     ],
+    bg: [["Paul quotes Greek poets", "At the Areopagus, Athens' council hill, Paul quotes the Greek poet Aratus: \"For we also are His offspring\" (17:28). The line \"in Him we live and move and exist\" is often traced to the poet Epimenides. Paul starts where his listeners are and leads them to Christ.", "strong", ["bruce", "keenerA"]]],
+    w: [["ἄγνωστος", "agnōstos", "G57", "unknown", "Paul saw an altar inscribed \"To an unknown god.\" Ancient writers mention such altars around Athens. Paul says, \"What you worship in ignorance, this I proclaim to you\" (17:23).", ["bdag", "marshallA"]]],
     refs: [["ROM.1", "Romans 1:19-23", "Creation reveals God"], ["1TH.1", "1 Thessalonians 1", "Paul's letter to Thessalonica"], ["ISA.40", "Isaiah 40:18-26", "To whom will you compare God?"], ["PSA.139", "Psalm 139", "God is near"]],
   },
   18: {
@@ -226,6 +248,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["20:32", "I commend you to God and to the word of His grace", "Saying goodbye, Paul entrusts them to God and to His word of grace, which can build them up."],
       ["20:35", "It is more blessed to give than to receive", "These words of Jesus are not in any of the four Gospels. Paul remembered them and passed them on."],
     ],
+    bg: [["Paul's farewell at Miletus", "Hurrying to reach Jerusalem by Pentecost, Paul called the elders of Ephesus to the port of Miletus, about thirty miles away. His speech is the only one in Acts given to Christian leaders, and it sounds much like his letters.", "good", ["bruce", "marshallA"]]],
+    w: [["ἐπίσκοπος", "episkopos", "G1985", "overseer", "One who watches over others, the word that gives us \"bishop.\" The same men are called elders in 20:17 and overseers in 20:28, set to shepherd God's flock.", ["bdag", "bockA"]]],
     refs: [["2TI.4", "2 Timothy 4:7", "I have finished the course"], ["1PE.5", "1 Peter 5:1-4", "Shepherd the flock"], ["2KI.4", "2 Kings 4:32-37", "Elisha raises a boy"]],
   },
   21: {
@@ -248,6 +272,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["22:16", "Get up and be baptized, and wash away your sins, calling on His name", "Ananias tells Saul to be baptized and wash away his sins, calling on the Lord's name. Christians differ on how baptism and forgiveness relate, but all agree the cleansing comes from the Lord."],
       ["22:25", "Is it lawful for you to scourge a man who is a Roman?", "Romans could not legally flog a Roman citizen who had not been tried. Paul's question stopped the whipping."],
     ],
+    bg: [["A Roman citizen", "Roman law forbade beating a citizen without a trial. Paul was born a citizen, while the commander had paid a large sum for his (22:28). Claiming citizenship falsely was punishable by death, so the claim was taken seriously at once.", "strong", ["bruce", "keenerA"]]],
     refs: [["ACT.9", "Acts 9:1-19", "The Damascus road"], ["PHP.3", "Philippians 3:4-8", "Paul's past counted as loss"], ["ACT.26", "Acts 26", "Paul tells it again"]],
   },
   23: {
@@ -258,6 +283,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["23:11", "Take courage... you must witness at Rome also", "That night the Lord stood beside Paul and told him to take courage. He would testify about Jesus in Rome too."],
       ["23:16", "The son of Paul's sister heard of their ambush", "More than forty men swore to kill Paul (23:12-13). His nephew overheard the plan and warned the commander."],
     ],
+    bg: [["The high priest Ananias", "Ananias son of Nedebaeus was high priest from about AD 47 to 59. Josephus describes him as greedy and violent; his servants took the tithes meant for poorer priests. He was killed by Jewish rebels in AD 66.", "good", ["bruce", "keenerA"]]],
     refs: [["MAT.10", "Matthew 10:18-20", "Before governors and kings"], ["ACT.27", "Acts 27:23-24", "Another night visit"], ["PSA.27", "Psalm 27:1", "Whom shall I fear?"]],
   },
   24: {
@@ -268,6 +294,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["24:16", "I also do my best to maintain always a blameless conscience", "Because judgment is coming, Paul works hard to keep a clear conscience before God and people."],
       ["24:25", "Go away for the present, and when I find time I will summon you", "When Paul spoke of right living, self-control and judgment, Governor Felix grew afraid and sent him away for a more convenient time."],
     ],
+    bg: [["Felix and Drusilla", "Antonius Felix governed Judea from about AD 52 to 59. The Roman historian Tacitus wrote that he \"exercised the power of a king with the mind of a slave.\" His wife Drusilla was a daughter of Herod Agrippa I (12:1-23).", "strong", ["bruce", "hemer"]]],
+    w: [["ἐγκράτεια", "enkrateia", "G1466", "self-control", "Mastery over one's own desires, also listed as a fruit of the Spirit (Galatians 5:23). Felix, who had taken another man's wife, grew afraid when Paul spoke of it.", ["bdag", "marshallA"]]],
     refs: [["DAN.12", "Daniel 12:2", "Resurrection of both"], ["2CO.6", "2 Corinthians 6:2", "Now is the day of salvation"], ["JHN.5", "John 5:28-29", "All in the tombs will hear"]],
   },
   25: {
@@ -278,6 +306,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["25:19", "A dead man, Jesus, whom Paul asserted to be alive", "Festus summed up the case to King Agrippa: it was about a dead man named Jesus, whom Paul said was alive."],
       ["25:23", "Amid great pomp", "Agrippa and Bernice entered with great show, with officers and city leaders. Paul stood before them in chains."],
     ],
+    bg: [["\"I appeal to Caesar\"", "A Roman citizen could ask to be tried before the emperor himself, at this time Nero. Paul's appeal took his case out of Jerusalem's hands and carried him to Rome, as Jesus had promised (23:11).", "strong", ["bruce", "keenerA"]]],
     refs: [["ACT.23", "Acts 23:11", "You must witness at Rome"], ["ACT.9", "Acts 9:15", "Before kings"], ["MAT.10", "Matthew 10:18", "Before governors and kings"]],
   },
   26: {
@@ -290,6 +319,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["26:28", "In a short time you will persuade me to become a Christian", "Agrippa brushes Paul off, perhaps half-joking, perhaps half-moved. \"Christian\" was still a new name (Acts 11:26)."],
       ["26:29", "Except for these chains", "Paul, standing in chains, wishes everyone listening could have what he has, everything except the chains."],
     ],
+    bg: [["King Agrippa and Bernice", "Herod Agrippa II, great-grandson of Herod the Great, ruled lands north and east of Galilee and had the right to appoint the high priest. Bernice was his sister. As a Jewish king he knew the Scriptures, so Paul speaks to him about the prophets (26:27).", "good", ["bruce", "bockA"]]],
+    w: [["κέντρον", "kentron", "G2759", "goad", "A pointed stick used to drive oxen. \"Kicking against the goads\" was a Greek saying for useless resistance. Saul had been fighting against God, and it only hurt him.", ["bdag", "keenerA"]]],
     refs: [["ACT.9", "Acts 9", "Paul's conversion"], ["ISA.42", "Isaiah 42:6-7", "To open blind eyes"], ["COL.1", "Colossians 1:13", "Rescued from darkness"]],
   },
   27: {
@@ -320,6 +351,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
       ["Ending on purpose", "Others think Luke wrote later but chose to end on the note of the gospel preached \"unhindered\" in the empire's capital, fulfilling Acts 1:8.", ["keenerA", "bockA"]],
     ],
     common: "Either way, the book's goal is reached: the good news has gone from Jerusalem to Rome, and the story continues with every believer.",
+    bg: [["The road to Rome", "From the port of Puteoli, Paul walked north on the Appian Way, Rome's great paved road. Believers came out to meet him at the Market of Appius and Three Inns, about 40 and 30 miles from Rome (28:15). He then lived two years under guard in his own rented house, preaching freely.", "strong", ["hemer", "bruce"]]],
     refs: [["ACT.1", "Acts 1:8", "To the remotest part of the earth"], ["MRK.16", "Mark 16:18", "Serpents will not harm them"], ["PHP.1", "Philippians 1:12-14", "Paul's chains advanced the gospel"], ["2TI.4", "2 Timothy 4:6-8", "Paul's last letter"]],
   },
 });
