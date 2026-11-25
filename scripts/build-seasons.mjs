@@ -401,8 +401,8 @@ const SCENES = {
       ${dabs(900, 560, 520, 220, 70, ["#ffd28a", "#ffe8b8"], { r1: 2, r2: 4, op: [.15, .45], stretch: 1 })}`;
   },
   // October: Psalm 23. Green pastures on the sunlit hills above; below, the valley of the shadow fades into
-  // deep navy, beautiful and a little fearful. The Good Shepherd leads the flock through it toward the light,
-  // past still waters, and the rod and staff stand close by to comfort.
+  // deep navy, beautiful and a little fearful, with a little stream among stones and desert dirt. The sheep graze in
+  // the light (one at the edge of the shade); the viewer is the shepherd, whose rod and staff are close by.
   psalm23(d) {
     const hillL = lin(d, [[0, "#86b052"], [.3, "#6a9444"], [.52, "#3a5a48"], [.72, "#1e2848"], [1, "#141a34"]], 1, 1);
     const hillR = lin(d, [[0, "#141a34"], [.28, "#1e2848"], [.48, "#3a5a48"], [.7, "#6a9444"], [1, "#86b052"]], 1, -1);
@@ -418,11 +418,12 @@ const SCENES = {
       ${sheep(150, 330, .5)}${sheep(250, 350, .42, -1)}${sheep(1380, 300, .5, -1)}${sheep(1480, 320, .4)}${oliveTree(380, 380, .55, { leaf: ["#5a7a3a", "#6e8e48", "#8aa85a", "#e8d890"], trunk: "#3a2c20" })}${cypress(1210, 380, .55, ["#2e4a32", "#3a5a3c", "#4a6a48"])}
       ${dabs(330, 650, 330, 220, 220, ["#1e2848", "#161c38", "#26305a", "#2e3a50"], { r1: 10, r2: 26, op: [.3, .6], stretch: 2 })}${dabs(1270, 650, 330, 220, 220, ["#1e2848", "#161c38", "#26305a", "#2e3a50"], { r1: 10, r2: 26, op: [.3, .6], stretch: 2 })}
       ${cypress(560, 600, .5, ["#10142a", "#181e38", "#20284a"])}${cypress(1050, 600, .55, ["#10142a", "#181e38", "#20284a"])}
-      <path d="M520 910 C 640 780, 760 640, 790 560 L 812 560 C 830 650, 920 790, 1080 910 Z" fill="#1a2040"/>
-      <path d="M760 910 C 780 780, 796 660, 800 560 L 806 560 C 812 660, 830 780, 860 910 Z" fill="#e8c890" opacity=".35"/>${dabs(810, 740, 40, 160, 50, ["#ffe6b0", "#fff4d8"], { r1: 2, r2: 5, op: [.3, .8] })}
-      <ellipse cx="690" cy="800" rx="90" ry="20" fill="#5a7aa0" opacity=".8"/><ellipse cx="684" cy="794" rx="56" ry="6" fill="#ffe8c0" opacity=".55"/>
-      ${person(830, 690, .55, { robe: "#e8dcc4", robe2: "#fff4e0", skin: "#b88060", veil: "#c8b89a", dir: 1, glowc: "#fff0c0", defs: d })}<path d="M846 690 L 852 600 q 2 -10 10 -6" stroke="#6a4626" stroke-width="3" fill="none"/>
-      ${glow(800, 760, 180, "#ffe8b0", .25, d)}${sheep(870, 760, .55, -1)}${sheep(760, 740, .45)}${sheep(900, 820, .7, -1)}${sheep(730, 830, .75)}
+      <path d="M520 910 C 640 780, 740 640, 756 550 L 844 550 C 860 650, 920 790, 1080 910 Z" fill="${lin(d, [[0, "#7a7092"], [.1, "#2a2c50"], [.2, "#1a2040"], [1, "#1a2040"]])}"/><path d="M740 600 C 770 580, 830 580, 860 600" stroke="#2a3050" stroke-width="30" fill="none" opacity=".6"/>
+      ${dabs(800, 790, 120, 120, 110, ["#3e3630", "#4a3e34", "#363030", "#54463a"], { r1: 6, r2: 14, op: [.4, .6], stretch: 1.8 })}
+      <path d="M801 612 C 796 650, 826 670, 812 710 C 796 752, 744 778, 772 836 C 790 874, 756 896, 740 912 L 856 912 C 850 890, 838 868, 828 838 C 808 788, 852 758, 838 708 C 828 670, 806 650, 805 612 Z" fill="#26405e"/>
+      <path d="M803 630 C 800 660, 818 680, 810 710 C 798 748, 770 776, 788 830 C 798 868, 790 890, 786 910" stroke="#7a9ac0" stroke-width="2.5" fill="none" opacity=".45"/>${dabs(800, 790, 30, 110, 26, ["#a8c0dc", "#c8d8e8"], { r1: 1.2, r2: 2.6, op: [.25, .55] })}
+      ${[[742, 820, 26, 15], [866, 850, 32, 18], [722, 880, 36, 20], [880, 760, 20, 12], [760, 720, 18, 10], [846, 668, 14, 8], [900, 898, 30, 16], [690, 760, 16, 9]].map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y + ry * .5}" rx="${rx * 1.6}" ry="${ry * .8}" fill="#5e4c3a" opacity=".6"/><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#3a3c4a"/><ellipse cx="${x - rx * .25}" cy="${y - ry * .35}" rx="${rx * .55}" ry="${ry * .4}" fill="#5c5e6e" opacity=".7"/>`).join("")}
+      ${sheep(452, 452, .42, -1)}
       ${frame(["#0c0e1e", "#12152a", "#181c36"], ["#2e3456", "#3e4470"], { y: 920 })}
       ${glow(330, 520, 150, "#ffd890", .22, d)}<g transform="rotate(-8 300 900)"><path d="M300 900 L 300 440 C 300 370, 380 360, 392 412 C 398 442, 368 452, 356 436" stroke="#6a4626" stroke-width="18" fill="none" stroke-linecap="round"/><path d="M292 900 L 292 452" stroke="#d09658" stroke-width="5" opacity=".7"/><path d="M308 394 C 330 366, 372 372, 384 398" stroke="#ffd090" stroke-width="4" fill="none" opacity=".7"/></g>
       ${glow(1290, 620, 130, "#ffd890", .22, d)}<g transform="rotate(10 1300 900)"><path d="M1300 900 L 1300 600" stroke="#5a3a20" stroke-width="22" stroke-linecap="round"/><ellipse cx="1300" cy="584" rx="26" ry="38" fill="#5a3a20"/><path d="M1288 560 C 1284 580, 1286 600, 1290 620" stroke="#d09658" stroke-width="6" fill="none" opacity=".7"/><path d="M1292 900 L 1292 640" stroke="#c08a50" stroke-width="5" opacity=".55"/></g>`;
