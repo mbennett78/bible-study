@@ -219,12 +219,14 @@ function tone(notes, { type = "sine", gap = 0.12, length = 0.18, volume = 0.18 }
     if (navigator.audioSession) navigator.audioSession.type = "ambient";
     audio ||= new (window.AudioContext || window.webkitAudioContext)();
     if (audio.state === "suspended") audio.resume();
-    notes.forEach((f, i) => {
+    // A step can be one note or a chord (several notes at once).
+    notes.forEach((step, i) => [].concat(step).forEach((f, k, all) => {
       const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + i * gap;
+      const len = i === notes.length - 1 ? length * 2.2 : length, v = volume / Math.sqrt(all.length);
       o.type = type; o.frequency.value = f;
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(volume, t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, t + length);
-      o.connect(g).connect(audio.destination); o.start(t); o.stop(t + length + 0.05);
-    });
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, t + len);
+      o.connect(g).connect(audio.destination); o.start(t); o.stop(t + len + 0.05);
+    }));
   } catch { /* no sound on this device */ }
 }
 export const SOUNDS = {
@@ -234,6 +236,8 @@ export const SOUNDS = {
   tap: () => tone([660, 990], { type: "triangle", gap: 0.06, length: 0.12, volume: 0.12 }),
   streak: () => tone([659, 784, 988, 1319], { type: "triangle", gap: 0.08, length: 0.2 }),
   cheer: () => tone([523, 659, 784, 1047, 784, 1047, 1319], { type: "triangle", gap: 0.11, length: 0.3 }),
+  // A game won: a bigger, brighter fanfare in chords, much more than a Quick check gets.
+  fanfare: () => { tone([[392, 523], [392, 523], [392, 523], [523, 659, 784], [], [494, 622, 740], [523, 659, 784, 1047]], { type: "triangle", gap: 0.13, length: 0.28, volume: 0.24 }); tone([131, [], [], 165, [], [], 196], { type: "sine", gap: 0.13, length: 0.35, volume: 0.2 }); },
   done: () => tone([523, 659, 784], { type: "triangle", gap: 0.14, length: 0.3, volume: 0.14 }),
 };
 
@@ -299,7 +303,14 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
   const saved = () => { const g = { players: [], board: {}, seen: [], sound: true, last: {}, ...(store.get("game") || {}) }; g.mine = { ...emptyProgress(), ...(g.mine || {}) }; return g; };
   const save = (patch) => store.set("game", { ...saved(), ...patch });
   const sound = (name) => { if (saved().sound) SOUNDS[name](); };
-  const paint = (html) => { dlg.classList.toggle("still", !lively()); dlg.innerHTML = GRADIENTS + html; };
+  // Every game screen has a sound switch at the top, next to Close.
+  const sndBtn = () => `<button type="button" class="g-snd" data-snd aria-pressed="${saved().sound}" aria-label="Sound effects ${saved().sound ? "on" : "off"}">${saved().sound ? "🔊" : "🔇"}</button>`;
+  const paint = (html) => {
+    dlg.classList.toggle("still", !lively()); dlg.innerHTML = GRADIENTS + html;
+    dlg.querySelector(".g-head .g-x")?.insertAdjacentHTML("beforebegin", sndBtn());
+    paintSnd();
+  };
+  const paintSnd = () => dlg.querySelector("[data-snd]")?.addEventListener("click", (e) => { save({ sound: !saved().sound }); e.currentTarget.outerHTML = sndBtn(); paintSnd(); const g = dlg.querySelector("#gSound"); if (g) g.checked = saved().sound; });
 
   let setup = null;   // { mode, players[], scope, topic, count, timer }
   let play = null;    // { players[{name,right,asked,stars,streak,longest}], deck[], turn, results[], shownAt }
@@ -386,7 +397,7 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     dlg.querySelectorAll("[data-timer]").forEach((b) => (b.onclick = () => { setup.timer = Number(b.dataset.timer); renderSetup(); }));
     dlg.querySelectorAll("[data-goal]").forEach((b) => (b.onclick = () => { save({ mine: { ...saved().mine, goal: Number(b.dataset.goal) } }); renderSetup(); dlg.querySelector(".g-goal-box").open = true; }));
     dlg.querySelector("#gResetMine")?.addEventListener("click", () => { if (confirm("Start your quiz progress over? Your stars, level, badges and best scores will be cleared. The leaderboard stays.")) { save({ mine: { ...emptyProgress(), goal: saved().mine.goal } }); renderSetup(); } });
-    dlg.querySelector("#gSound").onchange = (e) => save({ sound: e.target.checked });
+    dlg.querySelector("#gSound").onchange = (e) => { save({ sound: e.target.checked }); const b = dlg.querySelector("[data-snd]"); if (b) { b.outerHTML = sndBtn(); paintSnd(); } };
     const err = dlg.querySelector("#gErr");
     const add = (name) => {
       const n = name.replace(/\s+/g, " ").trim().slice(0, 24);
@@ -562,7 +573,7 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     dlg.querySelector("[data-close]").onclick = () => dlg.close();
     dlg.querySelector("#gAgain").onclick = () => start(play.players.map((p) => p.name));
     dlg.querySelector("#gChange").onclick = renderSetup;
-    if (celebrate) { sound("cheer"); if (lively()) confetti(dlg, lookColors()); } else sound("done");
+    if (celebrate) { sound("fanfare"); if (lively()) confetti(dlg, lookColors()); } else sound("done");
   }
 
   return { open };

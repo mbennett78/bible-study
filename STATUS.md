@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 11:20 AM Central
-**Current version:** v228 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 11:30 AM Central
+**Current version:** v229 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 11:45 AM CT: Games: a 🔊/🔇 sound switch now sits at the top of every Bible Spin and practice quiz screen, and winning a game plays a bigger fanfare in chords (the Quick check stays quiet). Next: named characters with personalities and the rest of trivia polish.
 - Wed Nov 25, 11:20 AM CT: Buddy keeping you company (journaling and reading along, bedtime and nudging awake, eating with fork and spoon) added for Sun Nov 29.
 - Wed Nov 25, 11:15 AM CT: Buddy's calm waiting (sitting chill, swinging his feet, whistling) and new commands like eat and exercise added for Sun Nov 29.
 - Wed Nov 25, 11:15 AM CT: More of Buddy's personality from Melissa added for Sun Nov 29: waves hello, good sport in games, glasses, sports and a baseball cap, loves to talk.

@@ -33,6 +33,9 @@ try {
   await page.click("#homeGames"); await page.clock.runFor(300);
   check("Bible games opens Bible Spin", await page.$eval("dialog.quest", (d) => d.open));
   check("three big ways to play", (await page.$$("dialog.quest [data-mode]")).length === 3);
+  await tap("[data-snd]"); await page.clock.runFor(100);
+  check("a sound switch sits at the top of the game", (await text("dialog.quest [data-snd]")) === "🔊" && await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).quest.sound === true));
+  await tap("[data-snd]"); await page.clock.runFor(100);
 
   // Solo
   await tap('[data-mode="solo"]'); await page.clock.runFor(300);

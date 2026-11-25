@@ -184,6 +184,9 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   const mine = () => ({ coins: 0, earned: 0, played: 0, won: 0, jewels: 0, best: 0, seen: [], badges: {}, players: [], buddy: "fair", sound: true, ...(store.get("quest") || {}) });
   const save = (patch) => store.set("quest", { ...mine(), ...patch });
   const sound = (n) => { if (mine().sound) SOUNDS[n](); };
+  // A sound switch at the top of every Bible Spin screen.
+  const sndBtn = () => `<button type="button" class="q-snd" data-snd aria-pressed="${mine().sound}" aria-label="Sound effects ${mine().sound ? "on" : "off"}">${mine().sound ? "🔊" : "🔇"}</button>`;
+  const wireSnd = () => dlg.querySelector("[data-snd]")?.addEventListener("click", (e) => { save({ sound: !mine().sound }); e.currentTarget.outerHTML = sndBtn(); wireSnd(); const c = dlg.querySelector("[data-sound]"); if (c) c.checked = mine().sound; });
   const reduce = () => !lively() || matchMedia("(prefers-reduced-motion: reduce)").matches;
   let game = null, tick = 0, waits = [];
   const later = (fn, ms) => { const t = setTimeout(fn, reduce() ? Math.min(ms, 400) : ms); waits.push(t); return t; };
@@ -194,7 +197,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
 
   function paint(html) {
     dlg.classList.toggle("still", reduce());
-    dlg.innerHTML = `<div class="q-top"><span class="q-coins" aria-label="${mine().coins} coins">🪙 <b>${mine().coins.toLocaleString()}</b></span><span class="q-title">Bible Spin</span><button type="button" class="q-x" data-close aria-label="Close">×</button></div><div class="q-body">${html}</div>`;
+    dlg.innerHTML = `<div class="q-top"><span class="q-coins" aria-label="${mine().coins} coins">🪙 <b>${mine().coins.toLocaleString()}</b></span><span class="q-title">Bible Spin</span>${sndBtn()}<button type="button" class="q-x" data-close aria-label="Close">×</button></div><div class="q-body">${html}</div>`;
+    wireSnd();
     dlg.querySelector("[data-close]").onclick = () => { if (!game || game.over || confirm("Leave this game? It won't be saved.")) { stop(); game = null; dlg.close(); } };
   }
 
@@ -215,7 +219,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     dlg.querySelectorAll("[data-mode]").forEach((b) => b.onclick = () => setupMode(b.dataset.mode));
     dlg.querySelector("[data-badges]").onclick = badges;
     dlg.querySelector("[data-practice]")?.addEventListener("click", () => { dlg.close(); practice(); });
-    dlg.querySelector("[data-sound]").onchange = (e) => save({ sound: e.target.checked });
+    dlg.querySelector("[data-sound]").onchange = (e) => { save({ sound: e.target.checked }); dlg.querySelector("[data-snd]").outerHTML = sndBtn(); wireSnd(); };
   }
 
   function badges() {
@@ -464,7 +468,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       ${winBonus ? `<p class="q-gain">Winner's bonus +${winBonus} 🪙</p>` : ""}
       ${fresh.length ? `<div class="q-newbadges"><h3>New badge${fresh.length > 1 ? "s" : ""}!</h3>${fresh.map(([, name, icon]) => `<div class="q-badge">${medal(icon, { fresh: true })}<b>${esc(name)}</b></div>`).join("")}</div>` : ""}
       <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
-    if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("cheer"); } else sound("done");
+    if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("fanfare"); } else sound(iWon ? "fanfare" : "done");
     if (iWon) onWin?.(game.mode);
     else if (game.mode === "buddy" && top !== me) onBuddyWin?.();
     const again = { mode: game.mode, names: game.players.filter((p) => p.kind === "person").map((p) => p.name), level: game.level };
