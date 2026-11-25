@@ -40,7 +40,7 @@ export default makeBook({ lang: "Greek", sources, use: ["feeP", "silva"] }, {
   3: {
     intro: "\"Rejoice in the Lord.\" Paul warns about those who trust in circumcision. If anyone could trust in his record, Paul could: circumcised the eighth day, of Israel, of Benjamin, a Pharisee, zealous, blameless under the Law. \"But whatever things were gain to me, those things I have counted as loss for the sake of Christ.\" He wants to know Christ, the power of His resurrection and the fellowship of His sufferings. He has not arrived yet, but \"forgetting what lies behind and reaching forward to what lies ahead, I press on toward the goal for the prize of the upward call of God in Christ Jesus.\" \"Our citizenship is in heaven.\"",
     v: [
-      ["3:1", "Rejoice in the Lord", "Paul is in prison, yet the word joy and rejoice run all through this short letter. Joy rests in the Lord, not in circumstances."],
+      ["3:1", "Rejoice in the Lord", "Paul is in prison, yet the words joy and rejoice run all through this short letter. Joy rests in the Lord, not in circumstances."],
       ["3:7", "Those things I have counted as loss for the sake of Christ", "Paul lists his impressive background (3:4-6), then calls it all loss compared with knowing Christ."],
       ["3:9", "Not having a righteousness of my own... but that which is through faith in Christ", "Not a goodness Paul built up by keeping the Law, but the righteousness God gives to those who trust Christ."],
       ["3:10", "That I may know Him and the power of His resurrection", "Paul wants to know Jesus personally: the power of His resurrection, and even sharing in His sufferings."],
