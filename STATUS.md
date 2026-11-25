@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:01 PM Central
-**Current version:** v235 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:04 PM Central
+**Current version:** v236 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 1:30 PM CT: Buddy now waves hello when you come back after a few minutes away (not every minute, and never when motion is turned down).
 - Wed Nov 25, 1:15 PM CT: Storybook rules pass: all 59 story pictures checked side by side for the storybook style and fitting faces, and every one holds still with Still pictures or reduced motion.
 - Wed Nov 25, 1:05 PM CT: Settings in plainer words: "Reading and listening" (was Reading and Bible), "Light or dark screen", "Reading plan and listening" (was Modes), and "Bible keys and versions (set up once)". Fixed a doubled period in the Bible key message.
 - Wed Nov 25, 12:45 PM CT: Buddy, part 1 of Melissa's picture. Come back after 20 minutes or more and you may catch him napping, reading (sometimes with glasses, sometimes dozing on his book), writing with crumpled paper at his feet and then tidying it into the trash, searching with his magnifying glass, juggling, jumping rope, eating at his little table, hiking with his backpack and cap, fishing, shooting baskets or exercising. While he waits he swings his feet, whistles or leans back. He writes along while you're in the Journal and reads along while you read. New things to tell him: eat, exercise, go fishing, go hiking, juggle, basketball, football, put on your glasses, go to bed (tap to nudge him awake). Losing a game makes him a little sad for a moment, then he cheers you on. All still when motion is turned down.

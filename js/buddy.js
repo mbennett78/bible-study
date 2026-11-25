@@ -481,7 +481,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }
   const seen = () => { try { return Number(localStorage.getItem(SEEN_KEY)) || 0; } catch { return 0; } };
   const markSeen = () => { try { localStorage.setItem(SEEN_KEY, String(Date.now())); } catch { /* private mode */ } };
-  const back = () => { const was = seen(), gone = Date.now() - was; markSeen(); if (was && gone > AWAY_MS) setTimeout(() => life(), 2500); };
+  const back = () => { const was = seen(), gone = Date.now() - was; markSeen(); if (was && gone > AWAY_MS) setTimeout(() => life(), 2500); else if (was && gone > 2 * 60 * 1000) setTimeout(() => { if (!el.hidden && !still() && !drag && say.hidden && !document.hidden && !el.classList.contains("visiting")) { el.classList.remove("tucked"); play("waving", 1600); sitSoon(3500); } }, 2000); };
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") back(); else markSeen(); });
   addEventListener("pagehide", markSeen);
   setInterval(() => { if (document.visibilityState === "visible") markSeen(); }, 60000);
