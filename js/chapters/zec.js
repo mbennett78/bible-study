@@ -13,10 +13,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   1: {
     intro: "In 520 BC, two months after Haggai began, Zechariah son of Berechiah calls the returned exiles: \"Return to Me, and I will return to you.\" Their fathers ignored the prophets, and God's word overtook them. Then come eight night visions. In the first, a man on a red horse stands among myrtle trees; patrol riders report that the earth is at rest, yet Jerusalem lies in ruins. God answers with comforting words: \"I will return to Jerusalem with compassion; My house will be built in it.\" A second vision shows four horns, the powers that scattered Judah, and four craftsmen who come to throw them down.",
     v: [
-      ["1:3", "Return to Me... that I may return to you", "The book's opening call."],
-      ["1:6", "Did they not overtake your fathers?", "God's word always comes true."],
-      ["1:12", "How long will You have no compassion for Jerusalem?", "The angel prays for the city."],
-      ["1:16", "I will return to Jerusalem with compassion; My house will be built in it", "Encouragement to the builders."],
+      ["1:3", "Return to Me... that I may return to you", "Zechariah, a prophet to the returned exiles, opens with God's call: return to Me, and I will return to you."],
+      ["1:6", "Did they not overtake your fathers?", "Their ancestors ignored the prophets, but God's words still caught up with them. What God says comes true."],
+      ["1:12", "How long will You have no compassion for Jerusalem?", "In a vision, the angel of the LORD asks how long God will withhold mercy from Jerusalem, now seventy years after its fall."],
+      ["1:16", "I will return to Jerusalem with compassion; My house will be built in it", "God answers with comfort: He will return to Jerusalem with mercy, and His house will be rebuilt there. It encouraged the people rebuilding the temple."],
       ["1:21", "These have come to terrify them, to throw down the horns", "God answers every power that harms His people."],
     ],
     bg: [["Prophet and priest", "Zechariah came from a priestly family that returned from Babylon (Nehemiah 12:16). Ezra 5:1 says he and Haggai together urged the people to rebuild the temple.", "strong", ["baldwin", "kitchen"]]],
@@ -25,22 +25,22 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   2: {
     intro: "In the third vision, a young man goes to measure Jerusalem, but is told the city will have no walls: it will overflow with people and animals, and \"I will be a wall of fire around her, and I will be the glory in her midst.\" Exiles still in Babylon are urged to come home, for \"he who touches you touches the apple of His eye.\" \"Sing for joy... for behold I am coming and I will dwell in your midst.\" Many nations will join themselves to the LORD.",
     v: [
-      ["2:4", "Jerusalem will be inhabited without walls", "Too many people to fit."],
-      ["2:5", "I will be a wall of fire around her", "God Himself is the protection."],
-      ["2:8", "He who touches you touches the apple of His eye", "God's tender care."],
-      ["2:11", "Many nations will join themselves to the LORD in that day", "The nations included."],
-      ["2:13", "Be silent, all flesh, before the LORD", "Awe before God's coming."],
+      ["2:4", "Jerusalem will be inhabited without walls", "A young man with a measuring line is told Jerusalem will be a city without walls, because it will be too full of people and animals to fit."],
+      ["2:5", "I will be a wall of fire around her", "Jerusalem will not need stone walls. The LORD Himself will be a wall of fire around her and the glory in her midst."],
+      ["2:8", "He who touches you touches the apple of His eye", "Whoever touches God's people touches the apple of His eye, the most sensitive and protected part."],
+      ["2:11", "Many nations will join themselves to the LORD in that day", "Many nations will join themselves to the LORD in that day and become His people too."],
+      ["2:13", "Be silent, all flesh, before the LORD", "Be silent before the LORD, all people, for He has roused Himself from His holy dwelling."],
     ],
     refs: [["DEU.32", "Deuteronomy 32:10", "The apple of His eye"], ["REV.21", "Revelation 21:3", "God dwells with them"], ["HAB.2", "Habakkuk 2:20", "Let all the earth be silent"]],
   },
   3: {
     intro: "In the fourth vision, Joshua the high priest stands before the angel of the LORD in filthy clothes, with Satan at his right hand to accuse him. The LORD rebukes Satan: \"Is this not a brand plucked from the fire?\" Joshua's filthy garments are removed: \"I have taken your iniquity away from you and will clothe you with festal robes.\" A clean turban is set on his head. God promises to bring \"My servant the Branch\" and to remove the iniquity of the land in one day.",
     v: [
-      ["3:1", "Satan standing at his right hand to accuse him", "The accuser."],
-      ["3:2", "The LORD rebuke you, Satan!", "God defends His people."],
-      ["3:4", "I have taken your iniquity away from you", "A picture of forgiveness."],
-      ["3:8", "I am going to bring in My servant the Branch", "A title for the coming King."],
-      ["3:9", "I will remove the iniquity of that land in one day", "One day of cleansing."],
+      ["3:1", "Satan standing at his right hand to accuse him", "In a vision, Joshua the high priest stands before the angel of the LORD, and Satan, \"the accuser,\" stands ready to accuse him."],
+      ["3:2", "The LORD rebuke you, Satan!", "The LORD rebukes Satan. Joshua is like a burning stick snatched from the fire, rescued by God."],
+      ["3:4", "I have taken your iniquity away from you", "Joshua's filthy clothes are taken off and he is dressed in clean robes. God says: I have taken away your sin."],
+      ["3:8", "I am going to bring in My servant the Branch", "God will bring His servant, the Branch, a title used for the coming King from David's line (Isaiah 11:1; Jeremiah 23:5)."],
+      ["3:9", "I will remove the iniquity of that land in one day", "God will remove the sin of the land in a single day. Christians see this fulfilled at the cross."],
     ],
     w: [["שָּׂטָן", "satan", "H7854", "adversary, accuser", "With \"the\" in front, as here and in Job 1-2, it names the accuser who opposes God's people in His court.", ["halot", "boda"]]],
     refs: [["JOB.1", "Job 1:6-12", "The accuser in God's court"], ["JUD.1", "Jude 9", "The Lord rebuke you"], ["REV.12", "Revelation 12:10", "The accuser thrown down"], ["ISA.61", "Isaiah 61:10", "Garments of salvation"], ["JER.23", "Jeremiah 23:5", "A righteous Branch"]],
@@ -48,10 +48,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   4: {
     intro: "In the fifth vision, Zechariah sees a gold lampstand with a bowl on top and seven lamps, fed by two olive trees. The message is for Zerubbabel, the governor: \"Not by might nor by power, but by My Spirit, says the LORD of hosts.\" The great mountain of difficulty will become a plain. Zerubbabel laid the temple's foundation, and his hands will finish it. \"Who has despised the day of small things?\" The two olive trees are the two anointed ones who stand by the Lord of the whole earth.",
     v: [
-      ["4:6", "Not by might nor by power, but by My Spirit", "God's work is done by God's Spirit."],
-      ["4:7", "What are you, O great mountain? Before Zerubbabel you will become a plain", "Obstacles flattened."],
-      ["4:9", "The hands of Zerubbabel have laid the foundation... his hands will finish it", "Completed in 515 BC."],
-      ["4:10", "Who has despised the day of small things?", "Small beginnings matter to God."],
+      ["4:6", "Not by might nor by power, but by My Spirit", "God's word to Zerubbabel, rebuilding the temple: not by might, not by power, but by My Spirit, says the LORD of hosts."],
+      ["4:7", "What are you, O great mountain? Before Zerubbabel you will become a plain", "The huge task before Zerubbabel looked like a mountain. Before him it will become level ground."],
+      ["4:9", "The hands of Zerubbabel have laid the foundation... his hands will finish it", "Zerubbabel laid the temple's foundation, and he will finish it. The second temple was completed in 515 BC (Ezra 6:15)."],
+      ["4:10", "Who has despised the day of small things?", "Some looked down on the small new temple. God says: do not despise the day of small beginnings."],
       ["4:14", "These are the two anointed ones", "Probably Zerubbabel and Joshua, king's line and priest."],
     ],
     refs: [["EXO.25", "Exodus 25:31-40", "The tabernacle lampstand"], ["REV.11", "Revelation 11:4", "Two olive trees and two lampstands"], ["EZR.6", "Ezra 6:15", "The temple finished"], ["MAT.17", "Matthew 17:20", "Faith moves mountains"]],
@@ -59,9 +59,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   5: {
     intro: "In the sixth vision, a huge flying scroll, thirty feet long and fifteen wide, carries a curse against thieves and those who swear falsely; it enters their houses and consumes them. In the seventh, a woman called Wickedness sits inside a measuring basket. A lead cover is pressed down on her, and two women with wings like a stork carry the basket away to Babylon (Shinar), where a house is built for it. Sin is removed from the land.",
     v: [
-      ["5:3", "This is the curse that is going forth over the face of the whole land", "God's law confronts sin."],
-      ["5:4", "It will enter the house of the thief", "No hiding place."],
-      ["5:8", "This is Wickedness!", "Evil personified."],
+      ["5:3", "This is the curse that is going forth over the face of the whole land", "Zechariah sees a huge flying scroll, a curse going out over the land against thieves and those who swear falsely."],
+      ["5:4", "It will enter the house of the thief", "God's curse will enter the house of the thief and the liar and stay there until it is destroyed. Sin cannot hide."],
+      ["5:8", "This is Wickedness!", "Inside a basket is a woman called Wickedness. She is shut in and carried away to Babylon (5:11). God will remove evil from His people."],
       ["5:11", "To build a temple for her in the land of Shinar", "Wickedness sent back to where it belongs."],
     ],
     refs: [["EXO.20", "Exodus 20:7, 15", "Do not steal, do not swear falsely"], ["GEN.11", "Genesis 11:2", "The land of Shinar"], ["REV.18", "Revelation 18:2", "Babylon, home of every unclean thing"]],
@@ -69,10 +69,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   6: {
     intro: "In the eighth vision, four chariots with red, black, white and dappled horses come out from between two bronze mountains and patrol the earth. Those going north have given God's Spirit rest there. Then Zechariah is told to take silver and gold from returned exiles, make a crown and set it on Joshua the high priest: \"Behold, a man whose name is Branch... He who will build the temple of the LORD... He will be a priest on His throne.\" Those far off will come and build.",
     v: [
-      ["6:5", "These are the four spirits of heaven", "God's oversight of all the earth."],
-      ["6:12", "Behold, a man whose name is Branch", "The coming King."],
-      ["6:13", "He will be a priest on His throne", "King and priest joined in one person."],
-      ["6:15", "Those who are far off will come and build the temple", "Many will join the work."],
+      ["6:5", "These are the four spirits of heaven", "Four chariots go out to patrol the earth. They are the four spirits of heaven serving the Lord of all the earth."],
+      ["6:12", "Behold, a man whose name is Branch", "A crown is placed on Joshua the high priest: here is the man called the Branch. He will build the LORD's temple."],
+      ["6:13", "He will be a priest on His throne", "He will sit and rule on His throne and be a priest on His throne, with harmony between the two. Christians see Jesus as both King and Priest (Hebrews 7)."],
+      ["6:15", "Those who are far off will come and build the temple", "People from far away will come and help build the LORD's temple, if God's people diligently obey Him."],
     ],
     why: "It is unusual for a priest to be crowned, since kings came from David's line and priests from Levi's.",
     views: [
@@ -85,11 +85,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
   7: {
     intro: "Two years later, in 518 BC, people from Bethel ask whether they should keep fasting in the fifth month, as they had for seventy years in memory of the temple's destruction. God asks, \"When you fasted... was it actually for Me?\" He reminds them of what the earlier prophets said: \"Dispense true justice and practice kindness and compassion each to his brother; do not oppress the widow, the orphan, the stranger or the poor.\" Their fathers made their hearts like flint, and so they were scattered.",
     v: [
-      ["7:3", "Shall I weep in the fifth month and abstain?", "A question about tradition."],
-      ["7:5", "Was it actually for Me that you fasted?", "God looks at the heart."],
-      ["7:9", "Dispense true justice and practice kindness and compassion", "What God really wants."],
-      ["7:10", "Do not oppress the widow or the orphan, the stranger or the poor", "Care for the vulnerable."],
-      ["7:12", "They made their hearts like flint", "Hardened against God's word."],
+      ["7:3", "Shall I weep in the fifth month and abstain?", "People from Bethel ask whether they should keep fasting in the fifth month, mourning the temple's destruction, now that it is being rebuilt."],
+      ["7:5", "Was it actually for Me that you fasted?", "God asks: during all those years of fasting, was it really for Me that you fasted?"],
+      ["7:9", "Dispense true justice and practice kindness and compassion", "What God really wants: judge truly and show steadfast love and compassion to one another."],
+      ["7:10", "Do not oppress the widow or the orphan, the stranger or the poor", "Do not oppress the widow, the orphan, the foreigner or the poor, and do not plot evil against each other."],
+      ["7:12", "They made their hearts like flint", "Their ancestors made their hearts as hard as flint so they would not hear God's word through the prophets."],
     ],
     refs: [["ISA.58", "Isaiah 58:3-7", "The fast God chooses"], ["MIC.6", "Micah 6:8", "Do justice, love kindness"], ["MAT.6", "Matthew 6:16-18", "Fasting in secret"], ["JAS.1", "James 1:27", "Pure religion"]],
   },
