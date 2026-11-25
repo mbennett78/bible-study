@@ -32,14 +32,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --page: #1f2b24; --page-deep: #18221c; --on-page: #e6ebe4; --on-page-muted: #9fb0a3;
-    --bg: #242a26; --surface: #2b322d; --text: #e7ebe4; --muted: #9ba59c;
+    --bg: #242a26; --surface: #2b322d; --text: #e7ebe4; --muted: #a9b2aa;
     --line: #3a443d; --accent: #9cc0a8; --accent-soft: #2f3d34; --verse: #7f8a81;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --page: #1f2b24; --page-deep: #18221c; --on-page: #e6ebe4; --on-page-muted: #9fb0a3;
-  --bg: #242a26; --surface: #2b322d; --text: #e7ebe4; --muted: #9ba59c;
+  --bg: #242a26; --surface: #2b322d; --text: #e7ebe4; --muted: #a9b2aa;
   --line: #3a443d; --accent: #9cc0a8; --accent-soft: #2f3d34; --verse: #7f8a81;
   color-scheme: dark;
 }
@@ -1469,6 +1469,8 @@ html:not([data-wordtap="off"]) #reader { cursor: pointer; }
 .dy-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .dy-head h2 { margin: 0; font-size: 1.35rem; }
 .dy-head .quiet-link { margin-left: auto; }
+.dy-head .small-print { color: color-mix(in srgb, var(--text) 80%, var(--bg)); }
+.dy-head .quiet-link { color: color-mix(in srgb, var(--accent) 70%, var(--text)); }
 .dy-label { display: block; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-top: 12px; }
 .dy-text { margin: 6px 0 4px; font-family: var(--serif); font-size: 1.25rem; line-height: 1.5; color: var(--text); }
 .dy-text:not(.has-words) { font-style: italic; }

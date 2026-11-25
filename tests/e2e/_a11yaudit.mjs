@@ -2,14 +2,15 @@
 import { chromium, serve } from "./harness.mjs";
 const site = await serve();
 const browser = await chromium.launch();
+const scheme = process.env.THEME === "dark" ? "dark" : "light";
 const LOOKS = ["classic","classic2","classic3","sage","nativity","easter","fall","christmas","masculine","animated"];
 const VIEWS = ["home","read","books","path","notes","journal","settings"];
 const out = {};
 for (const look of LOOKS) {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: scheme });
   await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
   await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p><span data-number=\"1\" class=\"v\">1</span>For God so loved the world.</p>", copyright: "c" } } }));
-  await ctx.addInitScript((look) => localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", style: look, last: { book: "JHN", chapter: 3 } })), look);
+  await ctx.addInitScript(([look, theme]) => localStorage.setItem("bible-study:v1", JSON.stringify({ apiBibleKey: "k", nasbBibleId: "x", setup: { done: true }, tourSeen: true, name: "Mel", style: look, theme, last: { book: "JHN", chapter: 3 } })), [look, process.env.THEME || "auto"]);
   const page = await ctx.newPage();
   const errors = []; page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(site.url); await page.waitForTimeout(900);
