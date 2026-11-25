@@ -1,7 +1,9 @@
-// Learn a verse by heart, in four gentle steps, the way memory-verse cards work:
+// Two keepsake helpers. Learn a verse by heart, in four gentle steps, the way memory-verse cards work:
 // read it (and hear it), then every other word hidden, then only first letters, then say it
 // with all the words hidden. Any hidden word can be tapped to peek. Nothing is scored or kept.
-import { canSpeak, sayAloud, stopSaying } from "./speech.js";
+// Speech loads only when the page opens a verse (so these helpers also run in tests).
+const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
+const speech = () => import("./speech.js");
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const STEPS = [
@@ -65,7 +67,7 @@ export function openHeart({ ref, text, ver = "" }) {
     if (b.classList.contains("ws-close")) { dlg.close(); return; }
     if (b.classList.contains("hw-blank")) { b.classList.add("peek"); b.textContent = b.dataset.word; return; }
     const h = b.dataset.h;
-    if (h === "hear") { stopSaying(); sayAloud(`${text}. ${ref}.`, { rate: 0.9 }); return; }
+    if (h === "hear") { speech().then(({ sayAloud, stopSaying }) => { stopSaying(); sayAloud(`${text}. ${ref}.`, { rate: 0.9 }); }); return; }
     if (h === "next") { step = Math.min(3, step + 1); showAll = false; }
     else if (h === "back") { step = Math.max(0, step - 1); showAll = false; }
     else if (h === "show") showAll = !showAll;
@@ -75,9 +77,25 @@ export function openHeart({ ref, text, ver = "" }) {
     }
     paint();
   });
-  dlg.addEventListener("close", () => { stopSaying(); dlg.remove(); });
+  dlg.addEventListener("close", () => { if (canSpeak) speechSynthesis.cancel(); dlg.remove(); });
   paint();
   document.body.append(dlg);
   dlg.showModal();
   return dlg;
+}
+
+// On this day: things written on today's month and day in an earlier year, newest first.
+// `when` gives each item's date ("2026-12-25" or a full ISO time); dates are read as local days.
+export function onThisDay(items, when, now = new Date()) {
+  const md = `${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const out = [];
+  for (const item of items) {
+    const raw = String(when(item) || "");
+    const d = /^\d{4}-\d{2}-\d{2}$/.test(raw) ? new Date(`${raw}T12:00:00`) : new Date(raw);
+    if (Number.isNaN(d.getTime())) continue;
+    const years = now.getFullYear() - d.getFullYear();
+    if (years < 1) continue;
+    if (`${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}` === md) out.push({ item, years });
+  }
+  return out.sort((a, b) => a.years - b.years);
 }

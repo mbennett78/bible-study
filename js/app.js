@@ -21,7 +21,7 @@ import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
-import { openHeart } from "./heart.js";
+import { openHeart, onThisDay } from "./heart.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
@@ -2466,7 +2466,10 @@ function renderJournalList(justSaved = null) {
     const j = it.j;
     return `<button class="log-row" data-key="${j.key}"><strong>📖 ${esc(keyRef(j.key).name)}</strong><small>${fmtDate(j.created || j.updated)}</small>${JOURNAL_BOXES.filter((b) => (j[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(j[b.field])}</span>`).join("")}</button>`;
   };
-  el.innerHTML = `<h3 class="journal-list-head">My entries</h3><div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${esc(l)}</button>`).join("")}</div>`
+  // On this day: what you wrote on this date in earlier years (like a keepsake journal's memories).
+  const past = journalFilter === "all" ? onThisDay(items, (it) => (it.type === "diary" ? it.d.day : it.at)) : [];
+  el.innerHTML = (past.length ? `<div class="on-this-day"><h3 class="journal-list-head">🕰️ On this day</h3><p class="muted small-print">What you wrote on ${esc(new Date().toLocaleDateString(undefined, { month: "long", day: "numeric" }))} in years before.</p>${past.map((p) => row(p.item).replace("<small>", `<small>${p.years === 1 ? "1 year ago" : `${p.years} years ago`} · `)).join("")}</div>` : "")
+    + `<h3 class="journal-list-head">My entries</h3><div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${esc(l)}</button>`).join("")}</div>`
     + (items.length ? items.map(row).join("") : `<p class="empty">${journalFilter === "all" ? "Nothing written yet. Tap one of the buttons above to write your first entry." : "Nothing here yet."}</p>`);
   el.querySelectorAll("[data-entry]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.entry })));
   el.querySelectorAll("[data-day]").forEach((b) => b.addEventListener("click", () => showDiaryDay(b.dataset.day)));

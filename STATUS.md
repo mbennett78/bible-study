@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:36 PM Central
-**Current version:** v240 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:37 PM Central
+**Current version:** v241 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:50 PM CT: B-75 second finding: Day One, the top journaling app, is loved for "On This Day". The Journal now does the same: on a date you wrote something in an earlier year, an "On this day" box at the top shows it ("1 year ago"). It starts showing next Christmas, a year after the gift.
 - Wed Nov 25, 2:35 PM CT: B-75 first finding, from reading current reviews of the top Bible apps: Dwell users love repeating a verse to memorize it, and nothing here did that. New "Learn by heart": tap a verse number, choose Learn by heart, and go from reading it (with Hear it) to every other word hidden, then first letters, then saying it with every word hidden. Tap any blank to peek. Nothing is scored or kept.
 - Wed Nov 25, 2:10 PM CT: New "Page width" in Settings > Reading and listening: Narrow (short lines, easy on the eyes), Medium (as before) or Wide (more words per line, and the study notes panel gives up a little room). On a phone, Narrow adds a small margin each side. Everyone stays on Medium until they choose.
 - Wed Nov 25, 1:55 PM CT: Buddy wears his red baseball cap in Bible Spin, the practice quiz and whenever he cheers.
