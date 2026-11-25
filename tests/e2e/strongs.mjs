@@ -54,6 +54,15 @@ try {
   await page.click(".word-sheet .ws-done"); await page.waitForTimeout(200);
   await tapWord("comprehend");
   check("“comprehend” finds katalambanō through the King James renderings", /In the Greek[\s\S]*G2638/.test(await page.textContent(".word-sheet .ws-lang")));
+  await page.click(".word-sheet .ws-done").catch(() => {}); await page.waitForTimeout(200);
+  // The full concordance: every place in the Bible a word is used, by book, and a tap goes there.
+  const light = '#strongsPanel .sc-word[data-n="G5457"]';
+  await page.$eval(light, (d) => { const rest = d.closest(".sc-rest"); if (rest) rest.hidden = false; d.open = true; }); await page.waitForTimeout(700);
+  check("a word's entry has its root words as taps", (await page.$$(light + " .sc-link")).length >= 2);
+  await page.click(light + " .sc-all"); await page.waitForTimeout(800);
+  check("See every place lists the verses by book", (await page.$$(light + " .sc-ref")).length > 50 && /verses<\/strong> in \d+ books/.test(await page.$eval(light + " .sc-conc-sum", (e) => e.innerHTML)));
+  await page.click(light + ' .sc-ref[data-b="MAT"]'); await page.waitForTimeout(1200);
+  check("tapping a verse there opens that chapter", (await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).last.book)) === "MAT");
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
 } catch (e) { stopped = e; } finally {

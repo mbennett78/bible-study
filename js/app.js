@@ -3438,12 +3438,12 @@ function loadLex(n) {
 // The chapter's words, sorted the way a study Bible would: names of God first, then the
 // people and places, the key words worth studying, everyday words, and the small words.
 const GOD_WORDS = new Set(["H430", "H3068", "H3069", "H136", "H410", "H433", "H426", "H5945", "H7706", "H3050", "G2316", "G2962", "G2424", "G5547"]);
-const strongsGroup = (r) => r[6] ? "small" : GOD_WORDS.has(r[0]) ? "god" : /^[A-Z][a-z]/.test(r[3]) ? "names" : r[4] > 1500 ? "common" : "key";
+const strongsGroup = (r) => r[6] ? "small" : GOD_WORDS.has(r[0]) ? "god" : /^[A-Z][a-z]/.test(r[3]) ? "names" : r[4] > 600 ? "common" : "key";
 const STRONGS_GROUPS = [
   ["god", "Names of God", "How this chapter names God, and Jesus in the New Testament.", true],
-  ["key", "Key words", "The words most worth studying here: tap one to see its full meaning.", true],
+  ["key", "Key words", "The words most worth studying here, the ones this chapter repeats first. Tap one to see its full meaning and every place it is used.", true],
   ["names", "People and places", "Names, and what many of them mean.", false],
-  ["common", "Everyday words", "Words used thousands of times, like “say”, “make” and “go”.", false],
+  ["common", "Everyday words", "Words used hundreds or thousands of times, like “say”, “all” and “go”.", false],
   ["small", "Small words", "Words like “and”, “the” and “in”.", false],
 ];
 function strongsRow([n, lemma, xlit, gloss, count, verses]) {
@@ -3455,6 +3455,46 @@ function strongsRow([n, lemma, xlit, gloss, count, verses]) {
     <div class="sc-body"><div class="sc-verses"><span class="muted small-print">Go to verse</span> ${shown.map((v) => `<button type="button" class="sc-v" data-v="${v}">${v}</button>`).join("")}${verses.length > shown.length ? `<span class="muted small-print">and ${verses.length - shown.length} more</span>` : ""}</div>
     <div class="sc-def muted small-print">Loading Strong's entry…</div></div></details>`;
 }
+// A few dictionary entries had their word origin split in two when the dictionary was
+// prepared ("from an obsolete (to shine...;" + "compare G5316...); luminousness"). Join them back.
+function tidyLex(e) {
+  if (!e) return e;
+  const open = (t) => (t.match(/\(/g) || []).length - (t.match(/\)/g) || []).length;
+  let from = e.from || "", def = e.def || "";
+  if (open(from) > 0 && def) {
+    let depth = open(from), i = 0;
+    for (; i < def.length && depth > 0; i++) { if (def[i] === "(") depth++; if (def[i] === ")") depth--; }
+    if (depth === 0) { from = `${from.replace(/;\s*$/, ";")} ${def.slice(0, i)}`; def = def.slice(i).replace(/^[;,\s]+/, ""); }
+  }
+  return { ...e, from, def };
+}
+// Strong's numbers inside a dictionary entry ("from G756") become taps that show that root word.
+const linkStrongs = (html) => html.replace(/\b([GH])(\d{1,4})\b/g, (m) => `<button type="button" class="sc-link" data-n="${m}">${m}</button>`);
+// The full concordance: every chapter and verse in the Bible where a Hebrew or Greek word is used.
+const concCache = {};
+function loadConc(n) {
+  const b = n[0] + Math.floor(Number(n.slice(1)) / 100);
+  if (!concCache[b]) concCache[b] = fetch(`data/conc/${b}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((d) => { if (!d) delete concCache[b]; return d || {}; });
+  return concCache[b].then((d) => d[n]);
+}
+async function showConcordance(n, host, btn) {
+  btn.disabled = true; btn.textContent = "Finding every place…";
+  const list = await loadConc(n);
+  if (!list) { btn.disabled = false; btn.textContent = "📖 See every place in the Bible"; host.innerHTML = `<p class="muted small-print">Couldn't load the list. Check your connection and try again.</p>`; return; }
+  btn.remove();
+  const byBook = [];
+  for (const s of list) {
+    const [ref, vs] = s.split(":"), [book, ch] = ref.split(".");
+    if (byBook.at(-1)?.[0] !== book) byBook.push([book, []]);
+    byBook.at(-1)[1].push([Number(ch), vs.split(",").map(Number)]);
+  }
+  const verses = list.reduce((t, s) => t + s.split(":")[1].split(",").length, 0);
+  host.innerHTML = `<p class="sc-conc-sum"><strong>${verses.toLocaleString()} verse${verses === 1 ? "" : "s"}</strong> in ${byBook.length} book${byBook.length === 1 ? "" : "s"}. Tap one to go there.</p>
+    ${byBook.length > 1 ? `<label class="sc-conc-pick"><span class="sr-only">Jump to a book</span><select>${byBook.map(([b], i) => `<option value="${i}">${esc(BOOK_BY_ID[b]?.name || b)}</option>`).join("")}</select></label>` : ""}
+    <div class="sc-conc-list">${byBook.map(([b, chs], i) => `<section class="sc-conc-book" data-i="${i}"><h4>${esc(BOOK_BY_ID[b]?.name || b)}</h4><div class="sc-conc-refs">${chs.map(([c, vs]) => vs.map((v) => `<button type="button" class="sc-ref" data-b="${b}" data-c="${c}" data-v="${v}">${c}:${v}</button>`).join("")).join("")}</div></section>`).join("")}</div>`;
+  host.querySelector(".sc-conc-pick select")?.addEventListener("change", (e) => host.querySelector(`.sc-conc-book[data-i="${e.target.value}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+  host.querySelectorAll(".sc-ref").forEach((b) => b.addEventListener("click", () => jumpTo({ book: b.dataset.b, chapter: Number(b.dataset.c), verse: Number(b.dataset.v) })));
+}
 async function fillStrongs(el, book, chapter) {
   const panel = el.querySelector("#strongsPanel");
   if (!panel) return;
@@ -3462,13 +3502,18 @@ async function fillStrongs(el, book, chapter) {
   if (!panel.isConnected) return;
   if (!rows) { panel.innerHTML = `<p class="muted small-print">The concordance couldn't load. Check your connection and try again.</p>`; return; }
   const lang = BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek";
-  const groups = STRONGS_GROUPS.map(([id, title, about, open]) => [id, title, about, open, rows.filter((r) => strongsGroup(r) === id)]).filter((g) => g[4].length);
+  const groups = STRONGS_GROUPS.map(([id, title, about, open]) => {
+    const list = rows.filter((r) => strongsGroup(r) === id);
+    // Key words: the ones this chapter repeats most come first (a stable sort keeps first-appearance order for ties).
+    if (id === "key") list.sort((a, b) => b[5].length - a[5].length);
+    return [id, title, about, open, list];
+  }).filter((g) => g[4].length);
   const tapOn = store.get("wordTap") !== false;
   panel.innerHTML = `<p class="sc-tip">${tapOn ? `💡 While you read, <strong>tap any word</strong> in the Bible text to see the ${lang} word behind it. Words with a <span class="sw-demo">light dotted line</span> are the key ones worth looking up.` : `💡 Turn on <strong>Tap a word for its meaning</strong> in Settings to look up any word right in the Bible text.`}</p>
     <label class="sc-find"><span class="sr-only">Find a word in this chapter</span><input type="search" placeholder="Find a word in ${esc(refName({ book, chapter }))}" autocomplete="off"></label>
     <p class="muted small-print sc-none" hidden>No word here matches that. Try a shorter word.</p>
     ${groups.map(([id, title, about, open, list]) => `<details class="sc-group" data-group="${id}"${open ? " open" : ""}><summary><strong>${title}</strong> <span class="count">${list.length}</span><small>${about}</small></summary>
-      <div class="sc-list">${list.map(strongsRow).join("")}</div></details>`).join("")}
+      <div class="sc-list">${list.map((r, i) => (id === "key" && i === 12 && list.length > 15 ? `<button type="button" class="sc-more small">Show all ${list.length} key words</button><div class="sc-rest" hidden>` : "") + strongsRow(r)).join("")}${id === "key" && list.length > 15 ? "</div>" : ""}</div></details>`).join("")}
     <p class="muted small-print sc-credit">Every ${lang} word in the chapter, in the order it first appears. Counts are of the ${lang} words, so they can differ from the count of an English word in the NASB. Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong, <em>Exhaustive Concordance</em> (1890), via Open Scriptures.</p>`;
   const find = panel.querySelector(".sc-find input");
   find.addEventListener("input", () => {
@@ -3478,23 +3523,31 @@ async function fillStrongs(el, book, chapter) {
       let hits = 0;
       g.querySelectorAll(".sc-word").forEach((w) => { const on = !q || w.dataset.find.includes(q); w.hidden = !on; if (on) hits++; });
       g.hidden = !hits;
-      if (q && hits) g.open = true;
+      if (q && hits) { g.open = true; const rest = g.querySelector(".sc-rest"); if (rest) { rest.hidden = false; g.querySelector(".sc-more")?.remove(); } }
       any = any || hits > 0;
     });
     panel.querySelector(".sc-none").hidden = any;
   });
   panel.querySelectorAll(".sc-v").forEach((b) => b.addEventListener("click", () => goToVerse(Number(b.dataset.v))));
+  panel.querySelector(".sc-more")?.addEventListener("click", (e) => { e.target.nextElementSibling.hidden = false; e.target.remove(); });
   panel.querySelectorAll(".sc-word").forEach((d) => d.addEventListener("toggle", async () => {
     if (!d.open || d.dataset.loaded) return;
-    const e = await loadLex(d.dataset.n);
+    const e = tidyLex(await loadLex(d.dataset.n));
     const box = d.querySelector(".sc-def");
     if (!e) { box.textContent = "No dictionary entry for this number. Check your connection and try again."; return; }
     d.dataset.loaded = "1";
     box.classList.remove("muted", "small-print");
     box.innerHTML = `${e.pron ? `<p class="muted small-print">Say it: ${esc(e.pron)}</p>` : ""}
-      ${e.def ? `<p><strong>Strong's definition:</strong> ${esc(e.def)}</p>` : ""}
+      ${e.def ? `<p><strong>Strong's definition:</strong> ${linkStrongs(esc(e.def))}</p>` : ""}
       ${e.kjv ? `<p><strong>KJV translates it:</strong> ${esc(e.kjv)}</p>` : ""}
-      ${e.from ? `<p class="muted small-print">Word origin: ${esc(e.from)}</p>` : ""}`;
+      ${e.from ? `<p class="muted small-print">Word origin: ${linkStrongs(esc(e.from.replace(/[;,.\s]+$/, "")))}</p>` : ""}
+      <div class="sc-root"></div>
+      <button type="button" class="small sc-all" data-n="${d.dataset.n}">📖 See every place in the Bible</button><div class="sc-conc"></div>`;
+    box.querySelectorAll(".sc-link").forEach((a) => a.addEventListener("click", async () => {
+      const r = await loadLex(a.dataset.n), host = box.querySelector(".sc-root");
+      host.innerHTML = r ? `<p class="sc-rootdef"><strong>${esc(a.dataset.n)} ${esc(r.lemma || "")}</strong> ${esc(r.def || r.kjv || "")}</p>` : "";
+    }));
+    box.querySelector(".sc-all").addEventListener("click", (ev) => showConcordance(d.dataset.n, box.querySelector(".sc-conc"), ev.target));
   }));
 }
 
