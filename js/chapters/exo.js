@@ -125,14 +125,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     v: [
       ["10:2", "Tell your son and grandson", "The plagues are to be told to future generations."],
       ["10:22-23", "Darkness that can be felt", "A blow against Ra, Egypt's sun god. \"All the sons of Israel had light in their dwellings.\""],
-      ["10:26", "Not a hoof", "Moses will accept no half-obedience."],
+      ["10:26", "Not a hoof", "Pharaoh offered to let the people go if they left their animals. Moses refuses: not a hoof will be left behind. He will not accept half-obedience."],
     ],
     refs: [["JOL.2", "Joel 2:1-11", "A day of darkness and locusts"], ["REV.9", "Revelation 9:3", "Locusts came upon the earth"]],
   },
   11: {
     intro: "God tells Moses one more plague is coming: at midnight every firstborn in Egypt will die, from Pharaoh's son to the slave girl's and the cattle. Israel is to ask their neighbors for silver and gold, and God gives them favor. Moses leaves Pharaoh in hot anger.",
     v: [
-      ["11:3", "Moses was greatly esteemed", "Even Pharaoh's servants respect Moses."],
+      ["11:3", "Moses was greatly esteemed", "The LORD gave the Israelites favor with the Egyptians, and Moses was highly respected even by Pharaoh's officials and the people."],
       ["11:5", "All the firstborn", "Pharaoh ordered Israel's sons drowned (1:22); God had warned that Pharaoh's firstborn would pay (4:23)."],
       ["11:7", "Not even a dog will bark", "So quiet will Israel's camp be that the difference between the two peoples will be plain."],
     ],
@@ -178,7 +178,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["15:2", "The LORD is my strength and song", "Isaiah 12:2 and Psalm 118:14 repeat these words."],
       ["15:11", "Who is like You?", "God is majestic in holiness and working wonders."],
       ["15:24", "The people grumbled", "Three days after the greatest miracle, Israel complains. The pattern repeats throughout the wilderness."],
-      ["15:26", "Jehovah-Rapha", "\"I, the LORD, am your healer.\""],
+      ["15:26", "Jehovah-Rapha", "At Marah God turned bitter water sweet and gave His name Jehovah-Rapha: I am the LORD who heals you."],
     ],
     refs: [["REV.15", "Revelation 15:3", "The song of Moses and of the Lamb"], ["PSA.118", "Psalm 118:14", "The LORD is my strength and song"], ["ISA.12", "Isaiah 12:2", "He has become my salvation"]],
   },
@@ -198,7 +198,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["17:6", "Strike the rock", "Paul writes that \"the rock was Christ\" (1 Corinthians 10:4)."],
       ["17:7", "Massah and Meribah", "\"Testing\" and \"quarreling\": \"Is the LORD among us, or not?\" Psalm 95:8 warns not to harden hearts as there."],
       ["17:11-12", "When Moses held his hand up", "Victory depended on God, not on Israel's swords, and Moses needed friends to hold him up."],
-      ["17:15", "Jehovah-Nissi", "\"The LORD is My Banner.\""],
+      ["17:15", "Jehovah-Nissi", "After defeating Amalek while Moses' hands were held up, Moses built an altar and called it Jehovah-Nissi: the LORD is my banner."],
     ],
     refs: [["1CO.10", "1 Corinthians 10:4", "The rock was Christ"], ["PSA.95", "Psalm 95:8-9", "Do not harden your hearts as at Meribah"], ["DEU.25", "Deuteronomy 25:17-19", "Remember what Amalek did"]],
   },
@@ -217,7 +217,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["19:4", "On eagles' wings", "God rescued them first; then He gave the law. Grace comes before command."],
       ["19:5-6", "A kingdom of priests and a holy nation", "Peter applies these words to the church (1 Peter 2:9)."],
       ["19:12", "Set bounds", "God's holiness is dangerous. Hebrews 12:18-24 contrasts Sinai with the welcome of Mount Zion in Christ."],
-      ["19:18", "The whole mountain quaked", "God's presence shakes the earth."],
+      ["19:18", "The whole mountain quaked", "Mount Sinai was covered in smoke because the LORD came down in fire, and the whole mountain shook. God's presence is awesome and holy."],
     ],
     why: "Where is Mount Sinai? The Bible names it but gives no map coordinates.",
     views: [
@@ -253,7 +253,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     v: [
       ["22:1", "Repay five oxen for one", "Restitution, not prison, was the main response to theft. Zacchaeus offered fourfold (Luke 19:8)."],
       ["22:21", "You were strangers in Egypt", "Israel's own past is the reason to be kind to foreigners."],
-      ["22:22-24", "The widow and the orphan", "God Himself hears their cry."],
+      ["22:22-24", "The widow and the orphan", "Do not mistreat any widow or orphan. If they cry out to God, He Himself will hear them and act."],
       ["22:26-27", "Before the sun sets", "A poor man's cloak was his blanket. \"I am gracious.\""],
     ],
     refs: [["LUK.19", "Luke 19:8", "I will give back four times as much"], ["JAS.1", "James 1:27", "Visit orphans and widows"]],
@@ -274,7 +274,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["24:7", "We will do", "A sincere promise they will quickly break (chapter 32)."],
       ["24:8", "The blood of the covenant", "Jesus echoes these words at the Last Supper: \"This is My blood of the covenant\" (Mark 14:24)."],
       ["24:10-11", "They saw God, and they ate and drank", "Under His feet was something like sapphire, clear as the sky. A covenant meal in God's presence."],
-      ["24:18", "Forty days and forty nights", "Moses waits on God on the mountain."],
+      ["24:18", "Forty days and forty nights", "Moses went up into the cloud on the mountain and stayed forty days and forty nights, receiving God's instructions."],
     ],
     refs: [["MRK.14", "Mark 14:24", "My blood of the covenant"], ["HEB.9", "Hebrews 9:18-22", "Not even the first covenant was made without blood"]],
   },
@@ -292,7 +292,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     intro: "Instructions for the tabernacle tent itself: curtains of fine linen with cherubim woven in, coverings of goat hair and skins, a frame of boards set in silver sockets, and a veil that divides the holy place from the holy of holies, where the ark will sit.",
     v: [
       ["26:1", "Curtains with cherubim", "Cherubim guarded Eden (Genesis 3:24). The tabernacle pictures a way back into God's presence."],
-      ["26:30", "According to its plan", "Every detail follows God's pattern."],
+      ["26:30", "According to its plan", "The tabernacle was to be set up exactly as God had shown Moses on the mountain. Every detail followed His pattern (Hebrews 8:5)."],
       ["26:33", "The veil", "Only the high priest went behind it, once a year. When Jesus died, the temple veil was torn from top to bottom (Matthew 27:51)."],
     ],
     refs: [["MAT.27", "Matthew 27:51", "The veil of the temple was torn"], ["HEB.10", "Hebrews 10:19-20", "A new and living way through the veil, His flesh"]],
@@ -301,7 +301,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     intro: "Instructions for the bronze altar of burnt offering with horns on its four corners, the courtyard around the tabernacle with its linen hangings and gate, and the clear olive oil to keep the lamp burning continually.",
     v: [
       ["27:1-2", "The bronze altar", "The first thing a worshiper met inside the gate: there is no approach to God without sacrifice."],
-      ["27:16", "The gate", "One entrance, on the east side."],
+      ["27:16", "The gate", "The courtyard had only one gate, on the east side, with a curtain of blue, purple and scarlet. There was one way in to God's presence."],
       ["27:20-21", "A lamp to burn continually", "The light was tended from evening to morning, a sign of God's ongoing presence."],
     ],
     refs: [["JHN.10", "John 10:9", "I am the door"], ["HEB.13", "Hebrews 13:10", "We have an altar"]],
@@ -339,7 +339,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     v: [
       ["31:3", "Filled with the Spirit of God", "The first person said to be filled with God's Spirit is an artist."],
       ["31:13", "A sign between Me and you", "The Sabbath showed Israel that the LORD makes them holy."],
-      ["31:18", "Written by the finger of God", "The commandments are God's own words."],
+      ["31:18", "Written by the finger of God", "God gave Moses two stone tablets written by the finger of God. The commandments are His own words."],
     ],
     refs: [["EXO.35", "Exodus 35:30-35", "Bezalel and Oholiab begin work"], ["2CO.3", "2 Corinthians 3:3", "Written not on tablets of stone but on hearts"]],
   },
@@ -348,7 +348,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     v: [
       ["32:4", "These are your gods, O Israel", "They likely meant the calf to represent the LORD (32:5), but God had forbidden any image of Himself."],
       ["32:11-14", "Moses pleads", "Moses appeals to God's glory and His promises, and God relents."],
-      ["32:24", "Out came this calf", "Aaron's famous excuse."],
+      ["32:24", "Out came this calf", "Aaron made the golden calf with a tool (32:4), but he tells Moses he just threw the gold into the fire and out came this calf. A famous excuse."],
       ["32:32", "Blot me out of Your book", "Moses would give himself for the people, as Paul later wishes for Israel (Romans 9:3)."],
     ],
     refs: [["PSA.106", "Psalm 106:19-23", "They made a calf in Horeb"], ["ACT.7", "Acts 7:39-41", "They made a calf"], ["1CO.10", "1 Corinthians 10:7", "Do not be idolaters"]],
@@ -358,8 +358,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     v: [
       ["33:11", "As a man speaks to his friend", "Not that Moses saw God's full being (33:20), but that God spoke with him openly and personally."],
       ["33:15", "If Your presence does not go with us", "Moses wants God Himself, not just the land."],
-      ["33:19", "I will be gracious to whom I will be gracious", "Paul quotes it in Romans 9:15."],
-      ["33:22", "In the cleft of the rock", "God shields Moses with His hand."],
+      ["33:19", "I will be gracious to whom I will be gracious", "Moses asks to see God's glory. God will show him His goodness and proclaim His name, and says His mercy is His to give. Paul quotes this in Romans 9:15."],
+      ["33:22", "In the cleft of the rock", "No one can see God's face and live. God puts Moses in a cleft in the rock and covers him with His hand as His glory passes by."],
     ],
     refs: [["JHN.1", "John 1:18", "No one has seen God at any time; the only begotten God has explained Him"], ["2CO.4", "2 Corinthians 4:6", "The glory of God in the face of Christ"]],
   },
@@ -375,7 +375,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
   35: {
     intro: "Moses repeats the Sabbath law and invites everyone with a willing heart to bring offerings for the tabernacle. Men and women bring gold, jewelry, yarn, skins, wood, oil and spices, and skilled women spin. Bezalel and Oholiab are named as the master craftsmen, gifted by God to teach others.",
     v: [
-      ["35:5", "Whoever is of a willing heart", "Giving is a matter of the heart."],
+      ["35:5", "Whoever is of a willing heart", "For the tabernacle, Moses asks for gifts from everyone whose heart is willing. Giving to God starts in the heart."],
       ["35:21", "Everyone whose heart stirred him", "The same people who gave gold to a calf now give it to God's house."],
       ["35:34", "To teach", "God gave the craftsmen the ability to teach as well as to do."],
     ],
@@ -384,8 +384,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
   36: {
     intro: "The craftsmen begin work. The people bring so much that the workers tell Moses, and Moses has to tell the people to stop giving. Then the tabernacle's curtains, coverings, boards and veil are made exactly as God commanded.",
     v: [
-      ["36:5", "Much more than enough", "A rare problem: too many gifts."],
-      ["36:6", "So the people were restrained from bringing any more", "Generosity overflowed."],
+      ["36:5", "Much more than enough", "The craftsmen told Moses the people were bringing much more than enough for the work."],
+      ["36:6", "So the people were restrained from bringing any more", "Moses had to send word through the camp to stop bringing gifts. Their generosity overflowed."],
       ["36:8", "Skillful workmen", "Chapters 36-39 repeat the instructions of 25-31 almost word for word, now as obedience."],
     ],
     refs: [["EXO.26", "Exodus 26", "The instructions for the tent"], ["2CO.8", "2 Corinthians 8:1-5", "Overflowing generosity"]],
@@ -413,7 +413,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
   39: {
     intro: "The priests' garments are made: the ephod, the breastpiece with twelve stones for the twelve tribes, the robe, tunics and the gold plate engraved \"Holy to the LORD.\" The finished work is brought to Moses. He sees that they have done everything just as the LORD commanded, and he blesses them.",
     v: [
-      ["39:30", "Holy to the LORD", "The gold plate for Aaron's turban."],
+      ["39:30", "Holy to the LORD", "A plate of pure gold on the high priest's turban was engraved Holy to the LORD. He carried the people's worship before God (28:38)."],
       ["39:32", "Just as the LORD had commanded", "The phrase is repeated again and again in chapters 39-40."],
       ["39:43", "Moses blessed them", "Like God viewing creation, Moses inspects the finished work and blesses it."],
     ],
@@ -422,7 +422,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
   40: {
     intro: "On the first day of the second year, Moses sets up the tabernacle, puts everything in place and anoints it. When the work is finished, the cloud covers the tent and the glory of the LORD fills the tabernacle, so that even Moses cannot enter. From then on, the cloud leads Israel on all their journeys.",
     v: [
-      ["40:2", "The first day of the first month", "About a year after leaving Egypt."],
+      ["40:2", "The first day of the first month", "The tabernacle was set up on the first day of the first month, almost a year after leaving Egypt. Then God's glory filled it (40:34)."],
       ["40:33", "So Moses finished the work", "Echoing Genesis 2:2, where God finished His work of creation."],
       ["40:34-35", "The glory of the LORD filled the tabernacle", "The book that began with Israel enslaved ends with God living among them."],
       ["40:38", "Throughout all their journeys", "God's presence goes with them all the way."],
