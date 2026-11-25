@@ -11,8 +11,8 @@ export const NEWS = [
       "🎨 Every kids' story picture is new, plus 8 new stories like the wise men and Hannah's prayer.",
       "🗺️ Maps look like a study Bible's, with mountains, deserts and a scale.",
       "👓 Easier to read: clearer gray words, and Largest text fits small phones.",
-      "📖 Study notes for every chapter, Genesis to Revelation.",
-      "🎲 Bible Spin: fill the lamp to pick a jewel, plus bonus rounds.",
+      "🧠 Learn a verse by heart: tap its number, then Learn by heart.",
+      "📏 Page width in Settings: Narrow, Medium or Wide Bible text.",
     ],
   },
   {

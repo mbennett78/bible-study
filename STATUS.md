@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:32 PM Central
-**Current version:** v239 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:36 PM Central
+**Current version:** v240 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:35 PM CT: B-75 first finding, from reading current reviews of the top Bible apps: Dwell users love repeating a verse to memorize it, and nothing here did that. New "Learn by heart": tap a verse number, choose Learn by heart, and go from reading it (with Hear it) to every other word hidden, then first letters, then saying it with every word hidden. Tap any blank to peek. Nothing is scored or kept.
 - Wed Nov 25, 2:10 PM CT: New "Page width" in Settings > Reading and listening: Narrow (short lines, easy on the eyes), Medium (as before) or Wide (more words per line, and the study notes panel gives up a little room). On a phone, Narrow adds a small margin each side. Everyone stays on Medium until they choose.
 - Wed Nov 25, 1:55 PM CT: Buddy wears his red baseball cap in Bible Spin, the practice quiz and whenever he cheers.
 - Wed Nov 25, 1:45 PM CT: Buddy part 2 begun. His answers now meet each person where they are (playful with kids, unhurried with grandparents, thorough with students), build on what was said earlier in the chat, and are more careful with Scripture: if he isn't sure of a verse's exact words he gives the reference and marks his wording as a paraphrase. "More depth" answers name scholars, never churches. He also knows all his new tricks (eat, fish, hike, juggle, basketball, football, glasses) and his own story (reading glasses, sports and his cap, a good sport who keeps to himself until wanted). This part needs the study-partner function redeployed (see Needed from Melissa).

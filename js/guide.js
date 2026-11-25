@@ -18,6 +18,7 @@ export const GUIDE = [
     "Tap any word for its meaning, with the Hebrew or Greek behind it.",
     "Scroll below the chapter for study notes: history, maps, word studies, what scholars say, and cross-references.",
     "Tap Read aloud to hear the chapter. The part being read is highlighted.",
+    "To learn a verse by heart, tap its number and choose Learn by heart. Four steps take you from reading it to saying it with every word hidden.",
   ] },
   { id: "buddy", icon: "🙂", title: "Your study buddy", tips: [
     "Tap the little stick-figure friend to ask any Bible question.",

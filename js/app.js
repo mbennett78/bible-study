@@ -21,6 +21,7 @@ import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
+import { openHeart } from "./heart.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
@@ -608,6 +609,7 @@ function openVerseSheet(v) {
       <button type="button" class="vs-act" data-act="bookmark" aria-pressed="${Boolean(m.bookmark)}"><span aria-hidden="true">🔖</span>${m.bookmark ? "Bookmarked ✓" : "Bookmark"}</button>
       <button type="button" class="vs-act" data-act="note"><span aria-hidden="true">📝</span>Add to notes</button>
       <button type="button" class="vs-act" data-act="copy"><span aria-hidden="true">📋</span>Copy</button>
+      ${text ? `<button type="button" class="vs-act" data-act="heart"><span aria-hidden="true">🧠</span>Learn by heart</button>` : ""}
       ${navigator.share ? `<button type="button" class="vs-act" data-act="share"><span aria-hidden="true">↗</span>Share</button>` : ""}
     </div>
     <p class="vs-msg muted small-print" role="status"></p>
@@ -644,6 +646,8 @@ function openVerseSheet(v) {
         msg.innerHTML = `<span class="vs-where">Add it to:</span> ${choices.map(([w, l]) => `<button type="button" class="small" data-where="${w}">${esc(l)}</button>`).join(" ")}`;
         msg.querySelectorAll("[data-where]").forEach((b) => b.addEventListener("click", () => go(b.dataset.where)));
       }
+    } else if (act === "heart") {
+      verseSheet.close(); openHeart({ ref, text, ver });
     } else if (act === "copy") {
       try { await navigator.clipboard.writeText(quote); msg.textContent = "Copied ✓"; } catch { msg.textContent = "Copying isn't allowed here. Press and hold the verse to copy it instead."; }
     } else if (act === "share") {

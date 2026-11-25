@@ -3081,3 +3081,17 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-dribble { from { transform: translateY(0); } to { transform: translateY(12px); } }
 @keyframes buddy-swing { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
 .bnd-face .buddy-pack, .bnd-face .buddy-table, .bnd-face .buddy-trash, .bnd-face .buddy-crumple, .bnd-face .buddy-cap, .bnd-face .buddy-pole, .bnd-face .buddy-utensils, .bnd-face .buddy-balls, .bnd-face .buddy-bball { display: none; }
+
+/* ---------- Learn a verse by heart ---------- */
+.heart-steps { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 10px; }
+.heart-steps li { font-size: .85rem; padding: 4px 10px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.heart-steps li.on { background: var(--accent); color: #fff; font-weight: 700; }
+.heart-steps li.done { color: var(--text); }
+.heart-verse { font-family: var(--reading-font, Georgia, serif); font-size: calc(var(--reading-size, 19px) * 1.1); line-height: 2; margin: 10px 0 4px; }
+.hw-blank { font: inherit; color: var(--accent); background: none; border: 0; padding: 0 1px; margin: 0; min-height: 0; cursor: pointer; letter-spacing: .02em; }
+.hw-blank span { opacity: .55; }
+.hw-blank.peek { color: var(--text); text-decoration: underline dotted var(--accent); }
+.heart-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.heart-acts .small { margin: 0; min-height: 44px; }
+.heart-go { min-height: 44px; padding: 8px 18px; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 700; }
+.heart-cheer { font-weight: 600; color: var(--accent); }
