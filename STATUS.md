@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 9:00 AM (check-in): Overnight, every screen got a readability check in all ten looks (light, dark, High contrast, Largest text on small phones), and the few faint or cut-off spots were fixed. Eight new kids' story pictures (59 in all). The 80 shortest chapter notes were filled out with more verse notes and history boxes. All tests pass. Version v210.
 - Wed Nov 25, 8:25 AM: Ten more short chapters filled out, 80 so far: Jeremiah 45 (Baruch, and why his seal is debated) and 48 ("wine on its dregs"), Ezekiel 48, Isaiah 4 (the Branch, with both readings), Job 15 and 20, 1 Chronicles 9 and 14, Numbers 34 and Psalm 43 (one psalm with 42, or two).
 - Wed Nov 25, 7:40 AM: Ten more short chapters filled out, 70 so far: Job 17 (a guarantor, pointing to Hebrews 7:22), Deuteronomy 13 (covenant loyalty, and how Paul applies it in the church), Ezekiel 14 (which Daniel, with both views), 1 Chronicles 27, 2 Chronicles 13, Nehemiah 11, Jeremiah 34 (the Lachish Letters from that very siege), Psalms 131 (a weaned child) and 134, and Isaiah 12 (drawing water at the Feast of Tabernacles and John 7:37).
 - Wed Nov 25, 6:55 AM: Ten more short chapters filled out, 60 so far: Psalm 75 (the cup in the LORD's hand and Gethsemane), Ezekiel 7, Isaiah 23 (Tyre's long fall, down to Alexander in 332 BC), 1 Chronicles 3, 6 (the temple singers and their psalms) and 18, 2 Chronicles 10, Leviticus 22, 1 Kings 15 (the queen mother) and Exodus 38 (bronze mirrors).
