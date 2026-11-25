@@ -34,7 +34,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "The peace offering (or fellowship offering): an unblemished animal from the herd or flock. The fat portions are burned for the LORD, and much of the meat is eaten by the worshiper and family in a joyful meal. No fat or blood may be eaten.",
     v: [
       ["3:1", "A sacrifice of peace offerings", "Shalom means wholeness and fellowship. This offering celebrated being at peace with God."],
-      ["3:16", "All fat is the LORD's", "The best parts were God's."],
+      ["3:16", "All fat is the LORD's", "In the peace offering, the fat was burned on the altar as a pleasing aroma. All the fat belongs to the LORD; the richest part was His."],
       ["3:17", "Neither fat nor blood", "A lasting rule \"throughout your generations.\""],
     ],
     refs: [["EPH.2", "Ephesians 2:14", "He Himself is our peace"], ["COL.1", "Colossians 1:20", "Peace through the blood of His cross"]],
@@ -45,15 +45,15 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
       ["4:2", "Unintentionally", "Even sins we do not realize make us unclean before God. Psalm 19:12: \"Acquit me of hidden faults.\""],
       ["4:3", "If the anointed priest sins", "The priest's sin brings guilt on the people, so he offers the largest animal, a bull."],
       ["4:12", "Outside the camp", "Hebrews 13:11-12 notes that Jesus also suffered outside the gate."],
-      ["4:31", "He will be forgiven", "The promise that ends each section."],
+      ["4:31", "He will be forgiven", "Each section on sin offerings ends with the same promise: the priest will make atonement for him, and he will be forgiven."],
     ],
     refs: [["HEB.13", "Hebrews 13:11-12", "Jesus suffered outside the gate"], ["PSA.19", "Psalm 19:12", "Acquit me of hidden faults"], ["2CO.5", "2 Corinthians 5:21", "He made Him who knew no sin to be sin"]],
   },
   5: {
     intro: "More on the sin offering: failing to testify, touching something unclean, careless oaths. The sinner must confess, and offerings are scaled so that even the very poor can bring two birds or some flour. Then the guilt offering for wrongs against holy things begins.",
     v: [
-      ["5:5", "He shall confess", "Confession comes before the sacrifice."],
-      ["5:7, 11", "If he cannot afford", "No one is too poor to be forgiven."],
+      ["5:5", "He shall confess", "When someone realized their guilt, they had to confess the sin they committed. Confession came before the sacrifice."],
+      ["5:7, 11", "If he cannot afford", "A person who could not afford a lamb could bring two birds, and the very poor a little flour. No one was too poor to be forgiven."],
       ["5:15-16", "Make restitution plus a fifth", "The guilt offering repairs the damage as well as the relationship."],
     ],
     refs: [["1JN.1", "1 John 1:9", "If we confess our sins"], ["PSA.32", "Psalm 32:5", "I acknowledged my sin to You"]],
@@ -79,7 +79,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   8: {
     intro: "Moses ordains Aaron and his sons before the whole congregation, exactly as God commanded in Exodus 29: washing, robing, anointing with oil, offerings and blood on ear, thumb and toe. They stay at the doorway of the tent for seven days.",
     v: [
-      ["8:6", "Washed them with water", "Cleansing before service."],
+      ["8:6", "Washed them with water", "Before Aaron and his sons were dressed and anointed as priests, Moses washed them with water. Cleansing came before service."],
       ["8:12", "Anointed him to consecrate him", "Messiah means \"anointed one.\" Psalm 133:2 pictures the oil running down Aaron's beard."],
       ["8:36", "Did all the things", "The chapter repeats \"just as the LORD commanded Moses\" seven times."],
     ],
@@ -88,7 +88,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   9: {
     intro: "On the eighth day Aaron offers the first sacrifices for himself and the people. He lifts his hands and blesses them, Moses and Aaron go into the tent, and the glory of the LORD appears. Fire comes out from the LORD and consumes the offering, and the people shout and fall on their faces.",
     v: [
-      ["9:6", "That the glory of the LORD may appear", "The whole purpose of the ceremony."],
+      ["9:6", "That the glory of the LORD may appear", "Moses tells the people to do what the LORD commanded, so that the glory of the LORD may appear to them. That was the purpose of it all, and it did (9:23-24)."],
       ["9:22", "Aaron lifted up his hands and blessed them", "Probably with the blessing of Numbers 6:24-26."],
       ["9:24", "Fire came out from before the LORD", "God accepts the offering. Fire also fell at the dedication of Solomon's temple (2 Chronicles 7:1)."],
     ],
@@ -141,7 +141,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "The ceremony for a healed person to be declared clean: two birds, one killed and one dipped in its blood and set free, then washing, shaving and offerings on the eighth day. Rules follow for mold in a house.",
     v: [
       ["14:3", "The priest shall go out", "The priest goes out to the one outside the camp."],
-      ["14:7", "Let the live bird go free", "A picture of cleansing and freedom."],
+      ["14:7", "Let the live bird go free", "For a person healed of a skin disease, one bird was killed and another dipped in its blood and released into the open field. A picture of cleansing and freedom."],
       ["14:14", "Ear, thumb and toe", "The same marks as a priest's ordination. The healed person is restored to the worshiping community."],
     ],
     refs: [["MAT.8", "Matthew 8:4", "Show yourself to the priest"], ["LUK.5", "Luke 5:12-14", "Offer for your cleansing"]],
@@ -157,7 +157,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   16: {
     intro: "The Day of Atonement, the holiest day of Israel's year. Once a year the high priest enters the holy of holies with blood. Two goats are chosen: one is sacrificed as a sin offering, and the other, the scapegoat, has the people's sins confessed over it and is sent away into the wilderness.",
     v: [
-      ["16:2", "Not at any time", "Only once a year, and only with blood."],
+      ["16:2", "Not at any time", "Aaron was not to enter the Most Holy Place whenever he chose, or he would die. Only once a year, on the Day of Atonement, and only with blood (Hebrews 9:7)."],
       ["16:21", "Confess over it all the iniquities", "The live goat carries away the people's sins."],
       ["16:30", "You will be clean from all your sins before the LORD", "The Day promised a fresh start every year."],
       ["16:34", "Once every year", "Hebrews contrasts this with Christ, who entered \"once for all\" with His own blood (Hebrews 9:12)."],
@@ -180,7 +180,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   18: {
     intro: "God forbids Israel to follow the ways of Egypt and Canaan. He lists forbidden sexual relationships (close relatives, adultery, same-sex relations, bestiality) and forbids child sacrifice to Molech. These practices defiled the land, and the land would \"vomit out\" any people who did them.",
     v: [
-      ["18:3", "You shall not do what is done in Egypt or Canaan", "God's people must be different."],
+      ["18:3", "You shall not do what is done in Egypt or Canaan", "Do not live as people did in Egypt, where you came from, or in Canaan, where I am bringing you. God's people must be different."],
       ["18:5", "If a man does them, he shall live", "Quoted by Paul in Romans 10:5 and Galatians 3:12."],
       ["18:21", "Molech", "A god whose worship involved burning children."],
       ["18:28", "The land will spew you out", "God judges His own people by the same standard."],
@@ -191,7 +191,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "A chapter of holiness in daily life, under the heading \"You shall be holy, for I the LORD your God am holy.\" Honor parents, keep the Sabbath, leave gleanings for the poor, do not steal or lie, pay workers promptly, do not curse the deaf or trip the blind, judge fairly, do not hate or take revenge, love your neighbor as yourself, and love the stranger as yourself.",
     v: [
       ["19:2", "You shall be holy", "Holiness is not only for priests and rituals but for farm fields, wages and words."],
-      ["19:9-10", "Leave the gleanings", "Ruth gleaned under this law (Ruth 2)."],
+      ["19:9-10", "Leave the gleanings", "Do not harvest to the very edges of your field or gather what falls. Leave it for the poor and the foreigner. Ruth gleaned under this law (Ruth 2)."],
       ["19:18", "Love your neighbor as yourself", "Jesus calls this the second greatest commandment (Matthew 22:39)."],
       ["19:34", "Love him as yourself", "Love reaches to the foreigner too, \"for you were aliens in the land of Egypt.\""],
     ],
@@ -201,8 +201,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "Penalties for the sins listed in chapter 18 and for turning to mediums and spiritists. God repeats His call: \"Consecrate yourselves therefore and be holy... I am the LORD who sanctifies you.\"",
     v: [
       ["20:6", "Mediums and spiritists", "Turning to them is spiritual unfaithfulness. Saul's visit to the medium of Endor shows the danger (1 Samuel 28)."],
-      ["20:8", "I am the LORD who sanctifies you", "God Himself makes His people holy."],
-      ["20:26", "I have set you apart", "Holiness means belonging to God."],
+      ["20:8", "I am the LORD who sanctifies you", "Keep My decrees and follow them. I am the LORD who makes you holy. Holiness is God's work in His people."],
+      ["20:26", "I have set you apart", "You are to be holy to Me, because I the LORD am holy, and I have set you apart from the nations to be My own."],
     ],
     refs: [["1SA.28", "1 Samuel 28", "Saul and the medium"], ["1TH.4", "1 Thessalonians 4:3-7", "This is the will of God, your sanctification"]],
   },
@@ -219,7 +219,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     v: [
       ["22:10-13", "No stranger shall eat the holy gift", "Holy food belonged to the priest's household, including a bought servant or a widowed daughter who came home."],
       ["22:20", "Whatever has a defect, you shall not offer", "Malachi 1:8 rebukes priests who offered blind and lame animals."],
-      ["22:28", "You shall not kill both it and its young in one day", "Even in sacrifice, God teaches mercy."],
+      ["22:28", "You shall not kill both it and its young in one day", "Do not slaughter a cow or sheep and its young on the same day. Even in sacrifice, God taught mercy."],
       ["22:32", "I will be sanctified", "God's name is honored when His people treat Him as holy."],
     ],
     bg: [["Without blemish", "Only animals without defect could be offered, because the offering stood for giving God one's best. The New Testament calls Christ \"a lamb unblemished and spotless\" (1 Peter 1:19), the perfect offering.", "good", ["wenham", "ross"]]],
@@ -228,7 +228,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   23: {
     intro: "The calendar of Israel's holy days: the weekly Sabbath, Passover and Unleavened Bread, Firstfruits, the Feast of Weeks (Pentecost), Trumpets, the Day of Atonement, and the Feast of Booths.",
     v: [
-      ["23:5", "Passover", "Jesus died at Passover."],
+      ["23:5", "Passover", "The LORD's Passover begins at twilight on the fourteenth day of the first month. Jesus was crucified at Passover, and Paul calls Him our Passover lamb (1 Corinthians 5:7)."],
       ["23:10-11", "Firstfruits", "Offered the day after the Sabbath following Passover. Paul calls Christ's resurrection \"the first fruits of those who are asleep\" (1 Corinthians 15:20)."],
       ["23:15-16", "Fifty days", "The Feast of Weeks, called Pentecost (\"fiftieth\") in Greek, when the Spirit came (Acts 2:1)."],
       ["23:42-43", "Live in booths", "So that each generation remembers that God made Israel live in booths when He brought them out of Egypt."],
@@ -248,7 +248,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "Every seventh year the land rests, and every fiftieth year is a Jubilee: land returns to its original families, and Israelites who sold themselves into service go free. \"The land is Mine; for you are but aliens and sojourners with Me.\" God also forbids charging interest to a poor brother.",
     v: [
       ["25:10", "Proclaim liberty throughout the land", "These words are engraved on the Liberty Bell in Philadelphia."],
-      ["25:23", "The land is Mine", "Israel held the land in trust from God."],
+      ["25:23", "The land is Mine", "The land must not be sold permanently, because it belongs to God. Israel lived on it as foreigners and guests, holding it in trust from Him."],
       ["25:35-36", "Support him", "Help a poor relative without charging interest, \"that your countryman may live with you.\""],
       ["25:55", "My servants whom I brought out", "Israelites belong to God, so they cannot be permanently enslaved."],
     ],
@@ -258,7 +258,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     intro: "God sets out blessings for obedience (rain, harvests, peace, His presence: \"I will walk among you and be your God\") and curses for disobedience, growing worse until exile. Yet even then, if they confess, God will remember His covenant with Jacob, Isaac and Abraham.",
     v: [
       ["26:12", "I will walk among you", "Paul applies it to the church in 2 Corinthians 6:16."],
-      ["26:13", "I broke the bars of your yoke and made you walk erect", "Freedom from slavery is God's gift."],
+      ["26:13", "I broke the bars of your yoke and made you walk erect", "I am the LORD who brought you out of Egypt. I broke the bars of your yoke and let you walk with your heads held high."],
       ["26:40-42", "If they confess their iniquity... I will remember My covenant", "Even after judgment, the door to return stays open."],
       ["26:44", "I will not reject them", "God's faithfulness outlasts Israel's unfaithfulness."],
     ],
