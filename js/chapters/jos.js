@@ -17,7 +17,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "After Moses dies, God commissions Joshua to lead Israel across the Jordan: \"Be strong and courageous... for the LORD your God is with you wherever you go.\" He must meditate on God's law day and night. Joshua prepares the people, and the eastern tribes promise to fight alongside their brothers.",
     v: [
       ["1:5", "I will not fail you or forsake you", "The promise given through Moses (Deuteronomy 31:6) is repeated to Joshua."],
-      ["1:7", "Do not turn from it to the right or to the left", "Courage here is the courage to obey."],
+      ["1:7", "Do not turn from it to the right or to the left", "God tells Joshua to be strong and very courageous, and careful to obey all the law Moses gave. The courage he needs most is the courage to obey."],
       ["1:8", "Meditate on it day and night", "Like Psalm 1:2. Success comes from God's word in heart and mouth."],
       ["1:9", "Be strong and courageous", "Said three times in this chapter (1:6, 7, 9), with the reason: God is with you."],
     ],
@@ -27,7 +27,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "Joshua sends two spies to Jericho. They stay at the house of Rahab, a prostitute, who hides them on her roof under flax and lies to the king's men. She confesses that the LORD is God in heaven and on earth, and asks for her family to be spared. The spies promise, and she ties a scarlet cord in her window.",
     v: [
       ["2:9-11", "Our hearts melted", "Jericho had heard about the Red Sea and Sihon and Og. Rahab concludes, \"The LORD your God, He is God in heaven above and on earth beneath.\""],
-      ["2:12", "Deal kindly with my father's household", "She asks for hesed, covenant kindness."],
+      ["2:12", "Deal kindly with my father's household", "Rahab asks the spies to show her family the same kindness she showed them. The Hebrew word is hesed, loyal covenant love."],
       ["2:18", "The cord of scarlet thread", "A sign of rescue, like the Passover blood on the door."],
     ],
     why: "Rahab lied to protect the spies (2:4-5). Was she right to lie?",
@@ -51,7 +51,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   4: {
     intro: "Twelve men, one from each tribe, carry twelve stones from the riverbed and set them up at Gilgal as a memorial. When children ask, \"What do these stones mean?\" parents will tell how the Jordan stopped. Once the priests step out, the river flows again.",
     v: [
-      ["4:6", "When your children ask", "Memorials invite questions and stories."],
+      ["4:6", "When your children ask", "Twelve stones from the Jordan were set up as a memorial. When children ask what they mean, parents tell how God stopped the river."],
       ["4:14", "The LORD exalted Joshua", "The people now revere Joshua as they did Moses."],
       ["4:24", "That all the peoples of the earth may know", "God's acts are meant for the whole world."],
     ],
@@ -63,14 +63,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
       ["5:9", "Gilgal, rolling", "The name sounds like the Hebrew for \"roll away.\""],
       ["5:12", "The manna ceased", "God's provision changes form but does not stop."],
       ["5:13-14", "Are you for us or for our adversaries?", "\"No; rather I indeed come now as captain of the host of the LORD.\" The question is not whether God is on our side, but whether we are on His."],
-      ["5:15", "Remove your sandal", "As Moses did at the bush (Exodus 3:5)."],
+      ["5:15", "Remove your sandal", "The commander of the LORD's army tells Joshua to take off his sandals, because the ground is holy, as Moses heard at the burning bush (Exodus 3:5)."],
     ],
     refs: [["EXO.3", "Exodus 3:5", "Holy ground"], ["COL.2", "Colossians 2:11", "Circumcision made without hands"]],
   },
   6: {
     intro: "God tells Israel to march around Jericho once a day for six days, with seven priests blowing ram's horns before the ark, and seven times on the seventh day. At the long trumpet blast the people shout, and the wall falls down flat. The city is devoted to destruction, but Rahab and her family are rescued, as promised.",
     v: [
-      ["6:2", "I have given Jericho into your hand", "Spoken before the battle."],
+      ["6:2", "I have given Jericho into your hand", "Before a single trumpet blew, the LORD said: I have given Jericho into your hand. The victory was God's before the battle began."],
       ["6:17", "Under the ban", "Hebrew herem: devoted to God, either to destruction or to His treasury."],
       ["6:20", "The wall fell down flat", "Hebrews 11:30: \"By faith the walls of Jericho fell down.\""],
       ["6:25", "Rahab lived in Israel", "\"To this day\": her family joined God's people."],
@@ -87,9 +87,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   7: {
     intro: "Israel attacks the small town of Ai and is defeated. Joshua falls before the ark in grief. God reveals that someone took devoted things from Jericho. By lot, Achan is found; he confesses he saw, coveted and took a cloak, silver and gold, and hid them in his tent. He and his family are stoned in the Valley of Achor.",
     v: [
-      ["7:1", "Israel acted unfaithfully", "One man's sin affects the whole people."],
+      ["7:1", "Israel acted unfaithfully", "Achan secretly took things devoted to God from Jericho, and the writer says Israel acted unfaithfully. One man's sin affected the whole people."],
       ["7:11", "They have sinned", "God tells Joshua to stop lying on his face and deal with the sin."],
-      ["7:21", "I saw... coveted... took... hid", "The same steps as Eve in Genesis 3:6."],
+      ["7:21", "I saw... coveted... took... hid", "Achan confesses: I saw, I coveted, I took, I hid. Sin follows the same steps as Eve's in Genesis 3:6."],
       ["7:26", "The Valley of Achor", "\"Trouble.\" Hosea 2:15 promises God will make it \"a door of hope.\""],
     ],
     refs: [["HOS.2", "Hosea 2:15", "The valley of Achor as a door of hope"], ["ACT.5", "Acts 5:1-11", "Ananias and Sapphira"], ["JAS.1", "James 1:14-15", "Lust conceived gives birth to sin"]],
@@ -97,16 +97,16 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   8: {
     intro: "Encouraged by God, Israel takes Ai using an ambush. Then Joshua builds an altar on Mount Ebal, writes a copy of the law on stones, and reads all of it to the people, with half on Gerizim and half on Ebal, as Moses commanded.",
     v: [
-      ["8:1", "Do not fear", "After failure, God renews His promise."],
+      ["8:1", "Do not fear", "After the defeat at Ai and Achan's sin dealt with, God says: do not fear or be discouraged. He renews His promise after failure."],
       ["8:2", "Take its spoil", "Here God allows what He had forbidden at Jericho. Achan only had to wait."],
-      ["8:35", "Not a word which Joshua did not read", "To men, women, children and strangers."],
+      ["8:35", "Not a word which Joshua did not read", "Joshua read every word of Moses' law to the whole assembly, including women, children and the foreigners living among them."],
     ],
     refs: [["DEU.27", "Deuteronomy 27:1-8", "Moses' instructions"], ["NEH.8", "Nehemiah 8:1-8", "Ezra reads the law"]],
   },
   9: {
     intro: "The people of Gibeon, a nearby city, pretend to have come from far away, with old sacks, patched sandals and moldy bread. Israel's leaders make a peace treaty with them without asking the LORD. When the truth comes out, Israel keeps its oath, and the Gibeonites become woodcutters and water carriers for the altar.",
     v: [
-      ["9:14", "They did not ask for the counsel of the LORD", "The real failure was not seeking God."],
+      ["9:14", "They did not ask for the counsel of the LORD", "The Gibeonites tricked Israel with worn-out clothes and moldy bread. Israel's leaders examined the evidence but did not ask the LORD."],
       ["9:19", "We have sworn to them", "Israel keeps its word even when tricked."],
       ["9:27", "For the altar of the LORD", "The Gibeonites end up serving at God's house."],
     ],
@@ -115,8 +115,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   10: {
     intro: "Five Amorite kings attack Gibeon, and Israel marches all night to defend their new ally. God throws the enemy into panic and sends huge hailstones. Joshua prays, \"O sun, stand still at Gibeon,\" and the sun stays in the sky about a whole day. Joshua then takes the cities of the south.",
     v: [
-      ["10:8", "Do not fear them", "God's promise before battle."],
-      ["10:11", "More died from the hailstones", "God fought for Israel."],
+      ["10:8", "Do not fear them", "Five kings attacked Gibeon, and the LORD told Joshua: do not fear them; I have given them into your hand."],
+      ["10:11", "More died from the hailstones", "As the enemy fled, the LORD threw down large hailstones from heaven. More died from the hail than from Israel's swords."],
       ["10:13", "The book of Jashar", "An ancient poetry book also quoted in 2 Samuel 1:18."],
       ["10:14", "There was no day like that", "\"When the LORD listened to the voice of a man.\""],
     ],
@@ -132,9 +132,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   11: {
     intro: "Jabin king of Hazor gathers a huge northern army with horses and chariots. God says, \"Do not be afraid,\" and Israel wins at the waters of Merom. Joshua burns Hazor and takes the north. After a long war, \"the land had rest from war.\"",
     v: [
-      ["11:6", "Hamstring their horses", "Israel was not to trust in chariots."],
+      ["11:6", "Hamstring their horses", "God told Joshua to hamstring the enemy's horses and burn their chariots. Israel was not to trust in chariots but in the LORD (Psalm 20:7)."],
       ["11:15", "He left nothing undone", "Joshua obeyed everything God commanded Moses."],
-      ["11:23", "The land had rest", "Yet much land remained (13:1)."],
+      ["11:23", "The land had rest", "Joshua took the whole land as the LORD had told Moses, and the land had rest from war. Yet much land still remained to be settled (13:1)."],
     ],
     bg: [["Hazor", "Hazor was the largest city in Canaan. Its great Late Bronze Age city was destroyed by fire in the 1200s BC, and its excavators linked that burn layer with Joshua.", "good", ["kitchen", "hess"]]],
     refs: [["JDG.4", "Judges 4:2", "Another Jabin of Hazor"], ["PSA.20", "Psalm 20:7", "Some trust in chariots"]],
@@ -144,7 +144,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     v: [
       ["12:1-5", "Sihon and Og", "The two Amorite kings east of the Jordan, whose defeat was sung about for generations (Psalm 136:19-20)."],
       ["12:6", "Moses the servant of the LORD", "The two leaders' victories are put side by side."],
-      ["12:24", "In all, thirty-one kings", "Each name is a promise kept."],
+      ["12:24", "In all, thirty-one kings", "The chapter lists thirty-one defeated kings, one by one. Each name is a promise God kept."],
     ],
     bg: [["Why a list of kings?", "Ancient rulers often recorded their victories as lists of defeated cities or kings; Egyptian pharaohs carved such lists on temple walls. A list like this fits its time. For Israel it was also a record of God's faithfulness, the promise of the land kept city by city.", "good", ["hess", "kitchen"]]],
     refs: [["PSA.136", "Psalm 136:17-22", "He struck down great kings"], ["DEU.7", "Deuteronomy 7:24", "He will deliver their kings into your hand"]],
@@ -154,7 +154,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     v: [
       ["13:1", "Very much of the land remains", "God's gift was real, but taking it required faith over time."],
       ["13:14", "The offerings are their inheritance", "Repeated in 13:33: \"the LORD... is their inheritance.\""],
-      ["13:22", "Balaam", "His death (Numbers 31:8) is recalled."],
+      ["13:22", "Balaam", "Among those killed was Balaam the fortune-teller, who had tried to curse Israel and then led them into sin (Numbers 22-25; 31:8, 16)."],
     ],
     refs: [["NUM.32", "Numbers 32", "The eastern tribes"], ["NUM.18", "Numbers 18:20", "I am your portion"]],
   },
@@ -163,7 +163,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     v: [
       ["14:2", "By lot", "The lot put the choice in God's hands (Proverbs 16:33)."],
       ["14:8", "I followed the LORD my God fully", "Caleb's testimony after forty-five years."],
-      ["14:11", "As strong today as I was", "Faith does not retire."],
+      ["14:11", "As strong today as I was", "Caleb, now eighty-five, says he is as strong as the day Moses sent him to spy out the land. He asks for the hill country with its giants. Faith does not retire."],
     ],
     refs: [["NUM.14", "Numbers 14:24", "My servant Caleb"], ["PRO.16", "Proverbs 16:33", "The lot is cast into the lap"]],
   },
@@ -189,8 +189,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   17: {
     intro: "Manasseh's land is described. Zelophehad's daughters receive their inheritance as Moses commanded. The sons of Joseph complain that their land is too small, and Joshua tells them to clear the forest and drive out the Canaanites with iron chariots.",
     v: [
-      ["17:4", "The LORD commanded Moses to give us an inheritance", "The daughters claim God's promise."],
-      ["17:14", "Only one lot?", "A large tribe asks for more."],
+      ["17:4", "The LORD commanded Moses to give us an inheritance", "The daughters of Zelophehad remind Joshua that the LORD told Moses to give them land (Numbers 27:1-7). They claim God's promise, and receive it."],
+      ["17:14", "Only one lot?", "The large tribes of Joseph complain they got only one share. Joshua tells them to clear the forested hill country and take it."],
       ["17:18", "You shall drive out the Canaanites", "Joshua challenges them to act in faith rather than complain."],
     ],
     refs: [["NUM.27", "Numbers 27:1-11", "The daughters' request"], ["NUM.36", "Numbers 36", "Their marriages"]],
@@ -199,7 +199,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "The whole congregation gathers at Shiloh and sets up the tent of meeting. Seven tribes still have no land. Joshua asks, \"How long will you put off entering?\" and sends men to map the land so it can be divided by lot. Benjamin's territory is assigned.",
     v: [
       ["18:1", "Shiloh", "The tabernacle stays at Shiloh through the time of Eli and Samuel."],
-      ["18:3", "How long will you put off?", "Delay can be a form of unbelief."],
+      ["18:3", "How long will you put off?", "Seven tribes still had not claimed their land. Joshua asks: how long will you wait before taking what the LORD has given you? Delay can be a form of unbelief."],
       ["18:6", "Describe the land in seven divisions", "Careful planning and trust in God go together."],
     ],
     refs: [["1SA.1", "1 Samuel 1:3", "Worship at Shiloh"], ["JER.7", "Jeremiah 7:12", "Go to My place at Shiloh"]],
@@ -208,7 +208,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "The lands for Simeon (within Judah), Zebulun, Issachar, Asher, Naphtali and Dan are assigned. Dan later moves north to Leshem. Finally Israel gives Joshua the town he asks for, Timnath-serah in Ephraim.",
     v: [
       ["19:1", "Within the inheritance of Judah", "Simeon is absorbed into Judah, as Jacob foretold (Genesis 49:7)."],
-      ["19:47", "Dan took Leshem", "Told more fully in Judges 18."],
+      ["19:47", "Dan took Leshem", "The tribe of Dan lost its land and moved north to capture Leshem, renaming it Dan. Judges 18 tells the story more fully."],
       ["19:49-50", "Joshua last", "The leader takes his own land after everyone else."],
     ],
     refs: [["GEN.49", "Genesis 49:7", "I will scatter them in Israel"], ["JDG.18", "Judges 18", "Dan moves north"]],
@@ -218,7 +218,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     v: [
       ["20:3", "Without premeditation", "The law protected the innocent from revenge."],
       ["20:4", "He shall stand at the entrance of the gate of the city", "The elders at the gate heard his case first. Refuge was for the innocent, not a hiding place for murderers."],
-      ["20:6", "Until the death of the high priest", "Then the manslayer could go home."],
+      ["20:6", "Until the death of the high priest", "Someone who killed a person by accident could flee to a city of refuge and stay there until the high priest died. Then he could go home safely."],
     ],
     bg: [["Never too far to run", "The six cities were spread across the land, three on each side of the Jordan, so a person in danger was never far from one. Later Jewish teaching says the roads to them were kept in good repair and marked with signs reading \"Refuge.\"", "good", ["howard", "hess"]]],
     w: [["miqlat", "mik-LAHT", "H4733", "refuge, place of safety", "From a root meaning to take in. It is used only for these cities: a place that takes in the one who flees.", ["halot"]]],
@@ -228,7 +228,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "The Levites receive forty-eight towns with pasturelands scattered through all the tribes. The chapter ends: \"Not one of the good promises which the LORD had made to the house of Israel failed; all came to pass.\"",
     v: [
       ["21:41", "Forty-eight cities", "The Levites lived among all the tribes to teach God's law."],
-      ["21:44", "The LORD gave them rest", "God kept His oath to the fathers."],
+      ["21:44", "The LORD gave them rest", "The LORD gave Israel rest on every side, as He had sworn to their ancestors. Not one of His good promises failed (21:45)."],
       ["21:45", "Not one promise failed", "One of the great summaries of God's faithfulness."],
     ],
     refs: [["1KI.8", "1 Kings 8:56", "Not one word has failed"], ["2CO.1", "2 Corinthians 1:20", "All the promises of God are yes in Him"]],
@@ -236,8 +236,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   22: {
     intro: "Joshua sends the eastern tribes home with his blessing. They build a large altar by the Jordan, and the other tribes, fearing rebellion, prepare for war. Phinehas leads a delegation, and the eastern tribes explain: it is a witness, not for sacrifice, so that future generations will know they too belong to the LORD. War is avoided.",
     v: [
-      ["22:5", "Love the LORD your God, walk in His ways", "Joshua's charge."],
-      ["22:22", "The Mighty One, God, the LORD! He knows", "The eastern tribes call God as witness."],
+      ["22:5", "Love the LORD your God, walk in His ways", "As the eastern tribes go home, Joshua charges them: love the LORD your God, walk in His ways, keep His commands, hold fast to Him and serve Him with all your heart."],
+      ["22:22", "The Mighty One, God, the LORD! He knows", "Accused of building a rival altar, the eastern tribes call on God as witness: the Mighty One, God, the LORD knows our hearts. The altar was a reminder, not a rival."],
       ["22:30-31", "It pleased them", "Listening before acting prevented a civil war."],
     ],
     refs: [["PRO.18", "Proverbs 18:13", "He who answers before listening"], ["JAS.1", "James 1:19", "Quick to hear, slow to speak"]],
@@ -246,8 +246,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "Old Joshua gathers Israel's leaders. He reminds them that God fought for them and urges them to keep the law, to cling to the LORD, and not to mix with the nations or their gods. \"Not one word of all the good words which the LORD your God spoke concerning you has failed.\"",
     v: [
       ["23:8", "Cling to the LORD your God", "The same word as a husband cleaving to his wife (Genesis 2:24)."],
-      ["23:11", "Take diligent heed to yourselves to love the LORD", "Love needs watchful care."],
-      ["23:14", "The way of all the earth", "Joshua knows he will die soon."],
+      ["23:11", "Take diligent heed to yourselves to love the LORD", "In his farewell Joshua says: be very careful to love the LORD your God. Love for God needs watchful care."],
+      ["23:14", "The way of all the earth", "Joshua is about to go the way of all the earth. He reminds them that not one of God's good promises has failed."],
     ],
     refs: [["DEU.10", "Deuteronomy 10:20", "Cling to Him"], ["ACT.11", "Acts 11:23", "Remain true to the Lord"]],
   },
@@ -255,10 +255,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "At Shechem Joshua retells Israel's story from Abraham to the conquest, all God's doing. Then he calls for a choice: \"Choose for yourselves today whom you will serve... but as for me and my house, we will serve the LORD.\" The people promise, Joshua writes it down and sets up a stone as witness. Joshua dies at 110, and Joseph's bones are buried at Shechem.",
     v: [
       ["24:2", "Your fathers served other gods", "Even Abraham's family began as idol worshipers."],
-      ["24:13", "Cities which you had not built", "Everything Israel had was a gift."],
-      ["24:15", "As for me and my house", "Joshua leads by example."],
+      ["24:13", "Cities which you had not built", "God reminds Israel: I gave you land you did not work for and cities you did not build. Everything they had was a gift."],
+      ["24:15", "As for me and my house", "Choose today whom you will serve. As for me and my house, we will serve the LORD. Joshua leads his family by example."],
       ["24:31", "Israel served the LORD all the days of Joshua", "And of the elders who outlived him. The next generation would forget (Judges 2:10)."],
-      ["24:32", "Joseph's bones", "The promise of Genesis 50:25 is kept."],
+      ["24:32", "Joseph's bones", "Joseph's bones, carried out of Egypt, were buried at Shechem. The promise of Genesis 50:25 was kept after four hundred years."],
     ],
     refs: [["JDG.2", "Judges 2:7-10", "Another generation arose who did not know the LORD"], ["ACT.7", "Acts 7:2-45", "Stephen retells the same story"], ["GEN.50", "Genesis 50:25", "Carry my bones up from here"]],
   },
