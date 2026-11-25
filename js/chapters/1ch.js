@@ -39,10 +39,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   3: {
     intro: "The sons of David born in Hebron and Jerusalem, and the line of kings descended from Solomon, continuing past the exile to the family of Zerubbabel and beyond.",
     v: [
+      ["3:1-4", "Born to him in Hebron", "Six sons in seven and a half years at Hebron, including Amnon, Absalom and Adonijah."],
       ["3:5", "Solomon", "Son of Bathsheba (Bath-shua)."],
       ["3:17", "Jeconiah, the prisoner", "The line survives in exile."],
       ["3:19", "Zerubbabel", "The leader of the return (Ezra 3; Haggai 1), in Jesus' family line (Matthew 1:12)."],
+      ["3:22", "Hattush", "Ezra 8:2 names a Hattush of David's line among those who returned with Ezra."],
     ],
+    bg: [["David's line after the exile", "The list carries David's family past the fall of Jerusalem, through King Jeconiah in exile, to Zerubbabel and several generations after him. For the returned exiles, it showed that God's promise to David's house had not died.", "good", ["selman", "williamson"]]],
     refs: [["MAT.1", "Matthew 1:6-16", "David to Jesus"], ["HAG.2", "Haggai 2:23", "Zerubbabel as a signet ring"]],
   },
   4: {
@@ -69,8 +72,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["6:31", "Over the service of song", "David organized music for worship."],
       ["6:39", "Asaph", "Twelve psalms carry Asaph's name (Psalms 50, 73-83)."],
       ["6:49", "To make atonement for Israel", "The heart of the priests' work."],
+      ["6:54-81", "Their dwelling places", "The Levites had no land of their own but lived in towns spread through every tribe, teaching God's law across Israel."],
     ],
-    refs: [["PSA.73", "Psalm 73", "A psalm of Asaph"], ["NUM.35", "Numbers 35:1-8", "Cities for the Levites"]],
+    bg: [["Singers in the temple", "Heman, Asaph and Ethan led the temple music David arranged. Psalms carry their names: Asaph (50, 73-83), Heman (88) and Ethan (89). The sons of Korah, also Levites, wrote others (42-49, 84-85, 87-88).", "good", ["selman", "japhet"]]],
+    refs: [["PSA.88", "Psalm 88", "A psalm of Heman"], ["PSA.89", "Psalm 89", "A psalm of Ethan"], ["PSA.73", "Psalm 73", "A psalm of Asaph"], ["NUM.35", "Numbers 35:1-8", "Cities for the Levites"]],
   },
   7: {
     intro: "Family lines of Issachar, Benjamin, Naphtali, Manasseh, Ephraim and Asher, often listing their fighting men. Ephraim's line leads to Joshua.",
@@ -179,11 +184,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   18: {
     intro: "David defeats the Philistines, Moab, Zobah, Aram and Edom. \"The LORD helped David wherever he went.\" He dedicates the spoil to the LORD, later used for the temple. He reigns with justice and righteousness.",
     v: [
+      ["18:4", "David hamstrung all the chariot horses, except for a hundred", "Kings were not to trust in horses (Deuteronomy 17:16)."],
       ["18:6", "The LORD helped David", "Repeated in 18:13."],
       ["18:8", "Bronze for the temple", "The spoils of war become temple materials."],
       ["18:14", "Justice and righteousness for all his people", "The mark of a godly king."],
     ],
-    refs: [["2SA.8", "2 Samuel 8", "The same events"]],
+    bg: [["A kingdom secure", "These victories gave Israel peace on every side, the setting God had promised before His house could be built (1 Chronicles 22:8-9). David gathered, and Solomon built.", "good", ["selman", "thompson"]]],
+    refs: [["DEU.17", "Deuteronomy 17:16", "Not many horses"], ["2SA.8", "2 Samuel 8", "The same events"]],
   },
   19: {
     intro: "David sends comfort to the new king of Ammon, but his envoys are humiliated. Ammon hires Aramean armies. Joab and Abishai defeat them: \"Be strong, and let us show ourselves courageous for the sake of our people and the cities of our God; and may the LORD do what is good in His sight.\"",

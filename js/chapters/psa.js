@@ -727,9 +727,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"We give thanks to You, O God.\" God says, \"When I select an appointed time, it is I who judge with equity.\" Exaltation does not come from east or west, but God puts down one and exalts another. The wicked drink from the cup in the LORD's hand.",
     v: [
       ["75:2", "It is I who judge with equity", "God sets the time."],
+      ["75:3", "It is I who have firmly set its pillars", "When the earth seems to shake, God holds it steady."],
       ["75:6-7", "God is the Judge; He puts down one and exalts another", "Promotion comes from God."],
+      ["75:8", "A cup is in the hand of the LORD", "The cup of God's judgment, a picture used by the prophets and by Jesus in Gethsemane."],
     ],
-    refs: [["LUK.1", "Luke 1:52", "He has brought down rulers"], ["1SA.2", "1 Samuel 2:7", "The LORD brings low and exalts"]],
+    bg: [["The cup of wrath", "The prophets pictured God's judgment as a cup the wicked must drink (Isaiah 51:17; Jeremiah 25:15). In Gethsemane Jesus prayed, \"Let this cup pass from Me\" (Matthew 26:39), and then drank it for others.", "good", ["tate", "kidner"]]],
+    refs: [["MAT.26", "Matthew 26:39", "Let this cup pass from Me"], ["LUK.1", "Luke 1:52", "He has brought down rulers"], ["1SA.2", "1 Samuel 2:7", "The LORD brings low and exalts"]],
   },
   76: {
     intro: "God is known in Judah; His dwelling is in Zion. There He broke the flaming arrows and the weapons of war. The warriors slept their final sleep. \"You, even You, are to be feared.\" Even human wrath will praise Him.",

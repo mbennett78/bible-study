@@ -403,8 +403,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
     intro: "The bronze altar, the bronze basin made from the mirrors of the women who served at the tent's door, and the courtyard are made. An account is given of the gold, silver and bronze used, counted under Ithamar the priest.",
     v: [
       ["38:8", "Mirrors of the serving women", "Polished bronze mirrors were given up to make the basin."],
+      ["38:22-23", "Bezalel... and with him Oholiab", "Skilled craftsmen filled with God's Spirit for the work (31:1-6)."],
+      ["38:24", "All the gold... was 29 talents", "A great treasure, given freely by the people (35:21)."],
       ["38:25-26", "Silver from the census", "The half-shekel ransom of 603,550 men became the silver bases of the tabernacle. It literally stood on redemption money."],
     ],
+    bg: [["Ancient mirrors", "Mirrors in this period were polished bronze, not glass. Many have been found in Egypt. The women gave up something personal and precious so it could become the basin where the priests washed.", "strong", ["stuart", "hoffmeier"]]],
     refs: [["EXO.30", "Exodus 30:11-16", "The ransom money"], ["NUM.1", "Numbers 1:46", "603,550 counted"]],
   },
   39: {

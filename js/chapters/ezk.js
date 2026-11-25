@@ -69,8 +69,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "\"An end! The end is coming on the four corners of the land.\" The day of doom has come. People will throw their silver into the streets, because it cannot save them. They will seek a vision from the prophet, but the law will perish from the priest.",
     v: [
       ["7:2", "An end! The end is coming", "Final judgment for Judah."],
+      ["7:12", "Let not the buyer rejoice nor the seller mourn", "Business as usual means nothing when judgment comes."],
       ["7:19", "Their silver and gold will not be able to deliver them", "Money cannot save."],
+      ["7:26", "They will seek a vision from a prophet", "When it is too late, people look for a word from God."],
     ],
+    bg: [["Short, hammering words", "Chapter 7 is a poem of alarm, with short cries repeated again and again: \"An end! The end has come!\" Jerusalem fell a few years later, in 586 BC.", "good", ["block", "taylor"]]],
     refs: [["ZEP.1", "Zephaniah 1:18", "Neither silver nor gold will deliver them"], ["AMO.8", "Amos 8:2", "The end has come"]],
   },
   8: {

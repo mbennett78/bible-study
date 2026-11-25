@@ -222,9 +222,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   23: {
     intro: "An oracle about Tyre, the great sea-trading city. Ships of Tarshish wail because Tyre is destroyed. \"The LORD of hosts has planned it, to defile the pride of all beauty.\" After seventy years Tyre will trade again, but her profits will be set apart for the LORD.",
     v: [
+      ["23:1", "Wail, O ships of Tarshish", "Sailors returning from the far west hear the news at Cyprus (Kittim)."],
       ["23:9", "The LORD of hosts has planned it", "God humbles the proud and wealthy."],
+      ["23:15", "Tyre will be forgotten for seventy years", "A set time of humbling, like Judah's seventy years."],
       ["23:18", "Her gain will be set apart to the LORD", "Wealth used for God."],
     ],
+    bg: [["Tyre's long fall", "Tyre stood on an island and withstood many attacks. Assyria pressed it in Isaiah's day, Nebuchadnezzar besieged it for thirteen years (about 585-572 BC), and Alexander the Great finally took it in 332 BC by building a causeway out to the island.", "strong", ["oswalt", "kitchen"]]],
     refs: [["EZK.26", "Ezekiel 26-28", "Tyre's judgment"], ["REV.18", "Revelation 18:11-19", "Merchants weep"]],
   },
   24: {

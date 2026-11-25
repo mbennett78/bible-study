@@ -152,8 +152,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
     v: [
       ["15:4", "For David's sake", "God keeps a lamp in Jerusalem."],
       ["15:11", "Asa did what was right", "\"Like David his father.\""],
+      ["15:13", "He also removed Maacah his grandmother from being queen mother", "Faithfulness reached into his own family."],
+      ["15:23", "In the time of his old age he was diseased in his feet", "Chronicles adds that he sought physicians, not the LORD (2 Chronicles 16:12)."],
       ["15:29", "According to the word of the LORD", "God's words through the prophets come true."],
     ],
+    bg: [["The queen mother", "In Judah the king's mother (here his grandmother) held an official, honored place, the gebirah or \"great lady.\" Asa removing her for idolatry was a bold public step.", "good", ["house", "wiseman"]]],
     refs: [["2CH.14", "2 Chronicles 14-16", "Asa's reign"]],
   },
   16: {

@@ -213,9 +213,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
   22: {
     intro: "More rules for priests: no unclean priest may eat holy food, and offerings must be without defect. \"You shall not profane My holy name, but I will be sanctified among the sons of Israel.\"",
     v: [
+      ["22:10-13", "No stranger shall eat the holy gift", "Holy food belonged to the priest's household, including a bought servant or a widowed daughter who came home."],
       ["22:20", "Whatever has a defect, you shall not offer", "Malachi 1:8 rebukes priests who offered blind and lame animals."],
+      ["22:28", "You shall not kill both it and its young in one day", "Even in sacrifice, God teaches mercy."],
       ["22:32", "I will be sanctified", "God's name is honored when His people treat Him as holy."],
     ],
+    bg: [["Without blemish", "Only animals without defect could be offered, because the offering stood for giving God one's best. The New Testament calls Christ \"a lamb unblemished and spotless\" (1 Peter 1:19), the perfect offering.", "good", ["wenham", "ross"]]],
     refs: [["MAL.1", "Malachi 1:6-14", "Blemished offerings rebuked"], ["1PE.1", "1 Peter 1:19", "A lamb unblemished and spotless"]],
   },
   23: {

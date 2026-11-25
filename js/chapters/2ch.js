@@ -97,11 +97,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   10: {
     intro: "Rehoboam refuses the elders' counsel to lighten the people's load, takes his young friends' harsh advice, and the northern tribes rebel under Jeroboam. The kingdom splits, \"a turn of events from God.\"",
     v: [
+      ["10:4", "Your father made our yoke hard", "Solomon's great building projects had cost the people dearly."],
       ["10:7", "If you will be kind to this people", "The elders' wise advice."],
       ["10:15", "A turn of events from God", "God's word through Ahijah fulfilled."],
       ["10:16", "Every man to your tents, O Israel", "The kingdom divides."],
+      ["10:18", "They stoned Hadoram", "Rehoboam sends the very man in charge of forced labor, and the people stone him."],
     ],
-    refs: [["1KI.12", "1 Kings 12:1-20", "The same events"]],
+    bg: [["Shechem", "Rehoboam went to Shechem to be made king. It was the old heart of the northern tribes, where Joshua had renewed the covenant (Joshua 24). Choosing harsh words there cost him ten tribes.", "good", ["selman", "thompson"]]],
+    refs: [["PRO.15", "Proverbs 15:1", "A harsh word stirs up anger"], ["1KI.12", "1 Kings 12:1-20", "The same events"]],
   },
   11: {
     intro: "God forbids Rehoboam to fight the north. Rehoboam fortifies Judah's cities. Priests and Levites, and all who set their hearts to seek the LORD, leave the north and come to Judah, strengthening the kingdom for three years.",
