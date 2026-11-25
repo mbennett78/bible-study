@@ -21,6 +21,7 @@ import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
+import { nextPrompt } from "./prompts.js";
 import { openHeart, onThisDay } from "./heart.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
@@ -2042,6 +2043,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       <div class="ee-quotes" id="eeQuotes"></div>
       <label class="ee-label" for="entryText" id="eeTextLabel">${church ? "Notes" : isDay ? `${esc(draft.opener)}…` : "Write here"}</label>
       ${noteKind ? `<div class="ee-fonts" role="group" aria-label="Writing style">${NOTE_FONTS.map(([f, l]) => `<button type="button" class="nf-${f}" data-font="${f}" aria-pressed="${draft.font === f}">${l}</button>`).join("")}</div>` : ""}
+      ${noteKind || church ? "" : `<div class="ee-idea"><button type="button" class="quiet-link" id="eeIdea">💭 Need an idea?</button><p class="ee-prompt" id="eePrompt" hidden></p></div>`}
       <textarea id="entryText" class="nf-${esc(draft.font)}" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
       <div class="ee-refs" id="eeRefs" aria-live="polite"></div>
       ${isDay ? `<div class="ee-extra" id="eePrayerBox" ${(e?.prayer || "").trim() ? "" : "hidden"}><label class="ee-label" for="eePrayer">🙏 Prayer</label><textarea id="eePrayer" rows="3" placeholder="Who and what are you praying for?">${esc(e?.prayer || "")}</textarea></div>
@@ -2058,6 +2060,12 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${noteKind ? `<button class="small" id="entryPrint">🖨 Print</button>` : ""}${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
       <p class="ee-msg" id="entryMsg" role="status"></p></div>`;
   const ta = $("#entryText"), panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
+  // A writing prompt, one at a time. Tap again for another. It never types anything for you.
+  $("#eeIdea")?.addEventListener("click", () => {
+    const p = $("#eePrompt");
+    p.textContent = nextPrompt(kind, p.textContent); p.hidden = false;
+    $("#eeIdea").textContent = "💭 Another idea";
+  });
   addMic(box.querySelector(".entry-editor"), ta);
   const fields = () => ({ kind, text: ta.value.trim(), ...(ref ? { ref } : {}), quotes: draft.quotes, pics: draft.pics,
     created: onDay($("#eeDate")?.value || dayOf(wroteAt.toISOString()), wroteAt),

@@ -3098,3 +3098,5 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .vs-cver { margin: 0 0 10px; line-height: 1.5; }
 .vs-cver b { display: inline-block; min-width: 3.4em; margin-right: 6px; font: 700 .8rem var(--sans); color: var(--accent); }
 .vs-cver.is-mine b::after { content: " ✓"; }
+.ee-idea { margin: 2px 0 6px; }
+.ee-prompt { margin: 6px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--text); font-style: italic; }

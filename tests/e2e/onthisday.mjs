@@ -19,6 +19,13 @@ try {
   const box = await page.$eval(".on-this-day", (b) => b.textContent.replace(/\s+/g, " ")).catch(() => "");
   check("the Journal shows On this day from a year ago", /On this day/.test(box) && /1 year ago/.test(box) && /first Christmas/.test(box), box.slice(0, 200));
   check("other days aren't in it", !/regular day/.test(box));
+  // Need an idea? A writing prompt, one at a time, that never types anything in.
+  await page.evaluate(() => document.querySelector('#diaryToday [data-add="day"]').click()); await page.clock.runFor(300);
+  await page.click("#eeIdea");
+  const p1 = await page.textContent("#eePrompt");
+  check("Need an idea? shows a writing prompt", p1.length > 20 && await page.isVisible("#eePrompt") && (await page.inputValue("#entryText")) === "", p1);
+  await page.click("#eeIdea");
+  check("tapping again gives another", (await page.textContent("#eePrompt")) !== p1);
   check("no page errors", !errors.length, errors.join("; "));
 } catch (e) { stopped = e; }
 await browser.close(); site.close(); finish(stopped);
