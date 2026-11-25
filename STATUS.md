@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 2:35 PM Central
-**Current version:** v248 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 2:36 PM Central
+**Current version:** v249 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,7 +10,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
-- Wed Nov 25, 2:45 PM CT: Notes catch-up, second ten. One-word verse notes ("Longing.", "Forgiveness.") are now full sentences, with new notes and boxes: Leviticus 17 (kaphar, "to make atonement"; the goat demons), Song of Songs 3, 6 and 7 (the royal wedding procession; "do not awaken love until it pleases"), Proverbs 2 (chokmah, wisdom as skill for living), Isaiah 62 (Hephzibah and Beulah), Isaiah 31 (Sennacherib's "like a bird in a cage"), Psalm 57 (the tune "Do Not Destroy"), Psalm 149 (the Hallelujah psalms) and Isaiah 38 (the stairway of Ahaz).
+- Wed Nov 25, 2:45 PM CT: Found a bigger notes gap while catching up: about 2,700 verse notes across 890 chapters are only a few words long (like "Unexpected." or "Keep growing."). They are accurate but thin. Started rewriting them as full, plain sentences, most-read letters first: 2 Timothy 2, 1 John 5, 1 Peter 2, 1 Thessalonians 5 and 2 Peter 3 (35 notes so far). This becomes the catch-up work from now through the weekly updates, New Testament letters and Gospels first.
+- Wed Nov 25, 2:35 PM CT: Notes catch-up, second ten. One-word verse notes ("Longing.", "Forgiveness.") are now full sentences, with new notes and boxes: Leviticus 17 (kaphar, "to make atonement"; the goat demons), Song of Songs 3, 6 and 7 (the royal wedding procession; "do not awaken love until it pleases"), Proverbs 2 (chokmah, wisdom as skill for living), Isaiah 62 (Hephzibah and Beulah), Isaiah 31 (Sennacherib's "like a bird in a cage"), Psalm 57 (the tune "Do Not Destroy"), Psalm 149 (the Hallelujah psalms) and Isaiah 38 (the stairway of Ahaz).
 - Wed Nov 25, 2:33 PM CT: Notes catch-up, a head start on Sunday. The ten shortest chapter notes left now have more verse notes plus a History and culture box or a Hebrew word: Esther 10 (Xerxes in history; God unnamed but at work), Psalm 87 (Rahab as a name for Egypt; the sons of Korah), Ezekiel 5 (why a priest shaving his head was shocking), Jeremiah 24 (the Hebrew word for fig), 1 Samuel 11 (the extra Dead Sea Scrolls paragraph about Nahash), Isaiah 56 (foreigners and eunuchs welcomed, fulfilled in Acts 8), Ezekiel 6 (gillulim, "dung-gods"), Jeremiah 21 (the Lachish letters from the same siege), Judges 10 (the minor judges) and Judges 21 (Shiloh's excavation).
 - Wed Nov 25, 2:05 PM CT: Games play-test, second pass (against Buddy, family game, kids' and animated looks): no errors. Questions now land with the right crew friend more often: "Which Persian king..." and "Which young helper of Paul..." go to Rosie (People) instead of Stories, and finish-the-verse questions like "one day is like a ___ years" go to Quill (Books & Verses). Also found and fixed: 29 questions were in the question bank twice with slightly different answers, so the same question could come up twice in one game (and an exact-answer test failed now and then). Each now appears once.
 - Wed Nov 25, 1:55 PM CT: Games play-test, first pass. Bible Spin's seven crew friends now always fit on one row (on a small phone the seventh used to drop to a line by itself), and a Quick check score now opens at the top, so the header picture isn't half scrolled away. Bible Spin, Quick check and the practice quiz were played start to finish at phone and iPad sizes with no errors.
@@ -165,7 +166,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Study notes: Daniel and the twelve minor prophets (Old Testament complete) | Done (Tue Nov 24) | Thu Nov 26 |
 | Study notes: Matthew, Mark, Luke, John, Acts | Done (Tue Nov 24) | Fri Nov 27 |
 | Study notes: Romans through Revelation (New Testament complete) | Done (Tue Nov 24) | Sat Nov 28 |
-| Catch-up day for notes | Not started | Sun Nov 29 |
+| Catch-up day for notes: first the 20 shortest chapters, then rewrite the ~2,700 few-word verse notes as full sentences, most-read books first | In progress (20 chapters and 35 notes done Wed Nov 25) | Sun Nov 29, then ongoing |
 | Quiet "What's new this week" note, with an off switch in Settings and never a forced tour | Done (Tue Nov 24) | Sun Nov 29 |
 | Buddy grows, part 1: built-in app guide that points out and explains features and settings (no AI needed) | Done (Tue Nov 24) | Mon Nov 30 |
 | Buddy grows, part 1: remembers where they left off and their last study, and jogs their memory | Done (Tue Nov 24) | Mon Nov 30 |
