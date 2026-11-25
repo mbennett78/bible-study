@@ -137,7 +137,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
-| Handwriting and drawing inside typed notes and Journal entries: add a sketch box anywhere in a note and write or draw with Apple Pencil or a finger, mixed with the typed text; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Not started | Fri Nov 27 |
+| Handwriting and drawing in notes and the Journal, both ways: a sketch box anywhere inside a typed note, or a full handwriting page; write or draw with Apple Pencil or a finger; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Not started | Fri Nov 27 |
 | Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
 | Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sat Nov 28 (moved up from Sun Nov 29) |
