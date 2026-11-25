@@ -2869,3 +2869,8 @@ details.set-group[open] > summary { padding-left: 6px; }
 .ref-head { flex-wrap: wrap; }
 .ref-head > div { flex: 1 1 11rem; min-width: 0; }
 .ref-head .ref-print { margin-left: auto; }
+
+/* A clear, matching focus ring for anyone using a keyboard (computers, iPads with keyboards). */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.topbar :focus-visible, .tabbar :focus-visible, .rail :focus-visible { outline-color: var(--on-page); }
+.chat-bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); }
