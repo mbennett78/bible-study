@@ -22,6 +22,7 @@ import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
 import { nextPrompt } from "./prompts.js";
+import { openVersePic } from "./versepic.js";
 import { openHeart, onThisDay } from "./heart.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
@@ -612,7 +613,7 @@ function openVerseSheet(v) {
       <button type="button" class="vs-act" data-act="note"><span aria-hidden="true">📝</span>Add to notes</button>
       <button type="button" class="vs-act" data-act="copy"><span aria-hidden="true">📋</span>Copy</button>
       ${text ? `<button type="button" class="vs-act" data-act="heart"><span aria-hidden="true">🧠</span>Learn by heart</button>` : ""}
-      ${navigator.share ? `<button type="button" class="vs-act" data-act="share"><span aria-hidden="true">↗</span>Share</button>` : ""}
+      <button type="button" class="vs-act" data-act="share"><span aria-hidden="true">↗</span>Share</button>
     </div>
     <p class="vs-msg muted small-print" role="status"></p>
     <p class="muted small-print">Highlights and bookmarks are saved to your account and show on all your devices. Find them in My Bible, under Saved.</p>`;
@@ -653,7 +654,10 @@ function openVerseSheet(v) {
     } else if (act === "copy") {
       try { await navigator.clipboard.writeText(quote); msg.textContent = "Copied ✓"; } catch { msg.textContent = "Copying isn't allowed here. Press and hold the verse to copy it instead."; }
     } else if (act === "share") {
-      try { await navigator.share({ text: quote }); } catch { /* they closed the share sheet */ }
+      // Share the words, or a picture of the verse (like a verse image) to send or save.
+      msg.innerHTML = `<span class="vs-where">Share:</span> ${navigator.share ? `<button type="button" class="small" data-share="words">The words</button> ` : ""}${text ? `<button type="button" class="small" data-share="pic">🖼 A verse picture</button>` : ""}`;
+      msg.querySelector('[data-share="words"]')?.addEventListener("click", async () => { try { await navigator.share({ text: quote }); } catch { /* they closed the share sheet */ } });
+      msg.querySelector('[data-share="pic"]')?.addEventListener("click", () => { verseSheet.close(); openVersePic({ ref, text, ver }); });
     }
   }));
   // Compare versions: this verse in each version the family has, side by side (like a parallel Bible).

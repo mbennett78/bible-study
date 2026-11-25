@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:39 PM Central
-**Current version:** v243 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:42 PM Central
+**Current version:** v244 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 3:40 PM CT: B-75 fifth finding: YouVersion users love sharing verse pictures. Tap a verse number, then Share: send the words, or make "A verse picture", the verse on a soft square card in one of four colors (Dawn, Sea, Olive, Night), made on the device and shared to Messages or saved to Photos.
 - Wed Nov 25, 3:20 PM CT: B-75 fourth finding: Day One keeps people journaling with prompts. Journal entries (My day, prayers, thanks, Bible thoughts) now have "💭 Need an idea?": one gentle, Scripture-shaped prompt at a time, tap again for another. It never types anything into the entry. Notes and church notes stay as they were.
 - Wed Nov 25, 3:05 PM CT: B-75 third finding: Olive Tree and Logos users value seeing a verse in several versions at once. Tap a verse number and open "Compare versions" to see that verse in every version the family has (NASB, plus the others the organizer turned on, plus ESV once its key is in). It only shows when there is more than one version.
 - Wed Nov 25, 2:50 PM CT: B-75 second finding: Day One, the top journaling app, is loved for "On This Day". The Journal now does the same: on a date you wrote something in an earlier year, an "On this day" box at the top shows it ("1 year ago"). It starts showing next Christmas, a year after the gift.

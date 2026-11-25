@@ -3100,3 +3100,9 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .vs-cver.is-mine b::after { content: " ✓"; }
 .ee-idea { margin: 2px 0 6px; }
 .ee-prompt { margin: 6px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--text); font-style: italic; }
+.vp-canvas { display: block; width: min(100%, 420px); aspect-ratio: 1; height: auto; margin: 4px auto 12px; border-radius: 14px; box-shadow: 0 4px 18px rgb(0 0 0 / .18); }
+.vp-styles { display: flex; justify-content: center; gap: 12px; }
+.vp-styles button { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--line); }
+.vp-styles button[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
+.versepic-sheet .heart-acts { justify-content: center; }
+.versepic-sheet .vp-msg { text-align: center; }

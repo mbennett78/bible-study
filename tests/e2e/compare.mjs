@@ -22,6 +22,18 @@ try {
   await page.click(".verse-sheet .vs-compare summary"); await page.waitForTimeout(600);
   const t = await page.textContent(".verse-sheet .vs-clist");
   check("it shows the verse in each version", /NASB.*will not be in need/.test(t) && /KJV.*I shall not want/.test(t), t);
+  // Share: the words, or a verse picture.
+  await page.$eval('.verse-sheet [data-act="share"]', (b) => b.click()); await page.waitForTimeout(200);
+  await page.$eval('.verse-sheet [data-share="pic"]', (b) => b.click()); await page.waitForTimeout(400);
+  check("Share offers a verse picture, drawn as a square card", await page.$eval(".versepic-sheet canvas", (c) => c.width === 1080 && c.height === 1080));
+  const before = await page.$eval(".versepic-sheet canvas", (c) => c.toDataURL().length);
+  await page.click('.versepic-sheet [data-style="night"]'); await page.waitForTimeout(100);
+  check("picking a color redraws it", await page.$eval(".versepic-sheet canvas", (c) => c.toDataURL().length) !== before);
+  const dl = page.waitForEvent("download", { timeout: 3000 }).catch(() => null);
+  await page.$eval('.versepic-sheet [data-vp="share"]', (b) => b.click());
+  const got = await dl; await page.waitForTimeout(300);
+  check("where files can't be shared, it saves the picture", Boolean(got) || /Saved/.test(await page.textContent(".versepic-sheet .vp-msg")));
+  await page.screenshot({ path: process.env.SHOT || "/dev/null" }).catch(() => {});
   check("no page errors", !errors.length, errors.join("; "));
 } catch (e) { stopped = e; }
 await browser.close(); site.close(); finish(stopped);
