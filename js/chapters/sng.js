@@ -13,9 +13,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   1: {
     intro: "\"The Song of Songs, which is Solomon's.\" A young woman longs for her beloved: \"Your love is better than wine.\" She is dark from working in the vineyards. The two praise each other in the language of shepherds and gardens: \"How beautiful you are, my darling.\" Friends join in.",
     v: [
-      ["1:1", "The Song of Songs", "Meaning \"the greatest song.\""],
-      ["1:2", "Your love is better than wine", "Delight in love."],
-      ["1:15", "How beautiful you are, my darling", "Words of honor and affection."],
+      ["1:1", "The Song of Songs", "\"Song of Songs\" is a Hebrew way of saying the greatest song, like \"King of kings.\" The book celebrates love between a bride and groom."],
+      ["1:2", "Your love is better than wine", "The bride opens with longing: his love is better than wine. The Song is honest about the delight of married love."],
+      ["1:15", "How beautiful you are, my darling", "He tells her she is beautiful, and her eyes are like doves. Words of praise and honor are part of love."],
     ],
     why: "The Song of Songs celebrates love between a man and a woman and never mentions God directly. Readers through history have understood it in different ways.",
     views: [
@@ -28,11 +28,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   2: {
     intro: "\"I am the rose of Sharon, the lily of the valleys.\" \"His banner over me is love.\" Winter is past: \"Arise, my darling, my beautiful one, and come along. For behold, the winter is past, the rain is over and gone. The flowers have already appeared in the land.\" \"Catch the foxes that are ruining the vineyards.\" \"My beloved is mine, and I am his.\"",
     v: [
-      ["2:4", "His banner over me is love", "Love openly declared."],
+      ["2:4", "His banner over me is love", "He brought her to the banquet hall, and his banner over her is love. Like a flag over an army, his love is openly shown."],
       ["2:7", "Do not arouse or awaken love until it pleases", "A refrain urging patience: wait for the right time."],
-      ["2:11-12", "The winter is past", "Springtime of love."],
-      ["2:15", "The little foxes that are ruining the vineyards", "Small problems can spoil love."],
-      ["2:16", "My beloved is mine, and I am his", "Belonging to each other."],
+      ["2:11-12", "The winter is past", "Winter is over, the rain has gone, and flowers appear. He invites her to come away in the springtime of love."],
+      ["2:15", "The little foxes that are ruining the vineyards", "Little foxes could ruin a vineyard in bloom. Small problems left alone can spoil love, so deal with them early."],
+      ["2:16", "My beloved is mine, and I am his", "She says: my beloved is mine, and I am his. Love means belonging to each other. The line returns, reversed, in 6:3."],
     ],
     refs: [["SNG.8", "Song of Songs 8:4", "The refrain repeated"], ["1CO.13", "1 Corinthians 13:4-7", "Love is patient"]],
   },
@@ -50,9 +50,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   4: {
     intro: "The groom praises his bride in poetic pictures from nature: eyes like doves, hair like a flock of goats, a neck like the tower of David. \"You are altogether beautiful, my darling, and there is no blemish in you.\" She is \"a garden locked,\" a spring sealed up, kept pure for him.",
     v: [
-      ["4:1", "Your eyes are like doves", "Images of gentleness."],
-      ["4:7", "You are altogether beautiful", "Love sees beauty."],
-      ["4:12", "A garden locked is my sister, my bride", "Faithfulness and purity."],
+      ["4:1", "Your eyes are like doves", "He praises her beauty from head to toe, using pictures from their world: doves, a flock of goats, sheep fresh from washing."],
+      ["4:7", "You are altogether beautiful", "You are altogether beautiful, my darling; there is no flaw in you. Love looks with delight."],
+      ["4:12", "A garden locked is my sister, my bride", "She is like a locked garden and a sealed spring, kept for him alone. The picture speaks of faithfulness and purity."],
     ],
     bg: [["Ancient love poetry", "Egyptian love songs from about 1300-1100 BC use similar images: gardens, gazelles, \"my sister\" as a term of affection. The Song fits this tradition of poetry.", "strong", ["longmanS", "carr"]]],
     refs: [["EPH.5", "Ephesians 5:27", "Holy and blameless"]],
@@ -60,10 +60,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   5: {
     intro: "The beloved knocks at night, but she is slow to open; when she does, he is gone. She searches, and the watchmen mistreat her. The daughters of Jerusalem ask what makes her beloved better than others, and she describes him: \"My beloved is dazzling and ruddy, outstanding among ten thousand... This is my beloved and this is my friend.\"",
     v: [
-      ["5:2", "I was asleep but my heart was awake", "A dreamlike scene."],
-      ["5:6", "My beloved had turned away and had gone", "Love missed by delay."],
-      ["5:10", "Outstanding among ten thousand", "No one compares."],
-      ["5:16", "This is my beloved and this is my friend", "Love and friendship together."],
+      ["5:2", "I was asleep but my heart was awake", "In a dream-like scene, she is asleep but her heart is awake, and she hears her beloved knocking."],
+      ["5:6", "My beloved had turned away and had gone", "She is slow to open, and when she does he has gone. Love missed by delay leads her to search the city."],
+      ["5:10", "Outstanding among ten thousand", "Asked what makes him special, she says he stands out among ten thousand. To her, no one compares."],
+      ["5:16", "This is my beloved and this is my friend", "This is my beloved, and this is my friend. Romance and friendship belong together in marriage."],
     ],
     refs: [["REV.3", "Revelation 3:20", "I stand at the door and knock"]],
   },
@@ -89,10 +89,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   8: {
     intro: "\"Put me like a seal over your heart... for love is as strong as death... Its flashes are flashes of fire, the very flame of the LORD. Many waters cannot quench love, nor will rivers overflow it.\" Love cannot be bought. The Song ends with the lovers calling to each other.",
     v: [
-      ["8:4", "Do not arouse or awaken love until it pleases", "The refrain a third time."],
-      ["8:6", "Love is as strong as death", "The Song's high point."],
+      ["8:4", "Do not arouse or awaken love until it pleases", "For the third time she warns: do not stir up or awaken love until the right time (2:7; 3:5)."],
+      ["8:6", "Love is as strong as death", "Set me as a seal over your heart. Love is as strong as death and its jealousy as fierce as the grave. Its flames are the very flame of the LORD."],
       ["8:6", "The very flame of the LORD", "Possibly the only mention of God's name in the Song."],
-      ["8:7", "Many waters cannot quench love", "Love that endures."],
+      ["8:7", "Many waters cannot quench love", "Floods cannot put out love, and rivers cannot sweep it away. Even all of a person's wealth could not buy it."],
     ],
     w: [["שַׁלְהֶבֶתְיָה", "shalhevetyah", "H7957", "flame of the LORD, mighty flame", "The word ends with \"-yah,\" a short form of God's name. It may mean \"a mighty flame\" or \"the flame of the LORD,\" suggesting that true love comes from God.", ["halot", "longmanS"]]],
     refs: [["ROM.8", "Romans 8:35-39", "Nothing can separate us from the love of God"], ["1CO.13", "1 Corinthians 13:7-8", "Love never fails"], ["1JN.4", "1 John 4:7-8", "Love is from God"]],
