@@ -2454,6 +2454,40 @@ html { background: var(--page); }
   :root[data-style="classic3"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6a5e50; --line: #e6dccb; --accent: #6b5238; --accent-soft: #f3ebdd; --page: #3a2e22; --page-deep: #2e241a; color-scheme: light; }
 }
 
+/* ---------- Seasonal changes: warm painted scenes that follow the year (opt-in only) ---------- */
+:root[data-style="seasons"] {
+  --page: #3a2a20; --page-deep: #2c2018; --on-page: #fbf3e4; --on-page-muted: #e2d2b8;
+  --bg: #fffaf2; --surface: #ffffff; --text: #2b241c; --muted: #67615a; --line: #eadfcd;
+  --accent: var(--page); --accent-soft: color-mix(in srgb, var(--page) 10%, #fffaf2); --warm: #b07a3e; --gold: #d0a45e; --verse: #8f8170;
+  --sky-top: #e8e0ea; --sky-low: #fbf1e2; --far-hill: #b8a48a;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+/* The header and page edges take a deep color from each painting. */
+:root[data-season="new-year"] { --page: #2e2648; --page-deep: #221c38; }
+:root[data-season="winter"] { --page: #3a4a6e; --page-deep: #2c3a58; }
+:root[data-season="angels"] { --page: #2c3858; --page-deep: #202a46; }
+:root[data-season="march"] { --page: #2f4c46; --page-deep: #243a36; }
+:root[data-season="easter"] { --page: #4a3a5a; --page-deep: #382c46; }
+:root[data-season="april"] { --page: #2f5236; --page-deep: #243f2a; }
+:root[data-season="may"] { --page: #6a3450; --page-deep: #52283e; }
+:root[data-season="june"] { --page: #6a3e24; --page-deep: #52301c; }
+:root[data-season="summer"] { --page: #1f4a64; --page-deep: #18394e; }
+:root[data-season="learning"] { --page: #3a2a20; --page-deep: #2c2018; }
+:root[data-season="psalm23"] { --page: #2e2a3e; --page-deep: #221f30; }
+:root[data-season="harvest"] { --page: #5a2e1a; --page-deep: #462414; }
+:root[data-season="advent"] { --page: #12203e; --page-deep: #0c1630; }
+/* On wide screens the painting fills the space around the page, softly dimmed; the reading
+   area itself stays plain, so the words are always easy to read. */
+:root[data-style="seasons"] body { background: linear-gradient(color-mix(in srgb, var(--page) 45%, transparent), color-mix(in srgb, var(--page) 70%, transparent)), var(--season-img, none) center / cover fixed, var(--page); }
+:root[data-style="seasons"] .vine { display: none; }
+:root[data-style="seasons"] .cl-cross rect { fill: var(--page); }
+:root[data-style="seasons"] .pc-featured, :root[data-style="seasons"] .notes-card { border-color: var(--gold); }
+.season-scene image, .season-strip image { filter: none; }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="seasons"]:not([data-theme="light"]) { --bg: #fffaf2; --surface: #ffffff; --text: #2b241c; --muted: #67615a; --line: #eadfcd; color-scheme: light; }
+}
+
 /* ---------- Full screen while reading on a phone ---------- */
 .topbar, .tabbar { transition: translate .28s ease; }
 body.bars-away .topbar { translate: 0 -110%; }

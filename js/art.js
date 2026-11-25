@@ -184,6 +184,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
   if (style === "classic3") return paintingScene({ height });
+  if (style === "seasons") return seasonScene({ height });
   if (style === "classic" || style === "classic2") return classicScene({ height, style });
   if (THEME_LOOKS.includes(style)) return themeScene(style, { height });
   const W = 360, H = height, surf = 58, bottom = H - 8;
@@ -251,6 +252,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
   if (style === "classic3") return paintingStrip(paintingOfDay());
+  if (style === "seasons") return seasonStrip();
   if (style === "classic" || style === "classic2") return classicStrip("Olive branches and a cross");
   if (THEME_LOOKS.includes(style)) return themeStrip(style);
   const id = ++uid, W = 360, H = 54;
@@ -307,6 +309,7 @@ export function passageStrip(book, chapter, style = "") {
   const kind = settingFor(book, chapter);
   if (style === "christmas" || style === "nativity") return christmasStrip(book, chapter, style);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
+  if (style === "seasons") { const k = seasonOf(); return { kind: "painting", caption: SEASONS[k][0], svg: seasonStrip(k) }; }
   if (style === "classic3") { const p = paintingFor(book, chapter); return { kind: "painting", caption: `${PAINTINGS[p][1]}, by David Roberts (1839)`, svg: paintingStrip(p) }; }
   if (style === "classic" || style === "classic2") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
   if (style === "animated") { const story = kidsStory(book, chapter); if (story) return story; }
@@ -1166,4 +1169,62 @@ export function kidsStory(book, chapter) {
   const [caption, draw, [a, b]] = name ? STORY_ART[name] : bookScene(book);
   const id = ++uid;
   return { kind: name || "book", caption, svg: `<svg class="fish-strip passage-art kids-story" viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${caption.replace(/"/g, "&quot;")}">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/><g class="kids-ink">${draw()}</g>${name ? (KIDS_FX[name]?.() || "") : ""}</g></svg>` };
+}
+
+
+/* ---------- Seasonal changes: 13 painted backgrounds through the year (opt-in only) ---------- */
+// Warm, glowing painted scenes, drawn for this app by scripts/build-seasons.mjs.
+// [title, where to center a thin strip (0 top, 1 bottom)]
+export const SEASONS = {
+  "new-year": ["New Year: a fresh dawn and fireworks of light", .62],
+  winter: ["New beginnings: a quiet winter sunrise", .6],
+  angels: ["Angels in soft light", .36],
+  march: ["A spring garden with gentle rain and a rainbow", .64],
+  easter: ["The empty tomb behind the three crosses", .58],
+  april: ["Spring gardens and the cross", .6],
+  may: ["Flowers and flowering trees", .7],
+  june: ["Daily life in Bible times at the town well", .66],
+  summer: ["The Sea of Galilee and the town below", .56],
+  learning: ["Learning: scrolls by lamplight", .74],
+  psalm23: ["Psalm 23: through the valley, with His rod and staff", .62],
+  harvest: ["Harvest and thanksgiving", .82],
+  advent: ["Advent: the star over Bethlehem", .66],
+};
+// Easter Sunday (Western), by the anonymous Gregorian method.
+export function easterOf(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, g = Math.floor((8 * b + 13) / 25);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(y, month - 1, day);
+}
+// Which painting is showing on a given day.
+export function seasonOf(now = new Date()) {
+  const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+  const today = new Date(y, m, d), day = 864e5;
+  const easter = easterOf(y);
+  if (today >= new Date(+easter - 7 * day) && today <= new Date(+easter + 7 * day)) return "easter"; // Palm Sunday to the Sunday after Easter
+  const thanks = new Date(y, 10, 1); thanks.setDate(1 + ((11 - thanks.getDay()) % 7) + 21); // fourth Thursday of November
+  if (m === 11 && d === 31) return "new-year";
+  if (m === 0) return d <= 6 ? "new-year" : "winter";
+  if (m === 1) return "angels";
+  if (m === 2) return "march";
+  if (m === 3) return "april";
+  if (m === 4) return "may";
+  if (m === 5) return "june";
+  if (m === 6 || m === 7) return "summer";
+  if (m === 8) return "learning";
+  if (m === 9) return "psalm23";
+  if (m === 10 && today <= thanks) return "harvest";
+  return "advent";
+}
+export const seasonSrc = (k = seasonOf()) => `img/season/${k}.jpg`;
+export function seasonScene({ height = 170, key = seasonOf() } = {}) {
+  return `<svg class="scene painting-scene season-scene" viewBox="0 0 360 ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${SEASONS[key][0]}">
+    <rect width="360" height="${height}" fill="#3a2e22"/><image href="${seasonSrc(key)}" width="360" height="${height}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+}
+export function seasonStrip(key = seasonOf()) {
+  const [title, y] = SEASONS[key];
+  const h = 202, top = -(h * y - 27);
+  return `<svg class="fish-strip passage-art painting-strip season-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}">
+    <rect width="360" height="54" fill="#3a2e22"/><image href="${seasonSrc(key)}" x="0" y="${top.toFixed(1)}" width="360" height="${h}" preserveAspectRatio="xMidYMid slice"/></svg>`;
 }

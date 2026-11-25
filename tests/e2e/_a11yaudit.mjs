@@ -3,7 +3,7 @@ import { chromium, serve } from "./harness.mjs";
 const site = await serve();
 const browser = await chromium.launch();
 const scheme = process.env.THEME === "dark" ? "dark" : "light";
-const LOOKS = ["classic","classic2","classic3","sage","nativity","easter","fall","christmas","masculine","animated"];
+const LOOKS = process.env.LOOKS ? process.env.LOOKS.split(",") : ["seasons","classic","classic2","classic3","sage","nativity","easter","fall","christmas","masculine","animated"];
 const VIEWS = ["home","read","books","path","notes","journal","settings"];
 const out = {};
 for (const look of LOOKS) {

@@ -13,7 +13,7 @@ import { isScary, checkingOn, comfortLine, propFor, newProp, warmthLevel, learnF
 import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { THEME_LOOKS, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
+import { THEME_LOOKS, seasonOf, seasonSrc, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl, MAP_OUTLINES, bookNotesReady, loadBookNotes } from "./notes.js";
 import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
@@ -56,6 +56,9 @@ function applyAppearance() {
   if (style === "sage") delete document.documentElement.dataset.style;
   else document.documentElement.dataset.style = style;
   if (isStill(style)) document.documentElement.dataset.still = "1"; else delete document.documentElement.dataset.still;
+  // Seasonal changes: the painting (and the header color) follow the time of year.
+  if (style === "seasons") { document.documentElement.dataset.season = seasonOf(); document.documentElement.style.setProperty("--season-img", `url(${seasonSrc()})`); }
+  else { delete document.documentElement.dataset.season; document.documentElement.style.removeProperty("--season-img"); }
   // Match the phone's status bar and Safari's edges to this look's page color.
   const page = getComputedStyle(document.documentElement).getPropertyValue("--page").trim();
   if (page) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = page; });
@@ -3122,6 +3125,7 @@ const FEATURES = [
 const LOOKS = [
   ["classic", "Classic 1", "Brown, gray and white, with olive branches, three crosses on a hill, soft sun and clouds. Clouds drift and birds glide in Lively pictures.", ["#3a3430", "#ffffff", "#7d8a6e"]],
   ["classic2", "Classic 2", "Navy, blues and warm browns: olive branches and the five loaves and two fish, softly glowing (John 6). Clouds drift in Lively pictures.", ["#1f2b42", "#dfe7f1", "#7a5a40"]],
+  ["seasons", "Seasonal changes", "Warm, glowing painted scenes that change through the year: a New Year's dawn, a winter sunrise, angels, spring rain, Easter, gardens and flowers, Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, the harvest and Advent.", ["#3a2a20", "#fffaf2", "#e0a85a"]],
   ["classic3", "Classic 3", "Hand-colored Holy Land paintings by David Roberts (1839): Jerusalem, Mount Tabor and the Sea of Galilee, in stone, sand and sky colors. The painting changes with the passage you read.", ["#4a3b2c", "#efe6d6", "#8aa0b0"]],
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
@@ -3133,7 +3137,7 @@ const LOOKS = [
 ];
 // Calm looks: no cartoons and no confetti, and motion only with Lively pictures (birds, breeze, candles). Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
-function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "sage", "easter", "fall"].includes(style); }
+function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "seasons", "sage", "easter", "fall"].includes(style); }
 // A drop-down of looks with a live picture of the chosen one right beside it, so people can
 // see what they're picking (used in first-time setup and in Settings).
 function lookPickerHtml(id) {
@@ -4188,7 +4192,7 @@ function seasonFor(now = new Date()) {
 }
 function seasonOffer() {
   const s = seasonFor();
-  if (!s || s.looks.includes(store.get("style")) || (store.get("seasonAsked") || {})[s.key]) return null;
+  if (!s || s.looks.includes(store.get("style")) || store.get("style") === "seasons" || (store.get("seasonAsked") || {})[s.key]) return null;
   return s;
 }
 function setStyle(v) {

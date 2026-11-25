@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 9:48 AM Central
-**Current version:** v212 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:08 AM Central
+**Current version:** v213 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,7 +10,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
-- Wed Nov 25, 10:40 AM: The Strong's concordance is now a full concordance and easier to read. Open any Hebrew or Greek word and tap "See every place in the Bible" for every verse where it's used, grouped by book with a book picker; tap one to go there. Root words in an entry ("from G756") can be tapped to see that word. Key words now start with the ones the chapter repeats most, with the rest behind "Show all", and very common words like "this" and "all" moved to Everyday words. A few dictionary entries whose word origin was split in two are joined back together. Confirmed the layout Melissa described: the Journal tab is a simple personal journal to add to (and can be locked); study notes live inside the Bible reading and study (the "My notes" square in Reference & resources and the note button under each chapter) and in the main Menu.
+- Wed Nov 25, 10:15 AM: The opt-in "Seasonal changes" look is built, two days early. 13 warm, glowing painted backgrounds follow the year (New Year's dawn, winter sunrise, angels, March rain and rainbow, Easter, April gardens, May flowers, June Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, harvest and Advent), with Easter moving each year from Palm Sunday through the Sunday after. The header color matches each painting, and the words always sit on plain cream panels, so the readability check passes in light and dark. Nobody is ever switched into it, and anyone in it isn't asked to switch to a holiday look. The preview of all 13 is sent to Melissa (project folder: bible-study/seasonal-preview/). Release-plan dates moved up as Melissa asked.
+- Wed Nov 25, 9:40 AM: The Strong's concordance is now a full concordance and easier to read. Open any Hebrew or Greek word and tap "See every place in the Bible" for every verse where it's used, grouped by book with a book picker; tap one to go there. Root words in an entry ("from G756") can be tapped to see that word. Key words now start with the ones the chapter repeats most, with the rest behind "Show all", and very common words like "this" and "all" moved to Everyday words. A few dictionary entries whose word origin was split in two are joined back together. Confirmed the layout Melissa described: the Journal tab is a simple personal journal to add to (and can be locked); study notes live inside the Bible reading and study (the "My notes" square in Reference & resources and the note button under each chapter) and in the main Menu.
 - Wed Nov 25, 9:45 AM: Melissa's five new goals for a 5-star gift are added to the release plan: the B-75 quality review against top apps (due Wed Dec 2), games and Quick check polish with celebrations, a friendlier Buddy, storybook tap surprises, and the new opt-in "Seasonal changes" look with 13 backgrounds (preview for her review by Fri Nov 27).
 - Wed Nov 25, 9:00 AM (check-in): Overnight, every screen got a readability check in all ten looks (light, dark, High contrast, Largest text on small phones), and the few faint or cut-off spots were fixed. Eight new kids' story pictures (59 in all). The 80 shortest chapter notes were filled out with more verse notes and history boxes. All tests pass. Version v210.
 - Wed Nov 25, 8:25 AM: Ten more short chapters filled out, 80 so far: Jeremiah 45 (Baruch, and why his seal is debated) and 48 ("wine on its dregs"), Ezekiel 48, Isaiah 4 (the Branch, with both readings), Job 15 and 20, 1 Chronicles 9 and 14, Numbers 34 and Psalm 43 (one psalm with 42, or two).
@@ -104,7 +105,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Open questions
 
-- Seasonal changes: Melissa's notes on the 13 background previews are needed by Mon Nov 30 to keep Dec 4.
+- Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
+- Reading margins: a simple "Page width" choice (narrow, medium, wide) is suggested instead of drag handles; planned for the B-75 navigation pass unless Melissa prefers otherwise.
 
 ## Release plan: in progress and not started
 
@@ -129,17 +131,17 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Christmas gift packet: setup page and illustrated user guide (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Kids' storybook pictures in the sticker style Melissa showed: big friendly characters, white sticker edges, watercolor skies, blinking eyes and gentle movement, feelings true to each story, and Holy Land plants and places. All 51 story pictures are done, from Creation to Peter freed from prison. More stories are added each month after release | Done (Tue Nov 24) | Wed Dec 2 |
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
-| Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Not started | Fri Nov 27 |
-| Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Not started | Fri Nov 27 |
-| Games and Quick check: play-test every game and fix all glitches | Not started | Fri Nov 27 |
-| Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Sat Nov 28 |
-| Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sun Nov 29 |
-| Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Mon Nov 30 |
-| Seasonal changes: Melissa's review changes made | Not started | Tue Dec 1 (needs her notes by Mon Nov 30) |
-| Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Not started | Wed Dec 2 |
-| Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Thu Dec 3 |
-| Gift packet and starter kit finished | Not started | Thu Dec 3 |
-| Print-friendly setup page and user guide saved to the project folder (final) | Not started | Thu Dec 3 |
+| Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Done (Wed Nov 25, early) | Fri Nov 27 |
+| Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
+| Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
+| Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
+| Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sat Nov 28 (moved up from Sun Nov 29) |
+| Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Sun Nov 29 (moved up from Mon Nov 30) |
+| Seasonal changes: Melissa's review changes made | Waiting for her notes | Within a day of her notes (by Tue Dec 1; notes by Mon Nov 30) |
+| Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Not started | Tue Dec 1 (moved up from Wed Dec 2) |
+| Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
+| Gift packet and starter kit finished | Not started | Wed Dec 2 (moved up from Thu Dec 3) |
+| Print-friendly setup page and user guide saved to the project folder (final) | Not started | Wed Dec 2 (moved up from Thu Dec 3) |
 | Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
 | Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |
 | Every Bible Spin mode played start to finish automatically; glitches fixed | Done (Tue Nov 24), rerun before release | Nov 24 |
@@ -223,6 +225,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 ## Standing rules
 
 - Kids' storybook pictures: fun, modern and playful, with bright colors, bold shapes and expressive faces, refreshed in updates. Small tap surprises are welcome. Gentle motion only (clouds, birds, grass, water, light, blinking, a wave), nothing fast or busy. Keep files light with no video. Everything holds still when motion is turned down.
+- Protect what Melissa loves most (Nov 25): rich, accurate content and resources; the Bible handy in church and Bible class; taking and making notes for class, presenting or participating; organized studies to navigate the Bible; the daily scripture; print and share to Google Docs for notes and the Journal; changing the look; multiple translations; speech to text and read aloud; Buddy and its options; easy navigation. Only improve these, never downgrade or remove them (Melissa, Nov 25). The B-75 review and final fixes must not weaken any of these.
 - Seasonal changes look: never switch anyone into it automatically. It is only for people who choose it.
 - Celebrations (confetti and the like) stay short and are skipped when motion is turned down.
 - No family reading plan, no tracking each other's reading, no notification reminders.
