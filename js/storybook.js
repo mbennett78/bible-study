@@ -638,6 +638,46 @@ export const STORYBOOK = {
       ${g(54, 186, .66, person({ robe: "#a63f35", cloth: "#9aa4ae", sash: "#e1b04a", sleep: true, mood: "calm", arms: ["down", "down"] }))}${g(320, 186, .66, person({ robe: "#a63f35", cloth: "#9aa4ae", sash: "#e1b04a", sleep: true, mood: "calm", arms: ["down", "down"] }))}`)}
     <g class="sb-fly">${chain(100, 190, 1)}</g>${chain(176, 194, .9)}
     <g class="sb-zz" fill="#fff8e1" font-family="Georgia, serif" font-weight="700" stroke="${INK}" stroke-width=".6"><text x="66" y="112" font-size="10">z</text><text x="74" y="102" font-size="13">z</text><text x="330" y="112" font-size="10">z</text><text x="338" y="102" font-size="13">z</text></g>` },
+  forgive: { caption: "Joseph forgives his brothers", draw: (id) => `${sky(id, "#e9d3a6", "#f6ead0")}
+    ${wash(id, `<rect x="0" y="0" width="360" height="200" fill="#e8d4a8"/><path d="M0 164 L 360 164 L 360 200 L 0 200 Z" fill="#c9a96e"/>`)}
+    ${[30, 110, 250, 330].map((x) => `<rect x="${x - 12}" y="10" width="24" height="154" fill="#f1e2bd" ${L2}/><path d="M${x - 16} 10 L ${x + 16} 10 L ${x + 12} 22 L ${x - 12} 22 Z" fill="#6aa0a0" ${L2}/>${[50, 90, 130].map((y) => `<path d="M${x - 12} ${y} L ${x + 12} ${y}" stroke="#d8c08a" stroke-width="3"/>`).join("")}`).join("")}
+    <g class="sb-glow"><circle cx="180" cy="110" r="60" fill="#fff6d6" opacity=".3" filter="url(#soft${id})"/></g>
+    ${stick(id, `${g(160, 190, .82, person({ robe: "#fbf8ef", hair: "#2f2016", sash: "#f2c45a", band: "#f2c45a", mood: "joy", arms: ["out", "out"] }))}
+      ${g(206, 190, .66, person({ robe: "#7f6cc8", hair: "#4a3020", sash: "#e1b04a", mood: "joy", arms: ["out", "down"] }))}
+      ${g(70, 192, .74, person({ robe: "#6aa06a", hair: "#3a2a1f", beard: "#3a2a1f", sash: "#c08a3e", kneel: true, mood: "sad", lookUp: true, arms: ["pray", "pray"] }))}
+      ${g(270, 192, .74, flip(person({ robe: "#a65a3a", hair: "#2f2016", beard: "#2f2016", sash: "#e1b04a", kneel: true, mood: "worried", lookUp: true, arms: ["pray", "pray"] })))}
+      ${g(318, 192, .7, flip(person({ robe: "#5b7fa6", cloth: "#c99a62", beard: "#5a3a24", sash: "#e1b04a", kneel: true, mood: "sad", arms: ["down", "pray"] })))}`)}
+    ${[[150, 128], [168, 132], [198, 140]].map(([x, y], i) => `<path class="sb-mote" style="--sdl:${-i * 1.1}s" d="M${x} ${y} C ${x - 2} ${y + 4}, ${x + 2} ${y + 4}, ${x} ${y} Z" fill="#8fd0f0" stroke="#4f9cca" stroke-width=".6"/>`).join("")}` },
+  hannah: { caption: "Hannah prays for a baby, and God hears her", draw: (id) => `${sky(id, "#f3cf9a", "#fbecd2")}${sunW(id, 60, 40, 14)}${cloud(id, 250, 30, .8)}
+    ${hills(id, "#d6bf86", "#c4a76e")}
+    ${wash(id, `<path d="M190 168 L 200 70 L 350 70 L 356 168 Z" fill="#efe6d2"/>`)}<path d="M190 168 L 200 70 L 350 70 L 356 168 Z" fill="none" ${L}/>${[230, 270, 310].map((x) => `<path d="M${x} 70 L ${x + 2} 168" stroke="#c9b99a" stroke-width="2"/>`).join("")}
+    <path d="M250 168 L 254 110 L 296 110 L 300 168 Z" fill="#7a4a8a" ${L2}/><path d="M254 110 L 296 110" stroke="#f2c45a" stroke-width="3"/>
+    ${stick(id, `<rect x="306" y="150" width="34" height="14" rx="3" fill="#9a7a5a" ${L2}/>${g(324, 168, .62, person({ robe: "#efe6d2", mantle: "#5b7fa6", hair: "#e8e2d6", beard: "#efeae0", sash: "#5b7fa6", mood: "worried", arms: ["down", "out"] }))}
+      ${g(140, 190, .84, person({ robe: "#c46f7c", veil: "#8a5a7a", sash: "#f2c45a", kneel: true, mood: "sad", lookUp: true, arms: ["pray", "pray"] }))}`)}
+    ${[[128, 112], [131, 120]].map(([x, y], i) => `<path class="sb-mote" style="--sdl:${-i * 1.3}s" d="M${x} ${y} C ${x - 2} ${y + 4}, ${x + 2} ${y + 4}, ${x} ${y} Z" fill="#8fd0f0" stroke="#4f9cca" stroke-width=".6"/>`).join("")}
+    <g class="sb-glow" style="animation-duration:5s"><circle cx="150" cy="70" r="26" fill="#fff6d6" opacity=".45" filter="url(#soft${id})"/></g>
+    ${scrub(30, 198, .8)}${anemone(70, 198)}${anemone(96, 196, "#f2c45a")}${oliveTree(40, 170, .7)}` },
+  magi: { caption: "Wise men follow the star to bring gifts to Jesus", draw: (id) => `${sky(id, "#1e2b52", "#4a5684")}${smallStars([[24, 24, 3], [70, 50, 2], [110, 18, 2.6], [300, 60, 2], [338, 22, 3], [160, 40, 1.8]])}
+    <g transform="translate(250 34)">${starBig(id)}</g><path d="M250 50 L 236 140 L 290 140 Z" fill="#fff3c4" opacity=".18" class="sb-glow"/>
+    ${wash(id, `<path d="M0 160 C 80 150, 280 150, 360 160 L 360 200 L 0 200 Z" fill="#6a5a4a"/>`)}
+    ${stoneHouse(222, 166, 60, 40, true)}${stoneHouse(300, 166, 36, 30, true)}${datePalm(344, 170, .6)}
+    ${stick(id, `${g(238, 166, .5, person({ robe: "#5b8fb9", veil: "#2f6aa8", sash: "#f2c45a", mood: "joy", arms: ["pray", "pray"] }))}<g transform="translate(238 140)">${baby(0, 0, .6)}</g>
+      ${camel(40, 170, .9)}
+      ${g(100, 190, .76, person({ robe: "#7a4a8a", cloth: "#f2c45a", band: "#d9363e", beard: "#e8e2d6", sash: "#f2c45a", mood: "joy", lookUp: true, arms: ["down", "out"] }))}
+      ${g(146, 190, .76, person({ robe: "#2f7a6a", cloth: "#efe6d2", band: "#7f6cc8", beard: "#2f2016", sash: "#e1b04a", mood: "joy", arms: ["down", "out"] }))}
+      ${g(188, 190, .72, person({ robe: "#a63f35", cloth: "#4f9cca", band: "#f2c45a", hair: "#2f2016", sash: "#f2c45a", mood: "calm", lookUp: true, arms: ["down", "out"] }))}
+      <rect x="122" y="146" width="12" height="9" rx="2" fill="#f2c45a" ${L2}/><path d="M166 148 L 176 148 L 174 158 L 168 158 Z" fill="#cfc3b0" ${L2}/><ellipse cx="216" cy="152" rx="6" ry="5" fill="#b5793f" ${L2}/>`)}` },
+  prison: { caption: "Paul and Silas sing to God in prison at midnight", draw: (id) => `${sky(id, "#2a2440", "#3a3250")}
+    ${wash(id, `<rect x="0" y="0" width="360" height="200" fill="#5a5068"/><path d="M0 170 L 360 170 L 360 200 L 0 200 Z" fill="#43394f"/>`)}
+    ${Array.from({ length: 6 }, (_, r) => Array.from({ length: 10 }, (_, c) => `<rect x="${c * 40 + (r % 2) * 20 - 20}" y="${r * 26}" width="40" height="26" fill="none" stroke="#4a4058" stroke-width="1.4"/>`).join("")).join("")}
+    <g transform="translate(80 50)"><rect x="-22" y="-18" width="44" height="36" fill="#1e2440" ${L2}/>${[-11, 0, 11].map((a) => `<path d="M${a} -18 L ${a} 18" stroke="#8f98a3" stroke-width="3"/>`).join("")}<circle cx="6" cy="-6" r="5" fill="#fff6d6"/></g>
+    <path class="sb-glow" d="M200 0 L 212 30 L 202 46 L 218 80 L 208 100" stroke="#fff3c4" stroke-width="2.4" fill="none"/>
+    ${stick(id, `${g(150, 186, .74, person({ robe: "#5b8fb9", hair: "#d8d0c0", beard: "#d8d0c0", sash: "#c08a3e", mood: "joy", lookUp: true, arms: ["up", "pray"] }))}
+      ${g(220, 186, .74, flip(person({ robe: "#a65a3a", hair: "#2f2016", beard: "#2f2016", sash: "#e1b04a", mood: "joy", lookUp: true, arms: ["up", "down"] })))}
+      ${g(318, 188, .7, flip(person({ robe: "#a63f35", cloth: "#9aa4ae", sash: "#e1b04a", mood: "scared", arms: ["out", "down"] })))}${torchJar(296, 140, 1)}
+      <rect x="118" y="174" width="136" height="16" rx="3" fill="#7a5a3e" ${L2}/>${[140, 160, 210, 230].map((x) => `<circle cx="${x}" cy="182" r="3.4" fill="#4a3424"/>`).join("")}
+      ${chain(96, 186, .9)}${chain(256, 186, .9)}`)}
+    <g fill="#fff3c4" font-family="Georgia, serif" font-weight="700" stroke="${INK}" stroke-width=".6">${[[112, 90, 20, "♪"], [132, 70, 17, "♫"], [248, 86, 19, "♪"], [268, 64, 16, "♫"]].map(([x, y, f, t]) => `<text x="${x}" y="${y}" font-size="${f}">${t}</text>`).join("")}</g>` },
   lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
     ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
       ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}

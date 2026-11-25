@@ -1062,12 +1062,12 @@ const STORIES = {
   creation: ["GEN.1"], eden: ["GEN.2"], fall: ["GEN.3"], ark: ["GEN.6", "GEN.7", "GEN.8"], rainbow: ["GEN.9"], babel: ["GEN.11"], stars: ["GEN.15"], ladder: ["GEN.28"], isaac: ["GEN.22"], joseph: ["GEN.37"], manna: ["EXO.16"], gideon: ["JDG.7"], ruth: ["RUT.1", "RUT.2", "RUT.3", "RUT.4"], samuel: ["1SA.3"], elijah: ["1KI.18"],
   basket: ["EXO.2"], bush: ["EXO.3"], sea: ["EXO.14", "EXO.15"], tablets: ["EXO.19", "EXO.20", "EXO.31", "EXO.32", "EXO.34", "DEU.5"],
   walls: ["JOS.6"], giant: ["1SA.17"], lions: ["DAN.6"], furnace: ["DAN.3"], jonah: ["JON.1", "JON.2", "JON.3", "JON.4"],
-  manger: ["LUK.2", "MAT.1", "MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
+  manger: ["LUK.2", "MAT.1"], magi: ["MAT.2"], storm: ["MAT.8", "MRK.4", "LUK.8"], water: ["MAT.14"], loaves: ["MRK.6", "LUK.9", "JHN.6", "MAT.15", "MRK.8"],
   nets: ["LUK.5", "JHN.21"], zacchaeus: ["LUK.19"], prodigal: ["LUK.15"], sheep: ["PSA.23", "JHN.10"], samaritan: ["LUK.10"],
   cross: ["MAT.27", "MRK.15", "LUK.23", "JHN.19"], tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20"], pentecost: ["ACT.2"], ship: ["ACT.27"],
   baptism: ["MAT.3", "MRK.1", "LUK.3"], cana: ["JHN.2"], lazarus: ["JHN.11"], palms: ["MAT.21", "MRK.11", "JHN.12"], supper: ["MAT.26", "MRK.14", "LUK.22", "JHN.13"], damascus: ["ACT.9"],
   esther: ["EST.2", "EST.4", "EST.5", "EST.7", "EST.8"], samson: ["JDG.13", "JDG.14", "JDG.15", "JDG.16"], elisha: ["2KI.2"], naaman: ["2KI.5"], wall: ["NEH.2", "NEH.3", "NEH.4", "NEH.6"],
-  sermon: ["MAT.5", "MAT.6", "MAT.7", "LUK.6"], children: ["MAT.19", "MRK.10", "LUK.18"], peter: ["ACT.12"],
+  sermon: ["MAT.5", "MAT.6", "MAT.7", "LUK.6"], children: ["MAT.19", "MRK.10", "LUK.18"], peter: ["ACT.12"], forgive: ["GEN.45", "GEN.50"], hannah: ["1SA.1"], prison: ["ACT.16"],
 };
 
 /* ---------- Lovely little animations for the kids' pictures ---------- */
