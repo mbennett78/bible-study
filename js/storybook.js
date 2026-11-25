@@ -261,6 +261,13 @@ const table = (x, y, w = 200) => `<g transform="translate(${x} ${y})"><rect x="$
 const cup = (x, y, s = 1) => g(x, y, s, `<path d="M-6 -14 L 6 -14 C 6 -6, 2 -4, 1 -2 L 1 0 L 4 1 L -4 1 L -1 0 L -1 -2 C -2 -4, -6 -6, -6 -14 Z" fill="#c79a3e" ${L2}/><ellipse cx="0" cy="-14" rx="6" ry="1.6" fill="#7a1f2a"/>`);
 const oilLamp = (x, y, s = 1) => g(x, y, s, `<path d="M-10 0 C -10 -6, 8 -6, 12 -4 L 16 -6 L 14 -1 C 8 2, -8 2, -10 0 Z" fill="#b5793f" ${L2}/>`) + flame(x + 15 * s, y - 5 * s, .45 * s, x % 3) + `<circle cx="${x + 15 * s}" cy="${y - 10 * s}" r="${14 * s}" fill="#ffd98a" opacity=".3"/>`;
 
+const fruitTree = (x, y, s = 1, fruit = "#d9363e") => g(x, y, s, `<path d="M-6 0 C -4 -16, -6 -30, -2 -40 L 4 -40 C 6 -30, 4 -16, 6 0 Z" fill="#8a6a48" ${L}/><g class="sb-sway" style="--sdl:${-(x % 5) * .5}s">${[[-18, -50, 18, 14], [0, -62, 22, 16], [18, -50, 18, 14], [0, -44, 20, 10]].map(([a, b, rx, ry]) => `<ellipse cx="${a}" cy="${b}" rx="${rx}" ry="${ry}" fill="#5fa04a" ${L2}/>`).join("")}${[[-16, -52], [4, -66], [16, -46], [-4, -48], [10, -58]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="3" fill="${fruit}" ${L2}/>`).join("")}</g>`);
+const serpent = (x, y, s = 1) => g(x, y, s, `<g class="sb-sway" style="--sdl:-1s"><path d="M-20 0 C -10 -8, 0 8, 10 0 C 18 -6, 22 -14, 18 -20" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M-20 0 C -10 -8, 0 8, 10 0 C 18 -6, 22 -14, 18 -20" stroke="#6f9a3a" stroke-width="4.4" fill="none" stroke-linecap="round"/><ellipse cx="19" cy="-22" rx="5" ry="3.6" fill="#6f9a3a" ${L2}/><circle cx="20" cy="-23" r=".9" fill="${INK}"/><path d="M24 -21 l 4 1 l -2 1 m 2 -1 l 2 -2" stroke="#d9363e" stroke-width=".9" fill="none"/></g>`);
+const ram = (x, y, s = 1) => g(x, y, s, `${sheep()}<path d="M-14 -10 C -22 -14, -24 -4, -16 -2 M -6 -12 C 0 -18, 6 -10, 0 -6" stroke="#8a6a48" stroke-width="3" fill="none" stroke-linecap="round"/>`);
+const thicket = (x, y, s = 1) => g(x, y, s, `${[-20, -10, 0, 10, 20].map((a, i) => `<path d="M${a} 0 C ${a - 6} -10, ${a + 6} -18, ${a - 2} -${26 + (i % 2) * 6}" stroke="#6b5236" stroke-width="2" fill="none"/>`).join("")}${[[-14, -16], [6, -20], [16, -12], [-4, -26]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5" fill="#7d9a5a" ${L2}/>`).join("")}`);
+const torchJar = (x, y, s = 1) => g(x, y, s, `<path d="M-6 0 C -8 -8, -6 -14, -4 -16 L 4 -16 C 6 -14, 8 -8, 6 0 Z" fill="#b5793f" ${L2}/>`) + flame(x, y - 16 * s, .6 * s, x % 3);
+const quail = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#a8845a" ${L2}/><circle cx="8" cy="-5" r="4" fill="#a8845a" ${L2}/><path d="M11.6 -5 l 3 1 l -3 1" fill="#e1b04a"/><circle cx="9" cy="-6" r=".8" fill="${INK}"/>${[-4, 0, 4].map((a) => `<circle cx="${a}" cy="1" r=".9" fill="#f4efe4"/>`).join("")}<g class="sb-flap" style="transform-origin:0 -2px"><path d="M-4 -3 C -6 -12, 2 -16, 6 -12 C 2 -10, 0 -6, 0 -2 Z" fill="#c4a274" ${L2}/></g></g>`;
+
 /* ---------- The scenes ---------- */
 export const STORYBOOK = {
   ark: { caption: "Noah's ark", draw: (id) => `${sky(id, "#a9d8f0", "#f3f8ee")}${cloud(id, 70, 40, 1.1)}${cloud(id, 250, 30, .8)}${sunW(id, 316, 40, 17)}
@@ -501,6 +508,45 @@ export const STORYBOOK = {
     ${stick(id, `${[[50, "#6aa06a", "worried"], [92, "#c08a3e", "worried"], [134, "#5b8fb9", "sad"], [226, "#7f6cc8", "worried"], [268, "#a63f35", "sad"], [310, "#e1b04a", "worried"]].map(([x, c, m], i) => g(x, 170, .62, person({ robe: c, [i % 2 ? "cloth" : "hair"]: i % 2 ? "#efe6d2" : "#3a2a1f", beard: i % 3 ? "#5a3a24" : "#3a2a1f", sash: "#e1b04a", mood: m, arms: ["down", "down"] }))).join("")}
       ${g(180, 172, .72, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "calm", arms: ["out", "out"] }))}`)}
     ${stick(id, `${table(180, 160, 340)}${loaf(150, 146, 1)}${loaf(230, 146, .9)}${cup(186, 150, 1.1)}${g(108, 150, 1, `<ellipse rx="10" ry="3" fill="#d8cbb0" ${L2}/>`)}${g(262, 150, 1, `<ellipse rx="10" ry="3" fill="#d8cbb0" ${L2}/>`)}`)}` },
+  creation: { caption: "God creates the world and says it is very good", draw: (id) => `${sky(id, "#a9d8f0", "#f3f8ee")}<rect width="140" height="200" fill="#1e2b52"/>${smallStars([[20, 20, 2.4], [60, 40, 1.8], [100, 18, 2.2], [30, 70, 1.6], [110, 64, 2]])}<g transform="translate(70 50)"><circle r="16" fill="#f4efd0" ${L2}/><circle cx="7" cy="-4" r="14" fill="#1e2b52"/></g>
+    ${sunW(id, 300, 40, 16)}${cloud(id, 210, 34, .8)}
+    ${wash(id, `<path d="M0 140 C 60 128, 120 130, 180 136 C 240 126, 300 128, 360 134 L 360 200 L 0 200 Z" fill="#8fc46a"/><path d="M0 168 C 60 160, 130 164, 170 170 L 170 200 L 0 200 Z" fill="#5f9cc4"/>`)}
+    ${fruitTree(200, 150, .8)}${fruitTree(330, 150, .9, "#f2c45a")}${datePalm(258, 140, .6)}
+    <g class="sb-fly">${g(170, 70, .5, dove(1, false))}${g(230, 90, .4, flip(dove(1, false)))}</g>
+    ${[[40, 186, 1], [100, 180, -1], [140, 190, 1]].map(([x, y, d], i) => `<g class="sb-swim" style="--sdl:${-i}s"><g transform="translate(${x} ${y}) scale(${d} 1)"><path d="M-8 0 C -4 -5, 4 -5, 8 0 C 4 5, -4 5, -8 0 Z M 8 0 L 13 -4 L 13 4 Z" fill="#f4a259" ${L2}/></g></g>`).join("")}
+    ${stick(id, `${g(196, 192, .6, sheep())}${g(330, 194, .5, lion())}${g(356, 196, .5, flip(sheep()))}${g(240, 196, .5, `${person({ robe: "#7fa65a", hair: "#5a3a24", sash: "#5e7a3a", mood: "joy", arms: ["up", "down"] })}`)}${g(280, 198, .48, person({ robe: "#8fb86a", hair: "#7a4a2a", longHair: true, sash: "#5e7a3a", mood: "joy", arms: ["down", "up"] }))}`)}
+    ${anemone(190, 198)}${anemone(340, 198, "#f6cf55")}` },
+  eden: { caption: "Adam names the animals in the Garden of Eden", draw: (id) => `${sky(id, "#a9d8f0", "#f3f8ee")}${sunW(id, 320, 30, 12)}${cloud(id, 90, 28, .9)}
+    ${wash(id, `<path d="M0 130 C 80 120, 280 120, 360 130 L 360 200 L 0 200 Z" fill="#8fc46a"/><path d="M120 200 C 140 170, 180 150, 230 140 L 250 140 C 210 156, 176 176, 160 200 Z" fill="#7fb6d6"/>`)}
+    ${fruitTree(40, 150, 1)}${fruitTree(300, 146, .9, "#f2c45a")}${datePalm(340, 140, .6)}${fruitTree(110, 138, .7)}
+    ${stick(id, `${g(90, 192, .84, person({ robe: "#7fa65a", hair: "#5a3a24", sash: "#5e7a3a", mood: "joy", arms: ["down", "out"] }))}
+      <g transform="translate(212 190) scale(.9)"><g transform="translate(-26 -34) scale(1.3)">${giraffeHead()}</g>${g(16, -10, 1, elephantFace())}</g>${g(288, 192, .6, lion())}${g(170, 196, .5, sheep())}`)}
+    <g transform="translate(110 92)"><path d="M0 0 C -2 -14, 50 -14, 48 0 C 48 8, 16 8, 10 8 L 2 14 L 4 7 C -2 6, 0 2, 0 0 Z" fill="#fff" ${L2}/><text x="24" y="3" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="10" fill="${INK}">Elephant!</text></g>
+    ${anemone(140, 198)}${anemone(250, 198, "#f6cf55")}${anemone(330, 198, "#e9e2f2")}` },
+  fall: { caption: "Adam and Eve hide from God in the garden", draw: (id) => `${sky(id, "#d8b88a", "#f3e6cc")}
+    ${wash(id, `<path d="M0 140 C 80 130, 280 130, 360 140 L 360 200 L 0 200 Z" fill="#7fa65a"/>`)}
+    ${fruitTree(260, 156, 1.3)}${stick(id, serpent(248, 92, 1))}${fruitTree(330, 156, 1)}
+    ${stick(id, `${g(130, 194, .74, person({ robe: "#7fa65a", hair: "#5a3a24", sash: "#5e7a3a", mood: "scared", arms: ["pray", "up"] }))}${g(172, 194, .7, person({ robe: "#8fb86a", hair: "#7a4a2a", longHair: true, sash: "#5e7a3a", mood: "sad", arms: ["pray", "pray"] }))}`)}
+    ${fruitTree(64, 166, 1.2)}${leafFront(110, 192, 1.4)}${leafFront(160, 198, 1.2)}${leafFront(200, 196, 1)}` },
+  isaac: { caption: "God provides a ram, and Abraham hugs Isaac", draw: (id) => `${sky(id, "#bfe0ef", "#f8f0dc")}<g class="sb-glow"><path d="M210 0 L 260 0 L 250 90 L 220 90 Z" fill="#fff3c4" opacity=".4"/></g>
+    ${hills(id, "#c9b480", "#b39d6a")}
+    ${stick(id, `${altar(150, 186, .8)}${g(150, 156, .8, `${[-14, -4, 6].map((a) => `<rect x="${a - 8}" y="-6" width="26" height="5" rx="2" fill="#8a5d3b" ${L2} transform="rotate(${a} ${a} -4)"/>`).join("")}`)}`)}
+    ${stick(id, `${g(230, 64, .4, person({ robe: "#fffdf6", hair: "#e2b04a", sash: "#f6cf55", angel: true, mood: "joy", arms: ["out", "up"] }))}`)}
+    ${stick(id, `${g(220, 194, .84, person({ robe: "#c99a62", mantle: "#7a5aa6", cloth: "#efe6d2", band: "#7a5aa6", beard: "#f4f1ea", sash: "#e1b04a", mood: "joy", lookUp: true, arms: ["out", "out"] }))}${g(250, 196, .56, person({ robe: "#6aa06a", hair: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["out", "down"] }))}`)}
+    ${thicket(318, 196, 1.2)}${stick(id, ram(318, 180, .6))}${rocks(40, 196, .8)}${scrub(80, 198, .8)}` },
+  manna: { caption: "God sends bread from heaven in the desert", draw: (id) => `${sky(id, "#f3d4a8", "#fbefd8")}<circle cx="300" cy="120" r="34" fill="#ffd98a" opacity=".7" filter="url(#soft${id})"/>
+    ${wash(id, `<path d="M0 140 C 80 130, 280 132, 360 138 L 360 200 L 0 200 Z" fill="#e3c88e"/><path d="M0 176 C 90 168, 270 168, 360 176 L 360 200 L 0 200 Z" fill="#d6b97c"/>`)}
+    ${stick(id, `${tent(40, 150, .6)}${tent(100, 146, .5)}${tent(330, 150, .55)}`)}
+    ${Array.from({ length: 60 }, (_, i) => `<ellipse cx="${(i * 53) % 350 + 6}" cy="${150 + (i * 29) % 48}" rx="2.2" ry="1.3" fill="#fffdf2" stroke="#d8c8a0" stroke-width=".5"/>`).join("")}
+    <g class="sb-fly">${[[90, 50], [130, 36], [200, 56], [250, 40]].map(([x, y]) => quail(x, y, 1.1)).join("")}</g>
+    ${stick(id, `${g(140, 194, .78, person({ robe: "#b4613f", veil: "#efe6d2", sash: "#e1b04a", kneel: true, mood: "joy", arms: ["out", "down"] }))}${basket(170, 196, .8, `${Array.from({ length: 6 }, (_, k) => `<ellipse cx="${-10 + k * 4}" cy="-11" rx="2.2" ry="1.3" fill="#fffdf2"/>`).join("")}`)}
+      ${g(220, 194, .5, person({ robe: "#6aa06a", hair: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["up", "up"] }))}${g(268, 194, .78, person({ robe: "#5b7fa6", cloth: "#efe6d2", beard: "#5a3a24", sash: "#e1b04a", mood: "joy", lookUp: true, arms: ["up", "down"] }))}`)}` },
+  gideon: { caption: "Gideon's 300 shout with trumpets and torches", draw: (id) => `${sky(id, "#141d3f", "#3d4a7a")}${smallStars(Array.from({ length: 24 }, (_, i) => [(i * 71) % 352 + 4, (i * 31) % 70 + 6, 1.4 + (i % 3) * .6]))}<g transform="translate(300 40)"><circle r="14" fill="#f4efd0" ${L2}/><circle cx="6" cy="-4" r="12" fill="#1e2b52"/></g>
+    ${wash(id, `<path d="M0 120 C 80 112, 280 112, 360 120 L 360 160 L 0 160 Z" fill="#2c3350"/><path d="M0 156 C 90 150, 270 150, 360 156 L 360 200 L 0 200 Z" fill="#4a4a5e"/>`)}
+    ${[[120, 130], [160, 126], [200, 130], [240, 126], [280, 132]].map(([x, y]) => tent(x, y, .32)).join("")}
+    ${stick(id, `${[[40, 194, "#6aa06a"], [90, 196, "#c08a3e"], [270, 196, "#5b8fb9"], [320, 194, "#a63f35"]].map(([x, y, c], i) => `${g(x, y, .7, `${person({ robe: c, cloth: "#efe6d2", beard: "#5a3a24", sash: "#e1b04a", mood: "firm", arms: ["up", "up"] })}${shofar(-26, -66, 1, -1)}`)}`).join("")}
+      ${g(180, 196, .82, `${person({ robe: "#8a6a48", mantle: "#a63f35", cloth: "#efe6d2", band: "#a63f35", beard: "#3a2a1f", sash: "#e1b04a", mood: "firm", arms: ["up", "up"] })}${shofar(24, -66, 1.1, 1)}`)}`)}
+    ${[[30, 132], [64, 136], [114, 140], [244, 140], [296, 136], [346, 132]].map(([x, y]) => torchJar(x, y, 1)).join("")}` },
   lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
     ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
       ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}
