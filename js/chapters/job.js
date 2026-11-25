@@ -363,7 +363,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
     v: [
       ["35:7", "What do you give to Him?", "God needs nothing from us."],
       ["35:10", "Who gives songs in the night", "God brings hope in dark times."],
+      ["35:11", "Who teaches us more than the beasts of the earth", "God gives people understanding to call on Him, more than animals that only cry out."],
+      ["35:13", "Surely God will not listen to an empty cry", "Elihu warns against crying out without turning to God Himself."],
     ],
+    bg: [["Who is Elihu?", "Elihu is a young man who speaks after Job's three friends fall silent (chapters 32-37). Some readers see him as preparing the way for God's speeches; others think he mostly repeats the friends. God rebukes the three friends at the end (42:7) but does not mention Elihu.", "debated", ["hartley", "walton"]]],
     refs: [["PSA.42", "Psalm 42:8", "His song will be with me in the night"], ["ACT.16", "Acts 16:25", "Paul and Silas sang at midnight"]],
   },
   36: {

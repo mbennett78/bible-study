@@ -182,8 +182,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "David sends comfort to the new king of Ammon, but his envoys are humiliated. Ammon hires Aramean armies. Joab and Abishai defeat them: \"Be strong, and let us show ourselves courageous for the sake of our people and the cities of our God; and may the LORD do what is good in His sight.\"",
     v: [
       ["19:2", "I will show kindness", "Kindness rejected."],
+      ["19:4", "Shaved them and cut off their garments", "In that culture a shaved beard and exposed body were a deep public shame, an insult to David himself."],
+      ["19:5", "Stay at Jericho until your beards grow", "David cares for his men's dignity."],
+      ["19:6", "A thousand talents of silver", "Ammon hired chariots and soldiers from Aram, a huge sum showing how serious the quarrel had become."],
       ["19:13", "May the LORD do what is good in His sight", "Courage and trust together."],
     ],
+    bg: [["Ammon", "Ammon lived east of the Jordan, with its capital at Rabbah, today's Amman in Jordan. Nahash, the father of the new king, had shown David kindness, which is why David sent comfort.", "good", ["selman", "thompson"]]],
     refs: [["2SA.10", "2 Samuel 10", "The same events"]],
   },
   20: {
@@ -243,9 +247,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   26: {
     intro: "The gatekeepers are assigned to the temple's gates by lot, and others are put in charge of the treasuries, including the dedicated spoils of war. Officials and judges are appointed for the work outside the temple.",
     v: [
+      ["26:5", "For God had blessed him", "Obed-edom, who had sheltered the ark (13:14), now has a large family serving at God's house."],
       ["26:8", "Able men with strength for the service", "Even gatekeeping is God's work."],
       ["26:27", "From the spoil won in battles", "Dedicated to repair the house of the LORD."],
+      ["26:28", "All that Samuel the seer had dedicated", "Gifts from Samuel, Saul, Abner and Joab: Israel's history stored up for God's house."],
     ],
+    bg: [["Gatekeepers and treasurers", "Gatekeepers guarded the temple's entrances day and night and cared for its storerooms. Treasurers kept the temple gifts and the spoils dedicated from battles, set aside for the house of God.", "good", ["selman", "japhet"]]],
     refs: [["PSA.84", "Psalm 84:10", "I would rather stand at the threshold of the house of my God"]],
   },
   27: {

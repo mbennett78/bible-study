@@ -161,10 +161,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   18: {
     intro: "An oracle to Cush (Ethiopia), a land of tall people sending messengers by papyrus boats. God waits quietly like heat in sunshine. In the end, gifts will be brought from Cush to Mount Zion, the place of the name of the LORD.",
     v: [
+      ["18:2", "Vessels of papyrus on the waters", "Light reed boats, used on the Nile for thousands of years."],
       ["18:4", "I will look from My dwelling place quietly", "God's timing."],
+      ["18:5", "Before the harvest... he will cut off the sprigs", "Like a vinedresser pruning just before harvest, God will cut short Assyria's plans at the right moment."],
       ["18:7", "A gift of homage will be brought to the LORD of hosts", "Distant nations come to God."],
     ],
-    refs: [["ACT.8", "Acts 8:27-39", "An Ethiopian official believes"]],
+    bg: [["Cush and its pharaohs", "Cush was the Nile kingdom south of Egypt (in today's Sudan), not modern Ethiopia. In Isaiah's day its kings ruled Egypt too, as the 25th Dynasty. One of them, Tirhakah, marched against Assyria in Hezekiah's time (2 Kings 19:9). Their envoys were probably seeking allies against Assyria. Isaiah's answer: wait for God.", "strong", ["oswalt", "kitchen"]]],
+    refs: [["2KI.19", "2 Kings 19:9", "Tirhakah king of Cush"], ["ACT.8", "Acts 8:27-39", "An Ethiopian official believes"]],
   },
   19: {
     intro: "God rides on a swift cloud to Egypt. Egypt's idols tremble, the Nile dries up, its wise men become fools. Then a surprise: \"In that day there will be an altar to the LORD in the midst of the land of Egypt.\" Egypt and Assyria, Israel's great enemies, will worship together. \"Blessed is Egypt My people, and Assyria the work of My hands, and Israel My inheritance.\"",

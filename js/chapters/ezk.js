@@ -306,8 +306,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   32: {
     intro: "A lament for Pharaoh, a sea monster caught in God's net. Then a solemn picture of the grave: Egypt goes down to the pit to join Assyria, Elam, Meshech, Tubal, Edom and Sidon, mighty nations that once spread terror and now lie with the slain.",
     v: [
-      ["32:2", "You are like the monster in the seas", "Pharaoh's power pictured."],
       ["32:1", "In the twelfth year, in the twelfth month", "Early 585 BC, about a year after Jerusalem fell."],
+      ["32:2", "You are like the monster in the seas", "Pharaoh's power pictured."],
       ["32:7", "I will cover the heavens and darken their stars", "Prophets used the darkening of sun and stars to picture the fall of a great kingdom."],
       ["32:18", "Wail for the hordes of Egypt", "Even the mighty fall."],
     ],
@@ -419,9 +419,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   42: {
     intro: "The guide shows Ezekiel the priests' chambers, where they eat the most holy offerings and change their garments. Then he measures the outer wall, 500 rods on each side, \"to divide between the holy and the profane.\"",
     v: [
+      ["42:13", "The holy chambers where the priests... shall eat the most holy things", "Rooms set apart so holy food and holy work stayed separate from ordinary life."],
       ["42:14", "They shall lay their garments in which they minister", "Holiness in worship."],
       ["42:20", "To divide between the holy and the profane", "God's holiness protected."],
     ],
+    bg: [["Reeds or cubits?", "The Hebrew text of 42:16-20 says each side measured 500 reeds (about a mile), while the Greek translation reads 500 cubits (about 850 feet), which fits the measurements of chapter 40. Translations differ here, but either way the wall marks a clear line around what is holy.", "debated", ["block", "taylor"]]],
     refs: [["LEV.10", "Leviticus 10:10", "Distinguish between holy and common"]],
   },
   43: {
@@ -456,8 +458,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     v: [
       ["46:9", "He shall go straight out", "Worship moves forward."],
       ["46:10", "The prince shall go in among them", "The leader worships with the people."],
+      ["46:16-18", "The prince shall not take from the people's inheritance", "Leaders may not seize family land, the very sin of Ahab against Naboth (1 Kings 21)."],
     ],
-    refs: [["PSA.42", "Psalm 42:4", "Going with the throng to the house of God"]],
+    bg: [["Reading Ezekiel's temple", "Chapters 40-48 describe a temple and its worship in great detail. Careful readers understand it in different ways: as a future temple, as a picture of God dwelling with a restored people, or as fulfilled in Christ and the new creation. The note on Ezekiel 40 sets out these views fairly.", "good", ["block", "duguidE"]]],
+    refs: [["1KI.21", "1 Kings 21", "Naboth's vineyard"], ["PSA.42", "Psalm 42:4", "Going with the throng to the house of God"]],
   },
   47: {
     intro: "Water flows from under the threshold of the temple toward the east. Ezekiel's guide measures it: ankle-deep, knee-deep, waist-deep, then a river too deep to cross. Where it flows into the Dead Sea, the water becomes fresh and teems with fish, and fishermen spread nets. Trees on both banks bear fruit every month, \"and their leaves for healing.\" The land's borders are drawn, and foreigners living among Israel receive an inheritance too.",

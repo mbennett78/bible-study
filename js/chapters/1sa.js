@@ -301,10 +301,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["bergen", "baldwin"] },
   29: {
     intro: "As the Philistines march to battle against Israel, their commanders refuse to let David come, fearing he will turn on them. Achish sends David home to Ziklag, sparing him from fighting his own people.",
     v: [
+      ["29:1", "The Philistines gathered all their armies at Aphek", "The same staging point where they had once captured the ark (4:1)."],
+      ["29:3", "What are these Hebrews doing here?", "The Philistine lords will not trust an Israelite at their side in battle."],
       ["29:4", "Make the man go back", "God uses the Philistines' suspicion to rescue David from an impossible situation."],
       ["29:9", "You are pleasing in my sight, like an angel of God", "Achish still trusts David."],
     ],
-    refs: [["PRO.21", "Proverbs 21:1", "The king's heart is in the hand of the LORD"]],
+    bg: [["God's timing", "Being sent home spared David from fighting Saul and Jonathan, who died in this very battle on Mount Gilboa (chapter 31). It also brought him back to Ziklag just in time to rescue his family from the Amalekites (chapter 30).", "good", ["bergen", "tsumura"]]],
+    refs: [["1SA.30", "1 Samuel 30", "Back in time for Ziklag"], ["PRO.21", "Proverbs 21:1", "The king's heart is in the hand of the LORD"]],
   },
   30: {
     intro: "David returns to find Ziklag burned and all the families taken by Amalekite raiders. His men talk of stoning him, but \"David strengthened himself in the LORD his God.\" He asks God, pursues, recovers everyone and everything, and insists the spoils be shared with those too exhausted to fight.",

@@ -676,9 +676,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "A short urgent prayer, nearly the same as Psalm 40:13-17. \"O God, hasten to deliver me.\" Let all who seek God rejoice. \"I am afflicted and needy; hasten to me, O God! You are my help and my deliverer.\"",
     v: [
       ["70:1", "O God, hasten to deliver me", "Urgent prayer."],
+      ["70:2-3", "Who say, Aha, aha!", "The mockers gloat; David asks that they be turned back in shame."],
       ["70:4", "Let God be magnified", "Others will praise."],
       ["70:5", "Do not delay", "Honest need."],
     ],
+    bg: [["A psalm \"to bring to remembrance\"", "The title is the same as Psalm 38 and may connect it with the memorial offering, asking God to remember. Its words repeat Psalm 40:13-17 almost exactly, a short prayer kept on its own for urgent need.", "good", ["tate", "kidner"]]],
     refs: [["PSA.40", "Psalm 40:13-17", "The same prayer"]],
   },
   71: {
@@ -1176,15 +1178,18 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"I was glad when they said to me, Let us go to the house of the LORD.\" Pilgrims arrive and stand within Jerusalem's gates, the city where the tribes go up to give thanks. \"Pray for the peace of Jerusalem: May they prosper who love you.\"",
     v: [
       ["122:1", "I was glad when they said to me", "Joy in going to worship."],
+      ["122:3", "Jerusalem, that is built as a city that is compact together", "Pilgrims marveled at the city crowded on its hills, a picture of the people joined together."],
+      ["122:5", "Thrones were set for judgment", "Jerusalem was also where justice was given, at the throne of David's house."],
       ["122:6", "Pray for the peace of Jerusalem", "Shalom: wholeness, not only no war."],
     ],
+    bg: [["A play on Jerusalem's name", "The Hebrew word for peace, shalom, echoes the name Jerusalem (Yerushalayim). The pilgrims pray for the peace of the city whose name sounds like peace. This is a Song of Ascents, sung by pilgrims going up to the feasts.", "good", ["allen", "kidner"]]],
     refs: [["HEB.10", "Hebrews 10:25", "Not forsaking our assembling together"]],
   },
   123: {
     intro: "\"To You I lift up my eyes, O You who are enthroned in the heavens!\" As servants watch their master's hand, so we look to the LORD until He is gracious. \"Be gracious to us, O LORD, for we are greatly filled with contempt.\"",
     v: [
-      ["123:2", "As the eyes of servants look to the hand of their master", "Watching for God's help."],
       ["123:1", "O You who are enthroned in the heavens", "Looking up past the scorn of people to the throne of God."],
+      ["123:2", "As the eyes of servants look to the hand of their master", "Watching for God's help."],
       ["123:3", "Be gracious to us", "A prayer under scorn."],
     ],
     bg: [["A Song of Ascents", "Psalms 120-134 are \"Songs of Ascents,\" most likely sung by pilgrims as they went up to Jerusalem for the feasts. This short one fits a people who have been mocked by the proud, as the returned exiles were while they rebuilt (Nehemiah 4:1-4).", "good", ["allen", "kidner"]]],
@@ -1204,7 +1209,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     v: [
       ["125:1", "As Mount Zion, which cannot be moved", "Steady trust."],
       ["125:2", "As the mountains surround Jerusalem", "Pilgrims could see the hills around the city."],
+      ["125:3", "The scepter of wickedness shall not rest upon the land of the righteous", "Evil rule will not last forever, so the righteous are not pushed into doing wrong."],
+      ["125:5", "Those who turn aside to their crooked ways", "A warning: trust in God means walking His straight path."],
     ],
+    bg: [["The hills around Jerusalem", "Jerusalem sits lower than the hills around it: the Mount of Olives to the east, Mount Scopus to the northeast, and higher ground to the south and west. Pilgrims climbing toward the city saw it ringed by mountains, a picture of the LORD surrounding His people.", "strong", ["allen", "vangemeren"]]],
     refs: [["PRO.10", "Proverbs 10:25", "The righteous has an everlasting foundation"]],
   },
   126: {

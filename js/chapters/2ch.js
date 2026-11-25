@@ -205,8 +205,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   22: {
     intro: "Ahaziah reigns one year, advised by his mother Athaliah to do evil, and is killed by Jehu. Athaliah then destroys the royal family to seize the throne, but Jehoshabeath hides baby Joash in the temple for six years.",
     v: [
-      ["22:3", "His mother was his counselor to do wickedly", "Influence matters."],
       ["22:2", "His mother's name was Athaliah, the granddaughter of Omri", "Athaliah came from Ahab's royal house in the north, through a marriage alliance that pulled Judah toward Baal worship."],
+      ["22:3", "His mother was his counselor to do wickedly", "Influence matters."],
       ["22:7", "His downfall was from God", "Ahaziah was visiting the king of Israel when Jehu's revolt swept them both away."],
       ["22:11", "Jehoshabeath hid him", "The line of David, and of the Messiah, survives by one courageous woman."],
     ],
