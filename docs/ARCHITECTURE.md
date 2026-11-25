@@ -32,6 +32,13 @@
 | `js/paths.js` | The four study paths; `checkPaths()` proves each covers all 1,189 chapters once |
 | `js/intros.js`, `js/notes.js`, `js/glossary.js`, `js/daily.js` | Study content |
 | `js/art.js` | Inline SVG illustrations, recoloured per look through CSS classes |
+| `js/storybook.js`, `js/stickers.js` | Kids' storybook scenes and stickers for notes, drawn as inline SVG |
+| `js/buddyguide.js`, `js/buddygrow.js` | Buddy's offline app guide and welcome back, and how he grows (moods, props, memories) |
+| `js/quest.js` | Bible Spin, the main game: wheel, candle timer, coins and jewels |
+| `js/ink.js` | Handwriting and drawing, stored as strokes so it stays small and prints sharp |
+| `js/notes-more.js`, `js/chapters/` | Full study notes, organized by book |
+| `js/outlines.js`, `js/history.js`, `js/topics.js`, `js/bookstats.js` | Book outlines, When and where, find a verse by topic, By the numbers |
+| `js/guide.js`, `js/whatsnew.js` | The user guide (screen and print) and the quiet What's new note |
 | `sw.js` | Service worker: caches the app shell for offline use, never touches saved data |
 | `data/strongs`, `data/lex` | Strong's tagging and lexicon, split per chapter and per entry, loaded on demand |
 | `supabase/functions/study-partner` | Edge Function that calls Claude for the built-in helper |
@@ -88,11 +95,11 @@ Device-only values (Bible keys, chosen voice, theme) are listed in `DEVICE_KEYS`
 
 ## Known trade-offs and next steps
 
-- `js/app.js` (about 2,700 lines) holds all screen code. It is organised in labelled
+- `js/app.js` (about 5,200 lines) holds all screen code. It is organised in labelled
   sections, but splitting it into per-view modules (reader, home, settings, setup, gate) is
   the natural next refactor. The other modules already have no DOM dependencies where
   possible, which is what makes them unit-testable.
 - Browser tests use fixed waits in places. Moving them to `@playwright/test` with
   auto-waiting assertions would make them faster and less timing-sensitive.
-- Study notes cover sample chapters so far; the format and evidence labels are in place for
-  more to be added book by book.
+- Every chapter has study notes. Deeper notes are added weekly after release, starting with
+  the most-read chapters, in the same format and with the same evidence labels.

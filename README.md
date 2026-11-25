@@ -27,7 +27,7 @@ and shows differing Christian views fairly ([docs/STUDY-GUIDELINES.md](docs/STUD
   Gemini. A small stick-figure study buddy opens the chat, reads answers aloud and takes
   spoken questions.
 - **Bible games**: solo quizzes or up to 20 players or teams, any part of the Bible,
-  optional timer, leaderboard, sound effects and celebrations. 239 questions, each tied to
+  optional timer, leaderboard, sound effects and celebrations. 1,042 questions, each tied to
   its verse.
 - **Today**: verse of the day, a psalm and proverb, a question and a prayer.
 - **Family accounts** (optional): Supabase email sign-in, account backup of progress and
@@ -87,6 +87,7 @@ touched by an update ([docs/DATA-SAFETY.md](docs/DATA-SAFETY.md)).
 
 ## Documentation
 
+- [docs/BUILD-NOTES.md](docs/BUILD-NOTES.md): how the app was built, the key decisions and why, and the standing rules
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): how the code is organized and why
 - [docs/SECURITY.md](docs/SECURITY.md): the security model and its trade-offs
 - [docs/DATA-SAFETY.md](docs/DATA-SAFETY.md): how everyone's place and journals survive updates
