@@ -38,12 +38,12 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
   3: {
     intro: "Paul could not stand the waiting, so he sent Timothy to strengthen and encourage them, worried that the tempter might have shaken them through their troubles. Timothy came back with good news of their faith and love, and that they longed to see Paul too. \"For now we really live, if you stand firm in the Lord.\" Paul prays night and day to see them, and asks that the Lord would make them increase and abound in love for one another and for all people.",
     v: [
-      ["3:2", "To strengthen and encourage you as to your faith", "Sending help."],
-      ["3:3", "So that no one would be disturbed by these afflictions", "Troubles expected."],
-      ["3:6", "Timothy has come to us from you, and has brought us good news", "Good news."],
-      ["3:8", "For now we really live, if you stand firm in the Lord", "Joy in others' faith."],
-      ["3:12", "May the Lord cause you to increase and abound in love", "Overflowing love."],
-      ["3:13", "So that He may establish your hearts without blame in holiness", "Ready for Jesus."],
+      ["3:2", "To strengthen and encourage you as to your faith", "Paul could not go back to Thessalonica himself, so he sent Timothy to strengthen the young church."],
+      ["3:3", "So that no one would be disturbed by these afflictions", "Paul had warned them that trouble would come (3:4). Suffering does not mean God has abandoned His people."],
+      ["3:6", "Timothy has come to us from you, and has brought us good news", "Timothy returned with news of their faith and love. Paul uses the word for \"good news\" usually used of the gospel itself."],
+      ["3:8", "For now we really live, if you stand firm in the Lord", "Paul says their faithfulness makes him come alive again. Other believers' growth is one of life's deepest joys."],
+      ["3:12", "May the Lord cause you to increase and abound in love", "Paul prays that their love will overflow, both for each other and for everyone else."],
+      ["3:13", "So that He may establish your hearts without blame in holiness", "Love now prepares believers to stand blameless before God when Jesus returns with all His holy ones."],
     ],
     refs: [["ACT.17", "Acts 17:14-15", "Timothy stays behind"], ["2TI.3", "2 Timothy 3:12", "All who live godly will be persecuted"], ["PHP.1", "Philippians 1:9", "Love that abounds"]],
   },

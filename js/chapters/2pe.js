@@ -26,12 +26,12 @@ export default makeBook({ lang: "Greek", sources, use: ["schreinerP", "green2P"]
   2: {
     intro: "Just as false prophets arose in Israel, false teachers will arise among believers, bringing destructive ideas and even denying the Master who bought them. In their greed they will exploit people with false words. But God knows how to judge and how to rescue: He did not spare the angels who sinned or the ancient world, but He protected Noah, \"a preacher of righteousness.\" He judged Sodom and Gomorrah but rescued righteous Lot. \"The Lord knows how to rescue the godly from temptation.\" These teachers promise freedom while they themselves are slaves of corruption, like Balaam who loved the wages of wrongdoing.",
     v: [
-      ["2:1", "There will also be false teachers among you", "A warning."],
-      ["2:5", "Preserved Noah, a preacher of righteousness", "Noah kept safe."],
-      ["2:7", "He rescued righteous Lot", "Lot rescued."],
-      ["2:9", "The Lord knows how to rescue the godly from temptation", "God rescues."],
-      ["2:15", "Balaam... who loved the wages of unrighteousness", "Greedy teachers."],
-      ["2:19", "Promising them freedom while they themselves are slaves", "False freedom."],
+      ["2:1", "There will also be false teachers among you", "False prophets troubled Israel, and false teachers will trouble the church. They often slip in quietly."],
+      ["2:5", "Preserved Noah, a preacher of righteousness", "Noah not only built the ark; he spoke up for what was right. God kept him and his family safe through the Flood."],
+      ["2:7", "He rescued righteous Lot", "Lot was troubled by the evil around him in Sodom, and God rescued him. God knows those who are His."],
+      ["2:9", "The Lord knows how to rescue the godly from temptation", "The lesson of Noah and Lot: God knows how to rescue His people and how to hold the wicked for judgment."],
+      ["2:15", "Balaam... who loved the wages of unrighteousness", "Balaam was willing to curse Israel for money (Numbers 22). False teachers who are in it for money follow his path."],
+      ["2:19", "Promising them freedom while they themselves are slaves", "They promise freedom while they are slaves to their own desires. Whatever masters a person is what enslaves them."],
     ],
     refs: [["GEN.6", "Genesis 6-8", "Noah and the flood"], ["GEN.19", "Genesis 19", "Sodom and Lot"], ["NUM.22", "Numbers 22", "Balaam's donkey"], ["JUD.1", "Jude 4-16", "Jude's similar warning"]],
   },
