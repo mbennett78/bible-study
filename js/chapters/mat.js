@@ -20,6 +20,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["3:15", "It is fitting for us to fulfill all righteousness", "Jesus had no sin to confess, yet He was baptized. He stood with sinners and did everything God asked, as He would at the cross."],
       ["3:17", "This is My beloved Son, in whom I am well-pleased", "The Son is baptized, the Spirit comes down like a dove, and the Father speaks from heaven. All three are present together."],
     ],
+    bg: [["John the Baptist in history", "The Jewish historian Josephus, writing about AD 93, describes John as a good man who called people to live justly and be baptized, and says Herod Antipas had him killed (Antiquities 18.116-119). Many stone-lined pools for ritual washing have been found from this period, but John's baptism was different: a one-time act of turning back to God.", "strong", ["keener", "france"]]],
+    w: [["μετανοέω", "metanoeō", "G3340", "to repent", "To change one's mind and turn around. It means more than feeling sorry: a whole new direction of life, back toward God.", ["bdag", "france"]]],
     refs: [["ISA.40", "Isaiah 40:3", "A voice in the wilderness"], ["MRK.1", "Mark 1:1-11", "The same events"], ["2KI.1", "2 Kings 1:8", "Elijah's clothing"], ["PSA.2", "Psalm 2:7", "You are My Son"]],
   },
   4: {
@@ -74,6 +76,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["8:17", "He Himself took our infirmities and carried away our diseases", "Quoting Isaiah 53:4. Jesus' healings were a foretaste of the cross, where He would carry our sin and its effects."],
       ["8:26", "Why are you afraid, you men of little faith?", "Jesus questions their fear first, then calms the storm with a word. The disciples ask what kind of man this is (8:27)."],
     ],
+    bg: [["Capernaum, Jesus' home base", "Capernaum was a fishing town on the north shore of the Sea of Galilee (4:13). Visitors today see a white limestone synagogue from about AD 400 built on older black basalt foundations, and nearby a house that early Christians honored as Peter's home, later covered by an eight-sided church.", "strong", ["keener", "blomberg"]]],
+    w: [["ἑκατοντάρχης", "hekatontarchēs", "G1543", "centurion", "A Roman officer over about a hundred soldiers. The centurions in the Gospels and Acts are often shown as men of faith (8:10; 27:54; Acts 10).", ["bdag", "france"]]],
     refs: [["LUK.7", "Luke 7:1-10", "The centurion"], ["MRK.4", "Mark 4:35-41", "The storm"], ["ISA.53", "Isaiah 53:4", "He bore our sicknesses"], ["MRK.5", "Mark 5:1-20", "The man among the tombs"]],
   },
   9: {
@@ -99,6 +103,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["10:32", "Everyone who confesses Me before men", "Those who are not ashamed to own Jesus before others, He will own before His Father in heaven."],
       ["10:42", "Whoever gives to one of these little ones even a cup of cold water", "Even the smallest kindness to one of Jesus' followers, like a cup of cold water, does not go unnoticed or unrewarded."],
     ],
+    bg: [["The lists of the Twelve", "The New Testament lists the twelve apostles four times (Matthew 10, Mark 3, Luke 6, Acts 1). The order changes a little, but Peter is always first and Judas Iscariot always last. A few apostles go by two names, like Thaddaeus, who is probably the same as Judas the son of James.", "good", ["carson", "bauckham"]]],
+    w: [["ἀπόστολος", "apostolos", "G652", "apostle, one sent", "A messenger sent with authority to speak for the one who sends him. Jesus sends the Twelve out with His own message and power.", ["bdag", "france"]]],
     refs: [["MRK.3", "Mark 3:13-19", "The Twelve"], ["LUK.9", "Luke 9:1-6", "Sent out"], ["MIC.7", "Micah 7:6", "Enemies in one's household"], ["LUK.12", "Luke 12:6-7", "Sparrows"]],
   },
   11: {
@@ -111,6 +117,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["11:28", "Come to Me, all who are weary and heavy-laden", "An open invitation to anyone worn out, whether by work, by guilt or by religion that only adds rules."],
       ["11:30", "My yoke is easy and My burden is light", "A yoke joins two oxen to pull together. Jesus' yoke fits well, and He pulls with us."],
     ],
+    bg: [["Chorazin, Bethsaida and Capernaum", "The three towns Jesus warns lay within a few miles of each other at the north end of the Sea of Galilee, where He did most of His miracles. At Chorazin, archaeologists found a black basalt synagogue and a carved stone seat like the \"seat of Moses\" Jesus mentions in 23:2.", "good", ["keener", "blomberg"]]],
+    w: [["ζυγός", "zygos", "G2218", "yoke", "The wooden bar that joined oxen for work. Jewish teachers spoke of taking on \"the yoke of the Law.\" Jesus offers His own yoke, which is easy, because He walks beside us.", ["bdag", "carson"]]],
     refs: [["ISA.35", "Isaiah 35:5-6", "The blind see"], ["MAL.3", "Malachi 3:1", "My messenger"], ["JER.6", "Jeremiah 6:16", "Rest for your souls"], ["LUK.7", "Luke 7:18-35", "The same"]],
   },
   12: {
@@ -123,6 +131,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["12:40", "Just as Jonah was three days and three nights in the belly of the sea monster", "Jonah came out of the fish after three days. Jesus points to His own resurrection as the one sign that will be given."],
       ["12:50", "Whoever does the will of My Father... is My brother and sister and mother", "Jesus is not rejecting His family; He is widening it. Everyone who does the Father's will belongs."],
     ],
+    bg: [["Sabbath rules in Jesus' day", "The Law said not to work on the Sabbath but gave few details, so teachers worked out what counted as work. A later Jewish collection, the Mishnah, lists thirty-nine kinds of forbidden work, including reaping and grinding, which is how plucking grain could be called breaking the Sabbath.", "good", ["keener", "france"]]],
+    w: [["σάββατον", "sabbaton", "G4521", "Sabbath, rest", "From the Hebrew shabbat, \"to stop, rest.\" God gave the seventh day as a gift of rest and a sign of His covenant (Exodus 31:13). Jesus calls Himself Lord of the Sabbath (12:8).", ["bdag", "carson"]]],
     refs: [["ISA.42", "Isaiah 42:1-4", "My chosen Servant"], ["JON.1", "Jonah 1:17", "Three days in the fish"], ["MRK.3", "Mark 3:20-35", "The Beelzebul debate"], ["1SA.21", "1 Samuel 21:1-6", "David and the holy bread"]],
   },
   13: {
@@ -149,6 +159,7 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["14:31", "Immediately Jesus stretched out His hand and took hold of him", "Jesus did not wait. He reached out at once and caught Peter. He gently asks why he doubted."],
       ["14:33", "You are certainly God's Son!", "Those in the boat worship Jesus. Only God rules the wind and sea (Psalm 107:29), and they see that in Him."],
     ],
+    bg: [["Herod Antipas and the fortress of Machaerus", "This Herod was Herod Antipas, a son of Herod the Great, who ruled Galilee and Perea from 4 BC to AD 39. Josephus says John was held and executed at Machaerus, a hilltop fortress east of the Dead Sea, whose ruins can still be visited.", "strong", ["keener", "france"]]],
     refs: [["MRK.6", "Mark 6:14-56", "The same events"], ["JHN.6", "John 6:1-21", "Feeding and walking on water"], ["PSA.107", "Psalm 107:29", "He stilled the storm"], ["EXO.3", "Exodus 3:14", "I AM"]],
   },
   15: {
@@ -160,6 +171,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["15:28", "O woman, your faith is great", "A Canaanite mother kept asking even when Jesus seemed to turn her away. He praises her great faith and heals her daughter."],
       ["15:32", "I feel compassion for the people", "The crowd had been with Him three days. Jesus would not send them home hungry, so He fed four thousand."],
     ],
+    bg: [["A Canaanite woman", "Tyre and Sidon were Gentile port cities on the coast north of Galilee. Mark calls the woman a Syrophoenician (Mark 7:26). Matthew uses the old name \"Canaanite,\" Israel's ancient enemies, which makes Jesus' praise of her great faith even more striking.", "good", ["carson", "keener"]]],
+    w: [["παράδοσις", "paradosis", "G3862", "tradition", "Teaching handed down from one generation to the next. Paul uses the same word for the good traditions of the gospel (2 Thessalonians 2:15). Jesus objects when human traditions set aside God's command.", ["bdag", "france"]]],
     refs: [["MRK.7", "Mark 7", "The same teaching"], ["ISA.29", "Isaiah 29:13", "Lips near, heart far"], ["MRK.8", "Mark 8:1-10", "Feeding four thousand"]],
   },
   16: {
@@ -191,6 +204,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["17:20", "If you have faith the size of a mustard seed", "A mustard seed is tiny. What matters is not how big our faith is but how great the God it trusts."],
       ["17:27", "You will find a shekel", "The temple tax was two drachmas a person. Jesus provides a four-drachma coin, enough for both Himself and Peter."],
     ],
+    bg: [["Which mountain?", "The Gospels say only \"a high mountain.\" An old tradition names Mount Tabor in Galilee. Many scholars suggest Mount Hermon, a tall peak near Caesarea Philippi, where the disciples had just been (16:13).", "good", ["carson", "france"]]],
+    w: [["μεταμορφόω", "metamorphoō", "G3339", "to be transformed, transfigured", "The root of our word \"metamorphosis.\" Paul uses it for believers too, who are being transformed into Christ's likeness (Romans 12:2; 2 Corinthians 3:18).", ["bdag", "france"]]],
     refs: [["MRK.9", "Mark 9:2-29", "The Transfiguration"], ["2PE.1", "2 Peter 1:16-18", "Peter remembers"], ["EXO.34", "Exodus 34:29-35", "Moses' shining face"], ["MAL.4", "Malachi 4:5", "Elijah will come"]],
   },
   18: {
@@ -203,6 +218,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["18:22", "Up to seventy times seven", "Peter offered seven times, which seemed generous. Jesus' answer means stop counting."],
       ["18:33", "Should you not also have had mercy?", "The servant forgiven a debt he could never repay refused to forgive a small one (18:23-30). Those forgiven so much by God must forgive others."],
     ],
+    bg: [["Ten thousand talents", "A talent was about 6,000 denarii, and a denarius was a day's wage, so the first servant owed about sixty million days' wages, more than anyone could ever repay. The second servant owed him a hundred denarii, about four months' pay. The difference shows how much God forgives us.", "good", ["carson", "blomberg"]]],
+    w: [["ἀφίημι", "aphiēmi", "G863", "to forgive, release, let go", "To cancel a debt or let something go. The same word is used in the Lord's Prayer: \"forgive us our debts\" (6:12).", ["bdag", "france"]]],
     refs: [["LUK.15", "Luke 15:3-7", "The lost sheep"], ["MRK.9", "Mark 9:33-42", "Who is greatest"], ["COL.3", "Colossians 3:13", "Forgive as the Lord forgave you"], ["GEN.4", "Genesis 4:24", "Lamech's seventy-sevenfold revenge"]],
   },
   19: {
@@ -215,6 +232,7 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["19:26", "With God all things are possible", "The disciples ask who can be saved. Jesus answers: no one by their own power, but God can do what we cannot."],
       ["19:30", "Many who are first will be last; and the last, first", "God's kingdom turns the world's ranking upside down. Those who seem last now may be first then, as the next parable shows (20:1-16)."],
     ],
+    bg: [["The divorce debate of Jesus' day", "Deuteronomy 24:1 allowed divorce for \"some indecency.\" Jewish teachers argued over what that meant. The school of Shammai said only serious sexual sin; the school of Hillel allowed divorce for almost any reason. The question \"for any reason at all\" (19:3) comes from that debate.", "strong", ["keener", "france"]]],
     refs: [["GEN.2", "Genesis 2:24", "One flesh"], ["MRK.10", "Mark 10:1-31", "The same"], ["LUK.18", "Luke 18:15-30", "The rich ruler"]],
   },
   20: {
@@ -226,6 +244,7 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["20:28", "To give His life a ransom for many", "A ransom was the price paid to set a captive free. Jesus came not to be served but to give His life to free many."],
       ["20:34", "Moved with compassion, Jesus touched their eyes", "The crowd told two blind men to be quiet. Jesus stopped, felt compassion, touched their eyes, and they followed Him."],
     ],
+    bg: [["Working hours and a day's wage", "A denarius was the usual pay for a day's work in the fields. The day was counted from about 6 AM, so the third hour was about 9 AM and the eleventh hour about 5 PM, with only an hour of work left.", "good", ["keener", "blomberg"]]],
     refs: [["MRK.10", "Mark 10:35-52", "The same"], ["ISA.53", "Isaiah 53:11-12", "He bore the sin of many"], ["PHP.2", "Philippians 2:5-8", "Taking the form of a servant"]],
   },
   21: {
@@ -238,6 +257,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["21:22", "All things you ask in prayer, believing, you will receive", "Prayer that trusts God is powerful. This promise sits beside others: we pray in Jesus' name and by God's will (1 John 5:14)."],
       ["21:42", "The stone which the builders rejected", "Quoting Psalm 118:22. The leaders reject Jesus like builders throwing out a stone, but God makes Him the cornerstone."],
     ],
+    bg: [["The money changers", "Every Jewish man paid a yearly temple tax, and it had to be paid in silver coins from Tyre. Money changers swapped other coins for a fee, and sellers offered animals approved for sacrifice. All this was set up in the temple's outer court, the only part where Gentiles could pray.", "good", ["keener", "france"]]],
+    w: [["ὡσαννά", "hōsanna", "G5614", "hosanna", "From Hebrew words in Psalm 118:25 meaning \"save, please!\" By Jesus' day it had also become a shout of praise.", ["bdag", "carson"]]],
     refs: [["ZEC.9", "Zechariah 9:9", "A king on a donkey"], ["PSA.118", "Psalm 118:22-26", "Hosanna and the cornerstone"], ["PSA.8", "Psalm 8:2", "Praise from children"], ["ISA.5", "Isaiah 5:1-7", "The vineyard"]],
   },
   22: {
@@ -249,6 +270,7 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["22:37", "You shall love the Lord your God with all your heart", "Quoting Deuteronomy 6:5, the prayer every Jewish family knew. Love God with everything you are: heart, soul and mind."],
       ["22:39", "You shall love your neighbor as yourself", "Quoting Leviticus 19:18. Love for God and love for neighbor belong together, and the whole Law hangs on these two (22:40)."],
     ],
+    bg: [["Caesar's coin", "The denarius of Emperor Tiberius, very likely the coin shown to Jesus, bore his portrait and the words \"Tiberius Caesar, son of the divine Augustus.\" Many have been found. Jesus' answer gives Caesar his coin and God the people who bear His image (Genesis 1:27).", "strong", ["keener", "carson"]]],
     refs: [["LUK.14", "Luke 14:15-24", "The great banquet"], ["DEU.6", "Deuteronomy 6:5", "Love the LORD"], ["LEV.19", "Leviticus 19:18", "Love your neighbor"], ["PSA.110", "Psalm 110:1", "The LORD said to my Lord"]],
   },
   23: {
@@ -280,6 +302,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["Mostly the future", "Others read much of the chapter as describing a time of trouble just before Christ's return.", ["keener"]],
     ],
     common: "All agree the temple fell as Jesus said, He will return visibly in glory, no one knows the day, and His followers should live ready and faithful.",
+    bg: [["The temple stones", "Herod's temple was one of the wonders of its time, built of huge white stones, some weighing many tons. In AD 70 Roman soldiers under Titus burned it. Stones thrown down from the temple walls still lie on the ancient street below, near the southwest corner of the Temple Mount.", "strong", ["france", "keener"]]],
+    w: [["παρουσία", "parousia", "G3952", "coming, arrival, presence", "Used for the official visit of a king or emperor to a city. The New Testament uses it for Jesus' return in glory (24:27; 1 Thessalonians 4:15).", ["bdag", "france"]]],
     refs: [["MRK.13", "Mark 13", "The same teaching"], ["DAN.7", "Daniel 7:13-14", "The Son of Man"], ["GEN.6", "Genesis 6-7", "The days of Noah"], ["1TH.4", "1 Thessalonians 4:16-17", "The Lord Himself will descend"]],
   },
   25: {
@@ -305,6 +329,7 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["26:64", "You will see the Son of Man sitting at the right hand of Power", "Jesus combines Psalm 110:1 and Daniel 7:13, claiming to be the heavenly Son of Man. The high priest calls it blasphemy (26:65)."],
       ["26:75", "He went out and wept bitterly", "Peter's denial broke his heart. But his story did not end here: the risen Jesus restored him (John 21:15-19)."],
     ],
+    bg: [["Gethsemane and thirty pieces of silver", "Gethsemane means \"oil press.\" It was an olive grove on the Mount of Olives, across the Kidron Valley from the temple. Thirty pieces of silver was the price the Law set for a slave (Exodus 21:32) and the insulting wage in Zechariah 11:12-13, which Matthew sees fulfilled (27:9-10).", "good", ["carson", "france"]]],
     refs: [["ZEC.11", "Zechariah 11:12-13", "Thirty pieces of silver"], ["ZEC.13", "Zechariah 13:7", "Strike the shepherd"], ["JER.31", "Jeremiah 31:31-34", "A new covenant"], ["1CO.11", "1 Corinthians 11:23-26", "The Supper"], ["JHN.21", "John 21:15-19", "Peter restored"]],
   },
   27: {
@@ -317,6 +342,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "carson"] }, {
       ["27:54", "Truly this was the Son of God!", "A Roman centurion, a Gentile soldier, is the one who confesses who Jesus is. The good news is for all nations."],
       ["27:66", "Sealing the stone, the guard being with them", "The leaders sealed the tomb and posted guards. Their precautions only made the empty tomb harder to explain away."],
     ],
+    bg: [["Pontius Pilate in history", "Pilate governed Judea for Rome from AD 26 to 36. In 1961 a stone found at Caesarea on the coast was found to name \"Pontius Pilate, prefect of Judea.\" Josephus and the Roman historian Tacitus also mention him; Tacitus says Christ was executed under Pilate (Annals 15.44).", "strong", ["keener", "blomberg"]]],
+    w: [["Γολγοθᾶ", "Golgotha", "G1115", "Golgotha, place of a skull", "An Aramaic name meaning \"skull.\" The Latin word for skull, calvaria, gives us the name Calvary.", ["bdag", "france"]]],
     refs: [["PSA.22", "Psalm 22", "Forsaken, pierced, mocked"], ["ISA.53", "Isaiah 53:7-9", "Silent like a lamb; buried with the rich"], ["MRK.15", "Mark 15", "The crucifixion"], ["HEB.10", "Hebrews 10:19-22", "Through the veil"]],
   },
   28: {

@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 4:04 PM Central
-**Current version:** v354 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 4:52 PM Central
+**Current version:** v355 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -176,6 +176,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Buddy grows, part 2: small story props (a tree to climb at Zacchaeus, and more), unlocked as they include him | Done (Tue Nov 24) | Tue Dec 1 |
 | Buddy grows, part 2: remembers what each person teaches him (private, per person) and grows warmer with attention | Done (Tue Nov 24) | Tue Dec 1 |
 | Deeper notes on the most-read chapters (first to be trimmed if notes run late; the rest continues after release) | Done (Tue Nov 24): 43 thin chapters filled out; all 64 on the most-read list now have full notes | Tue Dec 1 |
+| Deeper notes, next step: add a history section and a Greek or Hebrew word study to the chapters that have neither (128 in the New Testament, then the Old Testament), Gospels first | In progress (Wed Nov 25): Matthew and Mark done (25 chapters, 45 new entries) | New Testament by Tue Dec 1; Old Testament continues in the weekly updates |
 | Check every screen on phone, iPad and computer, including read-aloud, voice and printing. Keep menus short and clean: fold long lists into dropdowns or categories | Done (Tue Nov 24) | Wed Dec 2 |
 | Christmas gift packet: setup page and illustrated user guide (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Kids' storybook pictures in the sticker style Melissa showed: big friendly characters, white sticker edges, watercolor skies, blinking eyes and gentle movement, feelings true to each story, and Holy Land plants and places. All 51 story pictures are done, from Creation to Peter freed from prison. More stories are added each month after release | Done (Tue Nov 24) | Wed Dec 2 |

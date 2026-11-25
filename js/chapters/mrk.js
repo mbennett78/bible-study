@@ -52,6 +52,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["Specific to that moment", "Others stress the setting: scribes who saw Jesus' power and still called it Satan's. Mark adds the reason in 3:30.", ["lane"]],
     ],
     common: "All agree that someone worried they have committed it shows a tender heart toward God, the opposite of what Jesus described.",
+    bg: [["The Herodians", "The Herodians were supporters of Herod's family, who ruled for Rome. The Pharisees usually had little in common with them, so their plotting together (3:6) shows how much both groups felt threatened by Jesus.", "good", ["lane", "france"]]],
+    w: [["Βοανηργές", "Boanērges", "G993", "Boanerges, Sons of Thunder", "Jesus' nickname for James and John. Luke 9:54 shows their thunder, when they offered to call down fire on a village. John later became the apostle known for love.", ["bdag", "stein"]]],
     refs: [["MAT.12", "Matthew 12:22-32", "The Beelzebul debate"], ["LUK.6", "Luke 6:12-16", "The Twelve named"], ["JHN.7", "John 7:5", "His brothers did not believe"]],
   },
   4: {
@@ -77,6 +79,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["5:36", "Do not be afraid any longer, only believe", "News comes that Jairus's daughter has died. Jesus turns to the father at once: do not be afraid, only believe."],
       ["5:41", "Talitha kum!", "Aramaic, the language Jesus spoke: \"Little girl, get up!\""],
     ],
+    bg: [["Pigs on the other shore", "The eastern side of the Sea of Galilee belonged to the Decapolis, a group of Greek-style Gentile cities, where pigs were raised for food and sacrifice. At Kursi, on that shore, a steep slope meets the lake, and early Christians built a monastery there to mark the event.", "good", ["france", "lane"]]],
+    w: [["λεγιών", "legiōn", "G3003", "legion", "A Latin word for a Roman army unit of about 5,000 to 6,000 soldiers. The man's name meant he was held by a great force of evil, yet one word from Jesus sets him free.", ["bdag", "stein"]]],
     refs: [["LUK.8", "Luke 8:26-56", "The same events"], ["LEV.15", "Leviticus 15:25-27", "Why the woman was considered unclean"], ["1KI.17", "1 Kings 17:17-24", "Elijah raises a child"]],
   },
   6: {
@@ -100,6 +104,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["7:28", "Even the dogs under the table feed on the children's crumbs", "A Gentile mother accepts Jesus' hard words and still asks for crumbs of mercy. Jesus honors her answer and heals her daughter."],
       ["7:37", "He has done all things well", "After Jesus heals a deaf man who could hardly speak, the crowd is amazed. Isaiah had promised that the deaf would hear (Isaiah 35:5)."],
     ],
+    bg: [["Washing and stone jars", "The Pharisees' washing was about religious purity, not germs. Stone vessels were popular because stone was believed not to become unclean, and many stone cups and jars from this time have been found in Jerusalem and Galilee (compare John 2:6).", "strong", ["france", "lane"]]],
+    w: [["κορβᾶν", "korban", "G2878", "corban, an offering", "A Hebrew word for a gift set apart for God. Declaring money \"corban\" could be used as an excuse not to support one's parents, which Jesus says cancels God's command to honor them.", ["bdag", "stein"]]],
     refs: [["ISA.29", "Isaiah 29:13", "Lips near, heart far"], ["ACT.10", "Acts 10:9-16", "Peter's vision about food"], ["ISA.35", "Isaiah 35:5-6", "Ears of the deaf opened"]],
   },
   8: {
@@ -112,6 +118,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["8:34", "Deny himself, and take up his cross and follow Me", "A cross meant death. To follow Jesus is to stop living for ourselves and walk His road, wherever it leads."],
       ["8:36", "What does it profit a man to gain the whole world, and forfeit his soul?", "Gaining the whole world is a terrible trade if it costs your soul. Nothing in this world is worth more."],
     ],
+    bg: [["Caesarea Philippi", "Caesarea Philippi lay at the foot of Mount Hermon, by springs that feed the Jordan River. A large cave there held a shrine to the Greek god Pan, and Herod's son Philip rebuilt the town in honor of Caesar. In this place full of other gods, Peter confesses Jesus as the Christ.", "strong", ["france", "lane"]]],
+    w: [["Χριστός", "Christos", "G5547", "Christ, Anointed One", "The Greek form of the Hebrew Messiah, \"anointed.\" Kings and priests were anointed with oil. \"Christ\" is not Jesus' last name but His title: God's promised King.", ["bdag", "france"]]],
     refs: [["MAT.16", "Matthew 16:13-28", "Peter's confession"], ["LUK.9", "Luke 9:18-27", "The same"], ["ISA.53", "Isaiah 53", "The suffering servant"]],
   },
   9: {
@@ -124,6 +132,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["9:35", "If anyone wants to be first, he shall be last of all and servant of all", "The disciples had been arguing about who was greatest (9:34). Jesus says greatness means putting yourself last and serving everyone."],
       ["9:37", "Whoever receives one child like this in My name receives Me", "Jesus takes a child in His arms. Children had little standing in that world, but welcoming one in His name is welcoming Him."],
     ],
+    bg: [["A donkey's millstone", "The \"heavy millstone\" of 9:42 is literally a \"donkey's millstone,\" a huge stone turned by a donkey to grind grain, not the small hand mill used at home. Such stones have been found at Capernaum.", "good", ["france", "stein"]]],
+    w: [["γέεννα", "geenna", "G1067", "Gehenna, hell", "From the Valley of Hinnom outside Jerusalem, where children were once burned to false gods (Jeremiah 7:31). Jesus uses its name for final judgment.", ["bdag", "lane"]]],
     refs: [["MAT.17", "Matthew 17:1-13", "The Transfiguration"], ["2PE.1", "2 Peter 1:16-18", "Peter remembers it"], ["EXO.24", "Exodus 24:15-18", "Moses on the mountain in the cloud"], ["MAL.4", "Malachi 4:5", "Elijah will come"]],
   },
   10: {
@@ -148,6 +158,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["11:24", "All things for which you pray and ask, believe that you have received them", "Jesus calls for prayer that truly trusts God. Elsewhere Scripture adds that we ask according to His will (1 John 5:14)."],
       ["11:25", "Whenever you stand praying, forgive", "Prayer and forgiveness go together. Holding a grudge gets in the way of our own walk with the Father."],
     ],
+    bg: [["Figs out of season", "In spring, fig trees put out small early fruit along with their leaves. A tree in full leaf with nothing on it promised what it did not give. Mark sets the temple cleansing between the two fig tree scenes, so each explains the other.", "good", ["france", "lane"]]],
+    w: [["λῃστής", "lēstēs", "G3027", "robber, bandit", "Used for violent bandits and rebels, not petty thieves. Jesus quotes Jeremiah 7:11: the temple had become a hideout, as if robbers could do wrong and then feel safe there.", ["bdag", "stein"]]],
     refs: [["ZEC.9", "Zechariah 9:9", "Your King comes on a donkey"], ["PSA.118", "Psalm 118:25-26", "Hosanna"], ["ISA.56", "Isaiah 56:7", "A house of prayer"], ["JER.7", "Jeremiah 7:11", "A den of robbers"]],
   },
   12: {
@@ -178,6 +190,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["Mostly AD 70", "Some read most of the chapter, including the cloud language, as Old Testament style imagery for the judgment on Jerusalem in AD 70, with the final return in view at verse 32.", ["france"]],
     ],
     common: "All agree Jesus foretold the temple's fall, will return in glory, and calls His followers to be faithful and ready.",
+    bg: [["Fleeing to the mountains", "When the Romans surrounded Jerusalem in AD 66-70, many died in the siege. The church historian Eusebius, writing about AD 325, says the Jerusalem Christians had been warned and fled across the Jordan to the town of Pella.", "good", ["france", "lane"]]],
+    w: [["βδέλυγμα", "bdelygma", "G946", "abomination, detestable thing", "Something hateful to God, especially an idol. The phrase \"abomination of desolation\" comes from Daniel (9:27; 11:31; 12:11). Readers differ on how much refers to AD 70 and how much to the end of the age.", ["bdag", "france"]]],
     refs: [["DAN.7", "Daniel 7:13-14", "One like a Son of Man"], ["DAN.9", "Daniel 9:27", "The abomination"], ["MAT.24", "Matthew 24", "The same teaching"], ["1TH.5", "1 Thessalonians 5:1-6", "Like a thief in the night"]],
   },
   14: {
@@ -203,6 +217,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["15:38", "The veil of the temple was torn in two from top to bottom", "The heavy curtain closed off the Most Holy Place. Torn from top to bottom, by God's hand, the way into His presence is opened (Hebrews 10:19-20)."],
       ["15:39", "Truly this man was the Son of God!", "The Roman centurion, a Gentile, watches Jesus die and says what Mark wrote in his first line (1:1): this man was the Son of God."],
     ],
+    bg: [["Crucifixion in history", "Rome used crucifixion for slaves and rebels as a slow, public death meant to warn others. In 1968 an ossuary (bone box) found in Jerusalem held the heel bone of a man named Yehohanan, still pierced by an iron nail, from about the time of Jesus.", "strong", ["france", "lane"]]],
+    w: [["πραιτώριον", "praitōrion", "G4232", "praetorium, governor's headquarters", "A Latin word for a governor's official residence. In Jerusalem it was probably Herod's former palace, where Pilate stayed during the feasts.", ["bdag", "stein"]]],
     refs: [["PSA.22", "Psalm 22", "My God, why have You forsaken Me?"], ["ISA.53", "Isaiah 53:12", "Numbered with transgressors"], ["HEB.10", "Hebrews 10:19-20", "A new and living way through the veil"], ["ROM.16", "Romans 16:13", "Rufus greeted"]],
   },
   16: {
@@ -220,6 +236,8 @@ export default makeBook({ lang: "Greek", sources, use: ["france", "lane"] }, {
       ["Original or very early", "Some argue the verses are original or represent very early church tradition, noting their wide spread and use by second-century writers such as Irenaeus.", ["lane"]],
     ],
     common: "Every event in verses 9-20 is also reported elsewhere in the New Testament, so no teaching depends on this passage alone.",
+    bg: [["Rolling-stone tombs", "Most tombs in Jesus' day were closed with a square block, but a few belonging to wealthy families had a large disk-shaped stone rolled in a groove. Joseph of Arimathea was a rich member of the Council (15:43; Matthew 27:57), so his tomb fits that description.", "good", ["france", "lane"]]],
+    w: [["ἐγείρω", "egeirō", "G1453", "to raise, rise", "The word in \"He has risen\" (16:6). It is used for waking from sleep and for rising from the dead, and its form here shows that God raised Him.", ["bdag", "stein"]]],
     refs: [["MAT.28", "Matthew 28", "The resurrection and commission"], ["LUK.24", "Luke 24", "Appearances and ascension"], ["JHN.20", "John 20:11-18", "Jesus appears to Mary Magdalene"], ["ACT.1", "Acts 1:9-11", "The ascension"], ["1CO.15", "1 Corinthians 15:3-8", "The witnesses"]],
   },
 });
