@@ -235,7 +235,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["23:34", "Father, forgive them; for they do not know what they are doing", "Even while the nails are driven, Jesus prays for the people doing it. Stephen will pray the same way (Acts 7:60)."],
       ["23:42", "Jesus, remember me when You come in Your kingdom!", "A criminal with nothing to offer simply asks Jesus to remember him, and believes Jesus will have a kingdom."],
       ["23:43", "Today you shall be with Me in Paradise", "Jesus promises him paradise that very day. No one is too far gone to be saved while there is breath to call on Him."],
-      ["23:46", "Father, into Your hands I commit My spirit", "Jesus' last words, quoting Psalm 31:5, a prayer of trust. Jewish children were taught to say it at bedtime."],
+      ["23:46", "Father, into Your hands I commit My spirit", "Jesus' last words, quoting Psalm 31:5, a prayer of trust. He dies as He lived, trusting His Father."],
       ["23:47", "Certainly this man was innocent", "A Roman officer, who had seen many executions, praises God and says Jesus was innocent. Even outsiders saw it."],
     ],
     refs: [["PSA.31", "Psalm 31:5", "Into Your hands"], ["ISA.53", "Isaiah 53:12", "He interceded for transgressors"], ["MAT.27", "Matthew 27", "The crucifixion"], ["ACT.7", "Acts 7:59-60", "Stephen echoes Jesus"]],
