@@ -3039,6 +3039,8 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .buddy-balls circle { stroke: var(--accent); stroke-width: .8; } .buddy-balls .bb1 { fill: #e8634a; } .buddy-balls .bb2 { fill: #f2a516; } .buddy-balls .bb3 { fill: #2f8fd0; }
 .buddy-bball circle { fill: #e07a2a; stroke: #6a3410; stroke-width: .8; } .buddy-bball path { stroke: #6a3410; stroke-width: .6; fill: none; }
 .buddy.hiking .buddy-pack, .buddy.hiking .buddy-cap, .buddy.tossing .buddy-cap, .buddy.dribbling .buddy-cap, .buddy.dribbling .buddy-bball { display: inline; }
+/* His baseball cap goes on for the fun stuff: cheering, and every game he plays with you. */
+.buddy.cheering .buddy-cap, dialog.game .buddy-inline .buddy-cap, dialog.quest .buddy .buddy-cap { display: inline; }
 .buddy.eating .buddy-table, .buddy.eating .buddy-utensils, .buddy.fishing .buddy-pole, .buddy.juggling .buddy-balls { display: inline; }
 .buddy.crumpled .buddy-crumple, .buddy.tidying .buddy-trash { display: inline; }
 .buddy.tidying .buddy-crumple { display: none; }

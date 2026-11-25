@@ -70,6 +70,7 @@ try {
   // Challenge Buddy
   await tap('[data-mode="buddy"]'); await page.clock.runFor(300);
   check("Buddy's levels say how often he gets it right", /about 5 out of 10/.test(await text(".q-levels")));
+  check("Buddy wears his baseball cap for games", await page.$eval("dialog.quest .buddy .buddy-cap", (c) => getComputedStyle(c).display !== "none"));
   await tap('[data-lv="easy"]'); await page.clock.runFor(300);
   await spin(); await answerIt(false); await page.clock.runFor(1500);
   check("after a miss it's Buddy's turn", /Buddy's turn/.test(await text("[data-next]")));
