@@ -23,14 +23,22 @@ import { TRIVIA } from "./trivia-bank.js";
 import { topicOf, SOUNDS, medal, confetti } from "./game.js";
 import { BUDDY_SVG } from "./buddy.js";
 
+// Each category has its own character: an original, playful cast with a name and a personality.
 export const CATEGORIES = [
-  { id: "people", name: "People", icon: "👤", color: "#e8634a", topics: ["people"] },
-  { id: "places", name: "Places", icon: "🗺️", color: "#2f8fd0", topics: ["places"] },
-  { id: "stories", name: "Stories & Miracles", icon: "✨", color: "#4fae4a", topics: ["events"] },
-  { id: "stem", name: "STEM", icon: "🔬", color: "#f2a516", topics: ["science", "numbers"] },
-  { id: "books", name: "Books & Verses", icon: "📜", color: "#9b5fc7", topics: ["books", "connections"] },
-  { id: "history", name: "History", icon: "🏛️", color: "#e0457b", topics: ["history"] },
-  { id: "arts", name: "Arts & Music", icon: "🎨", color: "#15b3a6", topics: ["arts"] },
+  { id: "people", name: "People", icon: "👤", color: "#e8634a", topics: ["people"], who: "Rosie", about: "knows everybody's name and loves a good family tree",
+    cheer: ["You know your people! 🥰", "Ooh, I'd love to meet them someday!", "Name-remembering champion!"], comfort: ["Even I mix up my cousins sometimes!", "Now you've met someone new. 😊"] },
+  { id: "places", name: "Places", icon: "🗺️", color: "#2f8fd0", topics: ["places"], who: "Trek", about: "always has a map out and a bag packed",
+    cheer: ["Right on the map! 📍", "You'd make a great guide!", "Pack your bags, you know the way!"], comfort: ["Took a wrong turn. Happens to explorers!", "Now we know where to go next time."] },
+  { id: "stories", name: "Stories & Miracles", icon: "✨", color: "#4fae4a", topics: ["events"], who: "Sprout", about: "gasps at every miracle, every single time",
+    cheer: ["Wow, wow, WOW! ✨", "That's one of my favorite stories!", "Tell it again!"], comfort: ["Ooh, now you know the story!", "Every story is better the second time."] },
+  { id: "stem", name: "STEM", icon: "🔬", color: "#f2a516", topics: ["science", "numbers"], who: "Bolt", about: "counts everything, even the stars",
+    cheer: ["Calculated! 🔢", "Your brain is buzzing! ⚡", "Exactly right, to the decimal!"], comfort: ["Close! Let's measure again.", "Every scientist learns from a miss."] },
+  { id: "books", name: "Books & Verses", icon: "📜", color: "#9b5fc7", topics: ["books", "connections"], who: "Quill", about: "is a bookworm who quotes a verse for everything",
+    cheer: ["Chapter and verse! 📖", "You know your Bible!", "That deserves a bookmark!"], comfort: ["Let's look that one up together.", "Now it's written on your heart."] },
+  { id: "history", name: "History", icon: "🏛️", color: "#e0457b", topics: ["history"], who: "Dusty", about: "digs up old treasures and clues from long ago",
+    cheer: ["You dug up the answer! ⛏️", "A real history detective!", "That's a treasure!"], comfort: ["Even old clues get dusty.", "Now that's a fact you'll keep."] },
+  { id: "arts", name: "Arts & Music", icon: "🎨", color: "#15b3a6", topics: ["arts"], who: "Harper", about: "hums the Psalms and plays a little harp",
+    cheer: ["That's music to my ears! 🎶", "Beautiful! 🎨", "Sing it again!"], comfort: ["Every song has a wrong note sometimes.", "Now you know the tune!"] },
 ];
 export const NEED_PER_JEWEL = 2;   // right answers in a category to win its jewel
 export const CANDLE_SECS = 20;
@@ -209,6 +217,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     paint(`<div class="q-home">
       <div class="q-hero">${wheelSvg()}</div>
       <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "", i)).join("")}</div>
+      <details class="q-meet"><summary>Meet the crew</summary><ul>${CATEGORIES.map((c, i) => `<li>${critter(c, "", i, "happy")}<span><b>${esc(c.who)}</b> · ${esc(c.name)}<small>${esc(c.who)} ${esc(c.about)}.</small></span></li>`).join("")}</ul></details>
       <p class="q-tag">Spin, answer before the candle burns down, and collect all ${CATEGORIES.length} jewels!</p>
       <button class="q-big q-solo" data-mode="solo"><span>🎯</span><b>Play solo</b><small>Three hearts. How many jewels can you win?</small></button>
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
@@ -312,7 +321,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const owned = p.jewels[cat.id];
     const helps = game.mode !== "family" && !buddyPlays;
     paint(`<div class="q-ask" style="--cc:${cat.color}">
-      <div class="q-cat">${critter(cat, "big")}${esc(cat.name)}${jewelTry ? `<small>👑 Jewel question! Get it right to win this jewel.</small>` : owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
+      <div class="q-cat">${critter(cat, "big")}<div class="q-catname">${esc(cat.name)} <i class="q-who">with ${esc(cat.who)}</i></div>${jewelTry ? `<small>👑 Jewel question! Get it right to win this jewel.</small>` : owned ? `<small>Jewel won · bonus coins</small>` : ""}</div>
       <p class="q-say" style="--cc:${cat.color}">${esc(pick(SAYS[cat.id] || ["Here we go!"]))}</p>
       <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
       <div class="q-choices">${order.map((k, n) => `<button class="q-choice" data-k="${k}" style="--d:${0.25 + n * 0.08}s" ${buddyPlays ? "disabled" : ""}><span class="q-letter">${"ABCD"[n]}</span>${esc(q.choices[k])}</button>`).join("")}</div>
@@ -366,6 +375,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     const lampNote = jewelTry && !right ? `<p class="q-tag">The lamp is empty again. Fill it with three right answers to try again.</p>` : "";
     paint(`<div class="q-fb ${right ? "good" : "bad"}" style="--cc:${cat.color}">
       <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : critter(cat, `big q-fb-critter ${right ? "cheer" : "sad"}`, 0, right ? "happy" : "sad")}<h2>${esc(head)}</h2></div>
+      ${p.kind === "buddy" ? "" : `<p class="q-says"><b>${esc(cat.who)}:</b> ${esc(pick(right ? cat.cheer : cat.comfort))}</p>`}
       ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}${react}${lampNote}
       ${r.jewel ? `<div class="q-newjewel"><span class="q-rays" aria-hidden="true"></span>${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span><small>Jewel ${jewelCount(p)} of ${CATEGORIES.length}</small></p></div>
         <div class="q-crew q-crew-cheer">${CATEGORIES.map((c, i) => critter(c, p.jewels[c.id] ? "cheer" : "", i, p.jewels[c.id] ? "happy" : "")).join("")}</div>` : ""}

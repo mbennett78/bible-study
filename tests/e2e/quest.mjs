@@ -45,6 +45,7 @@ try {
   const before = await coins();
   await page.clock.runFor(2000);
   await answerIt(true); await page.clock.runFor(1500);
+  check("the category's character says something", /^(Rosie|Trek|Sprout|Bolt|Quill|Dusty|Harper):/.test(await text(".q-says")));
   check("a quick right answer earns coins", /\+\d+ 🪙/.test(await text(".q-gain")) && (await coins()) > before, `${before} -> ${await coins()}`);
   await tap("[data-next]"); await page.clock.runFor(300);
   check("one of two steps toward that jewel is marked", (await page.$$(".q-pl .q-pips b.on")).length === 1);
