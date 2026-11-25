@@ -65,6 +65,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["6:37", "The one who comes to Me I will certainly not cast out", "Everyone the Father gives to Jesus will come, and He will never turn away anyone who comes to Him."],
       ["6:68", "Lord, to whom shall we go? You have words of eternal life", "Many followers turned back after Jesus' hard teaching. Peter answers for the Twelve: there is no one else who has the words of life."],
     ],
+    bg: [["The synagogue at Capernaum", "Jesus gives the Bread of Life teaching in the synagogue at Capernaum (6:59). It was near Passover (6:4), when Israel remembered the exodus and the manna in the wilderness, so His words about bread from heaven fit the season.", "good", ["carsonJ", "keenerJ"]]],
+    w: [["ἄρτος", "artos", "G740", "bread", "The basic food of every meal. \"I am the bread of life\" (6:35) is the first of seven \"I am\" sayings in John, each a picture of what Jesus gives.", ["bdag", "carsonJ"]]],
     refs: [["EXO.16", "Exodus 16", "Manna in the wilderness"], ["MAT.14", "Matthew 14:13-33", "Feeding and walking on water"], ["MRK.6", "Mark 6:30-52", "The same"]],
   },
   7: {
@@ -94,6 +96,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["Part of John", "Some argue it belongs in John, noting its wide later use and how well it fits Jesus' teaching on judging in chapter 8.", ["morrisJ"]],
     ],
     common: "Nearly all agree the story rings true to Jesus' character: mercy for sinners and a call to a changed life.",
+    bg: [["The great lamps of the feast", "During the Feast of Booths, great golden lamps were lit in the temple's Court of Women, and a later Jewish writing says their light filled every courtyard in Jerusalem (Mishnah Sukkah 5:2-3). In that same court, by the treasury (8:20), Jesus says, \"I am the Light of the world.\"", "good", ["keenerJ", "kostenberger"]]],
+    w: [["ἐλευθερόω", "eleutheroō", "G1659", "to set free", "To free a slave. \"If the Son makes you free, you will be free indeed\" (8:36). Only the Son can free people from slavery to sin.", ["bdag", "morrisJ"]]],
     refs: [["EXO.3", "Exodus 3:14", "I AM"], ["GAL.5", "Galatians 5:1", "Freedom in Christ"], ["ISA.9", "Isaiah 9:2", "A great light"]],
   },
   9: {
@@ -131,6 +135,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["12:32", "I, if I am lifted up from the earth, will draw all men to Myself", "\"Lifted up\" means the cross (12:33). The cross draws people of every kind to Jesus."],
       ["12:46", "I have come as Light into the world", "Jesus came so that anyone who trusts Him does not have to stay in darkness."],
     ],
+    bg: [["Palm branches", "Palm branches were a symbol of victory and national hope. Jews had waved them when Judas Maccabeus took back the temple (2 Maccabees 10:7), and palms later appeared on Jewish coins during the revolts against Rome. The crowd is greeting a king.", "good", ["carsonJ", "keenerJ"]]],
+    w: [["δοξάζω", "doxazō", "G1392", "to glorify", "To show the true greatness of someone. In John, Jesus' \"hour\" of glory is His death on the cross (12:23-24), where God's love is shown most fully.", ["bdag", "kostenberger"]]],
     refs: [["MRK.14", "Mark 14:3-9", "The anointing"], ["ZEC.9", "Zechariah 9:9", "Your King on a donkey"], ["PSA.118", "Psalm 118:25-26", "Hosanna"], ["ISA.53", "Isaiah 53:1", "Who has believed?"]],
   },
   13: {
@@ -143,6 +149,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["13:34", "Love one another, even as I have loved you", "Loving others was already in the Law. What is new is the measure: \"as I have loved you.\""],
       ["13:35", "By this all men will know that you are My disciples", "The world will recognize Jesus' followers not mainly by their knowledge or buildings, but by their love for each other."],
     ],
+    bg: [["Washing feet", "People walked dusty roads in sandals, and a host might offer water for guests to wash their feet. Washing someone else's feet was a job for the lowest servant. At this meal they reclined at a low table, which is how the beloved disciple could lean back against Jesus (13:23-25).", "strong", ["keenerJ", "carsonJ"]]],
+    w: [["ἀγαπάω", "agapaō", "G25", "to love", "Love that gives itself for the good of another. Jesus' new command is to love one another \"even as I have loved you\" (13:34), by the measure of the cross.", ["bdag", "morrisJ"]]],
     refs: [["PHP.2", "Philippians 2:5-8", "Taking the form of a servant"], ["LUK.22", "Luke 22:24-27", "I am among you as one who serves"], ["1JN.3", "1 John 3:16-18", "Love in deed and truth"]],
   },
   15: {
@@ -167,6 +175,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["16:24", "Ask and you will receive, so that your joy may be made full", "Until now they had not prayed in Jesus' name. Now they may ask the Father in His name, and receive, so that their joy is full."],
       ["16:33", "Take courage; I have overcome the world", "Jesus does not promise a life without trouble. He promises peace in Him, because He has overcome the world."],
     ],
+    bg: [["Put out of the synagogue", "Jesus warns that His followers will be put out of the synagogue (16:2; compare 9:22). For Jewish believers that meant losing their place in the community, their friends and sometimes their family.", "good", ["carsonJ", "kostenberger"]]],
+    w: [["παράκλητος", "paraklētos", "G3875", "Helper, Advocate, Comforter", "One called to stand beside someone, like a friend who speaks for you in court. Jesus calls the Holy Spirit \"another Helper\" (14:16), and 1 John 2:1 uses the same word for Jesus Himself.", ["bdag", "carsonJ"]]],
     refs: [["JHN.14", "John 14:16-26", "The Helper promised"], ["ACT.2", "Acts 2", "The Spirit comes"], ["ROM.8", "Romans 8:37", "More than conquerors"]],
   },
   17: {
@@ -190,6 +200,7 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["18:36", "My kingdom is not of this world", "Jesus' kingdom does not come from this world or advance by armies. That is why His servants did not fight to free Him."],
       ["18:38", "What is truth?", "Pilate asks what truth is, then walks away without waiting for an answer. The Truth (14:6) was standing in front of him."],
     ],
+    bg: [["Annas and Caiaphas", "Annas was high priest from AD 6 to 15, and five of his sons and his son-in-law Caiaphas held the office after him, so he remained a powerful figure. In 1990 a family tomb in Jerusalem held a carved bone box inscribed \"Joseph son of Caiaphas,\" very likely the high priest's.", "strong", ["keenerJ", "kostenberger"]]],
     refs: [["MAT.26", "Matthew 26:47-75", "Arrest and denial"], ["JHN.21", "John 21:9-17", "Another charcoal fire, and restoration"], ["LUK.23", "Luke 23:1-25", "Before Pilate"]],
   },
   19: {
@@ -215,6 +226,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["20:29", "Blessed are they who did not see, and yet believed", "Jesus speaks a blessing on everyone who will believe without seeing Him, including every reader of this Gospel."],
       ["20:31", "These have been written so that you may believe", "John tells us his purpose: so that readers will believe Jesus is the Christ, the Son of God, and have life in His name."],
     ],
+    bg: [["Women as first witnesses", "In that culture a woman's word often counted for less in court, and some Jewish writings of the time would not accept women as witnesses. Yet all four Gospels name women as the first to find the empty tomb, and Mary Magdalene as the first to see the risen Jesus. Many scholars see this as a sign the accounts were not made up.", "good", ["bauckham", "carsonJ"]]],
+    w: [["Ῥαββουνί", "rabbouni", "G4462", "my teacher", "An Aramaic word, a warmer form of \"Rabbi.\" When Jesus says her name, Mary knows Him at once and answers, \"Rabboni!\"", ["bdag", "morrisJ"]]],
     refs: [["LUK.24", "Luke 24:36-49", "Jesus appears to the disciples"], ["MAT.28", "Matthew 28:1-10", "The women meet Jesus"], ["1PE.1", "1 Peter 1:8", "Though you have not seen Him"]],
   },
   21: {
@@ -227,6 +240,8 @@ export default makeBook({ lang: "Greek", sources, use: ["carsonJ", "kostenberger
       ["21:17", "Tend My sheep", "With each answer Jesus gives Peter a task: feed and care for My sheep. Peter is forgiven and given work to do."],
       ["21:19", "Follow Me!", "Jesus' last words to Peter in John are the same as His first call: Follow Me. He also tells Peter how he will one day glorify God by his death."],
     ],
+    bg: [["One hundred fifty-three fish", "John notes the exact number of fish, the kind of detail a fisherman remembers. Many meanings have been suggested for 153, but none is agreed upon. The plain point is a full catch, and a net that does not tear.", "good", ["carsonJ", "keenerJ"]]],
+    w: [["ἀνθρακιά", "anthrakia", "G439", "charcoal fire", "The word appears only twice in the New Testament: by the charcoal fire where Peter denied Jesus three times (18:18) and by the one where Jesus asks him three times, \"Do you love Me?\"", ["bdag", "kostenberger"]]],
     refs: [["LUK.5", "Luke 5:1-11", "The first great catch"], ["JHN.18", "John 18:15-27", "The charcoal fire of denial"], ["1PE.5", "1 Peter 5:1-4", "Peter on shepherding the flock"]],
   },
 });

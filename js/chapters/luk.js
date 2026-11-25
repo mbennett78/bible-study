@@ -32,6 +32,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["4:21", "Today this Scripture has been fulfilled in your hearing", "Jesus rolls up the scroll, sits down and says the promise is coming true that very day, in Him."],
       ["4:43", "I must preach the kingdom of God to the other cities also", "The crowd wanted to keep Jesus in Capernaum. He says He must take the good news of God's kingdom to other towns too."],
     ],
+    bg: [["Reading in the synagogue", "In a synagogue service, a reader stood to read from the scroll and then sat down to teach, as Jesus does in 4:20. A reading from the Law was usually followed by one from the Prophets. Nazareth was a small farming village of perhaps a few hundred people, where everyone knew Joseph's son.", "good", ["bock", "green"]]],
+    w: [["εὐαγγελίζω", "euangelizō", "G2097", "to preach good news", "To announce good news, the word behind our \"evangelism.\" In Isaiah 61:1, which Jesus reads, the good news is for the poor, the captives and the broken.", ["bdag", "marshall"]]],
     refs: [["ISA.61", "Isaiah 61:1-2", "Good news to the poor"], ["MAT.4", "Matthew 4:1-11", "The temptation"], ["1KI.17", "1 Kings 17:8-16", "The widow of Zarephath"], ["2KI.5", "2 Kings 5", "Naaman healed"]],
   },
   6: {
@@ -44,6 +46,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["6:36", "Be merciful, just as your Father is merciful", "God is kind even to the ungrateful (6:35). His children learn to show the same mercy."],
       ["6:38", "Give, and it will be given to you", "A picture from the grain market: a generous seller packs the measure down, shakes it and lets it overflow into your lap. God is that generous."],
     ],
+    bg: [["On a level place", "Matthew's Sermon on the Mount (Matthew 5-7) and Luke's sermon \"on a level place\" (6:17) share much teaching. Some think they are two accounts of one sermon; many think Jesus, like any traveling teacher, taught the same things in many places.", "good", ["bock", "marshall"]]],
+    w: [["μακάριος", "makarios", "G3107", "blessed, happy", "Truly well off in God's eyes. Jesus calls the poor and the hungry \"blessed,\" turning the world's idea of a good life upside down.", ["bdag", "green"]]],
     refs: [["MAT.5", "Matthew 5-7", "The Sermon on the Mount"], ["ROM.12", "Romans 12:14-21", "Bless those who persecute you"], ["MAT.7", "Matthew 7:24-27", "Building on rock"]],
   },
   7: {
@@ -55,6 +59,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["7:47", "Her sins, which are many, have been forgiven, for she loved much", "A sinful woman washed Jesus' feet with her tears. Her great love shows she knows how much she has been forgiven."],
       ["7:50", "Your faith has saved you; go in peace", "Jesus sends her away saved and at peace. Her faith in Him gave her a new start."],
     ],
+    bg: [["Nain and Shunem", "Nain is still a small village, called Nein, on the slope of the Hill of Moreh in Galilee. On the other side of the same hill lay Shunem, where the prophet Elisha raised a mother's only son (2 Kings 4). The crowd's cry, \"A great prophet has arisen among us!\" (7:16), fits.", "good", ["bock", "green"]]],
+    w: [["σπλαγχνίζομαι", "splanchnizomai", "G4697", "to have compassion", "From the word for a person's inner parts. It is pity felt deep in the gut. When Jesus saw the widow, His heart went out to her (7:13).", ["bdag", "marshall"]]],
     refs: [["MAT.8", "Matthew 8:5-13", "The centurion"], ["1KI.17", "1 Kings 17:17-24", "Elijah raises a widow's son"], ["ISA.35", "Isaiah 35:5-6", "Signs of salvation"]],
   },
   8: {
@@ -67,6 +73,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["8:48", "Daughter, your faith has made you well; go in peace", "Jesus stops to find the woman who touched Him. He calls her daughter and sends her off healed and at peace."],
       ["8:54", "Child, arise!", "Jesus takes the dead girl's hand and calls to her. Her spirit returns, and He tells them to give her something to eat (8:55)."],
     ],
+    bg: [["The women who traveled with Jesus", "Luke names women who traveled with Jesus and paid for the group's needs from their own money (8:2-3). Joanna was married to Chuza, the manager of Herod Antipas's household, so the gospel had reached the palace. Joanna and Mary Magdalene were also at the empty tomb (24:10).", "good", ["bauckham", "bock"]]],
     refs: [["MRK.4", "Mark 4", "Parables and the storm"], ["MRK.5", "Mark 5", "Legion, the woman and Jairus"], ["MAT.13", "Matthew 13:1-23", "The sower"]],
   },
   9: {
@@ -79,6 +86,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["9:51", "He was determined to go to Jerusalem", "Literally, He \"set His face\" toward Jerusalem, echoing Isaiah 50:7. Jesus walks toward the cross on purpose."],
       ["9:62", "No one, after putting his hand to the plow and looking back, is fit for the kingdom", "A farmer who keeps looking back plows a crooked furrow. Following Jesus takes a heart that is not divided."],
     ],
+    bg: [["Jews and Samaritans", "Samaritans lived between Galilee and Judea. They worshiped on Mount Gerizim instead of in Jerusalem and accepted only the five books of Moses, and the two peoples had long distrusted each other. A Samaritan village refused Jesus because He was heading to Jerusalem (9:53).", "strong", ["bock", "marshall"]]],
+    w: [["ἔξοδος", "exodos", "G1841", "departure, exodus", "On the mountain, Moses and Elijah talk with Jesus about His \"departure\" (9:31), literally His exodus. As Moses led Israel out of slavery, Jesus' death and rising would set His people free.", ["bdag", "green"]]],
     refs: [["MAT.14", "Matthew 14:13-21", "Feeding the five thousand"], ["MAT.16", "Matthew 16:13-28", "Peter's confession"], ["MAT.17", "Matthew 17:1-8", "The Transfiguration"]],
   },
   10: {
@@ -103,6 +112,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["11:13", "How much more will your heavenly Father give the Holy Spirit", "Even flawed parents give good gifts to their children. How much more will our perfect Father give the Holy Spirit to those who ask."],
       ["11:28", "Blessed are those who hear the word of God and observe it", "A woman blesses Jesus' mother. Jesus says even more blessed are those who hear God's word and live by it."],
     ],
+    bg: [["Beelzebul", "The name likely comes from Baal-zebub, \"lord of flies,\" the god of Ekron in 2 Kings 1:2, perhaps a mocking twist on Baal-zebul, \"Baal the prince.\" By Jesus' day it was a name for the ruler of demons.", "good", ["marshall", "bock"]]],
+    w: [["ἐπιούσιος", "epiousios", "G1967", "daily", "A rare word found almost nowhere outside the Lord's Prayer. Scholars differ on whether it means bread \"for today,\" \"for the coming day,\" or \"what we need.\" Each way, it asks God for what we need, one day at a time.", ["bdag", "marshall"]]],
     refs: [["MAT.6", "Matthew 6:9-13", "The Lord's Prayer"], ["MAT.7", "Matthew 7:7-11", "Ask, seek, knock"], ["MAT.12", "Matthew 12:22-45", "Beelzebul and the sign of Jonah"]],
   },
   12: {
@@ -115,6 +126,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["12:34", "Where your treasure is, there your heart will be also", "Whatever we spend our money and time on is where our hearts end up. So store treasure in heaven."],
       ["12:48", "From everyone who has been given much, much will be required", "More gifts, opportunities and knowledge bring more responsibility. Faithfulness is measured by what we were given."],
     ],
+    bg: [["Building bigger barns", "Farmers stored grain in storehouses or pits to last until the next harvest. The rich man in the parable plans for many years but never thinks of God or his neighbors, and his life ends that night (12:20).", "good", ["green", "bock"]]],
+    w: [["μεριμνάω", "merimnaō", "G3309", "to worry, be anxious", "To be pulled in different directions by care. Jesus tells His followers not to worry about food and clothes, because the Father knows what they need (12:29-30; 1 Peter 5:7).", ["bdag", "marshall"]]],
     refs: [["MAT.6", "Matthew 6:19-34", "Treasure and worry"], ["MAT.10", "Matthew 10:26-33", "Do not fear"], ["ECC.2", "Ecclesiastes 2:18-23", "Who will get it all?"], ["1TI.6", "1 Timothy 6:6-10", "Contentment"]],
   },
   13: {
@@ -126,6 +139,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["13:24", "Strive to enter through the narrow door", "Someone asks if only a few will be saved. Jesus answers personally: make every effort to enter now, before the door is shut (13:25)."],
       ["13:34", "Just as a hen gathers her brood under her wings", "Jesus longs over Jerusalem like a mother hen gathering her chicks, though they would not come."],
     ],
+    bg: [["The Pool of Siloam", "The tower that fell in Siloam is known only from this verse, but the Pool of Siloam was rediscovered in 2004 in Jerusalem's old City of David, with wide stone steps from the time of Jesus. Pilate's killing of the Galileans is not recorded elsewhere, but it fits what Josephus tells of his harsh rule.", "strong", ["bock", "green"]]],
     refs: [["MAT.13", "Matthew 13:31-33", "Mustard seed and leaven"], ["MAT.23", "Matthew 23:37-39", "Jerusalem, Jerusalem"], ["2PE.3", "2 Peter 3:9", "God is patient"]],
   },
   14: {
@@ -137,6 +151,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["14:23", "Compel them to come in, so that my house may be filled", "The master sends his servant to the roads and country lanes to urge everyone in. God wants His house full."],
       ["14:28", "Does not first sit down and calculate the cost?", "No one starts a tower without checking whether they can finish it. Following Jesus means counting the cost and giving Him everything."],
     ],
+    bg: [["Places at a banquet", "At a feast, guests reclined on couches, and the places nearest the host were the most honored. Hosts often invited people who could invite them back. Jesus tells them to invite those who never can (14:13-14).", "good", ["green", "marshall"]]],
+    w: [["μισέω", "miseō", "G3404", "to hate", "In Hebrew-style speech, \"hate\" can mean \"love less\" or \"put second\" (Genesis 29:30-31). Matthew 10:37 says the same thing plainly: whoever loves family more than Jesus is not worthy of Him.", ["bdag", "bock"]]],
     refs: [["PRO.25", "Proverbs 25:6-7", "Do not claim the best place"], ["MAT.22", "Matthew 22:1-14", "The wedding feast"], ["MAT.5", "Matthew 5:13", "Salt of the earth"]],
   },
   16: {
@@ -154,6 +170,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["A real glimpse", "Others note Jesus names Lazarus and speaks plainly, and they see a real picture of conscious existence after death and a fixed destiny.", ["morris"]],
     ],
     common: "All agree it teaches that choices in this life matter for eternity and that God's word is enough to lead us to Him.",
+    bg: [["Abraham's side", "Jewish writings of the time pictured the righteous dead resting with Abraham, as at a great feast where the honored guest reclines next to the host. Lazarus is carried there by angels, while the rich man is in Hades, the place of the dead.", "good", ["bock", "marshall"]]],
+    w: [["μαμωνᾶς", "mamōnas", "G3126", "wealth, money", "An Aramaic word for wealth or possessions. Jesus speaks of it almost as a rival master: \"You cannot serve God and wealth\" (16:13).", ["bdag", "green"]]],
     refs: [["MAT.6", "Matthew 6:24", "Two masters"], ["AMO.6", "Amos 6:4-7", "Woe to those at ease"], ["1TI.6", "1 Timothy 6:17-19", "Rich in good works"]],
   },
   17: {
@@ -165,6 +183,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["17:17", "Were there not ten cleansed? But the nine, where are they?", "Jesus notices who comes back to say thank you. Gratitude is part of faith."],
       ["17:21", "The kingdom of God is in your midst", "The Pharisees wanted signs of when the kingdom would come. Jesus says it is already among them, present in Him."],
     ],
+    bg: [["Lepers at a distance", "The Law told people with skin disease to live apart and call out \"Unclean!\" (Leviticus 13:45-46), so the ten men stood at a distance. Sickness had brought Jews and a Samaritan together, but only the Samaritan came back to thank Jesus.", "good", ["bock", "green"]]],
+    w: [["εὐχαριστέω", "eucharisteō", "G2168", "to give thanks", "The root of \"Eucharist,\" a name some churches use for the Lord's Supper, where Jesus gave thanks for the bread (22:19). The Samaritan falls at Jesus' feet giving thanks.", ["bdag", "marshall"]]],
     refs: [["LEV.14", "Leviticus 14:1-32", "Showing oneself to the priest"], ["MAT.18", "Matthew 18:21-22", "Forgiving seventy times seven"], ["GEN.19", "Genesis 19", "The days of Lot"], ["1TH.5", "1 Thessalonians 5:18", "In everything give thanks"]],
   },
   18: {
@@ -177,6 +197,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["18:27", "The things that are impossible with people are possible with God", "If even the rich cannot buy their way in, who can be saved? No one by their own power, but God can do it."],
       ["18:42", "Receive your sight; your faith has made you well", "The blind man near Jericho kept shouting for mercy. Jesus healed him, and he followed, praising God, and the crowd praised God too."],
     ],
+    bg: [["Prayer at the temple", "People went up to the temple to pray at the hours of the morning and afternoon sacrifices, about 9 AM and 3 PM (Acts 3:1). The Pharisee and the tax collector may have stood there while the lamb was offered for the people's sins.", "good", ["bock", "green"]]],
+    w: [["ἱλάσκομαι", "hilaskomai", "G2433", "to be merciful, make atonement", "The tax collector's prayer, \"God, be merciful to me,\" uses a word tied to atonement for sin (Hebrews 2:17). He asks God to cover his sin.", ["bdag", "marshall"]]],
     refs: [["MRK.10", "Mark 10", "Children, the rich ruler, Bartimaeus"], ["PSA.51", "Psalm 51:17", "A broken and contrite heart"], ["JAS.4", "James 4:6, 10", "God gives grace to the humble"]],
   },
   19: {
@@ -201,6 +223,7 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["20:38", "All live to Him", "God is the God of Abraham, Isaac and Jacob, so they are alive to Him. God is God of the living."],
       ["20:47", "Who devour widows' houses", "Some teachers made long prayers for show while taking advantage of widows. God sees, and their judgment will be greater."],
     ],
+    bg: [["The Sadducees", "The Sadducees were a priestly upper class who ran the temple. They did not believe in the resurrection or angels (Acts 23:8). Jesus answers them from Exodus 3:6, the part of Scripture they valued most.", "strong", ["bock", "marshall"]]],
     refs: [["MAT.21", "Matthew 21:23-46", "Authority and the tenants"], ["MAT.22", "Matthew 22:15-46", "Taxes, resurrection, David's Son"], ["PSA.110", "Psalm 110:1", "The LORD said to my Lord"]],
   },
   21: {
@@ -212,6 +235,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["21:28", "Straighten up and lift up your heads, because your redemption is drawing near", "When frightening things begin to happen, believers can look up with hope, not fear. Their rescue is coming near."],
       ["21:33", "Heaven and earth will pass away, but My words will not pass away", "The world as we know it will not last, but Jesus' words will never fail."],
     ],
+    bg: [["The widow's two coins", "The widow's two small copper coins were lepta, the smallest coins in use. It took 128 of them to make a denarius, a day's wage. Yet Jesus says she gave more than all the rich.", "good", ["bock", "green"]]],
+    w: [["λεπτόν", "lepton", "G3016", "small copper coin", "From a word meaning \"thin\" or \"small.\" Many lepta have been found in Israel, some stamped by Jewish rulers of the time.", ["bdag", "marshall"]]],
     refs: [["MRK.12", "Mark 12:41-44", "The widow's coins"], ["MAT.24", "Matthew 24", "The same teaching"], ["DAN.7", "Daniel 7:13", "Coming with the clouds"]],
   },
   22: {
@@ -238,6 +263,8 @@ export default makeBook({ lang: "Greek", sources, use: ["bock", "green"] }, {
       ["23:46", "Father, into Your hands I commit My spirit", "Jesus' last words, quoting Psalm 31:5, a prayer of trust. He dies as He lived, trusting His Father."],
       ["23:47", "Certainly this man was innocent", "A Roman officer, who had seen many executions, praises God and says Jesus was innocent. Even outsiders saw it."],
     ],
+    bg: [["Jesus before Herod", "Only Luke tells how Pilate sent Jesus to Herod Antipas, ruler of Galilee, who was in Jerusalem for the Passover. Herod hoped to see a miracle, but Jesus said nothing. Luke adds that Pilate and Herod became friends that day (23:12).", "good", ["bock", "green"]]],
+    w: [["παράδεισος", "paradeisos", "G3857", "paradise", "A Persian word for a walled garden or park. The Greek Old Testament uses it for the garden of Eden. Jesus promises the dying thief, \"Today you shall be with Me in Paradise\" (23:43).", ["bdag", "marshall"]]],
     refs: [["PSA.31", "Psalm 31:5", "Into Your hands"], ["ISA.53", "Isaiah 53:12", "He interceded for transgressors"], ["MAT.27", "Matthew 27", "The crucifixion"], ["ACT.7", "Acts 7:59-60", "Stephen echoes Jesus"]],
   },
   24: {
