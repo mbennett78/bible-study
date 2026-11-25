@@ -477,6 +477,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["44:22", "For Your sake we are killed all day long", "For God's sake they face death all day long. Paul quotes this in Romans 8:36, then says nothing can separate us from God's love."],
       ["44:26", "Redeem us for the sake of Your lovingkindness", "The psalm ends with a plea: rise up and help us, and rescue us because of Your steadfast love."],
     ],
+    bg: [["Faithful and still suffering", "Psalm 44 is a community lament by the sons of Korah. The people have not forgotten God (44:17), yet they are suffering. Paul quotes 44:22 in Romans 8:36, \"For Your sake we are being put to death all day long,\" and then answers that nothing can separate us from God's love.", "strong", ["craigie", "kidner"]]],
+    w: [["עוּר", "ur", "H5782", "to awake, stir up", "\"Arouse Yourself, why do You sleep, O Lord? Awake!\" (44:23). It is bold, honest prayer. Psalm 121:4 says God never sleeps, but sometimes it feels that way.", ["halot", "craigie"]]],
     refs: [["ROM.8", "Romans 8:35-37", "More than conquerors"], ["JOB.1", "Job 1", "Suffering that is not punishment"]],
   },
   45: {
@@ -486,6 +488,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["45:6-7", "Your throne, O God, is forever", "The king is addressed as God, whose throne lasts forever. Hebrews 1:8-9 applies these words to Jesus, the Son."],
       ["45:10", "Forget your people and your father's house", "The bride is told to leave her old home behind and give her loyalty to the king."],
     ],
+    bg: [["A royal wedding song", "Psalm 45 celebrates a king's wedding. Hebrews 1:8-9 quotes 45:6-7, \"Your throne, O God, is forever and ever,\" as spoken of the Son. Many Christians read the psalm as a picture of Christ and His bride, the church.", "strong", ["craigie", "kidner"]]],
+    w: [["מָשַׁח", "mashach", "H4886", "to anoint", "To pour oil on someone to set them apart. \"God has anointed You with the oil of joy\" (45:7). From this word comes \"Messiah,\" the Anointed One.", ["halot", "vangemeren"]]],
     refs: [["HEB.1", "Hebrews 1:8-9", "Your throne, O God"], ["EPH.5", "Ephesians 5:25-27", "Christ and His bride"], ["REV.19", "Revelation 19:7", "The marriage of the Lamb"]],
   },
   46: {
@@ -505,6 +509,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["47:5", "God has ascended with a shout", "Christians often read this at Ascension."],
       ["47:9", "The princes of the people have assembled", "Leaders of the nations gather as the people of the God of Abraham. God's promise to bless all nations through Abraham is coming true (Genesis 12:3)."],
     ],
+    bg: [["God goes up with a shout", "Psalm 47 calls all peoples to clap and shout because God reigns over all the earth. \"God has ascended with a shout, the LORD, with the sound of a trumpet\" (47:5) may picture the ark carried up to Jerusalem. Christians often read it on Ascension Day.", "good", ["craigie", "kidner"]]],
+    w: [["מֶלֶךְ", "melek", "H4428", "king", "\"For God is the King of all the earth\" (47:7). Not only Israel's King, but King over every nation.", ["halot", "vangemeren"]]],
     refs: [["GEN.12", "Genesis 12:3", "All families blessed in Abraham"], ["ACT.1", "Acts 1:9-11", "Jesus ascends"]],
   },
   48: {
@@ -514,6 +520,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["48:9", "We have thought on Your lovingkindness", "Inside God's temple, worshipers stop to think about His steadfast love."],
       ["48:13-14", "Tell it to the next generation", "Walk around the city, count its towers, so you can tell the next generation: this God is our God forever, and He will guide us."],
     ],
+    bg: [["Zion \"in the far north\"", "The psalm calls Mount Zion \"in the far north\" (48:2). The word is Zaphon, the name of the mountain where Canaanite stories said the god Baal lived. The psalm says the true mountain of God is Zion. Jesus calls Jerusalem \"the city of the great King\" (48:2; Matthew 5:35).", "strong", ["craigie", "vangemeren"]]],
     refs: [["HEB.12", "Hebrews 12:22", "Mount Zion, the city of the living God"], ["PSA.78", "Psalm 78:4", "Tell the generation to come"]],
   },
   49: {
@@ -523,6 +530,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["49:15", "God will redeem my soul... He will receive me", "The rich cannot buy their way out of death, but God will rescue the psalmist from the grave and take him to Himself."],
       ["49:17", "When he dies he will carry nothing away", "Do not be afraid when others get rich. When they die they take nothing with them, and their glory does not follow."],
     ],
+    bg: [["A riddle about riches", "Psalm 49 is a wisdom psalm, set to music as a riddle. Its point: the rich cannot buy their way out of death, \"for the redemption of his soul is costly\" (49:8), but God will redeem the faithful from the power of the grave (49:15).", "good", ["craigie", "kidner"]]],
+    w: [["פָּדָה", "padah", "H6299", "to ransom, redeem", "To pay a price to set someone free. No one can ransom his brother (49:7), \"but God will redeem my soul\" (49:15).", ["halot", "craigie"]]],
     refs: [["LUK.12", "Luke 12:16-21", "The rich fool"], ["1TI.6", "1 Timothy 6:7", "We brought nothing into the world"], ["MRK.8", "Mark 8:36-37", "What will a man give in exchange for his soul?"]],
   },
   50: {
@@ -533,6 +542,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["50:15", "Call upon Me in the day of trouble", "God invites His people to call on Him in trouble. He will rescue them, and they will honor Him."],
       ["50:23", "He who offers a sacrifice of thanksgiving honors Me", "A thankful heart honors God, and to the one who walks rightly God will show His salvation."],
     ],
+    bg: [["God takes His people to court", "Psalm 50 is the first psalm of Asaph, a chief musician under David. It is like a covenant court case: God summons heaven and earth as witnesses. He does not need sacrifices, \"for the cattle on a thousand hills\" are already His (50:10). He wants thanks and obedience.", "good", ["craigie", "kidner"]]],
+    w: [["תּוֹדָה", "todah", "H8426", "thanksgiving, thank offering", "Both a thank offering and the act of giving thanks. \"Offer to God a sacrifice of thanksgiving\" (50:14; Hebrews 13:15).", ["halot", "vangemeren"]]],
     refs: [["HEB.13", "Hebrews 13:15", "A sacrifice of praise"], ["MIC.6", "Micah 6:6-8", "What does the LORD require?"]],
   },
   51: {
@@ -554,6 +565,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["52:7", "Trusted in the abundance of his riches", "This man did not make God his refuge. He trusted his great wealth and grew strong by destroying others."],
       ["52:8", "Like a green olive tree in the house of God", "Olive trees can live for hundreds of years. David, trusting God's love, is like a green olive tree in God's house."],
     ],
+    bg: [["Doeg the Edomite", "The heading recalls Doeg the Edomite, Saul's chief herdsman, who told Saul that the priests at Nob had helped David and then killed eighty-five of them (1 Samuel 21:7; 22:9-19).", "strong", ["tate", "kidner"]]],
+    w: [["זַיִת", "zayit", "H2132", "olive tree", "Olive trees live for centuries and stay green. \"I am like a green olive tree in the house of God\" (52:8), in contrast with the uprooted wicked (52:5).", ["halot", "tate"]]],
     refs: [["1SA.22", "1 Samuel 22:9-19", "Doeg's betrayal"], ["JER.17", "Jeremiah 17:7-8", "Like a tree planted by water"]],
   },
   53: {
@@ -584,6 +597,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["55:17", "Evening and morning and at noon", "Evening, morning and noon, David keeps bringing his complaint to God, and God hears his voice."],
       ["55:22", "Cast your burden upon the LORD", "Throw your burden on the LORD, and He will hold you up. Peter echoes this: cast all your anxiety on Him (1 Peter 5:7)."],
     ],
+    bg: [["Betrayed by a friend", "\"It is not an enemy who reproaches me... but it is you, a man my equal, my companion\" (55:12-13). Many connect this with Ahithophel, David's counselor who joined Absalom (2 Samuel 15:31). 1 Peter 5:7 echoes 55:22.", "good", ["tate", "kidner"]]],
+    w: [["יְהָב", "yehab", "H3053", "burden, what is given", "\"Cast your burden upon the LORD and He will sustain you\" (55:22). The word may mean \"what has been given to you,\" your lot in life.", ["halot", "vangemeren"]]],
     refs: [["1PE.5", "1 Peter 5:7", "Casting all your anxiety on Him"], ["2SA.15", "2 Samuel 15:31", "Ahithophel betrays David"]],
   },
   56: {
@@ -593,6 +608,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["56:8", "Put my tears in Your bottle", "God keeps count of David's wanderings and stores his tears as if in a bottle. Not one is forgotten."],
       ["56:11", "What can man do to me?", "Because David trusts God, he will not be afraid. What can mere people do to him? Hebrews 13:6 echoes this."],
     ],
+    bg: [["Tears in a bottle", "The heading says the Philistines seized David in Gath. \"Put my tears in Your bottle\" (56:8) pictures a leather skin bottle used for water or wine. Not one of his tears is lost or forgotten by God.", "good", ["tate", "kidner"]]],
+    w: [["נֹאד", "nod", "H4997", "skin bottle", "A container made from animal skin. God keeps David's tears as carefully as a traveler keeps his water.", ["halot", "tate"]]],
     refs: [["1SA.21", "1 Samuel 21:10", "David in Gath"], ["REV.21", "Revelation 21:4", "He will wipe away every tear"]],
   },
   57: {
@@ -618,6 +635,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["Honest prayers we learn from", "Others stress that they show the real anger of the oppressed and teach us to bring even our anger to God, while Jesus also calls us to love and pray for enemies.", ["wilson", "tate"]],
     ],
     common: "All agree these psalms leave judgment in God's hands and that Christians read them in light of Jesus' command to love enemies.",
+    bg: [["Rulers who will not listen", "Psalm 58 speaks to unjust rulers, called \"gods\" or \"mighty ones,\" who should be judging rightly. They are like a cobra that will not listen to the snake charmer (58:4-5). The psalm ends sure that \"there is a God who judges on earth\" (58:11).", "good", ["tate", "kidner"]]],
     refs: [["ROM.12", "Romans 12:19", "Vengeance is Mine"], ["MAT.5", "Matthew 5:44", "Love your enemies"], ["REV.6", "Revelation 6:10", "How long, O Lord, until You judge?"]],
   },
   59: {
@@ -627,6 +645,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["59:16", "I shall joyfully sing of Your lovingkindness in the morning", "The enemies roam at night, but David will sing of God's strength and steadfast love in the morning."],
       ["59:17", "O my strength, I will sing praises to You", "God is David's strength, his fortress, and the God who shows him steadfast love."],
     ],
+    bg: [["Saul's men at the house", "The heading recalls the night Saul sent men to watch David's house to kill him, and Michal let him down through a window (1 Samuel 19:11-17). The enemies prowl like dogs at night (59:6, 14), but David sings of God's strength in the morning (59:16).", "good", ["tate", "kidner"]]],
+    w: [["מִשְׂגָּב", "misgab", "H4869", "stronghold, high refuge", "A high place out of reach of enemies. \"God is my stronghold\" (59:9, 17).", ["halot", "vangemeren"]]],
     refs: [["1SA.19", "1 Samuel 19:11-17", "Michal helps David escape"]],
   },
   60: {
@@ -636,6 +656,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["60:11", "Deliverance by man is in vain", "Human help is worthless in this fight. David asks God for help against the enemy."],
       ["60:12", "Through God we shall do valiantly", "With God the people will fight bravely, and He will trample their enemies."],
     ],
+    bg: [["Wars with Aram and Edom", "The heading ties Psalm 60 to David's wars with Aram and Edom (2 Samuel 8:3-14; 1 Chronicles 18). Verses 5-12 appear again in Psalm 108:6-13, joined with part of Psalm 57.", "strong", ["tate", "wilson"]]],
     refs: [["2SA.8", "2 Samuel 8:13-14", "Victory over Edom"], ["PSA.108", "Psalm 108", "Repeats this psalm"]],
   },
   61: {
@@ -657,6 +678,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["62:10", "If riches increase, do not set your heart upon them", "Do not trust in getting rich by force or theft, and even if riches grow honestly, do not set your heart on them."],
       ["62:11-12", "Power belongs to God... and lovingkindness", "God has made two things clear: power belongs to Him, and so does steadfast love. He is both strong and kind."],
     ],
+    bg: [["\"Pour out your heart\"", "Psalm 62 moves from David's own quiet trust to teaching others: \"Trust in Him at all times, O people; pour out your heart before Him\" (62:8). The heading names Jeduthun, one of David's chief musicians.", "good", ["tate", "kidner"]]],
+    w: [["דּוּמִיָּה", "dumiyyah", "H1747", "silence, quiet rest", "\"My soul waits in silence for God only\" (62:1). Quiet trust that stops striving and rests in God.", ["halot", "tate"]]],
     refs: [["1PE.5", "1 Peter 5:7", "Cast your cares on Him"], ["1TI.6", "1 Timothy 6:17", "Hope not in riches"]],
   },
   63: {
@@ -667,6 +690,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["63:6", "When I remember You on my bed", "Lying awake at night, David thinks about God through the watches of the night."],
       ["63:8", "My soul clings to You", "David clings to God, and God's right hand holds him up. Both are true at once."],
     ],
+    bg: [["The wilderness of Judah", "The heading places David in the wilderness of Judah, the dry, rocky land west of the Dead Sea, where he hid from Saul and later from Absalom. There he writes, \"My soul thirsts for You... in a dry and weary land where there is no water\" (63:1).", "strong", ["tate", "kidner"]]],
+    w: [["צָמֵא", "tsame", "H6770", "to thirst", "Thirst in the desert is a desperate need. David longs for God like that. Jesus said, \"If anyone is thirsty, let him come to Me and drink\" (John 7:37).", ["halot", "vangemeren"]]],
     refs: [["MAT.5", "Matthew 5:6", "Those who hunger and thirst"], ["PHP.3", "Philippians 3:8", "Surpassing value of knowing Christ"]],
   },
   64: {
@@ -677,6 +702,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["64:7", "But God will shoot at them with an arrow", "The enemies shot words like arrows (64:3-4). Now God shoots His arrow, and their own tongues bring them down (64:8)."],
       ["64:9", "Then all men will fear, and will declare the work of God", "When God acts, people everywhere learn from it."],
     ],
+    bg: [["Words like arrows", "The enemies sharpen their tongues like swords and aim bitter words like arrows, shooting from hiding (64:3-4). Then God shoots His own arrow, and their tongues bring them down (64:7-8).", "good", ["tate", "kidner"]]],
     refs: [["PRO.12", "Proverbs 12:18", "Rash words like sword thrusts"], ["JAS.3", "James 3:6-8", "The tongue is a fire"]],
   },
   65: {
@@ -686,6 +712,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["65:9", "You visit the earth and cause it to overflow", "God cares for the land, watering it and filling the streams so the grain can grow."],
       ["65:11", "You have crowned the year with Your bounty", "God crowns the whole year with His goodness, and abundance overflows. A fitting verse for Thanksgiving."],
     ],
+    bg: [["A harvest psalm", "Psalm 65 praises God who forgives sins, answers prayer and waters the earth. In Israel the crops depended on the early rains of autumn and the late rains of spring. \"You crown the year with Your bounty\" (65:11).", "good", ["tate", "kidner"]]],
     refs: [["ACT.14", "Acts 14:17", "He gave you rains and fruitful seasons"], ["MAT.6", "Matthew 6:26-30", "God feeds and clothes"]],
   },
   66: {
@@ -696,6 +723,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["66:16", "Come and hear... I will tell of what He has done for my soul", "The psalmist moves from what God did for the nation to what God did for him personally. Come and hear my story."],
       ["66:18", "If I regard wickedness in my heart, the Lord will not hear", "Holding on to sin we love gets in the way of prayer. But God did listen, because the psalmist turned from it (66:19)."],
     ],
+    bg: [["\"Come and hear\"", "Psalm 66 starts with all the earth and the exodus (66:6), then narrows to one person: \"Come and hear, all who fear God, and I will tell of what He has done for my soul\" (66:16). Public praise includes personal testimony.", "good", ["tate", "kidner"]]],
     refs: [["EXO.14", "Exodus 14", "The Red Sea"], ["1PE.1", "1 Peter 1:7", "Faith tested by fire"]],
   },
   67: {
@@ -705,6 +733,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["67:2", "That Your way may be known on the earth", "Israel asks for God's blessing so that every nation will come to know His ways and His salvation."],
       ["67:7", "All the ends of the earth may fear Him", "This is a missionary psalm. God's blessing on His people is meant to lead all the ends of the earth to honor Him."],
     ],
+    bg: [["The priestly blessing for the world", "Psalm 67 opens with words from the priests' blessing in Numbers 6:24-26: \"God be gracious to us and bless us, and cause His face to shine upon us.\" Then it asks that the blessing reach all nations (67:2).", "strong", ["tate", "kidner"]]],
+    w: [["פָּנִים", "panim", "H6440", "face, presence", "For God's face to shine on someone means His favor and presence are with them.", ["halot", "vangemeren"]]],
     refs: [["NUM.6", "Numbers 6:24-26", "The priestly blessing"], ["MAT.28", "Matthew 28:19", "Make disciples of all nations"]],
   },
   68: {
@@ -715,6 +745,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["68:18", "You have ascended on high", "Paul applies this to Christ in Ephesians 4:8."],
       ["68:19", "Who daily bears our burden", "Blessed be the Lord, who carries our load day by day. He is the God who saves."],
     ],
+    bg: [["The Rider of the clouds", "Psalm 68:4 calls God \"Him who rides through the deserts,\" which many translate \"rides on the clouds.\" Canaanite texts from Ugarit gave Baal the title \"rider of the clouds\"; the psalm gives that honor to the LORD. Paul quotes 68:18 in Ephesians 4:8.", "strong", ["tate", "vangemeren"]]],
     refs: [["NUM.10", "Numbers 10:35", "Rise up, O LORD"], ["EPH.4", "Ephesians 4:8-10", "He led captive a host of captives"]],
   },
   69: {
@@ -725,6 +756,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["69:21", "For my thirst they gave me vinegar", "David's enemies gave him poison for food and sour wine for thirst. At the cross Jesus was offered sour wine (Matthew 27:48; John 19:28-29)."],
       ["69:30", "I will praise the name of God with song", "After deep distress, the psalm ends in praise. A thankful song pleases God more than an ox offered on the altar (69:31)."],
     ],
+    bg: [["Quoted often in the New Testament", "After Psalms 22 and 110, Psalm 69 is one of the psalms quoted most in the New Testament: zeal for God's house (69:9; John 2:17), insults falling on Christ (Romans 15:3), and vinegar to drink (69:21; Matthew 27:34, 48).", "strong", ["tate", "kidner"]]],
+    w: [["קִנְאָה", "qin'ah", "H7068", "zeal, jealousy", "Burning devotion. \"Zeal for Your house has consumed me\" (69:9). The disciples remembered this when Jesus cleared the temple.", ["halot", "tate"]]],
     refs: [["JHN.2", "John 2:17", "Zeal for Your house"], ["MAT.27", "Matthew 27:34, 48", "Gall and sour wine"], ["ROM.15", "Romans 15:3", "The reproaches fell on Me"]],
   },
   70: {
@@ -746,6 +779,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["71:14", "I will praise You yet more and more", "Whatever happens, he will keep hoping and keep praising God more and more."],
       ["71:18", "Until I declare Your strength to this generation", "Even with gray hair, he wants to tell the next generation about God's power. Older believers have a ministry of passing on the faith."],
     ],
+    bg: [["A prayer for old age", "Psalm 71 is the prayer of an older believer who has trusted God \"from my youth\" (71:5, 17). \"Do not cast me off in the time of old age\" (71:9). He still has work to do: to tell the next generation of God's strength.", "good", ["tate", "kidner"]]],
+    w: [["שֵׂיבָה", "sebah", "H7872", "gray hair, old age", "\"Even when I am old and gray, O God, do not forsake me, until I declare Your strength to this generation\" (71:18).", ["halot", "vangemeren"]]],
     refs: [["ISA.46", "Isaiah 46:4", "Even to your old age I will be the same"], ["2TI.1", "2 Timothy 1:5", "Faith passed down"]],
   },
   72: {
@@ -756,6 +791,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["72:11", "Let all kings bow down before him", "May all kings bow and all nations serve him. No earthly king fulfilled this; many see it pointing to the Messiah."],
       ["72:19", "May the whole earth be filled with His glory", "This doxology closes Book Two of the Psalms (Psalms 42-72). A final note says the prayers of David son of Jesse are ended (72:20)."],
     ],
+    bg: [["The end of David's prayers", "Psalm 72 is a prayer for the king, headed \"of Solomon.\" It ends Book 2 of the Psalms with a doxology and a note: \"The prayers of David the son of Jesse are ended\" (72:20). The psalms were gathered into five books over time.", "strong", ["tate", "wilson"]]],
+    w: [["מִשְׁפָּט", "mishpat", "H4941", "justice", "Fair judgment that protects the weak. The ideal king \"will vindicate the afflicted of the people, save the children of the needy\" (72:4).", ["halot", "vangemeren"]]],
     refs: [["ISA.11", "Isaiah 11:1-5", "The righteous King"], ["MAT.2", "Matthew 2:11", "The wise men bring gifts"], ["HAB.2", "Habakkuk 2:14", "The earth filled with the knowledge of His glory"]],
   },
   73: {
