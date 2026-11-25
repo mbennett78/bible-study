@@ -1110,6 +1110,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["101:3", "I will set no worthless thing before my eyes", "David will not set anything worthless or vile before his eyes. Guarding what we look at helps guard the heart."],
       ["101:6", "My eyes shall be upon the faithful", "David will look for faithful people to be near him and serve him. Our companions shape us."],
     ],
+    bg: [["A king's promises", "Psalm 101 reads like a new king's vow: to walk with integrity at home, to keep liars and slanderers out of his court, and to judge the land \"every morning\" (101:8), when kings heard cases (2 Samuel 15:2).", "good", ["allen", "kidner"]]],
+    w: [["תָּמִים", "tamim", "H8549", "blameless, whole", "Complete and sound, like an animal without defect for sacrifice. \"I will give heed to the blameless way... I will walk within my house in the integrity of my heart\" (101:2).", ["halot", "allen"]]],
     refs: [["PHP.4", "Philippians 4:8", "Whatever is true, honorable, pure"], ["PRO.4", "Proverbs 4:23", "Guard your heart"]],
   },
   102: {
@@ -1119,6 +1121,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["102:18", "Written for the generation to come", "This prayer was written down for a generation not yet born, so they too would praise the LORD."],
       ["102:25-27", "You are the same", "Hebrews 1:10-12 applies this to the Son."],
     ],
+    bg: [["Quoted in Hebrews", "Psalm 102 is the prayer of someone overwhelmed, \"like a lonely bird on a housetop\" (102:7). Hebrews 1:10-12 applies its closing words to the Son: the heavens will wear out like clothing, \"but You are the same, and Your years will not come to an end.\"", "strong", ["allen", "kidner"]]],
     refs: [["HEB.1", "Hebrews 1:10-12", "You remain"], ["HEB.13", "Hebrews 13:8", "Jesus Christ is the same"]],
   },
   103: {
@@ -1139,6 +1142,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["104:24", "In wisdom You have made them all", "How many are God's works! He made them all in wisdom, and the earth is full of His creatures."],
       ["104:30", "You send forth Your Spirit, they are created", "When God sends His Spirit, creatures come to life, and He renews the face of the earth."],
     ],
+    bg: [["A creation hymn", "Psalm 104 walks through creation much like Genesis 1: light, sky, waters, land, plants, animals. Scholars have long noticed likenesses to an Egyptian \"Hymn to the Aten\" from about 1350 BC, but the psalm praises the one Creator, who made even the sun and moon to serve His purpose (104:19).", "strong", ["allen", "kidner"]]],
+    w: [["לִוְיָתָן", "livyatan", "H3882", "Leviathan", "A great sea creature, a symbol of chaos in ancient stories. Here it is simply one of God's creatures, made \"to sport in\" the sea (104:26), like a pet at play.", ["halot", "vangemeren"]]],
     refs: [["GEN.1", "Genesis 1", "Creation"], ["JOB.38", "Job 38-39", "God's wisdom in creation"], ["MAT.6", "Matthew 6:26", "Your Father feeds them"]],
   },
   105: {
@@ -1148,6 +1153,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["105:17", "He sent a man before them, Joseph", "Joseph was sold as a slave, but God had sent him ahead to save his family from famine (Genesis 45:5)."],
       ["105:45", "So that they might keep His statutes", "God did all this so His people would keep His laws. His grace comes first, and obedience is the grateful response."],
     ],
+    bg: [["Sung when the ark came home", "Psalm 105:1-15 also appears in the song of 1 Chronicles 16:8-22, sung when the ark came to Jerusalem. The psalm retells God's faithfulness from Abraham through Joseph and the exodus, and tells how He kept every promise.", "strong", ["allen", "wilson"]]],
     refs: [["GEN.15", "Genesis 15", "The covenant with Abraham"], ["GEN.50", "Genesis 50:20", "God meant it for good"], ["1CH.16", "1 Chronicles 16:8-22", "Sung when the ark came"]],
   },
   106: {
@@ -1158,6 +1164,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["106:23", "Had not Moses His chosen one stood in the breach", "After the golden calf, Moses stood in the gap between God and the people, praying for them (Exodus 32:11-14)."],
       ["106:45", "He remembered His covenant", "Again and again Israel rebelled, yet God remembered His covenant and relented, because of His great love."],
     ],
+    bg: [["A confession of history", "Where Psalm 105 tells of God's faithfulness, Psalm 106 confesses Israel's unfaithfulness from Egypt to the exile, yet God \"remembered His covenant\" (106:45). Its closing doxology ends Book 4 of the Psalms, and 1 Chronicles 16:34-36 uses its first and last lines.", "good", ["allen", "wilson"]]],
     refs: [["EXO.32", "Exodus 32", "The golden calf"], ["NUM.25", "Numbers 25", "Baal of Peor"], ["NEH.9", "Nehemiah 9", "A similar confession"]],
   },
   107: {
@@ -1168,6 +1175,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["107:20", "He sent His word and healed them", "Sick people near death cried to the LORD. He sent His word, healed them and rescued them from the grave."],
       ["107:29", "He caused the storm to be still", "Sailors in a storm cried out, and God calmed the storm and hushed the waves. Jesus did the same on the Sea of Galilee (Mark 4:39)."],
     ],
+    bg: [["Four rescues", "Psalm 107 opens Book 5 with four pictures of people in trouble: lost travelers, prisoners, the sick and sailors in a storm. Each time \"they cried out to the LORD in their trouble,\" and He saved them. Sailors on the Sea of Galilee saw Jesus do just what 107:29 says.", "good", ["allen", "kidner"]]],
+    w: [["גָּאַל", "ga'al", "H1350", "to redeem", "To buy back or rescue a family member as their close relative. \"Let the redeemed of the LORD say so\" (107:2).", ["halot", "allen"]]],
     refs: [["MRK.4", "Mark 4:39", "Hush, be still"], ["LUK.4", "Luke 4:18", "Release to the captives"]],
   },
   108: {
@@ -1188,6 +1197,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["109:8", "Let another take his office", "Peter applied this to Judas (Acts 1:20)."],
       ["109:26", "Save me according to Your lovingkindness", "After strong words about his enemies, David leaves the matter with God: help me, LORD, and save me because of Your steadfast love."],
     ],
+    bg: [["Quoted about Judas", "Psalm 109 is one of the strongest prayers against an enemy, a false friend who repaid love with hatred (109:4-5). Peter applied 109:8, \"Let another take his office,\" to choosing a replacement for Judas (Acts 1:20).", "strong", ["allen", "kidner"]]],
     refs: [["ACT.1", "Acts 1:20", "Let another man take his office"], ["PSA.58", "Psalm 58", "Another imprecatory psalm"], ["LUK.6", "Luke 6:28", "Pray for those who mistreat you"]],
   },
   110: {
@@ -1207,6 +1217,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["111:4", "He has made His wonders to be remembered", "God made His wonderful works to be remembered, like the Passover meal that recalls the exodus. He is gracious and compassionate."],
       ["111:10", "The fear of the LORD is the beginning of wisdom", "Wisdom starts with reverence for the LORD, as Proverbs 1:7 and 9:10 also say. Those who obey Him gain good understanding."],
     ],
+    bg: [["An alphabet of praise", "Psalm 111 is an acrostic: each half-line begins with the next letter of the Hebrew alphabet. It ends with \"The fear of the LORD is the beginning of wisdom\" (111:10), the same truth as Proverbs 1:7 and 9:10.", "strong", ["allen", "kidner"]]],
     refs: [["PRO.9", "Proverbs 9:10", "The beginning of wisdom"], ["PSA.112", "Psalm 112", "The companion psalm"]],
   },
   112: {
@@ -1216,6 +1227,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["112:7", "He will not fear evil tidings", "Bad news will not shake this person, because their heart is steady, trusting in the LORD."],
       ["112:9", "He has given freely to the poor", "They give generously to the poor, and their goodness lasts forever. Paul quotes this in 2 Corinthians 9:9."],
     ],
+    bg: [["Twin of Psalm 111", "Psalm 112 is also an alphabet acrostic, written as a pair with Psalm 111. Words used of God in Psalm 111, such as \"His righteousness endures forever,\" are now used of the person who fears Him (112:3, 9). Paul quotes 112:9 about generous giving (2 Corinthians 9:9).", "strong", ["allen", "kidner"]]],
     refs: [["2CO.9", "2 Corinthians 9:9", "He scattered abroad, he gave to the poor"], ["PSA.1", "Psalm 1", "The blessed man"]],
   },
   113: {
@@ -1235,6 +1247,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["114:7", "Tremble, O earth, before the Lord", "The whole earth should tremble before the Lord, the God of Jacob."],
       ["114:8", "Who turned the rock into a pool of water", "God turned rock into a pool and flint into a spring for His thirsty people in the wilderness (Exodus 17:6)."],
     ],
+    bg: [["A Passover song", "Psalms 113-118 are called the Hallel (\"praise\"), sung at Passover. Psalm 114 retells the exodus: the sea fled, the Jordan turned back, the mountains skipped like rams. The hymn Jesus and His disciples sang after the Last Supper was probably from these psalms (Matthew 26:30).", "strong", ["allen", "wilson"]]],
     refs: [["EXO.14", "Exodus 14", "The Red Sea"], ["JOS.3", "Joshua 3", "The Jordan stopped"], ["1CO.10", "1 Corinthians 10:4", "The rock was Christ"]],
   },
   115: {
@@ -1244,6 +1257,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["115:4-7", "They have mouths, but they cannot speak", "Idols made of silver and gold have mouths, eyes, ears and hands, but they cannot speak, see, hear or help."],
       ["115:8", "Those who make them will become like them", "Those who make idols and trust them become like them, empty and lifeless. We become like what we worship."],
     ],
+    bg: [["Idols that cannot", "\"They have mouths, but they cannot speak; they have eyes, but they cannot see\" (115:5). Psalm 115, part of the Passover Hallel, mocks idols made of silver and gold. \"Those who make them will become like them\" (115:8).", "good", ["allen", "kidner"]]],
     refs: [["ISA.44", "Isaiah 44:9-20", "The folly of idols"], ["1CO.10", "1 Corinthians 10:31", "Do all to the glory of God"]],
   },
   116: {
@@ -1254,6 +1268,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["116:12-13", "What shall I render to the LORD?", "How can he repay God's goodness? He will lift the cup of salvation and call on the LORD's name. Gratitude responds with worship."],
       ["116:15", "Precious in the sight of the LORD is the death of His godly ones", "The death of God's faithful people is precious and costly in His sight. He does not take it lightly."],
     ],
+    bg: [["The cup of salvation", "Part of the Passover Hallel, Psalm 116 thanks God for rescue from death. \"I shall lift up the cup of salvation\" (116:13) may refer to a cup of thanksgiving at a meal. Cups of wine were part of the Passover meal Jesus shared.", "good", ["allen", "kidner"]]],
+    w: [["כּוֹס", "kos", "H3563", "cup", "A cup can stand for one's portion in life, blessing or judgment. Here it is a cup of salvation, raised in thanks.", ["halot", "vangemeren"]]],
     refs: [["2CO.4", "2 Corinthians 4:13", "I believed, therefore I spoke"], ["MAT.11", "Matthew 11:28-29", "Rest for your souls"]],
   },
   117: {
@@ -1338,6 +1354,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["124:7", "As a bird out of the snare", "The trap was set, but it broke, and God's people escaped like a bird from a hunter's snare."],
       ["124:8", "Our help is in the name of the LORD", "Our help is in the name of the LORD, who made heaven and earth. Many churches open worship with these words."],
     ],
+    bg: [["Songs of Ascents", "Psalms 120-134 are headed \"A Song of Ascents.\" Many think pilgrims sang them going up to Jerusalem for the feasts. In Psalm 124 the people escape like a bird from the hunter's snare (124:7).", "good", ["allen", "wilson"]]],
     refs: [["ROM.8", "Romans 8:31", "If God is for us"]],
   },
   125: {
@@ -1358,6 +1375,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["126:3", "The LORD has done great things for us", "Even the nations said the LORD had done great things for them. God's people agree, and they are glad."],
       ["126:5", "Those who sow in tears shall reap with joyful shouting", "A farmer may plant with tears in a hard year, but harvest comes with shouts of joy. Sorrow sown in faith will not be wasted."],
     ],
+    bg: [["Streams in the Negev", "Psalm 126 remembers the joy of coming home from exile. \"Restore our captivity, O LORD, as the streams in the South\" (126:4): the dry stream beds of the Negev can suddenly fill with rushing water after rain.", "good", ["allen", "kidner"]]],
+    w: [["נֶגֶב", "negev", "H5045", "south, the Negev", "The dry southern region of Israel. Its sudden floods picture joy returning all at once. \"Those who sow in tears shall reap with joyful shouting\" (126:5).", ["halot", "allen"]]],
     refs: [["EZR.1", "Ezra 1", "The return from exile"], ["GAL.6", "Galatians 6:9", "In due time we will reap"]],
   },
   127: {
@@ -1367,6 +1386,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["127:2", "He gives to His beloved even in his sleep", "Getting up early and staying up late in anxious work does not secure our lives. God gives sleep to those He loves."],
       ["127:3", "Children are a gift of the LORD", "Children are a gift and a reward from the LORD, like arrows in a warrior's hand (127:4)."],
     ],
+    bg: [["Solomon's psalm", "Psalm 127 is the only Song of Ascents headed \"of Solomon,\" the king who built the temple. \"Unless the LORD builds the house, they labor in vain who build it\" (127:1). It moves from houses and cities to children, a gift from God.", "good", ["allen", "kidner"]]],
+    w: [["שָׁוְא", "shav", "H7723", "in vain, emptiness", "Worthless, coming to nothing. Used three times in 127:1-2: all our work is empty without God.", ["halot", "vangemeren"]]],
     refs: [["MAT.6", "Matthew 6:25-34", "Do not be anxious"], ["PSA.128", "Psalm 128", "Blessings on the home"]],
   },
   128: {
@@ -1376,6 +1397,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["128:3", "Your children like olive plants around your table", "A wife like a fruitful vine in the home, and children like young olive shoots around the table. A picture of a blessed family."],
       ["128:6", "May you see your children's children", "The psalm ends with a wish many grandparents know: may you live to see your children's children."],
     ],
+    bg: [["Olive shoots around the table", "Psalm 128 blesses the home of one who fears the LORD: his wife like a fruitful vine, his children \"like olive plants around your table\" (128:3). New shoots grow up around the base of an old olive tree.", "good", ["allen", "kidner"]]],
     refs: [["PRO.17", "Proverbs 17:6", "Grandchildren are the crown of old men"]],
   },
   129: {
@@ -1398,6 +1420,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["130:6", "More than the watchmen for the morning", "Night watchmen longed for the morning when their watch was over. The psalmist waits for the Lord even more eagerly."],
       ["130:7", "With Him is abundant redemption", "Israel can hope in the LORD, because with Him is steadfast love and full, abundant redemption."],
     ],
+    bg: [["\"Out of the depths\"", "Psalm 130 is one of seven psalms the early church called penitential psalms, prayers of repentance (with 6, 32, 38, 51, 102 and 143). Martin Luther turned it into a hymn, \"Out of the Depths I Cry to Thee.\"", "strong", ["allen", "kidner"]]],
+    w: [["סְלִיחָה", "selichah", "H5547", "forgiveness", "\"But there is forgiveness with You, that You may be feared\" (130:4). God's forgiveness does not make us careless; it draws us to reverence Him.", ["halot", "allen"]]],
     refs: [["ROM.3", "Romans 3:23-24", "Justified by His grace"], ["1JN.1", "1 John 1:9", "He is faithful to forgive"]],
   },
   131: {
@@ -1417,6 +1441,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["132:11", "The LORD has sworn to David a truth", "God swore an oath to David that one of his descendants would sit on his throne forever (2 Samuel 7:12-16)."],
       ["132:17", "There I will cause the horn of David to spring forth", "A horn was a symbol of strength. God promised to make a horn grow for David. Zechariah praised God for raising up this horn of salvation in Jesus (Luke 1:69)."],
     ],
+    bg: [["David's vow and God's oath", "Psalm 132 remembers David's vow to find a home for the ark (2 Samuel 6-7) and God's oath to set David's descendant on his throne (132:11). Solomon prayed 132:8-10 at the temple's dedication (2 Chronicles 6:41-42).", "strong", ["allen", "wilson"]]],
     refs: [["2SA.7", "2 Samuel 7", "God's covenant with David"], ["LUK.1", "Luke 1:69", "A horn of salvation in the house of David"]],
   },
   133: {
@@ -1426,6 +1451,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["133:2", "Like the precious oil upon the head", "Unity is like the fragrant anointing oil poured on Aaron's head that ran down his beard and robes (Exodus 29:7), holy and rich."],
       ["133:3", "There the LORD commanded the blessing", "It is like the heavy dew of Mount Hermon falling on Zion. There the LORD commands His blessing, life forever."],
     ],
+    bg: [["Oil and dew", "Unity among God's people is like the anointing oil poured on Aaron the high priest, running down his beard (Exodus 29:7), and like the heavy dew of Mount Hermon, the tall mountain in the north whose dew is famous.", "good", ["allen", "kidner"]]],
     refs: [["JHN.17", "John 17:21", "That they may all be one"], ["EPH.4", "Ephesians 4:3", "Preserve the unity of the Spirit"]],
   },
   134: {
@@ -1445,6 +1471,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["135:6", "Whatever the LORD pleases, He does", "The LORD does whatever He pleases in heaven, on earth, in the seas and all the depths. No idol can say that."],
       ["135:15-18", "The idols of the nations", "The idols of the nations are silver and gold made by human hands. They cannot speak, see or hear, as in Psalm 115:4-8."],
     ],
+    bg: [["A psalm built from others", "Psalm 135 borrows lines from other parts of Scripture, such as 135:15-18 from Psalm 115. It praises God for choosing Israel, ruling creation and defeating kings like Sihon and Og (Numbers 21).", "good", ["allen", "wilson"]]],
     refs: [["EXO.19", "Exodus 19:5", "My own possession"], ["PSA.115", "Psalm 115:4-8", "Idols that cannot speak"]],
   },
   136: {
@@ -1472,6 +1499,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["Recorded, not commanded", "Others stress that Scripture faithfully records these feelings without approving them as models, and that Jesus teaches love for enemies, so the psalm shows how deep the wound was.", ["wilson", "vangemeren"]],
     ],
     common: "All agree the psalm shows the deep pain of exile, and that Christians bring such anger to God and read it in light of the cross.",
+    bg: [["By the rivers of Babylon", "Babylon was crossed by the Euphrates and many canals. The exiles hung up their harps on the poplar trees and could not sing the LORD's song in a foreign land (137:1-4). The psalm's bitter ending is an honest cry, handed to God, about the violence they had suffered (137:7-9).", "strong", ["allen", "kidner"]]],
     refs: [["JER.51", "Jeremiah 51:24", "Babylon repaid"], ["OBA.1", "Obadiah 10-14", "Edom's cruelty"], ["MAT.5", "Matthew 5:44", "Love your enemies"]],
   },
   138: {
@@ -1481,6 +1509,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["138:6", "He regards the lowly", "Though the LORD is high, He looks kindly on the lowly. The proud He knows only from far away."],
       ["138:8", "The LORD will accomplish what concerns me", "The LORD will complete His purpose for David. His love lasts forever, so He will not abandon the work of His hands."],
     ],
+    bg: [["Before the gods", "David gives thanks \"before the gods\" (138:1), boldly praising the LORD in a world of other gods and kings. He looks ahead to the day when \"all the kings of the earth will give thanks to You\" (138:4).", "good", ["allen", "kidner"]]],
     refs: [["PHP.1", "Philippians 1:6", "He who began a good work will perfect it"], ["JAS.4", "James 4:6", "Grace to the humble"]],
   },
   139: {
@@ -1501,6 +1530,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["140:7", "You have covered my head in the day of battle", "God has protected David's head in battle like a helmet. He is the strength of his salvation."],
       ["140:12", "The LORD will maintain the cause of the afflicted", "David is sure that the LORD will defend the cause of the poor and bring justice for the needy."],
     ],
+    bg: [["Poison of vipers", "\"They sharpen their tongues as a serpent; poison of a viper is under their lips\" (140:3). Paul quotes this line in Romans 3:13 to describe the human tongue apart from God.", "strong", ["allen", "kidner"]]],
     refs: [["ROM.3", "Romans 3:13", "The poison of asps"], ["EPH.6", "Ephesians 6:17", "The helmet of salvation"]],
   },
   141: {
@@ -1510,6 +1540,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["141:3", "Set a guard over my mouth", "David asks God to post a guard at his mouth and watch the door of his lips. We need God's help to speak well."],
       ["141:5", "Let the righteous smite me in kindness", "When a good person corrects David, he will count it as kindness, like oil on his head. Correction from a friend is a gift."],
     ],
+    bg: [["Prayer like incense", "Incense was burned in the temple every morning and evening (Exodus 30:7-8). \"May my prayer be counted as incense before You; the lifting up of my hands as the evening offering\" (141:2). Revelation 5:8 pictures the prayers of the saints as incense.", "good", ["allen", "kidner"]]],
+    w: [["קְטֹרֶת", "qetoret", "H7004", "incense", "Fragrant spices burned so the smoke rose up before God. A picture of prayer rising to Him.", ["halot", "vangemeren"]]],
     refs: [["REV.8", "Revelation 8:3-4", "The prayers of the saints like incense"], ["JAS.3", "James 3:2-10", "Taming the tongue"], ["PRO.27", "Proverbs 27:6", "Faithful are the wounds of a friend"]],
   },
   142: {
@@ -1519,6 +1551,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["142:4", "No one cares for my soul", "David looks around and sees no one who cares about him and no place to run."],
       ["142:5", "You are my refuge, my portion", "So David cries to the LORD: You are my refuge and my share in the land of the living. God is enough."],
     ],
+    bg: [["A prayer in the cave", "The heading says David prayed this \"when he was in the cave,\" either at Adullam (1 Samuel 22:1) or at En-gedi (1 Samuel 24:3). Alone and hunted, he says, \"No one cares for my soul\" (142:4), and then, \"You are my refuge\" (142:5).", "good", ["allen", "kidner"]]],
     refs: [["1SA.22", "1 Samuel 22:1", "David in the cave of Adullam"], ["1PE.5", "1 Peter 5:7", "He cares for you"]],
   },
   143: {
@@ -1528,6 +1561,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["143:8", "Let me hear Your lovingkindness in the morning", "David asks to hear of God's steadfast love in the morning, because he trusts Him. Show me the way I should go."],
       ["143:10", "Teach me to do Your will", "Teach me to do Your will, for You are my God. May Your good Spirit lead me on level ground."],
     ],
+    bg: [["No one is righteous before God", "Psalm 143 is the last of the seven penitential psalms. \"In Your sight no man living is righteous\" (143:2) is echoed by Paul in Romans 3:20 and Galatians 2:16: no one is made right with God by works of the Law.", "strong", ["allen", "kidner"]]],
     refs: [["ROM.3", "Romans 3:20", "No flesh justified by works of the law"], ["GAL.5", "Galatians 5:25", "Walk by the Spirit"]],
   },
   144: {
@@ -1537,6 +1571,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["144:9", "I will sing a new song to You", "For the God who gives victory to kings, David will sing a new song on a ten-stringed harp."],
       ["144:15", "How blessed are the people whose God is the LORD", "After describing full barns and peaceful streets, David says the truly blessed people are those whose God is the LORD."],
     ],
+    bg: [["Echoes of Psalms 8 and 18", "Psalm 144 borrows from earlier psalms: the warrior's praise of Psalm 18 (144:1-2) and the question of Psalm 8, \"O LORD, what is man, that You take knowledge of him?\" (144:3). It ends with a picture of a peaceful, blessed land.", "good", ["allen", "wilson"]]],
     refs: [["PSA.18", "Psalm 18", "Similar words"], ["PSA.8", "Psalm 8:4", "What is man?"]],
   },
   145: {
@@ -1547,6 +1582,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["145:9", "The LORD is good to all", "The LORD is good to everyone, and His compassion rests on all He has made."],
       ["145:18", "The LORD is near to all who call upon Him", "The LORD is near to everyone who calls on Him in truth. He hears their cry and saves them (145:19)."],
     ],
+    bg: [["The missing letter", "Psalm 145 is an alphabet acrostic, but in the standard Hebrew text one letter, nun, is missing. A Psalms scroll from the Dead Sea Scrolls and the ancient Greek translation include a line for it: \"The LORD is faithful in all His words, and holy in all His works.\" Many modern Bibles add it as 145:13b.", "strong", ["allen", "wilson"]]],
+    w: [["גְּדֻלָּה", "gedullah", "H1420", "greatness", "\"His greatness is unsearchable\" (145:3). We will never come to the end of knowing God.", ["halot", "vangemeren"]]],
     refs: [["EXO.34", "Exodus 34:6", "Gracious and merciful"], ["ACT.17", "Acts 17:27", "He is not far from each one of us"]],
   },
   146: {
@@ -1556,6 +1593,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["146:5", "Whose help is the God of Jacob", "Blessed is the one whose help is the God of Jacob, whose hope is in the LORD, the Maker of heaven and earth."],
       ["146:7-9", "The LORD sets the prisoners free", "The LORD feeds the hungry, frees prisoners, opens blind eyes and watches over strangers, widows and orphans. Jesus did these very things (Luke 4:18; 7:22)."],
     ],
+    bg: [["Do not trust in princes", "\"His spirit departs, he returns to the earth\" (146:4): even great leaders die. The LORD instead sets prisoners free, opens blind eyes and lifts up those bowed down (146:7-8), the very works Jesus did (Luke 7:22).", "good", ["allen", "kidner"]]],
     refs: [["LUK.4", "Luke 4:18-19", "Jesus' mission"], ["LUK.7", "Luke 7:22", "The blind receive sight"]],
   },
   147: {
@@ -1565,6 +1603,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["147:4", "He counts the number of the stars", "The same God counts all the stars and calls each one by name. His power is as great as His care."],
       ["147:11", "The LORD favors those who fear Him", "God is not impressed by the strength of a horse or a runner's legs (147:10). He delights in those who revere Him and hope in His love."],
     ],
+    bg: [["Rebuilding Jerusalem", "\"The LORD builds up Jerusalem; He gathers the outcasts of Israel\" (147:2). Many connect this with the return from exile and the rebuilding of the walls under Nehemiah. The God who counts and names the stars heals the brokenhearted (147:3-4).", "good", ["allen", "kidner"]]],
     refs: [["ISA.61", "Isaiah 61:1", "To bind up the brokenhearted"], ["ISA.40", "Isaiah 40:26", "He calls them all by name"]],
   },
   148: {
@@ -1574,6 +1613,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["148:7-10", "Sea monsters... fire and hail... creeping things", "Then the earth: sea creatures, lightning and hail, snow and wind, mountains, trees, animals, insects and birds. Everything God made praises Him."],
       ["148:12", "Both young men and virgins; old men and children", "Young men and young women, old people and children: every age praises the LORD together. That includes every member of a family."],
     ],
+    bg: [["Creation's choir", "Psalm 148 calls everything to praise God: angels, sun and moon, sea creatures, fire and hail, mountains, animals, kings and children. Its spirit inspired Francis of Assisi's Canticle of the Creatures, the source of the hymn \"All Creatures of Our God and King.\"", "good", ["allen", "kidner"]]],
     refs: [["REV.5", "Revelation 5:13", "Every created thing praising"], ["GEN.1", "Genesis 1", "Creation"]],
   },
   149: {
