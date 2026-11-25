@@ -103,8 +103,16 @@ secrets: Supabase gives Edge Functions their own admin access, which never leave
    its key. Licensed versions such as the NASB need to be requested on your plan.
 2. **ESV** (optional): request a non-commercial key at api.esv.org.
 3. In the app: sign in as the organizer, open Settings, "Family organizer tools", paste the
-   keys, choose versions and tap "Save key for the whole family". Everyone else picks them up
-   the next time they open the app. Keys are typed into the app only; never commit them.
+   keys, choose versions and tap Save. Each change is saved to your family account
+   automatically, and everyone else picks it up the next time they open the app. Keys are
+   typed into the app only; never commit them.
+4. **Shortcut: a ready-filled key.** Another family running this app can share theirs with
+   you: in their app, Settings, Family organizer tools, "Set up a device for someone without
+   an account", "Make invite link". Paste that whole link into your API.Bible key box (in
+   first-time setup or in Settings) and the key, the NASB edition, extra versions and the
+   ESV key all fill in at once. Then tap Save so your family gets it too. Both families then
+   share one monthly reading allowance (5,000 reads), so it's best as a way to start; swap in
+   your own free key whenever you like.
 
 ## 8. Releasing changes
 
