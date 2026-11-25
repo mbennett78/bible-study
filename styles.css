@@ -2859,3 +2859,13 @@ details.set-group[open] > summary { padding-left: 6px; }
   .view > .art-slot > figure.scene { max-height: min(320px, 38vh); overflow: hidden; }
 
 }
+
+/* Largest text on small phones: nothing gets cut off at the right edge. */
+.tabbar button { min-width: 0; }
+.tabbar button span { max-width: 100%; }
+@media not ((min-width: 700px) and (min-height: 500px)) { .tabbar button span { font-size: min(.66rem, 3.4vw); white-space: normal; text-align: center; line-height: 1.1; } }
+.segments { flex-wrap: wrap; }
+.segments button { flex: 1 1 auto; min-width: 0; }
+.ref-head { flex-wrap: wrap; }
+.ref-head > div { flex: 1 1 11rem; min-width: 0; }
+.ref-head .ref-print { margin-left: auto; }
