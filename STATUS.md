@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 1:20 AM: Checked High contrast in all ten looks, light and dark. The Books/History/Saved/Journal tabs and the little number badges in Reference & resources sat on a dark gray fill that made their words hard to read; they now have a light fill with a strong border. Every screen now passes the reading-contrast check with High contrast on or off.
 - Wed Nov 25, 1:00 AM: On computers and iPads with a keyboard, pressing Tab now shows a clear ring around whatever is selected, matching each look (light on the dark side bar, the look's color on the page). Buddy's chat box gets a soft ring while you're typing in it.
 - Wed Nov 25, 12:55 AM: Checked the biggest settings (Largest text and the biggest reading size) on small and regular phones in four looks. Three things were cut off on the smallest phones, and all are fixed: the bottom buttons now fold long names onto two lines ("My / Bible", "Bible / study"), the Books/History/Saved/Journal tabs wrap instead of hiding Journal, and the Print button in Reference & resources moves under the heading instead of squeezing it.
 - Wed Nov 25, 12:20 AM: The readability check now covers dark mode too (Sage, Animated and For kids can go dark). Gray helper text, the date on the Today card and its "Choose what shows" link are now clear enough in light and dark, in every look.
@@ -68,7 +69,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Kids' Bible pictures | 9 | More stories get their own scene each update (ongoing) |
 | Maps | 9 | |
 | Looks | 9 | |
-| Readability for every age (contrast, text size, screen readers) | 9 | Fixed tonight: gray helper text is darker in every look |
+| Readability for every age (contrast, text size, screen readers) | 10 | Fixed tonight: helper text, dark mode, High contrast, Largest text on small phones, keyboard focus ring |
 | Ease of use and menus | 9 | |
 | Notes, journal and printing | 9 | |
 | Buddy | 9 | Redeploy of the study-partner function (optional) |
