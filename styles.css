@@ -2870,7 +2870,7 @@ textarea.nf-big { font-size: 1.25rem; }
 }
 
 /* What's new: a short note on Home after updates (js/whatsnew.js) */
-.news-card { border-left: 5px solid var(--accent, #c9a35a); }
+.news-card { border-left: 5px solid var(--accent, #c9a35a); touch-action: pan-y; transition: opacity .2s; }
 .news-card h2 { margin: 0 0 6px; font-size: 1.1rem; } .news-card ul { margin: 0 0 10px; padding-left: 1.1em; } .news-card li { margin: 4px 0; }
 .news-btns { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
 .news-off { background: none; border: 0; padding: 6px 2px; font: inherit; font-size: .9rem; color: inherit; opacity: .75; text-decoration: underline; cursor: pointer; }
@@ -2991,3 +2991,7 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 /* Pinch to zoom is always allowed. On touch screens, boxes you type in use at least 16px text,
    so the phone doesn't jump in on its own when you tap one. */
 @media (pointer: coarse) { input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea { font-size: max(16px, 1em); } }
+.recent-news { margin: 8px 0; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; }
+.recent-news summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+.rn-date { margin: 6px 0 2px; font-weight: 600; color: var(--muted); }
+.rn-week ul { margin: 0 0 10px; padding-left: 1.2em; }

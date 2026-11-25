@@ -29,8 +29,15 @@ export const NEWS = [
 ];
 
 // The note to show on Home now, or null.
-export function newsToShow({ seen = "", off = false, setupDone = true } = {}) {
+// Every note from the last 30 days, newest first, for Settings.
+export function recentNews(now = new Date()) {
+  const since = new Date(now); since.setDate(since.getDate() - 30);
+  return NEWS.filter((n) => new Date(`${n.id}T12:00:00`) >= since);
+}
+// At most one note a month, so no one is overwhelmed; the rest wait in Settings, under Recent updates.
+export function newsToShow({ seen = "", off = false, setupDone = true, lastAt = "", now = new Date() } = {}) {
   if (off || !setupDone) return null;
+  if (lastAt && now - new Date(lastAt) < 30 * 864e5) return null;
   const top = NEWS[0];
   return top && top.id !== seen ? top : null;
 }

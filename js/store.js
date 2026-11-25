@@ -51,6 +51,7 @@ const defaults = {
   daily: {},                // which parts of Today show on Home: { verse, readings, devotion } (all on by default)
   tourSeen: false,          // the welcome tour has been shown (it can always be replayed)
   newsSeen: "",             // the last "What's new" note put away (js/whatsnew.js)
+  newsSeenAt: "",           // when it was put away: at most one note a month
   newsOff: false,           // no "What's new" notes on Home
   buddyTogether: 0,         // how much time they've spent with Buddy (chats, games, teaching him); he grows warmer
   buddyMemory: [],          // what this person taught him, [{ key, text, at }]: private, on this device and in their own backup

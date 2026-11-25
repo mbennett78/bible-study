@@ -31,6 +31,12 @@ try {
   await ctx.close();
 
   ({ ctx, page, errors } = await run({ ...base, setup: { done: true } }));
+  const box = await page.$eval("#newsCard", (c) => { const r = c.getBoundingClientRect(); return [r.left + r.width / 2, r.top + 20]; });
+  await page.mouse.move(box[0], box[1]); await page.mouse.down(); await page.mouse.move(box[0] + 70, box[1], { steps: 4 }); await page.mouse.move(box[0] + 160, box[1], { steps: 4 }); await page.mouse.up(); await page.waitForTimeout(200);
+  check("the note can be swiped away", !(await page.$("#newsCard")) && Boolean((await stored(page)).newsSeenAt));
+  await ctx.close();
+
+  ({ ctx, page, errors } = await run({ ...base, setup: { done: true } }));
   await page.click("#newsOff"); await page.waitForTimeout(200);
   check("Don't show turns notes off and says where to turn them on", (await stored(page)).newsOff === true && /Settings/.test(await page.textContent("#newsCard")));
   await page.reload(); await page.waitForTimeout(800);
@@ -39,7 +45,7 @@ try {
   check("the Settings switch shows notes are off", sw === false);
   await page.evaluate(() => { const i = document.querySelector("#newsShow"); i.checked = true; i.dispatchEvent(new Event("change")); });
   check("the Settings switch turns notes back on", (await stored(page)).newsOff === false);
-  check("Settings lists the notes so far", (await page.$$eval("#newsList details", (d) => d.length)) >= 1);
+  check("Settings lists the updates from the last 30 days", (await page.$$eval("#newsList details", (d) => d.length)) >= 1 || /No updates in the last 30 days/.test(await page.textContent("#newsList")));
   await ctx.close();
 
   ({ ctx, page, errors } = await run({ ...base, tourSeen: false, setup: {} }));
