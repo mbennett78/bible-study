@@ -60,7 +60,7 @@ try {
   await answerIt(false); await page.clock.runFor(1500); await tap("[data-next]"); await page.clock.runFor(300);
   await spin(); await answerIt(false); await page.clock.runFor(1500);
   await tap("[data-next]"); await page.clock.runFor(500);
-  check("three misses end a solo game", /of 7 jewels/.test(await text(".q-end h2")), await text(".q-end h2"));
+  check("three misses end a solo game", /of 7 jewels|Good try/.test(await text(".q-end h2")), await text(".q-end h2"));
   await tap("[data-home]"); await page.clock.runFor(300);
 
   // Challenge Buddy

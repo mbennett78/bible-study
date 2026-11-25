@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:08 AM Central
-**Current version:** v213 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:21 AM Central
+**Current version:** v214 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:45 AM: Play-test of Bible Spin and the Quick check on a small phone and an iPad, in the kids' and Classic looks. Fixed: on short phones (iPhone SE, mini) the fourth answer and the helps were below the edge, and now everything fits. The Quick check now marks answers plainly in every look (green ✓ and red ✗), says the right answer in words (most explanations were only a verse reference), scrolls the Next button into view, starts on the question instead of the Close button, and ends with a "To read again" list of missed questions, each with a tap to read the verse. A solo game with no jewels now ends with "Good try! Every game you learn more." instead of "You won 0 of 7 jewels." All game tests pass.
 - Wed Nov 25, 10:15 AM: The opt-in "Seasonal changes" look is built, two days early. 13 warm, glowing painted backgrounds follow the year (New Year's dawn, winter sunrise, angels, March rain and rainbow, Easter, April gardens, May flowers, June Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, harvest and Advent), with Easter moving each year from Palm Sunday through the Sunday after. The header color matches each painting, and the words always sit on plain cream panels, so the readability check passes in light and dark. Nobody is ever switched into it, and anyone in it isn't asked to switch to a holiday look. The preview of all 13 is sent to Melissa (project folder: bible-study/seasonal-preview/). Release-plan dates moved up as Melissa asked.
 - Wed Nov 25, 9:40 AM: The Strong's concordance is now a full concordance and easier to read. Open any Hebrew or Greek word and tap "See every place in the Bible" for every verse where it's used, grouped by book with a book picker; tap one to go there. Root words in an entry ("from G756") can be tapped to see that word. Key words now start with the ones the chapter repeats most, with the rest behind "Show all", and very common words like "this" and "all" moved to Everyday words. A few dictionary entries whose word origin was split in two are joined back together. Confirmed the layout Melissa described: the Journal tab is a simple personal journal to add to (and can be locked); study notes live inside the Bible reading and study (the "My notes" square in Reference & resources and the note button under each chapter) and in the main Menu.
 - Wed Nov 25, 9:45 AM: Melissa's five new goals for a 5-star gift are added to the release plan: the B-75 quality review against top apps (due Wed Dec 2), games and Quick check polish with celebrations, a friendlier Buddy, storybook tap surprises, and the new opt-in "Seasonal changes" look with 13 backgrounds (preview for her review by Fri Nov 27).
@@ -106,6 +107,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 ## Open questions
 
 - Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
+- Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. A handwriting and sketch page for notes and the Journal (about a day) is offered for the B-75 pass; circling directly on the Bible text is harder because the text reflows.
+- B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
 - Reading margins: a simple "Page width" choice (narrow, medium, wide) is suggested instead of drag handles; planned for the B-75 navigation pass unless Melissa prefers otherwise.
 
 ## Release plan: in progress and not started

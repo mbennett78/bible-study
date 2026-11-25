@@ -2638,7 +2638,7 @@ function startTrivia() {
     const q = qs[i];
     body.innerHTML = `<div class="trivia-progress">${qs.map((_, k) => `<span class="${results[k] ? (results[k].right ? "right" : "wrong") : ""}"></span>`).join("")}</div>
       <p class="trivia-kind">${q.review ? "🔁 Review · " : ""}${kindLabel[q.kind] || ""} · ${q.refs.map((r) => esc(keyRef(r).name)).join(" + ")}</p>
-      <p class="trivia-q">${esc(q.q)}</p>
+      <p class="trivia-q" tabindex="-1">${esc(q.q)}</p>
       <div class="trivia-choices">${q.choices.map((c, k) => `<button data-k="${k}">${esc(c)}</button>`).join("")}</div>
       <p class="trivia-why" hidden></p>`;
     body.querySelectorAll("[data-k]").forEach((btn) => btn.addEventListener("click", () => answer(Number(btn.dataset.k))));
@@ -2654,11 +2654,16 @@ function startTrivia() {
     });
     const why = body.querySelector(".trivia-why");
     why.hidden = false;
-    why.textContent = `${right ? "Yes! " : "Not quite. "}${q.why}`;
+    // Many explanations are just the verse reference: then say the answer in words too.
+    const refOnly = whyIsRef(q.why);
+    why.innerHTML = `<strong>${right ? "Yes!" : "Not quite."}</strong> ${right ? "" : `The answer is <strong>${esc(q.choices[q.a])}</strong>. `}${refOnly ? `<span class="trivia-ref">${esc(q.why.replace(/\.$/, ""))}</span>` : esc(q.why)}`;
+    results[results.length - 1].q = q;
     body.querySelectorAll(".trivia-progress span")[i].className = right ? "right" : "wrong";
     const next = Object.assign(document.createElement("button"), { className: "trivia-next", textContent: i + 1 < qs.length ? "Next question" : "See my score" });
-    next.addEventListener("click", () => { i += 1; showQ(); });
+    next.addEventListener("click", () => { i += 1; showQ(); body.querySelector(".trivia-q")?.focus(); });
     body.append(next);
+    // On a small phone the Next button can land below the edge; bring it into view.
+    next.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.graphics !== "full" ? "auto" : "smooth" });
   }
   function showScore() {
     const keepRec = keepingRecord();
@@ -2672,13 +2677,33 @@ function startTrivia() {
       <p>${great ? "Wonderful! You know this well." : score ? "Good work. Every round helps it stick." : "That's how we learn. Try another round."}</p>
       <p class="muted small-print">${fresh === qs.length ? "All new questions this round." : `${fresh} new question${fresh === 1 ? "" : "s"} and ${qs.length - fresh} review.`}</p>
       ${keepRec ? `<p class="muted small-print">Your Bible knowledge: <strong>${esc(r.level)}</strong> · ${r.pct}% correct over ${r.answered} questions. See how you're growing in My Bible.</p>` : `<p class="muted small-print">No record is kept, as you chose. You can turn it on in Settings.</p>`}
+      ${missedHtml(results)}
       <button class="trivia-next" id="playAgain">Play again with new questions</button></div>`;
     $("#playAgain").addEventListener("click", startTrivia);
+    body.querySelectorAll("[data-read]").forEach((b) => b.addEventListener("click", () => { triviaDlg.close(); jumpTo(JSON.parse(b.dataset.read)); }));
     celebrate(great ? "big" : "small");
     mascotSay(great ? "Hooray! That was wonderful!" : "Nice try! Let's keep learning together.");
   }
   showQ();
   if (!triviaDlg.open) triviaDlg.showModal();
+  body.querySelector(".trivia-q")?.focus(); // start on the question, not the Close button
+}
+// "Genesis 1:3–5" or "John 1:29; Isaiah 53:7" with nothing else: a reference, not an explanation.
+const WHY_REF = /((?:[1-3] )?[A-Z][a-z]+(?: of [A-Z][a-z]+)?) (\d+)(?::(\d+))?/;
+function whyIsRef(why = "") { return /^[\s\d:;,.–-]*$/.test(why.replace(new RegExp(WHY_REF.source, "g"), "")); }
+function refIn(text = "") {
+  const m = text.match(WHY_REF);
+  const r = m && findRefs(`${m[1]} ${m[2]}${m[3] ? `:${m[3]}` : ""}`)[0];
+  return r && r.chapter ? { book: r.book, chapter: r.chapter, verse: r.verse, label: m[0] } : null;
+}
+// After a round: the questions they missed, with the right answer and a tap to read the verse.
+function missedHtml(results) {
+  const missed = results.filter((r) => !r.right && r.q);
+  if (!missed.length) return "";
+  return `<div class="trivia-missed"><h3>To read again</h3><ul>${missed.map(({ q }) => {
+    const r = refIn(q.why) || (q.refs?.[0] && (() => { const k = keyRef(q.refs[0]); return k ? { book: k.book, chapter: k.chapter, verse: 0, label: k.name } : null; })());
+    return `<li><span>${esc(q.q)}</span><strong>${esc(q.choices[q.a])}</strong>${r ? `<button type="button" class="small quiet-link" data-read='${esc(JSON.stringify({ book: r.book, chapter: r.chapter, verse: r.verse }))}'>📖 Read ${esc(r.label)}</button>` : ""}</li>`;
+  }).join("")}</ul></div>`;
 }
 $("#triviaBtn").addEventListener("click", startTrivia);
 $("#triviaClose").addEventListener("click", () => triviaDlg.close());

@@ -454,7 +454,8 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     add("coins500", earned >= 500); add("coins2000", earned >= 2000); add("games10", stats.played >= 10);
     const fresh = QUEST_BADGES.filter(([id]) => badgesNow[id] && !m.badges[id]);
     save({ ...stats, badges: badgesNow, coins: m.coins + winBonus, earned });
-    const title = game.mode === "solo" ? (iWon ? "You collected every jewel!" : `You won ${jewelCount(me)} of ${CATEGORIES.length} jewels!`)
+    const jw = jewelCount(me);
+    const title = game.mode === "solo" ? (iWon ? "You collected every jewel!" : jw ? `You won ${jw} of ${CATEGORIES.length} jewel${CATEGORIES.length === 1 ? "" : "s"}!` : "Good try! Every game you learn more.")
       : game.mode === "buddy" ? (top === me ? `You beat ${B()}!` : `${B()} won this time!`) : `${top.name} wins!`;
     paint(`<div class="q-end">
       ${game.mode === "buddy" ? buddyFace(top === me ? "" : "excited") : `<span class="q-fb-icon">🏆</span>`}<h2>${esc(title)}</h2>

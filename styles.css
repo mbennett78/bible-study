@@ -399,8 +399,18 @@ details.tool-card summary::-webkit-details-marker { display: none; }
   text-align: left; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: 1rem;
   transition: background .2s, border-color .2s;
 }
-.trivia-choices button.right { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
-.trivia-choices button.wrong { border-color: var(--warm); color: var(--warm); }
+/* Right and wrong are plain in every look: a green or red tint, a mark, and the words stay dark. */
+.trivia-choices button.right { background: color-mix(in srgb, #2f9a4a 16%, var(--surface)); border-color: #2f9a4a; border-width: 2px; color: var(--text); font-weight: 600; }
+.trivia-choices button.wrong { background: color-mix(in srgb, #c8402e 12%, var(--surface)); border-color: #c8402e; border-width: 2px; color: var(--text); }
+.trivia-choices button.right::after { content: "✓"; float: right; color: #2f8a3e; font-weight: 800; margin-left: 8px; }
+.trivia-choices button.wrong::after { content: "✗"; float: right; color: #b8372a; font-weight: 800; margin-left: 8px; }
+:root[data-theme="dark"] .trivia-choices button.right::after { color: #7fd08f; } :root[data-theme="dark"] .trivia-choices button.wrong::after { color: #f08a7a; }
+.trivia-q:focus { outline: none; }
+.trivia-ref { color: var(--muted); }
+.trivia-missed { text-align: left; margin: 14px 0 6px; } .trivia-missed h3 { font-size: 1rem; margin: 0 0 6px; }
+.trivia-missed ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.trivia-missed li { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); display: grid; gap: 2px; font-size: .95rem; }
+.trivia-missed li strong { color: var(--text); } .trivia-missed li button { justify-self: start; padding-left: 0; }
 .trivia-why { font-size: .85rem; color: var(--muted); margin: 14px 0 0; }
 .trivia-next { margin-top: 16px; width: 100%; padding: 14px; border: 0; border-radius: 12px; background: var(--accent); color: var(--bg); font-size: 1rem; }
 .trivia-score { text-align: center; padding: 8px 0; }
@@ -1915,6 +1925,15 @@ dialog.quest:not(.still) .qc-flame { animation: q-flick .6s ease-in-out infinite
 .q-helps { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .q-help { border: 0; border-radius: 999px; padding: 10px 16px; background: rgb(255 255 255 / .18); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
 .q-help small { opacity: .85; } .q-help:disabled { opacity: .4; }
+/* Short phones (iPhone SE and mini): a smaller badge and card so all four answers and the
+   helps fit on the screen without scrolling. */
+@media (max-height: 760px) and (max-width: 699px) {
+  .q-cat { padding: 4px 16px; font-size: 1rem; } .q-cat .q-critter.big { width: 50px; height: 50px; font-size: 1.1rem; }
+  .q-card { min-height: 84px; padding: 12px 14px; font-size: 1.1rem; }
+  .q-choice { min-height: 48px; padding: 8px 12px; font-size: 1.02rem; }
+  .q-choices { gap: 8px; } .q-candle svg { height: 76px; }
+}
+@media (max-width: 430px) { .q-helps { gap: 6px; flex-wrap: nowrap; } .q-help { padding: 8px 11px; font-size: .9rem; white-space: nowrap; } }
 .q-fb-head { display: flex; flex-direction: column; align-items: center; gap: 6px; animation: q-drop .45s cubic-bezier(.3,1.5,.5,1) both; }
 .q-fb-icon { font-size: 3.4rem; } .q-gain { margin: 0; font-size: 1.6rem; font-weight: 900; color: #ffe27a; animation: q-pop .5s .15s both cubic-bezier(.3,1.6,.5,1); }
 .q-streak { margin: 0; font-weight: 800; color: #ffb36b; font-size: 1.2rem; }
