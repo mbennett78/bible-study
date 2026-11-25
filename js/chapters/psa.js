@@ -709,10 +709,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   73: {
     intro: "Book Three opens with Asaph's honest struggle. \"Surely God is good to Israel... but as for me, my feet came close to stumbling,\" because he envied the prosperity of the wicked. It troubled him \"until I came into the sanctuary of God; then I perceived their end.\" \"Whom have I in heaven but You? And besides You, I desire nothing on earth.\"",
     v: [
-      ["73:3", "I was envious of the arrogant", "Honest about jealousy."],
-      ["73:17", "Until I came into the sanctuary of God", "Worship changed his view."],
-      ["73:25", "Whom have I in heaven but You?", "God is enough."],
-      ["73:26", "God is the strength of my heart and my portion forever", "When body fails, God remains."],
+      ["73:3", "I was envious of the arrogant", "Asaph admits he envied proud people who seemed to have easy lives, and he nearly lost his footing (73:2)."],
+      ["73:17", "Until I came into the sanctuary of God", "Trying to understand it wore him out, until he went into God's sanctuary. There he saw where the wicked end up."],
+      ["73:25", "Whom have I in heaven but You?", "With God, Asaph needs nothing else in heaven or on earth."],
+      ["73:26", "God is the strength of my heart and my portion forever", "His body and heart may fail, but God is the strength of his heart and his share forever."],
     ],
     bg: [["Asaph", "Asaph was one of David's chief musicians (1 Chronicles 16:5). Psalms 50 and 73-83 bear his name, likely written by him and the guild of singers who carried on his name.", "good", ["tate", "kidner"]]],
     refs: [["PSA.37", "Psalm 37", "Do not fret over the wicked"], ["JOB.21", "Job 21:7", "Why do the wicked live?"], ["PHP.3", "Philippians 3:8", "Knowing Christ above all"]],
@@ -720,18 +720,18 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   74: {
     intro: "A lament after enemies destroyed the temple. \"O God, why have You rejected us forever?\" They smashed the carvings and burned the sanctuary. \"There is no longer any prophet.\" Yet God is King from of old, who divided the sea and set the boundaries of the earth. \"Arise, O God, and plead Your own cause.\"",
     v: [
-      ["74:1", "Why have You rejected us forever?", "Grief over ruin."],
+      ["74:1", "Why have You rejected us forever?", "Enemies have burned God's sanctuary (74:7), probably the Babylonian destruction of 586 BC. Asaph's psalm asks why God seems to have turned away."],
       ["74:7", "They have burned Your sanctuary to the ground", "Likely the Babylonian destruction in 586 BC."],
-      ["74:12", "Yet God is my king from of old", "Faith remembers God's past power."],
+      ["74:12", "Yet God is my king from of old", "Even in the ruins, Asaph remembers: God has been his King from long ago, working salvation on the earth."],
     ],
     refs: [["LAM.2", "Lamentations 2", "The temple destroyed"], ["2KI.25", "2 Kings 25:9", "The house of the LORD burned"]],
   },
   75: {
     intro: "\"We give thanks to You, O God.\" God says, \"When I select an appointed time, it is I who judge with equity.\" Exaltation does not come from east or west, but God puts down one and exalts another. The wicked drink from the cup in the LORD's hand.",
     v: [
-      ["75:2", "It is I who judge with equity", "God sets the time."],
+      ["75:2", "It is I who judge with equity", "God speaks: at the time He chooses, He will judge fairly. The timing is His."],
       ["75:3", "It is I who have firmly set its pillars", "When the earth seems to shake, God holds it steady."],
-      ["75:6-7", "God is the Judge; He puts down one and exalts another", "Promotion comes from God."],
+      ["75:6-7", "God is the Judge; He puts down one and exalts another", "Success does not come from east or west or the desert. God is the Judge who brings one down and lifts another up."],
       ["75:8", "A cup is in the hand of the LORD", "The cup of God's judgment, a picture used by the prophets and by Jesus in Gethsemane."],
     ],
     bg: [["The cup of wrath", "The prophets pictured God's judgment as a cup the wicked must drink (Isaiah 51:17; Jeremiah 25:15). In Gethsemane Jesus prayed, \"Let this cup pass from Me\" (Matthew 26:39), and then drank it for others.", "good", ["tate", "kidner"]]],
@@ -740,8 +740,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   76: {
     intro: "God is known in Judah; His dwelling is in Zion. There He broke the flaming arrows and the weapons of war. The warriors slept their final sleep. \"You, even You, are to be feared.\" Even human wrath will praise Him.",
     v: [
-      ["76:3", "There He broke the flaming arrows", "God ends war."],
-      ["76:10", "The wrath of man shall praise You", "God turns opposition into praise."],
+      ["76:3", "There He broke the flaming arrows", "In Jerusalem God broke the enemy's flaming arrows, shields and swords. He is the One who ends war."],
+      ["76:10", "The wrath of man shall praise You", "Even human anger ends up bringing God praise, as He turns His enemies' plans to serve His purpose."],
     ],
     bg: [["Sennacherib's army", "The ancient Greek translation adds \"concerning the Assyrian\" to this psalm's title, linking it to the night the Assyrian army died outside Jerusalem (2 Kings 19:35).", "good", ["tate", "kidner"]]],
     refs: [["2KI.19", "2 Kings 19:35", "The angel of the LORD strikes the Assyrian camp"]],
@@ -749,9 +749,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   77: {
     intro: "In the day of trouble the psalmist seeks the Lord, but his soul refuses comfort. \"Will the Lord reject forever?... Has His lovingkindness ceased forever?\" Then he decides, \"I shall remember the deeds of the LORD.\" He recalls the exodus: \"Your way was in the sea... and Your footprints may not be known. You led Your people like a flock.\"",
     v: [
-      ["77:7-9", "Has God forgotten to be gracious?", "Six honest questions."],
-      ["77:11", "I shall remember the deeds of the LORD", "The turning point is memory."],
-      ["77:19", "Your footprints may not be known", "God leads even when we can't see how."],
+      ["77:7-9", "Has God forgotten to be gracious?", "Asaph asks hard questions: has God rejected us forever, forgotten His love, stopped being gracious? Faith can ask questions honestly."],
+      ["77:11", "I shall remember the deeds of the LORD", "The turning point is memory. Asaph chooses to remember the deeds of the LORD and His wonders of long ago."],
+      ["77:19", "Your footprints may not be known", "God led His people through the sea, though no one could see His footprints. He leads even when we cannot see how."],
     ],
     refs: [["EXO.14", "Exodus 14", "The way through the sea"], ["LAM.3", "Lamentations 3:21-23", "This I recall, therefore I have hope"]],
   },
@@ -759,45 +759,45 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "Asaph opens his mouth in a parable to tell the next generation the praises of the LORD, so they will set their hope in God and not forget His works. He retells Israel's history: the exodus, manna, water from the rock, and Israel's repeated rebellion in the wilderness and in the land. Yet God was compassionate. He chose David to shepherd His people \"with integrity of heart.\"",
     v: [
       ["78:2", "I will open my mouth in a parable", "Matthew 13:35 applies this to Jesus' teaching."],
-      ["78:4", "Telling to the generation to come", "Passing faith to children."],
-      ["78:38", "But He, being compassionate, forgave", "God's patience."],
-      ["78:72", "He shepherded them according to the integrity of his heart", "David's leadership."],
+      ["78:4", "Telling to the generation to come", "Asaph will not hide God's deeds from the children. Each generation is to tell the next, so they will trust God (78:6-7)."],
+      ["78:38", "But He, being compassionate, forgave", "Israel kept rebelling in the wilderness, but God was compassionate. Again and again He forgave and held back His anger."],
+      ["78:72", "He shepherded them according to the integrity of his heart", "God chose David from the sheepfolds (78:70). He shepherded Israel with a sincere heart and a skillful hand."],
     ],
     refs: [["DEU.6", "Deuteronomy 6:6-7", "Teach them diligently to your sons"], ["MAT.13", "Matthew 13:35", "I will open My mouth in parables"], ["1CO.10", "1 Corinthians 10:1-11", "These things were written as examples"]],
   },
   79: {
     intro: "\"O God, the nations have invaded Your inheritance; they have defiled Your holy temple; they have laid Jerusalem in ruins.\" The dead lie unburied. \"Help us, O God of our salvation, for the glory of Your name; and deliver us and forgive our sins for Your name's sake.\" The people are the sheep of His pasture.",
     v: [
-      ["79:1", "They have laid Jerusalem in ruins", "Lament for the city."],
-      ["79:9", "For the glory of Your name", "Prayer rooted in God's honor."],
-      ["79:13", "We Your people and the sheep of Your pasture", "Still His flock."],
+      ["79:1", "They have laid Jerusalem in ruins", "Nations have entered God's land, defiled His temple and left Jerusalem in ruins. This is a lament over the city's fall."],
+      ["79:9", "For the glory of Your name", "Asaph's prayer rests on God's honor: help us and forgive our sins for the glory of Your name."],
+      ["79:13", "We Your people and the sheep of Your pasture", "However bad things are, they are still God's people, the sheep of His pasture, and they will praise Him forever."],
     ],
     refs: [["PSA.74", "Psalm 74", "Another lament for the temple"], ["JER.10", "Jeremiah 10:25", "Pour out Your wrath on the nations"]],
   },
   80: {
     intro: "\"O Shepherd of Israel... You who are enthroned above the cherubim, shine forth!\" Three times the refrain prays, \"O God, restore us and cause Your face to shine upon us, and we will be saved.\" Israel is a vine God brought out of Egypt and planted, now broken down and burned. \"Let Your hand be upon the man of Your right hand.\"",
     v: [
-      ["80:3", "Cause Your face to shine upon us", "A refrain of hope."],
-      ["80:8", "You removed a vine from Egypt", "Israel as God's vine."],
-      ["80:17", "The son of man whom You made strong for Yourself", "A hope for God's chosen king."],
+      ["80:3", "Cause Your face to shine upon us", "This prayer comes three times (80:3, 7, 19): restore us, God, make Your face shine on us, and we will be saved."],
+      ["80:8", "You removed a vine from Egypt", "Israel is pictured as a vine God brought out of Egypt and planted. Now its walls are broken down (80:12). Jesus later called Himself the true vine (John 15:1)."],
+      ["80:17", "The son of man whom You made strong for Yourself", "Asaph prays for the man at God's right hand, the one He made strong. Many hear a hope for God's chosen king, fulfilled in Jesus."],
     ],
     refs: [["ISA.5", "Isaiah 5:1-7", "The song of the vineyard"], ["JHN.15", "John 15:1-5", "I am the true vine"]],
   },
   81: {
     intro: "\"Sing for joy to God our strength!\" Blow the trumpet at the new moon and the full moon on the feast day. God speaks: \"I relieved his shoulder of the burden... Open your mouth wide and I will fill it.\" But His people would not listen. \"Oh that My people would listen to Me!\" He would feed them with the finest wheat and honey from the rock.",
     v: [
-      ["81:10", "Open your mouth wide and I will fill it", "God wants to give generously."],
-      ["81:13", "Oh that My people would listen to Me", "God's longing."],
-      ["81:16", "With honey from the rock I would satisfy you", "The blessing they missed."],
+      ["81:10", "Open your mouth wide and I will fill it", "God brought Israel out of Egypt. He invites them to open their mouths wide, like baby birds, and He will fill them."],
+      ["81:13", "Oh that My people would listen to Me", "God longs for His people to listen and walk in His ways. He would quickly defeat their enemies (81:14)."],
+      ["81:16", "With honey from the rock I would satisfy you", "God would have fed them with the finest wheat and honey from the rock. This is the blessing they missed by not listening."],
     ],
     refs: [["LEV.23", "Leviticus 23:24", "The Feast of Trumpets"], ["MAT.23", "Matthew 23:37", "You were unwilling"]],
   },
   82: {
     intro: "God takes His stand in the divine assembly and judges among the \"gods.\" \"How long will you judge unjustly?\" He commands, \"Vindicate the weak and fatherless; do justice to the afflicted.\" \"I said, You are gods... nevertheless you will die like men.\" \"Arise, O God, judge the earth!\"",
     v: [
-      ["82:3", "Vindicate the weak and fatherless", "God's concern for justice."],
-      ["82:6", "I said, You are gods", "Jesus quoted this in John 10:34."],
-      ["82:8", "Arise, O God, judge the earth", "Hope for true justice."],
+      ["82:3", "Vindicate the weak and fatherless", "God tells the judges to defend the weak and the orphan and give justice to the poor."],
+      ["82:6", "I said, You are gods", "God calls these rulers \"gods\" because they judged in His place, yet they will die like anyone (82:7). Jesus quoted this verse in John 10:34."],
+      ["82:8", "Arise, O God, judge the earth", "Earthly judges failed. The psalm ends asking God Himself to rise and judge the earth, because all nations belong to Him."],
     ],
     why: "Psalm 82 speaks of God judging \"gods\" in His assembly. Scholars discuss who these \"gods\" are.",
     views: [
@@ -810,9 +810,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   83: {
     intro: "\"O God, do not remain quiet.\" A coalition of nations, Edom, Moab, Ammon, Philistia, Tyre and Assyria, plots to wipe Israel out. The psalmist asks God to deal with them as with Midian and Sisera, \"that they may know that You alone, whose name is the LORD, are the Most High over all the earth.\"",
     v: [
-      ["83:4", "Let us wipe them out as a nation", "A real threat."],
-      ["83:9", "Deal with them as with Midian", "Remembering Gideon's victory."],
-      ["83:18", "That they may know that You alone are the Most High", "The goal is God's name known."],
+      ["83:4", "Let us wipe them out as a nation", "A whole alliance of nations plots to wipe Israel off the map. The danger is real."],
+      ["83:9", "Deal with them as with Midian", "Asaph asks God to do as He did against Midian in Gideon's day (Judges 7) and against Sisera at the Kishon (Judges 4)."],
+      ["83:18", "That they may know that You alone are the Most High", "The goal is not only victory but that people will know that God alone, whose name is the LORD, is Most High over all the earth."],
     ],
     refs: [["JDG.7", "Judges 7", "Gideon defeats Midian"], ["2CH.20", "2 Chronicles 20", "An alliance against Jehoshaphat"]],
   },
