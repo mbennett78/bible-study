@@ -3009,3 +3009,10 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .q-meet li .q-critter { width: 44px; height: 44px; flex: none; }
 .q-meet li small { display: block; font-size: .85rem; opacity: .9; }
 .q-catname { font-size: 1.15rem; line-height: 1.2; text-align: center; }
+/* Story picture tap surprises (Lively pictures only) */
+.storybook { cursor: pointer; }
+.storybook .sb-hop { animation: sbHop .6s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes sbHop { 0%, 100% { translate: 0 0; } 40% { translate: 0 -12px; } 70% { translate: 0 2px; } }
+.storybook .sb-tapstar { transform-box: fill-box; transform-origin: center; animation: sbTapStar .9s ease-out forwards; pointer-events: none; }
+@keyframes sbTapStar { 0% { opacity: 0; scale: .3; rotate: 0deg; } 30% { opacity: 1; scale: 1.2; } 100% { opacity: 0; scale: .8; rotate: 90deg; translate: 0 -10px; } }
+@media (prefers-reduced-motion: reduce) { .storybook .sb-hop, .storybook .sb-tapstar { animation: none; } }

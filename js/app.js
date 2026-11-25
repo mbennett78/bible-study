@@ -5199,3 +5199,28 @@ if ("serviceWorker" in navigator) {
     // No banner: updates arrive quietly (Melissa: don't overwhelm anyone with notes).
   });
 }
+
+/* ---------- Kids' storybook: tap surprises ---------- */
+// Tap someone or something in a story picture and it gives a little hop, with a twinkle where
+// you tapped. Only with Lively pictures and when motion is welcome; otherwise pictures stay still.
+document.addEventListener("click", (e) => {
+  const svg = e.target.closest?.("svg.storybook");
+  if (!svg || (store.get("graphics") || "full") !== "full" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const root = svg.querySelector("g[clip-path]");
+  if (!root) return;
+  const vb = svg.viewBox.baseVal, box = svg.getBoundingClientRect();
+  // The thing tapped: the outermost drawn group under the finger that is small enough to hop.
+  let hop = null;
+  for (let el = e.target; el && el !== root; el = el.parentNode) {
+    if (el.tagName === "g") { const r = el.getBoundingClientRect(); if (r.width < box.width * .45 && r.height < box.height * .8) hop = el; }
+  }
+  if (hop && !hop.classList.contains("sb-hop")) { hop.classList.add("sb-hop"); hop.addEventListener("animationend", () => hop.classList.remove("sb-hop"), { once: true }); }
+  // A twinkle where the finger landed (the picture is scaled to fill its box).
+  const k = Math.max(box.width / vb.width, box.height / vb.height);
+  const x = (e.clientX - box.left - (box.width - vb.width * k) / 2) / k, y = (e.clientY - box.top - (box.height - vb.height * k) / 2) / k;
+  const star = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  star.setAttribute("d", `M${x} ${y - 9} L ${x + 2.4} ${y - 2.4} L ${x + 9} ${y} L ${x + 2.4} ${y + 2.4} L ${x} ${y + 9} L ${x - 2.4} ${y + 2.4} L ${x - 9} ${y} L ${x - 2.4} ${y - 2.4} Z`);
+  star.setAttribute("fill", "#ffe680"); star.setAttribute("stroke", "#3a2a1f"); star.setAttribute("stroke-width", "1.2"); star.setAttribute("class", "sb-tapstar");
+  root.append(star);
+  setTimeout(() => star.remove(), 900);
+});
