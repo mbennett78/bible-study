@@ -43,9 +43,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["bergen", "baldwin"] },
     intro: "Two of Ish-bosheth's captains murder him in his bed and bring his head to David, expecting a reward. David has them executed. The chapter also introduces Jonathan's son Mephibosheth, lame since childhood.",
     v: [
       ["4:4", "Mephibosheth", "Dropped by his nurse as she fled, at age five."],
+      ["4:5-6", "In the heat of the day", "They struck while Ish-bosheth lay resting at noon, a coward's attack."],
       ["4:9", "As the LORD lives, who has redeemed my life", "David trusts God to give him the throne, not murderers."],
     ],
-    refs: [["2SA.9", "2 Samuel 9", "David's kindness to Mephibosheth"]],
+    bg: [["A kingdom east of the Jordan", "After Saul's death, Abner made Ish-bosheth king at Mahanaim, east of the Jordan, away from the Philistines (2 Samuel 2:8-9). With Abner dead, the kingdom had no real strength left. David honored Ish-bosheth even in death, burying his head in Abner's tomb at Hebron (4:12).", "good", ["bergen", "baldwin"]]],
+    refs: [["2SA.1", "2 Samuel 1:14-16", "David's like response to Saul's killer"], ["2SA.9", "2 Samuel 9", "David's kindness to Mephibosheth"]],
   },
   5: {
     intro: "All the tribes come to Hebron and anoint David king over all Israel. He captures Jerusalem from the Jebusites, makes it his capital, the City of David, and defeats the Philistines twice, asking God before each battle.",

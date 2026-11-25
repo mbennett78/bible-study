@@ -206,9 +206,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "Ahaziah reigns one year, advised by his mother Athaliah to do evil, and is killed by Jehu. Athaliah then destroys the royal family to seize the throne, but Jehoshabeath hides baby Joash in the temple for six years.",
     v: [
       ["22:3", "His mother was his counselor to do wickedly", "Influence matters."],
+      ["22:2", "His mother's name was Athaliah, the granddaughter of Omri", "Athaliah came from Ahab's royal house in the north, through a marriage alliance that pulled Judah toward Baal worship."],
+      ["22:7", "His downfall was from God", "Ahaziah was visiting the king of Israel when Jehu's revolt swept them both away."],
       ["22:11", "Jehoshabeath hid him", "The line of David, and of the Messiah, survives by one courageous woman."],
     ],
-    refs: [["2KI.11", "2 Kings 11:1-3", "Joash hidden"]],
+    bg: [["The Tel Dan inscription", "Pieces of a stone found at Tel Dan in 1993-94 record an Aramean king, probably Hazael, boasting that he killed the king of Israel and a king of \"the house of David\" in these very years. The names on the broken stone are partly restored, and who really killed the two kings is debated (the Bible credits Jehu). But it is the earliest mention of David's royal line outside the Bible.", "strong", ["thompson", "kitchen"]]],
+    refs: [["2KI.9", "2 Kings 9:27-29", "Ahaziah's death"], ["2KI.11", "2 Kings 11:1-3", "Joash hidden"]],
   },
   23: {
     intro: "In the seventh year, Jehoiada the priest gathers the Levites and leaders, crowns young Joash, and the people shout \"Long live the king!\" Athaliah is executed. Jehoiada makes a covenant that they will be the LORD's people, and the temple of Baal is torn down.",

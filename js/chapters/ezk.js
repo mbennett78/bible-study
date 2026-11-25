@@ -288,9 +288,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "\"Wail, Alas for the day! For the day is near, the day of the LORD.\" Egypt and her allies will fall to Nebuchadnezzar. God has broken Pharaoh's arm, and will strengthen the arms of the king of Babylon.",
     v: [
       ["30:3", "The day of the LORD is near", "A day of judgment for nations."],
+      ["30:13-16", "Memphis, Zoan, Thebes, Pelusium", "Ezekiel names Egypt's great cities one by one, from the delta to the far south. None is beyond God's reach."],
+      ["30:20", "In the eleventh year, in the first month", "Spring of 587 BC, while Babylon besieged Jerusalem."],
       ["30:21", "I have broken the arm of Pharaoh", "Egypt's power broken."],
     ],
-    refs: [["JER.46", "Jeremiah 46:13-26", "Nebuchadnezzar against Egypt"]],
+    bg: [["Pharaoh's broken arm", "Pharaoh Hophra (Apries) marched out to help Jerusalem in 588 BC, and the Babylonians lifted the siege for a while to face him (Jeremiah 37:5-11). He was driven back, and the siege resumed. That defeat is the \"broken arm\" of verse 21. Hophra was later overthrown by his own general.", "strong", ["block", "kitchen"]]],
+    refs: [["JER.37", "Jeremiah 37:5-11", "Egypt's army turns back"], ["JER.46", "Jeremiah 46:13-26", "Nebuchadnezzar against Egypt"]],
   },
   31: {
     intro: "Pharaoh is compared to Assyria, once a towering cedar in Lebanon, the envy of every tree in Eden, with birds in its branches and nations in its shade. Because its heart was proud, it was cut down and went down to Sheol. So it will be with Pharaoh.",
@@ -304,8 +307,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "A lament for Pharaoh, a sea monster caught in God's net. Then a solemn picture of the grave: Egypt goes down to the pit to join Assyria, Elam, Meshech, Tubal, Edom and Sidon, mighty nations that once spread terror and now lie with the slain.",
     v: [
       ["32:2", "You are like the monster in the seas", "Pharaoh's power pictured."],
+      ["32:1", "In the twelfth year, in the twelfth month", "Early 585 BC, about a year after Jerusalem fell."],
+      ["32:7", "I will cover the heavens and darken their stars", "Prophets used the darkening of sun and stars to picture the fall of a great kingdom."],
       ["32:18", "Wail for the hordes of Egypt", "Even the mighty fall."],
     ],
+    bg: [["Among the uncircumcised", "Egyptians practiced circumcision, so being laid in the grave \"among the uncircumcised\" and \"those slain by the sword\" was a picture of the deepest shame for proud Pharaoh. Each nation in the list had once spread terror; now all share the same end.", "good", ["block", "duguidE"]]],
     refs: [["ISA.14", "Isaiah 14:9-11", "The grave stirs to meet them"]],
   },
   33: {
@@ -333,9 +339,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "An oracle against Mount Seir (Edom), which held an everlasting hatred against Israel, handed them over to the sword in their calamity, and said, \"These two nations will be mine.\" Edom will become a desolation.",
     v: [
       ["35:5", "Because you have had everlasting enmity", "Long-held hatred."],
+      ["35:6", "Since you have not hated bloodshed", "Edom stood by and helped while Judah was being slaughtered."],
       ["35:10", "Although the LORD was there", "Edom forgot God was with Israel."],
+      ["35:12", "I have heard all your revilings", "God hears the taunts spoken against His people."],
     ],
-    refs: [["OBA.1", "Obadiah", "Edom's judgment"], ["GEN.27", "Genesis 27:41", "Esau's grudge"]],
+    bg: [["Edom moves in", "After Jerusalem fell in 586 BC, Edomites moved into the south of Judah. In later centuries that area was called Idumea, and King Herod's family came from there. Psalm 137:7 remembers Edom shouting, \"Tear it down!\" on the day Jerusalem fell.", "good", ["block", "taylor"]]],
+    refs: [["PSA.137", "Psalm 137:7", "Remember, O LORD, against the sons of Edom"], ["OBA.1", "Obadiah", "Edom's judgment"], ["GEN.27", "Genesis 27:41", "Esau's grudge"]],
   },
   36: {
     intro: "God speaks to the mountains of Israel: they will bear fruit again and be inhabited. Israel profaned God's name among the nations, \"but I had concern for My holy name.\" \"I will sprinkle clean water on you, and you will be clean... Moreover, I will give you a new heart and put a new spirit within you; and I will remove the heart of stone from your flesh and give you a heart of flesh. I will put My Spirit within you and cause you to walk in My statutes.\"",

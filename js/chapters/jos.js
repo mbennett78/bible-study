@@ -217,8 +217,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
     intro: "Six cities of refuge are set apart: Kedesh, Shechem and Hebron west of the Jordan, and Bezer, Ramoth and Golan east of it, for anyone who kills a person unintentionally.",
     v: [
       ["20:3", "Without premeditation", "The law protected the innocent from revenge."],
+      ["20:4", "He shall stand at the entrance of the gate of the city", "The elders at the gate heard his case first. Refuge was for the innocent, not a hiding place for murderers."],
       ["20:6", "Until the death of the high priest", "Then the manslayer could go home."],
     ],
+    bg: [["Never too far to run", "The six cities were spread across the land, three on each side of the Jordan, so a person in danger was never far from one. Later Jewish teaching says the roads to them were kept in good repair and marked with signs reading \"Refuge.\"", "good", ["howard", "hess"]]],
+    w: [["miqlat", "mik-LAHT", "H4733", "refuge, place of safety", "From a root meaning to take in. It is used only for these cities: a place that takes in the one who flees.", ["halot"]]],
     refs: [["NUM.35", "Numbers 35:9-34", "Cities of refuge commanded"], ["HEB.6", "Hebrews 6:18", "We who have taken refuge"]],
   },
   21: {

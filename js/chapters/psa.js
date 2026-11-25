@@ -515,9 +515,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "Written when the Ziphites told Saul where David was hiding. \"Save me, O God, by Your name.\" \"Behold, God is my helper; the Lord is the sustainer of my soul.\" David promises to give thanks.",
     v: [
       ["54:1", "Save me, O God, by Your name", "God's character is his hope."],
+      ["54:3", "Strangers have risen against me", "The betrayers were fellow Judeans, yet they acted like strangers."],
       ["54:4", "God is my helper", "A turning point."],
+      ["54:6", "A freewill offering I will sacrifice to You", "Thanks given gladly, not because it was owed."],
     ],
-    refs: [["1SA.23", "1 Samuel 23:19-29", "The Ziphites betray David"], ["HEB.13", "Hebrews 13:6", "The Lord is my helper"]],
+    bg: [["The Ziphites", "Ziph lay in the rough wilderness southeast of Hebron, in David's own tribe of Judah. Twice its people told Saul where David was hiding (1 Samuel 23:19; 26:1). This psalm turns that betrayal into prayer.", "good", ["tate", "kidner"]]],
+    refs: [["1SA.26", "1 Samuel 26:1", "The second betrayal"], ["1SA.23", "1 Samuel 23:19-29", "The Ziphites betray David"], ["HEB.13", "Hebrews 13:6", "The Lord is my helper"]],
   },
   55: {
     intro: "David is overwhelmed with fear: \"Oh, that I had wings like a dove! I would fly away and be at rest.\" The worst part is that the betrayer is \"my companion and my familiar friend; we who had sweet fellowship together.\" Evening, morning and noon he will pray. \"Cast your burden upon the LORD and He will sustain you.\"",
@@ -584,8 +587,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"Hear my cry, O God... from the end of the earth I call to You when my heart is faint; lead me to the rock that is higher than I.\" He longs to dwell in God's tent forever and prays for the king's long life.",
     v: [
       ["61:2", "Lead me to the rock that is higher than I", "A safety beyond himself."],
+      ["61:2", "From the end of the earth I call to You", "Far from home, or simply at the end of his strength, he can still pray."],
       ["61:4", "Let me dwell in Your tent forever", "Longing for God's presence."],
+      ["61:4", "The shelter of Your wings", "A picture of a mother bird, or of the cherubim's wings over the ark."],
     ],
+    bg: [["A prayer for the king", "Verses 6-7 pray for the king's long life and steadfast love. Many think David prayed this while far from Jerusalem, perhaps during Absalom's revolt. Christians have long heard in it the King whose reign has no end.", "good", ["tate", "kidner"]]],
     refs: [["PSA.18", "Psalm 18:2", "The LORD is my rock"]],
   },
   62: {
@@ -612,9 +618,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "David asks God to hide him from secret plots. Enemies sharpen their tongues like swords and shoot bitter words like arrows. But God shoots His arrow at them, and their own tongues trip them up. The righteous will be glad in the LORD.",
     v: [
       ["64:3", "Who have sharpened their tongue like a sword", "Words as weapons."],
+      ["64:5", "They talk of laying snares secretly; they say, Who will see them?", "Plotters forget that God sees."],
       ["64:7", "But God will shoot at them with an arrow", "God turns the tables."],
+      ["64:9", "Then all men will fear, and will declare the work of God", "When God acts, people everywhere learn from it."],
     ],
-    refs: [["JAS.3", "James 3:6-8", "The tongue is a fire"]],
+    refs: [["PRO.12", "Proverbs 12:18", "Rash words like sword thrusts"], ["JAS.3", "James 3:6-8", "The tongue is a fire"]],
   },
   65: {
     intro: "A harvest psalm. Praise waits for God in Zion. He forgives sins and satisfies us with the goodness of His house. He stills the roaring seas, waters the earth, and crowns the year with His bounty. \"The meadows are clothed with flocks... they shout for joy, yes, they sing.\"",
@@ -1176,9 +1184,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"To You I lift up my eyes, O You who are enthroned in the heavens!\" As servants watch their master's hand, so we look to the LORD until He is gracious. \"Be gracious to us, O LORD, for we are greatly filled with contempt.\"",
     v: [
       ["123:2", "As the eyes of servants look to the hand of their master", "Watching for God's help."],
+      ["123:1", "O You who are enthroned in the heavens", "Looking up past the scorn of people to the throne of God."],
       ["123:3", "Be gracious to us", "A prayer under scorn."],
     ],
-    refs: [["HEB.12", "Hebrews 12:2", "Fixing our eyes on Jesus"]],
+    bg: [["A Song of Ascents", "Psalms 120-134 are \"Songs of Ascents,\" most likely sung by pilgrims as they went up to Jerusalem for the feasts. This short one fits a people who have been mocked by the proud, as the returned exiles were while they rebuilt (Nehemiah 4:1-4).", "good", ["allen", "kidner"]]],
+    refs: [["NEH.4", "Nehemiah 4:1-4", "Mocked while rebuilding"], ["HEB.12", "Hebrews 12:2", "Fixing our eyes on Jesus"]],
   },
   124: {
     intro: "\"Had it not been the LORD who was on our side, let Israel now say.\" The enemies would have swallowed them, the flood would have swept them away. \"Our soul has escaped as a bird out of the snare.\" \"Our help is in the name of the LORD, who made heaven and earth.\"",
