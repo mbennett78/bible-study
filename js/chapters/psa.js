@@ -253,10 +253,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   27: {
     intro: "\"The LORD is my light and my salvation; whom shall I fear?\" David asks one thing: to dwell in the house of the LORD all his days and behold His beauty. \"When You said, Seek My face, my heart said to You, Your face, O LORD, I shall seek.\" Even if father and mother forsake him, the LORD will take him up. \"Wait for the LORD; be strong.\"",
     v: [
-      ["27:1", "The LORD is my light", "God drives out fear."],
-      ["27:4", "One thing I have asked", "One great desire."],
-      ["27:10", "The LORD will take me up", "God never abandons."],
-      ["27:14", "Wait for the LORD", "Patient courage."],
+      ["27:1", "The LORD is my light", "With the LORD as his light, salvation and stronghold, David asks: whom shall I fear? God's presence drives out fear."],
+      ["27:4", "One thing I have asked", "Of all he could ask for, David wants one thing: to live near God and gaze on His beauty."],
+      ["27:10", "The LORD will take me up", "Even if father and mother turned away, the LORD would take him in. God's care is deeper than the closest human love."],
+      ["27:14", "Wait for the LORD", "The psalm ends by telling David's own heart, and ours: wait for the LORD. Be strong and take courage while you wait."],
     ],
     refs: [["JHN.8", "John 8:12", "I am the light of the world"], ["LUK.10", "Luke 10:42", "Only one thing is necessary"], ["ISA.40", "Isaiah 40:31", "Those who wait for the LORD"]],
   },
@@ -439,9 +439,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   46: {
     intro: "\"God is our refuge and strength, a very present help in trouble.\" Even if the earth changes and mountains fall into the sea, we will not fear. There is a river whose streams make glad the city of God. \"The LORD of hosts is with us.\" God makes wars cease. \"Cease striving and know that I am God.\"",
     v: [
-      ["46:1", "A very present help in trouble", "Always near."],
+      ["46:1", "A very present help in trouble", "God is not far off. He is a refuge and strength, a help we find right there in the middle of trouble."],
       ["46:4", "There is a river", "Jerusalem had no great river; God Himself is the source."],
-      ["46:10", "Cease striving and know that I am God", "Be still: let go and trust."],
+      ["46:10", "Cease striving and know that I am God", "The Hebrew means to let go, stop fighting. In the middle of wars and turmoil, God says: be still and know that I am God."],
     ],
     bg: [["A Mighty Fortress", "Martin Luther's hymn \"A Mighty Fortress Is Our God\" (1529) is based on Psalm 46 and has been sung by Protestant churches ever since.", "strong", ["kidner"]]],
     refs: [["2KI.19", "2 Kings 19:32-35", "God defends Jerusalem"], ["REV.22", "Revelation 22:1", "The river of the water of life"]],
@@ -486,11 +486,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   51: {
     intro: "David's prayer after Nathan confronted him about his sin with Bathsheba. \"Be gracious to me, O God, according to Your lovingkindness... wash me thoroughly from my iniquity.\" \"Against You, You only, I have sinned.\" \"Create in me a clean heart, O God, and renew a steadfast spirit within me.\" God does not despise a broken and contrite heart.",
     v: [
-      ["51:1", "According to Your lovingkindness", "David appeals only to God's mercy."],
-      ["51:4", "Against You, You only, I have sinned", "All sin is ultimately against God."],
-      ["51:7", "Purify me with hyssop", "Hyssop was used in cleansing rites."],
-      ["51:10", "Create in me a clean heart", "Only God can make a new heart."],
-      ["51:17", "A broken and a contrite heart", "What God accepts."],
+      ["51:1", "According to Your lovingkindness", "The heading links this psalm to David's sin with Bathsheba (2 Samuel 11-12). He offers no excuse and asks only for God's mercy and steadfast love."],
+      ["51:4", "Against You, You only, I have sinned", "David had wronged Bathsheba and Uriah terribly, yet he sees that every sin is first of all against God."],
+      ["51:7", "Purify me with hyssop", "Hyssop was a small plant used to sprinkle blood or water in cleansing rites (Leviticus 14:4-7; Numbers 19:18). David asks God to wash him whiter than snow."],
+      ["51:10", "Create in me a clean heart", "The Hebrew word for create is the one used in Genesis 1:1. A clean heart is something only God can make."],
+      ["51:17", "A broken and a contrite heart", "Sacrifices alone could not fix David's sin. What God wants is a heart broken over sin and humble before Him."],
     ],
     w: [["בָּרָא", "bara", "H1254", "create", "The same verb as Genesis 1:1. In the Bible only God is ever the subject of this verb. David asks for a new creation inside him.", ["halot", "tate"]]],
     refs: [["2SA.12", "2 Samuel 12", "Nathan confronts David"], ["EZK.36", "Ezekiel 36:26", "A new heart"], ["2CO.5", "2 Corinthians 5:17", "A new creation"]],
@@ -889,10 +889,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   91: {
     intro: "\"He who dwells in the shelter of the Most High will abide in the shadow of the Almighty.\" God covers His people with His feathers. \"You will not be afraid of the terror by night, or of the arrow that flies by day.\" He gives His angels charge over them. God says, \"Because he has loved Me, I will deliver him... I will be with him in trouble.\"",
     v: [
-      ["91:1", "In the shadow of the Almighty", "Safe in God."],
-      ["91:4", "Under His wings you may seek refuge", "A mother bird's care."],
+      ["91:1", "In the shadow of the Almighty", "The one who lives close to the Most High rests in His shadow, like finding shade and safety near Him."],
+      ["91:4", "Under His wings you may seek refuge", "God covers His people like a bird spreading its wings over its young. His faithfulness is their shield."],
       ["91:11-12", "He will give His angels charge concerning you", "Satan misused this verse to tempt Jesus."],
-      ["91:15", "I will be with him in trouble", "God's presence in hardship."],
+      ["91:15", "I will be with him in trouble", "God does not promise there will be no trouble. He promises to be with His people in it and to rescue them."],
     ],
     refs: [["MAT.4", "Matthew 4:5-7", "Satan quotes Psalm 91"], ["HEB.1", "Hebrews 1:14", "Ministering spirits"]],
   },
@@ -974,10 +974,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   100: {
     intro: "A psalm for giving thanks. \"Shout joyfully to the LORD, all the earth. Serve the LORD with gladness; come before Him with joyful singing. Know that the LORD Himself is God; it is He who has made us, and not we ourselves; we are His people and the sheep of His pasture.\" \"Enter His gates with thanksgiving.\" For the LORD is good; His lovingkindness is everlasting.",
     v: [
-      ["100:2", "Serve the LORD with gladness", "Joyful service."],
-      ["100:3", "It is He who has made us", "We belong to God."],
-      ["100:4", "Enter His gates with thanksgiving", "The way into worship."],
-      ["100:5", "His faithfulness to all generations", "A promise for families."],
+      ["100:2", "Serve the LORD with gladness", "Worship is not a chore. Come before the LORD with gladness and joyful singing."],
+      ["100:3", "It is He who has made us", "The LORD is God. He made us and we belong to Him, like sheep of His own pasture."],
+      ["100:4", "Enter His gates with thanksgiving", "Worshipers entered the temple gates and courts singing. Thanksgiving and praise are the way in."],
+      ["100:5", "His faithfulness to all generations", "The LORD is good, His love lasts forever, and His faithfulness reaches every generation of a family."],
     ],
     bg: [["The Old Hundredth", "The hymn \"All People That on Earth Do Dwell\" (1561) set this psalm to a tune called \"Old Hundredth,\" the same tune often used for the Doxology, \"Praise God from Whom All Blessings Flow.\"", "strong", ["kidner"]]],
     refs: [["PSA.95", "Psalm 95:6-7", "The sheep of His hand"], ["JHN.10", "John 10:14-16", "I am the good shepherd"]],
@@ -1003,10 +1003,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   103: {
     intro: "\"Bless the LORD, O my soul, and all that is within me, bless His holy name... and forget none of His benefits.\" He pardons, heals, redeems, crowns with lovingkindness. \"As far as the east is from the west, so far has He removed our transgressions from us.\" \"Just as a father has compassion on his children, so the LORD has compassion on those who fear Him.\"",
     v: [
-      ["103:2", "Forget none of His benefits", "Remembering God's gifts."],
-      ["103:8", "Compassionate and gracious, slow to anger", "From Exodus 34:6."],
-      ["103:12", "As far as the east is from the west", "Complete forgiveness."],
-      ["103:13", "Just as a father has compassion on his children", "God's fatherly heart."],
+      ["103:2", "Forget none of His benefits", "David tells his own soul to bless the LORD and not forget all He has done: forgiving, healing, redeeming, crowning with love (103:3-4)."],
+      ["103:8", "Compassionate and gracious, slow to anger", "Quoting God's own description of Himself to Moses (Exodus 34:6): compassionate and gracious, slow to anger and full of love."],
+      ["103:12", "As far as the east is from the west", "North and south meet at the poles, but east and west never meet. That is how far God removes our sins."],
+      ["103:13", "Just as a father has compassion on his children", "God knows how weak we are, that we are dust (103:14). He is tender toward us like a loving father with his children."],
     ],
     refs: [["EXO.34", "Exodus 34:6-7", "God's name"], ["MIC.7", "Micah 7:19", "Sins cast into the sea"], ["LUK.15", "Luke 15:20", "The father ran"]],
   },
@@ -1182,9 +1182,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   121: {
     intro: "\"I will lift up my eyes to the mountains; from where shall my help come? My help comes from the LORD, who made heaven and earth.\" He who keeps you will not slumber. \"The LORD is your keeper... The sun will not smite you by day, nor the moon by night. The LORD will guard your going out and your coming in from this time forth and forever.\"",
     v: [
-      ["121:1-2", "My help comes from the LORD", "The Creator is our helper."],
-      ["121:4", "He who keeps Israel will neither slumber nor sleep", "God never stops watching."],
-      ["121:8", "Your going out and your coming in", "A traveler's blessing."],
+      ["121:1-2", "My help comes from the LORD", "Pilgrims climbing to Jerusalem looked at the hills, where robbers might hide. Their help comes from the LORD, who made heaven and earth."],
+      ["121:4", "He who keeps Israel will neither slumber nor sleep", "God never dozes off on watch. Day and night, He keeps His people."],
+      ["121:8", "Your going out and your coming in", "The LORD guards your leaving and returning, now and forever. Many families pray this over travelers."],
     ],
     w: [["שָׁמַר", "shamar", "H8104", "to keep, guard, watch over", "A shepherd's or watchman's word. It appears six times in these eight verses.", ["halot", "allen"]]],
     refs: [["PSA.124", "Psalm 124:8", "Our help is in the name of the LORD"], ["JHN.17", "John 17:11-12", "Jesus keeps His disciples"]],
@@ -1365,11 +1365,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   139: {
     intro: "\"O LORD, You have searched me and known me.\" God knows when David sits and stands, his thoughts and words before he speaks. \"Where can I go from Your Spirit?\" Even darkness is light to God. \"You formed my inward parts; You wove me in my mother's womb. I will give thanks to You, for I am fearfully and wonderfully made.\" \"Search me, O God, and know my heart.\"",
     v: [
-      ["139:1", "You have searched me and known me", "Fully known."],
-      ["139:7", "Where can I go from Your Spirit?", "God is everywhere."],
-      ["139:13-14", "Fearfully and wonderfully made", "God made each person with care."],
-      ["139:16", "Your eyes have seen my unformed substance", "God knows us before birth."],
-      ["139:23-24", "Search me, O God", "An open heart."],
+      ["139:1", "You have searched me and known me", "God has looked deeply into David's heart and knows him completely: when he sits, stands, thinks or speaks."],
+      ["139:7", "Where can I go from Your Spirit?", "There is nowhere David can go where God is not, from the heights of heaven to the depths, from dawn to the far sea (139:8-9)."],
+      ["139:13-14", "Fearfully and wonderfully made", "God formed David in his mother's womb with care. He responds with praise: I am fearfully and wonderfully made."],
+      ["139:16", "Your eyes have seen my unformed substance", "Before David was born, God saw him and knew all his days. Every person's life is known and valued by God."],
+      ["139:23-24", "Search me, O God", "David ends by inviting God to search his heart, show him anything wrong, and lead him in the everlasting way."],
     ],
     refs: [["JER.1", "Jeremiah 1:5", "Before I formed you in the womb, I knew you"], ["HEB.4", "Hebrews 4:13", "All things are open to His eyes"], ["MAT.10", "Matthew 10:30", "The hairs of your head are numbered"]],
   },
