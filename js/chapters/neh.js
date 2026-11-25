@@ -118,8 +118,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
     v: [
       ["11:1", "The holy city", "Jerusalem is called holy because God's house is there."],
       ["11:2", "The people blessed all the men who volunteered", "Moving was a sacrifice."],
+      ["11:17", "The leader in beginning the thanksgiving at prayer", "Mattaniah led the temple songs of thanks."],
+      ["11:23", "A commandment from the king concerning them", "The Persian king himself supported the singers' daily needs."],
     ],
-    refs: [["PSA.122", "Psalm 122:6", "Pray for the peace of Jerusalem"], ["REV.21", "Revelation 21:2", "The holy city, new Jerusalem"]],
+    bg: [["An empty city", "Jerusalem's walls were rebuilt, but few people lived inside and the houses were not yet built (7:4). Living in the city meant leaving farms and family land and being first in danger. So one family in ten was chosen by lot to move, a kind of tithe of the people.", "good", ["kidner", "williamsonEN"]]],
+    refs: [["NEH.7", "Nehemiah 7:4", "The city was large, the people few"], ["PSA.122", "Psalm 122:6", "Pray for the peace of Jerusalem"], ["REV.21", "Revelation 21:2", "The holy city, new Jerusalem"]],
   },
   12: {
     intro: "Lists of priests and Levites lead into the dedication of the wall. Two great choirs with instruments walk on top of the wall in opposite directions and meet at the temple. They offer sacrifices and rejoice, \"so that the joy of Jerusalem was heard from afar.\" Men are appointed to care for the storerooms.",

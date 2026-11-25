@@ -107,7 +107,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
     v: [
       ["12:2", "God is my salvation, I will trust and not be afraid", "Echoes Exodus 15:2."],
       ["12:3", "Draw water from the springs of salvation", "Joy in God's rescue."],
+      ["12:4", "Make known His deeds among the peoples", "Praise is not only private: it tells the nations."],
+      ["12:6", "Great in your midst is the Holy One of Israel", "Isaiah's favorite name for God closes the first part of his book."],
     ],
+    bg: [["Drawing water with joy", "In later Jewish practice at the Feast of Tabernacles, priests drew water from the Pool of Siloam and poured it out at the altar with great rejoicing, singing words like Isaiah 12:3. On the last day of that feast Jesus stood and cried out, \"If anyone is thirsty, let him come to Me and drink\" (John 7:37).", "good", ["oswalt", "motyer"]]],
     refs: [["EXO.15", "Exodus 15:2", "The LORD is my strength and song"], ["JHN.7", "John 7:37-38", "Rivers of living water"]],
   },
   13: {

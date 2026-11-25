@@ -333,10 +333,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
   34: {
     intro: "During the siege, King Zedekiah and the people make a covenant to free their Hebrew slaves, as the law required. But when Babylon's army briefly withdraws, they take them back. God says: you proclaimed release and then broke it, so I proclaim a \"release\" for you to the sword, plague and famine.",
     v: [
+      ["34:7", "Only Lachish and Azekah remained", "The last fortified cities of Judah still holding out."],
       ["34:8", "To proclaim release to them", "Doing right under pressure."],
       ["34:16", "You turned and profaned My name", "Broken promises."],
+      ["34:18", "When they cut the calf in two and passed between its parts", "An ancient covenant rite: may I be cut in two if I break my word."],
     ],
-    refs: [["EXO.21", "Exodus 21:2", "Freedom in the seventh year"], ["DEU.15", "Deuteronomy 15:12-15", "Release your slaves"]],
+    bg: [["The Lachish Letters", "Pottery letters found at Lachish in 1935 were written by an officer during this very siege. One says, \"we are watching for the signals of Lachish... for we cannot see Azekah,\" which suggests Azekah had just fallen, exactly as Jeremiah 34:7 describes the last two cities.", "strong", ["thompsonJ", "kitchen"]]],
+    refs: [["GEN.15", "Genesis 15:9-18", "God passes between the pieces"], ["EXO.21", "Exodus 21:2", "Freedom in the seventh year"], ["DEU.15", "Deuteronomy 15:12-15", "Release your slaves"]],
   },
   35: {
     intro: "God sends Jeremiah to the Rechabites and offers them wine in the temple. They refuse, because their ancestor Jonadab commanded them not to drink wine or build houses, and they have obeyed for over two hundred years. God contrasts their faithfulness to a human father with Judah's refusal to obey God.",

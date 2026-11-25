@@ -134,9 +134,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "Elders come to Ezekiel, but they have set up idols in their hearts. God says that even if Noah, Daniel and Job were in a land under judgment, they would save only themselves by their righteousness. Yet a remnant will survive, and others will be comforted when they see why God acted.",
     v: [
       ["14:3", "These men have set up their idols in their hearts", "Idolatry can be inward."],
+      ["14:7", "Who separates himself from Me and sets up his idols in his heart", "Coming to a prophet does not cover a divided heart."],
       ["14:14", "Noah, Daniel and Job", "Three famous righteous men."],
+      ["14:22-23", "You will be comforted", "When survivors arrive, the exiles will see that God's judgment was just."],
     ],
-    refs: [["JOB.1", "Job 1:1", "Blameless and upright"], ["1JN.5", "1 John 5:21", "Guard yourselves from idols"]],
+    bg: [["Which Daniel?", "Ezekiel names Noah, Daniel and Job as famous righteous men. Many think this Daniel is Ezekiel's younger contemporary in Babylon, already known for wisdom and faithfulness (Daniel 1-2; Ezekiel 28:3). Others note that the Hebrew spelling matches Dan'el, an ancient righteous king in texts from Ugarit, who would fit with the ancient figures Noah and Job.", "debated", ["block", "taylor"]]],
+    refs: [["DAN.1", "Daniel 1", "Daniel's faithfulness"], ["JOB.1", "Job 1:1", "Blameless and upright"], ["1JN.5", "1 John 5:21", "Guard yourselves from idols"]],
   },
   15: {
     intro: "A vine is valuable only for its fruit; its wood is useless, not even good enough to make a peg. If it is burned, it is good for nothing. So Jerusalem, which bore no fruit, will be given to the fire.",

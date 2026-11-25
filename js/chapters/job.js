@@ -179,10 +179,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
     intro: "Job's spirit is broken; the grave is ready for him. He asks God to put up a pledge for him, since no one else will. Mockers surround him. \"Where now is my hope? And who regards my hope?\"",
     v: [
       ["17:3", "Lay down, now, a pledge for me with Yourself", "Only God can guarantee him."],
+      ["17:6", "He has made me a byword of the people", "Job has become the one everyone talks about, a warning tale."],
       ["17:9", "The righteous will hold to his way", "Even now, Job holds on."],
       ["17:15", "Where now is my hope?", "Darkness closing in."],
     ],
-    refs: [["PSA.42", "Psalm 42:5", "Why are you in despair, O my soul?"]],
+    bg: [["A pledge only God can give", "To \"strike hands\" was to stand as guarantor for someone's debt (Proverbs 6:1). Job has no one to stand for him, so he asks God to be his guarantor with God. The New Testament calls Jesus \"the guarantee of a better covenant\" (Hebrews 7:22).", "good", ["hartley", "andersen"]]],
+    refs: [["HEB.7", "Hebrews 7:22", "Jesus, our guarantee"], ["PSA.42", "Psalm 42:5", "Why are you in despair, O my soul?"]],
   },
   18: {
     intro: "Bildad's second speech describes the fate of the wicked in vivid pictures: his light goes out, his steps are caught in a trap, terrors frighten him, disease eats his skin, and his memory perishes from the earth. The description is clearly aimed at Job.",

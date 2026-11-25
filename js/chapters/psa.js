@@ -1277,8 +1277,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     v: [
       ["131:1", "Nor do I involve myself in great matters", "Content not to know everything."],
       ["131:2", "Like a weaned child rests against his mother", "Calm trust, not demanding."],
+      ["131:3", "O Israel, hope in the LORD", "One person's quiet trust becomes a call to the whole people."],
     ],
-    refs: [["MAT.18", "Matthew 18:3-4", "Become like children"], ["MAT.11", "Matthew 11:29", "Gentle and humble in heart"]],
+    bg: [["A weaned child", "In Israel children were usually weaned around age two or three (Hannah waited until Samuel was weaned before bringing him to the temple, 1 Samuel 1:22-24). A nursing baby fusses to be fed; a weaned child simply rests with its mother. David's trust has grown quiet like that.", "good", ["allen", "kidner"]]],
+    refs: [["1SA.1", "1 Samuel 1:22-24", "When the child is weaned"], ["MAT.18", "Matthew 18:3-4", "Become like children"], ["MAT.11", "Matthew 11:29", "Gentle and humble in heart"]],
   },
   132: {
     intro: "A psalm remembering David's vow not to rest until he found a dwelling place for the LORD, and God's answering promise: \"Of the fruit of your body I will set upon your throne.\" God has chosen Zion as His resting place forever. \"There I will cause the horn of David to spring forth.\"",
@@ -1302,8 +1304,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "The last Song of Ascents, a night blessing. \"Behold, bless the LORD, all servants of the LORD, who serve by night in the house of the LORD! Lift up your hands to the sanctuary and bless the LORD.\" The priests answer: \"May the LORD bless you from Zion, He who made heaven and earth.\"",
     v: [
       ["134:1", "Who serve by night in the house of the LORD", "Faithful night watch."],
+      ["134:2", "Lift up your hands to the sanctuary", "Raised hands were a common posture of prayer and praise."],
       ["134:3", "May the LORD bless you from Zion", "A blessing to take home."],
     ],
+    bg: [["The last Song of Ascents", "The pilgrim songs (Psalms 120-134) end in the temple at night. The people call on the priests and Levites on night duty to bless the LORD, and the priests answer with a blessing on the people, just as Aaron's blessing did (Numbers 6:24-26).", "good", ["allen", "kidner"]]],
     refs: [["1CH.9", "1 Chronicles 9:33", "Singers on duty day and night"], ["NUM.6", "Numbers 6:24", "The LORD bless you"]],
   },
   135: {

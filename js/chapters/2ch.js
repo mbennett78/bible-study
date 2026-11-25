@@ -128,11 +128,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   13: {
     intro: "Abijah of Judah faces Jeroboam's army, twice as large, and calls out from Mount Zemaraim: Judah has the LORD, His priests and His temple. Ambushed from behind, Judah cries to the LORD, the priests blow trumpets, and God routs Israel.",
     v: [
+      ["13:5", "By a covenant of salt", "A lasting covenant. Salt, which preserves, stood for permanence (Numbers 18:19)."],
       ["13:12", "God is with us at our head", "\"Do not fight against the LORD.\""],
       ["13:14", "They cried to the LORD", "In crisis, prayer."],
       ["13:18", "Because they trusted in the LORD", "The secret of Judah's victory."],
     ],
-    refs: [["1KI.15", "1 Kings 15:1-8", "Abijam's reign"]],
+    bg: [["Two views of one king", "1 Kings 15:3 says Abijam (Abijah) \"walked in all the sins of his father.\" Chronicles does not deny it, but shows the one day he trusted God and God answered. Both are true: a flawed king can still call on the LORD and be heard.", "good", ["selman", "thompson"]]],
+    refs: [["NUM.18", "Numbers 18:19", "An everlasting covenant of salt"], ["1KI.15", "1 Kings 15:1-8", "Abijam's reign"]],
   },
   14: {
     intro: "Asa does good: he removes foreign altars and idols and commands Judah to seek the LORD. When Zerah the Cushite attacks with a vast army, Asa prays, \"LORD, there is no one besides You to help in the battle between the powerful and those who have no strength,\" and God gives victory.",

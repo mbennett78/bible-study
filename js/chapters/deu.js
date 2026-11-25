@@ -138,8 +138,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["craigie", "block"] }, 
     v: [
       ["13:3", "The LORD your God is testing you", "Signs alone do not prove a message is from God; its faithfulness to God does."],
       ["13:4", "You shall follow the LORD your God", "Follow, fear, keep, listen, serve, cling."],
+      ["13:6", "Your brother... or your friend who is as your own soul", "Loyalty to God comes before even the closest human ties."],
+      ["13:14", "You shall investigate and search out and inquire thoroughly", "No one was to be judged on rumor."],
     ],
-    refs: [["MAT.24", "Matthew 24:24", "False prophets will show great signs"], ["GAL.1", "Galatians 1:8", "Even if an angel preaches another gospel"]],
+    bg: [["Loyalty like a covenant", "Ancient treaties demanded total loyalty to the great king and required reporting any plot against him, even by family members. Deuteronomy uses that same language for Israel's covenant with the LORD. Paul quotes its refrain, \"purge the evil from among you,\" for church discipline (1 Corinthians 5:13), where the penalty is removal from fellowship, not death.", "good", ["craigie", "block"]]],
+    refs: [["1CO.5", "1 Corinthians 5:13", "Remove the wicked man"], ["MAT.24", "Matthew 24:24", "False prophets will show great signs"], ["GAL.1", "Galatians 1:8", "Even if an angel preaches another gospel"]],
   },
   14: {
     intro: "Israel is God's holy people, so they must not cut themselves in mourning like their neighbors. The clean and unclean food laws are repeated. A tithe of the harvest is eaten in a joyful feast before God, and every third year it is stored for the Levite, the stranger, the orphan and the widow.",

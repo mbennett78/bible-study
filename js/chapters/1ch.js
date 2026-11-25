@@ -279,9 +279,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     v: [
       ["27:1", "Month by month", "A citizen army that served in rotation."],
       ["27:23", "David did not count those twenty years and under", "Because God had promised to make Israel as many as the stars."],
+      ["27:24", "The number was not included in the account of the chronicles of King David", "The census of chapter 21 had brought judgment, so its total was left out of the royal records."],
       ["27:33", "Ahithophel was counselor to the king", "Hushai was the king's friend."],
     ],
-    refs: [["GEN.15", "Genesis 15:5", "Count the stars"]],
+    bg: [["A citizen army", "Twelve divisions of 24,000 men each took turns serving one month a year. This kept a trained force ready without a large standing army, and let men spend most of the year at home on their farms.", "good", ["selman", "thompson"]]],
+    refs: [["1CH.21", "1 Chronicles 21", "David's census"], ["GEN.15", "Genesis 15:5", "Count the stars"]],
   },
   28: {
     intro: "David assembles all Israel's leaders. He tells them God chose Solomon to build the temple, and charges Solomon: \"Know the God of your father, and serve Him with a whole heart and a willing mind; for the LORD searches all hearts.\" He gives Solomon the plans for the temple, written by the hand of the LORD upon him.",
