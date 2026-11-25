@@ -26,12 +26,12 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
   2: {
     intro: "Paul reminds them how he came to them after being mistreated in Philippi. He did not use flattery or seek glory; \"we proved to be gentle among you, as a nursing mother tenderly cares for her own children.\" He worked night and day so as not to be a burden, and encouraged each one like a father. They received God's word not as human words, \"but for what it really is, the word of God.\" Paul longed to see them again, but Satan hindered him. \"For you are our glory and joy.\"",
     v: [
-      ["2:4", "Not as pleasing men, but God who examines our hearts", "Serving God, not applause."],
-      ["2:7", "As a nursing mother tenderly cares for her own children", "Gentle care."],
-      ["2:8", "We were well-pleased to impart to you not only the gospel of God but also our own lives", "Sharing life."],
-      ["2:11", "As a father would his own children", "Fatherly encouragement."],
-      ["2:13", "You accepted it not as the word of men, but for what it really is, the word of God", "God's word."],
-      ["2:20", "You are our glory and joy", "People are the prize."],
+      ["2:4", "Not as pleasing men, but God who examines our hearts", "Paul's message was not shaped to win applause. He answered to God, who sees the heart."],
+      ["2:7", "As a nursing mother tenderly cares for her own children", "Paul could have used his authority as an apostle (2:6). Instead he was gentle, like a mother caring for her little ones."],
+      ["2:8", "We were well-pleased to impart to you not only the gospel of God but also our own lives", "Paul and his friends shared not just a message but their lives. People mattered to them."],
+      ["2:11", "As a father would his own children", "Like a good father, Paul encouraged, comforted and urged each of them to live in a way worthy of God."],
+      ["2:13", "You accepted it not as the word of men, but for what it really is, the word of God", "They heard human voices, but they recognized God speaking, and that word went to work in them."],
+      ["2:20", "You are our glory and joy", "Paul's greatest joy and reward are not achievements but people who know and follow Jesus."],
     ],
     refs: [["ACT.16", "Acts 16:22-24", "Mistreated at Philippi"], ["ACT.18", "Acts 18:3", "Paul the tentmaker"], ["GAL.1", "Galatians 1:10", "Pleasing God, not men"]],
   },
