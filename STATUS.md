@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:05 PM CT: Gift packet, printed guide and starter kit brought up to v244. The user guide (in Settings and on paper) now covers Compare versions, verse pictures, Need an idea?, On this day and Page width. New large-print user guide (4 pages, with lines for notes) for anyone who'd rather keep paper beside the iPad. The starter kit is rebuilt from v244 (it was still v180) and its setup now has a shortcut: paste an invite link from Melissa's app into the Bible key box and the NASB, extra versions and ESV fill themselves in. A ten-step family try-out sheet is ready for the testers. Files: gift-packet.pdf, user-guide-large-print.pdf, family-bible-study-starter-kit.tar.gz, starter-kit-checklist.md. Try-out sheet: https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8
 - Wed Nov 25, 3:50 PM CT: B-75 review written up (link in the task row): seven top apps compared area by area, six gaps closed today, and what's still needed to reach 5 stars.
 - Wed Nov 25, 3:40 PM CT: B-75 fifth finding: YouVersion users love sharing verse pictures. Tap a verse number, then Share: send the words, or make "A verse picture", the verse on a soft square card in one of four colors (Dawn, Sea, Olive, Night), made on the device and shared to Messages or saved to Photos.
 - Wed Nov 25, 3:20 PM CT: B-75 fourth finding: Day One keeps people journaling with prompts. Journal entries (My day, prayers, thanks, Bible thoughts) now have "💭 Need an idea?": one gentle, Scripture-shaped prompt at a time, tap again for another. It never types anything into the entry. Notes and church notes stay as they were.
@@ -106,9 +107,14 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 - Tue Nov 24, 11:20 AM: Jeremiah 1-52 notes are live. The Books and music page stays removed (Melissa's decision), and "no shopping or selling" is now a standing rule.
 - Tue Nov 24, 11:15 AM: Made this page the complete tracker. Added every earlier request, the post-release plan and an open question about the Books and music page.
 
-## Quality ratings (first pass, Wed Nov 25)
+## Quality ratings (second pass, Wed Nov 25, based on the B-75 comparison)
 
-Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it back: (1) it hasn't been used yet by the family on their own phones and iPads (Pencil, Android, the oldest and youngest readers); every check so far is automated; (2) setup still asks for Bible keys, which is hard for some family members, and ESV is waiting on its key; (3) so many features that Settings and some menus feel busy. The family play-test, the gift starter kit and a Settings clean-up are the path to 4.5 to 5 stars.
+Honest outside view (App Store style), Nov 25: about 4 stars today. The B-75 comparison found the app already avoids the top complaints about the best-known Bible apps (ads, paywalls, pop-ups, streak pressure, hard-to-reach notes) and the six gaps it found are closed. What still holds it back:
+1. **No one in the family has used it yet on their own phone or iPad.** Every check so far is by machine. This is the biggest step left. The ten-step try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) takes about 20 minutes per person; finished by Mon Nov 30, there's time to fix what they find.
+2. **Bible keys: solved for the family, eased for the siblings.** Family members signing in never see a key; the organizer's keys reach every device. The siblings' own copies need an API.Bible key, or they can paste an invite link from Melissa's app and everything fills in. ESV still waits on its key (optional).
+3. **Busy Settings:** the plain-label clean-up is underway in the main build thread.
+
+With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 stars).
 
 | Category | Score | What would make it a 10 |
 |---|---|---|
@@ -125,12 +131,13 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Works offline and keeps everyone's place | 10 | |
 | Privacy and security | 10 | |
 | Speed | 9 | |
-| Setup and gift packet | 9 | Final packet and print-friendly guide, Thu Dec 3 |
+| Setup and gift packet | 9 | Packet, large-print guide and starter kit done for v244; one last rebuild after the Settings clean-up and the try-out fixes (by Wed Dec 2) |
 
 ## Needed from Melissa
 
 | Item | Required for Dec 4? | Notes |
 |---|---|---|
+| Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
 | Redeploy the study-partner function (new `study-partner-function.ts`) | No, optional | Lets Buddy act things out during normal chat, talk about himself, and use his newer, more careful answering (updated Wed Nov 25). Simple commands already work. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
@@ -184,8 +191,9 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Seasonal changes: Melissa's review changes made | Round 2 done (Wed Nov 25); waiting for any more notes | Tue Dec 1 |
 | Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Done (Wed Nov 25, six days early): review at https://claude.ai/artifact/9tChW7DK8XW6gks1cBXsyp; six gaps fixed (Learn by heart, On this day, journal prompts, Compare versions, verse pictures, Page width) | Tue Dec 1 (moved up from Wed Dec 2) |
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
-| Gift packet and starter kit finished | Not started | Wed Dec 2 (moved up from Thu Dec 3) |
-| Print-friendly setup page and user guide saved to the project folder (final) | Not started | Wed Dec 2 (moved up from Thu Dec 3) |
+| Gift packet and starter kit finished | Done for v244 (Wed Nov 25): packet rebuilt with the new guide tips; starter kit rebuilt from v244 with the invite-link key shortcut. One last rebuild after the Settings clean-up | Wed Dec 2 (moved up from Thu Dec 3) |
+| Print-friendly setup page and user guide saved to the project folder (final) | Done for v244 (Wed Nov 25): gift-packet.pdf (6 pages) and user-guide-large-print.pdf (4 pages). Rebuilt once more by Wed Dec 2 | Wed Dec 2 (moved up from Thu Dec 3) |
+| Family try-out: five people (iPhone, iPad with Pencil, Android, the oldest and the youngest reader) try ten things on their own devices; every problem fixed before release | Try-out sheet ready (Wed Nov 25); waiting on testers | Mon Nov 30 |
 | Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
 | Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |
 | Every Bible Spin mode played start to finish automatically; glitches fixed | Done (Tue Nov 24), rerun before release | Nov 24 |
