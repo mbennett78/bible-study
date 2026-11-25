@@ -55,12 +55,12 @@ export default makeBook({ lang: "Greek", sources, use: ["mooC", "wrightC"] }, {
   4: {
     intro: "Masters must treat servants fairly, knowing they too have a Master in heaven. \"Devote yourselves to prayer, keeping alert in it with an attitude of thanksgiving,\" and pray for an open door for the word. Act wisely toward outsiders, making the most of the opportunity. \"Let your speech always be with grace, as though seasoned with salt.\" Paul sends greetings from friends: Tychicus, Onesimus, Aristarchus, Mark (Barnabas's cousin), Luke the beloved physician, Demas, and Epaphras, who always labors in prayer for them. They should share this letter with Laodicea. Paul signs it himself: \"Remember my imprisonment.\"",
     v: [
-      ["4:2", "Devote yourselves to prayer, keeping alert in it with an attitude of thanksgiving", "Prayer and thanks."],
-      ["4:3", "That God will open up to us a door for the word", "Open doors."],
-      ["4:5", "Conduct yourselves with wisdom toward outsiders", "Wise with neighbors."],
-      ["4:6", "Let your speech always be with grace, as though seasoned with salt", "Gracious words."],
-      ["4:12", "Always laboring earnestly for you in his prayers", "A praying friend."],
-      ["4:14", "Luke, the beloved physician", "Doctor Luke."],
+      ["4:2", "Devote yourselves to prayer, keeping alert in it with an attitude of thanksgiving", "Keep praying, stay awake to what God is doing, and keep thanking Him. Paul joins prayer and thanks again and again (Philippians 4:6)."],
+      ["4:3", "That God will open up to us a door for the word", "Paul, writing from prison, does not ask for the chains to come off. He asks for an open door to share the message about Christ."],
+      ["4:5", "Conduct yourselves with wisdom toward outsiders", "Outsiders are those who do not yet know Christ. Believers should treat them wisely and make good use of every chance."],
+      ["4:6", "Let your speech always be with grace, as though seasoned with salt", "Salt gives flavor and keeps food from spoiling. Kind, thoughtful words make the message about Jesus welcome."],
+      ["4:12", "Always laboring earnestly for you in his prayers", "Epaphras, who first brought the gospel to Colossae (1:7), works hard for them in prayer. Praying for others is real work."],
+      ["4:14", "Luke, the beloved physician", "This is how we know Luke was a doctor. He traveled with Paul and wrote the Gospel of Luke and the book of Acts."],
     ],
     bg: [["Onesimus and Mark", "Onesimus is the runaway servant Paul sends home in the letter to Philemon, now called \"our faithful and beloved brother.\" Mark is the young man who once left Paul (Acts 15:38) but is now trusted again. Both show God's grace in giving people a second chance.", "strong", ["mooC", "bruceC"]]],
     refs: [["PHM.1", "Philemon 10-16", "Onesimus"], ["ACT.15", "Acts 15:37-39", "Paul and Barnabas disagree over Mark"], ["2TI.4", "2 Timothy 4:11", "Mark is useful to me"]],
