@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 12:00 AM: Started the final quality ratings (due Thu Dec 3). All 26 automatic test suites pass (680 checks), with no errors on any screen. A new readability check went through all seven screens in all ten looks. Every button and box has a name that screen readers can say. No screen slides sideways. The one weak spot was gray helper text (dates, "0 of 1189 chapters", the History/Saved/Journal tabs), which was a little too faint in every look, so it's now slightly darker everywhere and meets the standard reading-contrast guideline (4.5 to 1). The first scores are in the new "Quality ratings" section below.
 - Tue Nov 24, 10:25 PM: Every story picture in the kids' Bible is now in the new storybook style, all 51 of them, a week ahead of the Wed Dec 2 target. The last five: Nehemiah's builders working with a sword at their side, Jesus teaching on the mountain among the birds and wildflowers, the blinding light on the Damascus road, Paul's shipwreck with everyone reaching the shore of Malta, and an angel freeing Peter while the guards sleep. Chapters without their own story keep a standard picture for their book, and new stories will be added each month. Picture: kids-storybook-last-5.png.
 - Tue Nov 24, 9:40 PM: Six more storybook pictures, 46 in all. Peter kneels in amazement in the boat beside a net so full of fish it begins to break. Lazarus walks out of the tomb in his grave clothes as Jesus calls and his sisters cheer. At the wedding in Cana, servants fill the stone jars and a cup of new wine goes round. Samson carries the city gates of Gaza up the hill at night. Horses and a chariot of fire carry Elijah up in a whirlwind as his cloak falls to Elisha. Naaman comes up from his seventh dip in the Jordan healed, with bubbles counting one to seven. Picture: kids-storybook-6-batch6.png.
 - Tue Nov 24, 8:55 PM: Six more storybook pictures, 40 in all. Creation shows night and day, the moon and the sun, birds, fish, trees, animals, and Adam and Eve. In Eden, Adam names the animals ("Elephant!") beside the river. Adam and Eve hide among the bushes, scared and sad, while the serpent watches from the tree. Abraham hugs Isaac by the altar as an angel calls and a ram is caught in the thicket (told gently). Families gather manna from the desert ground as quail fly in. Gideon's men raise trumpets and torches over the sleeping Midianite camp. Picture: kids-storybook-6-batch5.png.
@@ -55,6 +56,25 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 - Tue Nov 24, 11:20 AM: Jeremiah 1-52 notes are live. The Books and music page stays removed (Melissa's decision), and "no shopping or selling" is now a standing rule.
 - Tue Nov 24, 11:15 AM: Made this page the complete tracker. Added every earlier request, the post-release plan and an open question about the Books and music page.
 
+## Quality ratings (first pass, Wed Nov 25)
+
+| Category | Score | What would make it a 10 |
+|---|---|---|
+| Study notes and sources | 9 | Weekly deeper notes after release, as planned |
+| Bible text and versions | 9 | ESV turns on when its key arrives |
+| Kids' Bible pictures | 9 | More stories get their own scene each update (ongoing) |
+| Maps | 9 | |
+| Looks | 9 | |
+| Readability for every age (contrast, text size, screen readers) | 9 | Fixed tonight: gray helper text is darker in every look |
+| Ease of use and menus | 9 | |
+| Notes, journal and printing | 9 | |
+| Buddy | 9 | Redeploy of the study-partner function (optional) |
+| Games and Quick check | 9 | |
+| Works offline and keeps everyone's place | 10 | |
+| Privacy and security | 10 | |
+| Speed | 9 | |
+| Setup and gift packet | 9 | Final packet and print-friendly guide, Thu Dec 3 |
+
 ## Needed from Melissa
 
 | Item | Required for Dec 4? | Notes |
@@ -92,7 +112,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Christmas gift packet: setup page and illustrated user guide (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Kids' storybook pictures in the sticker style Melissa showed: big friendly characters, white sticker edges, watercolor skies, blinking eyes and gentle movement, feelings true to each story, and Holy Land plants and places. All 51 story pictures are done, from Creation to Peter freed from prison. More stories are added each month after release | Done (Tue Nov 24) | Wed Dec 2 |
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
-| Final quality ratings (aiming for 9 or 10 in every category) and fixes | Not started | Thu Dec 3 |
+| Final quality ratings (aiming for 9 or 10 in every category) and fixes | In progress (first pass Wed Nov 25) | Thu Dec 3 |
 | Gift packet and starter kit finished | Not started | Thu Dec 3 |
 | Print-friendly setup page and user guide saved to the project folder (final) | Not started | Thu Dec 3 |
 | Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
