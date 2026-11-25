@@ -1233,36 +1233,36 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   126: {
     intro: "\"When the LORD brought back the captive ones of Zion, we were like those who dream.\" Their mouths filled with laughter. \"The LORD has done great things for us; we are glad.\" Now they pray again: \"Restore our fortunes.\" \"Those who sow in tears shall reap with joyful shouting.\"",
     v: [
-      ["126:1", "We were like those who dream", "Joy too good to believe."],
-      ["126:3", "The LORD has done great things for us", "Remembering answered prayer."],
-      ["126:5", "Those who sow in tears shall reap with joyful shouting", "Hope for hard seasons."],
+      ["126:1", "We were like those who dream", "When God brought the exiles home to Zion, it felt like a dream. They laughed and sang for joy (126:2)."],
+      ["126:3", "The LORD has done great things for us", "Even the nations said the LORD had done great things for them. God's people agree, and they are glad."],
+      ["126:5", "Those who sow in tears shall reap with joyful shouting", "A farmer may plant with tears in a hard year, but harvest comes with shouts of joy. Sorrow sown in faith will not be wasted."],
     ],
     refs: [["EZR.1", "Ezra 1", "The return from exile"], ["GAL.6", "Galatians 6:9", "In due time we will reap"]],
   },
   127: {
     intro: "A psalm of Solomon. \"Unless the LORD builds the house, they labor in vain who build it.\" It is vain to rise early and stay up late, for \"He gives to His beloved even in his sleep.\" \"Children are a gift of the LORD... like arrows in the hand of a warrior.\"",
     v: [
-      ["127:1", "Unless the LORD builds the house", "God's blessing makes the work count."],
-      ["127:2", "He gives to His beloved even in his sleep", "Rest is a gift."],
-      ["127:3", "Children are a gift of the LORD", "A blessing, not a burden."],
+      ["127:1", "Unless the LORD builds the house", "A psalm with Solomon's name. Unless the LORD builds the house and guards the city, all the work and watching is in vain."],
+      ["127:2", "He gives to His beloved even in his sleep", "Getting up early and staying up late in anxious work does not secure our lives. God gives sleep to those He loves."],
+      ["127:3", "Children are a gift of the LORD", "Children are a gift and a reward from the LORD, like arrows in a warrior's hand (127:4)."],
     ],
     refs: [["MAT.6", "Matthew 6:25-34", "Do not be anxious"], ["PSA.128", "Psalm 128", "Blessings on the home"]],
   },
   128: {
     intro: "\"How blessed is everyone who fears the LORD, who walks in His ways.\" He will eat the fruit of his work. \"Your wife shall be like a fruitful vine within your house, your children like olive plants around your table.\" May you see your children's children.",
     v: [
-      ["128:1", "Who walks in His ways", "Fear of God shown in daily life."],
-      ["128:3", "Your children like olive plants around your table", "A picture of family blessing."],
-      ["128:6", "May you see your children's children", "A blessing for grandparents."],
+      ["128:1", "Who walks in His ways", "Blessed is everyone who reveres the LORD and shows it by walking in His ways day by day."],
+      ["128:3", "Your children like olive plants around your table", "A wife like a fruitful vine in the home, and children like young olive shoots around the table. A picture of a blessed family."],
+      ["128:6", "May you see your children's children", "The psalm ends with a wish many grandparents know: may you live to see your children's children."],
     ],
     refs: [["PRO.17", "Proverbs 17:6", "Grandchildren are the crown of old men"]],
   },
   129: {
     intro: "\"Many times they have persecuted me from my youth up, let Israel now say.\" The plowers plowed on Israel's back, but the LORD is righteous and has cut the cords of the wicked. Those who hate Zion will be like grass on the rooftops that withers before it grows.",
     v: [
-      ["129:2", "Yet they have not prevailed against me", "Survival by God's grace."],
+      ["129:2", "Yet they have not prevailed against me", "Israel's enemies have attacked them since their youth, but they have never won."],
       ["129:3", "The plowers plowed upon my back", "A vivid picture of long suffering, deep furrows of pain."],
-      ["129:4", "The LORD is righteous; He has cut in two the cords", "God sets free."],
+      ["129:4", "The LORD is righteous; He has cut in two the cords", "Enemies plowed long furrows on Israel's back (129:3), but the righteous LORD has cut the ropes of the wicked and set His people free."],
       ["129:6", "Like grass upon the housetops", "Grass sprouting on flat mud roofs has no deep soil and withers fast."],
       ["129:8", "The blessing of the LORD be upon you", "The friendly greeting at harvest (Ruth 2:4) no one will give to the enemies of Zion."],
     ],
@@ -1272,18 +1272,18 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   130: {
     intro: "\"Out of the depths I have cried to You, O LORD.\" \"If You, LORD, should mark iniquities, O Lord, who could stand? But there is forgiveness with You, that You may be feared.\" \"My soul waits for the Lord more than the watchmen for the morning.\" With the LORD there is abundant redemption.",
     v: [
-      ["130:1", "Out of the depths", "Prayer from the lowest place."],
-      ["130:3-4", "There is forgiveness with You", "Forgiveness leads to reverence."],
-      ["130:6", "More than the watchmen for the morning", "Eager waiting."],
-      ["130:7", "With Him is abundant redemption", "More than enough grace."],
+      ["130:1", "Out of the depths", "From the depths of trouble or guilt, the psalmist cries to the LORD and asks Him to listen."],
+      ["130:3-4", "There is forgiveness with You", "If God kept a record of sins, no one could stand. But He forgives, and that leads us to revere Him, not to take Him lightly."],
+      ["130:6", "More than the watchmen for the morning", "Night watchmen longed for the morning when their watch was over. The psalmist waits for the Lord even more eagerly."],
+      ["130:7", "With Him is abundant redemption", "Israel can hope in the LORD, because with Him is steadfast love and full, abundant redemption."],
     ],
     refs: [["ROM.3", "Romans 3:23-24", "Justified by His grace"], ["1JN.1", "1 John 1:9", "He is faithful to forgive"]],
   },
   131: {
     intro: "A short psalm of humble trust. \"O LORD, my heart is not proud, nor my eyes haughty.\" David does not busy himself with things too great for him. \"Surely I have composed and quieted my soul; like a weaned child rests against his mother.\" \"O Israel, hope in the LORD.\"",
     v: [
-      ["131:1", "Nor do I involve myself in great matters", "Content not to know everything."],
-      ["131:2", "Like a weaned child rests against his mother", "Calm trust, not demanding."],
+      ["131:1", "Nor do I involve myself in great matters", "David's heart is not proud. He does not busy himself with things too great for him to understand."],
+      ["131:2", "Like a weaned child rests against his mother", "A nursing baby fusses, but a weaned child rests quietly in its mother's arms. David's soul is calm and content with God."],
       ["131:3", "O Israel, hope in the LORD", "One person's quiet trust becomes a call to the whole people."],
     ],
     bg: [["A weaned child", "In Israel children were usually weaned around age two or three (Hannah waited until Samuel was weaned before bringing him to the temple, 1 Samuel 1:22-24). A nursing baby fusses to be fed; a weaned child simply rests with its mother. David's trust has grown quiet like that.", "good", ["allen", "kidner"]]],
@@ -1292,27 +1292,27 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   132: {
     intro: "A psalm remembering David's vow not to rest until he found a dwelling place for the LORD, and God's answering promise: \"Of the fruit of your body I will set upon your throne.\" God has chosen Zion as His resting place forever. \"There I will cause the horn of David to spring forth.\"",
     v: [
-      ["132:5", "Until I find a place for the LORD", "David's passion for God's house."],
-      ["132:11", "The LORD has sworn to David a truth", "God's oath."],
-      ["132:17", "There I will cause the horn of David to spring forth", "A messianic hope (Luke 1:69)."],
+      ["132:5", "Until I find a place for the LORD", "David vowed not to rest until he found a place for the ark of the LORD (2 Samuel 6-7)."],
+      ["132:11", "The LORD has sworn to David a truth", "God swore an oath to David that one of his descendants would sit on his throne forever (2 Samuel 7:12-16)."],
+      ["132:17", "There I will cause the horn of David to spring forth", "A horn was a symbol of strength. God promised to make a horn grow for David. Zechariah praised God for raising up this horn of salvation in Jesus (Luke 1:69)."],
     ],
     refs: [["2SA.7", "2 Samuel 7", "God's covenant with David"], ["LUK.1", "Luke 1:69", "A horn of salvation in the house of David"]],
   },
   133: {
     intro: "\"Behold, how good and how pleasant it is for brothers to dwell together in unity!\" It is like the precious oil poured on Aaron's head, running down his beard, like the dew of Hermon falling on Zion. \"For there the LORD commanded the blessing, life forever.\"",
     v: [
-      ["133:1", "How good and how pleasant", "Unity is a blessing."],
-      ["133:2", "Like the precious oil upon the head", "Unity is holy and refreshing."],
-      ["133:3", "There the LORD commanded the blessing", "God blesses unity."],
+      ["133:1", "How good and how pleasant", "How good and pleasant it is when God's people live together in unity."],
+      ["133:2", "Like the precious oil upon the head", "Unity is like the fragrant anointing oil poured on Aaron's head that ran down his beard and robes (Exodus 29:7), holy and rich."],
+      ["133:3", "There the LORD commanded the blessing", "It is like the heavy dew of Mount Hermon falling on Zion. There the LORD commands His blessing, life forever."],
     ],
     refs: [["JHN.17", "John 17:21", "That they may all be one"], ["EPH.4", "Ephesians 4:3", "Preserve the unity of the Spirit"]],
   },
   134: {
     intro: "The last Song of Ascents, a night blessing. \"Behold, bless the LORD, all servants of the LORD, who serve by night in the house of the LORD! Lift up your hands to the sanctuary and bless the LORD.\" The priests answer: \"May the LORD bless you from Zion, He who made heaven and earth.\"",
     v: [
-      ["134:1", "Who serve by night in the house of the LORD", "Faithful night watch."],
+      ["134:1", "Who serve by night in the house of the LORD", "The last Song of Ascents calls the priests and Levites who serve in God's house at night to lift their hands and bless the LORD."],
       ["134:2", "Lift up your hands to the sanctuary", "Raised hands were a common posture of prayer and praise."],
-      ["134:3", "May the LORD bless you from Zion", "A blessing to take home."],
+      ["134:3", "May the LORD bless you from Zion", "The servants answer with a blessing for the pilgrims to take home: may the LORD, Maker of heaven and earth, bless you from Zion."],
     ],
     bg: [["The last Song of Ascents", "The pilgrim songs (Psalms 120-134) end in the temple at night. The people call on the priests and Levites on night duty to bless the LORD, and the priests answer with a blessing on the people, just as Aaron's blessing did (Numbers 6:24-26).", "good", ["allen", "kidner"]]],
     refs: [["1CH.9", "1 Chronicles 9:33", "Singers on duty day and night"], ["NUM.6", "Numbers 6:24", "The LORD bless you"]],
@@ -1320,19 +1320,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   135: {
     intro: "\"Praise the name of the LORD; praise Him, O servants of the LORD.\" The LORD has chosen Jacob as His own possession. Whatever He pleases He does, in heaven and earth. He struck Egypt and the kings of Canaan and gave their land to Israel. Idols are silver and gold that cannot speak. \"Bless the LORD, O house of Israel.\"",
     v: [
-      ["135:4", "Israel for His own possession", "A treasured people."],
-      ["135:6", "Whatever the LORD pleases, He does", "God's sovereignty."],
-      ["135:15-18", "The idols of the nations", "Echoes Psalm 115."],
+      ["135:4", "Israel for His own possession", "The LORD chose Jacob for Himself, Israel as His own treasured possession (Exodus 19:5)."],
+      ["135:6", "Whatever the LORD pleases, He does", "The LORD does whatever He pleases in heaven, on earth, in the seas and all the depths. No idol can say that."],
+      ["135:15-18", "The idols of the nations", "The idols of the nations are silver and gold made by human hands. They cannot speak, see or hear, as in Psalm 115:4-8."],
     ],
     refs: [["EXO.19", "Exodus 19:5", "My own possession"], ["PSA.115", "Psalm 115:4-8", "Idols that cannot speak"]],
   },
   136: {
     intro: "A responsive song: every one of 26 verses ends, \"For His lovingkindness is everlasting.\" It thanks God for who He is, for creation (the heavens, the earth, the sun and moon), for the exodus, for the wilderness, for the land, and for food for all flesh.",
     v: [
-      ["136:1", "Give thanks to the LORD, for He is good", "The heart of worship."],
-      ["136:13", "Who divided the Red Sea", "Remembering the exodus."],
-      ["136:23", "Who remembered us in our low estate", "God's personal care."],
-      ["136:25", "Who gives food to all flesh", "Daily provision."],
+      ["136:1", "Give thanks to the LORD, for He is good", "Every verse of this psalm ends with the same refrain: His steadfast love endures forever. It was likely sung with a leader and a responding congregation."],
+      ["136:13", "Who divided the Red Sea", "God split the Red Sea, led Israel through and swept Pharaoh's army away. His love is behind every rescue."],
+      ["136:23", "Who remembered us in our low estate", "God remembered us when we were low. His love is not only for history but for us personally."],
+      ["136:25", "Who gives food to all flesh", "God gives food to every living creature. His steadfast love shows up in daily bread."],
     ],
     bg: [["Sung in response", "The repeated line suggests a leader sang each first half and the congregation answered with the refrain, as at the dedication of Solomon's temple (2 Chronicles 7:3).", "good", ["allen", "kidner"]]],
     refs: [["2CH.7", "2 Chronicles 7:3", "His lovingkindness is everlasting"], ["EZR.3", "Ezra 3:11", "Sung at the new temple's foundation"]],
@@ -1340,10 +1340,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   137: {
     intro: "\"By the rivers of Babylon, there we sat down and wept, when we remembered Zion.\" Their captors asked for songs of Zion. \"How can we sing the LORD's song in a foreign land?\" \"If I forget you, O Jerusalem, may my right hand forget her skill.\" The psalm ends with raw, bitter cries against Edom and Babylon.",
     v: [
-      ["137:1", "By the rivers of Babylon", "Grief in exile."],
-      ["137:4", "How can we sing the LORD's song in a foreign land?", "Faith far from home."],
-      ["137:5", "If I forget you, O Jerusalem", "Refusing to forget."],
-      ["137:9", "How blessed will be the one who seizes your little ones", "Shocking words of grief and anger."],
+      ["137:1", "By the rivers of Babylon", "Exiled in Babylon, God's people sat by the rivers and wept when they remembered Zion."],
+      ["137:4", "How can we sing the LORD's song in a foreign land?", "Their captors demanded happy songs of Zion. How could they sing the LORD's songs in a foreign land?"],
+      ["137:5", "If I forget you, O Jerusalem", "They would rather lose the skill of their right hand than forget Jerusalem."],
+      ["137:9", "How blessed will be the one who seizes your little ones", "These shocking words come from raw grief. Babylon had done such things to Jerusalem's children. The psalmist brings his anger to God instead of acting on it, and Jesus later taught His followers to love their enemies (Matthew 5:44)."],
     ],
     why: "The last verses of Psalm 137 are among the hardest in the Bible. Scholars and teachers weigh how believers should read them.",
     views: [
