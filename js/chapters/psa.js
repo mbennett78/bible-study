@@ -1082,27 +1082,27 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   111: {
     intro: "An alphabet psalm of praise. \"Great are the works of the LORD; they are studied by all who delight in them.\" He has made His wonders to be remembered; He is gracious and compassionate. He sent redemption to His people. \"The fear of the LORD is the beginning of wisdom.\"",
     v: [
-      ["111:2", "Studied by all who delight in them", "Delight leads to study."],
-      ["111:4", "He has made His wonders to be remembered", "God wants us to remember."],
-      ["111:10", "The fear of the LORD is the beginning of wisdom", "The foundation of wisdom."],
+      ["111:2", "Studied by all who delight in them", "God's works are great, and those who delight in them love to study them. This psalm is an acrostic, each line starting with the next Hebrew letter."],
+      ["111:4", "He has made His wonders to be remembered", "God made His wonderful works to be remembered, like the Passover meal that recalls the exodus. He is gracious and compassionate."],
+      ["111:10", "The fear of the LORD is the beginning of wisdom", "Wisdom starts with reverence for the LORD, as Proverbs 1:7 and 9:10 also say. Those who obey Him gain good understanding."],
     ],
     refs: [["PRO.9", "Proverbs 9:10", "The beginning of wisdom"], ["PSA.112", "Psalm 112", "The companion psalm"]],
   },
   112: {
     intro: "A companion to Psalm 111, describing the person who fears the LORD. He delights in God's commands; his children will be mighty. He is gracious, lends generously and conducts his affairs with justice. \"He will not fear evil tidings; his heart is steadfast, trusting in the LORD.\"",
     v: [
-      ["112:1", "Who greatly delights in His commandments", "Joy in obedience."],
-      ["112:7", "He will not fear evil tidings", "Steady in bad news."],
-      ["112:9", "He has given freely to the poor", "Paul quotes this in 2 Corinthians 9:9."],
+      ["112:1", "Who greatly delights in His commandments", "Psalm 112 mirrors Psalm 111. Blessed is the person who fears the LORD and finds great joy in His commands."],
+      ["112:7", "He will not fear evil tidings", "Bad news will not shake this person, because their heart is steady, trusting in the LORD."],
+      ["112:9", "He has given freely to the poor", "They give generously to the poor, and their goodness lasts forever. Paul quotes this in 2 Corinthians 9:9."],
     ],
     refs: [["2CO.9", "2 Corinthians 9:9", "He scattered abroad, he gave to the poor"], ["PSA.1", "Psalm 1", "The blessed man"]],
   },
   113: {
     intro: "The first of the Hallel psalms (113-118), sung at Passover. \"From the rising of the sun to its setting the name of the LORD is to be praised.\" God is high above the nations, yet He humbles Himself to look on heaven and earth. He raises the poor from the dust and makes the barren woman a joyful mother of children.",
     v: [
-      ["113:3", "From the rising of the sun to its setting", "All day, everywhere."],
-      ["113:6", "Who humbles Himself to behold", "The high God stoops down."],
-      ["113:7-9", "He raises the poor from the dust", "Echoed in Hannah's and Mary's songs."],
+      ["113:3", "From the rising of the sun to its setting", "From sunrise to sunset, in every place, the LORD's name is to be praised. Psalms 113-118 were sung at Passover."],
+      ["113:6", "Who humbles Himself to behold", "God is so high that He must stoop down even to look at the heavens and the earth. Yet He does stoop, to help the lowly."],
+      ["113:7-9", "He raises the poor from the dust", "God lifts the poor from the dust and gives the childless woman a home. Hannah (1 Samuel 2:8) and Mary (Luke 1:52) sang of the same God."],
     ],
     bg: [["The Hallel", "Psalms 113-118 are called the Egyptian Hallel (\"praise\") and were sung at Passover. The hymn Jesus and His disciples sang after the Last Supper was probably Psalms 115-118 (Matthew 26:30).", "strong", ["allen", "kidner"]]],
     refs: [["1SA.2", "1 Samuel 2:8", "Hannah's song"], ["LUK.1", "Luke 1:52-53", "Mary's song"], ["PHP.2", "Philippians 2:6-8", "Christ humbled Himself"]],
@@ -1110,36 +1110,36 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   114: {
     intro: "When Israel went out of Egypt, the sea looked and fled, the Jordan turned back, the mountains skipped like rams. \"What ails you, O sea?\" \"Tremble, O earth, before the Lord... who turned the rock into a pool of water.\"",
     v: [
-      ["114:3", "The sea looked and fled", "Creation responds to God."],
-      ["114:7", "Tremble, O earth, before the Lord", "The proper response."],
-      ["114:8", "Who turned the rock into a pool of water", "God's provision."],
+      ["114:3", "The sea looked and fled", "At the exodus the Red Sea saw God and fled, and the Jordan turned back (Joshua 3:16). Creation responds to its Maker."],
+      ["114:7", "Tremble, O earth, before the Lord", "The whole earth should tremble before the Lord, the God of Jacob."],
+      ["114:8", "Who turned the rock into a pool of water", "God turned rock into a pool and flint into a spring for His thirsty people in the wilderness (Exodus 17:6)."],
     ],
     refs: [["EXO.14", "Exodus 14", "The Red Sea"], ["JOS.3", "Joshua 3", "The Jordan stopped"], ["1CO.10", "1 Corinthians 10:4", "The rock was Christ"]],
   },
   115: {
     intro: "\"Not to us, O LORD, not to us, but to Your name give glory.\" The nations ask, \"Where is their God?\" Our God is in the heavens and does whatever He pleases. Idols have mouths but cannot speak, eyes but cannot see, \"those who make them will become like them.\" \"O Israel, trust in the LORD; He is their help and their shield.\"",
     v: [
-      ["115:1", "Not to us, O LORD, but to Your name give glory", "Humble worship."],
-      ["115:4-7", "They have mouths, but they cannot speak", "Idols are powerless."],
-      ["115:8", "Those who make them will become like them", "We become like what we worship."],
+      ["115:1", "Not to us, O LORD, but to Your name give glory", "The glory does not belong to us, but to God's name, because of His steadfast love and faithfulness."],
+      ["115:4-7", "They have mouths, but they cannot speak", "Idols made of silver and gold have mouths, eyes, ears and hands, but they cannot speak, see, hear or help."],
+      ["115:8", "Those who make them will become like them", "Those who make idols and trust them become like them, empty and lifeless. We become like what we worship."],
     ],
     refs: [["ISA.44", "Isaiah 44:9-20", "The folly of idols"], ["1CO.10", "1 Corinthians 10:31", "Do all to the glory of God"]],
   },
   116: {
     intro: "\"I love the LORD, because He hears my voice.\" The cords of death surrounded him; he called on God and was saved. \"Return to your rest, O my soul.\" \"What shall I render to the LORD for all His benefits?\" He will lift up the cup of salvation. \"Precious in the sight of the LORD is the death of His godly ones.\"",
     v: [
-      ["116:1", "I love the LORD, because He hears", "Love answers love."],
-      ["116:7", "Return to your rest, O my soul", "Peace after danger."],
-      ["116:12-13", "What shall I render to the LORD?", "Gratitude in action."],
-      ["116:15", "Precious in the sight of the LORD is the death of His godly ones", "God cares about His people's deaths."],
+      ["116:1", "I love the LORD, because He hears", "The psalmist loves the LORD because God heard his cry for mercy when death seemed near."],
+      ["116:7", "Return to your rest, O my soul", "After the danger has passed, he tells his soul to rest again, because the LORD has been good to him."],
+      ["116:12-13", "What shall I render to the LORD?", "How can he repay God's goodness? He will lift the cup of salvation and call on the LORD's name. Gratitude responds with worship."],
+      ["116:15", "Precious in the sight of the LORD is the death of His godly ones", "The death of God's faithful people is precious and costly in His sight. He does not take it lightly."],
     ],
     refs: [["2CO.4", "2 Corinthians 4:13", "I believed, therefore I spoke"], ["MAT.11", "Matthew 11:28-29", "Rest for your souls"]],
   },
   117: {
     intro: "The shortest chapter in the Bible, two verses. \"Praise the LORD, all nations; laud Him, all peoples! For His lovingkindness is great toward us, and the truth of the LORD is everlasting. Praise the LORD!\"",
     v: [
-      ["117:1", "Praise the LORD, all nations", "Paul quotes this in Romans 15:11."],
-      ["117:2", "His lovingkindness is great toward us", "Two reasons: love and faithfulness."],
+      ["117:1", "Praise the LORD, all nations", "The shortest psalm, and the shortest chapter in the Bible, calls every nation to praise the LORD. Paul quotes it in Romans 15:11."],
+      ["117:2", "His lovingkindness is great toward us", "Two reasons to praise: God's steadfast love for us is great, and His faithfulness lasts forever."],
     ],
     bg: [["The middle chapter", "Counting the 1,189 chapters in the Protestant Bible, Psalm 117 sits right in the middle, with 594 chapters before it and 594 after. The shortest chapter calls every nation to praise.", "good", ["allen"]]],
     w: [["hesed", "KHEH-sed", "H2617", "steadfast love, lovingkindness", "God's loyal love that keeps His promises, the reason the nations are called to praise.", ["halot"]], ["emet", "eh-MET", "H571", "truth, faithfulness", "Firmness and reliability: God is true to His word forever.", ["halot"]]],
@@ -1173,8 +1173,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   120: {
     intro: "The first of fifteen Songs of Ascents (120-134), sung by pilgrims going up to Jerusalem. The pilgrim lives far away among liars and people who hate peace. \"I am for peace, but when I speak, they are for war.\"",
     v: [
-      ["120:1", "In my trouble I cried to the LORD, and He answered me", "Starting the journey with prayer."],
-      ["120:7", "I am for peace", "Longing for a better home."],
+      ["120:1", "In my trouble I cried to the LORD, and He answered me", "Psalms 120-134 are Songs of Ascents, likely sung by pilgrims going up to Jerusalem. The journey begins with a cry to God, and He answers."],
+      ["120:7", "I am for peace", "Living among people who love war and lies, the psalmist longs for peace. Pilgrimage begins with longing for a better place."],
     ],
     bg: [["Songs of Ascents", "Psalms 120-134 are titled \"A Song of Ascents.\" Most scholars think pilgrims sang them on the way up to Jerusalem for the three yearly feasts; Jerusalem sits high in the hills, so every road goes up.", "good", ["allen", "kidner"]]],
     refs: [["LUK.2", "Luke 2:41-42", "Jesus' family goes up to Jerusalem"], ["HEB.11", "Hebrews 11:13-16", "Strangers seeking a homeland"]],
@@ -1192,10 +1192,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   122: {
     intro: "\"I was glad when they said to me, Let us go to the house of the LORD.\" Pilgrims arrive and stand within Jerusalem's gates, the city where the tribes go up to give thanks. \"Pray for the peace of Jerusalem: May they prosper who love you.\"",
     v: [
-      ["122:1", "I was glad when they said to me", "Joy in going to worship."],
+      ["122:1", "I was glad when they said to me", "David was glad when others invited him to go to the house of the LORD. Worship with others is a joy."],
       ["122:3", "Jerusalem, that is built as a city that is compact together", "Pilgrims marveled at the city crowded on its hills, a picture of the people joined together."],
       ["122:5", "Thrones were set for judgment", "Jerusalem was also where justice was given, at the throne of David's house."],
-      ["122:6", "Pray for the peace of Jerusalem", "Shalom: wholeness, not only no war."],
+      ["122:6", "Pray for the peace of Jerusalem", "Pray for the peace of Jerusalem. The Hebrew word shalom means wholeness and well-being, not only the absence of war."],
     ],
     bg: [["A play on Jerusalem's name", "The Hebrew word for peace, shalom, echoes the name Jerusalem (Yerushalayim). The pilgrims pray for the peace of the city whose name sounds like peace. This is a Song of Ascents, sung by pilgrims going up to the feasts.", "good", ["allen", "kidner"]]],
     refs: [["HEB.10", "Hebrews 10:25", "Not forsaking our assembling together"]],
@@ -1204,8 +1204,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"To You I lift up my eyes, O You who are enthroned in the heavens!\" As servants watch their master's hand, so we look to the LORD until He is gracious. \"Be gracious to us, O LORD, for we are greatly filled with contempt.\"",
     v: [
       ["123:1", "O You who are enthroned in the heavens", "Looking up past the scorn of people to the throne of God."],
-      ["123:2", "As the eyes of servants look to the hand of their master", "Watching for God's help."],
-      ["123:3", "Be gracious to us", "A prayer under scorn."],
+      ["123:2", "As the eyes of servants look to the hand of their master", "As servants watch their master's hand for a signal, God's people keep their eyes on Him until He shows mercy."],
+      ["123:3", "Be gracious to us", "Have mercy on us, LORD, for we have had more than enough of people's contempt."],
     ],
     bg: [["A Song of Ascents", "Psalms 120-134 are \"Songs of Ascents,\" most likely sung by pilgrims as they went up to Jerusalem for the feasts. This short one fits a people who have been mocked by the proud, as the returned exiles were while they rebuilt (Nehemiah 4:1-4).", "good", ["allen", "kidner"]]],
     refs: [["NEH.4", "Nehemiah 4:1-4", "Mocked while rebuilding"], ["HEB.12", "Hebrews 12:2", "Fixing our eyes on Jesus"]],
@@ -1213,16 +1213,16 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   124: {
     intro: "\"Had it not been the LORD who was on our side, let Israel now say.\" The enemies would have swallowed them, the flood would have swept them away. \"Our soul has escaped as a bird out of the snare.\" \"Our help is in the name of the LORD, who made heaven and earth.\"",
     v: [
-      ["124:1", "Had it not been the LORD who was on our side", "Remembering rescue."],
-      ["124:7", "As a bird out of the snare", "Escape."],
-      ["124:8", "Our help is in the name of the LORD", "Often said at the start of worship."],
+      ["124:1", "Had it not been the LORD who was on our side", "Let Israel say it: if the LORD had not been on our side, the enemy would have swallowed us alive."],
+      ["124:7", "As a bird out of the snare", "The trap was set, but it broke, and God's people escaped like a bird from a hunter's snare."],
+      ["124:8", "Our help is in the name of the LORD", "Our help is in the name of the LORD, who made heaven and earth. Many churches open worship with these words."],
     ],
     refs: [["ROM.8", "Romans 8:31", "If God is for us"]],
   },
   125: {
     intro: "\"Those who trust in the LORD are as Mount Zion, which cannot be moved but abides forever. As the mountains surround Jerusalem, so the LORD surrounds His people.\" Do good, O LORD, to those who are upright. \"Peace be upon Israel.\"",
     v: [
-      ["125:1", "As Mount Zion, which cannot be moved", "Steady trust."],
+      ["125:1", "As Mount Zion, which cannot be moved", "Those who trust in the LORD are like Mount Zion, which cannot be shaken. As mountains surround Jerusalem, the LORD surrounds His people (125:2)."],
       ["125:2", "As the mountains surround Jerusalem", "Pilgrims could see the hills around the city."],
       ["125:3", "The scepter of wickedness shall not rest upon the land of the righteous", "Evil rule will not last forever, so the righteous are not pushed into doing wrong."],
       ["125:5", "Those who turn aside to their crooked ways", "A warning: trust in God means walking His straight path."],
