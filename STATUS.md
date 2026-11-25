@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 3:36 PM Central
-**Current version:** v352 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 4:04 PM Central
+**Current version:** v353 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -210,7 +210,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Study sources audit: every source a trusted academic work, withdrawn titles removed, facts checked | Done (Tue Nov 24) | Sun Nov 29 |
 | Maps upgrade in every look and Bible version (terrain, smooth coasts, clearer labels), with before and after | Done (Tue Nov 24) | Mon Nov 30 |
 | Kids' storybook style across much of the kids' Bible, with Holy Land settings and true feelings | Done (Tue Nov 24): all 51 stories | Wed Dec 2 (more stories added monthly) |
-| Update schedule set up: frequent updates until Christmas, then every Saturday night through February, then the last Saturday night of each month; glitch fixes ship right away | Not started | Thu Dec 3 |
+| Update schedule set up: frequent updates until Christmas, then every Saturday night through February, then the last Saturday night of each month; glitch fixes ship right away | Done (Wed Nov 25, a week early): a Saturday 8:37 PM Central update wake is set; it ships weekly from Dec 26 through February, then only on the last Saturday of each month. Until Christmas the keep-going wake keeps frequent updates coming. The app already holds What's new to one note a month and lists the last 30 days in Settings | Thu Dec 3 |
 | Family-level count of which looks are in use (no individual tracking), for the monthly look reviews | Done (Tue Nov 24); shows once the family-admin function is redeployed | Thu Dec 3 |
 | Settings and menu declutter: groups fold away, long lists become short categories | Done (Tue Nov 24) | Thu Dec 3 |
 | Release | Not started | Fri Dec 4 |

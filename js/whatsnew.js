@@ -13,6 +13,7 @@ export const NEWS = [
       "👓 Easier to read: clearer gray words, and Largest text fits small phones.",
       "🧠 Learn a verse by heart: tap its number, then Learn by heart.",
       "📏 Page width in Settings: Narrow, Medium or Wide Bible text.",
+      "📝 Every short study note is now a full, plain sentence, in all 66 books.",
     ],
   },
   {
