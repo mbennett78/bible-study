@@ -530,3 +530,12 @@ export const TRIVIA = [
   { id: "ar38", refs: ["PSA.33"], kind: "fact", topic: "arts", q: "Psalm 33:3 says, \"Sing to Him a new song; play ___ with a shout of joy.\"", choices: ["Skillfully", "Quietly", "Slowly", "Alone"], a: 0, why: "Psalm 33:3. Doing art well is a way of honoring God." },
 ];
 TRIVIA.push(...TRIVIA2, ...TRIVIA3);
+// The later banks repeat a few questions word for word (with slightly different answers).
+// Keep only the first, so nobody gets the same question twice in one game.
+{
+  const seenQ = new Set();
+  for (let i = 0; i < TRIVIA.length; i++) {
+    if (seenQ.has(TRIVIA[i].q)) TRIVIA.splice(i--, 1);
+    else seenQ.add(TRIVIA[i].q);
+  }
+}

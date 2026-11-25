@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:53 PM Central
-**Current version:** v245 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 2:05 PM Central
+**Current version:** v246 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:05 PM CT: Games play-test, second pass (against Buddy, family game, kids' and animated looks): no errors. Questions now land with the right crew friend more often: "Which Persian king..." and "Which young helper of Paul..." go to Rosie (People) instead of Stories, and finish-the-verse questions like "one day is like a ___ years" go to Quill (Books & Verses). Also found and fixed: 29 questions were in the question bank twice with slightly different answers, so the same question could come up twice in one game (and an exact-answer test failed now and then). Each now appears once.
 - Wed Nov 25, 1:55 PM CT: Games play-test, first pass. Bible Spin's seven crew friends now always fit on one row (on a small phone the seventh used to drop to a line by itself), and a Quick check score now opens at the top, so the header picture isn't half scrolled away. Bible Spin, Quick check and the practice quiz were played start to finish at phone and iPad sizes with no errors.
 - Wed Nov 25, 1:55 PM CT: Gift packet, printed guide and starter kit brought up to v244. The user guide (in Settings and on paper) now covers Compare versions, verse pictures, Need an idea?, On this day and Page width. New large-print user guide (4 pages, with lines for notes) for anyone who'd rather keep paper beside the iPad. The starter kit is rebuilt from v244 (it was still v180) and its setup now has a shortcut: paste an invite link from Melissa's app into the Bible key box and the NASB, extra versions and ESV fill themselves in. A ten-step family try-out sheet is ready for the testers. Files: gift-packet.pdf, user-guide-large-print.pdf, family-bible-study-starter-kit.tar.gz, starter-kit-checklist.md. Try-out sheet: https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8
 - Wed Nov 25, 1:45 PM CT: B-75 review written up (link in the task row): seven top apps compared area by area, six gaps closed today, and what's still needed to reach 5 stars.
@@ -178,7 +179,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Handwriting and drawing in notes and the Journal, both ways: a sketch box anywhere inside a typed note, or a full handwriting page; write or draw with Apple Pencil or a finger; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Done Wed Nov 25 (2 days early) | Fri Nov 27 |
-| Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
+| Games and Quick check: play-test every game and fix all glitches | Done (Wed Nov 25, a day early) | Thu Nov 26 (moved up from Fri Nov 27) |
 | Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down; games get a bigger celebration sound than the Quick check, and a sound on/off switch at the top of every game screen | Done Wed Nov 25 (play-test fixes, named crew, sound switch, win fanfare; the Quick check already celebrates a finished round with confetti, or a quiet ✓ when motion is off) | Fri Nov 27 (moved up from Sat Nov 28) |
 | Bible Spin characters: give each of the 7 category characters its own name and playful personality (an original game-show cast, not copied from any game), with lines when they cheer or comfort (Melissa asked Nov 25) | Done Wed Nov 25 | Fri Nov 27 |
 | Settings clear and easy to follow, and feel finished: plain labels and fewer choices per section; every change is still kept the moment it is made (nothing lost), plus a clear "Saved ✓" after each change and a Done button that closes the section with "All changes saved" (Melissa asked Nov 25) | Done Wed Nov 25 (Saved ✓, Done buttons, plainer labels) | Sat Nov 28 |

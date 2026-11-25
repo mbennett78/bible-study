@@ -102,3 +102,14 @@ test("a bonus round comes after every sixth question, for people only", () => {
   answer(game, me, "people", true);
   assert.equal(bonusDue(me), false);
 });
+
+test("finish-the-verse questions go to Books & Verses in Bible Spin", async () => {
+  const { categoryOf } = await import("../../js/quest.js");
+  assert.equal(categoryOf({ q: "\"With the Lord one day is like a ___ years.\"", choices: ["Thousand", "Hundred"], a: 0 }).id, "books");
+  assert.equal(categoryOf({ q: "Which angel told Mary she would have a son?", choices: ["Gabriel", "Michael"], a: 0 }).id, "stories");
+});
+
+test("no question appears twice in the bank", async () => {
+  const { TRIVIA } = await import("../../js/trivia-bank.js");
+  assert.equal(new Set(TRIVIA.map((q) => q.q)).size, TRIVIA.length);
+});

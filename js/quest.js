@@ -63,7 +63,10 @@ export const QUEST_BADGES = [
 ];
 
 /* ---------- Rules (plain functions, unit-tested) ---------- */
-export const categoryOf = (q) => CATEGORIES.find((c) => c.topics.includes(topicOf(q))) || CATEGORIES[2];
+// A finish-the-verse question ("...like a ___ years.") belongs with Quill's Books & Verses,
+// even when the practice quiz files it under Stories and sayings.
+const isVerseBlank = (q) => !q.topic && /^["“]/.test(q.q) && /_{2,}/.test(q.q);
+export const categoryOf = (q) => (isVerseBlank(q) ? CATEGORIES.find((c) => c.id === "books") : CATEGORIES.find((c) => c.topics.includes(topicOf(q)))) || CATEGORIES[2];
 export const questionsFor = (catId) => TRIVIA.filter((q) => categoryOf(q).id === catId);
 // A question from this category the person hasn't seen lately (or any, once all are seen).
 export function pickQuestion(catId, seen = [], rand = Math.random) {

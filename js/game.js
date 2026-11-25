@@ -52,7 +52,7 @@ export function topicOf(q) {
   const t = q.q;
   if (/^How (many|long|old|much)\b/i.test(t) || q.choices.every((c) => /^\d/.test(c))) return "numbers";
   if (/^Where\b|which (city|town|mountain|river|sea|land|country|place|village|region)\b|^To what (city|place)/i.test(t)) return "places";
-  if (/^(Who|Whose|Whom)\b|which (man|woman|king|queen|prophet|apostle|disciple|judge|person|son|brother|priest)\b|^What was the name of|new name|\bnamed\b/i.test(t)) return "people";
+  if (/^(Who|Whose|Whom)\b|which (\w+ )?(man|woman|king|queen|prophet|prophetess|apostle|disciple|judge|person|son|brother|priest|helper|leader|ruler|wife|mother|father|sister|daughter|boy|girl)\b|^What was the name of|new name|\bnamed\b/i.test(t)) return "people";
   return "events";
 }
 
