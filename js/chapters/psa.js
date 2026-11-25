@@ -813,6 +813,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["74:7", "They have burned Your sanctuary to the ground", "Likely the Babylonian destruction in 586 BC."],
       ["74:12", "Yet God is my king from of old", "Even in the ruins, Asaph remembers: God has been his King from long ago, working salvation on the earth."],
     ],
+    bg: [["The temple in ruins", "Psalm 74 mourns enemies who smashed the carvings of God's sanctuary and burned it to the ground (74:6-7), most likely the Babylonian destruction of 586 BC. It recalls God crushing \"the heads of Leviathan\" (74:14), a sea monster that Canaanite poems from Ugarit also describe with many heads.", "strong", ["tate", "kidner"]]],
     refs: [["LAM.2", "Lamentations 2", "The temple destroyed"], ["2KI.25", "2 Kings 25:9", "The house of the LORD burned"]],
   },
   75: {
@@ -842,6 +843,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["77:11", "I shall remember the deeds of the LORD", "The turning point is memory. Asaph chooses to remember the deeds of the LORD and His wonders of long ago."],
       ["77:19", "Your footprints may not be known", "God led His people through the sea, though no one could see His footprints. He leads even when we cannot see how."],
     ],
+    bg: [["Unseen footprints", "Psalm 77 begins in sleepless doubt and turns when the writer remembers the exodus. God led His people through the sea, \"and Your footprints may not be known\" (77:19). God was at work even when no one could see His steps.", "good", ["tate", "kidner"]]],
+    w: [["הָגָה", "hagah", "H1897", "to meditate, ponder", "To murmur or think something over again and again. \"I will meditate on all Your work\" (77:12; compare Psalm 1:2).", ["halot", "tate"]]],
     refs: [["EXO.14", "Exodus 14", "The way through the sea"], ["LAM.3", "Lamentations 3:21-23", "This I recall, therefore I have hope"]],
   },
   78: {
@@ -852,6 +855,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["78:38", "But He, being compassionate, forgave", "Israel kept rebelling in the wilderness, but God was compassionate. Again and again He forgave and held back His anger."],
       ["78:72", "He shepherded them according to the integrity of his heart", "God chose David from the sheepfolds (78:70). He shepherded Israel with a sincere heart and a skillful hand."],
     ],
+    bg: [["A history lesson in song", "Psalm 78 is the longest history psalm, retelling Israel's story from Egypt to David so that \"the generation to come might know\" (78:6). Matthew 13:35 quotes its opening, \"I will open my mouth in a parable,\" for Jesus' teaching in parables.", "strong", ["tate", "kidner"]]],
+    w: [["מָשָׁל", "mashal", "H4912", "parable, proverb", "A saying that sets two things side by side to teach. The book of Proverbs is called mishle, the plural of this word.", ["halot", "vangemeren"]]],
     refs: [["DEU.6", "Deuteronomy 6:6-7", "Teach them diligently to your sons"], ["MAT.13", "Matthew 13:35", "I will open My mouth in parables"], ["1CO.10", "1 Corinthians 10:1-11", "These things were written as examples"]],
   },
   79: {
@@ -861,6 +866,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["79:9", "For the glory of Your name", "Asaph's prayer rests on God's honor: help us and forgive our sins for the glory of Your name."],
       ["79:13", "We Your people and the sheep of Your pasture", "However bad things are, they are still God's people, the sheep of His pasture, and they will praise Him forever."],
     ],
+    bg: [["\"How long, O LORD?\"", "Psalm 79 mourns Jerusalem in ruins and the bodies of God's servants left unburied (79:1-3). The cry \"How long?\" (79:5) is heard again from the martyrs in Revelation 6:10.", "good", ["tate", "kidner"]]],
     refs: [["PSA.74", "Psalm 74", "Another lament for the temple"], ["JER.10", "Jeremiah 10:25", "Pour out Your wrath on the nations"]],
   },
   80: {
@@ -870,6 +876,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["80:8", "You removed a vine from Egypt", "Israel is pictured as a vine God brought out of Egypt and planted. Now its walls are broken down (80:12). Jesus later called Himself the true vine (John 15:1)."],
       ["80:17", "The son of man whom You made strong for Yourself", "Asaph prays for the man at God's right hand, the one He made strong. Many hear a hope for God's chosen king, fulfilled in Jesus."],
     ],
+    bg: [["The vine out of Egypt", "Psalm 80 pictures Israel as a vine God brought out of Egypt and planted, now broken down (80:8-16). Isaiah 5 uses the same picture, and Jesus calls Himself the true vine (John 15:1). The refrain asks, \"Cause Your face to shine upon us\" (80:3, 7, 19).", "good", ["tate", "kidner"]]],
+    w: [["גֶּפֶן", "gephen", "H1612", "vine", "Grapevines were among the land's most precious crops. A vine needs care, pruning and protection, and so did God's people.", ["halot", "vangemeren"]]],
     refs: [["ISA.5", "Isaiah 5:1-7", "The song of the vineyard"], ["JHN.15", "John 15:1-5", "I am the true vine"]],
   },
   81: {
@@ -879,6 +887,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["81:13", "Oh that My people would listen to Me", "God longs for His people to listen and walk in His ways. He would quickly defeat their enemies (81:14)."],
       ["81:16", "With honey from the rock I would satisfy you", "God would have fed them with the finest wheat and honey from the rock. This is the blessing they missed by not listening."],
     ],
+    bg: [["A festival trumpet", "\"Blow the trumpet at the new moon, at the full moon, on our feast day\" (81:3). The month of the Feast of Booths began with a new moon and the feast came at the full moon, so many link this psalm with that festival.", "strong", ["tate", "wilson"]]],
+    w: [["שׁוֹפָר", "shophar", "H7782", "ram's horn trumpet", "A trumpet made from a ram's horn, blown to call the people together for feasts, battle or the Day of Atonement. It is still blown in synagogues today.", ["halot", "tate"]]],
     refs: [["LEV.23", "Leviticus 23:24", "The Feast of Trumpets"], ["MAT.23", "Matthew 23:37", "You were unwilling"]],
   },
   82: {
@@ -894,6 +904,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["Heavenly beings", "Others see them as spiritual powers in God's heavenly council who were given authority over nations and abused it, comparing Deuteronomy 32:8 and Daniel 10.", ["tate"]],
     ],
     common: "All agree the psalm shows God as the supreme Judge who demands justice for the weak and will judge all who rule unjustly.",
+    bg: [["God among the \"gods\"", "God stands in the assembly and judges the \"gods\" who have judged unjustly (82:1-2). Readers differ on whether these are human judges and rulers or heavenly powers. Jesus quoted 82:6, \"I said, you are gods,\" in a debate with His opponents (John 10:34-36).", "good", ["tate", "kidner"]]],
     refs: [["JHN.10", "John 10:34-36", "Jesus quotes Psalm 82"], ["ISA.1", "Isaiah 1:17", "Defend the orphan"]],
   },
   83: {
@@ -903,6 +914,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["83:9", "Deal with them as with Midian", "Asaph asks God to do as He did against Midian in Gideon's day (Judges 7) and against Sisera at the Kishon (Judges 4)."],
       ["83:18", "That they may know that You alone are the Most High", "The goal is not only victory but that people will know that God alone, whose name is the LORD, is Most High over all the earth."],
     ],
+    bg: [["A league of nations", "Psalm 83 lists ten peoples, from Edom and Moab to Philistia, Tyre and Assyria, who plot together against Israel (83:6-8). It asks God to deal with them as He did with Sisera and Midian in the days of the judges (83:9-12).", "good", ["tate", "kidner"]]],
     refs: [["JDG.7", "Judges 7", "Gideon defeats Midian"], ["2CH.20", "2 Chronicles 20", "An alliance against Jehoshaphat"]],
   },
   84: {
@@ -913,6 +925,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["84:10", "A day in Your courts is better than a thousand", "One day near God is worth more than a thousand anywhere else. Better to stand at the door of His house than live comfortably among the wicked."],
       ["84:11", "The LORD God is a sun and shield", "The LORD is like the sun that gives light and a shield that protects. He does not hold back any good thing from those who walk uprightly."],
     ],
+    bg: [["The valley of Baca", "Pilgrims traveling to Jerusalem pass \"through the valley of Baca\" and make it a place of springs (84:6). Baca may mean \"weeping\" or the name of a tree that grows in dry places. Even birds nest near God's altars (84:3).", "good", ["tate", "kidner"]]],
+    w: [["בָּכָא", "Baca", "H1056", "Baca", "The name of a dry valley, perhaps meaning \"weeping.\" Those whose strength is in God turn hard places into springs.", ["halot", "vangemeren"]]],
     refs: [["PSA.27", "Psalm 27:4", "One thing I have asked"], ["HEB.13", "Hebrews 13:14", "We seek the city to come"]],
   },
   85: {
@@ -922,6 +936,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["85:8", "He will speak peace to His people", "The psalmist will listen for what God says. He speaks peace to His people, if they do not turn back to foolishness."],
       ["85:10", "Righteousness and peace have kissed", "A beautiful picture, often linked to the cross."],
     ],
+    bg: [["After the exile", "\"O LORD, You showed favor to Your land; You restored the captivity of Jacob\" (85:1). Many think this psalm comes after the return from exile, when the people still needed God to revive them again (85:6).", "good", ["tate", "kidner"]]],
+    w: [["שָׁלוֹם", "shalom", "H7965", "peace, wholeness", "Not only the end of war, but everything being as it should be. \"Righteousness and peace have kissed each other\" (85:10).", ["halot", "vangemeren"]]],
     refs: [["HAB.3", "Habakkuk 3:2", "Revive Your work"], ["ROM.5", "Romans 5:1", "Peace with God"]],
   },
   86: {
@@ -931,6 +947,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["86:11", "Unite my heart to fear Your name", "David asks God to teach him His way and to make his heart whole, not divided, so he can revere God's name."],
       ["86:15", "Slow to anger and abundant in lovingkindness", "David quotes God's own words to Moses (Exodus 34:6): merciful and gracious, slow to anger, abounding in love and faithfulness."],
     ],
+    bg: [["David's psalm in Book 3", "Psalm 86 is the only psalm headed \"of David\" in Book 3 of the Psalms (Psalms 73-89). Verse 15 quotes God's own description of Himself to Moses in Exodus 34:6.", "strong", ["tate", "wilson"]]],
+    w: [["רַחוּם", "rachum", "H7349", "compassionate", "Related to the word for womb: tender love like a mother's. \"You, O Lord, are a God merciful and gracious\" (86:15).", ["halot", "vangemeren"]]],
     refs: [["EXO.34", "Exodus 34:6", "Compassionate and gracious"], ["JAS.1", "James 1:8", "A double-minded man"]],
   },
   87: {
@@ -963,6 +981,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["89:34", "My covenant I will not violate", "God says He will not break His covenant or change what He has said."],
       ["89:46", "How long, O LORD?", "The king has been defeated, and the promise seems broken (89:38-45). The psalmist asks how long, then still ends in praise (89:52)."],
     ],
+    bg: [["Ethan and the promise to David", "Psalm 89 is headed \"of Ethan the Ezrahite,\" a wise man mentioned in 1 Kings 4:31. It celebrates God's covenant with David (2 Samuel 7) and then asks why the crown lies in the dust (89:38-45). It closes Book 3 of the Psalms.", "strong", ["tate", "wilson"]]],
+    w: [["אֱמוּנָה", "emunah", "H530", "faithfulness", "Firmness, reliability. The word appears seven times in this psalm: God's faithfulness is the ground of every promise.", ["halot", "tate"]]],
     refs: [["2SA.7", "2 Samuel 7:12-16", "God's covenant with David"], ["LUK.1", "Luke 1:32-33", "The throne of His father David"], ["ACT.13", "Acts 13:22-23", "From David's offspring, a Savior"]],
   },
   90: {
@@ -973,6 +993,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["90:12", "Teach us to number our days", "Our lives are short, like grass that fades by evening (90:5-6). Teach us to count our days so we live them wisely."],
       ["90:17", "Confirm the work of our hands", "Moses asks God's favor on His people and that He would make the work of their hands last."],
     ],
+    bg: [["The psalm of Moses", "Psalm 90 is the only psalm headed \"of Moses,\" and many think it may be the oldest in the book. \"A thousand years in Your sight are like yesterday\" (90:4) is echoed in 2 Peter 3:8.", "strong", ["tate", "kidner"]]],
+    w: [["מָנָה", "manah", "H4487", "to number, count", "\"Teach us to number our days, that we may present to You a heart of wisdom\" (90:12). Knowing life is short helps us live wisely.", ["halot", "vangemeren"]]],
     refs: [["2PE.3", "2 Peter 3:8", "With the Lord one day is like a thousand years"], ["JAS.4", "James 4:14", "Life is a vapor"], ["DEU.33", "Deuteronomy 33:27", "The eternal God is a dwelling place"]],
   },
   91: {
@@ -992,6 +1014,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["92:12", "Flourish like the palm tree", "Palm trees stand tall and live long, and cedars of Lebanon are strong. The righteous will flourish like them."],
       ["92:14", "They will still yield fruit in old age", "Planted in God's house, they still bear fruit in old age, staying fresh and green. A promise for older believers."],
     ],
+    bg: [["A song for the Sabbath", "Psalm 92 is the only psalm headed \"for the Sabbath day.\" A later Jewish writing, the Mishnah, lists a psalm the Levites sang in the temple for each day of the week, and Psalm 92 was the Sabbath psalm (Tamid 7:4).", "strong", ["tate", "wilson"]]],
+    w: [["תָּמָר", "tamar", "H8558", "palm tree", "Date palms grow tall and bear fruit for many years. \"The righteous man will flourish like the palm tree... They will still yield fruit in old age\" (92:12-14).", ["halot", "vangemeren"]]],
     refs: [["PSA.1", "Psalm 1:3", "A tree firmly planted"], ["ISA.40", "Isaiah 40:29-31", "Renewed strength"]],
   },
   93: {
@@ -1012,6 +1036,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["94:18", "Your lovingkindness will hold me up", "When the psalmist felt his foot slipping, God's steadfast love held him up."],
       ["94:19", "When my anxious thoughts multiply", "When worries pile up in his mind, God's comfort brings joy to his soul."],
     ],
+    bg: [["\"God of vengeance\"", "Psalm 94 calls on God to judge those who crush widows, strangers and orphans and say, \"The LORD does not see\" (94:6-7). It hands the wrong over to God rather than taking revenge. Later Jewish tradition sang it in the temple on Wednesdays.", "good", ["tate", "kidner"]]],
     refs: [["ROM.12", "Romans 12:19", "Vengeance is Mine"], ["PHP.4", "Philippians 4:6-7", "Be anxious for nothing"]],
   },
   95: {
@@ -1021,6 +1046,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["95:6", "Let us worship and bow down", "The LORD made us, so come, worship, bow down and kneel before Him."],
       ["95:7-8", "Today, if you would hear His voice", "Today, if you hear His voice, do not harden your hearts as Israel did at Massah in the wilderness. Hebrews 3-4 applies this to believers now."],
     ],
+    bg: [["Massah and Meribah", "\"Do not harden your hearts, as at Meribah, as in the day of Massah in the wilderness\" (95:8) recalls Israel testing God over water (Exodus 17:1-7). Hebrews 3-4 quotes 95:7-11 as a warning for believers to keep trusting God today.", "strong", ["tate", "kidner"]]],
+    w: [["כָּרַע", "kara", "H3766", "to kneel, bow down", "\"Come, let us worship and bow down, let us kneel before the LORD our Maker\" (95:6).", ["halot", "vangemeren"]]],
     refs: [["HEB.3", "Hebrews 3:7-15", "Do not harden your hearts"], ["EXO.17", "Exodus 17:1-7", "Meribah"]],
   },
   96: {
@@ -1030,6 +1057,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["96:9", "In the splendor of holiness", "Worship the LORD in the beauty of holiness. Tremble before Him, all the earth."],
       ["96:12-13", "All the trees of the forest will sing for joy", "Fields and forests sing for joy, because the LORD is coming to judge the world with righteousness and truth."],
     ],
+    bg: [["Sung when the ark came home", "Most of Psalm 96 appears again in 1 Chronicles 16:23-33, in the song David's musicians sang when the ark was brought to Jerusalem. It calls all the earth to sing a new song.", "strong", ["tate", "wilson"]]],
+    w: [["אֱלִילִים", "elilim", "H457", "idols, worthless things", "\"For all the gods of the peoples are idols\" (96:5). The word sounds like elohim, \"gods,\" but means \"nothings\": a pun on how empty idols are.", ["halot", "tate"]]],
     refs: [["1CH.16", "1 Chronicles 16:23-33", "Sung when the ark came to Jerusalem"], ["ROM.8", "Romans 8:19-21", "Creation waits"]],
   },
   97: {
@@ -1039,6 +1068,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["97:10", "Hate evil, you who love the LORD", "Those who love the LORD hate evil. He guards the lives of His faithful ones."],
       ["97:11", "Light is sown like seed for the righteous", "Light is planted like seed for those who do right, and gladness for the honest-hearted. It will grow and blossom."],
     ],
+    bg: [["\"The LORD reigns\"", "Psalms 93 and 95-99 celebrate the LORD as King. Psalm 97 pictures His coming in clouds, fire and lightning, and calls on all the gods to worship Him (97:7). Hebrews 1:6 uses a line very like it about the angels worshiping the Son.", "good", ["tate", "kidner"]]],
     refs: [["EXO.19", "Exodus 19:16-18", "God on Sinai"], ["ROM.12", "Romans 12:9", "Abhor what is evil"]],
   },
   98: {
@@ -1058,6 +1088,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["99:6", "Moses and Aaron... Samuel", "Moses, Aaron and Samuel called on the LORD, and He answered them. God listens to those who pray."],
       ["99:8", "A forgiving God, and yet an avenger of their evil deeds", "God forgave His people, yet He also disciplined their wrongdoing. Mercy and justice belong together in Him."],
     ],
+    bg: [["Holy, holy, holy", "Psalm 99 repeats \"He is holy\" three times (99:3, 5, 9), like the seraphim in Isaiah 6:3. It names Moses, Aaron and Samuel as people who called on God and were answered (99:6).", "good", ["tate", "kidner"]]],
+    w: [["קָדוֹשׁ", "qadosh", "H6918", "holy", "Set apart, wholly other, pure. God's holiness is the reason to worship Him with awe.", ["halot", "vangemeren"]]],
     refs: [["ISA.6", "Isaiah 6:3", "Holy, holy, holy"], ["REV.4", "Revelation 4:8", "Holy, holy, holy"]],
   },
   100: {
