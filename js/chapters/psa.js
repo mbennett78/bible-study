@@ -546,10 +546,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   57: {
     intro: "Written when David hid from Saul in the cave. \"In the shadow of Your wings I will take refuge until destruction passes by.\" He is among lions, but his heart is steadfast. \"Awake, my glory... I will awaken the dawn!\" \"Be exalted above the heavens, O God.\"",
     v: [
-      ["57:1", "In the shadow of Your wings", "Shelter while danger passes."],
-      ["57:7", "My heart is steadfast", "Settled trust."],
-      ["57:8", "I will awaken the dawn", "Praise that wakes the morning."],
+      ["57:1", "In the shadow of Your wings", "Like chicks under a mother bird's wings (Psalm 91:4; Matthew 23:37). David waits there \"until destruction passes by.\""],
+      ["57:7", "My heart is steadfast", "Steadfast means firm and fixed. Danger is still all around, but his heart is settled."],
+      ["57:8", "I will awaken the dawn", "Usually the dawn wakes us. David plans to be up singing before the sun."],
     ],
+    bg: [["Do Not Destroy", "The heading names a tune, Al-tashheth, \"Do not destroy,\" shared by Psalms 57, 58, 59 and 75. David hid from Saul in caves at Adullam (1 Samuel 22:1) and at En-gedi (1 Samuel 24).", "good", ["tate", "kidner"]]],
     refs: [["1SA.24", "1 Samuel 24", "David spares Saul in the cave"], ["PSA.108", "Psalm 108", "Repeats part of this psalm"]],
   },
   58: {
@@ -1457,10 +1458,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   149: {
     intro: "\"Sing to the LORD a new song, and His praise in the congregation of the godly ones.\" Let Israel be glad in their Maker. Let them praise His name with dancing, timbrel and lyre. \"For the LORD takes pleasure in His people; He will beautify the afflicted ones with salvation.\"",
     v: [
-      ["149:1", "Sing to the LORD a new song", "Fresh praise."],
-      ["149:3", "Praise His name with dancing", "Joyful worship."],
-      ["149:4", "The LORD takes pleasure in His people", "God delights in us."],
+      ["149:1", "Sing to the LORD a new song", "A new song answers new mercies. The phrase comes again and again in the Psalms (33:3; 96:1; 98:1) and in heaven's worship (Revelation 5:9)."],
+      ["149:3", "Praise His name with dancing", "Dancing, the timbrel (a hand drum) and the lyre all belong in joyful praise, as when Miriam danced after the Red Sea crossing (Exodus 15:20)."],
+      ["149:4", "The LORD takes pleasure in His people", "God is pleased with His people and accepts them. He \"will beautify the afflicted ones with salvation.\""],
     ],
+    bg: [["The Hallelujah psalms", "Psalms 146 to 150 each begin and end with \"Praise the LORD,\" in Hebrew hallelu-yah. The book of Psalms ends in a crescendo of praise.", "strong", ["allen"]]],
     refs: [["ZEP.3", "Zephaniah 3:17", "He will rejoice over you with shouts of joy"]],
   },
   150: {

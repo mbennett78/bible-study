@@ -39,10 +39,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   3: {
     intro: "At night the young woman searches for the one her soul loves through the city streets, asks the watchmen, and finds him: \"I held on to him and would not let him go.\" Then a royal procession comes up from the wilderness: Solomon's carriage, guarded by sixty mighty men, on his wedding day.",
     v: [
-      ["3:1", "I sought him whom my soul loves", "Longing."],
-      ["3:4", "I held on to him and would not let him go", "Love holds fast."],
-      ["3:11", "On the day of his wedding", "The joy of a wedding."],
+      ["3:1", "I sought him whom my soul loves", "In a dream-like night scene she searches the city for him. Real love goes looking; it will not sit still."],
+      ["3:4", "I held on to him and would not let him go", "Once she finds him, she will not let go. Many readers hear in this how a believer clings to the Lord (Genesis 32:26)."],
+      ["3:11", "On the day of his wedding", "His mother crowns him \"on the day of his gladness of heart.\" A wedding is meant to be a day of deep joy."],
+      ["3:5", "Do not arouse or awaken my love until she pleases", "A refrain repeated three times (2:7; 3:5; 8:4): love has its right time, so do not rush it."],
     ],
+    bg: [["A royal wedding procession", "Royal weddings included a procession with music and guards. Solomon's carried couch (3:9-10) is made of timber from Lebanon, with posts of silver, a back of gold and a seat of purple cloth, the finest materials in his kingdom.", "good", ["longmanS", "garrett"]]],
     refs: [["JHN.20", "John 20:15-17", "Mary seeks Jesus at the tomb"]],
   },
   4: {
@@ -68,18 +70,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
   6: {
     intro: "The daughters ask where the beloved has gone. She knows: to his garden. \"I am my beloved's and my beloved is mine.\" He praises her again: \"My dove, my perfect one, is unique.\" Even queens praise her. \"Who is this that grows like the dawn, as beautiful as the full moon, as pure as the sun?\"",
     v: [
-      ["6:3", "I am my beloved's and my beloved is mine", "Restored together."],
-      ["6:9", "My dove, my perfect one, is unique", "One and only."],
-      ["6:10", "Who is this that grows like the dawn?", "Love's radiance."],
+      ["6:3", "I am my beloved's and my beloved is mine", "After a time apart (5:6), they belong to each other again. The vow from 2:16 comes back with its order turned around."],
+      ["6:9", "My dove, my perfect one, is unique", "Even among sixty queens and eighty concubines (6:8), she is the only one for him. Faithful love sees one person as one of a kind."],
+      ["6:10", "Who is this that grows like the dawn?", "Dawn, moon and sun: her beauty is described with the brightest things in the sky."],
+      ["6:4", "As beautiful as Tirzah, as lovely as Jerusalem", "Tirzah, whose name means \"pleasant,\" was a lovely city that later became a royal capital of the northern kingdom (1 Kings 16:23)."],
     ],
     refs: [["SNG.2", "Song of Songs 2:16", "The earlier vow"]],
   },
   7: {
     intro: "Friends call out to the young woman as she dances. Her beloved praises her beauty from her feet to her head. She answers, \"I am my beloved's, and his desire is for me,\" and invites him to go out to the countryside together where the vines have budded.",
     v: [
-      ["7:1", "How beautiful are your feet", "Admiration and delight."],
-      ["7:10", "I am my beloved's, and his desire is for me", "Secure in love."],
-      ["7:12", "Let us rise early and go to the vineyards", "Time together."],
+      ["7:1", "How beautiful are your feet", "He praises her from her feet up, the reverse of 4:1-5. In the Song, love is honest, kind and full of delight."],
+      ["7:10", "I am my beloved's, and his desire is for me", "After the fall, the woman's desire is for a husband who rules over her (Genesis 3:16). Here his desire is for her. Many see love being healed."],
+      ["7:12", "Let us rise early and go to the vineyards", "Love makes time. The couple plan a day in the countryside among the vines and blossoms."],
     ],
     refs: [["GEN.3", "Genesis 3:16", "Desire after the fall; here love is restored"]],
   },

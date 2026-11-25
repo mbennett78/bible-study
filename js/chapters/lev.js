@@ -170,7 +170,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ross"] }, {
     v: [
       ["17:7", "Goat demons", "God stops false worship hiding in the fields."],
       ["17:11", "The life is in the blood", "The key verse on sacrifice: life is given for life. Hebrews 9:22: \"without shedding of blood there is no forgiveness.\""],
+      ["17:3-4", "Has not brought it to the doorway of the tent of meeting", "In the wilderness every animal killed for food was brought as a peace offering, so no one could quietly sacrifice to other gods. Once Israel spread out in the land, Deuteronomy 12:20-21 allowed killing animals for food at home."],
+      ["17:13", "He shall pour out its blood and cover it with earth", "Even with wild game, the blood, which stands for the life, is given back to God, not eaten."],
     ],
+    bg: [["Goat demons", "The Hebrew se'irim means \"hairy ones\" or goats. Neighboring peoples believed spirits haunted the open country, and some Israelites had been sacrificing to them. Later King Jeroboam appointed priests for them (2 Chronicles 11:15).", "good", ["milgrom", "hartley"]]],
+    w: [["כָּפַר", "kaphar", "H3722", "to make atonement", "To cover over or wipe clean a debt of sin, so that the relationship with God is restored. Leviticus 17:11 is one of the clearest statements of how atonement works: a life given in place of a life.", ["halot", "wenham"]]],
     refs: [["HEB.9", "Hebrews 9:22", "Without shedding of blood"], ["ACT.15", "Acts 15:20, 29", "Abstain from blood"]],
   },
   18: {

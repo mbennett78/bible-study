@@ -304,10 +304,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   31: {
     intro: "\"Woe to those who go down to Egypt for help and rely on horses.\" The Egyptians are men and not God; their horses are flesh and not spirit. Like a lion over its prey, like birds hovering, the LORD of hosts will protect Jerusalem. \"Return to Him from whom you have deeply defected.\"",
     v: [
-      ["31:1", "Rely on horses", "Misplaced trust."],
-      ["31:3", "The Egyptians are men and not God", "Human help fails."],
-      ["31:5", "Like flying birds the LORD will protect Jerusalem", "God's tender protection."],
+      ["31:1", "Rely on horses", "Judah's leaders hoped Egypt's chariot horses could stop Assyria. They looked everywhere except to \"the Holy One of Israel\" (31:1)."],
+      ["31:3", "The Egyptians are men and not God", "Flesh and spirit: the strongest army is still only human, and God is Spirit."],
+      ["31:5", "Like flying birds the LORD will protect Jerusalem", "God is pictured both as a lion that will not be scared off (31:4) and as a mother bird hovering over her nest."],
     ],
+    bg: [["Assyria turned back from Jerusalem", "31:8 says Assyria will fall by a sword not of man. In 701 BC King Sennacherib's army threatened Jerusalem, and 2 Kings 19:35 tells how the angel of the LORD struck the camp. Sennacherib's own records boast that he shut Hezekiah up \"like a bird in a cage,\" but never claim that he took the city.", "strong", ["kitchen", "oswalt"]]],
     refs: [["PSA.20", "Psalm 20:7", "Some trust in chariots"]],
   },
   32: {
@@ -372,10 +373,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   38: {
     intro: "Hezekiah becomes mortally ill. Isaiah tells him to set his house in order. Hezekiah turns his face to the wall, prays and weeps. God answers: \"I have heard your prayer, I have seen your tears; behold, I will add fifteen years to your life.\" As a sign, the shadow on the stairway goes back ten steps. Hezekiah writes a psalm of thanks.",
     v: [
-      ["38:3", "Remember now, O LORD", "Honest prayer."],
-      ["38:5", "I have heard your prayer, I have seen your tears", "God sees our tears."],
-      ["38:17", "You have cast all my sins behind Your back", "Forgiveness."],
+      ["38:3", "Remember now, O LORD", "Hezekiah reminds God of his faithful life. It is not bragging but the honest prayer of a man facing death."],
+      ["38:5", "I have heard your prayer, I have seen your tears", "God answers quickly. 2 Kings 20:4 says the word came before Isaiah had even left the palace courtyard."],
+      ["38:17", "You have cast all my sins behind Your back", "Out of sight: God puts our sins where He will not look at them again (Micah 7:19)."],
     ],
+    bg: [["The stairway of Ahaz", "The sign in 38:8 is the shadow on the stairway of Ahaz going back ten steps. Steps or dials that marked time by the sun's shadow were known in the ancient world. Whatever its form, the sign was a miracle given in answer to prayer.", "good", ["oswalt"]]],
     refs: [["2KI.20", "2 Kings 20:1-11", "The same story"], ["JAS.5", "James 5:15-16", "The prayer of faith"]],
   },
   39: {
@@ -610,10 +612,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   62: {
     intro: "\"For Zion's sake I will not keep silent.\" Zion will be called by a new name: no longer \"Forsaken\" but \"My delight is in her.\" \"As the bridegroom rejoices over the bride, so your God will rejoice over you.\" Watchmen on the walls will never be silent. \"Say to the daughter of Zion, Lo, your salvation comes.\"",
     v: [
-      ["62:4", "My delight is in her", "Hephzibah: God's delight."],
-      ["62:5", "As the bridegroom rejoices over the bride", "God's joy over His people."],
-      ["62:6-7", "Give Him no rest", "Persistent prayer."],
+      ["62:4", "My delight is in her", "The Hebrew is Hephzibah, \"my delight is in her.\" It was also the name of King Hezekiah's wife (2 Kings 21:1)."],
+      ["62:5", "As the bridegroom rejoices over the bride", "God does not merely put up with His people. He rejoices over them like a groom on his wedding day."],
+      ["62:6-7", "Give Him no rest", "Those who pray are told to give God no rest until He keeps His promise. God welcomes bold, persistent prayer (Luke 18:1-8)."],
+      ["62:2", "You will be called by a new name", "A new name means a new identity, like Abram becoming Abraham, and the new name promised in Revelation 2:17."],
     ],
+    bg: [["Beulah", "62:4 also says the land will be called Beulah, \"married\" (the NASB translates it). The word gave its name to old hymns like \"Beulah Land,\" a picture of heaven.", "good", ["oswalt"]]],
     refs: [["REV.21", "Revelation 21:2", "A bride adorned for her husband"], ["ZEP.3", "Zephaniah 3:17", "He will rejoice over you"]],
   },
   63: {

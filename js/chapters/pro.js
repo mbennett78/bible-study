@@ -27,10 +27,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidnerP", "waltke"] },
   2: {
     intro: "If you receive wisdom's words, seek her like silver and search for her as hidden treasure, \"then you will discern the fear of the LORD and discover the knowledge of God. For the LORD gives wisdom.\" Wisdom guards you from evil men and from the adulterous woman.",
     v: [
-      ["2:4", "Search for her as for hidden treasures", "Wisdom takes effort."],
-      ["2:6", "For the LORD gives wisdom", "Wisdom is God's gift."],
-      ["2:11", "Discretion will guard you", "Wisdom protects."],
+      ["2:4", "Search for her as for hidden treasures", "Miners dug deep for silver (Job 28:1-11). Wisdom is worth that kind of effort."],
+      ["2:6", "For the LORD gives wisdom", "We search, but in the end wisdom is a gift. God gives it to those who ask (James 1:5)."],
+      ["2:11", "Discretion will guard you", "Good sense is pictured as a guard posted around your life, keeping you off paths that lead to harm."],
+      ["2:1", "My son, if you will receive my words", "Proverbs 1-9 is written like a parent's talks to a child, passing faith on to the next generation (Deuteronomy 6:6-7)."],
     ],
+    w: [["חָכְמָה", "chokmah", "H2451", "wisdom", "Not just knowing facts, but skill for living. The same word describes the skill God gave Bezalel to build the tabernacle (Exodus 31:3).", ["halot", "waltke"]]],
     refs: [["MAT.13", "Matthew 13:44", "Treasure hidden in a field"], ["JAS.1", "James 1:5", "God gives generously"]],
   },
   3: {
