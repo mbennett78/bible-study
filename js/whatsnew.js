@@ -7,6 +7,7 @@ export const NEWS = [
     id: "2026-11-25",
     title: "What's new this week",
     items: [
+      "✏️ Write or draw in your notes and journal with Apple Pencil or a finger, or fill a whole handwriting page. It prints and goes to Google Docs too.",
       "🎨 Every kids' story picture is new, plus 8 new stories like the wise men and Hannah's prayer.",
       "🗺️ Maps look like a study Bible's, with mountains, deserts and a scale.",
       "👓 Easier to read: clearer gray words, and Largest text fits small phones.",

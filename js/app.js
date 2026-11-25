@@ -21,6 +21,7 @@ import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml } from "./whatsnew.js";
+import { openInk, inkSvg, inkPng } from "./ink.js";
 import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -1935,9 +1936,26 @@ function picHtml(p, i, editable = true) {
   if (p.t === "map") { const n = notesFor(...p.key.split(".").map((v, k) => (k ? Number(v) : v))); return n?.map ? `<div class="ee-pic is-map">${mapSvg(n.map)}<p class="muted small-print">Map: ${esc(refKeyName(p.key))}</p>${x}</div>` : ""; }
   if (p.t === "box") { const [, ic, l] = BOX_TONES.find(([v]) => v === p.tone) || BOX_TONES[0]; return `<div class="ee-pic is-box tone-${esc(p.tone || "key")}"><p class="nb-label">${ic} ${esc(l)}</p><p class="nb-text">${linkRefs(esc(p.text || "")).replace(/\n/g, "<br>")}</p>${editable ? `<button type="button" class="small chart-edit" data-bedit="${i}">Change</button>` : ""}${x}</div>`; }
   if (p.t === "table") return `<div class="ee-pic is-table"><table class="note-table">${(p.rows || []).map((r, ri) => `<tr>${r.map((c) => (ri ? `<td>${linkRefs(esc(c))}</td>` : `<th>${esc(c)}</th>`)).join("")}</tr>`).join("")}</table>${editable ? `<button type="button" class="small chart-edit" data-tedit="${i}">Change</button>` : ""}${x}</div>`;
+  if (p.t === "ink") return `<div class="ee-pic is-ink${p.page ? " is-page" : ""}">${editable ? `<p class="ink-label">${p.page ? "📄 Page" : "✏️ Drawing"} ${esc(p.n)}</p>` : ""}${inkSvg(p, `data-ink="${inkKey(p)}"${editable ? ` data-iedit="${i}"` : ""}`)}${editable ? `<button type="button" class="small chart-edit" data-iedit="${i}">Change</button>` : ""}${x}</div>`;
   if (p.t === "chart") return `<div class="ee-pic is-chart"${editable ? ` data-chart="${i}"` : ""}>${chartHtml(p)}${editable ? `<button type="button" class="small chart-edit" data-cedit="${i}">Change</button>` : ""}${x}</div>`;
   return "";
 }
+// Drawings drawn on the page, so a copy for Google Docs can turn each into a picture.
+const INK_SEEN = new Map();
+const inkKey = (p) => { const k = `i${INK_SEEN.size}`; INK_SEEN.set(k, p); return k; };
+// A "[✏️ Drawing 2]" line in the words is where that drawing goes when printed or sent.
+const inkLine = (n) => new RegExp(`^\\[(?:✏️ Drawing|📄 Page) ${n}\\]$`, "m");
+const inkTag = (p) => `[${p.page ? "📄 Page" : "✏️ Drawing"} ${p.n}]`;
+function paraInk(t, pics, para) {
+  const inks = (pics || []).filter((p) => p.t === "ink");
+  if (!inks.length || !t) return para(t || "");
+  return String(t).split(/^\[(?:✏️ Drawing|📄 Page) (\d+)\]$/m).map((c, i) => {
+    if (i % 2) { const p = inks.find((x) => String(x.n) === c); return p ? `<div class="ee-pics">${picHtml(p, 0, false)}</div>` : ""; }
+    return c.trim() ? para(c.replace(/^\n+|\n+$/g, "")) : "";
+  }).join("");
+}
+// The pictures that aren't already placed in the words.
+const loosePics = (e) => (e.pics || []).filter((p) => !(p.t === "ink" && inkLine(p.n).test(e.text || "")));
 // Make a photo small enough to keep and sync: at most 720 pixels across.
 function shrinkPhoto(file) {
   return new Promise((resolve, reject) => {
@@ -2009,7 +2027,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       <div class="ee-pics" id="eePics"></div>
       <div class="ee-tools" role="group" aria-label="Add to this entry">
         <button type="button" data-tool="verse">📖 Quote a verse</button><button type="button" data-tool="sticker">🎨 Pictures &amp; arrows</button><button type="button" data-tool="box">▭ Shaded box</button>
-        <button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button><button type="button" data-tool="table">▦ Table</button>
+        <button type="button" data-tool="ink">✏️ Draw or write</button><button type="button" data-tool="inkpage">📄 Handwriting page</button><button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button><button type="button" data-tool="table">▦ Table</button>
         <input type="file" id="eePhoto" accept="image/*" hidden>
       </div>
       <div class="ee-panel" id="eePanel" hidden></div>
@@ -2047,12 +2065,28 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   const drawPics = () => {
     const el = $("#eePics");
     el.innerHTML = draft.pics.map((x, i) => picHtml(x, i)).join("");
-    el.querySelectorAll("[data-px]").forEach((b) => b.addEventListener("click", () => { draft.pics.splice(Number(b.dataset.px), 1); drawPics(); keep(); }));
+    el.querySelectorAll("[data-px]").forEach((b) => b.addEventListener("click", () => { const [gone] = draft.pics.splice(Number(b.dataset.px), 1); if (gone?.t === "ink") ta.value = ta.value.replace(new RegExp(`\\n?${inkLine(gone.n).source.slice(1, -1)}\\n?`), "\n"); drawPics(); keep(); }));
+    el.querySelectorAll("[data-iedit]").forEach((b) => b.addEventListener("click", () => drawInk(draft.pics[Number(b.dataset.iedit)].page, Number(b.dataset.iedit))));
     el.querySelectorAll("[data-cedit]").forEach((b) => b.addEventListener("click", () => chartForm(Number(b.dataset.cedit))));
     el.querySelectorAll("[data-tedit]").forEach((b) => b.addEventListener("click", () => tableForm(Number(b.dataset.tedit))));
     el.querySelectorAll("[data-bedit]").forEach((b) => b.addEventListener("click", () => boxForm(Number(b.dataset.bedit))));
   };
   const addPic = (pic) => { draft.pics.push(pic); drawPics(); keep(); msg("Added ✓"); };
+  // Handwriting or a drawing goes where the cursor was in the words.
+  let caret = null;
+  ta.addEventListener("blur", () => { caret = ta.selectionStart; });
+  async function drawInk(page, editAt = -1) {
+    const old = editAt >= 0 ? draft.pics[editAt] : null;
+    const n = old?.n || 1 + Math.max(0, ...draft.pics.filter((p) => p.t === "ink").map((p) => Number(p.n) || 0));
+    const out = await openInk(old || { t: "ink", page, n });
+    if (!out) return;
+    if (!out.s.length) { if (old) { draft.pics.splice(editAt, 1); ta.value = ta.value.replace(new RegExp(`\\n?${inkLine(old.n).source.slice(1, -1)}\\n?`), "\n"); drawPics(); keep(); } return; }
+    if (old) { draft.pics[editAt] = out; drawPics(); keep(); msg("Drawing kept ✓"); return; }
+    const at = caret ?? ta.value.length, before = ta.value.slice(0, at), after = ta.value.slice(at);
+    ta.value = `${before}${before && !before.endsWith("\n") ? "\n" : ""}${inkTag(out)}\n${after.replace(/^\n/, "")}`;
+    caret = before.length + inkTag(out).length + (before && !before.endsWith("\n") ? 2 : 1);
+    addPic(out);
+  }
   const closePanel = () => { panel.hidden = true; panel.innerHTML = ""; };
   function chartForm(editAt = -1) {
     const c = editAt >= 0 ? draft.pics[editAt] : { kind: "venn" };
@@ -2143,6 +2177,8 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       draw();
     },
     photo() { $("#eePhoto").click(); },
+    ink() { closePanel(); drawInk(false); },
+    inkpage() { closePanel(); drawInk(true); },
     map() {
       panel.hidden = false;
       const maps = sampleChapters().filter((key) => keyRef(key) && notesFor(keyRef(key).book, keyRef(key).chapter)?.map);
@@ -2255,7 +2291,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
 // A short line for an entry in a list: its words, or its first verse, plus what's attached.
 function entrySnippet(e) {
   const t = (e.title ? `${e.title}${e.speaker ? ` (${e.speaker})` : ""}. ` : "") + (e.text || (e.quotes?.[0] ? `“${e.quotes[0].text}” ${refKeyName(e.quotes[0].ref)}` : ""));
-  const extras = [e.quotes?.length && `📖 ${e.quotes.length}`, e.pics?.filter((p) => p.t === "photo").length && `📷 ${e.pics.filter((p) => p.t === "photo").length}`, e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join(""), e.pics?.some((p) => p.t === "map") && "🗺️", e.pics?.some((p) => p.t === "chart") && "📊"].filter(Boolean);
+  const extras = [e.quotes?.length && `📖 ${e.quotes.length}`, e.pics?.filter((p) => p.t === "photo").length && `📷 ${e.pics.filter((p) => p.t === "photo").length}`, e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join(""), e.pics?.some((p) => p.t === "map") && "🗺️", e.pics?.some((p) => p.t === "chart") && "📊", e.pics?.some((p) => p.t === "ink") && "✏️"].filter(Boolean);
   return `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}${extras.length ? `<span class="entry-extras">${extras.join(" ")}</span>` : ""}`;
 }
 // Prints a little book: only #printBook shows on paper (styles.css, "Printed books").
@@ -2283,6 +2319,7 @@ function printPages(html, kind = "journal", title = PRINT_TITLES[kind] || "Bible
 async function sendDocument(html, title) {
   const box = document.createElement("div");
   box.innerHTML = html;
+  box.querySelectorAll("svg[data-ink]").forEach((n) => { const p = INK_SEEN.get(n.dataset.ink); if (p) n.replaceWith(Object.assign(document.createElement("img"), { src: inkPng(p, p.page ? 800 : 640), alt: p.page ? "Handwriting page" : "Drawing" })); });
   box.querySelectorAll("svg, button, .pb-art, .pb-strip, .pb-blank, script, style").forEach((n) => n.remove());
   const doc = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
 <style>body{font-family:Georgia,serif;font-size:13pt;line-height:1.5;max-width:42em;margin:2em auto;color:#222}h1,h2,h3{font-family:Arial,sans-serif;color:#333}blockquote,q{display:block;margin:.6em 0;padding-left:1em;border-left:3px solid #bbb;font-style:italic}cite{display:block;font-size:.9em;color:#555}</style></head>
@@ -2321,9 +2358,9 @@ async function makeJournalBook() {
   const days = {};
   const add = (day, item) => { if (item.parts.some(([, t]) => (t || "").trim()) || item.extra || item.head) (days[day] ||= []).push(item); };
   for (const e of store.allEntries()) if (want(e.kind) || (only === "prayer" && e.prayer?.trim()) || (only === "gratitude" && e.gratitude?.trim())) add(dayOf(e.created), { at: e.created, kind: entryLabel(e), k: e.kind, ref: e.ref,
-    parts: e.kind === "day" ? [[openerOf(e), want("day") ? e.text : ""], ["Prayer", want("prayer") ? e.prayer : ""], ["Thankful for", want("gratitude") ? e.gratitude : ""]] : [["", e.text]], answered: e.answered,
+    parts: e.kind === "day" ? [[openerOf(e), want("day") ? e.text : ""], ["Prayer", want("prayer") ? e.prayer : ""], ["Thankful for", want("gratitude") ? e.gratitude : ""]] : [["", e.text]], answered: e.answered, pics: e.pics,
     head: e.title || e.speaker || e.passage ? `<p class="pb-lesson">${e.title ? `<b>${esc(e.title)}</b>` : ""}${e.speaker ? `<span>${esc(e.speaker)}</span>` : ""}${e.passage ? `<span>${esc(e.passage)}</span>` : ""}</p>` : "",
-    extra: (e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("") + ((e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : "") });
+    extra: (e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("") + (loosePics(e).length ? `<div class="ee-pics">${loosePics(e).map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : "") });
   for (const d of store.allDiary()) {
     const parts = [["My day", d.text, "day"], ["Prayers", d.prayer, "prayer"], ["Thankful for", d.gratitude, "gratitude"]].filter(([, , k]) => want(k));
     add(d.day, { at: d.created || `${d.day}T12:00:00`, kind: only === "all" ? "My day" : BOOK_KINDS[only][0], k: only === "all" ? "day" : only, parts, answered: d.answered });
@@ -2357,7 +2394,7 @@ async function makeJournalBook() {
       <header class="pb-dayhead"><div class="pb-strip">${seaScene(style, { height: 46 })}</div><div class="pb-when"><span class="pb-dnum">${dnum}</span><span class="pb-dow">${esc(dow)}</span><span class="pb-month">${esc(month)}</span></div></header>
       ${days[day].sort((a, b) => String(a.at).localeCompare(String(b.at))).map((it) => { const filled = it.parts.filter(([, t]) => (t || "").trim()); return `<section class="pb-entry pk-${it.k}">
         <h3><span class="pb-kind">${esc(it.kind)}${it.ref ? ` · ${esc(keyRef(it.ref).name)}` : ""}</span><span class="pb-time">${esc(timeOf(it.at))}</span></h3>${it.head || ""}${it.extra || ""}
-        <div class="pb-lines">${filled.map(([label, t]) => `${label && filled.length > 1 ? `<h4>${esc(label)}</h4>` : ""}${para(t)}`).join("")}</div>
+        <div class="pb-lines">${filled.map(([label, t]) => `${label && filled.length > 1 ? `<h4>${esc(label)}</h4>` : ""}${paraInk(t, it.pics, para)}`).join("")}</div>
         ${it.answered ? `<p class="pb-answered">Answered ✓ ${esc(fmtDate(it.answered))}</p>` : ""}</section>`; }).join("")}
       <div class="pb-blank" aria-hidden="true"></div>
       <footer class="pb-verse"><span class="pb-vlabel">The verse for ${esc(dow)}</span>${verses[day].words ? `<q>${esc(verses[day].words)}</q>` : `<q>${esc(verses[day].theme)}</q>`}<cite>${esc(verses[day].ref)}</cite></footer>
@@ -2382,7 +2419,7 @@ function printNotes(book, chapter) {
     ${n ? `${n.sections.map(section).join("")}
       ${n.map ? `<section class="pn-sec pn-map"><h2>Map</h2>${mapSvg(n.map)}<p class="pn-small">${esc(n.map.caption)}</p></section>` : ""}
       ${n.crossRefs ? `<section class="pn-sec"><h2>Cross-references</h2><ul class="pn-x">${n.crossRefs.map(([, r, why]) => `<li><b>${esc(r)}</b> ${esc(why)}</li>`).join("")}</ul></section>` : ""}` : ""}
-    ${mine.length ? `<section class="pn-sec pn-mine"><h2>My notes</h2>${mine.map((e) => `<div class="pn-item"><h3>${esc(KIND[e.kind]?.label || "Note")} <span class="pb-time">${esc(dayLabel(dayOf(e.created)))}</span></h3>${e.title ? `<p><b>${esc(e.title)}</b></p>` : ""}${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}${e.text ? `<div class="pb-lines">${esc(e.text).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("")}</div>` : ""}</div>`).join("")}</section>` : ""}
+    ${mine.length ? `<section class="pn-sec pn-mine"><h2>My notes</h2>${mine.map((e) => `<div class="pn-item"><h3>${esc(KIND[e.kind]?.label || "Note")} <span class="pb-time">${esc(dayLabel(dayOf(e.created)))}</span></h3>${e.title ? `<p><b>${esc(e.title)}</b></p>` : ""}${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}${loosePics(e).length ? `<div class="ee-pics">${loosePics(e).map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}${e.text ? `<div class="pb-lines">${paraInk(e.text, e.pics, (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join(""))}</div>` : ""}</div>`).join("")}</section>` : ""}
     ${n ? `<section class="pn-sec pn-sources"><h2>Sources</h2><ol>${srcKeys.map((k) => `<li>${esc(sourceText(n.sources[k]))}</li>`).join("")}</ol></section>` : ""}`;
   printPages(html, "notes", `Study notes: ${name}`);
 }
@@ -2548,7 +2585,7 @@ function renderNotesList(justSaved = null) {
       <button type="button" class="nc-open" data-note="${e.id}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}${e.kind === "study" && PATH_BY_ID[e.path] ? `<small class="nc-path">${esc(PATH_BY_ID[e.path].name)} path</small>` : ""}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}<span class="go" aria-hidden="true">›</span></button>
       ${refs.length ? `<p class="nc-refs">${refs.map((r) => refButton(r)).join(" ")}</p>` : ""}
       ${snip ? `<p class="nc-snip nf-${esc(e.font || "classic")}">${linkRefs(esc(snip)).replace(/\n/g, "<br>")}</p>` : ""}
-      ${(e.quotes?.length || e.pics?.length) ? `<p class="nc-extras">${[e.quotes?.length && `📖 ${e.quotes.length} verse${e.quotes.length === 1 ? "" : "s"}`, e.pics?.some((p) => p.t === "table") && "▦ table", e.pics?.some((p) => p.t === "chart") && "📊 chart", e.pics?.some((p) => p.t === "photo") && "📷 photo", e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join("")].filter(Boolean).join(" · ")}</p>` : ""}
+      ${(e.quotes?.length || e.pics?.length) ? `<p class="nc-extras">${[e.quotes?.length && `📖 ${e.quotes.length} verse${e.quotes.length === 1 ? "" : "s"}`, e.pics?.some((p) => p.t === "table") && "▦ table", e.pics?.some((p) => p.t === "chart") && "📊 chart", e.pics?.some((p) => p.t === "photo") && "📷 photo", e.pics?.some((p) => p.t === "ink") && "✏️ handwriting", e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join("")].filter(Boolean).join(" · ")}</p>` : ""}
     </article>`;
   }).join("");
   el.querySelectorAll("[data-note]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.note }, $("#notesEditor"))));
@@ -2582,8 +2619,8 @@ function printNotesBook(list, title = "My Notes") {
       ${e.kind === "study" && PATH_BY_ID[e.path] ? `<p class="pn-path">${esc(PATH_BY_ID[e.path].name)} path</p>` : ""}
       ${e.speaker || e.passage || (e.ref && e.kind !== "church" && e.kind !== "class") ? `<p class="pn-sub">${[e.speaker, e.passage, e.ref && e.kind !== "church" && e.kind !== "class" ? keyRef(e.ref).name : ""].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
       ${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}
-      ${e.text ? `<div class="pb-lines nf-${esc(e.font || "classic")}">${para(e.text)}</div>` : ""}
-      ${(e.pics || []).length ? `<div class="ee-pics">${e.pics.map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
+      ${e.text ? `<div class="pb-lines nf-${esc(e.font || "classic")}">${paraInk(e.text, e.pics, para)}</div>` : ""}
+      ${loosePics(e).length ? `<div class="ee-pics">${loosePics(e).map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
       ${scanRefs(`${e.passage || ""} ${e.text || ""}`).length ? `<p class="pn-verses">Verses: ${scanRefs(`${e.passage || ""} ${e.text || ""}`).map((r) => esc(r.name)).join(" · ")}</p>` : ""}
     </section>`;
   const html = list.length === 1 ? `<article class="pn-book">${one(list[0])}</article>`

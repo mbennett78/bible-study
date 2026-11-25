@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:52 AM Central
-**Current version:** v220 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:55 AM Central
+**Current version:** v221 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 11:25 AM CT: Handwriting and drawing are done, two days early. Every note and Journal entry has "✏️ Draw or write" (a drawing placed right where your cursor is in the typed words) and "📄 Handwriting page" (a full lined page). Pen in 5 colors and 3 sizes, a highlighter, an eraser, undo, and plain, lined or grid paper. With Apple Pencil the line follows how hard you press, and a hand resting on the screen does not draw. Drawings are kept as strokes, so they stay small to back up and print sharp, in their place in the words; sent to Google Docs they come along as pictures.
 - Wed Nov 25, 10:55 AM CT: Seasonal round 5, Psalm 23: no shepherd in the picture (you are the shepherd, rod and staff close by); the sheep graze on the green pastures in the light, one at the edge of the shade; the dark valley has a little stream between stones with a tinge of desert dirt.
 - Wed Nov 25, 10:50 AM CT: Games play-test, practice quiz: a miss now names the right answer before its verse, and three awkwardly worded questions read cleanly (1 Peter 3:15, James 3, God's promise to David). Every game has now been play-tested on phone and iPad.
 - Wed Nov 25, 10:45 AM CT: Seasonal round 5 from Melissa: April now shows the three crosses small and far away on a distant hill (sides dark, middle shining), the empty tomb faint in the distance, and the spring garden filling the near ground.
@@ -113,7 +114,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 ## Open questions
 
 - Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
-- Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. Handwriting and drawing pages are approved and planned for Fri Nov 27. Circling directly on the Bible text is harder because the text reflows.
+- Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. Handwriting and drawing are done (Nov 25): ✏️ Draw or write and 📄 Handwriting page in every note and Journal entry. Circling directly on the Bible text is harder because the text reflows.
 - B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
 - Reading margins: a simple "Page width" choice (narrow, medium, wide) is suggested instead of drag handles; planned for the B-75 navigation pass unless Melissa prefers otherwise.
 
@@ -142,7 +143,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
-| Handwriting and drawing in notes and the Journal, both ways: a sketch box anywhere inside a typed note, or a full handwriting page; write or draw with Apple Pencil or a finger; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Not started | Fri Nov 27 |
+| Handwriting and drawing in notes and the Journal, both ways: a sketch box anywhere inside a typed note, or a full handwriting page; write or draw with Apple Pencil or a finger; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Done Wed Nov 25 (2 days early) | Fri Nov 27 |
 | Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
 | Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sat Nov 28 (moved up from Sun Nov 29) |
