@@ -2987,3 +2987,7 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
   .ee-pic.is-ink.is-page { max-width: none; break-before: page; }
   .ee-pic.is-ink .ink-svg { max-height: 9in; width: auto; max-width: 100%; margin: 0 auto; }
 }
+
+/* Pinch to zoom is always allowed. On touch screens, boxes you type in use at least 16px text,
+   so the phone doesn't jump in on its own when you tap one. */
+@media (pointer: coarse) { input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea { font-size: max(16px, 1em); } }
