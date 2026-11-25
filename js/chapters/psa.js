@@ -321,9 +321,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   34: {
     intro: "Written when David pretended to be insane before the Philistine king. \"I will bless the LORD at all times.\" David sought the LORD, and He delivered him from all his fears. \"O taste and see that the LORD is good.\" \"The LORD is near to the brokenhearted.\" He keeps all the bones of the righteous; not one is broken.",
     v: [
-      ["34:4", "He delivered me from all my fears", "Seeking God brings relief."],
-      ["34:8", "O taste and see that the LORD is good", "Try Him and find Him good."],
-      ["34:18", "The LORD is near to the brokenhearted", "God draws close in grief."],
+      ["34:4", "He delivered me from all my fears", "The heading links this psalm to David pretending to be mad before a Philistine king (1 Samuel 21:10-15). He sought the LORD, and God freed him from all his fears."],
+      ["34:8", "O taste and see that the LORD is good", "David invites us to try God for ourselves, like tasting good food. Those who take refuge in Him are blessed."],
+      ["34:18", "The LORD is near to the brokenhearted", "God does not stay away from people in pain. He comes close to the brokenhearted and saves those crushed in spirit."],
       ["34:20", "Not one of them is broken", "John applies this to Jesus (John 19:36)."],
     ],
     refs: [["1SA.21", "1 Samuel 21:10-15", "David before Achish"], ["1PE.2", "1 Peter 2:3", "You have tasted the kindness of the Lord"], ["1PE.3", "1 Peter 3:10-12", "Peter quotes Psalm 34"]],
@@ -349,10 +349,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   37: {
     intro: "A wisdom psalm in alphabet form. \"Do not fret because of evildoers.\" They will wither like grass. \"Delight yourself in the LORD; and He will give you the desires of your heart. Commit your way to the LORD.\" The meek will inherit the land. David has never seen the righteous forsaken. Wait for the LORD and keep His way.",
     v: [
-      ["37:1", "Do not fret because of evildoers", "Don't let the wicked steal your peace."],
-      ["37:4", "Delight yourself in the LORD", "Delighting in God shapes our desires."],
-      ["37:5", "Commit your way to the LORD", "Roll your path onto Him."],
-      ["37:11", "The humble will inherit the land", "Jesus echoes this in Matthew 5:5."],
+      ["37:1", "Do not fret because of evildoers", "Do not burn with worry or envy when wrongdoers seem to succeed. Like grass, they will soon fade (37:2)."],
+      ["37:4", "Delight yourself in the LORD", "When the LORD is our joy, our wants begin to line up with His, and He gives us the desires of our heart."],
+      ["37:5", "Commit your way to the LORD", "The Hebrew word for commit means to roll, like rolling a heavy load onto someone stronger. Trust Him, and He will act."],
+      ["37:11", "The humble will inherit the land", "Jesus echoes this verse in Matthew 5:5: blessed are the gentle, for they shall inherit the earth."],
     ],
     refs: [["MAT.5", "Matthew 5:5", "The meek shall inherit the earth"], ["PRO.16", "Proverbs 16:3", "Commit your works to the LORD"], ["PSA.73", "Psalm 73", "The prosperity of the wicked"]],
   },
@@ -398,10 +398,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   42: {
     intro: "Book Two opens. \"As the deer pants for the water brooks, so my soul pants for You, O God.\" Far from the temple, the psalmist remembers leading crowds to worship. Tears have been his food while people ask, \"Where is your God?\" He talks to himself: \"Why are you in despair, O my soul? Hope in God, for I shall again praise Him.\"",
     v: [
-      ["42:1", "As the deer pants for the water brooks", "Thirst for God."],
-      ["42:3", "My tears have been my food", "Honest sorrow."],
-      ["42:5", "Why are you in despair, O my soul?", "Preaching hope to oneself."],
-      ["42:8", "His song will be with me in the night", "God's love by day and night."],
+      ["42:1", "As the deer pants for the water brooks", "Like a deer desperate for water in a dry land, the psalmist longs for God Himself."],
+      ["42:3", "My tears have been my food", "He has cried day and night while others mock, Where is your God? The psalms give us words for honest grief."],
+      ["42:5", "Why are you in despair, O my soul?", "The psalmist talks back to his own sad heart: why so downcast? Hope in God, for I will yet praise Him. The refrain comes again in 42:11 and 43:5."],
+      ["42:8", "His song will be with me in the night", "By day the LORD sends His steadfast love, and at night His song stays with me, a prayer to the God of my life."],
     ],
     bg: [["The sons of Korah", "Psalms 42-49 and 84-88 are credited to the sons of Korah, a family of Levite temple singers. Their ancestor Korah rebelled against Moses (Numbers 16), but his descendants became worship leaders.", "good", ["craigie", "wilson"]]],
     refs: [["PSA.43", "Psalm 43", "The same refrain continues"], ["JHN.7", "John 7:37", "If anyone is thirsty, let him come to Me"], ["NUM.26", "Numbers 26:11", "The sons of Korah did not die"]],
@@ -600,10 +600,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   62: {
     intro: "\"My soul waits in silence for God only; from Him is my salvation. He only is my rock.\" People are a breath, and riches should not be trusted. \"Trust in Him at all times, O people; pour out your heart before Him.\" Power belongs to God, and so does lovingkindness.",
     v: [
-      ["62:1", "My soul waits in silence for God only", "Quiet trust."],
-      ["62:8", "Pour out your heart before Him", "Honest prayer."],
-      ["62:10", "If riches increase, do not set your heart upon them", "Wealth is not security."],
-      ["62:11-12", "Power belongs to God... and lovingkindness", "Strength and love together."],
+      ["62:1", "My soul waits in silence for God only", "The psalmist waits quietly for God alone. His rescue comes from God, not from his own efforts."],
+      ["62:8", "Pour out your heart before Him", "Trust Him at all times and tell Him everything. God is a safe place to pour out your heart."],
+      ["62:10", "If riches increase, do not set your heart upon them", "Do not trust in getting rich by force or theft, and even if riches grow honestly, do not set your heart on them."],
+      ["62:11-12", "Power belongs to God... and lovingkindness", "God has made two things clear: power belongs to Him, and so does steadfast love. He is both strong and kind."],
     ],
     refs: [["1PE.5", "1 Peter 5:7", "Cast your cares on Him"], ["1TI.6", "1 Timothy 6:17", "Hope not in riches"]],
   },
@@ -819,10 +819,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   84: {
     intro: "\"How lovely are Your dwelling places, O LORD of hosts!\" Even the sparrow has found a home near God's altars. \"How blessed are those who dwell in Your house.\" Pilgrims passing through the valley of Baca make it a spring. \"A day in Your courts is better than a thousand outside. I would rather stand at the threshold of the house of my God.\"",
     v: [
-      ["84:2", "My soul longed and even yearned", "Longing for worship."],
-      ["84:5", "In whose heart are the highways to Zion", "Pilgrims at heart."],
-      ["84:10", "A day in Your courts is better than a thousand", "The value of God's presence."],
-      ["84:11", "The LORD God is a sun and shield", "Light and protection."],
+      ["84:2", "My soul longed and even yearned", "The psalmist aches to be in the courts of the LORD. Even the sparrows have found a home near His altars (84:3)."],
+      ["84:5", "In whose heart are the highways to Zion", "Blessed are those whose strength is in God and whose hearts are set on the pilgrim roads to Jerusalem."],
+      ["84:10", "A day in Your courts is better than a thousand", "One day near God is worth more than a thousand anywhere else. Better to stand at the door of His house than live comfortably among the wicked."],
+      ["84:11", "The LORD God is a sun and shield", "The LORD is like the sun that gives light and a shield that protects. He does not hold back any good thing from those who walk uprightly."],
     ],
     refs: [["PSA.27", "Psalm 27:4", "One thing I have asked"], ["HEB.13", "Hebrews 13:14", "We seek the city to come"]],
   },
@@ -879,10 +879,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   90: {
     intro: "Book Four opens with the only psalm credited to Moses. \"Lord, You have been our dwelling place in all generations... from everlasting to everlasting, You are God.\" A thousand years are like yesterday to Him. Our lives are like grass, seventy or eighty years. \"Teach us to number our days, that we may present to You a heart of wisdom.\" \"Confirm for us the work of our hands.\"",
     v: [
-      ["90:1", "You have been our dwelling place", "God is home."],
-      ["90:4", "A thousand years in Your sight are like yesterday", "Peter echoes this (2 Peter 3:8)."],
-      ["90:12", "Teach us to number our days", "Living wisely because life is short."],
-      ["90:17", "Confirm the work of our hands", "Asking God to make our work last."],
+      ["90:1", "You have been our dwelling place", "The heading calls this a prayer of Moses, the oldest psalm by its title. Through every generation, God Himself has been His people's home."],
+      ["90:4", "A thousand years in Your sight are like yesterday", "To the eternal God, a thousand years are like a day that has just passed. Peter uses this when people ask why Jesus has not yet returned (2 Peter 3:8)."],
+      ["90:12", "Teach us to number our days", "Our lives are short, like grass that fades by evening (90:5-6). Teach us to count our days so we live them wisely."],
+      ["90:17", "Confirm the work of our hands", "Moses asks God's favor on His people and that He would make the work of their hands last."],
     ],
     refs: [["2PE.3", "2 Peter 3:8", "With the Lord one day is like a thousand years"], ["JAS.4", "James 4:14", "Life is a vapor"], ["DEU.33", "Deuteronomy 33:27", "The eternal God is a dwelling place"]],
   },
@@ -1148,11 +1148,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   118: {
     intro: "\"Give thanks to the LORD, for He is good; for His lovingkindness is everlasting.\" In distress the psalmist called, and God set him free. \"It is better to take refuge in the LORD than to trust in man.\" \"Open to me the gates of righteousness.\" \"The stone which the builders rejected has become the chief corner stone.\" \"This is the day which the LORD has made.\" \"Blessed is the one who comes in the name of the LORD.\"",
     v: [
-      ["118:6", "The LORD is for me; I will not fear", "Quoted in Hebrews 13:6."],
-      ["118:8", "Better to take refuge in the LORD than to trust in man", "Where to put trust."],
-      ["118:22", "The stone which the builders rejected", "Jesus applied this to Himself."],
-      ["118:24", "This is the day which the LORD has made", "The day of God's salvation."],
-      ["118:26", "Blessed is the one who comes in the name of the LORD", "The crowds shouted this on Palm Sunday."],
+      ["118:6", "The LORD is for me; I will not fear", "With the LORD on his side, the psalmist will not be afraid of what people can do. Hebrews 13:6 quotes this."],
+      ["118:8", "Better to take refuge in the LORD than to trust in man", "It is better to take refuge in the LORD than to trust in people, even powerful rulers (118:9)."],
+      ["118:22", "The stone which the builders rejected", "The stone the builders threw away became the cornerstone. Jesus applied this to Himself (Matthew 21:42), and so did Peter (Acts 4:11)."],
+      ["118:24", "This is the day which the LORD has made", "In this psalm, \"the day\" is the day God acted to save. Today many also say it as a joyful start to any day."],
+      ["118:26", "Blessed is the one who comes in the name of the LORD", "Pilgrims were welcomed to the temple with these words. The crowds shouted them as Jesus rode into Jerusalem (Matthew 21:9)."],
     ],
     w: [["הוֹשִׁיעָה נָּא", "hoshi'ah na", "H3467, H4994", "save now, please", "The cry in 118:25. It became the word Hosanna, shouted when Jesus entered Jerusalem.", ["halot", "allen"]]],
     refs: [["MAT.21", "Matthew 21:9, 42", "Hosanna and the cornerstone"], ["ACT.4", "Acts 4:11", "The stone rejected by you builders"], ["1PE.2", "1 Peter 2:7", "The precious cornerstone"]],
@@ -1160,11 +1160,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   119: {
     intro: "The longest chapter in the Bible, 176 verses: an alphabet poem in 22 sections of eight verses, one section for each Hebrew letter. Almost every verse speaks of God's word, using words like law, testimonies, precepts, statutes, commandments and judgments. \"How can a young man keep his way pure? By keeping it according to Your word.\" \"Your word is a lamp to my feet and a light to my path.\"",
     v: [
-      ["119:9", "How can a young man keep his way pure?", "God's word guides youth."],
-      ["119:11", "Your word I have treasured in my heart", "Memorizing Scripture."],
-      ["119:18", "Open my eyes, that I may behold wonderful things", "A prayer before reading the Bible."],
-      ["119:71", "It is good for me that I was afflicted", "Learning through hardship."],
-      ["119:105", "Your word is a lamp to my feet", "Light for the next step."],
+      ["119:9", "How can a young man keep his way pure?", "How can a young person stay on a clean path? By living according to God's word."],
+      ["119:11", "Your word I have treasured in my heart", "Storing God's word in the heart, by reading and learning it by heart, helps keep us from sin."],
+      ["119:18", "Open my eyes, that I may behold wonderful things", "Only God can open our eyes to the wonders in His word. Many use this verse as a prayer before reading the Bible."],
+      ["119:71", "It is good for me that I was afflicted", "Hard times taught the psalmist God's ways. Looking back, he can say the affliction was good for him."],
+      ["119:105", "Your word is a lamp to my feet", "In those days a small oil lamp lit only a few steps ahead. God's word gives enough light for the next step on the path."],
     ],
     bg: [["An alphabet of the word", "Each of the 22 sections begins every one of its eight lines with the same Hebrew letter: Aleph, Beth, Gimel and so on. Many Bibles print the letter names as section headings. The form suggests the psalm covers God's word \"from A to Z.\"", "strong", ["allen", "kidner"]]],
     w: [["תּוֹרָה", "torah", "H8451", "law, instruction", "More than rules: God's teaching and direction for life. The word appears 25 times in Psalm 119.", ["halot", "allen"]]],
@@ -1182,7 +1182,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   121: {
     intro: "\"I will lift up my eyes to the mountains; from where shall my help come? My help comes from the LORD, who made heaven and earth.\" He who keeps you will not slumber. \"The LORD is your keeper... The sun will not smite you by day, nor the moon by night. The LORD will guard your going out and your coming in from this time forth and forever.\"",
     v: [
-      ["121:1-2", "My help comes from the LORD", "Pilgrims climbing to Jerusalem looked at the hills, where robbers might hide. Their help comes from the LORD, who made heaven and earth."],
+      ["121:1-2", "My help comes from the LORD", "Pilgrims climbing to Jerusalem looked up at the hills. Their help does not come from the hills but from the LORD, who made heaven and earth."],
       ["121:4", "He who keeps Israel will neither slumber nor sleep", "God never dozes off on watch. Day and night, He keeps His people."],
       ["121:8", "Your going out and your coming in", "The LORD guards your leaving and returning, now and forever. Many families pray this over travelers."],
     ],
