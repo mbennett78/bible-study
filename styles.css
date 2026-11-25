@@ -7,7 +7,7 @@
   --bg: #fbfaf6;            /* study sheet */
   --surface: #ffffff;       /* cards */
   --text: #26302a;
-  --muted: #6f7a71;
+  --muted: #5d665f;
   --line: #e3e6df;
   --accent: #46604f;
   --accent-soft: #e5ede6;
@@ -23,11 +23,11 @@
 }
 :root[data-style="feminine"] {
   --page: #8e6a6f; --page-deep: #7a585d; --on-page: #fbf4f2; --on-page-muted: #ead6d5;
-  --accent: #8e5f66; --accent-soft: #f5e8e8; --line: #eee2e0; --text: #33282a; --muted: #8a7a7b; --warm: #c46f7c;
+  --accent: #8e5f66; --accent-soft: #f5e8e8; --line: #eee2e0; --text: #33282a; --muted: #6e6262; --warm: #c46f7c;
 }
 :root[data-style="masculine"] {
   --page: #3b2b20; --page-deep: #2e2119; --on-page: #f7f1e7; --on-page-muted: #d6c3a5;
-  --bg: #fffdf9; --accent: #5a3e2b; --accent-soft: #efe3d0; --line: #e7dccb; --text: #2a1f18; --muted: #7d6b5c; --warm: #b8875a; --gold: #c9a978;
+  --bg: #fffdf9; --accent: #5a3e2b; --accent-soft: #efe3d0; --line: #e7dccb; --text: #2a1f18; --muted: #6d5d50; --warm: #b8875a; --gold: #c9a978;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -979,7 +979,7 @@ html:has(#setup[open]) body > :not(dialog) { visibility: hidden; }
 /* ---------- Classic look: dark brown-gray desk, white pages, olive and cross, nothing moves ---------- */
 :root[data-style="classic"] {
   --page: #3a3430; --page-deep: #2c2724; --on-page: #f3f1ed; --on-page-muted: #c2bab1;
-  --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #6f6861; --line: #e3dfda;
+  --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #67615a; --line: #e3dfda;
   --accent: #4a413a; --accent-soft: #efece8; --warm: #8c6e54; --gold: #a8957a; --verse: #9b948d;
   --sky-top: #e9e7e3; --sky-low: #fbfaf8; --far-hill: #c9c3bb;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -1004,7 +1004,7 @@ html:has(#setup[open]) body > :not(dialog) { visibility: hidden; }
 /* Classic 2: navy, blues and warm browns, otherwise just like Classic 1. */
 :root[data-style="classic2"] {
   --page: #1f2b42; --page-deep: #172034; --on-page: #eef2f8; --on-page-muted: #aeb9cc;
-  --bg: #ffffff; --surface: #ffffff; --text: #1c2433; --muted: #5f6a7c; --line: #dde3ec;
+  --bg: #ffffff; --surface: #ffffff; --text: #1c2433; --muted: #596475; --line: #dde3ec;
   --accent: #2c3e5c; --accent-soft: #e8edf5; --warm: #7a5a40; --gold: #a88a64; --verse: #8a95a8;
   --sky-top: #dfe7f1; --sky-low: #f6f8fb; --far-hill: #9fb0c6;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -1029,8 +1029,8 @@ html:has(#setup[open]) body > :not(dialog) { visibility: hidden; }
 :root[data-still] .notes-card { border-top: 3px solid var(--accent); }
 :root[data-still] .notes-tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); }
 @media (prefers-color-scheme: dark) {
-  :root[data-style="classic2"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #1c2433; --muted: #5f6a7c; --line: #dde3ec; --accent: #2c3e5c; --accent-soft: #e8edf5; --page: #1a2438; --page-deep: #131b2b; color-scheme: light; }
-  :root[data-style="classic"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #6f6861; --line: #e3dfda; --accent: #4a413a; --accent-soft: #efece8; --page: #2c2724; --page-deep: #221e1b; color-scheme: light; }
+  :root[data-style="classic2"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #1c2433; --muted: #596475; --line: #dde3ec; --accent: #2c3e5c; --accent-soft: #e8edf5; --page: #1a2438; --page-deep: #131b2b; color-scheme: light; }
+  :root[data-style="classic"]:not([data-theme="light"]) { --bg: #ffffff; --surface: #ffffff; --text: #24201d; --muted: #67615a; --line: #e3dfda; --accent: #4a413a; --accent-soft: #efece8; --page: #2c2724; --page-deep: #221e1b; color-scheme: light; }
 }
 .pc-featured { grid-column: 1 / -1; border: 2px solid var(--accent); }
 .pc-featured h3 { font-size: 1.3rem; }
@@ -1122,7 +1122,7 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 :root[data-style="nativity"] {
   /* navy night, desert beige, stable brown, palm green, star gold */
   --page: #1c2742; --page-deep: #141c31; --on-page: #f6f1e4; --on-page-muted: #c7c2b2;
-  --bg: #fffdf8; --surface: #ffffff; --text: #1f2230; --muted: #6e6a60; --line: #e8e1d2;
+  --bg: #fffdf8; --surface: #ffffff; --text: #1f2230; --muted: #666359; --line: #e8e1d2;
   --accent: #2b3a5c; --accent-soft: #f3ecdc; --warm: #8a5a3a; --gold: #d8a94e; --verse: #a39a86;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
@@ -1130,7 +1130,7 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 :root[data-style="easter"] {
   /* lavender dawn, cream, sage green, soft gold */
   --page: #5e5578; --page-deep: #4b4462; --on-page: #faf6ee; --on-page-muted: #d8d0e4;
-  --bg: #fffdf9; --surface: #ffffff; --text: #2b2733; --muted: #77707f; --line: #ebe5ee;
+  --bg: #fffdf9; --surface: #ffffff; --text: #2b2733; --muted: #6a6471; --line: #ebe5ee;
   --accent: #5e5578; --accent-soft: #f1ecf4; --warm: #c98e6a; --gold: #c9a45a; --verse: #a59cae;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
@@ -1138,7 +1138,7 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 :root[data-style="fall"] {
   /* rust, harvest gold, bark brown, cream, deep green */
   --page: #5a3220; --page-deep: #472718; --on-page: #fbf4e6; --on-page-muted: #e1c9a8;
-  --bg: #fffcf5; --surface: #ffffff; --text: #2e2218; --muted: #7c6a58; --line: #ecdfcb;
+  --bg: #fffcf5; --surface: #ffffff; --text: #2e2218; --muted: #705f4f; --line: #ecdfcb;
   --accent: #8a4a26; --accent-soft: #f6ead6; --warm: #b5652e; --gold: #d9a441; --verse: #ab9a85;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
@@ -1146,16 +1146,16 @@ html.auth-wait body > *:not(#gate) { visibility: hidden !important; }
 :root[data-style="christmas"] {
   /* evergreen, deep red, gold, cream */
   --page: #1f3a2e; --page-deep: #172d23; --on-page: #fbf6ea; --on-page-muted: #c9d3c4;
-  --bg: #fffdf7; --surface: #ffffff; --text: #22261f; --muted: #6d7066; --line: #e7e2d4;
+  --bg: #fffdf7; --surface: #ffffff; --text: #22261f; --muted: #61645b; --line: #e7e2d4;
   --accent: #8c2a2a; --accent-soft: #f6ece2; --warm: #a8443a; --gold: #d4b062; --verse: #a29c8c;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root[data-style="nativity"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #1f2230; --muted: #6e6a60; --line: #e8e1d2; --accent: #2b3a5c; --accent-soft: #f3ecdc; --page: #141c31; --page-deep: #0f1526; color-scheme: light; }
-  :root[data-style="easter"]:not([data-theme="light"]) { --bg: #fffdf9; --surface: #ffffff; --text: #2b2733; --muted: #77707f; --line: #ebe5ee; --accent: #5e5578; --accent-soft: #f1ecf4; --page: #3f3953; --page-deep: #322d43; color-scheme: light; }
-  :root[data-style="fall"]:not([data-theme="light"]) { --bg: #fffcf5; --surface: #ffffff; --text: #2e2218; --muted: #7c6a58; --line: #ecdfcb; --accent: #8a4a26; --accent-soft: #f6ead6; --page: #3f2417; --page-deep: #321c11; color-scheme: light; }
-  :root[data-style="christmas"]:not([data-theme="light"]) { --bg: #fffdf7; --surface: #ffffff; --text: #22261f; --muted: #6d7066; --line: #e7e2d4; --accent: #8c2a2a; --accent-soft: #f6ece2; --page: #172d23; --page-deep: #11231b; color-scheme: light; }
+  :root[data-style="nativity"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #1f2230; --muted: #666359; --line: #e8e1d2; --accent: #2b3a5c; --accent-soft: #f3ecdc; --page: #141c31; --page-deep: #0f1526; color-scheme: light; }
+  :root[data-style="easter"]:not([data-theme="light"]) { --bg: #fffdf9; --surface: #ffffff; --text: #2b2733; --muted: #6a6471; --line: #ebe5ee; --accent: #5e5578; --accent-soft: #f1ecf4; --page: #3f3953; --page-deep: #322d43; color-scheme: light; }
+  :root[data-style="fall"]:not([data-theme="light"]) { --bg: #fffcf5; --surface: #ffffff; --text: #2e2218; --muted: #705f4f; --line: #ecdfcb; --accent: #8a4a26; --accent-soft: #f6ead6; --page: #3f2417; --page-deep: #321c11; color-scheme: light; }
+  :root[data-style="christmas"]:not([data-theme="light"]) { --bg: #fffdf7; --surface: #ffffff; --text: #22261f; --muted: #61645b; --line: #e7e2d4; --accent: #8c2a2a; --accent-soft: #f6ece2; --page: #172d23; --page-deep: #11231b; color-scheme: light; }
 }
 :root[data-style="nativity"] .reader, :root[data-style="christmas"] .reader { font-family: var(--serif); }
 :root[data-style="nativity"] .notes-card, :root[data-style="christmas"] .notes-card { border-top: 3px solid var(--gold); }
@@ -2437,7 +2437,7 @@ html { background: var(--page); }
 /* ---------- Classic 3: David Roberts' Holy Land paintings, in stone, sand and sky ---------- */
 :root[data-style="classic3"] {
   --page: #4a3b2c; --page-deep: #3a2e22; --on-page: #f5ecdc; --on-page-muted: #cdbfa6;
-  --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6e6253; --line: #e6dccb;
+  --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6a5e50; --line: #e6dccb;
   --accent: #6b5238; --accent-soft: #f3ebdd; --warm: #a0784c; --gold: #c2a06a; --verse: #9a8b76;
   --sky-top: #dfe5ea; --sky-low: #f6f1e8; --far-hill: #b7a88f;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -2449,7 +2449,7 @@ html { background: var(--page); }
 :root[data-style="classic3"] .pc-featured, :root[data-style="classic3"] .notes-card { border-color: var(--gold); }
 .painting-scene image, .painting-strip image { filter: saturate(1.05) contrast(1.02); }
 @media (prefers-color-scheme: dark) {
-  :root[data-style="classic3"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6e6253; --line: #e6dccb; --accent: #6b5238; --accent-soft: #f3ebdd; --page: #3a2e22; --page-deep: #2e241a; color-scheme: light; }
+  :root[data-style="classic3"]:not([data-theme="light"]) { --bg: #fffdf8; --surface: #ffffff; --text: #2b241c; --muted: #6a5e50; --line: #e6dccb; --accent: #6b5238; --accent-soft: #f3ebdd; --page: #3a2e22; --page-deep: #2e241a; color-scheme: light; }
 }
 
 /* ---------- Full screen while reading on a phone ---------- */
