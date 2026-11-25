@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:56 AM Central
-**Current version:** v222 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 11:05 AM Central
+**Current version:** v223 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 11:05 AM CT: Melissa's update schedule is now a standing rule: frequent updates until Christmas, every Saturday through February, then monthly on the last Saturday; glitch fixes right away; announcements at most monthly. Games get a bigger celebration sound and a sound switch at the top (with trivia polish, Fri Nov 27).
 - Wed Nov 25, 11:35 AM CT: Pinch to zoom now works everywhere in the app (it was blocked on some Android phones), and boxes you type in no longer make the phone jump in on their own. New from Melissa: names and personalities for the Bible Spin characters, a "Saved ✓" feel in Settings, and changing your email, all added to the plan.
 - Wed Nov 25, 11:25 AM CT: Handwriting and drawing are done, two days early. Every note and Journal entry has "✏️ Draw or write" (a drawing placed right where your cursor is in the typed words) and "📄 Handwriting page" (a full lined page). Pen in 5 colors and 3 sizes, a highlighter, an eraser, undo, and plain, lined or grid paper. With Apple Pencil the line follows how hard you press, and a hand resting on the screen does not draw. Drawings are kept as strokes, so they stay small to back up and print sharp, in their place in the words; sent to Google Docs they come along as pictures.
 - Wed Nov 25, 10:55 AM CT: Seasonal round 5, Psalm 23: no shepherd in the picture (you are the shepherd, rod and staff close by); the sheep graze on the green pastures in the light, one at the edge of the shade; the dark valley has a little stream between stones with a tinge of desert dirt.
@@ -146,7 +147,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Handwriting and drawing in notes and the Journal, both ways: a sketch box anywhere inside a typed note, or a full handwriting page; write or draw with Apple Pencil or a finger; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Done Wed Nov 25 (2 days early) | Fri Nov 27 |
 | Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
-| Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
+| Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down; games get a bigger celebration sound than the Quick check, and a sound on/off switch at the top of every game screen | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
 | Bible Spin characters: give each of the 7 category characters its own name and playful personality (an original game-show cast, not copied from any game), with lines when they cheer or comfort (Melissa asked Nov 25) | Not started | Fri Nov 27 |
 | Settings feel finished: every change is still kept the moment it is made (nothing lost), plus a clear "Saved ✓" after each change and a Done button that closes the section with "All changes saved" (Melissa asked Nov 25) | Not started | Sat Nov 28 |
 | Change my email in Settings: confirmed from both inboxes, and the family list follows the new address (Melissa asked Nov 25; password and name changes already work) | Not started | Sat Nov 28 |
@@ -168,7 +169,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Study sources audit: every source a trusted academic work, withdrawn titles removed, facts checked | Done (Tue Nov 24) | Sun Nov 29 |
 | Maps upgrade in every look and Bible version (terrain, smooth coasts, clearer labels), with before and after | Done (Tue Nov 24) | Mon Nov 30 |
 | Kids' storybook style across much of the kids' Bible, with Holy Land settings and true feelings | Done (Tue Nov 24): all 51 stories | Wed Dec 2 (more stories added monthly) |
-| Saturday-night weekly update schedule set up | Not started | Thu Dec 3 |
+| Update schedule set up: frequent updates until Christmas, then every Saturday night through February, then the last Saturday night of each month; glitch fixes ship right away | Not started | Thu Dec 3 |
 | Family-level count of which looks are in use (no individual tracking), for the monthly look reviews | Done (Tue Nov 24); shows once the family-admin function is redeployed | Thu Dec 3 |
 | Settings and menu declutter: groups fold away, long lists become short categories | Done (Tue Nov 24) | Thu Dec 3 |
 | Release | Not started | Fri Dec 4 |
@@ -177,7 +178,8 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 | Item | Status | When |
 |---|---|---|
-| Weekly updates on Saturday nights, starting with the remaining deep study notes | Not started | Every Saturday from Dec 5 |
+| Weekly updates on Saturday nights through February, starting with the remaining deep study notes; then one update on the last Saturday of each month (Buddy, graphics, ease of use and navigation, media, fact and source checks, study notes and summaries, the Pencil, new features, current design and technology, and a full check that everything still works) | Not started | Every Saturday from Dec 5; monthly from March |
+| "What's new" shows at most once a month from March (glitch fixes never announce themselves), with a choice to see the list | Not started | Sat Feb 27 |
 | Switch to monthly updates once the deep notes are finished: graphics using newer Claude abilities, navigation, interface, printing, the kids' Bible, headings, looks | Not started | After the deep notes |
 | Looks rotation: keep favorites, retire unused looks from the menu, add new or seasonal ones. Never change the look someone is using. | Not started | Monthly |
 | Buddy keeps learning new tricks, emojis, moods and props; never grows bigger on screen; can always be moved, quieted or turned off | Not started | Monthly |
@@ -238,6 +240,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 - STATUS.md for Project HQ, updated with every publish. (Nov 24)
 
 ## Standing rules
+- Update schedule (Melissa, Nov 25): frequent updates until Christmas; weekly on Saturday nights through February; then the last Saturday of each month. Glitch fixes always ship right away. Announce updates at most once a month, and let people choose to see what's new. Each monthly update covers Buddy, graphics, usability and navigation, media, fact and source checks, study notes and summaries, the Pencil, new features, and current technology and design, plus a check that everything still works.
 
 - Kids' storybook pictures: fun, modern and playful, with bright colors, bold shapes and expressive faces, refreshed in updates. Small tap surprises are welcome. Gentle motion only (clouds, birds, grass, water, light, blinking, a wave), nothing fast or busy. Keep files light with no video. Everything holds still when motion is turned down.
 - Protect what Melissa loves most (Nov 25): rich, accurate content and resources; the Bible handy in church and Bible class; taking and making notes for class, presenting or participating; organized studies to navigate the Bible; the daily scripture; print and share to Google Docs for notes and the Journal; changing the look; multiple translations; speech to text and read aloud; Buddy and its options; easy navigation. Only improve these, never downgrade or remove them (Melissa, Nov 25). The B-75 review and final fixes must not weaken any of these.
