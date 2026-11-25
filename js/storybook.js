@@ -268,6 +268,12 @@ const thicket = (x, y, s = 1) => g(x, y, s, `${[-20, -10, 0, 10, 20].map((a, i) 
 const torchJar = (x, y, s = 1) => g(x, y, s, `<path d="M-6 0 C -8 -8, -6 -14, -4 -16 L 4 -16 C 6 -14, 8 -8, 6 0 Z" fill="#b5793f" ${L2}/>`) + flame(x, y - 16 * s, .6 * s, x % 3);
 const quail = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#a8845a" ${L2}/><circle cx="8" cy="-5" r="4" fill="#a8845a" ${L2}/><path d="M11.6 -5 l 3 1 l -3 1" fill="#e1b04a"/><circle cx="9" cy="-6" r=".8" fill="${INK}"/>${[-4, 0, 4].map((a) => `<circle cx="${a}" cy="1" r=".9" fill="#f4efe4"/>`).join("")}<g class="sb-flap" style="transform-origin:0 -2px"><path d="M-4 -3 C -6 -12, 2 -16, 6 -12 C 2 -10, 0 -6, 0 -2 Z" fill="#c4a274" ${L2}/></g></g>`;
 
+const net = (x, y, s = 1) => g(x, y, s, `<path d="M-40 0 C -36 24, 36 24, 40 0 Z" fill="#e9dfc6" opacity=".85" ${L2}/>${Array.from({ length: 7 }, (_, i) => `<path d="M${-36 + i * 12} 0 L ${-30 + i * 10} 18" stroke="#cbbd9a" stroke-width="1"/>`).join("")}<path d="M-38 8 C -10 14, 10 14, 38 8" stroke="#cbbd9a" stroke-width="1" fill="none"/>${[[-26, 8], [-12, 12], [2, 8], [14, 14], [26, 8], [-4, 16], [-20, 15], [20, 4]].map(([a, b], i) => fishS(a, b, .8, i % 2 ? 1 : -1)).join("")}`);
+const jar = (x, y, s = 1, wine = false) => g(x, y, s, `<path d="M-10 0 C -14 -10, -14 -24, -8 -30 L -8 -34 L 8 -34 L 8 -30 C 14 -24, 14 -10, 10 0 Z" fill="#cfc3ad" ${L2}/><path d="M-6 -30 L 6 -30" stroke="#a89c86" stroke-width="1.4"/><ellipse cx="0" cy="-34" rx="8" ry="2.4" fill="${wine ? "#8a1f3a" : "#9fd0ec"}" ${L2}/>`);
+const fireHorse = (x, y, s = 1) => g(x, y, s, `<g class="sb-glow" style="animation-duration:1.4s"><path d="M-20 0 L -18 -14 C -20 -22, -10 -26, 4 -22 C 10 -30, 18 -34, 24 -30 L 28 -24 L 20 -22 L 16 -14 L 16 0 L 12 0 L 10 -10 L -10 -10 L -12 0 Z" fill="#ff8a3c" stroke="#e0602a" stroke-width="1.4"/><path d="M8 -26 C 4 -36, 12 -40, 14 -32 M 12 -30 C 10 -40, 20 -42, 18 -32 M -20 -16 C -30 -20, -30 -10, -24 -8" stroke="#ffd27a" stroke-width="3" fill="none" stroke-linecap="round"/></g>`);
+const chariot = (x, y, s = 1) => g(x, y, s, `<path d="M-14 -24 L 16 -24 L 12 0 L -14 0 Z" fill="#ff9a3c" stroke="#e0602a" stroke-width="1.4"/><circle cx="-2" cy="2" r="10" fill="none" stroke="#e0602a" stroke-width="3"/><circle cx="-2" cy="2" r="10" fill="none" stroke="#ffd27a" stroke-width="1.6"/>${[0, 45, 90, 135].map((r) => `<path d="M-12 2 L 8 2" stroke="#ffd27a" stroke-width="1.4" transform="rotate(${r} -2 2)"/>`).join("")}`) + flame(x - 6 * s, y - 24 * s, 1.2 * s, 0) + flame(x + 8 * s, y - 26 * s, 1 * s, .5);
+const gate = (x, y, s = 1) => g(x, y, s, `<rect x="-30" y="-60" width="26" height="60" rx="2" fill="#8a5d3b" ${L}/><rect x="4" y="-60" width="26" height="60" rx="2" fill="#8a5d3b" ${L}/>${[-50, -30, -10].map((b) => `<path d="M-30 ${b} L -4 ${b} M 4 ${b} L 30 ${b}" stroke="#5a3c28" stroke-width="2"/>`).join("")}<rect x="-34" y="-66" width="68" height="8" rx="2" fill="#6b4428" ${L2}/>`);
+
 /* ---------- The scenes ---------- */
 export const STORYBOOK = {
   ark: { caption: "Noah's ark", draw: (id) => `${sky(id, "#a9d8f0", "#f3f8ee")}${cloud(id, 70, 40, 1.1)}${cloud(id, 250, 30, .8)}${sunW(id, 316, 40, 17)}
@@ -547,6 +553,46 @@ export const STORYBOOK = {
     ${stick(id, `${[[40, 194, "#6aa06a"], [90, 196, "#c08a3e"], [270, 196, "#5b8fb9"], [320, 194, "#a63f35"]].map(([x, y, c], i) => `${g(x, y, .7, `${person({ robe: c, cloth: "#efe6d2", beard: "#5a3a24", sash: "#e1b04a", mood: "firm", arms: ["up", "up"] })}${shofar(-26, -66, 1, -1)}`)}`).join("")}
       ${g(180, 196, .82, `${person({ robe: "#8a6a48", mantle: "#a63f35", cloth: "#efe6d2", band: "#a63f35", beard: "#3a2a1f", sash: "#e1b04a", mood: "firm", arms: ["up", "up"] })}${shofar(24, -66, 1.1, 1)}`)}`)}
     ${[[30, 132], [64, 136], [114, 140], [244, 140], [296, 136], [346, 132]].map(([x, y]) => torchJar(x, y, 1)).join("")}` },
+  nets: { caption: "So many fish that the nets begin to break!", draw: (id) => `${sky(id, "#f6c9a0", "#fcefdc")}<circle cx="300" cy="70" r="26" fill="#ffd98a" opacity=".8" filter="url(#soft${id})"/>
+    ${wash(id, `<path d="M0 108 C 60 96, 130 98, 180 104 C 240 94, 310 96, 360 104 L 360 118 L 0 118 Z" fill="#a8946c"/><path d="M0 116 L 360 116 L 360 200 L 0 200 Z" fill="#5f9cc4"/>`)}
+    <g class="sb-bob">${stick(id, g(170, 150, .86, `${g(-44, -16, .76, person({ robe: "#5b8fb9", hair: "#d8d0c0", beard: "#d8d0c0", sash: "#c08a3e", kneel: true, mood: "joy", arms: ["pray", "pray"] }))}${g(40, -16, .72, person({ robe: "#6aa06a", hair: "#3a2a1f", beard: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["up", "up"] }))}${boat()}${g(2, -16, .84, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "joy", arms: ["down", "out"] }))}`))}</g>
+    ${stick(id, net(268, 164, 1.6))}
+    ${wash(id, `<g class="sb-wave"><path d="M-40 180 ${Array.from({ length: 12 }, () => "c 10 -6, 24 -6, 34 0").join(" ")} L 400 200 L -40 200 Z" fill="#4f8cb8" opacity=".92"/></g>`)}
+    <g class="sb-fly">${g(60, 50, .5, dove(1, false))}</g>` },
+  lazarus: { caption: "Jesus calls, “Lazarus, come out!”", draw: (id) => `${sky(id, "#bfe0ef", "#f8f0dc")}${sunW(id, 330, 30, 12)}
+    ${hills(id, "#cdb67c", "#b9a46c")}${oliveTree(30, 160, .8)}
+    ${stick(id, `${g(250, 180, 1, tomb())}${g(318, 180, .8, stone())}`)}
+    ${stick(id, g(250, 178, .62, `${person({ robe: "#f8f5ee", hair: "#5a3a24", beard: "#5a3a24", sash: "#e9e2d0", mood: "joy", arms: ["down", "down"] })}${[-56, -44, -32, -20, -8].map((b) => `<path d="M-18 ${b} L 18 ${b + 4}" stroke="#d8cfbc" stroke-width="1.6"/>`).join("")}`))}
+    ${stick(id, `${g(120, 192, .86, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "firm", arms: ["down", "out"] }))}${g(70, 194, .7, person({ robe: "#7f6cc8", veil: "#efe6d2", sash: "#e1b04a", mood: "joy", arms: ["up", "up"] }))}${g(166, 196, .66, person({ robe: "#c08a3e", veil: "#a63f35", sash: "#efe6d2", mood: "joy", arms: ["pray", "pray"] }))}`)}
+    ${anemone(200, 198)}${rocks(340, 196, .7)}` },
+  cana: { caption: "Jesus turns water into wine at a wedding in Cana", draw: (id) => `${sky(id, "#f3d9a8", "#fbefd8")}
+    ${wash(id, `<rect x="0" y="0" width="360" height="200" fill="#e9d6b0"/><path d="M0 160 L 360 160 L 360 200 L 0 200 Z" fill="#c9ae80"/>`)}
+    <path d="M0 22 C 40 40, 80 40, 120 22 C 160 40, 200 40, 240 22 C 280 40, 320 40, 360 22" stroke="#6f9a4a" stroke-width="4" fill="none"/>${[30, 90, 150, 210, 270, 330].map((x, i) => `<circle cx="${x}" cy="35" r="4" fill="${["#f08ab0", "#f6cf55", "#ffffff"][i % 3]}" ${L2}/>`).join("")}
+    ${[90, 270].map((x) => `<g transform="translate(${x} 96)"><path d="M-26 30 L -26 -6 C -26 -26, 26 -26, 26 -6 L 26 30 Z" fill="#9fd0ec" ${L}/><path d="M0 -24 L 0 30 M -26 6 L 26 6" stroke="#7a5c40" stroke-width="3"/></g>`).join("")}${oilLamp(170, 90, 1.2)}
+    ${stick(id, table(180, 150, 300))}${loaf(140, 138, .9)}${loaf(220, 138, .9)}
+    ${stick(id, `${[30, 56, 82].map((x, i) => jar(x, 194, 1.1, i < 2)).join("")}${jar(108, 194, 1.1, true)}`)}
+    ${stick(id, `${g(150, 192, .7, person({ robe: "#c08a3e", cloth: "#efe6d2", sash: "#5b8fb9", mood: "joy", arms: ["out", "out"] }))}${cup(166, 160, 1)}
+      ${g(206, 194, .84, person({ robe: "#f6f3ec", mantle: "#b5473a", hair: "#6b4528", longHair: true, beard: "#6b4528", sash: "#d9a441", mood: "joy", arms: ["out", "down"] }))}${g(250, 196, .7, person({ robe: "#dbe8f5", mantle: "#4f7fc0", veil: "#4f7fc0", sash: "#f2eee4", mood: "joy", arms: ["pray", "pray"] }))}
+      ${g(298, 194, .7, person({ robe: "#5b7fa6", mantle: "#e1b04a", cloth: "#efe6d2", beard: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["down", "out"] }))}${g(330, 196, .66, `${person({ robe: "#fbf8f0", veil: "#fbf8f0", sash: "#f6cf55", mood: "joy", arms: ["out", "down"] })}${crown(0, -96, .8)}`)}`)}` },
+  samson: { caption: "God makes Samson strong", draw: (id) => `${sky(id, "#1e2b52", "#c98a5a")}${smallStars([[30, 20, 2.4], [90, 40, 1.8], [320, 24, 2.2], [260, 50, 1.6]])}
+    ${wash(id, `<path d="M0 150 C 60 120, 120 110, 200 120 C 260 106, 320 110, 360 118 L 360 200 L 0 200 Z" fill="#b39a72"/><path d="M0 180 C 90 172, 270 172, 360 180 L 360 200 L 0 200 Z" fill="#9c8360"/>`)}
+    ${wash(id, `<path d="M0 150 L 70 150 L 70 110 L 0 110 Z M 0 110 L 0 100 L 12 100 L 12 110 M 30 110 L 30 100 L 42 100 L 42 110" fill="#c9b48e"/>`)}
+    ${stick(id, g(200, 194, .9, `${person({ robe: "#c08a3e", hair: "#3a2a1f", longHair: true, beard: "#3a2a1f", sash: "#a63f35", mood: "firm", arms: ["up", "up"] })}${g(0, -96, .9, gate(0, 0, 1))}`))}
+    ${scrub(320, 198, .8)}${rocks(100, 196, .8)}` },
+  elisha: { caption: "A chariot of fire takes Elijah up to heaven", draw: (id) => `${sky(id, "#8fa3b8", "#f4e6c8")}<g class="sb-spin" style="transform-origin:220px 60px"><path d="M220 60 m -40 0 a 40 26 0 1 0 80 0 a 40 26 0 1 0 -80 0" stroke="#fff" stroke-width="2" fill="none" opacity=".5" stroke-dasharray="14 10"/></g>
+    ${hills(id, "#cdb67c", "#b9a46c")}${wash(id, `<path d="M0 170 C 90 164, 270 164, 360 170 L 360 182 C 270 178, 90 178, 0 184 Z" fill="#7fb6d6"/>`)}
+    ${fireHorse(170, 70, 1.1)}${fireHorse(196, 64, 1)}${chariot(240, 66, 1.2)}${stick(id, g(244, 50, .4, person({ robe: "#8a6a48", mantle: "#c99a62", hair: "#5a3a24", beard: "#f4f1ea", sash: "#5a3a24", mood: "joy", lookUp: true, arms: ["up", "up"] })))}
+    <g class="sb-fly">${g(230, 110, 1, `<path d="M-14 -6 C -6 -12, 10 -12, 16 -4 L 12 8 C 4 4, -6 4, -12 8 Z" fill="#c99a62" ${L2}/>`)}</g>
+    ${stick(id, g(120, 194, .84, person({ robe: "#6aa06a", hair: "#5a3a24", beard: "#5a3a24", sash: "#e1b04a", mood: "scared", lookUp: true, arms: ["up", "out"] })))}
+    ${reeds(30, 178, .9)}${reeds(340, 178, .8)}${rocks(300, 196, .8)}` },
+  naaman: { caption: "Naaman dips seven times in the Jordan and is healed", draw: (id) => `${sky(id, "#bfe3f5", "#f6f2e2")}${sunW(id, 320, 30, 12)}${cloud(id, 80, 28, .8)}
+    ${hills(id, "#cdb67c", "#b9a46c")}${datePalm(40, 136, .6)}
+    ${wash(id, `<path d="M0 150 C 80 142, 280 142, 360 150 L 360 200 L 0 200 Z" fill="#6fa9c9"/>`)}
+    ${stick(id, g(180, 186, .9, person({ robe: "#efe6d2", hair: "#3a2a1f", beard: "#3a2a1f", sash: "#c79a3e", mood: "joy", arms: ["up", "up"] })))}
+    ${Array.from({ length: 7 }, (_, i) => `<circle class="sb-bubble" style="--sdl:${-i * .5}s" cx="${226 + i * 11}" cy="${150 - (i % 2) * 6}" r="3.6" fill="#fff" stroke="#5f9cc4" stroke-width="1"/><text x="${226 + i * 11}" y="${153 - (i % 2) * 6}" text-anchor="middle" font-size="5" font-family="Georgia, serif" fill="#3f6f80">${i + 1}</text>`).join("")}
+    ${wash(id, `<g class="sb-wave"><path d="M-40 172 ${Array.from({ length: 12 }, () => "c 10 -6, 24 -6, 34 0").join(" ")} L 400 200 L -40 200 Z" fill="#5f9cc4" opacity=".92"/></g>`)}
+    ${stick(id, `${g(296, 150, .5, person({ robe: "#a63f35", cloth: "#efe6d2", beard: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["up", "down"] }))}${g(326, 150, .44, person({ robe: "#5b8fb9", hair: "#3a2a1f", sash: "#e1b04a", mood: "joy", arms: ["pray", "pray"] }))}`)}
+    ${reeds(24, 176, 1)}${reeds(60, 180, .8)}` },
   lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
     ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
       ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}
