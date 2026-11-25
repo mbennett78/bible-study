@@ -84,6 +84,7 @@ try {
   await page.click("#homeGames"); await page.clock.runFor(300);
   await tap('[data-mode="family"]'); await page.clock.runFor(200);
   await tap("[data-add]"); await page.fill('[data-name="1"]', "Grandpa"); await page.clock.runFor(100);
+  check("family: the players' names can be read (dark on white)", await page.$eval('[data-name="1"]', (i) => { const s = getComputedStyle(i); return s.webkitTextFillColor !== s.backgroundColor && s.color !== s.backgroundColor; }));
   await tap("[data-go]"); await page.clock.runFor(300);
   check("family: pass the device to the first player", /Pass the device to/.test(await text(".q-pass")) && /Mel/.test(await text(".q-pass h2")));
   await tap("[data-ready]"); await page.clock.runFor(300);

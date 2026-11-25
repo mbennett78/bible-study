@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:26 AM Central
-**Current version:** v215 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:34 AM Central
+**Current version:** v216 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:50 AM: Seasonal round 3 from Melissa: New Year is back to the original; Learning has no person, just a half-written scroll with the pen and ink set down; Psalm 23 has green pastures on the sunlit hills fading into a deep navy valley. Games play-test: in family mode the players' names were white on white and couldn't be read (fixed, with a test), long "Jewel question" notes now wrap neatly, and the wheel fits short phones with the turn label showing.
 - Wed Nov 25, 10:35 AM: Seasonal backgrounds round 2, from Melissa's notes: New Year now shows dawn over Jerusalem lit by the temple's golden lampstands and torches (there were no fireworks in Bible times); February is prettier, with almond trees in blossom and red anemones; April has three crosses with the middle one larger and shining; May mixes olive, fig, cypress, almond and pomegranate; the Sea of Galilee town climbs the hill like the old Tiberias painting; Learning shows a scribe writing a scroll, with birds past the window; Psalm 23 has the Good Shepherd leading the flock and more detail; Advent is richer, with the ox, donkey and sheep, and in Lively pictures the star twinkles, the candles flicker and the baby Jesus softly glows (all still when motion is turned down). Handwriting and drawing inside typed notes is approved and planned for Fri Nov 27.
 - Wed Nov 25, 10:45 AM: Play-test of Bible Spin and the Quick check on a small phone and an iPad, in the kids' and Classic looks. Fixed: on short phones (iPhone SE, mini) the fourth answer and the helps were below the edge, and now everything fits. The Quick check now marks answers plainly in every look (green ✓ and red ✗), says the right answer in words (most explanations were only a verse reference), scrolls the Next button into view, starts on the question instead of the Close button, and ends with a "To read again" list of missed questions, each with a tap to read the verse. A solo game with no jewels now ends with "Good try! Every game you learn more." instead of "You won 0 of 7 jewels." All game tests pass.
 - Wed Nov 25, 10:15 AM: The opt-in "Seasonal changes" look is built, two days early. 13 warm, glowing painted backgrounds follow the year (New Year's dawn, winter sunrise, angels, March rain and rainbow, Easter, April gardens, May flowers, June Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, harvest and Advent), with Easter moving each year from Palm Sunday through the Sunday after. The header color matches each painting, and the words always sit on plain cream panels, so the readability check passes in light and dark. Nobody is ever switched into it, and anyone in it isn't asked to switch to a holiday look. The preview of all 13 is sent to Melissa (project folder: bible-study/seasonal-preview/). Release-plan dates moved up as Melissa asked.

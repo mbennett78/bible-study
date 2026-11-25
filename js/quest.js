@@ -242,7 +242,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     if (!names.length) names = [me];
     const draw = () => {
       paint(`<div class="q-setup"><h2>Who's playing?</h2><p class="q-tag">Two to four players. Pass the device when it's someone else's turn.</p>
-        <ol class="q-names">${names.map((n, i) => `<li><input data-name="${i}" value="${esc(n)}" maxlength="16" aria-label="Player ${i + 1}">${names.length > 1 ? `<button class="q-link" data-drop="${i}" aria-label="Take ${esc(n || "this player")} out">✕</button>` : ""}</li>`).join("")}</ol>
+        <ol class="q-names">${names.map((n, i) => `<li><input data-name="${i}" value="${esc(n)}" maxlength="16" placeholder="Player ${i + 1}" aria-label="Player ${i + 1}">${names.length > 1 ? `<button class="q-link" data-drop="${i}" aria-label="Take ${esc(n || "this player")} out">✕</button>` : ""}</li>`).join("")}</ol>
         ${names.length < 4 ? `<button class="q-btn ghost" data-add>+ Add a player</button>` : ""}
         <button class="q-btn" data-go ${names.filter((n) => n.trim()).length < 2 ? "disabled" : ""}>Start the game</button>
         <button class="q-link" data-back>Back</button></div>`);

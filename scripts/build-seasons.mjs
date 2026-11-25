@@ -182,7 +182,6 @@ function candle(x, y, h, color, defs, s = 1) {
 function boat(x, y, s, sail = "#efe2c8") {
   return `<path d="M${f(x - 70 * s)} ${f(y - 14 * s)} Q ${f(x)} ${f(y + 18 * s)}, ${f(x + 74 * s)} ${f(y - 16 * s)} L ${f(x + 60 * s)} ${f(y - 2 * s)} Q ${f(x)} ${f(y + 14 * s)}, ${f(x - 58 * s)} ${f(y)} Z" fill="#5a3b26"/><path d="M${f(x)} ${f(y - 10 * s)} L ${f(x)} ${f(y - 110 * s)}" stroke="#4a3020" stroke-width="${f(4 * s)}"/><path d="M${f(x + 3 * s)} ${f(y - 104 * s)} Q ${f(x + 54 * s)} ${f(y - 64 * s)}, ${f(x + 4 * s)} ${f(y - 20 * s)} Z" fill="${sail}"/>`;
 }
-// eslint-disable-next-line no-unused-vars -- kept for later scenes
 function burst(cx, cy, r, colors, defs, n = 22) {
   let g = glow(cx, cy, r * 1.3, colors[0], .55, defs);
   for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2 + rr(-.08, .08), L = r * rr(.6, 1); const ex = cx + Math.cos(a) * L, ey = cy + Math.sin(a) * L + L * .08; g += `<path d="M${f(cx + Math.cos(a) * r * .12)} ${f(cy + Math.sin(a) * r * .12)} Q ${f(cx + Math.cos(a) * L * .6)} ${f(cy + Math.sin(a) * L * .6)}, ${f(ex)} ${f(ey)}" stroke="${pick(colors)}" stroke-width="${f(rr(2, 4))}" stroke-linecap="round" fill="none" opacity=".85"/><circle cx="${f(ex)}" cy="${f(ey)}" r="${f(rr(3, 6))}" fill="${pick(colors)}"/>`; }
@@ -205,6 +204,7 @@ function rainbow(cx, cy, r, op) {
 }
 
 // The great golden lampstands of the temple courts (lit at the Feast of Tabernacles).
+// eslint-disable-next-line no-unused-vars -- kept in case the New Year scene changes again
 function lampstand(x, base, h, defs) {
   const top = base - h, arm = h * .28;
   let g = `<rect x="${f(x - 4)}" y="${f(top)}" width="8" height="${f(h)}" fill="#b8862e"/><rect x="${f(x - arm)}" y="${f(top + 6)}" width="${f(arm * 2)}" height="6" fill="#c8963a"/><path d="M${f(x - 16)} ${base} L ${f(x + 16)} ${base} L ${f(x + 6)} ${f(base - 14)} L ${f(x - 6)} ${f(base - 14)} Z" fill="#a8782a"/>`;
@@ -225,25 +225,19 @@ function donkey(x, y, s, dir = 1) {
 
 /* ---------- the 13 scenes ---------- */
 const SCENES = {
-  // Dec 31 to Jan 6: a fresh dawn over Jerusalem, lit by the temple's great golden lampstands and torches.
-  // (No fireworks in Bible times. At the Feast of Tabernacles four huge golden lampstands lit the temple courts
-  // and people danced with torches all night; here that festival light meets the new year's first dawn.)
+  // Dec 31 to Jan 6: fireworks of light over a fresh dawn, and a hill town waking up.
   "new-year"(d) {
-    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#141e44"], [.36, "#4a3f72"], [.58, "#e0907a"], [.7, "#ffd490"]])}"/>
-      ${stars(170, 380)}${star(1240, 150, 4, d, "#fffbe8")}${glow(820, 560, 760, "#ffc878", .9, d)}${glow(820, 570, 200, "#fff4d4", 1, d)}
-      ${Array.from({ length: 22 }, (_, i) => { const a = Math.PI + (i + .5) * Math.PI / 22; return `<path d="M820 570 L ${f(820 + Math.cos(a) * 1500 - 30)} ${f(570 + Math.sin(a) * 1500)} L ${f(820 + Math.cos(a) * 1500 + 30)} ${f(570 + Math.sin(a) * 1500)} Z" fill="#fff0c8" opacity=".07"/>`; }).join("")}
-      ${clouds(330, 300, 300, 26, ["#d88a90", "#f6b0a0", "#9a7aa0"])}${clouds(1250, 330, 280, 24, ["#f6b898", "#ffd8b8", "#b8889e"])}
-      ${ridge(580, 26, "#8a6a86", { seed: 3, rim: "#ffcf9a" })}
-      <path d="M300 640 C 420 520, 640 470, 820 466 C 1000 470, 1200 520, 1320 640 Z" fill="#5e4866"/>${dabs(820, 560, 440, 70, 120, ["#6e5674", "#523e5c", "#7a6280"], { r1: 6, r2: 14, op: [.4, .7], stretch: 2.4 })}
-      <path d="M470 560 L 470 520 L 520 520 L 520 506 L 560 506 L 560 520 L 1080 520 L 1080 506 L 1120 506 L 1120 520 L 1170 520 L 1170 560 Z" fill="#6a5070"/>${Array.from({ length: 24 }, (_, i) => `<rect x="${474 + i * 29}" y="512" width="14" height="10" fill="#6a5070"/>`).join("")}
-      <rect x="700" y="420" width="240" height="100" fill="#8a6a7a"/><rect x="760" y="380" width="120" height="140" fill="#9a7a86"/><rect x="800" y="440" width="40" height="80" fill="#ffd890"/>${glow(820, 470, 160, "#ffd890", .7, d)}
-      ${lampstand(660, 520, 150, d)}${lampstand(740, 520, 160, d)}${lampstand(900, 520, 160, d)}${lampstand(980, 520, 150, d)}
-      ${house(520, 640, 90, 70, { defs: d, wall: "#7a6070", side: "#4e3e52", roof: "#3e3244" })}${house(620, 650, 80, 56, { defs: d, wall: "#6e566a", side: "#46384c", roof: "#382e40", door: false })}${house(980, 650, 90, 66, { defs: d, wall: "#7a6070", side: "#4e3e52", roof: "#3e3244" })}${house(1080, 640, 80, 60, { defs: d, wall: "#6a5266", side: "#443648", roof: "#352c3c", door: false })}
-      ${ridge(690, 26, "#3c2f4c", { seed: 9 })}
-      <path d="M640 900 C 700 820, 760 760, 820 700 L 850 702 C 820 770, 800 830, 820 900 Z" fill="#d8a888" opacity=".4"/>
-      ${[[700, 780], [760, 740], [800, 715], [900, 760], [540, 820], [1060, 800], [380, 760], [1230, 750]].map(([x, y]) => `${glow(x, y, 46, "#ffb850", .8, d)}<circle cx="${x}" cy="${y}" r="4.5" fill="#fff0b8"/>`).join("")}
-      ${oliveTree(300, 760, 1.15, { leaf: ["#3e3452", "#4e4264", "#5e5070", "#f0b088"], trunk: "#2a2234" })}${cypress(1460, 780, 1.3, ["#241f34", "#30293f", "#3c344c"])}${cypress(1400, 790, .9, ["#241f34", "#30293f", "#3c344c"])}
-      ${frame(["#1c1828", "#262036", "#302842"], ["#8a6a8a", "#a87a8a"], { y: 900 })}`;
+    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#141e44"], [.38, "#4a3f72"], [.6, "#d98a78"], [.72, "#ffd08a"]])}"/>
+      ${stars(160, 360)}${glow(820, 600, 760, "#ffc878", .9, d)}${glow(820, 610, 220, "#fff4d4", 1, d)}
+      ${Array.from({ length: 22 }, (_, i) => { const a = Math.PI + (i + .5) * Math.PI / 22; return `<path d="M820 610 L ${f(820 + Math.cos(a) * 1500 - 30)} ${f(610 + Math.sin(a) * 1500)} L ${f(820 + Math.cos(a) * 1500 + 30)} ${f(610 + Math.sin(a) * 1500)} Z" fill="#fff0c8" opacity=".07"/>`; }).join("")}
+      ${burst(330, 210, 160, ["#ffe7a3", "#ffd0e8", "#fff8e8"], d)}${burst(1270, 180, 180, ["#fff3c4", "#bfe0ff", "#ffe0a8"], d)}${burst(820, 110, 110, ["#ffffff", "#ffe5b0", "#ffc9d8"], d, 18)}${burst(1500, 400, 80, ["#ffe7a3", "#fff"], d, 14)}${burst(110, 420, 76, ["#ffd0e8", "#fff8e8"], d, 14)}
+      ${clouds(380, 470, 280, 26, ["#f0a890", "#ffd0a8", "#c88a9a"])}${clouds(1230, 450, 300, 24, ["#f6b898", "#ffe0b8", "#b8889e"])}
+      ${ridge(610, 34, "#8a6a86", { seed: 3, rim: "#ffcf9a" })}${ridge(660, 30, "#5a4668", { seed: 5, rim: "#f6b080" })}
+      ${house(980, 690, 120, 90, { defs: d, wall: "#7a6070", shade: "#4e3e52", roof: "#3e3244" })}${house(1110, 700, 90, 70, { defs: d, wall: "#6e566a", shade: "#46384c", roof: "#382e40", door: false })}${house(1210, 690, 110, 96, { defs: d, wall: "#7a6070", shade: "#4e3e52", roof: "#3e3244" })}${house(1330, 705, 80, 62, { defs: d, wall: "#6a5266", shade: "#443648", roof: "#352c3c", door: false })}
+      ${ridge(720, 26, "#3c2f4c", { seed: 9 })}
+      <path d="M720 900 C 760 820, 820 760, 900 730 L 940 732 C 880 770, 840 830, 830 900 Z" fill="#d8a888" opacity=".45"/>
+      ${oliveTree(380, 760, 1.2, { leaf: ["#3e3452", "#4e4264", "#5e5070", "#f0b088"], trunk: "#2a2234" })}${cypress(1500, 780, 1.3, ["#241f34", "#30293f", "#3c344c"])}${cypress(1440, 790, .9, ["#241f34", "#30293f", "#3c344c"])}
+      ${frame(["#1c1828", "#262036", "#302842"], ["#d88a78", "#f6b48a", "#8a6a8a"], { y: 900 })}`;
   },
   // Jan 7 to 31: new beginnings, a quiet winter sunrise and a lamp-lit home.
   winter(d) {
@@ -380,7 +374,7 @@ const SCENES = {
       ${dabs(800, 840, 820, 70, 260, ["#8a8a46", "#a8a058", "#6a7438", "#d8c070", "#e8d498"], { box: true, r1: 6, r2: 14 })}${dabs(800, 830, 600, 50, 80, ["#ffffff", "#f2d24a", "#e86a5a"], { r1: 3, r2: 5, stretch: 1 })}
       ${oliveTree(110, 930, 1.7, { leaf: ["#3e4a2c", "#4e5c36", "#6a7a46", "#c8c890"], trunk: "#3a2c20" })}${figTree(1500, 930, 1.5)}`;
   },
-  // September: learning. A scribe writes a scroll by lamplight, with birds flying past the evening window.
+  // September: learning. A scroll half written, the reed pen and ink set down beside it, lamplight, and birds flying past the evening window.
   learning(d) {
     const birds = [[1150, 230, 1], [1190, 260, .8], [1240, 215, .9], [1290, 290, .7], [1120, 300, .6]].map(([x, y, k]) => `<path d="M${x - 12 * k} ${y} q ${6 * k} ${-7 * k} ${12 * k} 0 q ${6 * k} ${-7 * k} ${12 * k} 0" stroke="#2e2430" stroke-width="${2.6 * k}" fill="none" stroke-linecap="round"/>`).join("");
     return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#2e2018"], [1, "#4a3426"]])}"/>
@@ -390,33 +384,39 @@ const SCENES = {
       <rect x="120" y="180" width="400" height="16" fill="#5a3e28"/><rect x="120" y="340" width="400" height="16" fill="#5a3e28"/>
       ${[0, 1, 2, 3, 4, 5].map((i) => `<g transform="translate(${170 + i * 60} 170)">${scroll(0, 0, .2, false)}</g>`).join("")}${jar(180, 340, .9)}${jar(260, 340, .7, "#8a5030")}${jar(440, 340, 1, "#a06a40")}
       ${glow(820, 600, 760, "#ffb050", .8, d)}
-      ${person(540, 720, 1.9, { robe: "#5a4a7a", robe2: "#8070a8", skin: "#b88060", hair: "#2a1d14", veil: "#e8dcc4", dir: 1, glowc: "#ffc870", defs: d })}
       <path d="M-20 640 L ${W + 20} 600 L ${W + 20} ${H + 20} L -20 ${H + 20} Z" fill="#6a4026"/><path d="M-20 640 L ${W + 20} 600 L ${W + 20} 632 L -20 672 Z" fill="#a8703e"/>
       ${dabs(800, 780, 820, 100, 120, ["#7a4a2c", "#5a3620", "#8a5634"], { box: true, r1: 10, r2: 24, op: [.3, .6], stretch: 3 })}
       ${scroll(760, 720, 1.25)}${lamp(1100, 650, 1.9, d)}${scroll(280, 660, .6, false)}${scroll(1360, 660, .55, false)}
-      <path d="M560 500 C 600 560, 640 620, 690 672" stroke="#5a4a7a" stroke-width="22" fill="none" stroke-linecap="round"/><circle cx="694" cy="676" r="12" fill="#b88060"/><path d="M690 684 L 740 610" stroke="#f2e6c8" stroke-width="6" stroke-linecap="round"/><path d="M734 618 L 750 594" stroke="#ffffff" stroke-width="2"/>
+      <path d="M560 772 L 700 742" stroke="#000" stroke-width="7" stroke-linecap="round" opacity=".18" transform="translate(4 6)"/><path d="M560 772 L 700 742" stroke="#f2e6c8" stroke-width="6" stroke-linecap="round"/><path d="M692 744 L 716 739" stroke="#2a1a10" stroke-width="5" stroke-linecap="round"/><path d="M566 768 L 640 752" stroke="#ffffff" stroke-width="1.6" opacity=".7"/>
       <path d="M720 700 q 30 -6 50 4 q 24 8 50 0" stroke="#2a1a10" stroke-width="3" fill="none" opacity=".7"/><circle cx="470" cy="752" r="22" fill="#3a2a20"/><circle cx="470" cy="748" r="15" fill="#1a1410"/>
       ${dabs(900, 560, 520, 220, 70, ["#ffd28a", "#ffe8b8"], { r1: 2, r2: 4, op: [.15, .45], stretch: 1 })}`;
   },
-  // October: Psalm 23. The Good Shepherd leads His flock through the valley of the shadow toward the light,
-  // beside still waters and green pastures, with the rod and staff that comfort.
+  // October: Psalm 23. Green pastures on the sunlit hills above; below, the valley of the shadow fades into
+  // deep navy, beautiful and a little fearful. The Good Shepherd leads the flock through it toward the light,
+  // past still waters, and the rod and staff stand close by to comfort.
   psalm23(d) {
-    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#38466a"], [.38, "#9a7c86"], [.58, "#f2bc74"], [.68, "#ffe2a8"]])}"/>
-      ${glow(800, 540, 660, "#ffd890", .95, d)}${glow(800, 550, 150, "#fff8e0", 1, d)}
-      ${Array.from({ length: 14 }, (_, i) => { const a = Math.PI + (i + .5) * Math.PI / 14; return `<path d="M800 550 L ${f(800 + Math.cos(a) * 900 - 24)} ${f(550 + Math.sin(a) * 900)} L ${f(800 + Math.cos(a) * 900 + 24)} ${f(550 + Math.sin(a) * 900)} Z" fill="#fff0c8" opacity=".07"/>`; }).join("")}
-      ${clouds(380, 220, 360, 44, ["#7a6a80", "#a89098", "#d6b098"])}${clouds(1250, 200, 320, 40, ["#8a7a8a", "#b89aa0", "#e6c098"])}
-      ${ridge(560, 20, "#b88a7c", { seed: 121, rim: "#ffe0b0" })}
-      <path d="M-20 900 L -20 260 C 160 290, 380 420, 540 560 C 620 620, 680 650, 740 650 L 740 900 Z" fill="#2e2a3e"/><path d="M${W + 20} 900 L ${W + 20} 240 C 1440 290, 1230 420, 1070 560 C 990 620, 920 650, 860 650 L 860 900 Z" fill="#2a2638"/>
-      ${dabs(250, 560, 280, 260, 160, ["#3e3650", "#26223a", "#4a405c", "#5a4a5a"], { r1: 10, r2: 24, op: [.3, .6], stretch: 2 })}${dabs(1350, 560, 280, 260, 160, ["#3e3650", "#26223a", "#4a405c", "#5a4a5a"], { r1: 10, r2: 24, op: [.3, .6], stretch: 2 })}
-      ${cypress(440, 470, .5, ["#1e1c2a", "#262434", "#2e2c3e"])}${cypress(1170, 470, .55, ["#1e1c2a", "#262434", "#2e2c3e"])}${oliveTree(230, 360, .5, { leaf: ["#2e2a3e", "#3a3450", "#4a4060", "#8a6a6a"], trunk: "#1e1a28" })}
-      ${dabs(560, 560, 40, 90, 30, ["#e8a87a", "#ffcf9a"], { r1: 3, r2: 7, op: [.4, .8] })}${dabs(1040, 560, 40, 90, 30, ["#e8a87a", "#ffcf9a"], { r1: 3, r2: 7, op: [.4, .8] })}
-      <path d="M560 910 C 660 800, 760 700, 790 650 L 812 650 C 830 730, 900 820, 1040 910 Z" fill="#7a9a4a"/>${dabs(800, 790, 220, 110, 200, ["#9aba5a", "#b8d070", "#6a8a3a", "#e8e090"], { r1: 4, r2: 9 })}${dabs(800, 820, 200, 80, 60, ["#ffffff", "#f6e070", "#f0a0b0"], { r1: 2.5, r2: 4.5, stretch: 1 })}
-      <ellipse cx="720" cy="812" rx="80" ry="22" fill="#a8d0e0" opacity=".85"/><ellipse cx="712" cy="806" rx="50" ry="8" fill="#fff4d8" opacity=".7"/><path d="M798 652 C 780 700, 750 740, 730 792" stroke="#a8d0e0" stroke-width="10" fill="none" opacity=".75"/>
+    const hillL = lin(d, [[0, "#86b052"], [.3, "#6a9444"], [.52, "#3a5a48"], [.72, "#1e2848"], [1, "#141a34"]], 1, 1);
+    const hillR = lin(d, [[0, "#141a34"], [.28, "#1e2848"], [.48, "#3a5a48"], [.7, "#6a9444"], [1, "#86b052"]], 1, -1);
+    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#1e2a5a"], [.35, "#6a6a98"], [.55, "#e8a888"], [.66, "#ffdca0"]])}"/>
+      ${stars(60, 220)}${glow(800, 520, 560, "#ffd890", .9, d)}${glow(800, 530, 130, "#fff8e0", 1, d)}
+      ${clouds(380, 200, 340, 40, ["#5a5a88", "#8a7a9a", "#c8a0a0"])}${clouds(1240, 180, 300, 36, ["#6a6a90", "#9a8aa0", "#e0b0a0"])}
+      ${ridge(540, 16, "#8a7a9a", { seed: 121, rim: "#ffe0b0" })}
+      <path d="M-20 900 L -20 240 C 140 230, 320 300, 470 420 C 560 490, 640 560, 760 560 L 760 900 Z" fill="${hillL}"/>
+      <path d="M${W + 20} 900 L ${W + 20} 220 C 1460 220, 1280 300, 1130 420 C 1040 490, 960 560, 840 560 L 840 900 Z" fill="${hillR}"/>
+      <path d="M-20 240 C 140 230, 320 300, 470 420 C 560 490, 640 560, 760 560" stroke="#f6e090" stroke-width="6" fill="none" opacity=".55"/><path d="M${W + 20} 220 C 1460 220, 1280 300, 1130 420 C 1040 490, 960 560, 840 560" stroke="#f6e090" stroke-width="6" fill="none" opacity=".55"/>
+      ${dabs(200, 330, 230, 80, 220, ["#7aa64a", "#8ab456", "#6a9442", "#a8c868"], { r1: 3, r2: 7, op: [.35, .7], stretch: 2.6 })}${dabs(1400, 310, 230, 80, 220, ["#7aa64a", "#8ab456", "#6a9442", "#a8c868"], { r1: 3, r2: 7, op: [.35, .7], stretch: 2.6 })}
+      ${dabs(200, 330, 200, 60, 60, ["#ffffff", "#f6e070", "#f0a0b0"], { r1: 2.5, r2: 4.5, stretch: 1 })}${dabs(1400, 310, 200, 60, 60, ["#ffffff", "#f6e070", "#f0a0b0"], { r1: 2.5, r2: 4.5, stretch: 1 })}
+      ${sheep(150, 330, .5)}${sheep(250, 350, .42, -1)}${sheep(1380, 300, .5, -1)}${sheep(1480, 320, .4)}${oliveTree(380, 380, .55, { leaf: ["#5a7a3a", "#6e8e48", "#8aa85a", "#e8d890"], trunk: "#3a2c20" })}${cypress(1210, 380, .55, ["#2e4a32", "#3a5a3c", "#4a6a48"])}
+      ${dabs(330, 650, 330, 220, 220, ["#1e2848", "#161c38", "#26305a", "#2e3a50"], { r1: 10, r2: 26, op: [.3, .6], stretch: 2 })}${dabs(1270, 650, 330, 220, 220, ["#1e2848", "#161c38", "#26305a", "#2e3a50"], { r1: 10, r2: 26, op: [.3, .6], stretch: 2 })}
+      ${cypress(560, 600, .5, ["#10142a", "#181e38", "#20284a"])}${cypress(1050, 600, .55, ["#10142a", "#181e38", "#20284a"])}
+      <path d="M520 910 C 640 780, 760 640, 790 560 L 812 560 C 830 650, 920 790, 1080 910 Z" fill="#1a2040"/>
+      <path d="M760 910 C 780 780, 796 660, 800 560 L 806 560 C 812 660, 830 780, 860 910 Z" fill="#e8c890" opacity=".35"/>${dabs(810, 740, 40, 160, 50, ["#ffe6b0", "#fff4d8"], { r1: 2, r2: 5, op: [.3, .8] })}
+      <ellipse cx="690" cy="800" rx="90" ry="20" fill="#5a7aa0" opacity=".8"/><ellipse cx="684" cy="794" rx="56" ry="6" fill="#ffe8c0" opacity=".55"/>
       ${person(830, 690, .55, { robe: "#e8dcc4", robe2: "#fff4e0", skin: "#b88060", veil: "#c8b89a", dir: 1, glowc: "#fff0c0", defs: d })}<path d="M846 690 L 852 600 q 2 -10 10 -6" stroke="#6a4626" stroke-width="3" fill="none"/>
-      ${sheep(880, 760, .6, -1)}${sheep(660, 840, .9)}${sheep(780, 720, .45)}${sheep(940, 820, .75, -1)}${sheep(740, 760, .55)}
-      ${frame(["#14141e", "#1c1a28", "#262234"], ["#5a4a5a", "#8a6a6a"], { y: 920 })}
-      <g transform="rotate(-8 300 900)"><path d="M300 900 L 300 440 C 300 370, 380 360, 392 412 C 398 442, 368 452, 356 436" stroke="#6a4626" stroke-width="18" fill="none" stroke-linecap="round"/><path d="M292 900 L 292 452" stroke="#d09658" stroke-width="5" opacity=".7"/><path d="M308 394 C 330 366, 372 372, 384 398" stroke="#ffd090" stroke-width="4" fill="none" opacity=".7"/></g>
-      <g transform="rotate(10 1300 900)"><path d="M1300 900 L 1300 600" stroke="#5a3a20" stroke-width="22" stroke-linecap="round"/><ellipse cx="1300" cy="584" rx="26" ry="38" fill="#5a3a20"/><path d="M1288 560 C 1284 580, 1286 600, 1290 620" stroke="#d09658" stroke-width="6" fill="none" opacity=".7"/><path d="M1292 900 L 1292 640" stroke="#c08a50" stroke-width="5" opacity=".55"/></g>`;
+      ${glow(800, 760, 180, "#ffe8b0", .25, d)}${sheep(870, 760, .55, -1)}${sheep(760, 740, .45)}${sheep(900, 820, .7, -1)}${sheep(730, 830, .75)}
+      ${frame(["#0c0e1e", "#12152a", "#181c36"], ["#2e3456", "#3e4470"], { y: 920 })}
+      ${glow(330, 520, 150, "#ffd890", .22, d)}<g transform="rotate(-8 300 900)"><path d="M300 900 L 300 440 C 300 370, 380 360, 392 412 C 398 442, 368 452, 356 436" stroke="#6a4626" stroke-width="18" fill="none" stroke-linecap="round"/><path d="M292 900 L 292 452" stroke="#d09658" stroke-width="5" opacity=".7"/><path d="M308 394 C 330 366, 372 372, 384 398" stroke="#ffd090" stroke-width="4" fill="none" opacity=".7"/></g>
+      ${glow(1290, 620, 130, "#ffd890", .22, d)}<g transform="rotate(10 1300 900)"><path d="M1300 900 L 1300 600" stroke="#5a3a20" stroke-width="22" stroke-linecap="round"/><ellipse cx="1300" cy="584" rx="26" ry="38" fill="#5a3a20"/><path d="M1288 560 C 1284 580, 1286 600, 1290 620" stroke="#d09658" stroke-width="6" fill="none" opacity=".7"/><path d="M1292 900 L 1292 640" stroke="#c08a50" stroke-width="5" opacity=".55"/></g>`;
   },
   // Nov 1 through Thanksgiving: the harvest feast, thanks and fall colors.
   harvest(d) {
