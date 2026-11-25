@@ -438,10 +438,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
   45: {
     intro: "A short word for Baruch, Jeremiah's scribe, who feels weary and sorrowful. God says He is tearing down what He built. \"But you, are you seeking great things for yourself? Do not seek them... but I will give your life to you as a prize of war in all the places where you may go.\"",
     v: [
+      ["45:1", "In the fourth year of Jehoiakim", "605 BC, the year Baruch wrote Jeremiah's scroll (chapter 36). This word is placed late in the book but was given early."],
       ["45:3", "I am weary with my groaning", "Even faithful helpers grow tired."],
       ["45:5", "Are you seeking great things for yourself?", "Be content with God's care."],
     ],
-    refs: [["MAT.6", "Matthew 6:33", "Seek first His kingdom"], ["PHP.4", "Philippians 4:11-13", "Content in every situation"]],
+    bg: [["Baruch's seal", "Baruch son of Neriah was a professional scribe from a leading family (his brother Seraiah served the king, 51:59). Clay seal impressions reading \"Belonging to Berekhyahu son of Neriyahu the scribe\" have been published. Some scholars question whether they are genuine, since they came through the antiquities market rather than an excavation.", "debated", ["thompsonJ", "lundbom"]]],
+    refs: [["JER.36", "Jeremiah 36:4", "Baruch writes the scroll"], ["MAT.6", "Matthew 6:33", "Seek first His kingdom"], ["PHP.4", "Philippians 4:11-13", "Content in every situation"]],
   },
   46: {
     intro: "The oracles against the nations begin (46-51). Egypt is defeated by Babylon at Carchemish in 605 BC: \"The swift man cannot flee.\" Egypt will be judged, \"but you, O Jacob My servant, do not fear... for I am with you.\"",
@@ -466,11 +468,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
   48: {
     intro: "A long lament over Moab, proud and complacent \"like wine left on its dregs.\" Its cities, gods and pride will fall. Even so, God says, \"I will restore the fortunes of Moab in the latter days.\"",
     v: [
+      ["48:7", "Chemosh will go off into exile", "Even Moab's god is carried away. The Moabite Stone names Chemosh as Moab's god."],
       ["48:11", "Like wine on its dregs", "Never shaken, never changed."],
+      ["48:13", "Moab will be ashamed of Chemosh, as Israel was ashamed of Bethel", "Both trusted false worship and were let down."],
       ["48:29", "We have heard of the pride of Moab", "Pride is the root."],
       ["48:47", "I will restore the fortunes of Moab", "Mercy beyond judgment."],
     ],
-    refs: [["ISA.16", "Isaiah 16:6", "The pride of Moab"], ["RUT.1", "Ruth 1:22", "Ruth the Moabitess"]],
+    bg: [["Like wine on its dregs", "Wine was poured from jar to jar to separate it from its sediment. Wine left on its dregs grows thick and sour. Moab had never been \"poured out\" into exile, so it stayed complacent and unchanged. Zephaniah uses the same picture for careless Judah (Zephaniah 1:12).", "good", ["thompsonJ", "huey"]]],
+    refs: [["ZEP.1", "Zephaniah 1:12", "Men stagnant on their dregs"], ["ISA.16", "Isaiah 16:6", "The pride of Moab"], ["RUT.1", "Ruth 1:22", "Ruth the Moabitess"]],
   },
   49: {
     intro: "Oracles against Ammon, Edom, Damascus, Kedar and Hazor, and Elam. Edom trusted in its rocky heights, but \"though you make your nest as high as an eagle's, I will bring you down.\" Even so, God promises to restore the fortunes of Ammon and Elam.",

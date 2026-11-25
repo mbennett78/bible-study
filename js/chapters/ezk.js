@@ -496,9 +496,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   48: {
     intro: "The land is divided among the twelve tribes in parallel strips, with the holy portion in the middle. The city has twelve gates named for the tribes, three on each side. The book ends with the city's new name: \"The LORD is there.\"",
     v: [
+      ["48:8-10", "The holy allotment", "God's sanctuary stands at the center, with the tribes around it."],
       ["48:31", "The gates of the city shall be named after the tribes", "Every tribe has a place."],
       ["48:35", "The LORD is there", "Hebrew: Yahweh Shammah. The best thing about the city is God's presence."],
     ],
+    bg: [["Every tribe has a place", "Unlike Joshua's division of the land, Ezekiel's tribes receive equal strips running east to west, with the sanctuary in the middle. Even the tribes of servant-wives' sons get full shares. Revelation 21 takes up the twelve gates with the tribes' names.", "good", ["block", "duguidE"]]],
     refs: [["REV.21", "Revelation 21:3, 12-13", "Twelve gates; God dwells with them"], ["MAT.1", "Matthew 1:23", "Immanuel, God with us"]],
   },
 });

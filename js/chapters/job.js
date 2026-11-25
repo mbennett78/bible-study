@@ -161,9 +161,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
     v: [
       ["15:4", "You do away with reverence", "Eliphaz thinks Job's honesty is dangerous."],
       ["15:7", "Were you the first man to be born?", "Mocking Job's claims."],
+      ["15:11", "Are the consolations of God too small for you?", "Eliphaz thinks his own words were God's comfort, and Job has refused them."],
       ["15:20", "The wicked man writhes in pain", "Again suffering is linked to wickedness."],
     ],
-    refs: [["PSA.73", "Psalm 73", "Why do the wicked prosper?"]],
+    bg: [["The friends grow harsher", "In the second round of speeches (chapters 15-21), the friends stop offering Job hope and simply describe the fate of the wicked, hinting that it describes him. God later says they \"have not spoken of Me what is right\" (42:7).", "good", ["hartley", "alden"]]],
+    refs: [["JOB.42", "Job 42:7", "God corrects the friends"], ["PSA.73", "Psalm 73", "Why do the wicked prosper?"]],
   },
   16: {
     intro: "\"Sorry comforters are you all.\" Job says he too could talk as they do if they were in his place. He describes God as attacking him. Yet in the middle of it he says, \"Even now, behold, my witness is in heaven, and my advocate is on high.\"",
@@ -215,11 +217,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
   20: {
     intro: "Zophar is insulted and answers that the joy of the wicked is short. He may swallow riches, but he will vomit them up. Heaven will reveal his guilt. This is the wicked man's portion from God.",
     v: [
+      ["20:2", "My disquieting thoughts make me respond", "Zophar answers out of hurt pride."],
       ["20:5", "The triumphing of the wicked is short", "A general truth turned against Job."],
       ["20:15", "He swallows riches, but will vomit them up", "Ill-gotten gain does not last."],
       ["20:29", "This is the wicked man's portion from God", "Zophar's last word."],
     ],
-    refs: [["PSA.37", "Psalm 37:1-2", "Do not fret because of evildoers"]],
+    bg: [["Zophar's last word", "This is Zophar's final speech; he does not speak in the third round. What he says is often true in general, as the Psalms and Proverbs agree, but he is wrong to apply it to Job. Job answers in chapter 21 that the wicked often do prosper.", "good", ["hartley", "andersen"]]],
+    refs: [["JOB.21", "Job 21:7", "Why do the wicked still live?"], ["PSA.37", "Psalm 37:1-2", "Do not fret because of evildoers"]],
   },
   21: {
     intro: "Job challenges the friends' main idea directly. Look around: the wicked often live long, grow rich, see their children prosper, and die in peace. One man dies healthy and another bitter, and both lie in the dust. \"How then will you vainly comfort me?\"",

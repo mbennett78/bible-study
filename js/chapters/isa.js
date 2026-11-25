@@ -47,9 +47,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   4: {
     intro: "After judgment, \"the Branch of the LORD will be beautiful and glorious.\" Those left in Zion will be called holy, washed clean. Over Mount Zion God will create a cloud by day and fire by night, a shelter and shade like the wilderness journey.",
     v: [
+      ["4:1", "Seven women will take hold of one man", "So many men will die in war that women will beg for a husband's name."],
       ["4:2", "The Branch of the LORD", "A title for the coming Messiah."],
+      ["4:4", "By the spirit of judgment and the spirit of burning", "God's cleansing fire purifies a remnant."],
       ["4:5", "A cloud by day... a flaming fire by night", "God's presence as in the exodus."],
     ],
+    bg: [["The Branch", "\"Branch\" (tsemach) became a title for the coming King from David's line (Jeremiah 23:5; 33:15; Zechariah 3:8; 6:12). Some readers think in Isaiah 4:2 it may simply mean the land's fruitfulness, but many see the Messiah here too.", "debated", ["oswalt", "motyer"]]],
     refs: [["JER.23", "Jeremiah 23:5", "A righteous Branch"], ["ZEC.3", "Zechariah 3:8", "My servant the Branch"], ["EXO.13", "Exodus 13:21", "The pillar of cloud and fire"]],
   },
   5: {

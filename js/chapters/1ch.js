@@ -102,8 +102,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     v: [
       ["9:1", "Carried away to Babylon for their unfaithfulness", "The reason for the exile is stated plainly."],
       ["9:2", "The first who lived in their possessions", "God brought His people back."],
+      ["9:22", "David and Samuel the seer appointed them", "The gatekeepers' duties went back to Israel's earliest worship."],
+      ["9:26-27", "They spent the night around the house of God", "Gatekeepers kept the keys and opened the doors every morning."],
       ["9:33", "The singers... day and night", "Worship never stopped."],
     ],
+    bg: [["Life after return", "This chapter shows Jerusalem resettled after the exile, much like Nehemiah 11. The long family lists of chapters 1-8 end here, where the readers lived: back in the land, with worship going on day and night.", "good", ["selman", "williamson"]]],
     refs: [["NEH.11", "Nehemiah 11", "The people who settled in Jerusalem"]],
   },
   10: {
@@ -150,8 +153,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     v: [
       ["14:2", "For the sake of His people Israel", "David's kingdom was for others."],
       ["14:10", "David inquired of God", "Each time."],
+      ["14:12", "They abandoned their gods there, so David gave the order and they were burned", "The Philistines' idols could not save them."],
       ["14:15", "The sound of marching in the tops of the balsam trees", "God goes ahead into battle."],
+      ["14:17", "The fame of David went out into all lands", "God's blessing made his name known."],
     ],
+    bg: [["Why here?", "Chronicles places these victories between the first, failed attempt to bring up the ark (chapter 13) and the joyful second one (chapter 15). David's new habit of asking God first, before each battle, prepares him to bring the ark up the right way.", "good", ["selman", "thompson"]]],
     refs: [["2SA.5", "2 Samuel 5:11-25", "The same events"]],
   },
   15: {

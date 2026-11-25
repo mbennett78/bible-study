@@ -409,10 +409,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   43: {
     intro: "Probably once joined with Psalm 42, it shares the same refrain. The psalmist asks God to vindicate him and to send out His light and truth to lead him back to God's holy hill and altar, \"to God my exceeding joy.\"",
     v: [
+      ["43:1", "Vindicate me, O God, and plead my case", "He asks God to be both his judge and his defender."],
       ["43:3", "Send out Your light and Your truth, let them lead me", "God's guidance home."],
       ["43:4", "God my exceeding joy", "God Himself is the joy."],
       ["43:5", "Hope in God", "The refrain a third time."],
     ],
+    bg: [["One psalm or two?", "Psalm 43 has no title, though the psalms around it do, and it repeats the refrain of Psalm 42 (42:5, 11; 43:5). Some Hebrew manuscripts join them as one psalm. Many think they were written as one song in three stanzas.", "good", ["craigie", "kidner"]]],
     refs: [["PSA.42", "Psalm 42", "The first half"], ["JHN.14", "John 14:6", "I am the way, the truth"]],
   },
   44: {
