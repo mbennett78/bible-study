@@ -40,12 +40,12 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
   3: {
     intro: "Wives may win unbelieving husbands without a word by their pure and respectful lives, with the inner beauty of \"a gentle and quiet spirit, which is precious in the sight of God.\" Husbands should live with their wives in an understanding way, honoring them as fellow heirs of the grace of life. All of you, be harmonious, kind and humble, \"not returning evil for evil.\" \"Sanctify Christ as Lord in your hearts, always being ready to make a defense to everyone who asks you to give an account for the hope that is in you, yet with gentleness and reverence.\" Christ died for sins once for all, \"the just for the unjust, so that He might bring us to God.\" Peter compares Noah's flood to baptism, which saves \"through the resurrection of Jesus Christ.\"",
     v: [
-      ["3:4", "A gentle and quiet spirit, which is precious in the sight of God", "Inner beauty."],
-      ["3:7", "Grant her honor as a fellow heir of the grace of life", "Honor in marriage."],
-      ["3:9", "Not returning evil for evil... but giving a blessing instead", "Bless instead."],
-      ["3:15", "Always being ready to make a defense... yet with gentleness and reverence", "Ready to share."],
-      ["3:18", "Christ also died for sins once for all, the just for the unjust", "To bring us to God."],
-      ["3:21", "Baptism now saves you... through the resurrection of Jesus Christ", "Noah and baptism."],
+      ["3:4", "A gentle and quiet spirit, which is precious in the sight of God", "Real beauty is a gentle, peaceful spirit, which never fades and which God treasures."],
+      ["3:7", "Grant her honor as a fellow heir of the grace of life", "Husbands are to understand and honor their wives as equal heirs of God's grace, so their prayers are not hindered."],
+      ["3:9", "Not returning evil for evil... but giving a blessing instead", "When insulted, believers answer with blessing, because that is what they were called to and what they will inherit."],
+      ["3:15", "Always being ready to make a defense... yet with gentleness and reverence", "Be ready to explain why you have hope, and do it gently and respectfully, not to win an argument."],
+      ["3:18", "Christ also died for sins once for all, the just for the unjust", "Jesus, the righteous one, died once for the unrighteous, to bring us to God. He was put to death in the body but made alive."],
+      ["3:21", "Baptism now saves you... through the resurrection of Jesus Christ", "Peter compares baptism to the Flood: Noah's family passed through water to safety. It is not washing dirt off the body but \"an appeal to God for a good conscience,\" and it saves \"through the resurrection of Jesus Christ.\" Christians differ on how baptism and salvation relate; all agree the power is in the risen Christ, not the water itself."],
     ],
     views: [["\"Baptism now saves you\" (3:21)", "Some scholars read Peter as saying God saves through baptism as the moment a believer, trusting the risen Christ, appeals to God for a clean conscience. Others read baptism here as the outward pledge and picture of a salvation already received by faith, stressing Peter's words that it is \"not the removal of dirt from the flesh.\" All agree that the saving power comes from Christ's resurrection, not the water itself, and that baptism was expected of every believer.", ["jobes", "schreinerP", "grudem"]]],
     refs: [["GEN.6", "Genesis 6-8", "Noah's ark"], ["EPH.5", "Ephesians 5:25-33", "Husbands and wives"], ["ROM.12", "Romans 12:17-21", "Do not repay evil"], ["ACT.2", "Acts 2:38", "Repent and be baptized"]],
