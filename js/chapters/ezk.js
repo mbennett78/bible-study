@@ -247,11 +247,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   25: {
     intro: "Oracles against Israel's neighbors begin (25-32). Ammon clapped its hands when the temple was profaned; Moab said Judah was like all the nations; Edom and Philistia took revenge. Each will be judged, \"and they will know that I am the LORD.\"",
     v: [
-      ["25:3", "Because you said, Aha!", "Gloating over others' ruin."],
-      ["25:6", "Because you have clapped your hands and stamped your feet", "Ammon celebrated Judah's ruin."],
+      ["25:3", "Because you said, Aha!", "Ammon said \"Aha!\" when the temple was profaned and Judah went into exile. God judges those who gloat over others' ruin (Proverbs 24:17-18)."],
+      ["25:6", "Because you have clapped your hands and stamped your feet", "Ammon clapped its hands, stamped its feet and rejoiced with contempt at Judah's fall. Their celebration of someone else's grief was itself a sin."],
       ["25:8", "Judah is like all the nations", "Moab mocked the idea that Israel's God was special."],
-      ["25:12", "Edom has acted against the house of Judah by taking vengeance", "Revenge judged."],
-      ["25:15", "The Philistines have acted in revenge", "Old hatred took its chance."],
+      ["25:12", "Edom has acted against the house of Judah by taking vengeance", "Edom, descended from Jacob's brother Esau, took revenge on Judah in its weakest hour (Obadiah 10-14). God judges revenge."],
+      ["25:15", "The Philistines have acted in revenge", "The Philistines acted with \"everlasting enmity\" and used Judah's fall to take revenge. Old hatred took its chance."],
     ],
     bg: [["Four neighbors", "Ammon and Moab lay east of the Jordan, Edom to the southeast, and Philistia on the coast to the west. All four had long histories of conflict with Israel, and all four rejoiced when Jerusalem fell in 586 BC.", "good", ["block", "taylor"]]],
     refs: [["OBA.1", "Obadiah 12", "Do not gloat"], ["PRO.24", "Proverbs 24:17", "Do not rejoice when your enemy falls"]],
@@ -259,9 +259,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   26: {
     intro: "Tyre, the rich island trading city, rejoiced at Jerusalem's fall, hoping to profit. God will bring many nations against her like waves. Nebuchadnezzar will besiege her; her stones and timber will be thrown into the sea, and she will become a bare rock for spreading fishing nets.",
     v: [
-      ["26:2", "Aha, the gateway of the peoples is broken", "Greed at another's loss."],
-      ["26:3", "As the sea brings up its waves", "Wave after wave of attackers."],
-      ["26:14", "A bare rock... a place for the spreading of nets", "Tyre's ruin."],
+      ["26:2", "Aha, the gateway of the peoples is broken", "Tyre, a rich trading city, cheered Jerusalem's fall as a competitor knocked out of business: \"I shall be filled, now that she is laid waste.\" Greed profits from another's loss."],
+      ["26:3", "As the sea brings up its waves", "God will bring many nations against Tyre, like waves the sea throws up one after another. Tyre would face attacker after attacker over the centuries."],
+      ["26:14", "A bare rock... a place for the spreading of nets", "Tyre will become a bare rock where fishermen spread their nets to dry. Nebuchadnezzar besieged it for thirteen years, and in 332 BC Alexander the Great scraped the old city's rubble into the sea to build a causeway to the island fortress."],
     ],
     why: "Ezekiel 26 says Nebuchadnezzar would besiege Tyre and that Tyre would be scraped bare and never rebuilt. Scholars discuss how this was fulfilled.",
     views: [
@@ -274,10 +274,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   27: {
     intro: "A lament for Tyre pictured as a magnificent merchant ship built from the finest materials, trading with nations from Spain to Arabia. A long list of trading partners and goods follows. Then the east wind wrecks the ship in the heart of the seas, and sailors and merchants wail.",
     v: [
-      ["27:3", "I am perfect in beauty", "Pride in wealth."],
+      ["27:3", "I am perfect in beauty", "Tyre boasted, \"I am perfect in beauty.\" Ezekiel pictures the city as a splendid trading ship loaded with the wealth of the world, proud of its riches."],
       ["27:5-7", "Fir trees from Senir... cedars from Lebanon... fine linen from Egypt", "Tyre's ship is built from the best of every land."],
       ["27:12", "Tarshish was your customer", "Probably in far-off Spain, the western edge of the known world."],
-      ["27:26", "The east wind has broken you", "Sudden ruin."],
+      ["27:26", "The east wind has broken you", "The grand ship is wrecked in the heart of the sea by the east wind. Tyre's ruin would come suddenly, and all who traded with it would mourn (27:29-32)."],
     ],
     bg: [["Tyre, queen of the sea", "Tyre was an island city off the coast of Lebanon, and its Phoenician sailors traded across the whole Mediterranean. Ezekiel 27 is one of the richest ancient lists of trade goods: silver, tin and lead, horses, ivory, ebony, spices, wool and wine.", "strong", ["block", "kitchen"]]],
     refs: [["REV.18", "Revelation 18:11-19", "Merchants weep over Babylon"], ["JAS.4", "James 4:13-16", "Boasting in plans"]],
@@ -285,10 +285,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   28: {
     intro: "The prince of Tyre says, \"I am a god,\" yet he is only a man. Then a lament for the king of Tyre: \"You were the signet of perfection, full of wisdom and perfect in beauty. You were in Eden, the garden of God... You were the anointed cherub who covers.\" He was blameless until unrighteousness was found in him; his heart was lifted up because of his beauty. Sidon is judged too, and Israel will be gathered and live securely.",
     v: [
-      ["28:2", "I am a god", "The ultimate pride."],
-      ["28:13", "You were in Eden, the garden of God", "Poetic language of an exalted figure."],
-      ["28:17", "Your heart was lifted up because of your beauty", "Pride's root."],
-      ["28:26", "They will live in it securely", "Hope for God's people."],
+      ["28:2", "I am a god", "The ruler of Tyre said, \"I am a god.\" It is the ultimate pride: forgetting that he was only a man (28:9)."],
+      ["28:13", "You were in Eden, the garden of God", "The king of Tyre is described as if he were in Eden, covered in precious stones. Readers differ: some see Satan's fall behind these words, while others read it as poetry picturing the king like a proud Adam."],
+      ["28:17", "Your heart was lifted up because of your beauty", "\"Your heart was lifted up because of your beauty.\" God's gifts became the root of pride."],
+      ["28:26", "They will live in it securely", "After judging the nations, God promises His people will live in their land securely, build houses and plant vineyards. There is hope for His people."],
     ],
     why: "Ezekiel 28:11-19 describes the king of Tyre as a cherub in Eden who fell through pride. Readers discuss whether it also describes Satan.",
     views: [
@@ -301,19 +301,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   29: {
     intro: "Pharaoh, the great monster lying in the Nile, says, \"My Nile is mine, and I myself have made it.\" God will put hooks in his jaws. Egypt has been a staff of reed to Israel that splinters when leaned on. Egypt will be humbled and never again rule over nations. Later (571 BC), God gives Egypt to Nebuchadnezzar as wages for his labor against Tyre.",
     v: [
-      ["29:3", "My Nile is mine, and I myself have made it", "Pride claims what God made."],
-      ["29:6", "A staff made of reed", "Egypt was unreliable help."],
-      ["29:18", "He and his army had no wages from Tyre", "Ezekiel honestly records this."],
+      ["29:3", "My Nile is mine, and I myself have made it", "Pharaoh is pictured as a great river monster who says, \"My Nile is mine, and I myself have made it.\" Pride claims credit for what God made."],
+      ["29:6", "A staff made of reed", "Egypt was like a reed staff that splinters and pierces the hand of anyone who leans on it (2 Kings 18:21). Judah kept trusting Egypt, and Egypt kept failing them."],
+      ["29:18", "He and his army had no wages from Tyre", "Nebuchadnezzar's thirteen-year siege of Tyre left his army worn out with little plunder to show for it. Ezekiel honestly records this, and God gives Egypt to Babylon as wages instead (29:19-20)."],
     ],
     refs: [["ISA.36", "Isaiah 36:6", "A crushed reed"], ["JER.46", "Jeremiah 46", "Egypt's defeat"]],
   },
   30: {
     intro: "\"Wail, Alas for the day! For the day is near, the day of the LORD.\" Egypt and her allies will fall to Nebuchadnezzar. God has broken Pharaoh's arm, and will strengthen the arms of the king of Babylon.",
     v: [
-      ["30:3", "The day of the LORD is near", "A day of judgment for nations."],
+      ["30:3", "The day of the LORD is near", "\"The day of the LORD is near... a time of doom for the nations.\" The phrase means a day when God steps in to judge, here against Egypt."],
       ["30:13-16", "Memphis, Zoan, Thebes, Pelusium", "Ezekiel names Egypt's great cities one by one, from the delta to the far south. None is beyond God's reach."],
       ["30:20", "In the eleventh year, in the first month", "Spring of 587 BC, while Babylon besieged Jerusalem."],
-      ["30:21", "I have broken the arm of Pharaoh", "Egypt's power broken."],
+      ["30:21", "I have broken the arm of Pharaoh", "\"I have broken the arm of Pharaoh.\" Egypt's attempt to rescue Jerusalem in 588 BC had already failed (Jeremiah 37:5-7), and its power would not recover."],
     ],
     bg: [["Pharaoh's broken arm", "Pharaoh Hophra (Apries) marched out to help Jerusalem in 588 BC, and the Babylonians lifted the siege for a while to face him (Jeremiah 37:5-11). He was driven back, and the siege resumed. That defeat is the \"broken arm\" of verse 21. Hophra was later overthrown by his own general.", "strong", ["block", "kitchen"]]],
     refs: [["JER.37", "Jeremiah 37:5-11", "Egypt's army turns back"], ["JER.46", "Jeremiah 46:13-26", "Nebuchadnezzar against Egypt"]],
@@ -321,10 +321,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   31: {
     intro: "Pharaoh is compared to Assyria, once a towering cedar in Lebanon, the envy of every tree in Eden, with birds in its branches and nations in its shade. Because its heart was proud, it was cut down and went down to Sheol. So it will be with Pharaoh.",
     v: [
-      ["31:3", "Assyria was a cedar in Lebanon", "A picture of a great empire."],
+      ["31:3", "Assyria was a cedar in Lebanon", "Assyria is pictured as a towering cedar of Lebanon, giving shade to all the nations. It is a picture of a great empire at its height."],
       ["31:8", "The cedars in God's garden could not match it", "Even the trees of Eden envied it, so great was its glory."],
-      ["31:10", "Its heart is haughty in its loftiness", "Pride brings it down."],
-      ["31:16", "I made the nations quake at the sound of its fall", "When the mighty fall, everyone notices."],
+      ["31:10", "Its heart is haughty in its loftiness", "Because the tree grew proud of its height, God cut it down. Assyria fell to Babylon in 612-609 BC, and Egypt should learn from it."],
+      ["31:16", "I made the nations quake at the sound of its fall", "The nations shook at the sound of the great tree's fall. When the mighty fall, everyone notices."],
     ],
     bg: [["Assyria's fall", "Assyria had ruled the Near East for centuries. Its capital Nineveh fell to the Babylonians and Medes in 612 BC, only about twenty-five years before this word. Pharaoh is told to look at that fallen cedar and learn.", "strong", ["block", "kitchen"]]],
     refs: [["DAN.4", "Daniel 4:10-17", "Nebuchadnezzar's tree dream"], ["NAM.3", "Nahum 3", "Assyria's fall"]],
@@ -333,9 +333,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "A lament for Pharaoh, a sea monster caught in God's net. Then a solemn picture of the grave: Egypt goes down to the pit to join Assyria, Elam, Meshech, Tubal, Edom and Sidon, mighty nations that once spread terror and now lie with the slain.",
     v: [
       ["32:1", "In the twelfth year, in the twelfth month", "Early 585 BC, about a year after Jerusalem fell."],
-      ["32:2", "You are like the monster in the seas", "Pharaoh's power pictured."],
+      ["32:2", "You are like the monster in the seas", "Pharaoh thought himself a young lion among the nations, but he was more like a monster thrashing in the rivers and muddying the water. God will catch him in His net (32:3)."],
       ["32:7", "I will cover the heavens and darken their stars", "Prophets used the darkening of sun and stars to picture the fall of a great kingdom."],
-      ["32:18", "Wail for the hordes of Egypt", "Even the mighty fall."],
+      ["32:18", "Wail for the hordes of Egypt", "Ezekiel is told to wail for Egypt and send it down to the grave with the other fallen nations. Even the mightiest empire falls."],
     ],
     bg: [["Among the uncircumcised", "Egyptians practiced circumcision, so being laid in the grave \"among the uncircumcised\" and \"those slain by the sword\" was a picture of the deepest shame for proud Pharaoh. Each nation in the list had once spread terror; now all share the same end.", "good", ["block", "duguidE"]]],
     refs: [["ISA.14", "Isaiah 14:9-11", "The grave stirs to meet them"]],
@@ -343,30 +343,30 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   33: {
     intro: "God renews Ezekiel's call as watchman. \"As I live, I take no pleasure in the death of the wicked, but rather that the wicked turn from his way and live. Turn back, turn back from your evil ways! Why then will you die, O house of Israel?\" Then a fugitive arrives: \"The city has been taken.\" Ezekiel can speak freely again. The people enjoy hearing him like a love song, but do not obey.",
     v: [
-      ["33:7", "I have appointed you a watchman", "The call renewed."],
-      ["33:11", "Turn back, turn back... Why then will you die?", "God's heart for the lost."],
-      ["33:21", "The city has been taken", "News reaches the exiles."],
-      ["33:32", "Like a sensual song... they hear your words but do not practice them", "Listening without doing."],
+      ["33:7", "I have appointed you a watchman", "God renews Ezekiel's call as a watchman (3:17). As the news of Jerusalem's fall draws near, his job of warning becomes more urgent."],
+      ["33:11", "Turn back, turn back... Why then will you die?", "\"As I live, I take no pleasure in the death of the wicked... Turn back, turn back from your evil ways! Why then will you die?\" It shows God's heart for the lost."],
+      ["33:21", "The city has been taken", "In the twelfth year of exile, a survivor arrived and said, \"The city has been taken.\" The news reached the exiles about six months after Jerusalem fell."],
+      ["33:32", "Like a sensual song... they hear your words but do not practice them", "To the people Ezekiel was like a singer with a lovely voice: they enjoyed listening but did not do what he said. Listening without doing is not enough (James 1:22)."],
     ],
     refs: [["EZK.18", "Ezekiel 18:23, 32", "No pleasure in death"], ["JAS.1", "James 1:22", "Be doers of the word"], ["2PE.3", "2 Peter 3:9", "Not wishing any to perish"]],
   },
   34: {
     intro: "\"Woe, shepherds of Israel who have been feeding themselves!\" They ate the fat and clothed themselves with the wool but did not care for the flock. So God says, \"I Myself will search for My sheep and seek them out... I will seek the lost, bring back the scattered, bind up the broken and strengthen the sick.\" \"I will set over them one shepherd, My servant David.\" A covenant of peace and showers of blessing.",
     v: [
-      ["34:2", "Shepherds who have been feeding themselves", "Leaders who serve themselves."],
-      ["34:11", "I Myself will search for My sheep", "God the Shepherd."],
+      ["34:2", "Shepherds who have been feeding themselves", "Israel's leaders were shepherds who fed themselves instead of the flock. They took the wool and the meat but did not care for the weak or the lost (34:3-4)."],
+      ["34:11", "I Myself will search for My sheep", "\"I Myself will search for My sheep and seek them out.\" God Himself will be their Shepherd. Jesus calls Himself the good shepherd (John 10:11) and came to seek the lost (Luke 19:10)."],
       ["34:16", "I will seek the lost", "Jesus said He came to seek and save the lost."],
-      ["34:23", "One shepherd, My servant David", "A promise of the Messiah."],
-      ["34:26", "There will be showers of blessing", "The source of the hymn's title."],
+      ["34:23", "One shepherd, My servant David", "God will set over them one shepherd, \"My servant David.\" David had long been dead, so this points to a future King from his line. Christians see it fulfilled in Jesus."],
+      ["34:26", "There will be showers of blessing", "\"There will be showers of blessing.\" The 1883 hymn \"There Shall Be Showers of Blessing\" takes its title from this verse."],
     ],
     refs: [["JHN.10", "John 10:11-16", "I am the good shepherd"], ["LUK.19", "Luke 19:10", "To seek and save the lost"], ["PSA.23", "Psalm 23", "The LORD is my shepherd"]],
   },
   35: {
     intro: "An oracle against Mount Seir (Edom), which held an everlasting hatred against Israel, handed them over to the sword in their calamity, and said, \"These two nations will be mine.\" Edom will become a desolation.",
     v: [
-      ["35:5", "Because you have had everlasting enmity", "Long-held hatred."],
+      ["35:5", "Because you have had everlasting enmity", "Edom held \"everlasting enmity\" against Israel and turned them over to the sword in their disaster. Long-held hatred is judged."],
       ["35:6", "Since you have not hated bloodshed", "Edom stood by and helped while Judah was being slaughtered."],
-      ["35:10", "Although the LORD was there", "Edom forgot God was with Israel."],
+      ["35:10", "Although the LORD was there", "Edom planned to take over both Israel and Judah, \"although the LORD was there.\" They forgot that God was still with His people."],
       ["35:12", "I have heard all your revilings", "God hears the taunts spoken against His people."],
     ],
     bg: [["Edom moves in", "After Jerusalem fell in 586 BC, Edomites moved into the south of Judah. In later centuries that area was called Idumea, and King Herod's family came from there. Psalm 137:7 remembers Edom shouting, \"Tear it down!\" on the day Jerusalem fell.", "good", ["block", "taylor"]]],
@@ -375,21 +375,21 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   36: {
     intro: "God speaks to the mountains of Israel: they will bear fruit again and be inhabited. Israel profaned God's name among the nations, \"but I had concern for My holy name.\" \"I will sprinkle clean water on you, and you will be clean... Moreover, I will give you a new heart and put a new spirit within you; and I will remove the heart of stone from your flesh and give you a heart of flesh. I will put My Spirit within you and cause you to walk in My statutes.\"",
     v: [
-      ["36:22", "Not for your sake... but for My holy name", "Grace rooted in God's character."],
-      ["36:25", "I will sprinkle clean water on you", "Cleansing."],
-      ["36:26", "A new heart and a new spirit", "Inner transformation."],
-      ["36:27", "I will put My Spirit within you", "The Spirit enables obedience."],
+      ["36:22", "Not for your sake... but for My holy name", "\"It is not for your sake... but for My holy name.\" God restores Israel because of who He is, not because they deserve it. His grace is rooted in His character."],
+      ["36:25", "I will sprinkle clean water on you", "\"I will sprinkle clean water on you, and you will be clean from all your filthiness.\" God Himself cleanses His people (Psalm 51:7)."],
+      ["36:26", "A new heart and a new spirit", "God promises to take out the heart of stone and give a heart of flesh. Many see Jesus drawing on this passage when He speaks of being born of water and the Spirit (John 3:5)."],
+      ["36:27", "I will put My Spirit within you", "\"I will put My Spirit within you and cause you to walk in My statutes.\" God's Spirit within makes obedience possible."],
     ],
     refs: [["JHN.3", "John 3:5", "Born of water and the Spirit"], ["JER.31", "Jeremiah 31:33", "The new covenant"], ["2CO.3", "2 Corinthians 3:3", "Tablets of human hearts"]],
   },
   37: {
     intro: "The Spirit sets Ezekiel in a valley full of very dry bones. \"Son of man, can these bones live?\" \"O Lord GOD, You know.\" He prophesies, and there is a rattling; bones come together, sinews and flesh and skin cover them, but no breath. He prophesies to the breath, and they stand up, an exceedingly great army. These bones are Israel, who say, \"Our hope has perished.\" God will open their graves and put His Spirit in them. Then two sticks, Judah and Joseph, become one in his hand: one nation under one King, David, with an everlasting covenant of peace.",
     v: [
-      ["37:3", "Can these bones live?", "A hopeless situation."],
-      ["37:4", "O dry bones, hear the word of the LORD", "God's word gives life."],
-      ["37:9", "Come from the four winds, O breath", "Hebrew ruach: breath, wind and Spirit."],
-      ["37:11", "Our hope has perished", "God answers despair."],
-      ["37:24", "My servant David will be king over them", "One Shepherd King."],
+      ["37:3", "Can these bones live?", "God sets Ezekiel in a valley of dry bones and asks, \"Can these bones live?\" It is a picture of a situation beyond all human hope."],
+      ["37:4", "O dry bones, hear the word of the LORD", "Ezekiel is told to preach to the bones: \"O dry bones, hear the word of the LORD.\" God's word brings life where there is none."],
+      ["37:9", "Come from the four winds, O breath", "The Hebrew word ruach means breath, wind and Spirit. The breath that fills these bodies is the same Spirit God promised in 36:27 (compare Genesis 2:7; John 20:22)."],
+      ["37:11", "Our hope has perished", "The bones are Israel in exile, saying, \"Our bones are dried up and our hope has perished.\" God's answer to despair is to open their graves (37:12)."],
+      ["37:24", "My servant David will be king over them", "The two sticks joined in Ezekiel's hand (37:15-22) show Judah and Israel made one nation again under one King, \"My servant David.\""],
     ],
     w: [["רוּחַ", "ruach", "H7307", "breath, wind, spirit", "One Hebrew word means breath, wind and Spirit. Ezekiel 37 uses all three meanings: the wind blows, the breath enters, and God's Spirit gives life.", ["halot", "block"]]],
     refs: [["GEN.2", "Genesis 2:7", "God breathed into man the breath of life"], ["JHN.20", "John 20:22", "Jesus breathed on them: Receive the Holy Spirit"], ["ROM.8", "Romans 8:11", "He will give life to your mortal bodies"]],
@@ -397,9 +397,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   38: {
     intro: "Gog, of the land of Magog, chief prince of Meshech and Tubal, will gather a vast coalition and attack Israel \"in the latter years,\" when the people are living securely in unwalled villages. But God will rise up against Gog with earthquake, plague, hail and fire. \"I will magnify Myself... and they will know that I am the LORD.\"",
     v: [
-      ["38:8", "In the latter years", "A future conflict."],
-      ["38:11", "Unwalled villages... living securely", "God's restored people at rest."],
-      ["38:23", "I will make Myself known in the sight of many nations", "The purpose: God's glory."],
+      ["38:8", "In the latter years", "Gog of the land of Magog will come against Israel \"in the latter years.\" Readers differ on whether this describes one future war, a past event, or a symbolic picture of the last enemy (compare Revelation 20:8)."],
+      ["38:11", "Unwalled villages... living securely", "The invader plans to attack people living in unwalled villages, at peace and without defenses. God's restored people are pictured at rest."],
+      ["38:23", "I will make Myself known in the sight of many nations", "\"I will make Myself known in the sight of many nations.\" However it is read, the purpose of the battle is the same: that all will know the LORD."],
     ],
     why: "Scholars and teachers read the Gog and Magog prophecy (38-39) in different ways.",
     views: [
@@ -412,18 +412,18 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   39: {
     intro: "Gog falls on the mountains of Israel. The people burn the weapons for seven years and bury the dead for seven months. Birds and beasts are invited to a great feast. Then God promises: \"Now I will restore the fortunes of Jacob... I will not hide My face from them any longer, for I will have poured out My Spirit on the house of Israel.\"",
     v: [
-      ["39:9", "They will make fires with the weapons", "Weapons no longer needed."],
-      ["39:25", "I will restore the fortunes of Jacob", "Mercy after judgment."],
-      ["39:29", "I will not hide My face from them any longer", "God's face turned toward His people."],
+      ["39:9", "They will make fires with the weapons", "The people will burn the enemy's weapons for fuel for seven years. Weapons will no longer be needed."],
+      ["39:25", "I will restore the fortunes of Jacob", "\"Now I will restore the fortunes of Jacob and have mercy on the whole house of Israel.\" After judgment comes mercy."],
+      ["39:29", "I will not hide My face from them any longer", "\"I will not hide My face from them any longer, for I will have poured out My Spirit.\" God's face is turned toward His people again."],
     ],
     refs: [["REV.19", "Revelation 19:17-18", "The great supper of God"], ["JOL.2", "Joel 2:28", "I will pour out My Spirit"]],
   },
   40: {
     intro: "In 573 BC, twenty-five years into exile, Ezekiel is taken in a vision to a very high mountain in Israel. A man shining like bronze, with a measuring line and rod, shows him a temple and measures everything: walls, gates, courts, rooms and altars. \"Declare to the house of Israel all that you see.\" Chapters 40-48 describe this temple and land in great detail.",
     v: [
-      ["40:2", "On a very high mountain", "The place of God's presence."],
-      ["40:3", "A man whose appearance was like bronze", "A heavenly guide."],
-      ["40:4", "Declare to the house of Israel all that you see", "A vision for exiles with no temple."],
+      ["40:2", "On a very high mountain", "In the twenty-fifth year of exile, about 573 BC, God set Ezekiel on a very high mountain in a vision. High mountains in Scripture are often places of God's presence (Isaiah 2:2)."],
+      ["40:3", "A man whose appearance was like bronze", "A man who looked like bronze, holding a measuring rod and a line, became Ezekiel's guide. Revelation 11:1 and 21:15 also use measuring to show God's care for His holy place."],
+      ["40:4", "Declare to the house of Israel all that you see", "Ezekiel is told to declare everything he sees. For exiles with no temple, the vision was a promise that God would dwell with them again. Christians differ on whether it describes a future building, the church, or the new creation."],
     ],
     why: "Ezekiel 40-48 describes a temple, sacrifices and land divisions that were never built as described. Scholars and teachers read these chapters in different ways.",
     views: [
@@ -436,9 +436,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   41: {
     intro: "The guide measures the temple building itself: the nave, the inner room (the Most Holy Place), side rooms on three levels, and walls carved with cherubim and palm trees, each cherub with two faces, a man's and a lion's. A wooden altar stands before the LORD.",
     v: [
-      ["41:4", "This is the most holy place", "The heart of the temple."],
-      ["41:18", "Cherubim and palm trees", "Images of Eden and God's presence."],
-      ["41:22", "This is the table that is before the LORD", "Fellowship with God."],
+      ["41:4", "This is the most holy place", "The guide measured the innermost room, twenty cubits square, and said, \"This is the most holy place.\" Only the guide entered it; Ezekiel the priest stayed outside."],
+      ["41:18", "Cherubim and palm trees", "The walls were carved with cherubim and palm trees, each cherub with the face of a man and of a lion. They recall Eden and the presence of God."],
+      ["41:22", "This is the table that is before the LORD", "A wooden altar is called \"the table that is before the LORD.\" Worship is pictured as a meal in God's presence."],
     ],
     refs: [["1KI.6", "1 Kings 6", "Solomon's temple"], ["HEB.9", "Hebrews 9:1-12", "The true holy place"]],
   },
@@ -446,8 +446,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "The guide shows Ezekiel the priests' chambers, where they eat the most holy offerings and change their garments. Then he measures the outer wall, 500 rods on each side, \"to divide between the holy and the profane.\"",
     v: [
       ["42:13", "The holy chambers where the priests... shall eat the most holy things", "Rooms set apart so holy food and holy work stayed separate from ordinary life."],
-      ["42:14", "They shall lay their garments in which they minister", "Holiness in worship."],
-      ["42:20", "To divide between the holy and the profane", "God's holiness protected."],
+      ["42:14", "They shall lay their garments in which they minister", "Priests were to leave their holy garments in special rooms before going out among the people. Holiness in worship was carefully guarded."],
+      ["42:20", "To divide between the holy and the profane", "A wall around the whole area divided the holy from the common. God's holiness is protected."],
     ],
     bg: [["Reeds or cubits?", "The Hebrew text of 42:16-20 says each side measured 500 reeds (about a mile), while the Greek translation reads 500 cubits (about 850 feet), which fits the measurements of chapter 40. Translations differ here, but either way the wall marks a clear line around what is holy.", "debated", ["block", "taylor"]]],
     refs: [["LEV.10", "Leviticus 10:10", "Distinguish between holy and common"]],
@@ -457,33 +457,33 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     v: [
       ["43:2", "His voice was like the sound of many waters", "The same description as the risen Jesus (Revelation 1:15)."],
       ["43:5", "The glory of the LORD filled the house", "The glory that left in chapter 10 returns."],
-      ["43:7", "I will dwell among the sons of Israel forever", "God's presence restored."],
+      ["43:7", "I will dwell among the sons of Israel forever", "The glory that left in chapter 10 returns from the east and fills the house. God says, \"This is the place of My throne... where I will dwell among the sons of Israel forever.\""],
     ],
     refs: [["EZK.10", "Ezekiel 10:18-19", "The glory departs"], ["REV.1", "Revelation 1:15", "His voice like the sound of many waters"], ["JHN.1", "John 1:14", "We beheld His glory"]],
   },
   44: {
     intro: "The east gate is shut because the LORD entered by it; only the prince may sit there to eat before the LORD. Foreigners uncircumcised in heart may not enter. The Levites who served idols lose their priestly rank; the faithful sons of Zadok will minister and teach the people the difference between holy and common.",
     v: [
-      ["44:2", "This gate shall be shut", "Honoring the way God came."],
-      ["44:15", "The sons of Zadok, who kept charge of My sanctuary", "Faithfulness rewarded."],
-      ["44:23", "Teach My people the difference between the holy and the profane", "A priest's calling."],
+      ["44:2", "This gate shall be shut", "The east gate was to stay shut because the LORD had entered by it. The present Golden Gate on Jerusalem's east wall has been sealed for centuries, and some people connect it with this verse."],
+      ["44:15", "The sons of Zadok, who kept charge of My sanctuary", "The priests descended from Zadok stayed faithful when others strayed, so they alone would serve at God's altar. Faithfulness is rewarded."],
+      ["44:23", "Teach My people the difference between the holy and the profane", "Priests were to teach the people the difference between the holy and the common, the clean and the unclean. Teaching was part of a priest's calling (Malachi 2:7)."],
     ],
     refs: [["1SA.2", "1 Samuel 2:35", "A faithful priest"], ["MAL.2", "Malachi 2:7", "The lips of a priest preserve knowledge"]],
   },
   45: {
     intro: "A holy portion of land is set apart for the sanctuary, priests and Levites, with land for the prince on each side. God commands the princes: \"Put away violence and destruction, and practice justice and righteousness.\" Honest weights and measures, and offerings for the feasts.",
     v: [
-      ["45:1", "An allotment to the LORD, a holy portion", "God at the center."],
-      ["45:9", "Practice justice and righteousness", "Leaders must not oppress."],
-      ["45:10", "You shall have just balances", "Honesty in business."],
+      ["45:1", "An allotment to the LORD, a holy portion", "A holy portion of land is set apart for the LORD at the center of the land. God is at the center of His people's life."],
+      ["45:9", "Practice justice and righteousness", "\"Enough, you princes of Israel; put away violence and destruction, and practice justice and righteousness.\" Leaders must not oppress the people."],
+      ["45:10", "You shall have just balances", "\"You shall have just balances.\" Honest weights and measures were part of honoring God (Proverbs 11:1)."],
     ],
     refs: [["MIC.6", "Micah 6:8, 11", "Do justice; dishonest scales"], ["PRO.11", "Proverbs 11:1", "A false balance"]],
   },
   46: {
     intro: "Rules for worship on Sabbaths and new moons. The people enter by one gate and leave by the opposite gate, so no one turns back. The prince worships among the people. Kitchens are set in the corners of the court for cooking the offerings.",
     v: [
-      ["46:9", "He shall go straight out", "Worship moves forward."],
-      ["46:10", "The prince shall go in among them", "The leader worships with the people."],
+      ["46:9", "He shall go straight out", "Worshipers who came in by the north gate were to leave by the south gate, and the reverse. No one went back the way they came; worship moves forward."],
+      ["46:10", "The prince shall go in among them", "The prince was to go in and out with the people, not apart from them. The leader worships alongside everyone else."],
       ["46:16-18", "The prince shall not take from the people's inheritance", "Leaders may not seize family land, the very sin of Ahab against Naboth (1 Kings 21)."],
     ],
     bg: [["Reading Ezekiel's temple", "Chapters 40-48 describe a temple and its worship in great detail. Careful readers understand it in different ways: as a future temple, as a picture of God dwelling with a restored people, or as fulfilled in Christ and the new creation. The note on Ezekiel 40 sets out these views fairly.", "good", ["block", "duguidE"]]],
@@ -492,11 +492,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
   47: {
     intro: "Water flows from under the threshold of the temple toward the east. Ezekiel's guide measures it: ankle-deep, knee-deep, waist-deep, then a river too deep to cross. Where it flows into the Dead Sea, the water becomes fresh and teems with fish, and fishermen spread nets. Trees on both banks bear fruit every month, \"and their leaves for healing.\" The land's borders are drawn, and foreigners living among Israel receive an inheritance too.",
     v: [
-      ["47:1", "Water was flowing from under the threshold", "Life flows from God's presence."],
-      ["47:5", "A river that I could not ford", "Ever-deepening blessing."],
-      ["47:9", "Everything will live where the river goes", "Even the Dead Sea comes alive."],
-      ["47:12", "Their leaves for healing", "Echoed in Revelation 22:2."],
-      ["47:22", "The aliens who stay in your midst... shall have an inheritance", "Room for outsiders."],
+      ["47:1", "Water was flowing from under the threshold", "Water flowed from under the threshold of the temple toward the east. Life flows out from God's presence (Joel 3:18; Zechariah 14:8)."],
+      ["47:5", "A river that I could not ford", "Ankle-deep, then knee-deep, then waist-deep, and finally a river too deep to cross. God's blessing keeps getting deeper."],
+      ["47:9", "Everything will live where the river goes", "Wherever the river flows, everything lives. Even the salty Dead Sea becomes fresh, with fishermen spreading nets from En-gedi (47:10)."],
+      ["47:12", "Their leaves for healing", "Fruit trees grow along the river, bearing every month, \"and their leaves for healing.\" Revelation 22:2 echoes this picture."],
+      ["47:22", "The aliens who stay in your midst... shall have an inheritance", "Foreigners who live among Israel and raise families there will receive an inheritance like the native-born. There is room in God's land for outsiders."],
     ],
     refs: [["REV.22", "Revelation 22:1-2", "The river of the water of life"], ["JHN.7", "John 7:37-39", "Rivers of living water"], ["ZEC.14", "Zechariah 14:8", "Living waters from Jerusalem"]],
   },
@@ -504,7 +504,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "The land is divided among the twelve tribes in parallel strips, with the holy portion in the middle. The city has twelve gates named for the tribes, three on each side. The book ends with the city's new name: \"The LORD is there.\"",
     v: [
       ["48:8-10", "The holy allotment", "God's sanctuary stands at the center, with the tribes around it."],
-      ["48:31", "The gates of the city shall be named after the tribes", "Every tribe has a place."],
+      ["48:31", "The gates of the city shall be named after the tribes", "The city has twelve gates named after the twelve tribes, so every tribe has a place. Revelation 21:12 describes the new Jerusalem the same way, and the book ends with the city's name: \"The LORD is there\" (48:35)."],
       ["48:35", "The LORD is there", "Hebrew: Yahweh Shammah. The best thing about the city is God's presence."],
     ],
     bg: [["Every tribe has a place", "Unlike Joshua's division of the land, Ezekiel's tribes receive equal strips running east to west, with the sanctuary in the middle. Even the tribes of servant-wives' sons get full shares. Revelation 21 takes up the twelve gates with the tribes' names.", "good", ["block", "duguidE"]]],
