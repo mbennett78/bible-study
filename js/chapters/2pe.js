@@ -33,6 +33,8 @@ export default makeBook({ lang: "Greek", sources, use: ["schreinerP", "green2P"]
       ["2:15", "Balaam... who loved the wages of unrighteousness", "Balaam was willing to curse Israel for money (Numbers 22). False teachers who are in it for money follow his path."],
       ["2:19", "Promising them freedom while they themselves are slaves", "They promise freedom while they are slaves to their own desires. Whatever masters a person is what enslaves them."],
     ],
+    bg: [["Tartarus", "In Greek stories, Tartarus was the deepest pit beneath the world, where rebels were kept. Peter borrows the word to say that God put the angels who sinned into dark pits until judgment (2:4).", "good", ["green2P", "bauckham"]]],
+    w: [["ταρταρόω", "tartaroō", "G5020", "to cast into Tartarus", "Found only here in the Bible. Peter uses a word his readers knew to make the point that God judges evil, while He knows how to rescue the godly (2:9).", ["bdag", "schreinerP"]]],
     refs: [["GEN.6", "Genesis 6-8", "Noah and the flood"], ["GEN.19", "Genesis 19", "Sodom and Lot"], ["NUM.22", "Numbers 22", "Balaam's donkey"], ["JUD.1", "Jude 4-16", "Jude's similar warning"]],
   },
   3: {
@@ -46,6 +48,8 @@ export default makeBook({ lang: "Greek", sources, use: ["schreinerP", "green2P"]
       ["3:16", "As also in all his letters... the rest of the Scriptures", "Peter places Paul's letters beside \"the rest of the Scriptures.\" Even in the first century, Paul's letters were being read as God's word."],
       ["3:18", "Grow in the grace and knowledge of our Lord and Savior Jesus Christ", "Peter's last words: keep growing. Knowing Jesus is not a finish line but a lifelong journey."],
     ],
+    bg: [["Paul's letters as Scripture", "Peter mentions Paul's letters, saying some things in them are hard to understand, and puts them alongside \"the rest of the Scriptures\" (3:16). Very early, the church was already treating the apostles' letters as God's word.", "good", ["green2P", "schreinerP"]]],
+    w: [["μακροθυμέω", "makrothymeō", "G3114", "to be patient", "Literally \"long-tempered,\" slow to anger. God is not slow about His promise but is patient, \"not wishing for any to perish but for all to come to repentance\" (3:9).", ["bdag", "bauckham"]]],
     refs: [["PSA.90", "Psalm 90:4", "A thousand years like a day"], ["ISA.65", "Isaiah 65:17", "New heavens and a new earth"], ["REV.21", "Revelation 21:1", "All things new"], ["MAT.24", "Matthew 24:43", "Like a thief"]],
   },
 });

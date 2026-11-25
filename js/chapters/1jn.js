@@ -47,6 +47,8 @@ export default makeBook({ lang: "Greek", sources, use: ["yarbrough", "kruseJ"] }
       ["3:18", "Let us not love with word or with tongue, but in deed and truth", "Talk is cheap. Real love shows in practical help, like sharing with a brother or sister in need (3:17)."],
       ["3:20", "God is greater than our heart and knows all things", "When our conscience condemns us, we can rest in God, who knows everything, including our trust in Him, and is greater than our guilt."],
     ],
+    bg: [["Cain", "John points to Cain, who killed his brother Abel (Genesis 4:8), as the opposite of love. Cain hated his brother because his own deeds were evil (3:12). Love lays down its life for others, as Christ did (3:16).", "good", ["yarbrough", "kruseJ"]]],
+    w: [["τέκνον", "teknon", "G5043", "child", "John loves to call believers God's children. \"See how great a love the Father has bestowed on us, that we would be called children of God; and such we are\" (3:1).", ["bdag", "stottJ"]]],
     refs: [["GEN.4", "Genesis 4:1-8", "Cain and Abel"], ["JHN.15", "John 15:13", "Greater love"], ["JAS.2", "James 2:15-16", "Faith that helps"]],
   },
   4: {
@@ -73,6 +75,8 @@ export default makeBook({ lang: "Greek", sources, use: ["yarbrough", "kruseJ"] }
       ["5:14", "If we ask anything according to His will, He hears us", "Prayer is not a way to bend God to our will, but asking in line with His will, and that kind of prayer He always hears."],
       ["5:21", "Little children, guard yourselves from idols", "The letter ends with a warning: anything that takes God's place in our hearts is an idol."],
     ],
+    bg: [["The extra words in 5:7-8", "The King James Version adds words about \"the Father, the Word, and the Holy Ghost\" in 5:7-8. They are not found in any Greek manuscript before the late Middle Ages, so modern translations leave them out. The Trinity is taught elsewhere in Scripture and does not depend on these words.", "strong", ["kruseJ", "marshallJ"]]],
+    w: [["νικάω", "nikaō", "G3528", "to overcome, win", "Related to Nike, the Greek goddess of victory. \"This is the victory that has overcome the world: our faith\" (5:4).", ["bdag", "yarbrough"]]],
     refs: [["JHN.20", "John 20:31", "That you may believe and have life"], ["JHN.19", "John 19:34", "Blood and water"], ["JHN.14", "John 14:13-14", "Ask in My name"]],
   },
 });

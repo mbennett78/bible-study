@@ -35,6 +35,8 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["2:10", "By means of good works, as is proper for women making a claim to godliness", "Paul points away from expensive hair styles, gold and pearls (2:9) toward the beauty of a life full of good works."],
     ],
     views: [["Women teaching in 2:11-15", "Some readers hold that Paul limits the role of pastor or elder, and teaching with authority over the gathered church, to qualified men, grounding this in creation order. Others read it as addressing a specific problem in Ephesus, such as untrained women influenced by false teachers, and see the instruction as tied to that setting. Readers on both sides affirm that women are equally saved, gifted and valued, and that many women served alongside Paul.", ["towner", "knight", "mounce"]]],
+    bg: [["Ephesus", "Timothy led the church in Ephesus, a great port city famous for its temple of Artemis, one of the seven wonders of the ancient world (Acts 19:23-41). False teaching had troubled the church there (1:3-7).", "strong", ["towner", "mounce"]]],
+    w: [["μεσίτης", "mesitēs", "G3316", "mediator, go-between", "One who stands between two parties to bring them together. \"There is one God, and one mediator also between God and men, the man Christ Jesus\" (2:5).", ["bdag", "knight"]]],
     refs: [["JER.29", "Jeremiah 29:7", "Pray for the city"], ["MRK.10", "Mark 10:45", "A ransom for many"], ["1PE.3", "1 Peter 3:3-4", "Inner beauty"]],
   },
   3: {
@@ -60,6 +62,8 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["4:13", "Give attention to the public reading of Scripture", "Most believers did not own copies of Scripture, so it was read aloud when the church met. Timothy was to give himself to reading, encouraging and teaching."],
       ["4:16", "Pay close attention to yourself and to your teaching", "Timothy must watch both how he lives and what he teaches. Both matter for him and for those who hear him."],
     ],
+    bg: [["Forbidding marriage and foods", "Some false teachers in Ephesus told believers not to marry and to avoid certain foods, as if the body and the good things of creation were unspiritual. Paul answers that everything God created is good when received with thanks (4:3-4).", "good", ["towner", "knight"]]],
+    w: [["γυμνάζω", "gymnazō", "G1128", "to train, exercise", "The word behind \"gymnasium.\" Paul says bodily training is of some value, but training in godliness is of value for this life and the next (4:7-8).", ["bdag", "mounce"]]],
     refs: [["GEN.1", "Genesis 1:31", "Everything was very good"], ["1CO.9", "1 Corinthians 9:25-27", "Training like an athlete"], ["2TI.1", "2 Timothy 1:6", "Kindle the gift"]],
   },
   5: {
@@ -72,6 +76,8 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["5:18", "The laborer is worthy of his wages", "Paul quotes Deuteronomy 25:4 and words Jesus said (Luke 10:7), putting them side by side as Scripture."],
       ["5:23", "Use a little wine for the sake of your stomach", "Paul cares about Timothy's health. Water in that world was often unsafe, and a little wine was a common remedy for stomach trouble."],
     ],
+    bg: [["Caring for widows", "There were no pensions, so a widow without family could quickly become destitute. From the start the church cared for widows (Acts 6:1). Paul asks families to care for their own first, so the church can help those who are truly alone.", "good", ["towner", "guthrieP"]]],
+    w: [["τιμή", "timē", "G5092", "honor, price", "The word means both honor and payment. \"Honor widows\" (5:3) and \"double honor\" for elders (5:17) include practical support.", ["bdag", "knight"]]],
     refs: [["EXO.20", "Exodus 20:12", "Honor your parents"], ["DEU.25", "Deuteronomy 25:4", "Do not muzzle the ox"], ["LUK.10", "Luke 10:7", "The laborer deserves his wages"], ["JAS.1", "James 1:27", "Visit widows and orphans"]],
   },
   6: {
@@ -85,6 +91,8 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["6:17", "God, who richly supplies us with all things to enjoy", "God is not stingy. He gives good things to enjoy, so the rich should trust Him, not their wealth, and be generous (6:18)."],
       ["6:20", "Guard what has been entrusted to you", "The gospel was entrusted to Timothy like a valuable deposit. He must guard it and pass it on unchanged."],
     ],
+    bg: [["The love of money", "\"The love of money is a root of all sorts of evil\" (6:10). Greek and Roman writers said similar things, but Paul adds the reason: it pulls people away from the faith. He commands the rich to be generous and ready to share (6:17-18).", "good", ["towner", "mounce"]]],
+    w: [["αὐτάρκεια", "autarkeia", "G841", "contentment", "Greek thinkers used it for being independent of circumstances. Paul gives it new depth: godliness with contentment is great gain, because we brought nothing in and take nothing out (6:6-7).", ["bdag", "knight"]]],
     refs: [["JOB.1", "Job 1:21", "Naked I came"], ["MAT.6", "Matthew 6:19-24", "You cannot serve God and money"], ["HEB.13", "Hebrews 13:5", "Be content"], ["LUK.12", "Luke 12:15-21", "The rich fool"]],
   },
 });

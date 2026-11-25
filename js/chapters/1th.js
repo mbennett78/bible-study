@@ -33,6 +33,8 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["2:13", "You accepted it not as the word of men, but for what it really is, the word of God", "They heard human voices, but they recognized God speaking, and that word went to work in them."],
       ["2:20", "You are our glory and joy", "Paul's greatest joy and reward are not achievements but people who know and follow Jesus."],
     ],
+    bg: [["Traveling teachers", "Greek cities saw many wandering speakers who flattered their audiences and expected to be paid. Paul reminds the Thessalonians that he worked night and day at his trade so as not to be a burden (2:9; Acts 18:3).", "good", ["weima", "green"]]],
+    w: [["τροφός", "trophos", "G5162", "nursing mother", "A mother who nurses her own children. Paul says he was gentle among them like that (2:7), and also like a father (2:11).", ["bdag", "stottT"]]],
     refs: [["ACT.16", "Acts 16:22-24", "Mistreated at Philippi"], ["ACT.18", "Acts 18:3", "Paul the tentmaker"], ["GAL.1", "Galatians 1:10", "Pleasing God, not men"]],
   },
   3: {
@@ -45,6 +47,8 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["3:12", "May the Lord cause you to increase and abound in love", "Paul prays that their love will overflow, both for each other and for everyone else."],
       ["3:13", "So that He may establish your hearts without blame in holiness", "Love now prepares believers to stand blameless before God when Jesus returns with all His holy ones."],
     ],
+    bg: [["Timothy sent back", "Paul had to leave Thessalonica in a hurry after only a short stay (Acts 17:1-10). From Athens he sent Timothy back to strengthen the new believers, and Timothy's good report brought him great joy (3:6-9).", "good", ["green", "weima"]]],
+    w: [["στηρίζω", "stērizō", "G4741", "to strengthen, make firm", "To set something firmly so it will not fall. Paul sent Timothy to strengthen them (3:2) and prays that God will establish their hearts (3:13).", ["bdag", "fee12"]]],
     refs: [["ACT.17", "Acts 17:14-15", "Timothy stays behind"], ["2TI.3", "2 Timothy 3:12", "All who live godly will be persecuted"], ["PHP.1", "Philippians 1:9", "Love that abounds"]],
   },
   4: {
@@ -75,6 +79,8 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["5:18", "In everything give thanks", "Not thankful for every evil, but thankful in every situation, because God is still good and still at work."],
       ["5:21", "Examine everything carefully; hold fast to that which is good", "Do not believe everything or reject everything. Test what you hear against God's truth, keep what is good, and turn from every kind of evil (5:22)."],
     ],
+    bg: [["\"Peace and safety\"", "Rome boasted that it had brought \"peace and security\" to the world, and similar words appear on Roman coins and inscriptions. Paul warns that the day of the Lord will come suddenly while people are saying just that (5:3).", "good", ["weima", "green"]]],
+    w: [["ἀδιαλείπτως", "adialeiptōs", "G89", "without ceasing, constantly", "Used of something that keeps coming back again and again. \"Pray without ceasing\" (5:17) means a life that keeps returning to prayer.", ["bdag", "stottT"]]],
     refs: [["MAT.24", "Matthew 24:42-44", "Like a thief"], ["EPH.6", "Ephesians 6:14-17", "Breastplate and helmet"], ["PHP.4", "Philippians 4:4-6", "Rejoice and pray"]],
   },
 });

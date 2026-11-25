@@ -36,6 +36,8 @@ export default makeBook({ lang: "Greek", sources, use: ["mooJ", "mcknight"] }, {
       ["2:26", "As the body without the spirit is dead, so also faith without works is dead", "A body without breath is dead, and faith without works is just as lifeless."],
     ],
     views: [["James and Paul on faith and works", "Paul says a person is justified by faith apart from works of the Law (Romans 3:28); James says a person is justified by works and not by faith alone (2:24). Most scholars see no contradiction: Paul fights the idea of earning God's favor through the Law, while James fights an empty faith that changes nothing. Some read James's \"justified\" as being shown to be right before people; others as God's final verdict on a faith that has proved real. Both apostles use Abraham, and both agree that true faith works through love.", ["mooJ", "mcknight", "davids"]]],
+    bg: [["Rich and poor in the meeting", "In Roman society the best seats always went to people of wealth and rank. James pictures a man with gold rings walking into the church's gathering and getting the good seat, while the poor man is told to stand. That, he says, is favoritism (2:1-4).", "good", ["mooJ", "davids"]]],
+    w: [["συναγωγή", "synagōgē", "G4864", "assembly, gathering", "James calls the believers' gathering their \"assembly,\" literally \"synagogue\" (2:2), the only time the New Testament uses this word for a Christian meeting. It is a sign of how early and how Jewish his letter is.", ["bdag", "mcknight"]]],
     refs: [["LEV.19", "Leviticus 19:15-18", "No partiality; love your neighbor"], ["GEN.22", "Genesis 22", "Abraham offers Isaac"], ["JOS.2", "Joshua 2", "Rahab hides the spies"], ["GAL.5", "Galatians 5:6", "Faith working through love"]],
   },
   3: {
@@ -49,6 +51,8 @@ export default makeBook({ lang: "Greek", sources, use: ["mooJ", "mcknight"] }, {
       ["3:17", "The wisdom from above is first pure, then peaceable, gentle", "True wisdom is shown less by cleverness than by character: pure, peaceful, gentle, open to reason, merciful and sincere."],
       ["3:18", "The seed whose fruit is righteousness is sown in peace", "Peacemakers are like farmers. They plant peace, and a harvest of righteousness grows from it."],
     ],
+    bg: [["Bits and rudders", "A small bit in a horse's mouth turns the whole horse, and a small rudder steers a great ship in strong winds. James uses everyday pictures to show how much power the small tongue has (3:3-5).", "good", ["mooJ", "blomberg"]]],
+    w: [["χαλινός", "chalinos", "G5469", "bit, bridle", "The metal piece in a horse's mouth. Someone who can bridle the tongue can bridle the whole body (3:2; 1:26).", ["bdag", "davids"]]],
     refs: [["PRO.18", "Proverbs 18:21", "Death and life are in the tongue"], ["PSA.141", "Psalm 141:3", "Set a guard over my mouth"], ["MAT.12", "Matthew 12:34-37", "Out of the heart the mouth speaks"]],
   },
   4: {
@@ -62,6 +66,8 @@ export default makeBook({ lang: "Greek", sources, use: ["mooJ", "mcknight"] }, {
       ["4:14", "You are just a vapor that appears for a little while", "Like morning mist that disappears as the sun rises. Our lives are short, so we hold our plans loosely."],
       ["4:15", "If the Lord wills, we will live and also do this or that", "Planning is not wrong; leaving God out of our plans is. Saying \"if the Lord wills\" keeps us humble and trusting."],
     ],
+    bg: [["Traveling merchants", "Merchants traveled from city to city to trade and make a profit. James does not condemn business, but warns against planning as if life were ours to control: \"If the Lord wills, we will live and also do this or that\" (4:15).", "good", ["mooJ", "mcknight"]]],
+    w: [["δίψυχος", "dipsychos", "G1374", "double-minded", "Literally \"two-souled,\" a person divided between God and the world. James may have coined the word (1:8; 4:8).", ["bdag", "davids"]]],
     refs: [["PRO.3", "Proverbs 3:34", "He gives grace to the afflicted"], ["PRO.27", "Proverbs 27:1", "Do not boast about tomorrow"], ["1PE.5", "1 Peter 5:5-9", "Humble yourselves; resist the devil"]],
   },
   5: {

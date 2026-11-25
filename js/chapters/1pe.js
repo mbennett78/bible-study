@@ -35,6 +35,8 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
       ["2:21", "Christ also suffered for you, leaving you an example", "The Greek word for example was used for a tracing pattern that children copied when learning to write. We trace the outline of Jesus' life."],
       ["2:24", "By His wounds you were healed", "Quoting Isaiah 53:5. Jesus carried our sins in His own body on the cross so that we could be healed and live for righteousness."],
     ],
+    bg: [["Living stones", "Peter quotes Isaiah 28:16 and Psalm 118:22 about a cornerstone. Believers are living stones being built into a spiritual house, God's new temple (2:4-5).", "good", ["jobes", "schreinerP"]]],
+    w: [["πάροικος", "paroikos", "G3941", "foreigner, resident alien", "Someone living in a place without full rights as a citizen. Peter calls believers \"aliens and strangers\" (2:11): their true home is with God.", ["bdag", "davidsP"]]],
     refs: [["PSA.118", "Psalm 118:22", "The rejected stone"], ["EXO.19", "Exodus 19:5-6", "A kingdom of priests"], ["ISA.53", "Isaiah 53:4-9", "By His wounds"], ["ROM.13", "Romans 13:1-7", "Governing authorities"]],
   },
   3: {
@@ -48,6 +50,8 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
       ["3:21", "Baptism now saves you... through the resurrection of Jesus Christ", "Peter compares baptism to the Flood: Noah's family passed through water to safety. It is not washing dirt off the body but \"an appeal to God for a good conscience,\" and it saves \"through the resurrection of Jesus Christ.\" Christians differ on how baptism and salvation relate; all agree the power is in the risen Christ, not the water itself."],
     ],
     views: [["\"Baptism now saves you\" (3:21)", "Some scholars read Peter as saying God saves through baptism as the moment a believer, trusting the risen Christ, appeals to God for a clean conscience. Others read baptism here as the outward pledge and picture of a salvation already received by faith, stressing Peter's words that it is \"not the removal of dirt from the flesh.\" All agree that the saving power comes from Christ's resurrection, not the water itself, and that baptism was expected of every believer.", ["jobes", "schreinerP", "grudem"]]],
+    bg: [["Braided hair and gold", "Roman statues and coins show that wealthy women wore elaborate braided hairstyles with gold ornaments, a sign of status. Peter says a woman's true beauty is the inner person, a gentle and quiet spirit, precious to God (3:3-4).", "good", ["jobes", "davidsP"]]],
+    w: [["πραΰς", "praus", "G4239", "gentle, meek", "Strength under control, not weakness. Jesus called Himself gentle (Matthew 11:29), and Peter asks believers to give their reasons for hope \"with gentleness and reverence\" (3:15).", ["bdag", "grudem"]]],
     refs: [["GEN.6", "Genesis 6-8", "Noah's ark"], ["EPH.5", "Ephesians 5:25-33", "Husbands and wives"], ["ROM.12", "Romans 12:17-21", "Do not repay evil"], ["ACT.2", "Acts 2:38", "Repent and be baptized"]],
   },
   4: {
@@ -74,6 +78,8 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
       ["5:8", "Your adversary, the devil, prowls around like a roaring lion", "Lions hunt the weak and the stragglers. Stay alert and stand firm in the faith, knowing others are suffering too (5:9)."],
       ["5:10", "The God of all grace... will Himself perfect, confirm, strengthen and establish you", "After a short time of suffering, God Himself will restore His people and make them strong, firm and steady."],
     ],
+    bg: [["\"She who is in Babylon\"", "Peter sends greetings from \"she who is in Babylon\" (5:13), most likely meaning the church in Rome. Like Revelation, he calls Rome Babylon, the city where God's people lived as exiles.", "good", ["jobes", "schreinerP"]]],
+    w: [["ποιμαίνω", "poimainō", "G4165", "to shepherd", "To feed, guide and protect a flock. Jesus told Peter, \"Shepherd My sheep\" (John 21:16), and Peter passes the charge on to the elders (5:2).", ["bdag", "davidsP"]]],
     refs: [["JHN.21", "John 21:15-17", "Tend My sheep"], ["PSA.55", "Psalm 55:22", "Cast your burden on the LORD"], ["JAS.4", "James 4:6-10", "Grace to the humble"], ["ACT.12", "Acts 12:12", "Mark's family home"]],
   },
 });

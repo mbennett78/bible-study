@@ -34,6 +34,8 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["2:16", "Gave us eternal comfort and good hope by grace", "God loved us and gave eternal comfort and good hope as a gift of grace, not something earned."],
     ],
     views: [["Who or what is the \"restrainer\" (2:6-7)?", "Some think it is the Holy Spirit working through the church. Others think it is the rule of law and government that holds back chaos. Others think it is an angel such as Michael, or the preaching of the gospel. Paul says the readers already knew what he meant, but we do not know for sure. All agree that God is in control and that Christ will defeat evil.", ["weima", "green", "fee12"]]],
+    bg: [["A letter \"as if from us\"", "Some in Thessalonica had been upset by a message, perhaps a letter claiming to be from Paul, saying the day of the Lord had already come (2:2). That is why Paul closes by pointing to his own handwriting (3:17).", "good", ["weima", "fee12"]]],
+    w: [["ἀποστασία", "apostasia", "G646", "rebellion, falling away", "A turning away from loyalty, the word behind \"apostasy.\" Paul says this will come before the day of the Lord (2:3). Readers differ on the details of these events.", ["bdag", "green"]]],
     refs: [["DAN.7", "Daniel 7:25", "He will speak against the Most High"], ["DAN.11", "Daniel 11:36", "He will exalt himself"], ["MAT.24", "Matthew 24:4-24", "Do not be misled"], ["1JN.2", "1 John 2:18", "Many antichrists"]],
   },
   3: {
@@ -46,6 +48,8 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["3:13", "Do not grow weary of doing good", "Some in the church were idle and leaning on others (3:11). Paul tells everyone else not to grow tired of doing what is right."],
       ["3:16", "May the Lord of peace Himself continually grant you peace in every circumstance", "Paul closes with a blessing: may the Lord of peace give you peace at all times and in every way."],
     ],
+    bg: [["Believers who stopped working", "Some believers had stopped working and were living off others. Paul reminds them that he worked for his own food, and gives a simple rule: \"if anyone is not willing to work, then he is not to eat, either\" (3:10).", "good", ["green", "stottT"]]],
+    w: [["ἀτάκτως", "ataktōs", "G814", "in an undisciplined way", "Used of a soldier out of step with the ranks. In everyday papers of the time it could describe a worker skipping work, which fits the idle believers here (3:6, 11).", ["bdag", "weima"]]],
     refs: [["1TH.4", "1 Thessalonians 4:11-12", "Work with your hands"], ["GAL.6", "Galatians 6:9", "Do not lose heart"], ["PRO.6", "Proverbs 6:6-11", "Learn from the ant"]],
   },
 });

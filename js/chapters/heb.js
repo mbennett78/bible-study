@@ -47,6 +47,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["3:13", "Encourage one another day after day", "Sin hardens hearts slowly, by deceiving us. Daily encouragement from other believers helps keep hearts soft."],
       ["3:19", "They were not able to enter because of unbelief", "The generation that left Egypt did not enter the promised land, not for lack of strength, but because they did not trust God."],
     ],
+    bg: [["Moses the faithful servant", "In Numbers 12:7 God calls Moses \"faithful in all My household.\" Hebrews honors Moses as a faithful servant in God's house, and Jesus as the Son over the house (3:5-6).", "good", ["lane", "bruceH"]]],
+    w: [["σήμερον", "sēmeron", "G4594", "today", "Hebrews quotes Psalm 95: \"Today if you hear His voice, do not harden your hearts.\" As long as it is still called \"Today,\" there is time to listen (3:13).", ["bdag", "guthrieH"]]],
     refs: [["NUM.12", "Numbers 12:7", "Moses faithful in My house"], ["PSA.95", "Psalm 95:7-11", "Do not harden your hearts"], ["NUM.14", "Numbers 14", "Israel refuses to enter"]],
   },
   4: {
@@ -58,6 +60,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["4:15", "One who has been tempted in all things as we are, yet without sin", "Jesus was tempted in every way we are, yet never sinned. He knows our weakness from the inside and feels for us."],
       ["4:16", "Let us draw near with confidence to the throne of grace", "Because of our great High Priest, we can come to God's throne without fear, to find mercy and help just when we need it."],
     ],
+    bg: [["Joshua and Jesus", "In Greek, the name Joshua is Iēsous, the same as Jesus. Hebrews notes that Joshua brought Israel into the land, but not into God's final rest (4:8). That rest still remains for God's people.", "strong", ["bruceH", "lane"]]],
+    w: [["κατάπαυσις", "katapausis", "G2663", "rest, resting place", "God's rest after creation (Genesis 2:2) and the rest of the promised land (Psalm 95:11). Hebrews says a Sabbath rest remains for those who trust God (4:9-10).", ["bdag", "ellingworth"]]],
     refs: [["GEN.2", "Genesis 2:2", "God rested"], ["MAT.11", "Matthew 11:28-30", "I will give you rest"], ["MAT.4", "Matthew 4:1-11", "Jesus tempted"]],
   },
   5: {
@@ -70,6 +74,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["5:8", "He learned obedience from the things which He suffered", "Jesus was always the Son, yet as a man He learned what obedience costs by actually obeying through suffering."],
       ["5:12", "You have come to need milk and not solid food", "By now they should have been teaching others, but they needed the basics again. Faith is meant to grow up."],
     ],
+    bg: [["Melchizedek", "Melchizedek appears only twice in the Old Testament: as king of Salem and priest of God Most High who blessed Abraham (Genesis 14:18-20), and in Psalm 110:4. A Dead Sea Scroll (11QMelchizedek) shows Jews of the time were already wondering about him.", "strong", ["lane", "bruceH"]]],
+    w: [["ἀρχιερεύς", "archiereus", "G749", "high priest", "The chief priest, who alone entered the Most Holy Place once a year. Hebrews calls Jesus the great high priest who understands our weakness (4:15; 5:1-10).", ["bdag", "guthrieH"]]],
     refs: [["PSA.110", "Psalm 110:4", "A priest forever"], ["LUK.22", "Luke 22:41-44", "Jesus prays in agony"], ["1CO.3", "1 Corinthians 3:1-2", "Milk, not solid food"]],
   },
   6: {
@@ -83,6 +89,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["6:19", "This hope we have as an anchor of the soul", "Hope in Christ holds the soul steady like an anchor in a storm. It is fastened to Jesus Himself, who has gone before us into God's presence (6:20)."],
     ],
     views: [["The warning in 6:4-6", "Some read it as describing true believers who can fall away and be lost. Others read it as describing people who came close to faith and tasted its blessings but never truly trusted Christ. Others read it as a real warning God uses to keep His people from falling away. All agree the passage calls readers to keep trusting Christ, and the writer says he is confident of better things for them (6:9).", ["lane", "bruceH", "guthrieH"]]],
+    bg: [["An anchor for the soul", "Early Christians often carved an anchor on tombs in the catacombs of Rome, sometimes shaped like a cross. It pictured the hope of Hebrews 6:19: \"sure and steadfast.\"", "strong", ["lane", "bruceH"]]],
+    w: [["ἄγκυρα", "ankyra", "G45", "anchor", "An anchor keeps a ship from drifting in a storm. Our hope is anchored where Jesus has gone ahead of us, behind the veil in God's presence (6:19-20).", ["bdag", "ellingworth"]]],
     refs: [["GEN.22", "Genesis 22:16-17", "God swears to Abraham"], ["GEN.14", "Genesis 14:18-20", "Melchizedek"], ["NUM.23", "Numbers 23:19", "God is not a man that He should lie"]],
   },
   7: {
@@ -95,6 +103,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["7:26", "Holy, innocent, undefiled, separated from sinners", "The priest we need: holy, blameless, pure, and exalted above the heavens."],
       ["7:27", "He did once for all when He offered up Himself", "Earthly priests offered sacrifices day after day, first for their own sins. Jesus offered Himself, once, and it was enough."],
     ],
+    bg: [["Abraham's tithe", "Abraham gave Melchizedek a tenth of the spoils (Genesis 14:20). Hebrews reasons that Levi, still \"in the loins\" of his ancestor, gave the tithe too, so Melchizedek's priesthood is greater than Levi's (7:9-10).", "good", ["lane", "guthrieH"]]],
+    w: [["ἔγγυος", "engyos", "G1450", "guarantee, surety", "Someone who stands behind a promise and makes it good. Jesus is the guarantee of a better covenant (7:22).", ["bdag", "bruceH"]]],
     refs: [["GEN.14", "Genesis 14:17-20", "Abraham meets Melchizedek"], ["PSA.110", "Psalm 110:4", "The LORD has sworn"], ["ROM.8", "Romans 8:34", "Christ intercedes for us"]],
   },
   8: {
@@ -106,6 +116,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["8:10", "I will put My laws into their minds, and I will write them on their hearts", "Quoting Jeremiah 31:33. The old covenant was written on stone. In the new covenant God writes His ways on His people's hearts."],
       ["8:12", "I will remember their sins no more", "Quoting Jeremiah 31:34. When God forgives, He chooses not to hold our sins against us anymore."],
     ],
+    bg: [["A copy and a shadow", "God told Moses to build the tabernacle by the pattern shown him on the mountain (Exodus 25:40). Hebrews calls the earthly tabernacle a copy and shadow of the heavenly one, where Christ now serves (8:5).", "good", ["lane", "ellingworth"]]],
+    w: [["διαθήκη", "diathēkē", "G1242", "covenant", "A binding agreement set by one party for others. Hebrews 8:8-12 quotes the new covenant promise of Jeremiah 31:31-34, the longest Old Testament quotation in the New Testament.", ["bdag", "bruceH"]]],
     refs: [["JER.31", "Jeremiah 31:31-34", "The new covenant"], ["EXO.25", "Exodus 25:40", "Make it after the pattern"], ["LUK.22", "Luke 22:20", "The new covenant in My blood"]],
   },
   9: {
@@ -132,6 +144,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["10:24", "Let us consider how to stimulate one another to love and good deeds", "Think about how to stir each other up, not to anger, but to love and good works."],
       ["10:25", "Not forsaking our own assembling together", "Some had stopped meeting with the church. Gathering together is how believers encourage one another, especially as the Day draws near."],
     ],
+    bg: [["Year after year", "On the yearly Day of Atonement (Leviticus 16), the high priest offered sacrifices for the people's sins. That they had to be repeated every year showed they could not fully take sin away (10:1-4).", "good", ["lane", "guthrieH"]]],
+    w: [["τελειόω", "teleioō", "G5048", "to make perfect, complete", "To bring something to its goal. \"By one offering He has perfected for all time those who are sanctified\" (10:14).", ["bdag", "ellingworth"]]],
     refs: [["PSA.40", "Psalm 40:6-8", "I come to do Your will"], ["HAB.2", "Habakkuk 2:3-4", "The righteous will live by faith"], ["ACT.2", "Acts 2:42-47", "Believers meeting together"]],
   },
   11: {
@@ -171,6 +185,8 @@ export default makeBook({ lang: "Greek", sources, use: ["lane", "bruceH"] }, {
       ["13:15", "Let us continually offer up a sacrifice of praise to God", "The animal sacrifices have ended, but a new kind continues: praise to God and thanks spoken to His name."],
       ["13:20", "The great Shepherd of the sheep", "Jesus is the Good Shepherd (John 10:11), the Chief Shepherd (1 Peter 5:4), and here \"the great Shepherd,\" raised from the dead."],
     ],
+    bg: [["Outside the camp", "The bodies of the animals offered on the Day of Atonement were burned outside the camp (Leviticus 16:27). Jesus was crucified outside Jerusalem's city gate (John 19:17, 20). Believers are called to go out to Him, bearing His reproach (13:12-13).", "good", ["lane", "bruceH"]]],
+    w: [["φιλοξενία", "philoxenia", "G5381", "hospitality", "Literally \"love of strangers.\" Travelers depended on the kindness of others, and some who welcomed strangers entertained angels without knowing it, as Abraham did (13:2; Genesis 18).", ["bdag", "guthrieH"]]],
     refs: [["GEN.18", "Genesis 18:1-8", "Abraham welcomes visitors"], ["DEU.31", "Deuteronomy 31:6", "He will not fail you"], ["JHN.10", "John 10:11", "The good shepherd"], ["MAL.3", "Malachi 3:6", "I, the LORD, do not change"]],
   },
 });

@@ -48,6 +48,8 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
       ["3:14", "Our people must also learn to engage in good deeds", "Doing good takes practice. Paul wants believers to learn to meet real needs, so their lives are not fruitless."],
     ],
     views: [["\"The washing of regeneration\" (3:5)", "Some scholars see a direct reference to baptism as the moment God applies the new birth and renewal of the Spirit to the believer. Others see the washing as the cleansing the Spirit does inwardly, which baptism pictures. Others hold that Paul links the two closely without making the water itself the cause. All agree the passage stresses that salvation is by God's mercy and grace, not by our own good works.", ["towner", "knight", "mounce"]]],
+    bg: [["Wintering at Nicopolis", "Paul asks Titus to meet him at Nicopolis, where he planned to spend the winter (3:12). Sea travel nearly stopped in winter, so travelers chose a place to wait. Nicopolis was a city on the western coast of Greece.", "good", ["towner", "mounce"]]],
+    w: [["παλιγγενεσία", "palingenesia", "G3824", "regeneration, new birth", "A new beginning, being born again. God saved us \"by the washing of regeneration and renewing by the Holy Spirit\" (3:5). Christians differ on how this washing relates to baptism.", ["bdag", "knight"]]],
     refs: [["EZK.36", "Ezekiel 36:25-27", "Clean water and a new spirit"], ["JHN.3", "John 3:5", "Born of water and the Spirit"], ["EPH.2", "Ephesians 2:8-10", "Saved by grace for good works"]],
   },
 });
