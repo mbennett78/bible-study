@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:43 AM Central
-**Current version:** v218 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:44 AM Central
+**Current version:** v219 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:50 AM CT: Games play-test, practice quiz: a miss now names the right answer before its verse, and three awkwardly worded questions read cleanly (1 Peter 3:15, James 3, God's promise to David). Every game has now been play-tested on phone and iPad.
 - Wed Nov 25, 10:45 AM CT: Seasonal round 5 from Melissa: April now shows the three crosses small and far away on a distant hill (sides dark, middle shining), the empty tomb faint in the distance, and the spring garden filling the near ground.
 - Wed Nov 25, 10:55 AM: Seasonal round 4 from Melissa: April shows the three crosses on a distant hill (the two beside it small and dark, the middle one shining), the empty tomb faded behind, in Judean desert colors with spring green and flowers.
 - Wed Nov 25, 10:50 AM: Seasonal round 3 from Melissa: New Year is back to the original; Learning has no person, just a half-written scroll with the pen and ink set down; Psalm 23 has green pastures on the sunlit hills fading into a deep navy valley. Games play-test: in family mode the players' names were white on white and couldn't be read (fixed, with a test), long "Jewel question" notes now wrap neatly, and the wheel fits short phones with the turn label showing.

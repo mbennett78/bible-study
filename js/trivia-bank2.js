@@ -306,7 +306,7 @@ export const TRIVIA2 = [
   t("x-heb12", "HEB.12", "Hebrews 12 pictures the Christian life as what kind of race?", ["A race run with endurance", "A short sprint", "A chariot race", "A race against others"], "Hebrews 12:1"),
   t("x-heb13", "HEB.13", "\"Jesus Christ is the same yesterday and today and ___.\"", ["Forever", "Tomorrow", "Always", "Each day"], "Hebrews 13:8"),
   t("x-jas1", "JAS.1", "\"Be quick to hear, slow to ___ and slow to anger.\"", ["Speak", "Judge", "Act", "Leave"], "James 1:19"),
-  t("x-jas3", "JAS.3", "James compares the tongue to a small what that sets a great forest on fire?", ["Fire", "Stone", "Wind", "Seed"], "James 3:5-6"),
+  t("x-jas3", "JAS.3", "James compares the tongue to a small ___ that sets a great forest on fire.", ["Fire", "Stone", "Wind", "Seed"], "James 3:5-6"),
   t("x-1pe5", "1PE.5", "\"Casting all your anxiety on Him, because He ___ for you.\"", ["Cares", "Waits", "Died", "Prays"], "1 Peter 5:7"),
   t("x-1pe5b", "1PE.5", "Peter says the devil prowls around like what?", ["A roaring lion", "A wolf", "A serpent", "A thief"], "1 Peter 5:8"),
   t("x-2pe3", "2PE.3", "\"With the Lord one day is like a ___ years.\"", ["Thousand", "Hundred", "Million", "Few"], "2 Peter 3:8"),

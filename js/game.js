@@ -509,7 +509,7 @@ export function createGame({ store, esc, lively, lookColors, myName }) {
     if (shout && who.streak >= 5 && lively()) confetti(dlg, lookColors(), 60);
     dlg.querySelector(".g-speed").innerHTML = right ? starRow(Math.min(stars, 6), golden ? 6 : 3, "won") : "";
     if (right && golden && lively()) confetti(dlg, ["#f6c445", "#ffd970", "#e0a82e", "#fff3c4"], 50);
-    dlg.querySelector(".g-why").innerHTML = `${shout ? `<strong class="g-streak">${shout}</strong> ` : ""}${pick === -1 ? "⏰ Time's up! " : right ? `✓ ${pickOne(CHEERS)} ${golden ? "Double stars! " : stars === 3 ? "Speedy! " : ""}` : `${pickOne(KIND)} `}<span>${esc(q.why)}</span>`;
+    dlg.querySelector(".g-why").innerHTML = `${shout ? `<strong class="g-streak">${shout}</strong> ` : ""}${pick === -1 ? "⏰ Time's up! " : right ? `✓ ${pickOne(CHEERS)} ${golden ? "Double stars! " : stars === 3 ? "Speedy! " : ""}` : `${pickOne(KIND)} `}${right ? "" : `The answer: <b>${esc(q.choices[q.a])}</b>. `}<span>${esc(q.why)}</span>`;
     const next = dlg.querySelector("#gNext");
     const last = play.turn + 1 >= play.deck.length;
     const nextWho = play.players[(play.turn + 1) % play.players.length];
