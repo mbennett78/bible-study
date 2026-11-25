@@ -286,7 +286,7 @@ export const STORYBOOK = {
   ark: { caption: "Noah's ark", draw: (id) => `${sky(id, "#a9d8f0", "#f3f8ee")}${cloud(id, 70, 40, 1.1)}${cloud(id, 250, 30, .8)}${sunW(id, 316, 40, 17)}
     <g class="sb-fly">${g(70, 60, 1, dove(1.1))}</g>
     ${wash(id, `<path d="M0 150 C 40 142, 80 156, 120 148 C 170 140, 210 156, 260 148 C 300 142, 330 152, 360 146 L 360 200 L 0 200 Z" fill="#7fc0e0"/>`)}
-    <g class="sb-bob">${stick(id, g(200, 150, .82, `${ark()}${g(-92, -31, .62, person({ robe: "#5b7fa6", mantle: "#b4613f", cloth: "#efe6d2", beard: "#f4f1ea", sash: "#e1b04a", arms: ["out", "down"], staff: "right" }))}`))}</g>
+    <g class="sb-bob">${stick(id, g(200, 150, .82, `${ark()}${g(-92, -31, .62, person({ robe: "#5b7fa6", mantle: "#b4613f", cloth: "#efe6d2", beard: "#f4f1ea", sash: "#e1b04a", mood: "joy", arms: ["out", "down"], staff: "right" }))}`))}</g>
     ${wash(id, `<g class="sb-wave"><path d="M-40 168 ${Array.from({ length: 12 }, () => "c 10 -10, 24 -10, 34 0").join(" ")} L 400 200 L -40 200 Z" fill="#4f9fcb"/></g>`)}
     <g class="sb-wave2">${Array.from({ length: 9 }, (_, i) => `<path d="M${i * 46 - 10} 172 c 6 -6, 14 -6, 18 -1 c -4 -2, -9 -1, -11 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".85"/>`).join("")}</g>` },
   sea: { caption: "Israel crosses the Red Sea on dry ground", draw: (id) => `${sky(id, "#2e3a63", "#c98a5a")}<circle cx="180" cy="80" r="40" fill="#ffb347" opacity=".55" filter="url(#soft${id})"/>
