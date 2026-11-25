@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:04 PM Central
-**Current version:** v236 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:06 PM Central
+**Current version:** v237 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 1:45 PM CT: Buddy part 2 begun. His answers now meet each person where they are (playful with kids, unhurried with grandparents, thorough with students), build on what was said earlier in the chat, and are more careful with Scripture: if he isn't sure of a verse's exact words he gives the reference and marks his wording as a paraphrase. "More depth" answers name scholars, never churches. He also knows all his new tricks (eat, fish, hike, juggle, basketball, football, glasses) and his own story (reading glasses, sports and his cap, a good sport who keeps to himself until wanted). This part needs the study-partner function redeployed (see Needed from Melissa).
 - Wed Nov 25, 1:30 PM CT: Buddy now waves hello when you come back after a few minutes away (not every minute, and never when motion is turned down).
 - Wed Nov 25, 1:15 PM CT: Storybook rules pass: all 59 story pictures checked side by side for the storybook style and fitting faces, and every one holds still with Still pictures or reduced motion.
 - Wed Nov 25, 1:05 PM CT: Settings in plainer words: "Reading and listening" (was Reading and Bible), "Light or dark screen", "Reading plan and listening" (was Modes), and "Bible keys and versions (set up once)". Fixed a doubled period in the Bible key message.
@@ -123,7 +124,7 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Item | Required for Dec 4? | Notes |
 |---|---|---|
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
-| Redeploy the study-partner function (new `study-partner-function.ts`) | No, optional | Lets Buddy act things out during normal chat and talk about himself. Simple commands already work. |
+| Redeploy the study-partner function (new `study-partner-function.ts`) | No, optional | Lets Buddy act things out during normal chat, talk about himself, and use his newer, more careful answering (updated Wed Nov 25). Simple commands already work. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
 
 **Blockers:** none.
@@ -167,7 +168,7 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Settings clear and easy to follow, and feel finished: plain labels and fewer choices per section; every change is still kept the moment it is made (nothing lost), plus a clear "Saved ✓" after each change and a Done button that closes the section with "All changes saved" (Melissa asked Nov 25) | Done Wed Nov 25 (Saved ✓, Done buttons, plainer labels) | Sat Nov 28 |
 | Change my email in Settings: confirmed from both inboxes, and the family list follows the new address (Melissa asked Nov 25; password and name changes already work) | Done Wed Nov 25 (needs the Supabase email sender, already set up) | Sat Nov 28 |
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Done Wed Nov 25 (tap surprises; all 59 pictures checked: storybook style, faces fit the story, still when motion is off) | Sat Nov 28 (moved up from Sun Nov 29) |
-| Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Sun Nov 29 (moved up from Mon Nov 30) |
+| Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | In progress (answer rules and wave done Wed Nov 25) | Sun Nov 29 (moved up from Mon Nov 30) |
 | Buddy lives his own life in the app (Melissa, Nov 25): when you come back after time away you may catch him sleeping, reading his Bible, writing with crumpled paper at his feet then tossing it in the trash, searching for something, juggling, jumping rope, eating at a little table, putting on a backpack to go hiking, or fishing. He sits and waits quietly, keeps to himself unless someone engages him, never interrupts; gentle, light motion, still when motion is turned down | Not started | Sun Nov 29 |
 | Buddy's personality (Melissa, Nov 25): waves when he sees you; in games he celebrates his own wins but is a good sport and cheers his friend's wins too; a little sad when he loses, then perks right up; puts on glasses to be a happy nerd; loves basketball, football and baseball and wears a baseball cap; loves to talk and answer questions | Not started | Sun Nov 29 |
 | Buddy waits calmly (Melissa, Nov 25): sits chill, swings his feet, whistles, leans back; never distracting. More things to tell him to do: eat, exercise, plus the ones that already work (nap, read, write, jump rope, dance, pray and more) | Not started | Sun Nov 29 |
