@@ -602,6 +602,7 @@ function openVerseSheet(v) {
     ${vNote && !vNote.near ? `<div class="vs-note"><p class="vs-label">Study note</p><strong>${esc(vNote.head)}</strong><p>${esc(vNote.text.length > 420 ? `${vNote.text.slice(0, 420)}…` : vNote.text)}</p><button type="button" class="small" data-act="notes">All verse notes</button></div>` : ""}
     <details class="vs-more vs-xref" hidden><summary>Cross-references</summary><div class="vs-xlist"></div><p class="muted small-print">Tap one to read it here. From OpenBible.info's cross-references (CC BY), ranked by how many readers found them helpful.</p></details>
     <details class="vs-more vs-orig" hidden><summary>${BOOK_BY_ID[book].testament === "OT" ? "Hebrew" : "Greek"} words in this verse</summary><div class="vs-olist"></div><p class="muted small-print ws-credit">Word tagging: STEPBible.org, Tyndale House Cambridge (CC BY). Definitions: James Strong (1890).</p></details>
+    ${versionList().length > 1 ? `<details class="vs-more vs-compare"><summary>Compare versions</summary><div class="vs-clist"><p class="muted small-print">Loading…</p></div></details>` : ""}
     <p class="vs-label">Highlight</p>
     <div class="vs-colors">${HL_COLORS.map(([c, label]) => `<button type="button" class="vs-color hl-${c}" data-color="${c}" aria-pressed="${m.color === c}" aria-label="${label}">${m.color === c ? "✓" : ""}</button>`).join("")}
       <button type="button" class="vs-clear" data-color="" ${m.color ? "" : "disabled"}>No color</button></div>
@@ -654,6 +655,21 @@ function openVerseSheet(v) {
       try { await navigator.share({ text: quote }); } catch { /* they closed the share sheet */ }
     }
   }));
+  // Compare versions: this verse in each version the family has, side by side (like a parallel Bible).
+  verseSheet.querySelector(".vs-compare")?.addEventListener("toggle", async (e) => {
+    const box = e.currentTarget.querySelector(".vs-clist");
+    if (!e.currentTarget.open || box.dataset.done) return;
+    box.dataset.done = "1";
+    const rows = await Promise.all(versionList().map(async ([id, label]) => {
+      try {
+        const res = await getChapter(id, book, chapter);
+        const div = document.createElement("div"); div.innerHTML = sanitize(res.html);
+        const t = (verseTextNodes(div).get(v) || []).map((n) => n.textContent).join("").replace(/\s+/g, " ").trim();
+        return `<p class="vs-cver${id === store.get("version") ? " is-mine" : ""}"><b>${esc(label)}</b> ${t ? esc(t) : `<span class="muted">Not found in this version.</span>`}</p>`;
+      } catch { return `<p class="vs-cver"><b>${esc(label)}</b> <span class="muted">Couldn't load this version right now.</span></p>`; }
+    }));
+    box.innerHTML = rows.join("");
+  });
   fillVerseTools(book, chapter, v);
   if (!verseSheet.isConnected) document.body.append(verseSheet); // added when first used, after the word sheet
   if (!verseSheet.open) verseSheet.showModal();

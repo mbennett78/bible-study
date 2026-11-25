@@ -3095,3 +3095,6 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .heart-acts .small { margin: 0; min-height: 44px; }
 .heart-go { min-height: 44px; padding: 8px 18px; border: 0; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 700; }
 .heart-cheer { font-weight: 600; color: var(--accent); }
+.vs-cver { margin: 0 0 10px; line-height: 1.5; }
+.vs-cver b { display: inline-block; min-width: 3.4em; margin-right: 6px; font: 700 .8rem var(--sans); color: var(--accent); }
+.vs-cver.is-mine b::after { content: " ✓"; }
