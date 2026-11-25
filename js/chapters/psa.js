@@ -829,8 +829,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   85: {
     intro: "God showed favor before and restored His people. Now the psalmist asks, \"Will You not Yourself revive us again, that Your people may rejoice in You?\" He listens for God's word of peace. \"Lovingkindness and truth have met together; righteousness and peace have kissed each other.\"",
     v: [
-      ["85:6", "Will You not revive us again?", "A prayer for renewal."],
-      ["85:8", "He will speak peace to His people", "Listening for God."],
+      ["85:6", "Will You not revive us again?", "God had restored His people before (85:1). Now they ask Him to bring them back to life again, so they can rejoice in Him."],
+      ["85:8", "He will speak peace to His people", "The psalmist will listen for what God says. He speaks peace to His people, if they do not turn back to foolishness."],
       ["85:10", "Righteousness and peace have kissed", "A beautiful picture, often linked to the cross."],
     ],
     refs: [["HAB.3", "Habakkuk 3:2", "Revive Your work"], ["ROM.5", "Romans 5:1", "Peace with God"]],
@@ -838,17 +838,17 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   86: {
     intro: "\"Incline Your ear, O LORD, and answer me; for I am afflicted and needy.\" God is good, ready to forgive, abundant in lovingkindness. \"Teach me Your way, O LORD; I will walk in Your truth; unite my heart to fear Your name.\" All nations will come and worship. \"Turn to me and be gracious to me.\"",
     v: [
-      ["86:5", "Ready to forgive", "God's eager mercy."],
-      ["86:11", "Unite my heart to fear Your name", "An undivided heart."],
-      ["86:15", "Slow to anger and abundant in lovingkindness", "Quoting Exodus 34:6."],
+      ["86:5", "Ready to forgive", "The Lord is good and ready to forgive, rich in steadfast love to all who call on Him."],
+      ["86:11", "Unite my heart to fear Your name", "David asks God to teach him His way and to make his heart whole, not divided, so he can revere God's name."],
+      ["86:15", "Slow to anger and abundant in lovingkindness", "David quotes God's own words to Moses (Exodus 34:6): merciful and gracious, slow to anger, abounding in love and faithfulness."],
     ],
     refs: [["EXO.34", "Exodus 34:6", "Compassionate and gracious"], ["JAS.1", "James 1:8", "A double-minded man"]],
   },
   87: {
     intro: "A short song about Zion, the city God loves. Surprising nations are listed as born there: Egypt (Rahab), Babylon, Philistia, Tyre and Ethiopia. \"This one and that one were born in her.\" The LORD records the peoples as citizens of Zion. \"All my springs of joy are in you.\"",
     v: [
-      ["87:4", "This one was born there", "Former enemies become citizens."],
-      ["87:6", "The LORD shall count when He registers the peoples", "God's book of citizens."],
+      ["87:4", "This one was born there", "God records former enemies like Egypt and Babylon, and peoples like Philistia, Tyre and Ethiopia, as born in Zion. Outsiders become citizens of God's city."],
+      ["87:6", "The LORD shall count when He registers the peoples", "When the LORD writes the register of the peoples, He notes each one as born in Zion. It is a picture of God's family from every nation."],
       ["87:2", "The LORD loves the gates of Zion", "Not because the city is grand, but because God chose to dwell there (Psalm 132:13)."],
       ["87:4", "Rahab and Babylon", "Rahab here is a poetic name for Egypt (Isaiah 30:7), not Rahab of Jericho. Israel's oldest enemies, Egypt and Babylon, are named first among those who know God."],
       ["87:7", "All my springs of joy are in you", "Singers and dancers celebrate. The life of every people now flows from God's city."],
@@ -859,9 +859,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   88: {
     intro: "The darkest psalm. \"O LORD, the God of my salvation, I have cried out by day and in the night.\" The psalmist feels near death, cut off, abandoned by friends. \"Will Your wonders be made known in the darkness?\" It ends without resolution: \"You have removed lover and friend far from me; my acquaintances are in darkness.\"",
     v: [
-      ["88:1", "God of my salvation", "Even here, he speaks to his Savior."],
-      ["88:13", "In the morning my prayer comes before You", "He keeps praying."],
-      ["88:18", "My acquaintances are in darkness", "No happy ending."],
+      ["88:1", "God of my salvation", "This may be the darkest psalm, yet it begins by calling God \"the God of my salvation.\" Even in despair, he prays to his Savior."],
+      ["88:13", "In the morning my prayer comes before You", "Feeling rejected, Heman still prays every morning. Faith keeps talking to God when it feels nothing."],
+      ["88:18", "My acquaintances are in darkness", "The psalm ends in darkness with no happy turn. It shows that God's people can bring even unrelieved grief to Him."],
     ],
     bg: [["A psalm for the darkest days", "Psalm 88 is the only lament that does not turn to praise. Many teachers note its gift: it shows that faith can keep praying even when there is no feeling of answer, and that such prayers belong in the Bible.", "good", ["tate", "kidner"]]],
     refs: [["JOB.30", "Job 30:20", "I cry out, but You do not answer"], ["MAT.26", "Matthew 26:38", "My soul is deeply grieved"]],
@@ -869,10 +869,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   89: {
     intro: "\"I will sing of the lovingkindness of the LORD forever.\" God made a covenant with David: \"I will establish your seed forever and build up your throne to all generations.\" God rules the raging sea. Even if David's sons sin, God will not break His covenant. But now the crown is in the dust, and the psalmist asks, \"How long, O LORD?\" Book Three ends: \"Blessed be the LORD forever! Amen and Amen.\"",
     v: [
-      ["89:1", "I will sing of the lovingkindness of the LORD forever", "Faithfulness praised."],
-      ["89:3-4", "I have made a covenant with My chosen", "The promise to David."],
-      ["89:34", "My covenant I will not violate", "God keeps His word."],
-      ["89:46", "How long, O LORD?", "Waiting for the promise."],
+      ["89:1", "I will sing of the lovingkindness of the LORD forever", "Ethan opens by promising to sing of God's steadfast love forever and tell of His faithfulness to every generation."],
+      ["89:3-4", "I have made a covenant with My chosen", "God promised David that his family line and throne would last forever (2 Samuel 7:12-16). Christians see that promise fulfilled in Jesus."],
+      ["89:34", "My covenant I will not violate", "God says He will not break His covenant or change what He has said."],
+      ["89:46", "How long, O LORD?", "The king has been defeated, and the promise seems broken (89:38-45). The psalmist asks how long, then still ends in praise (89:52)."],
     ],
     refs: [["2SA.7", "2 Samuel 7:12-16", "God's covenant with David"], ["LUK.1", "Luke 1:32-33", "The throne of His father David"], ["ACT.13", "Acts 13:22-23", "From David's offspring, a Savior"]],
   },
@@ -899,19 +899,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   92: {
     intro: "A song for the Sabbath. \"It is good to give thanks to the LORD... to declare Your lovingkindness in the morning and Your faithfulness by night.\" The wicked sprout like grass but are destroyed. \"The righteous man will flourish like the palm tree... They will still yield fruit in old age; they shall be full of sap and very green.\"",
     v: [
-      ["92:1-2", "Morning and night", "Thanks all day long."],
-      ["92:12", "Flourish like the palm tree", "Strong and lasting."],
-      ["92:14", "They will still yield fruit in old age", "A promise for older believers."],
+      ["92:1-2", "Morning and night", "A psalm for the Sabbath. It is good to declare God's love in the morning and His faithfulness every night."],
+      ["92:12", "Flourish like the palm tree", "Palm trees stand tall and live long, and cedars of Lebanon are strong. The righteous will flourish like them."],
+      ["92:14", "They will still yield fruit in old age", "Planted in God's house, they still bear fruit in old age, staying fresh and green. A promise for older believers."],
     ],
     refs: [["PSA.1", "Psalm 1:3", "A tree firmly planted"], ["ISA.40", "Isaiah 40:29-31", "Renewed strength"]],
   },
   93: {
     intro: "\"The LORD reigns, He is clothed with majesty.\" His throne is established from of old. The floods have lifted up their roaring, but \"more than the sounds of many waters... the LORD on high is mighty.\" His testimonies are sure, and holiness befits His house forever.",
     v: [
-      ["93:1", "The LORD reigns", "The theme of Psalms 93-99."],
+      ["93:1", "The LORD reigns", "\"The LORD reigns\" begins a group of psalms (93-99) celebrating God as King. He is robed in majesty, and the world stands firm."],
       ["93:3", "The floods have lifted up their voice", "Roaring waters picture every power that threatens chaos."],
-      ["93:4", "More than the sounds of many waters", "God is stronger than chaos."],
-      ["93:5", "Holiness befits Your house, O LORD, forevermore", "The King's house must be holy."],
+      ["93:4", "More than the sounds of many waters", "The floods roar and the sea's waves crash, but the LORD on high is mightier than all of them."],
+      ["93:5", "Holiness befits Your house, O LORD, forevermore", "God's decrees are completely trustworthy, and holiness fits His house forever."],
     ],
     bg: [["The LORD above the sea", "Israel's neighbors told stories of gods battling the sea. Texts from ancient Ugarit, for example, tell of Baal fighting Yam, the sea god. This psalm sings that no battle is needed: the LORD already reigns, mightier than the loudest waves.", "good", ["tate", "vangemeren"]]],
     refs: [["MRK.4", "Mark 4:39-41", "Even the wind and sea obey Him"], ["REV.19", "Revelation 19:6", "The Lord our God, the Almighty, reigns"]],
@@ -919,36 +919,36 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   94: {
     intro: "\"O LORD, God of vengeance, shine forth!\" The wicked crush God's people and say the LORD does not see. \"He who planted the ear, does He not hear?\" \"Blessed is the man whom You chasten.\" \"If I should say, My foot has slipped, Your lovingkindness, O LORD, will hold me up. When my anxious thoughts multiply within me, Your consolations delight my soul.\"",
     v: [
-      ["94:9", "He who planted the ear, does He not hear?", "God sees and hears."],
-      ["94:18", "Your lovingkindness will hold me up", "God catches us when we slip."],
-      ["94:19", "When my anxious thoughts multiply", "God's comfort in anxiety."],
+      ["94:9", "He who planted the ear, does He not hear?", "The wicked say God does not see (94:7). But the One who made the ear can hear, and the One who formed the eye can see."],
+      ["94:18", "Your lovingkindness will hold me up", "When the psalmist felt his foot slipping, God's steadfast love held him up."],
+      ["94:19", "When my anxious thoughts multiply", "When worries pile up in his mind, God's comfort brings joy to his soul."],
     ],
     refs: [["ROM.12", "Romans 12:19", "Vengeance is Mine"], ["PHP.4", "Philippians 4:6-7", "Be anxious for nothing"]],
   },
   95: {
     intro: "\"O come, let us sing for joy to the LORD.\" He is a great King; the depths of the earth and the peaks of the mountains are His. \"Come, let us worship and bow down, let us kneel before the LORD our Maker.\" Then a warning: \"Today, if you would hear His voice, do not harden your hearts\" as Israel did at Meribah.",
     v: [
-      ["95:1", "Let us sing for joy to the LORD", "A call to worship."],
-      ["95:6", "Let us worship and bow down", "Humble worship."],
-      ["95:7-8", "Today, if you would hear His voice", "Hebrews 3-4 builds on this."],
+      ["95:1", "Let us sing for joy to the LORD", "Come, let us sing for joy and shout to the Rock of our salvation. Many churches have opened worship with this psalm for centuries."],
+      ["95:6", "Let us worship and bow down", "The LORD made us, so come, worship, bow down and kneel before Him."],
+      ["95:7-8", "Today, if you would hear His voice", "Today, if you hear His voice, do not harden your hearts as Israel did at Massah in the wilderness. Hebrews 3-4 applies this to believers now."],
     ],
     refs: [["HEB.3", "Hebrews 3:7-15", "Do not harden your hearts"], ["EXO.17", "Exodus 17:1-7", "Meribah"]],
   },
   96: {
     intro: "\"Sing to the LORD a new song; sing to the LORD, all the earth.\" Tell of His glory among the nations. The gods of the peoples are idols, but the LORD made the heavens. \"Worship the LORD in holy attire.\" Let the heavens be glad and the trees of the forest sing, for He is coming to judge the world in righteousness.",
     v: [
-      ["96:3", "Tell of His glory among the nations", "A call to share God's fame."],
-      ["96:9", "In the splendor of holiness", "Worship in reverence."],
-      ["96:12-13", "All the trees of the forest will sing for joy", "Creation celebrates God's coming."],
+      ["96:3", "Tell of His glory among the nations", "Tell all the nations about God's glory and His wonderful deeds. The good news is meant for everyone."],
+      ["96:9", "In the splendor of holiness", "Worship the LORD in the beauty of holiness. Tremble before Him, all the earth."],
+      ["96:12-13", "All the trees of the forest will sing for joy", "Fields and forests sing for joy, because the LORD is coming to judge the world with righteousness and truth."],
     ],
     refs: [["1CH.16", "1 Chronicles 16:23-33", "Sung when the ark came to Jerusalem"], ["ROM.8", "Romans 8:19-21", "Creation waits"]],
   },
   97: {
     intro: "\"The LORD reigns, let the earth rejoice.\" Clouds and darkness surround Him; righteousness and justice are His throne. Fire goes before Him; mountains melt like wax. \"Hate evil, you who love the LORD.\" \"Light is sown like seed for the righteous.\"",
     v: [
-      ["97:2", "Righteousness and justice are the foundation of His throne", "God rules rightly."],
-      ["97:10", "Hate evil, you who love the LORD", "Love for God means turning from evil."],
-      ["97:11", "Light is sown like seed for the righteous", "Joy will grow."],
+      ["97:2", "Righteousness and justice are the foundation of His throne", "Clouds and darkness surround God, yet His throne rests on righteousness and justice. He always rules rightly."],
+      ["97:10", "Hate evil, you who love the LORD", "Those who love the LORD hate evil. He guards the lives of His faithful ones."],
+      ["97:11", "Light is sown like seed for the righteous", "Light is planted like seed for those who do right, and gladness for the honest-hearted. It will grow and blossom."],
     ],
     refs: [["EXO.19", "Exodus 19:16-18", "God on Sinai"], ["ROM.12", "Romans 12:9", "Abhor what is evil"]],
   },
