@@ -13,12 +13,12 @@ export default makeBook({ lang: "Greek", sources, use: ["mooG", "bruceG"] }, {
   1: {
     intro: "Paul skips his usual thanksgiving. He is amazed that the Galatians are so quickly turning to a different gospel, which is really no gospel at all. \"Even if we, or an angel from heaven, should preach to you a gospel contrary to what we have preached to you, he is to be accursed!\" Paul's gospel did not come from people but by a revelation of Jesus Christ. Once he violently persecuted the church; then God, who set him apart from birth, revealed His Son to him. He spent time in Arabia and only later met Peter and James in Jerusalem.",
     v: [
-      ["1:4", "Who gave Himself for our sins so that He might rescue us", "Rescued."],
-      ["1:6", "I am amazed that you are so quickly deserting Him", "Paul is alarmed."],
-      ["1:8", "Even if we, or an angel from heaven, should preach to you a gospel contrary", "One true gospel."],
-      ["1:10", "If I were still trying to please men, I would not be a bond-servant of Christ", "Pleasing God."],
-      ["1:12", "I received it through a revelation of Jesus Christ", "Where Paul's message came from."],
-      ["1:23", "He who once persecuted us is now preaching the faith", "A changed life."],
+      ["1:4", "Who gave Himself for our sins so that He might rescue us", "In his greeting Paul already gives the heart of the gospel: Christ gave Himself for our sins to rescue us from this evil age."],
+      ["1:6", "I am amazed that you are so quickly deserting Him", "Paul skips his usual thanksgiving. He is shocked that the Galatians are turning so quickly to a different message."],
+      ["1:8", "Even if we, or an angel from heaven, should preach to you a gospel contrary", "The gospel does not change, no matter who preaches it, even an apostle or an angel. Paul says it twice to make sure (1:9)."],
+      ["1:10", "If I were still trying to please men, I would not be a bond-servant of Christ", "Paul's critics said he softened the message to win people. He says if he were living to please people, he could not serve Christ."],
+      ["1:12", "I received it through a revelation of Jesus Christ", "Paul did not learn the gospel from other people. The risen Jesus revealed it to him (Acts 9)."],
+      ["1:23", "He who once persecuted us is now preaching the faith", "The churches in Judea had only heard about Paul: the man who once persecuted them now preaches the faith. And they praised God (1:24)."],
     ],
     bg: [["Who were the Galatians?", "Galatia was a Roman province in what is now central Turkey. Many scholars think Paul wrote to the churches he started on his first journey (Pisidian Antioch, Iconium, Lystra, Derbe; Acts 13-14). Teachers had arrived saying Gentile believers must be circumcised and keep the Law of Moses to truly belong.", "debated", ["bruceG", "mooG"]]],
     refs: [["ACT.9", "Acts 9:1-22", "Paul's conversion"], ["ACT.13", "Acts 13-14", "Churches in Galatia"], ["JER.1", "Jeremiah 1:5", "Set apart before birth"]],

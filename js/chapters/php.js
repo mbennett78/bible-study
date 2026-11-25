@@ -13,12 +13,12 @@ export default makeBook({ lang: "Greek", sources, use: ["feeP", "silva"] }, {
   1: {
     intro: "Paul and Timothy write to the believers in Philippi. Paul thanks God for their partnership in the gospel from the first day, \"confident of this very thing, that He who began a good work in you will perfect it until the day of Christ Jesus.\" He prays their love will abound more and more in knowledge. Though in chains, Paul sees good coming from it: the whole palace guard has heard about Christ, and others preach more boldly. \"For to me, to live is Christ and to die is gain.\" He urges them to live in a manner worthy of the gospel, standing firm in one spirit.",
     v: [
-      ["1:3", "I thank my God in all my remembrance of you", "Thankful for friends."],
-      ["1:6", "He who began a good work in you will perfect it", "God finishes what He starts."],
-      ["1:9", "That your love may abound still more and more", "Growing love."],
-      ["1:12", "My circumstances have turned out for the greater progress of the gospel", "Good from hard times."],
-      ["1:21", "For to me, to live is Christ and to die is gain", "Living for Christ."],
-      ["1:27", "Conduct yourselves in a manner worthy of the gospel of Christ", "Live it out."],
+      ["1:3", "I thank my God in all my remembrance of you", "Writing from prison, Paul thanks God every time he remembers the Philippians, his partners in the gospel from the first day (1:5)."],
+      ["1:6", "He who began a good work in you will perfect it", "God does not start what He will not finish. The work He began in them will be completed on the day Christ returns."],
+      ["1:9", "That your love may abound still more and more", "Paul prays that their love will keep growing, guided by knowledge and good judgment."],
+      ["1:12", "My circumstances have turned out for the greater progress of the gospel", "Paul's chains did not stop the gospel. The whole palace guard heard why he was in prison, and others grew bolder (1:13-14)."],
+      ["1:21", "For to me, to live is Christ and to die is gain", "For Paul, living means serving Christ, and dying means being with Him, which is even better (1:23)."],
+      ["1:27", "Conduct yourselves in a manner worthy of the gospel of Christ", "Live as citizens worthy of the good news, standing together and striving side by side for the faith."],
     ],
     bg: [["Philippi", "Philippi was a Roman colony in Macedonia where many retired soldiers lived, proud of their Roman citizenship. Paul started the church there with Lydia and a jailer's family (Acts 16). He wrote while under guard, probably in Rome around AD 60-62.", "strong", ["feeP", "hansen"]]],
     refs: [["ACT.16", "Acts 16", "The church at Philippi begins"], ["2CO.5", "2 Corinthians 5:8", "At home with the Lord"], ["ROM.8", "Romans 8:28", "God works all things for good"]],
