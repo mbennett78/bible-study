@@ -398,8 +398,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
     intro: "Ishmael, of the royal family, murders Gedaliah at a meal, along with Judeans and Babylonian soldiers, and takes captives. Johanan pursues him and frees the captives. Afraid of Babylon's revenge, they plan to flee to Egypt.",
     v: [
       ["41:2", "Struck down Gedaliah", "Treachery at the table."],
+      ["41:5", "Eighty men from Shechem, Shiloh and Samaria", "Mourners from the north still came with offerings to the house of the LORD, even with the temple in ruins."],
+      ["41:9", "The cistern that King Asa had made", "Ishmael throws the bodies into an old royal cistern at Mizpah."],
       ["41:17", "To go into Egypt", "Fear drives them back to Egypt."],
     ],
+    bg: [["Gedaliah and Mizpah", "Mizpah, Gedaliah's headquarters, is usually identified with Tell en-Nasbeh, north of Jerusalem, a town that kept going after Jerusalem fell. A clay seal impression found at Lachish reads \"Belonging to Gedaliah, who is over the house,\" probably the same man before he became governor.", "good", ["thompsonJ", "lundbom"]]],
     refs: [["2KI.25", "2 Kings 25:25-26", "Gedaliah's murder"]],
   },
   42: {
@@ -448,8 +451,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
   },
   47: {
     intro: "An oracle against the Philistines. Waters rise from the north like a flood. \"Ah, sword of the LORD, how long will you not be quiet?\"",
-    v: [["47:6", "Ah, sword of the LORD", "Judgment pictured as a sword."]],
-    refs: [["EZK.25", "Ezekiel 25:15-17", "Against the Philistines"]],
+    v: [
+      ["47:1", "Before Pharaoh struck down Gaza", "Egypt also attacked the Philistine coast in these years, so the little Philistine cities were caught between two great powers."],
+      ["47:2", "Waters are rising out of the north", "Babylon's army is pictured as a flood pouring down the coast."],
+      ["47:4", "The remnant of the coastland of Caphtor", "The Philistines had come from Caphtor, usually identified with Crete and the Aegean islands (Amos 9:7)."],
+      ["47:6-7", "Ah, sword of the LORD", "Judgment pictured as a sword. It cannot rest, because the LORD Himself has given it its task."],
+    ],
+    bg: [["Ashkelon falls", "The Babylonian Chronicle records that Nebuchadnezzar captured and destroyed Ashkelon in 604 BC. Excavations at Ashkelon found a thick layer of burned ruins from that same year, with scattered pottery, loose arrowheads and the skeleton of a woman caught in the attack.", "strong", ["lundbom", "kitchen"]]],
+    refs: [["EZK.25", "Ezekiel 25:15-17", "Against the Philistines"], ["AMO.9", "Amos 9:7", "The Philistines from Caphtor"], ["ZEP.2", "Zephaniah 2:4-7", "Gaza and Ashkelon"]],
   },
   48: {
     intro: "A long lament over Moab, proud and complacent \"like wine left on its dregs.\" Its cities, gods and pride will fall. Even so, God says, \"I will restore the fortunes of Moab in the latter days.\"",

@@ -142,10 +142,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   12: {
     intro: "A list of the kings defeated by Moses east of the Jordan and by Joshua west of it: thirty-one kings in all.",
     v: [
+      ["12:1-5", "Sihon and Og", "The two Amorite kings east of the Jordan, whose defeat was sung about for generations (Psalm 136:19-20)."],
       ["12:6", "Moses the servant of the LORD", "The two leaders' victories are put side by side."],
       ["12:24", "In all, thirty-one kings", "Each name is a promise kept."],
     ],
-    refs: [["DEU.7", "Deuteronomy 7:24", "He will deliver their kings into your hand"]],
+    bg: [["Why a list of kings?", "Ancient rulers often recorded their victories as lists of defeated cities or kings; Egyptian pharaohs carved such lists on temple walls. A list like this fits its time. For Israel it was also a record of God's faithfulness, the promise of the land kept city by city.", "good", ["hess", "kitchen"]]],
+    refs: [["PSA.136", "Psalm 136:17-22", "He struck down great kings"], ["DEU.7", "Deuteronomy 7:24", "He will deliver their kings into your hand"]],
   },
   13: {
     intro: "Joshua is old, and much land remains to be taken. God tells him to divide the land anyway. The chapter records the land east of the Jordan given to Reuben, Gad and half of Manasseh. The Levites receive no land, because the LORD is their inheritance.",
@@ -177,8 +179,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["howard", "hess"] }, {
   16: {
     intro: "The land given to the sons of Joseph, beginning with Ephraim. Ephraim does not drive out the Canaanites of Gezer, who instead become forced laborers.",
     v: [
-      ["16:10", "They did not drive out the Canaanites", "Partial obedience becomes a pattern."],
+      ["16:1-3", "The lot for the sons of Joseph", "The border runs from the Jordan at Jericho up through the hill country to Bethel and down to the sea. Joseph's sons received the rich central hills."],
+      ["16:9", "Towns set apart for Ephraim within Manasseh", "The two brother tribes lived side by side, sometimes in each other's land."],
+      ["16:10", "They did not drive out the Canaanites", "Partial obedience becomes a pattern that the book of Judges traces with sorrow."],
     ],
+    bg: [["Gezer", "Gezer guarded the main road from the coast up to Jerusalem, so it mattered to every power in the region. It stayed Canaanite until a pharaoh captured it and gave it to Solomon as a wedding gift (1 Kings 9:16). Solomon rebuilt it along with Hazor and Megiddo (1 Kings 9:15). Archaeologists found matching gates with six rooms at all three sites. When these gates were built is debated, in Solomon's day or a little later.", "good", ["howard", "kitchen"]]],
     refs: [["1KI.9", "1 Kings 9:16", "Pharaoh gave Gezer to Solomon"], ["JDG.1", "Judges 1:29", "Ephraim did not drive out Gezer"]],
   },
   17: {

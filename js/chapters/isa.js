@@ -134,8 +134,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   15: {
     intro: "An oracle about Moab. In one night its cities are destroyed. People wail on every rooftop; heads are shaved in mourning. Even God's heart cries out for Moab as refugees flee.",
     v: [
-      ["15:5", "My heart cries out for Moab", "God grieves even over judgment."],
+      ["15:1", "In a night Ar of Moab is laid waste", "The disaster comes suddenly. Ar and Kir were Moab's chief cities."],
+      ["15:2", "Dibon has gone up to the high places to weep", "In their grief the people turn to the shrines of their god Chemosh, which cannot save them."],
+      ["15:5", "My heart cries out for Moab", "God grieves even over judgment, and the prophet shares that grief."],
+      ["15:9", "The waters of Dibon are full of blood", "The play on words (Dimon or Dibon, and dam, blood) makes the river itself a picture of loss."],
     ],
+    bg: [["The Moabite Stone", "In 1868 a black stone was found at Dhiban, the Dibon of this chapter. On it Mesha king of Moab (2 Kings 3) boasts of freeing Moab from Israel with the help of Chemosh. It names Dibon, Medeba, Nebo and other towns in Isaiah 15-16, and it mentions Omri king of Israel and the LORD by name.", "strong", ["oswalt", "kitchen"]]],
     refs: [["JER.48", "Jeremiah 48", "Moab's judgment"], ["RUT.1", "Ruth 1", "Ruth the Moabite"]],
   },
   16: {

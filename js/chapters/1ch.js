@@ -73,16 +73,20 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "Family lines of Issachar, Benjamin, Naphtali, Manasseh, Ephraim and Asher, often listing their fighting men. Ephraim's line leads to Joshua.",
     v: [
       ["7:22-23", "Ephraim mourned many days", "A father's grief, then a new son named Beriah."],
+      ["7:24", "His daughter was Sheerah, who built Lower and Upper Beth-horon", "A rare mention of a woman who founded towns, and one of them, Uzzen-sheerah, carries her name."],
       ["7:27", "Joshua his son", "The successor of Moses."],
     ],
+    bg: [["Why so many names?", "Chronicles was written for Jews home from exile in Babylon. These family lists told them they still belonged to the twelve tribes and to God's promises. Tribes like Naphtali and Asher, scattered long before, are still counted.", "good", ["selman", "japhet"]]],
     refs: [["NUM.13", "Numbers 13:8, 16", "Joshua of Ephraim"]],
   },
   8: {
     intro: "The family of Benjamin, leading to King Saul and his descendants, including Jonathan's son Mephibosheth (here called Merib-baal).",
     v: [
       ["8:33", "Saul", "Israel's first king came from Benjamin."],
+      ["8:33", "Esh-baal", "Saul's son, called Ish-bosheth in 2 Samuel, the same pattern of name-changing."],
       ["8:34", "Merib-baal", "The name Mephibosheth in 2 Samuel; writers sometimes replaced \"baal\" with \"bosheth\" (shame)."],
     ],
+    bg: [["The tribe of Benjamin", "Benjamin was small but known for skilled fighters: left-handed slingers who could hit a hair (Judges 20:16) and archers who could shoot with either hand (1 Chronicles 12:2; 8:40). From this tribe came King Saul, and much later the apostle Paul.", "good", ["selman", "thompson"]]],
     refs: [["2SA.9", "2 Samuel 9", "Mephibosheth"], ["PHP.3", "Philippians 3:5", "Paul, of the tribe of Benjamin"]],
   },
   9: {
@@ -224,6 +228,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["24:5", "By lot", "Fair division, left to God."],
       ["24:10", "The eighth to Abijah", "Zechariah, father of John the Baptist, belonged to the division of Abijah (Luke 1:5)."],
     ],
+    bg: [["The priestly courses", "Each of the twenty-four divisions served at the temple for a week at a time, about twice a year, and all served together at the great feasts. Scrolls found at Qumran keep calendars of these courses, and an inscription from Caesarea lists the twenty-four courses with the Galilee towns where their families later lived.", "good", ["selman", "williamson"]]],
     refs: [["LUK.1", "Luke 1:5, 8-9", "Zechariah's division"]],
   },
   25: {

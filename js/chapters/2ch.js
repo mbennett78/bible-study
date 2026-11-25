@@ -251,9 +251,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "Jotham reigns sixteen years and does right. He builds the upper gate of the temple and defeats the Ammonites. \"Jotham became mighty because he ordered his ways before the LORD his God.\"",
     v: [
       ["27:2", "He did not enter the temple of the LORD", "He learned from his father's mistake."],
+      ["27:3", "He built the upper gate of the house of the LORD", "Jotham strengthened the temple and the city walls on the hill of Ophel."],
+      ["27:5", "The Ammonites gave him a hundred talents of silver", "Tribute for three years: a sign of God's blessing on a faithful king."],
       ["27:6", "He ordered his ways before the LORD", "Steady faithfulness."],
     ],
-    refs: [["2KI.15", "2 Kings 15:32-38", "Jotham's reign"]],
+    bg: [["Jotham's times", "Jotham first ruled alongside his father Uzziah, who had leprosy (2 Chronicles 26:21). Isaiah, Hosea and Micah were all preaching in his day (Isaiah 1:1). Assyria was rising under Tiglath-pileser III, and the people, the writer notes, \"still followed corrupt practices\" (27:2) even under a good king.", "good", ["selman", "thompson"]]],
+    refs: [["ISA.1", "Isaiah 1:1", "Isaiah prophesied in Jotham's days"], ["2KI.15", "2 Kings 15:32-38", "Jotham's reign"]],
   },
   28: {
     intro: "Ahaz does evil, making idols for the Baals and burning his sons. Aram and Israel defeat Judah. Israel takes 200,000 captives, but the prophet Oded rebukes them, and they clothe, feed and return the captives to Jericho. Ahaz turns to Assyria and to Aram's gods, and closes the doors of the temple.",

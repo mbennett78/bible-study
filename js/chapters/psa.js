@@ -1030,8 +1030,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "David combines parts of two earlier psalms (57:7-11 and 60:5-12). \"My heart is steadfast, O God; I will sing.\" \"Be exalted, O God, above the heavens.\" \"Through God we will do valiantly.\"",
     v: [
       ["108:1", "My heart is steadfast", "Settled praise."],
+      ["108:7-9", "Judah is my scepter; Moab is my washbasin", "God speaks as the owner of every land, Israel's and her neighbors' alike."],
+      ["108:12", "Vain is the salvation of man", "Human help fails; God's help does not."],
       ["108:13", "Through God we will do valiantly", "Victory through God."],
     ],
+    bg: [["An old song for a new day", "Israel reused older psalms when new needs came. Here the confident praise of Psalm 57 is joined to the prayer for victory of Psalm 60, making one new song. It sits in Book V of the Psalms, which was gathered after the exile, when God's people again needed both praise and help.", "good", ["allen", "kidner"]]],
     refs: [["PSA.57", "Psalm 57:7-11", "The first half"], ["PSA.60", "Psalm 60:5-12", "The second half"]],
   },
   109: {
