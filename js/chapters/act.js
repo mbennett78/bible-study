@@ -283,12 +283,12 @@ export default makeBook({ lang: "Greek", sources, use: ["bockA", "bruce"] }, {
   26: {
     intro: "Before King Agrippa, Paul tells his story one more time: his strict life as a Pharisee, his fury against believers, and the light brighter than the sun on the Damascus road. Jesus sent him \"to open their eyes so that they may turn from darkness to light and from the dominion of Satan to God.\" \"I did not prove disobedient to the heavenly vision.\" Festus shouts, \"Paul, you are out of your mind!\" Paul replies that these things were \"not done in a corner.\" Agrippa says, \"In a short time you will persuade me to become a Christian.\" Paul wishes all who hear him would become as he is, \"except for these chains.\"",
     v: [
-      ["26:18", "To open their eyes so that they may turn from darkness to light", "Paul's mission."],
-      ["26:19", "I did not prove disobedient to the heavenly vision", "Faithful to God's call."],
-      ["26:22", "Stating nothing but what the Prophets and Moses said was going to take place", "The Old Testament fulfilled."],
-      ["26:26", "This has not been done in a corner", "Public, checkable events."],
-      ["26:28", "In a short time you will persuade me to become a Christian", "Almost persuaded."],
-      ["26:29", "Except for these chains", "Paul's warm wish."],
+      ["26:18", "To open their eyes so that they may turn from darkness to light", "Jesus' charge to Paul: open eyes, bring people from darkness to light and from Satan's power to God, so they receive forgiveness."],
+      ["26:19", "I did not prove disobedient to the heavenly vision", "Paul tells a king that since the Damascus road he has simply obeyed what Jesus told him to do."],
+      ["26:22", "Stating nothing but what the Prophets and Moses said was going to take place", "Paul insists he teaches nothing new: Moses and the prophets foretold a Messiah who would suffer and rise (26:23)."],
+      ["26:26", "This has not been done in a corner", "Jesus' death and resurrection happened in public, in Jerusalem, and could be checked. The king knew about them."],
+      ["26:28", "In a short time you will persuade me to become a Christian", "Agrippa brushes Paul off, perhaps half-joking, perhaps half-moved. \"Christian\" was still a new name (Acts 11:26)."],
+      ["26:29", "Except for these chains", "Paul, standing in chains, wishes everyone listening could have what he has, everything except the chains."],
     ],
     refs: [["ACT.9", "Acts 9", "Paul's conversion"], ["ISA.42", "Isaiah 42:6-7", "To open blind eyes"], ["COL.1", "Colossians 1:13", "Rescued from darkness"]],
   },
