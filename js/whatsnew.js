@@ -4,6 +4,17 @@
 // Newest first. Each note's id must be new so it shows once.
 export const NEWS = [
   {
+    id: "2026-11-25",
+    title: "What's new this week",
+    items: [
+      "🎨 Every kids' story picture is new, plus 8 new stories like the wise men and Hannah's prayer.",
+      "🗺️ Maps look like a study Bible's, with mountains, deserts and a scale.",
+      "👓 Easier to read: clearer gray words, and Largest text fits small phones.",
+      "📖 Study notes for every chapter, Genesis to Revelation.",
+      "🎲 Bible Spin: fill the lamp to pick a jewel, plus bonus rounds.",
+    ],
+  },
+  {
     id: "2026-11-24",
     title: "What's new this week",
     items: [
