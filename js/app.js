@@ -3011,7 +3011,7 @@ function initSettings() {
       }));
     } catch (err) {
       btn.textContent = "Check my plan for versions";
-      keyStatus(`That key didn't work: ${err.message || "couldn't load the versions"}. Check that the whole key was pasted, then tap Save again.`);
+      keyStatus(`That key didn't work: ${String(err.message || "couldn't load the versions").replace(/\.+$/, "")}. Check that the whole key was pasted, then tap Save again.`);
     }
   });
   $("#exportBtn").addEventListener("click", () => {
@@ -5063,7 +5063,7 @@ const SET_HINTS = {
   "sg-help": "User guide, what's new, the tour",
   "sg-you": "Your name, account, Bible version, journal passcode",
   "sg-buddy": "Your study buddy, colors and pictures",
-  "sg-reading": "Text size, read aloud, study helps, Bible text",
+  "sg-reading": "Text size, light or dark, read aloud, study helps, Bible keys",
   "sg-device": "Home screen, backup",
   "sg-about": "About this app, family organizer tools",
 };

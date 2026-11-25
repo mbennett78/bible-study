@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 12:19 PM Central
-**Current version:** v233 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:00 PM Central
+**Current version:** v234 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 1:05 PM CT: Settings in plainer words: "Reading and listening" (was Reading and Bible), "Light or dark screen", "Reading plan and listening" (was Modes), and "Bible keys and versions (set up once)". Fixed a doubled period in the Bible key message.
 - Wed Nov 25, 12:45 PM CT: Buddy, part 1 of Melissa's picture. Come back after 20 minutes or more and you may catch him napping, reading (sometimes with glasses, sometimes dozing on his book), writing with crumpled paper at his feet and then tidying it into the trash, searching with his magnifying glass, juggling, jumping rope, eating at his little table, hiking with his backpack and cap, fishing, shooting baskets or exercising. While he waits he swings his feet, whistles or leans back. He writes along while you're in the Journal and reads along while you read. New things to tell him: eat, exercise, go fishing, go hiking, juggle, basketball, football, put on your glasses, go to bed (tap to nudge him awake). Losing a game makes him a little sad for a moment, then he cheers you on. All still when motion is turned down.
 - Wed Nov 25, 12:20 PM CT: Settings: every change now shows a short "Saved ✓", and each section ends with a ✓ Done button that closes it with "All changes saved" (changes are still kept the moment they're made). Change my email is in Settings, under You and your account: Supabase emails a confirmation link first.
 - Wed Nov 25, 12:05 PM CT: Kids' storybook: tap someone in a story picture and they give a little hop, with a twinkle where you tapped (Lively pictures only; still when motion is turned down).
@@ -161,7 +162,7 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 | Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
 | Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down; games get a bigger celebration sound than the Quick check, and a sound on/off switch at the top of every game screen | Done Wed Nov 25 (play-test fixes, named crew, sound switch, win fanfare; the Quick check already celebrates a finished round with confetti, or a quiet ✓ when motion is off) | Fri Nov 27 (moved up from Sat Nov 28) |
 | Bible Spin characters: give each of the 7 category characters its own name and playful personality (an original game-show cast, not copied from any game), with lines when they cheer or comfort (Melissa asked Nov 25) | Done Wed Nov 25 | Fri Nov 27 |
-| Settings clear and easy to follow, and feel finished: plain labels and fewer choices per section; every change is still kept the moment it is made (nothing lost), plus a clear "Saved ✓" after each change and a Done button that closes the section with "All changes saved" (Melissa asked Nov 25) | Saved ✓ and Done added Wed Nov 25; plain-label clean-up next | Sat Nov 28 |
+| Settings clear and easy to follow, and feel finished: plain labels and fewer choices per section; every change is still kept the moment it is made (nothing lost), plus a clear "Saved ✓" after each change and a Done button that closes the section with "All changes saved" (Melissa asked Nov 25) | Done Wed Nov 25 (Saved ✓, Done buttons, plainer labels) | Sat Nov 28 |
 | Change my email in Settings: confirmed from both inboxes, and the family list follows the new address (Melissa asked Nov 25; password and name changes already work) | Done Wed Nov 25 (needs the Supabase email sender, already set up) | Sat Nov 28 |
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Tap surprises done Wed Nov 25; rules pass next | Sat Nov 28 (moved up from Sun Nov 29) |
 | Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Sun Nov 29 (moved up from Mon Nov 30) |

@@ -213,7 +213,7 @@
 
       <div class="card setup-card" id="setupCard"></div>
 
-      <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and look</button><button type="button" data-jump="sg-reading">Reading and Bible</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
+      <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and look</button><button type="button" data-jump="sg-reading">Reading and listening</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
 
       <h2 class="settings-group" id="sg-help" tabindex="-1">Help and guide</h2>
       <div class="card guide-card" id="guideCard">
@@ -283,7 +283,7 @@
         <p class="muted small-print" id="lookGraphicsNote"></p>
       </div>
 
-      <h2 class="settings-group" id="sg-reading" tabindex="-1">Reading and Bible</h2>
+      <h2 class="settings-group" id="sg-reading" tabindex="-1">Reading and listening</h2>
       <div class="card">
         <h2>Reading</h2>
         <label class="field">Text size
@@ -312,7 +312,7 @@
           </select>
         </label>
         <p class="muted small-print">While the app reads aloud, the part being read is highlighted so you can follow along.</p>
-        <label class="field">Appearance
+        <label class="field">Light or dark screen
           <select id="theme">
             <option value="auto">Match my device</option>
             <option value="light">Light</option>
@@ -322,7 +322,7 @@
       </div>
 
       <div class="card">
-        <h2>Modes</h2>
+        <h2>Reading plan and listening</h2>
         <label class="switch-row"><span>One-year pace<small>Suggest today's reading to finish your path in a year, and adjust if you fall behind</small></span><input type="checkbox" id="modePace" role="switch"></label>
         <label class="switch-row"><span>Read to me<small>Reads each chapter aloud and goes on to the next by itself, until you turn it off</small></span><input type="checkbox" id="modeDrive" role="switch"></label>
         <label class="switch-row"><span>Voice commands<small>Say "next", "pause", "play", "repeat" or "mark read"</small></span><input type="checkbox" id="modeVoice" role="switch"></label>
@@ -335,7 +335,7 @@
       </div>
 
       <div class="card" id="bibleTextCard">
-        <h2>Bible text</h2>
+        <h2>Bible keys and versions (set up once)</h2>
         <label class="field">API.Bible key
           <span class="key-row"><input id="apiBibleKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key"><button type="button" class="small" id="saveApiKey">Save</button></span>
         </label>

@@ -55,7 +55,7 @@ export const GUIDE = [
     "Sign in on any device and your reading, journal and notes follow you.",
     "The first time you tap a microphone button, your device asks to use the microphone. Tap Allow. It asks only once.",
     "Reading aloud and Buddy's voice need no permission. The app never asks for your location, contacts, camera or notifications.",
-    "Bigger words, bigger buttons and high contrast are under Reading and Bible in Settings.",
+    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings.",
   ] },
 ];
 
