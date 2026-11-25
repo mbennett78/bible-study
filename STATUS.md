@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 11:37 AM Central
-**Current version:** v232 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 12:19 PM Central
+**Current version:** v233 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 12:45 PM CT: Buddy, part 1 of Melissa's picture. Come back after 20 minutes or more and you may catch him napping, reading (sometimes with glasses, sometimes dozing on his book), writing with crumpled paper at his feet and then tidying it into the trash, searching with his magnifying glass, juggling, jumping rope, eating at his little table, hiking with his backpack and cap, fishing, shooting baskets or exercising. While he waits he swings his feet, whistles or leans back. He writes along while you're in the Journal and reads along while you read. New things to tell him: eat, exercise, go fishing, go hiking, juggle, basketball, football, put on your glasses, go to bed (tap to nudge him awake). Losing a game makes him a little sad for a moment, then he cheers you on. All still when motion is turned down.
 - Wed Nov 25, 12:20 PM CT: Settings: every change now shows a short "Saved ✓", and each section ends with a ✓ Done button that closes it with "All changes saved" (changes are still kept the moment they're made). Change my email is in Settings, under You and your account: Supabase emails a confirmation link first.
 - Wed Nov 25, 12:05 PM CT: Kids' storybook: tap someone in a story picture and they give a little hop, with a twinkle where you tapped (Lively pictures only; still when motion is turned down).
 - Wed Nov 25, 11:55 AM CT: Bible Spin's crew now have names and personalities, an original cast: Rosie (People), Trek (Places), Sprout (Stories & Miracles), Bolt (STEM), Quill (Books & Verses), Dusty (History) and Harper (Arts & Music). Each one cheers a right answer and comforts a miss in their own voice, and "Meet the crew" on the Bible Spin menu introduces them.

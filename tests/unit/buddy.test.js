@@ -16,3 +16,10 @@ test("Buddy does what he's asked, and leaves Bible questions to the helper", () 
 test("every action has something to say", () => {
   for (const [k, a] of Object.entries(BUDDY_ACTIONS)) assert.ok(a.say.length > 0, k);
 });
+
+test("Buddy can be told to eat, exercise, fish, hike, juggle, play ball, go to bed and wake up", () => {
+  const want = { "eat": "eat", "Buddy, have a snack": "eat", "go eat lunch": null, "exercise": "exercise", "do jumping jacks": "exercise", "go fishing": "fish",
+    "go hiking": "hike", "put on your backpack": "hike", "juggle": "juggle", "play basketball": "basketball", "play football": "football",
+    "put on your glasses": "glasses", "go to bed": "nap", "wake up": "wake", "jump": "jump" };
+  for (const [say, act] of Object.entries(want)) if (act) assert.equal(buddyCommand(say), act, say);
+});

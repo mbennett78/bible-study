@@ -3023,3 +3023,52 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .saved-note { position: fixed; left: 50%; bottom: calc(var(--tabbar-total, 70px) + 14px); translate: -50% 12px; z-index: 40; padding: 10px 18px; border-radius: 999px; background: #1f6b3a; color: #fff; font-weight: 700; box-shadow: 0 6px 18px rgb(0 0 0 / .25); opacity: 0; pointer-events: none; transition: opacity .2s, translate .2s; }
 .saved-note.show { opacity: 1; translate: -50% 0; }
 @media (prefers-reduced-motion: reduce) { .saved-note { transition: none; } }
+
+/* Buddy living his own life: his props (hidden until he uses them) */
+.buddy-pack, .buddy-table, .buddy-trash, .buddy-crumple, .buddy-cap, .buddy-pole, .buddy-utensils, .buddy-balls, .buddy-bball { display: none; }
+.buddy-pack rect { fill: #7a8f4a; stroke: var(--accent); stroke-width: 1.2; } .buddy-pack path { stroke: #4e5e2e; stroke-width: 1.2; }
+.buddy-table-top { stroke: #8a5a36; stroke-width: 2.6; stroke-linecap: round; } .buddy-table-leg { stroke: #8a5a36; stroke-width: 1.8; }
+.buddy-plate { fill: #fff; stroke: var(--accent); stroke-width: .8; } .buddy-bread { fill: #d9a55c; stroke: #8a5a36; stroke-width: .7; }
+.buddy-apple { fill: #d9452b; stroke: #8a2a1a; stroke-width: .7; } .buddy-cup { fill: #6fb3e8; stroke: var(--accent); stroke-width: .8; }
+.buddy-trash path { fill: #9aa3ad; stroke: var(--accent); stroke-width: 1.1; stroke-linejoin: round; }
+.buddy-crumple circle { fill: #fff; stroke: var(--accent); stroke-width: .8; }
+.buddy-cap path { fill: #d9452b; stroke: var(--accent); stroke-width: 1; stroke-linejoin: round; }
+.buddy-pole path { fill: none; stroke: #8a5a36; stroke-width: 1.6; stroke-linecap: round; } .buddy-pole .buddy-fishline { stroke: var(--muted); stroke-width: .6; }
+.buddy-bobber { fill: #d9452b; stroke: #fff; stroke-width: .6; }
+.buddy-utensils path { stroke: #8a8f98; stroke-width: 1.2; stroke-linecap: round; fill: none; } .buddy-utensils ellipse { fill: #8a8f98; }
+.buddy-balls circle { stroke: var(--accent); stroke-width: .8; } .buddy-balls .bb1 { fill: #e8634a; } .buddy-balls .bb2 { fill: #f2a516; } .buddy-balls .bb3 { fill: #2f8fd0; }
+.buddy-bball circle { fill: #e07a2a; stroke: #6a3410; stroke-width: .8; } .buddy-bball path { stroke: #6a3410; stroke-width: .6; fill: none; }
+.buddy.hiking .buddy-pack, .buddy.hiking .buddy-cap, .buddy.tossing .buddy-cap, .buddy.dribbling .buddy-cap, .buddy.dribbling .buddy-bball { display: inline; }
+.buddy.eating .buddy-table, .buddy.eating .buddy-utensils, .buddy.fishing .buddy-pole, .buddy.juggling .buddy-balls { display: inline; }
+.buddy.crumpled .buddy-crumple, .buddy.tidying .buddy-trash { display: inline; }
+.buddy.tidying .buddy-crumple { display: none; }
+.buddy.eating .buddy-arm-r { transform: rotate(-55deg); } .buddy.eating .buddy-arm-l { transform: rotate(30deg); }
+.buddy.fishing .buddy-arm-r { transform: rotate(-12deg); }
+.buddy.juggling .buddy-arm-r { transform: rotate(-35deg); } .buddy.juggling .buddy-arm-l { transform: rotate(35deg); }
+.buddy.tidying .buddy-arm-r { transform: rotate(-80deg); }
+.buddy.dozing .buddy-eye { display: none; } .buddy.dozing .buddy-shut { display: inline; }
+.buddy.dozing .buddy-head, .buddy.dozing .buddy-shut, .buddy.dozing .buddy-smile, .buddy.dozing .buddy-glasses { transform: translate(2px, 4px); transform-box: view-box; }
+.buddy.lean .buddy-body { transform: rotate(-8deg); transform-origin: 26px 56px; transform-box: view-box; }
+.buddy.whistle .buddy-smile { display: none; } .buddy.whistle .buddy-mouth { display: inline; transform: scale(.6); transform-origin: 26px 26.6px; transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.eating .buddy-arm-r { animation: buddy-bite .6s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.exercising .buddy-arm-r { animation: buddy-jack-r .5s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.exercising .buddy-arm-l { animation: buddy-jack-l .5s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.exercising .buddy-body { animation: buddy-hopsmall .5s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.fishing .buddy-bobber { animation: buddy-bob 1.4s ease-in-out infinite; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .bb1 { animation: buddy-juggle .9s ease-in-out infinite; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .bb2 { animation: buddy-juggle .9s ease-in-out -.3s infinite; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .bb3 { animation: buddy-juggle .9s ease-in-out -.6s infinite; }
+  :root:not([data-graphics="simple"]) .buddy.dribbling .buddy-bball { animation: buddy-dribble .45s ease-in infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.hiking .buddy-legs-stand { animation: buddy-walk .35s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.swing .buddy-legs-sit { animation: buddy-swing .7s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
+}
+@keyframes buddy-bite { from { transform: rotate(-55deg); } to { transform: rotate(-95deg); } }
+@keyframes buddy-jack-r { from { transform: rotate(0); } to { transform: rotate(-130deg); } }
+@keyframes buddy-jack-l { from { transform: rotate(0); } to { transform: rotate(130deg); } }
+@keyframes buddy-hopsmall { to { transform: translateY(-3px); } }
+@keyframes buddy-bob { 50% { transform: translateY(1.6px); } }
+@keyframes buddy-juggle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes buddy-dribble { from { transform: translateY(0); } to { transform: translateY(12px); } }
+@keyframes buddy-swing { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+.bnd-face .buddy-pack, .bnd-face .buddy-table, .bnd-face .buddy-trash, .bnd-face .buddy-crumple, .bnd-face .buddy-cap, .bnd-face .buddy-pole, .bnd-face .buddy-utensils, .bnd-face .buddy-balls, .bnd-face .buddy-bball { display: none; }

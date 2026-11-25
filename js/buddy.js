@@ -13,6 +13,10 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <circle class="ti-dot d1" cx="49" cy="13.5" r="2"/><circle class="ti-dot d2" cx="56.5" cy="13.5" r="2"/><circle class="ti-dot d3" cx="64" cy="13.5" r="2"/>
   </g>
   <g class="buddy-body">
+    <g class="buddy-pack"><rect x="13.5" y="33" width="9.5" height="14" rx="3.2"/><path d="M15.5 38h5.5"/></g>
+    <g class="buddy-table"><path class="buddy-table-top" d="M37 59h26"/><path class="buddy-table-leg" d="M41 59v14M59 59v14"/><ellipse class="buddy-plate" cx="46" cy="57.6" rx="5.4" ry="1.4"/><ellipse class="buddy-bread" cx="45.5" cy="55.9" rx="3.6" ry="2"/><circle class="buddy-apple" cx="53.5" cy="56" r="2.3"/><path class="buddy-cup" d="M57 51.5h4l-.6 6h-2.8z"/></g>
+    <g class="buddy-trash"><path d="M50 48h10l-1.5 11h-7z"/><path d="M49 48h12"/></g>
+    <g class="buddy-crumple"><circle cx="44" cy="58" r="2.3"/><circle cx="49" cy="59" r="1.9"/><circle cx="40" cy="59.3" r="1.6"/></g>
     <circle class="buddy-head" cx="26" cy="22" r="10"/>
     <circle class="buddy-eye" cx="22.5" cy="20.5" r="1.6"/><circle class="buddy-eye" cx="29.5" cy="20.5" r="1.6"/>
     <path class="buddy-shut" d="M20.8 21q1.7 1.2 3.4 0M27.8 21q1.7 1.2 3.4 0"/>
@@ -23,6 +27,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <path class="buddy-mad" d="M20.2 16.3l3.6 1.7M31.8 16.3l-3.6 1.7"/>
     <path class="buddy-tear" d="M22.3 23.2q-1.3 2.1 0 3.1q1.3-1 0-3.1z"/>
     <g class="buddy-glasses"><circle cx="22.5" cy="20.6" r="3.1"/><circle cx="29.5" cy="20.6" r="3.1"/><path d="M25.6 20.4h.8M19.4 20.1l-2.6-1.1M32.6 20.1l2.6-1.1"/></g>
+    <g class="buddy-cap"><path d="M16.3 19.5Q16.6 11.2 26 11.2Q35.4 11.2 35.7 19.5Z"/><path d="M34 18.6l8.5.9q-1.6 2.3-8 1.9z"/></g>
     <path class="buddy-line" d="M26 32v22"/>
     <g class="buddy-arm-l"><path class="buddy-line" d="M26 38l-10 9"/></g>
     <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
@@ -31,6 +36,10 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-paper"><path class="buddy-paper-sheet" d="M17.5 44.5h13v11h-13z"/><path class="buddy-paper-lines" d="M19.5 47.5h9M19.5 50h9M19.5 52.5h5"/><path class="buddy-pencil" d="M37 43.5l-7.5 8.5"/><path class="buddy-pencil-tip" d="M29.5 52l-.9 1.9 1.9-.9z"/></g>
     <path class="buddy-rope" d="M16 47Q26 88 36 47"/>
     <g class="buddy-mitt"><ellipse cx="37.5" cy="48" rx="3.6" ry="3.1"/><path d="M35.2 46.4l-1.8-2.2"/></g>
+    <g class="buddy-pole"><path d="M36 47L58 19"/><path class="buddy-fishline" d="M58 19Q63 40 61 66"/><circle class="buddy-bobber" cx="61" cy="67" r="2.1"/></g>
+    <g class="buddy-utensils"><path d="M36 47l2.5-6.5M37.4 40.2l.6-2.2M38.6 40.6l.6-2.2M39.8 41l.6-2.2"/><path d="M16 47l-2.2-6.3"/><ellipse cx="13.4" cy="39.6" rx="1.4" ry="2"/></g>
+    <g class="buddy-balls"><circle class="bb1" cx="16" cy="40" r="2.4"/><circle class="bb2" cx="26" cy="36" r="2.4"/><circle class="bb3" cx="36" cy="40" r="2.4"/></g>
+    <g class="buddy-bball"><circle cx="38" cy="58" r="3.6"/><path d="M34.4 58h7.2M38 54.4v7.2"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
@@ -39,7 +48,9 @@ const SPOT_KEY = "bible-study:buddy-spot2"; // 2: on iPad he starts in the side 
 // His little tricks while nobody needs him, and when he naps.
 const TRICK_EVERY_MS = 25000;
 const NAP_AFTER_MS = 150000;
-const TRICKS = ["cartwheel", "stroll", "pondering", "yay", "reading", "pondering", "reading", "stroll", "yay", "reading", "cartwheel"];
+const TRICKS = ["cartwheel", "stroll", "pondering", "yay", "reading", "pondering", "reading", "stroll", "yay", "reading", "cartwheel", "swing", "whistle", "lean", "swing", "lean"];
+// Quiet things he does while he sits and waits: swinging his feet, whistling, leaning back.
+const IDLES = { swing: 4200, whistle: 2800, lean: 4200 };
 // Late at night he gets sleepy: he yawns now and then and naps much sooner.
 const lateNow = () => { const h = new Date().getHours(); return h >= 22 || h < 5; };
 const LATE_NAP_MS = 45000;
@@ -71,16 +82,28 @@ export const BUDDY_ACTIONS = {
   read: { ms: 9000, pop: "📖", say: ["Reading time! 📖 I love this part.", "Let me read my little Bible with you. 📖"] },
   think: { ms: 5000, pop: "💭", say: ["Hmm, let me think... 🤔", "*thinking hard* 💭"] },
   write: { ms: 7000, pop: "✏️", say: ["Taking notes! ✏️", "Writing this down so I remember. ✏️"] },
+  eat: { ms: 7000, pop: "🍞", say: ["Snack time! 🍞🍎 Mmm, bread and an apple.", "Yum! *munch munch* Want some? 🍎", "A little bread and a drink. Thank you, Lord, for food! 🙏"] },
+  exercise: { ms: 4200, pop: "💪", say: ["Jumping jacks! One, two, three... 💪", "Gotta stay strong! 💪 Phew!", "Exercise break! Wanna join me? 🏃"] },
+  fish: { ms: 9000, pop: "🎣", say: ["Gone fishing! 🎣 Like Peter by the Sea of Galilee.", "Shh... I think I've got a bite! 🎣", "Fishing is good thinking time. 🎣"] },
+  hike: { ms: 6000, pop: "🎒", say: ["Backpack on! Let's go hiking! 🎒", "Off to explore! 🥾", "Climbing a mountain, like Moses! ⛰️"] },
+  juggle: { ms: 4500, pop: "🤹", say: ["Juggling! 🤹 One, two, three... don't drop it!", "Look, three balls at once! 🤹"] },
+  basketball: { ms: 4200, pop: "🏀", say: ["Dribble, dribble... swish! 🏀", "Basketball time! 🏀 Nothing but net!"] },
+  football: { ms: 3600, pop: "🏈", say: ["Go long! 🏈 Touchdown!", "Football! 🏈 I've got a good arm."] },
+  glasses: { ms: 6000, pop: "🤓", say: ["*puts on glasses* Very scholarly. 🤓", "Nerd mode: ON. 🤓"] },
   nap: { ms: 0, pop: "", say: ["Okay... yawn... nap time. 😴 Tap me to wake me up!", "Just a little nap... 💤"] },
   wake: { ms: 2000, pop: "☀️", say: ["I'm up! I'm up! ☀️", "Good morning! Did I miss anything? ☀️"] },
 };
 const ACTION_WORDS = [
-  [/jump ?rope|skip(ping)? ?rope/, "jumprope"], [/jumping jacks?|jump|hop/, "jump"], [/dance|dancing|boogie|groove/, "dance"],
+  [/jump ?rope|skip(ping)? ?rope/, "jumprope"], [/jump|hop/, "jump"], [/dance|dancing|boogie|groove/, "dance"],
   [/wave|say (hi|hello)/, "wave"], [/cartwheels?|flips?|backflips?|somersaults?|tumble/, "cartwheel"], [/spin|twirl|turn around/, "spin"],
   [/cheer|celebrate|yay|hooray/, "cheer"], [/laugh|roll on the floor|giggle|lol/, "laugh"], [/take a bow|bow/, "bow"],
   [/play (ball|catch)|toss (a |the )?ball|throw (a |the )?ball|catch/, "ball"], [/hug( me)?|give me a hug/, "hug"],
   [/read( your bible)?/, "read"], [/think/, "think"], [/write|take notes/, "write"],
-  [/(take a |go to )?(nap|sleep)/, "nap"], [/wake up/, "wake"], [/(a |some )?tricks?|something (fun|cool)/, "trick"],
+  [/eat|have (a )?(snack|lunch|dinner|breakfast)|snack|lunch|dinner|breakfast|get something to eat/, "eat"],
+  [/exercise|work ?out|jumping jacks|stretch/, "exercise"], [/(go )?fish(ing)?/, "fish"], [/(go )?hik(e|ing)|put on (your )?backpack|go exploring/, "hike"],
+  [/juggle|juggling/, "juggle"], [/(play )?basketball|dribble|shoot hoops/, "basketball"], [/(play )?football|throw a pass/, "football"],
+  [/(put on )?(your )?glasses|be a nerd|nerd/, "glasses"], [/(go )?(to )?bed|bedtime/, "nap"],
+  [/(take a |go to )?(nap|sleep)/, "nap"], [/wake up|nudge/, "wake"], [/(a |some )?tricks?|something (fun|cool)/, "trick"],
 ];
 // "Can you jump rope?", "Buddy, dance!", "do a cartwheel please": a short request to do one
 // of his actions. Questions about the Bible ("Why did David dance?") are left for the helper.
@@ -340,6 +363,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   const popUp = (text, ms) => { clearTimeout(popTimer); pop.classList.remove("snore"); pop.textContent = text; pop.classList.add("on"); popTimer = setTimeout(() => pop.classList.remove("on"), ms); };
   function trick(name) {
     if (busy() || el.classList.contains("sleeping")) return false;
+    if (IDLES[name]) {
+      trickUntil = Date.now() + IDLES[name] + 400;
+      el.classList.add("sitting", name);
+      if (name === "whistle") popUp("♪ ♫", IDLES[name]);
+      setTimeout(() => el.classList.remove(name), IDLES[name]);
+      return true;
+    }
     const ms = { cartwheel: 1700, stroll: 3200, pondering: 5000, yay: 2000, reading: 9000 }[name] || 2000;
     trickUntil = Date.now() + ms + 400;
     el.classList.remove("tucked", "sitting");
@@ -401,7 +431,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }, TRICK_EVERY_MS);
 
   // Asked to do something: he does it right away, even while the chat is open.
-  const ACT_CLASSES = ["jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging"];
+  const ACT_CLASSES = ["jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging", "eating", "exercising", "fishing", "hiking", "juggling", "dribbling", "nerdy"];
   function act(name, also = null) {
     if (name === "trick") name = pick(["cartwheel", "jumprope", "dance", "spin", "ball", "jump"]);
     const a = BUDDY_ACTIONS[name];
@@ -415,12 +445,47 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     el.classList.remove("tucked", "sitting");
     both((x) => x.classList.remove("sitting", ...ACT_CLASSES));
     const cls = { jump: "jumping", jumprope: "roping", dance: "dancing", spin: "spinning", laugh: "laughing", pray: "praying", bow: "bowing", ball: "tossing", hug: "hugging",
-      wave: "waving", cartwheel: "cartwheel", cheer: "cheering", read: "reading", think: "pondering", write: "writing" }[name];
+      wave: "waving", cartwheel: "cartwheel", cheer: "cheering", read: "reading", think: "pondering", write: "writing",
+      eat: "eating", exercise: "exercising", fish: "fishing", hike: "hiking", juggle: "juggling", basketball: "dribbling", football: "tossing", glasses: "nerdy" }[name];
     both((x) => { void x.offsetWidth; x.classList.add(cls); setTimeout(() => x.classList.remove(cls), ms); });
+    if (name === "eat" || name === "fish") both((x) => x.classList.add("sitting"));
     if (a.pop) popUp(a.pop, Math.min(ms, 3000));
     if (!keepStanding) sitSoon(ms + 2500);
     return name;
   }
+
+  // Living his own life: come back after a while and you may catch him at something:
+  // asleep, reading (maybe dozing on his book), writing with crumpled paper at his feet and then
+  // tidying it into the trash, searching for something, juggling, eating, hiking or fishing.
+  const SEEN_KEY = "bible-study:buddy-seen", AWAY_MS = 20 * 60 * 1000;
+  const LIFE = ["nap", "read", "doze", "writeTidy", "search", "juggle", "jumprope", "eat", "hike", "fish", "basketball", "exercise", "read", "writeTidy"];
+  function life(what = pick(LIFE)) {
+    if (el.hidden || still() || drag || !say.hidden) return null;
+    if (what === "nap") { nap(true); return what; }
+    if (what === "read" || what === "doze") {
+      if (!trick("reading")) return null;
+      if (what === "doze") { el.classList.add("dozing"); setTimeout(() => { if (el.classList.contains("dozing")) { pop.textContent = "z z"; pop.classList.add("on", "snore"); } }, 3000); setTimeout(() => { el.classList.remove("dozing"); pop.classList.remove("on", "snore"); }, 9000); }
+      else if (Math.random() < 0.5) el.classList.add("nerdy"), setTimeout(() => el.classList.remove("nerdy"), 9000);
+      return what;
+    }
+    if (what === "writeTidy") {
+      trickUntil = 0;
+      el.classList.remove("tucked", "reading"); el.classList.add("sitting", "writing", "crumpled");
+      trickUntil = Date.now() + 9000;
+      setTimeout(() => { el.classList.remove("writing"); el.classList.add("tidying"); popUp("🗑️", 1800); }, 6000);
+      setTimeout(() => el.classList.remove("crumpled", "tidying"), 8200);
+      return what;
+    }
+    if (what === "search") { el.classList.remove("tucked"); el.classList.add("thinking"); pop.textContent = "🔍"; pop.classList.add("on", "search"); setTimeout(() => { el.classList.remove("thinking"); pop.classList.remove("search"); popUp("💡", 1800); }, 4500); trickUntil = Date.now() + 6500; return what; }
+    return act(what);
+  }
+  const seen = () => { try { return Number(localStorage.getItem(SEEN_KEY)) || 0; } catch { return 0; } };
+  const markSeen = () => { try { localStorage.setItem(SEEN_KEY, String(Date.now())); } catch { /* private mode */ } };
+  const back = () => { const was = seen(), gone = Date.now() - was; markSeen(); if (was && gone > AWAY_MS) setTimeout(() => life(), 2500); };
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") back(); else markSeen(); });
+  addEventListener("pagehide", markSeen);
+  setInterval(() => { if (document.visibilityState === "visible") markSeen(); }, 60000);
+  back();
 
   addEventListener("resize", place);
   // While someone scrolls through the reading he sits and fades a little, so he never
@@ -480,6 +545,14 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
       return true;
     },
     nap,
+    life,
+    // Keeping you company: he writes in his own journal while you're in yours, and reads along
+    // while you read (sometimes with glasses on, sometimes dozing off on his book).
+    mirror(view) {
+      if (el.hidden || still() || busy() || el.classList.contains("sleeping") || Math.random() < 0.4) return;
+      if (view === "journal" || view === "notes") this.writing(9000);
+      else if (view === "read") life(Math.random() < 0.25 ? "doze" : "read");
+    },
     sleeping: () => el.classList.contains("sleeping"),
     // Looking something up: his magnifying glass while he thinks, and a lightbulb when he's got it.
     thinking(on) {

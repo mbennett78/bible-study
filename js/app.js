@@ -88,6 +88,8 @@ function showView(name) {
   document.querySelectorAll(".view").forEach((v) => { v.hidden = v.id !== `view-${name}`; });
   markNav(name);
   document.body.dataset.view = name;
+  // Buddy keeps you company: journaling while you journal, reading while you read.
+  setTimeout(() => { try { if (document.body.dataset.view === name) buddy.mirror(name === "books" && segment === "journal" ? "journal" : name); } catch { /* he isn't here yet */ } }, 1800);
   $("#topTitle").textContent = { home: "Home", books: "My Bible", path: "Bible study", settings: "Settings", notes: "My Notes" }[name] || "";
   if (name === "notes") renderNotesList();
   if (name === "read") showPassageMood();
@@ -1477,8 +1479,8 @@ const quest = createQuest({
     if (mode === "buddy") buddyTogether();
     if (mode === "buddy") {
       // Beaten! A little pout... then a good sport.
-      buddy.mood("mad", 2600);
-      setTimeout(() => buddy.celebrate(pickOne(["Hmph! 😤 ...okay, okay. You beat me fair and square. Great game! 🏆", "Nooo! I was SO close! 😢 Just kidding. You earned it. Good game! 🤝", "You got me! I demand a rematch... later. 😄 Great playing!"]), "trophy"), 2800);
+      buddy.mood("cry", 2200);
+      setTimeout(() => buddy.celebrate(pickOne(["Aww, I lost... 😢 But hey, YOU won! Great game! 🏆", "So close! 😅 You beat me fair and square. Good game! 🤝", "You got me! That was so fun. You were amazing! 🏆"]), "trophy"), 2400);
     } else buddy.celebrate(pickOne([`You WON! 🏆 That was amazing, ${store.get("name")?.trim() || "friend"}!`, "Woohoo! You're a trivia champion! 🎉", "YES! I knew you could do it! 🏆"]), "trophy");
   }),
   // He won: a happy little victory dance, and then he's a good sport about it.
