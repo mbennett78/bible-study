@@ -467,19 +467,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   49: {
     intro: "A wisdom psalm for rich and poor alike. Why fear when wealthy people boast? No one can pay God a ransom for another's life. The wise and the foolish both die and leave wealth to others. \"But God will redeem my soul from the power of Sheol, for He will receive me.\"",
     v: [
-      ["49:7", "No man can by any means redeem his brother", "Money cannot buy life."],
-      ["49:15", "God will redeem my soul... He will receive me", "Hope beyond death."],
-      ["49:17", "When he dies he will carry nothing away", "Wealth stays behind."],
+      ["49:7", "No man can by any means redeem his brother", "No amount of money can pay for another person's life before God. The price of a soul is too high (49:8)."],
+      ["49:15", "God will redeem my soul... He will receive me", "The rich cannot buy their way out of death, but God will rescue the psalmist from the grave and take him to Himself."],
+      ["49:17", "When he dies he will carry nothing away", "Do not be afraid when others get rich. When they die they take nothing with them, and their glory does not follow."],
     ],
     refs: [["LUK.12", "Luke 12:16-21", "The rich fool"], ["1TI.6", "1 Timothy 6:7", "We brought nothing into the world"], ["MRK.8", "Mark 8:36-37", "What will a man give in exchange for his soul?"]],
   },
   50: {
     intro: "God calls heaven and earth to witness as He judges His people. He does not need their animals: \"every beast of the forest is Mine, the cattle on a thousand hills.\" What He wants is thanksgiving, kept promises and calling on Him in trouble. He rebukes those who recite His covenant but hate discipline.",
     v: [
-      ["50:10", "The cattle on a thousand hills", "God owns everything."],
-      ["50:14", "Offer to God a sacrifice of thanksgiving", "Grateful hearts."],
-      ["50:15", "Call upon Me in the day of trouble", "God invites our prayers."],
-      ["50:23", "He who offers a sacrifice of thanksgiving honors Me", "Thanks honors God."],
+      ["50:10", "The cattle on a thousand hills", "God does not need Israel's sacrifices. Every animal in the forest and the cattle on a thousand hills already belong to Him."],
+      ["50:14", "Offer to God a sacrifice of thanksgiving", "What God wants more than animals is thanks from the heart, and keeping the promises made to Him."],
+      ["50:15", "Call upon Me in the day of trouble", "God invites His people to call on Him in trouble. He will rescue them, and they will honor Him."],
+      ["50:23", "He who offers a sacrifice of thanksgiving honors Me", "A thankful heart honors God, and to the one who walks rightly God will show His salvation."],
     ],
     refs: [["HEB.13", "Hebrews 13:15", "A sacrifice of praise"], ["MIC.6", "Micah 6:6-8", "What does the LORD require?"]],
   },
@@ -498,17 +498,17 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   52: {
     intro: "Written after Doeg the Edomite betrayed David's helpers to Saul. The boastful man loves evil and his tongue is like a sharp razor; he trusted in riches. God will uproot him. \"But as for me, I am like a green olive tree in the house of God; I trust in the lovingkindness of God forever.\"",
     v: [
-      ["52:2", "Your tongue devises destruction", "The damage of words."],
-      ["52:7", "Trusted in the abundance of his riches", "Misplaced trust."],
-      ["52:8", "Like a green olive tree in the house of God", "Rooted and fruitful."],
+      ["52:2", "Your tongue devises destruction", "The heading links this psalm to Doeg, who betrayed David and the priests to Saul (1 Samuel 22:9-19). His tongue was sharp as a razor."],
+      ["52:7", "Trusted in the abundance of his riches", "This man did not make God his refuge. He trusted his great wealth and grew strong by destroying others."],
+      ["52:8", "Like a green olive tree in the house of God", "Olive trees can live for hundreds of years. David, trusting God's love, is like a green olive tree in God's house."],
     ],
     refs: [["1SA.22", "1 Samuel 22:9-19", "Doeg's betrayal"], ["JER.17", "Jeremiah 17:7-8", "Like a tree planted by water"]],
   },
   53: {
     intro: "Nearly the same as Psalm 14. \"The fool has said in his heart, There is no God.\" God looks down and finds no one who seeks Him. The psalm longs for salvation from Zion.",
     v: [
-      ["53:1", "The fool has said in his heart", "Practical atheism."],
-      ["53:5", "Where no terror had been", "A detail added from Psalm 14."],
+      ["53:1", "The fool has said in his heart", "A fool in the Bible is not someone unintelligent but someone who lives as if there is no God."],
+      ["53:5", "Where no terror had been", "Psalm 53 is nearly the same as Psalm 14. Here a line is added: the enemies are struck with terror when there was nothing to fear."],
     ],
     bg: [["Why twice?", "Psalm 53 uses the general name God (Elohim) where Psalm 14 uses the LORD (Yahweh), a pattern across Psalms 42-83. Many think the same song was kept in two collections of temple songs.", "good", ["tate", "kidner"]]],
     refs: [["PSA.14", "Psalm 14", "The twin psalm"], ["ROM.3", "Romans 3:10-12", "None righteous"]],
@@ -516,9 +516,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   54: {
     intro: "Written when the Ziphites told Saul where David was hiding. \"Save me, O God, by Your name.\" \"Behold, God is my helper; the Lord is the sustainer of my soul.\" David promises to give thanks.",
     v: [
-      ["54:1", "Save me, O God, by Your name", "God's character is his hope."],
+      ["54:1", "Save me, O God, by Your name", "The heading places this when the Ziphites told Saul where David was hiding (1 Samuel 23:19). God's name, His character, is David's hope."],
       ["54:3", "Strangers have risen against me", "The betrayers were fellow Judeans, yet they acted like strangers."],
-      ["54:4", "God is my helper", "A turning point."],
+      ["54:4", "God is my helper", "In the middle of the psalm the tone turns: God is my helper. The Lord sustains my life."],
       ["54:6", "A freewill offering I will sacrifice to You", "Thanks given gladly, not because it was owed."],
     ],
     bg: [["The Ziphites", "Ziph lay in the rough wilderness southeast of Hebron, in David's own tribe of Judah. Twice its people told Saul where David was hiding (1 Samuel 23:19; 26:1). This psalm turns that betrayal into prayer.", "good", ["tate", "kidner"]]],
@@ -527,19 +527,19 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   55: {
     intro: "David is overwhelmed with fear: \"Oh, that I had wings like a dove! I would fly away and be at rest.\" The worst part is that the betrayer is \"my companion and my familiar friend; we who had sweet fellowship together.\" Evening, morning and noon he will pray. \"Cast your burden upon the LORD and He will sustain you.\"",
     v: [
-      ["55:6", "Wings like a dove", "Longing to escape."],
-      ["55:12-14", "It is you, my companion", "Betrayal by a close friend."],
-      ["55:17", "Evening and morning and at noon", "Steady prayer."],
-      ["55:22", "Cast your burden upon the LORD", "Peter echoes this in 1 Peter 5:7."],
+      ["55:6", "Wings like a dove", "Under great stress David wishes he had wings like a dove to fly away and find rest."],
+      ["55:12-14", "It is you, my companion", "An enemy's insult could be borne. The deepest hurt is from a close friend he once walked with to God's house."],
+      ["55:17", "Evening and morning and at noon", "Evening, morning and noon, David keeps bringing his complaint to God, and God hears his voice."],
+      ["55:22", "Cast your burden upon the LORD", "Throw your burden on the LORD, and He will hold you up. Peter echoes this: cast all your anxiety on Him (1 Peter 5:7)."],
     ],
     refs: [["1PE.5", "1 Peter 5:7", "Casting all your anxiety on Him"], ["2SA.15", "2 Samuel 15:31", "Ahithophel betrays David"]],
   },
   56: {
     intro: "Written when the Philistines seized David in Gath. \"When I am afraid, I will put my trust in You. In God, whose word I praise, in God I have put my trust; I shall not be afraid. What can mere man do to me?\" God keeps his tears in a bottle.",
     v: [
-      ["56:3", "When I am afraid, I will put my trust in You", "Fear met with trust."],
-      ["56:8", "Put my tears in Your bottle", "God remembers every tear."],
-      ["56:11", "What can man do to me?", "Hebrews 13:6 echoes this."],
+      ["56:3", "When I am afraid, I will put my trust in You", "David does not pretend he is never afraid. When fear comes, he chooses to trust God."],
+      ["56:8", "Put my tears in Your bottle", "God keeps count of David's wanderings and stores his tears as if in a bottle. Not one is forgotten."],
+      ["56:11", "What can man do to me?", "Because David trusts God, he will not be afraid. What can mere people do to him? Hebrews 13:6 echoes this."],
     ],
     refs: [["1SA.21", "1 Samuel 21:10", "David in Gath"], ["REV.21", "Revelation 21:4", "He will wipe away every tear"]],
   },
@@ -556,8 +556,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   58: {
     intro: "David challenges unjust rulers who speak crookedly and judge unfairly. They are like a cobra that will not listen to the charmer. He asks God to break their teeth. In the end people will say, \"Surely there is a God who judges on earth.\"",
     v: [
-      ["58:1", "Do you indeed speak righteousness, O gods?", "Probably addressed to rulers or judges."],
-      ["58:11", "Surely there is a God who judges on earth", "Justice will come."],
+      ["58:1", "Do you indeed speak righteousness, O gods?", "The word translated gods probably means rulers or judges, the powerful ones who should have judged fairly but did not."],
+      ["58:11", "Surely there is a God who judges on earth", "In the end people will say there is a reward for the righteous, and there is a God who judges on the earth."],
     ],
     why: "Psalm 58 is one of the imprecatory psalms, which ask God to judge enemies in strong language. Believers have long asked how to read them.",
     whySrc: ["kidner", "wilson"],
@@ -571,27 +571,27 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
   59: {
     intro: "Written when Saul sent men to watch David's house to kill him. Enemies return each evening, howling like dogs. \"But as for me, I shall sing of Your strength... for You have been my stronghold.\"",
     v: [
-      ["59:6", "They return at evening, they howl like a dog", "Relentless enemies."],
-      ["59:16", "I shall joyfully sing of Your lovingkindness in the morning", "Morning brings praise."],
-      ["59:17", "O my strength, I will sing praises to You", "God is his fortress."],
+      ["59:6", "They return at evening, they howl like a dog", "The heading places this when Saul sent men to watch David's house to kill him (1 Samuel 19:11). They prowl like wild dogs at night."],
+      ["59:16", "I shall joyfully sing of Your lovingkindness in the morning", "The enemies roam at night, but David will sing of God's strength and steadfast love in the morning."],
+      ["59:17", "O my strength, I will sing praises to You", "God is David's strength, his fortress, and the God who shows him steadfast love."],
     ],
     refs: [["1SA.19", "1 Samuel 19:11-17", "Michal helps David escape"]],
   },
   60: {
     intro: "After a defeat, David says, \"O God, You have rejected us.\" But God has spoken: Shechem, Gilead, Ephraim and Judah are His. \"Through God we shall do valiantly, and it is He who will tread down our adversaries.\"",
     v: [
-      ["60:4", "A banner to those who fear You", "God rallies His people."],
-      ["60:11", "Deliverance by man is in vain", "Human help is not enough."],
-      ["60:12", "Through God we shall do valiantly", "Victory through God."],
+      ["60:4", "A banner to those who fear You", "After a hard defeat, God raises a banner, a battle flag, for His people to rally around."],
+      ["60:11", "Deliverance by man is in vain", "Human help is worthless in this fight. David asks God for help against the enemy."],
+      ["60:12", "Through God we shall do valiantly", "With God the people will fight bravely, and He will trample their enemies."],
     ],
     refs: [["2SA.8", "2 Samuel 8:13-14", "Victory over Edom"], ["PSA.108", "Psalm 108", "Repeats this psalm"]],
   },
   61: {
     intro: "\"Hear my cry, O God... from the end of the earth I call to You when my heart is faint; lead me to the rock that is higher than I.\" He longs to dwell in God's tent forever and prays for the king's long life.",
     v: [
-      ["61:2", "Lead me to the rock that is higher than I", "A safety beyond himself."],
+      ["61:2", "Lead me to the rock that is higher than I", "From the ends of the earth, with a fainting heart, David asks God to lead him to a rock too high for him to climb alone."],
       ["61:2", "From the end of the earth I call to You", "Far from home, or simply at the end of his strength, he can still pray."],
-      ["61:4", "Let me dwell in Your tent forever", "Longing for God's presence."],
+      ["61:4", "Let me dwell in Your tent forever", "David longs to live in God's tent forever and take shelter under His wings."],
       ["61:4", "The shelter of Your wings", "A picture of a mother bird, or of the cherubim's wings over the ark."],
     ],
     bg: [["A prayer for the king", "Verses 6-7 pray for the king's long life and steadfast love. Many think David prayed this while far from Jerusalem, perhaps during Absalom's revolt. Christians have long heard in it the King whose reign has no end.", "good", ["tate", "kidner"]]],
