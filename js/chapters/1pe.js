@@ -67,12 +67,12 @@ export default makeBook({ lang: "Greek", sources, use: ["jobes", "schreinerP"] }
   5: {
     intro: "Peter, \"your fellow elder and witness of the sufferings of Christ,\" urges the elders: \"Shepherd the flock of God among you,\" not under compulsion or for money, but willingly and as examples. When the Chief Shepherd appears, you will receive the unfading crown of glory. \"Clothe yourselves with humility toward one another, for God is opposed to the proud, but gives grace to the humble.\" \"Casting all your anxiety on Him, because He cares for you.\" \"Be of sober spirit, be on the alert. Your adversary, the devil, prowls around like a roaring lion.\" After you have suffered a little while, the God of all grace will Himself perfect, confirm, strengthen and establish you. Silvanus and Mark send greetings.",
     v: [
-      ["5:2", "Shepherd the flock of God among you", "Caring leaders."],
-      ["5:4", "When the Chief Shepherd appears, you will receive the unfading crown of glory", "The Chief Shepherd."],
-      ["5:5", "Clothe yourselves with humility toward one another", "Humble clothes."],
+      ["5:2", "Shepherd the flock of God among you", "Peter, who was told by Jesus to feed His sheep (John 21:15-17), urges church leaders to care for God's flock willingly and eagerly, not for money."],
+      ["5:4", "When the Chief Shepherd appears, you will receive the unfading crown of glory", "Jesus is the Chief Shepherd. When He comes, faithful shepherds will receive a crown of glory that never fades."],
+      ["5:5", "Clothe yourselves with humility toward one another", "Put on humility like an apron of service. Quoting Proverbs 3:34: God opposes the proud but gives grace to the humble."],
       ["5:7", "Casting all your anxiety on Him, because He cares for you", "He cares for you. 1 Peter 5:7 is a verse worth memorizing at any age: throw your worries on God, because He cares."],
-      ["5:8", "Your adversary, the devil, prowls around like a roaring lion", "Stay alert."],
-      ["5:10", "The God of all grace... will Himself perfect, confirm, strengthen and establish you", "God will restore."],
+      ["5:8", "Your adversary, the devil, prowls around like a roaring lion", "Lions hunt the weak and the stragglers. Stay alert and stand firm in the faith, knowing others are suffering too (5:9)."],
+      ["5:10", "The God of all grace... will Himself perfect, confirm, strengthen and establish you", "After a short time of suffering, God Himself will restore His people and make them strong, firm and steady."],
     ],
     refs: [["JHN.21", "John 21:15-17", "Tend My sheep"], ["PSA.55", "Psalm 55:22", "Cast your burden on the LORD"], ["JAS.4", "James 4:6-10", "Grace to the humble"], ["ACT.12", "Acts 12:12", "Mark's family home"]],
   },

@@ -73,7 +73,7 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
       ["5:16", "Rejoice always", "Always joy. Verses 16-18 are three short commands that even young children can memorize: rejoice, pray, give thanks."],
       ["5:17", "Pray without ceasing", "Not nonstop words, but a life in steady conversation with God, turning to Him all day long."],
       ["5:18", "In everything give thanks", "Not thankful for every evil, but thankful in every situation, because God is still good and still at work."],
-      ["5:21", "Examine everything carefully; hold fast to that which is good", "Test and keep the good."],
+      ["5:21", "Examine everything carefully; hold fast to that which is good", "Do not believe everything or reject everything. Test what you hear against God's truth, keep what is good, and turn from every kind of evil (5:22)."],
     ],
     refs: [["MAT.24", "Matthew 24:42-44", "Like a thief"], ["EPH.6", "Ephesians 6:14-17", "Breastplate and helmet"], ["PHP.4", "Philippians 4:4-6", "Rejoice and pray"]],
   },

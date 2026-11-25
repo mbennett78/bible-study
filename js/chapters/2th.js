@@ -39,12 +39,12 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
   3: {
     intro: "Paul asks them to pray that the word of the Lord will spread rapidly and that he will be rescued from evil people. \"The Lord is faithful, and He will strengthen and protect you from the evil one.\" Some believers have quit working and become busybodies, perhaps thinking the Lord's return made work pointless. Paul reminds them that he worked night and day to set an example: \"if anyone is not willing to work, then he is not to eat.\" \"Do not grow weary of doing good.\" He signs it with his own hand: \"The grace of our Lord Jesus Christ be with you all.\"",
     v: [
-      ["3:1", "Pray for us that the word of the Lord will spread rapidly", "Praying for the gospel."],
-      ["3:3", "The Lord is faithful, and He will strengthen and protect you", "God protects."],
-      ["3:5", "May the Lord direct your hearts into the love of God", "Hearts directed."],
+      ["3:1", "Pray for us that the word of the Lord will spread rapidly", "Paul asks for prayer, not for his own comfort, but that the Lord's message would spread quickly and be honored."],
+      ["3:3", "The Lord is faithful, and He will strengthen and protect you", "People may not be faithful, but the Lord is. He will strengthen His people and guard them from the evil one."],
+      ["3:5", "May the Lord direct your hearts into the love of God", "Paul prays that the Lord will lead their hearts into God's love and into the patient endurance Christ showed."],
       ["3:10", "If anyone is not willing to work, then he is not to eat", "Work matters. \"If anyone is not willing to work\" is about people who can work but refuse, not those who cannot work or cannot find work. The same letters call believers to help the weak (1 Thessalonians 5:14)."],
-      ["3:13", "Do not grow weary of doing good", "Keep doing good."],
-      ["3:16", "May the Lord of peace Himself continually grant you peace in every circumstance", "Peace always."],
+      ["3:13", "Do not grow weary of doing good", "Some in the church were idle and leaning on others (3:11). Paul tells everyone else not to grow tired of doing what is right."],
+      ["3:16", "May the Lord of peace Himself continually grant you peace in every circumstance", "Paul closes with a blessing: may the Lord of peace give you peace at all times and in every way."],
     ],
     refs: [["1TH.4", "1 Thessalonians 4:11-12", "Work with your hands"], ["GAL.6", "Galatians 6:9", "Do not lose heart"], ["PRO.6", "Proverbs 6:6-11", "Learn from the ant"]],
   },

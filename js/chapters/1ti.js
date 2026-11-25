@@ -53,12 +53,12 @@ export default makeBook({ lang: "Greek", sources, use: ["towner", "knight"] }, {
   4: {
     intro: "The Spirit says that in later times some will fall away, following deceiving spirits, forbidding marriage and certain foods. But \"everything created by God is good, and nothing is to be rejected if it is received with gratitude.\" \"Discipline yourself for the purpose of godliness; for bodily discipline is only of little profit, but godliness is profitable for all things.\" \"Let no one look down on your youthfulness, but rather in speech, conduct, love, faith and purity, show yourself an example of those who believe.\" Give attention to reading Scripture, encouraging and teaching. Do not neglect your gift. \"Pay close attention to yourself and to your teaching.\"",
     v: [
-      ["4:4", "Everything created by God is good", "Receive with thanks."],
-      ["4:7", "Discipline yourself for the purpose of godliness", "Spiritual training."],
-      ["4:8", "Godliness is profitable for all things", "What lasts."],
+      ["4:4", "Everything created by God is good", "False teachers forbade marriage and certain foods (4:3). Paul says everything God made is good when received with thanks and prayer (4:5)."],
+      ["4:7", "Discipline yourself for the purpose of godliness", "Athletes train their bodies. Paul tells Timothy to train himself in godliness, with the same effort and practice."],
+      ["4:8", "Godliness is profitable for all things", "Physical training has some value, but godliness helps in every way, both in this life and the life to come."],
       ["4:12", "Let no one look down on your youthfulness", "Young people can lead. 1 Timothy 4:12 speaks straight to the youngest readers: kids and teens can be examples of faith for everyone."],
-      ["4:13", "Give attention to the public reading of Scripture", "Read it aloud."],
-      ["4:16", "Pay close attention to yourself and to your teaching", "Life and teaching."],
+      ["4:13", "Give attention to the public reading of Scripture", "Most believers did not own copies of Scripture, so it was read aloud when the church met. Timothy was to give himself to reading, encouraging and teaching."],
+      ["4:16", "Pay close attention to yourself and to your teaching", "Timothy must watch both how he lives and what he teaches. Both matter for him and for those who hear him."],
     ],
     refs: [["GEN.1", "Genesis 1:31", "Everything was very good"], ["1CO.9", "1 Corinthians 9:25-27", "Training like an athlete"], ["2TI.1", "2 Timothy 1:6", "Kindle the gift"]],
   },
