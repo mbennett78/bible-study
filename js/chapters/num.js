@@ -295,7 +295,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["wenham", "ashley"] }, 
     v: [
       ["30:2", "He shall not violate his word", "Jesus later taught, \"Let your statement be, 'Yes, yes' or 'No, no'\" (Matthew 5:37)."],
       ["30:5", "The LORD will forgive her", "The law protected a woman who made a rash vow."],
+      ["30:9", "The vow of a widow or a divorced woman", "A woman heading her own home answered for her own vows."],
+      ["30:15", "He shall bear her guilt", "A husband who cancels a vow late, not on the day he hears it, carries the blame himself."],
     ],
+    bg: [["Vows in Israel", "A vow was a promise to God, often made in trouble: Hannah vowed a son to the LORD (1 Samuel 1:11), and Jephthah's rash vow ended in grief (Judges 11). These rules kept vows serious while protecting a household from a promise its head had not agreed to.", "good", ["wenham", "ashley"]]],
+    w: [["neder", "NEH-der", "H5088", "vow, a promise made to God", "Used for promises of gifts, service or self-denial. A vow was voluntary, but once made it was binding.", ["halot"]]],
     refs: [["MAT.5", "Matthew 5:33-37", "Make no oath at all"], ["ECC.5", "Ecclesiastes 5:4-5", "Pay what you vow"]],
   },
   31: {

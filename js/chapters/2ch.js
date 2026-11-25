@@ -43,7 +43,9 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["4:2-4", "The sea on twelve oxen", "Three facing each direction, perhaps picturing the tribes."],
       ["4:6", "For the priests to wash in", "Cleansing before service."],
       ["4:7", "Ten lampstands", "Light for God's house."],
+      ["4:17", "In the plain of the Jordan the king cast them, in the clay ground", "The thick clay near Succoth was good for making casting molds."],
     ],
+    bg: [["How much did the Sea hold?", "The bronze Sea was about 15 feet across. 2 Chronicles 4:5 says it held 3,000 baths, while 1 Kings 7:26 says 2,000. Some suggest one gives its full capacity and the other its usual level; others think a number was miscopied. It held many thousands of gallons either way.", "debated", ["selman", "thompson"]]],
     refs: [["1KI.7", "1 Kings 7:23-51", "The furnishings"]],
   },
   5: {

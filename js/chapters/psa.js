@@ -899,9 +899,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"The LORD reigns, He is clothed with majesty.\" His throne is established from of old. The floods have lifted up their roaring, but \"more than the sounds of many waters... the LORD on high is mighty.\" His testimonies are sure, and holiness befits His house forever.",
     v: [
       ["93:1", "The LORD reigns", "The theme of Psalms 93-99."],
+      ["93:3", "The floods have lifted up their voice", "Roaring waters picture every power that threatens chaos."],
       ["93:4", "More than the sounds of many waters", "God is stronger than chaos."],
+      ["93:5", "Holiness befits Your house, O LORD, forevermore", "The King's house must be holy."],
     ],
-    refs: [["REV.19", "Revelation 19:6", "The Lord our God, the Almighty, reigns"]],
+    bg: [["The LORD above the sea", "Israel's neighbors told stories of gods battling the sea. Texts from ancient Ugarit, for example, tell of Baal fighting Yam, the sea god. This psalm sings that no battle is needed: the LORD already reigns, mightier than the loudest waves.", "good", ["tate", "vangemeren"]]],
+    refs: [["MRK.4", "Mark 4:39-41", "Even the wind and sea obey Him"], ["REV.19", "Revelation 19:6", "The Lord our God, the Almighty, reigns"]],
   },
   94: {
     intro: "\"O LORD, God of vengeance, shine forth!\" The wicked crush God's people and say the LORD does not see. \"He who planted the ear, does He not hear?\" \"Blessed is the man whom You chasten.\" \"If I should say, My foot has slipped, Your lovingkindness, O LORD, will hold me up. When my anxious thoughts multiply within me, Your consolations delight my soul.\"",
@@ -1128,6 +1131,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["117:1", "Praise the LORD, all nations", "Paul quotes this in Romans 15:11."],
       ["117:2", "His lovingkindness is great toward us", "Two reasons: love and faithfulness."],
     ],
+    bg: [["The middle chapter", "Counting the 1,189 chapters in the Protestant Bible, Psalm 117 sits right in the middle, with 594 chapters before it and 594 after. The shortest chapter calls every nation to praise.", "good", ["allen"]]],
+    w: [["hesed", "KHEH-sed", "H2617", "steadfast love, lovingkindness", "God's loyal love that keeps His promises, the reason the nations are called to praise.", ["halot"]], ["emet", "eh-MET", "H571", "truth, faithfulness", "Firmness and reliability: God is true to His word forever.", ["halot"]]],
     refs: [["ROM.15", "Romans 15:11", "Gentiles praising God"], ["REV.7", "Revelation 7:9-10", "Every nation praising"]],
   },
   118: {
@@ -1246,9 +1251,13 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     intro: "\"Many times they have persecuted me from my youth up, let Israel now say.\" The plowers plowed on Israel's back, but the LORD is righteous and has cut the cords of the wicked. Those who hate Zion will be like grass on the rooftops that withers before it grows.",
     v: [
       ["129:2", "Yet they have not prevailed against me", "Survival by God's grace."],
+      ["129:3", "The plowers plowed upon my back", "A vivid picture of long suffering, deep furrows of pain."],
       ["129:4", "The LORD is righteous; He has cut in two the cords", "God sets free."],
+      ["129:6", "Like grass upon the housetops", "Grass sprouting on flat mud roofs has no deep soil and withers fast."],
+      ["129:8", "The blessing of the LORD be upon you", "The friendly greeting at harvest (Ruth 2:4) no one will give to the enemies of Zion."],
     ],
-    refs: [["2CO.4", "2 Corinthians 4:8-9", "Persecuted, but not forsaken"]],
+    bg: [["A Song of Ascents", "Pilgrims going up to Jerusalem sang of Israel's long history of suffering, from slavery in Egypt to exile, and of God who kept them through it all.", "good", ["allen", "kidner"]]],
+    refs: [["RUT.2", "Ruth 2:4", "The LORD be with you"], ["2CO.4", "2 Corinthians 4:8-9", "Persecuted, but not forsaken"]],
   },
   130: {
     intro: "\"Out of the depths I have cried to You, O LORD.\" \"If You, LORD, should mark iniquities, O Lord, who could stand? But there is forgiveness with You, that You may be feared.\" \"My soul waits for the Lord more than the watchmen for the morning.\" With the LORD there is abundant redemption.",

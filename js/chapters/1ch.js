@@ -222,8 +222,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "David, old, makes Solomon king. He counts the Levites from age thirty up (later twenty) and organizes them for temple service, gatekeeping, music and praise every morning and evening.",
     v: [
       ["23:13", "Aaron was set apart to sanctify him as most holy", "The priests' special role."],
+      ["23:26", "The Levites will no longer need to carry the tabernacle", "With a permanent temple, their old work of carrying the tent was done, so David gave them new duties."],
       ["23:30", "To stand every morning to thank and to praise the LORD", "And likewise at evening."],
     ],
+    bg: [["Thirty or twenty?", "In Numbers 4 Levites served from age thirty; here David counts from thirty, then lowers the age to twenty (23:24, 27). A permanent temple with daily music, gatekeeping and care of the courts needed many more helpers than carrying the tabernacle had.", "good", ["selman", "williamson"]]],
     refs: [["NUM.4", "Numbers 4:3", "Levites' service ages"], ["PSA.92", "Psalm 92:1-2", "To declare Your lovingkindness in the morning"]],
   },
   24: {

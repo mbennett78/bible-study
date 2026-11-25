@@ -36,9 +36,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   3: {
     intro: "The LORD is removing Jerusalem's support: its leaders, warriors, judges and prophets. Youths and the inexperienced will rule. \"Say to the righteous that it will go well with them.\" God judges the elders who plundered the poor, and the proud women of Zion who walk with heads held high.",
     v: [
+      ["3:4", "I will make mere lads their princes", "When God removes wise leaders, inexperienced ones fill the gap."],
       ["3:10", "It will go well with them", "Comfort for the faithful."],
       ["3:14-15", "Crushing My people", "God defends the poor."],
+      ["3:16-23", "Anklets, headbands, crescent ornaments...", "Isaiah lists more than twenty pieces of finery, the pride of a city that ignored the poor."],
     ],
+    bg: [["Jewelry from Isaiah's day", "The finery in 3:18-23 (anklets, crescent pendants, earrings, nose rings, signet rings, perfume boxes) matches the kinds of jewelry archaeologists have found in Judah and its neighbors from this period.", "good", ["oswalt", "motyer"]]],
     refs: [["AMO.4", "Amos 4:1", "Cows of Bashan who oppress the poor"]],
   },
   4: {
@@ -145,18 +148,25 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   16: {
     intro: "Moab's refugees ask Judah for shelter. Then: \"A throne will even be established in lovingkindness, and a judge will sit on it in faithfulness in the tent of David.\" Moab's pride is famous. Within three years Moab's glory will be brought low.",
     v: [
+      ["16:1", "Send the tribute lamb to the ruler of the land", "Moab had once paid Israel tribute in lambs. King Mesha sent 100,000 lambs a year (2 Kings 3:4)."],
+      ["16:3-4", "Hide the outcasts, do not betray the fugitive", "Moab's refugees ask Judah for the very shelter Moab once gave David's parents."],
       ["16:5", "A throne established in lovingkindness... in the tent of David", "A promise of a righteous King."],
       ["16:6", "We have heard of the pride of Moab", "Pride brings ruin."],
+      ["16:14", "Within three years, as a hired man would count them", "Exactly three years: a hired worker counted the days of his contract carefully."],
     ],
-    refs: [["AMO.9", "Amos 9:11", "The tent of David restored"]],
+    bg: [["Moab and David's family", "Ruth, David's great-grandmother, came from Moab. When Saul hunted David, David took his father and mother to the king of Moab for safety (1 Samuel 22:3-4). Isaiah 16 imagines Moab now asking David's house for refuge.", "good", ["oswalt", "smithG"]]],
+    refs: [["2KI.3", "2 Kings 3:4", "Mesha's tribute of lambs"], ["1SA.22", "1 Samuel 22:3-4", "David's parents in Moab"], ["AMO.9", "Amos 9:11", "The tent of David restored"]],
   },
   17: {
     intro: "Damascus will become a heap of ruins, and Israel's glory will fade, leaving only a few olives on the tree. In that day people will look to their Maker. \"You have forgotten the God of your salvation.\" The roaring nations will flee like chaff before the wind.",
     v: [
+      ["17:6", "Two or three olives on the topmost bough", "After harvest, only a few olives are left where poles cannot reach: a picture of the small remnant left."],
       ["17:7", "In that day man will have regard for his Maker", "Judgment turns hearts back."],
       ["17:10", "You have forgotten the God of your salvation", "The root problem."],
+      ["17:12-14", "At evening time, behold, terror! Before morning they are no more", "Many link this to Sennacherib's army, struck down in one night outside Jerusalem (Isaiah 37:36)."],
     ],
-    refs: [["2KI.16", "2 Kings 16:9", "Damascus captured by Assyria"]],
+    bg: [["Damascus and Israel against Judah", "Around 734 BC Damascus (Aram) and Israel joined to attack Judah. Assyria's king Tiglath-pileser III captured Damascus in 732 BC and took much of northern Israel, as his own records and 2 Kings 15-16 describe.", "strong", ["oswalt", "kitchen"]]],
+    refs: [["ISA.37", "Isaiah 37:36", "Gone by morning"], ["2KI.16", "2 Kings 16:9", "Damascus captured by Assyria"]],
   },
   18: {
     intro: "An oracle to Cush (Ethiopia), a land of tall people sending messengers by papyrus boats. God waits quietly like heat in sunshine. In the end, gifts will be brought from Cush to Mount Zion, the place of the name of the LORD.",
@@ -191,9 +201,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
   21: {
     intro: "A vision of judgment on Babylon. A watchman sees riders: \"Fallen, fallen is Babylon; and all the images of her gods are shattered on the ground.\" Short oracles follow for Edom (\"Watchman, how far gone is the night?\") and Arabia.",
     v: [
+      ["21:2", "Go up, Elam, lay siege, Media", "Elam and Media, peoples of the east, would bring Babylon down."],
       ["21:9", "Fallen, fallen is Babylon", "Echoed in Revelation 14:8."],
       ["21:11", "Watchman, how far gone is the night?", "Waiting for dawn."],
+      ["21:16-17", "Within a year... the glory of Kedar will end", "Kedar was a powerful Arabian tribe of the desert."],
     ],
+    bg: [["Which fall of Babylon?", "Babylon fell more than once. Some scholars link this vision to the Assyrian king Sennacherib's capture of Babylon in 689 BC; others to its fall to Cyrus of Persia in 539 BC, since Elam and Media fought on Cyrus's side. Either way, the gods of Babylon could not save it.", "debated", ["oswalt", "motyer"]]],
     refs: [["REV.14", "Revelation 14:8", "Fallen is Babylon the great"], ["REV.18", "Revelation 18:2", "Babylon has fallen"]],
   },
   22: {
