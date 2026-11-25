@@ -29,9 +29,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     v: [
       ["2:1-2", "The sons of Israel", "Twelve tribes, one family."],
       ["2:3", "Er was evil in the sight of the LORD", "Even a family list remembers that God sees."],
+      ["2:7", "Achar, the troubler of Israel", "Achan of Joshua 7; his name is spelled to sound like trouble (achar)."],
       ["2:15", "David the seventh", "The youngest, as in 1 Samuel 16."],
+      ["2:34-35", "Sheshan gave his daughter to Jarha his Egyptian servant", "A foreign servant becomes part of Judah's family line."],
     ],
-    refs: [["RUT.4", "Ruth 4:18-22", "From Perez to David"], ["GEN.38", "Genesis 38", "Judah and Tamar"]],
+    bg: [["Why Judah first?", "Judah was not the oldest son, but Chronicles lists his family first and at greatest length because the kings came from Judah and God promised David's house a lasting throne. Matthew's list of Jesus' ancestors follows the same line (Matthew 1:3-6).", "good", ["selman", "japhet"]]],
+    refs: [["MAT.1", "Matthew 1:3-6", "Judah to David in Jesus' family line"], ["RUT.4", "Ruth 4:18-22", "From Perez to David"], ["GEN.38", "Genesis 38", "Judah and Tamar"]],
   },
   3: {
     intro: "The sons of David born in Hebron and Jerusalem, and the line of kings descended from Solomon, continuing past the exile to the family of Zerubbabel and beyond.",
@@ -101,10 +104,14 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
   10: {
     intro: "Saul and his sons die on Mount Gilboa. The writer explains why: \"Saul died for his trespass which he committed against the LORD... and also because he asked counsel of a medium... So He killed him and turned the kingdom to David.\"",
     v: [
+      ["10:6", "So Saul died, and his three sons", "Chronicles skips Saul's whole reign and begins with its end, to turn quickly to David."],
+      ["10:10", "They fastened his head in the house of Dagon", "The Philistines credit their god with the victory."],
+      ["10:12", "All the valiant men... took away the body of Saul", "The men of Jabesh-gilead remember how Saul once rescued them (1 Samuel 11)."],
       ["10:13", "He did not keep the word of the LORD", "Chronicles gives the spiritual reason for Saul's fall."],
       ["10:14", "He did not inquire of the LORD", "Saul asked a medium instead."],
     ],
-    refs: [["1SA.31", "1 Samuel 31", "Saul's death"], ["1SA.28", "1 Samuel 28", "The medium at Endor"]],
+    bg: [["Why begin with Saul's death?", "After nine chapters of family lists, the story in Chronicles starts here. It tells only how Saul's reign ended and why, so that David's kingdom, and God's promise to his house, can take center stage.", "good", ["selman", "japhet"]]],
+    refs: [["1SA.11", "1 Samuel 11", "Saul rescues Jabesh-gilead"], ["1SA.31", "1 Samuel 31", "Saul's death"], ["1SA.28", "1 Samuel 28", "The medium at Endor"]],
   },
   11: {
     intro: "All Israel anoints David king at Hebron. He takes Jerusalem, and Joab becomes chief. The rest of the chapter lists David's mighty men, including the three who brought water from Bethlehem's well.",
@@ -194,8 +201,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
     intro: "Joab takes the Ammonite capital Rabbah, and David receives its king's crown. In later battles, David's men kill Philistine giants, including Lahmi the brother of Goliath.",
     v: [
       ["20:1", "At the time when kings go out to battle", "Chronicles does not repeat the story of David and Bathsheba from that spring; its focus is the temple and God's promise."],
+      ["20:2", "David took the crown of their king", "It weighed a talent of gold, about 75 pounds, and was set on David's head."],
       ["20:5", "Lahmi the brother of Goliath", "This helps explain 2 Samuel 21:19."],
+      ["20:6", "A man of great stature who had twenty-four fingers and toes", "Six on each hand and foot."],
     ],
+    bg: [["Lahmi and 2 Samuel 21:19", "2 Samuel 21:19 says Elhanan killed \"Goliath the Gittite,\" while 1 Chronicles 20:5 says he killed \"Lahmi the brother of Goliath.\" Many think the Samuel text suffered a copying slip (the Hebrew words look alike). Others think the giant's brother bore a family name. Either way, David killed Goliath in 1 Samuel 17.", "debated", ["selman", "thompson"]]],
     refs: [["2SA.12", "2 Samuel 12:26-31", "The fall of Rabbah"], ["2SA.21", "2 Samuel 21:15-22", "The giants"]],
   },
   21: {

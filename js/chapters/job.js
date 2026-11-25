@@ -258,9 +258,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
   25: {
     intro: "Bildad's last speech is only six verses. Dominion and awe belong to God. Not even the moon and stars are pure in His sight, \"how much less man, that maggot.\" The friends have run out of arguments.",
     v: [
+      ["25:2", "Dominion and awe belong to Him", "Bildad says true things about God, but uses them to crush Job."],
       ["25:4", "How then can a man be just with God?", "A true question with no answer from Bildad."],
       ["25:6", "How much less man, that maggot", "A low view of people."],
     ],
+    bg: [["The friends fall silent", "Bildad's speech is the shortest in the book, and the third friend, Zophar, does not speak at all in this last round. The friends have run out of things to say. Job keeps talking, and then God Himself answers.", "good", ["hartley", "andersen"]]],
     refs: [["PSA.8", "Psalm 8:5", "You crowned him with glory and majesty"], ["ROM.3", "Romans 3:23-26", "God declares sinners righteous through faith"]],
   },
   26: {

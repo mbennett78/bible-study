@@ -324,9 +324,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
     intro: "God's judgment on the nations, pictured in Edom. The sky will be rolled up like a scroll and the stars will fall. Edom's land will become a desert of thorns where owls and wild animals live. \"Seek from the book of the LORD, and read.\"",
     v: [
       ["34:4", "The sky will be rolled up like a scroll", "Echoed in Revelation 6:14."],
+      ["34:6", "The LORD has a sacrifice in Bozrah", "Bozrah was Edom's chief city."],
+      ["34:11", "The pelican and hedgehog will possess it", "Once proud cities become home to wild creatures."],
       ["34:16", "Seek from the book of the LORD, and read", "God's word comes true."],
     ],
-    refs: [["REV.6", "Revelation 6:14", "The sky split like a scroll"], ["OBA.1", "Obadiah", "Edom's judgment"]],
+    bg: [["Edom as a picture", "Chapters 34 and 35 belong together. Edom stands for every proud nation set against God, and its land becomes a desert. Then chapter 35 turns the picture around: the desert of God's people will bloom, and the redeemed will come to Zion with singing.", "good", ["oswalt", "motyer"]]],
+    refs: [["ISA.35", "Isaiah 35", "The desert will bloom"], ["REV.6", "Revelation 6:14", "The sky split like a scroll"], ["OBA.1", "Obadiah", "Edom's judgment"]],
   },
   35: {
     intro: "\"The wilderness and the desert will be glad, and the Arabah will rejoice and blossom.\" \"Say to those with anxious heart, Take courage, fear not. Behold, your God will come.\" \"Then the eyes of the blind will be opened and the ears of the deaf will be unstopped. Then the lame will leap like a deer.\" A highway called the Highway of Holiness. \"The ransomed of the LORD will return and come with joyful shouting to Zion.\"",

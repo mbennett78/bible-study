@@ -139,9 +139,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "A vine is valuable only for its fruit; its wood is useless, not even good enough to make a peg. If it is burned, it is good for nothing. So Jerusalem, which bore no fruit, will be given to the fire.",
     v: [
       ["15:2", "How is the wood of the vine better than any wood?", "A vine exists to bear fruit."],
+      ["15:3", "Can a peg be taken from it to hang any vessel on?", "Vine wood is too twisted and weak even for a peg."],
       ["15:6", "As the wood of the vine... so I have given up the inhabitants of Jerusalem", "Fruitlessness leads to judgment."],
+      ["15:7", "Though they have come out of the fire, the fire will consume them", "Jerusalem had already been burned once (597 BC) but had not repented."],
     ],
-    refs: [["JHN.15", "John 15:1-6", "Abide in the vine"], ["ISA.5", "Isaiah 5:1-7", "The fruitless vineyard"]],
+    bg: [["Israel as God's vine", "The Bible often calls Israel God's vine (Psalm 80:8-16; Isaiah 5). A vine's only value is fruit. Jesus took up the same picture: \"I am the true vine... apart from Me you can do nothing\" (John 15:1-5).", "good", ["block", "duguidE"]]],
+    refs: [["PSA.80", "Psalm 80:8-16", "You brought a vine out of Egypt"], ["JHN.15", "John 15:1-6", "Abide in the vine"], ["ISA.5", "Isaiah 5:1-7", "The fruitless vineyard"]],
   },
   16: {
     intro: "An allegory of Jerusalem as an abandoned baby girl, left in a field on the day she was born. God passed by, said \"Live!\", raised her, married her, and clothed her in splendor. But she trusted in her beauty and became unfaithful with idols and foreign nations. Yet God will remember His covenant: \"I will establish an everlasting covenant with you... when I have forgiven you for all that you have done.\"",
@@ -232,8 +235,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "Oracles against Israel's neighbors begin (25-32). Ammon clapped its hands when the temple was profaned; Moab said Judah was like all the nations; Edom and Philistia took revenge. Each will be judged, \"and they will know that I am the LORD.\"",
     v: [
       ["25:3", "Because you said, Aha!", "Gloating over others' ruin."],
+      ["25:6", "Because you have clapped your hands and stamped your feet", "Ammon celebrated Judah's ruin."],
+      ["25:8", "Judah is like all the nations", "Moab mocked the idea that Israel's God was special."],
       ["25:12", "Edom has acted against the house of Judah by taking vengeance", "Revenge judged."],
+      ["25:15", "The Philistines have acted in revenge", "Old hatred took its chance."],
     ],
+    bg: [["Four neighbors", "Ammon and Moab lay east of the Jordan, Edom to the southeast, and Philistia on the coast to the west. All four had long histories of conflict with Israel, and all four rejoiced when Jerusalem fell in 586 BC.", "good", ["block", "taylor"]]],
     refs: [["OBA.1", "Obadiah 12", "Do not gloat"], ["PRO.24", "Proverbs 24:17", "Do not rejoice when your enemy falls"]],
   },
   26: {
@@ -255,8 +262,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "A lament for Tyre pictured as a magnificent merchant ship built from the finest materials, trading with nations from Spain to Arabia. A long list of trading partners and goods follows. Then the east wind wrecks the ship in the heart of the seas, and sailors and merchants wail.",
     v: [
       ["27:3", "I am perfect in beauty", "Pride in wealth."],
+      ["27:5-7", "Fir trees from Senir... cedars from Lebanon... fine linen from Egypt", "Tyre's ship is built from the best of every land."],
+      ["27:12", "Tarshish was your customer", "Probably in far-off Spain, the western edge of the known world."],
       ["27:26", "The east wind has broken you", "Sudden ruin."],
     ],
+    bg: [["Tyre, queen of the sea", "Tyre was an island city off the coast of Lebanon, and its Phoenician sailors traded across the whole Mediterranean. Ezekiel 27 is one of the richest ancient lists of trade goods: silver, tin and lead, horses, ivory, ebony, spices, wool and wine.", "strong", ["block", "kitchen"]]],
     refs: [["REV.18", "Revelation 18:11-19", "Merchants weep over Babylon"], ["JAS.4", "James 4:13-16", "Boasting in plans"]],
   },
   28: {
@@ -299,8 +309,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     intro: "Pharaoh is compared to Assyria, once a towering cedar in Lebanon, the envy of every tree in Eden, with birds in its branches and nations in its shade. Because its heart was proud, it was cut down and went down to Sheol. So it will be with Pharaoh.",
     v: [
       ["31:3", "Assyria was a cedar in Lebanon", "A picture of a great empire."],
+      ["31:8", "The cedars in God's garden could not match it", "Even the trees of Eden envied it, so great was its glory."],
       ["31:10", "Its heart is haughty in its loftiness", "Pride brings it down."],
+      ["31:16", "I made the nations quake at the sound of its fall", "When the mighty fall, everyone notices."],
     ],
+    bg: [["Assyria's fall", "Assyria had ruled the Near East for centuries. Its capital Nineveh fell to the Babylonians and Medes in 612 BC, only about twenty-five years before this word. Pharaoh is told to look at that fallen cedar and learn.", "strong", ["block", "kitchen"]]],
     refs: [["DAN.4", "Daniel 4:10-17", "Nebuchadnezzar's tree dream"], ["NAM.3", "Nahum 3", "Assyria's fall"]],
   },
   32: {

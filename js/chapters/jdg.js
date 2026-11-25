@@ -122,9 +122,12 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "webb"] }, {
   12: {
     intro: "Ephraim's men pick a fight with Jephthah, and Gilead defeats them. At the Jordan crossings, Ephraimites are identified because they cannot say \"Shibboleth\" and say \"Sibboleth.\" Three minor judges follow: Ibzan, Elon and Abdon.",
     v: [
+      ["12:1", "We will burn your house down on you", "Ephraim had been just as quick to quarrel with Gideon (8:1)."],
       ["12:6", "Shibboleth", "A dialect difference became a deadly test. The word is still used today for a password or test of belonging."],
       ["12:7", "Six years", "Jephthah's short rule ends."],
+      ["12:8-15", "Ibzan, Elon and Abdon", "Short notes on three judges; their many children and donkeys show wealth and standing."],
     ],
+    bg: [["Tribe against tribe", "Ephraim was proud and quick to take offense. Here Israelites kill fellow Israelites at the Jordan fords, a sign of how far the nation had slipped. Judges ends with even worse civil war (chapters 20-21).", "good", ["block", "webb"]]],
     refs: [["JDG.8", "Judges 8:1-3", "Gideon calms Ephraim"], ["PRO.15", "Proverbs 15:1", "A gentle answer turns away wrath"]],
   },
   13: {
