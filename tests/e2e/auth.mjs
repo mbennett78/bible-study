@@ -62,6 +62,12 @@ try {
     check("no password nag after it was changed", !(await page.$(".pw-sheet[open]")));
     await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(600);
     check("the family organizer sees the organizer tools", await visible(page, "#organizerBox"));
+    await page.evaluate(() => { const d = document.querySelector("#saveEmail").closest("details"); d.closest("details.set-group").open = true; d.open = true; }); await page.waitForTimeout(100);
+    await page.fill("#newEmail", "not-an-email"); await page.click("#saveEmail"); await page.waitForTimeout(200);
+    check("a mistyped new email is caught", /doesn't look like an email/.test(await text(page, "#emailMsg")));
+    await page.fill("#newEmail", "mel.new@example.com"); await page.click("#saveEmail"); await page.waitForTimeout(500);
+    const em = fake.calls.findLast((c) => c.method === "PUT" && c.path === "/auth/v1/user");
+    check("a new email can be set, confirmed by email", em?.body?.email === "mel.new@example.com" && /confirmation email/.test(await text(page, "#emailMsg")), await text(page, "#emailMsg"));
     await page.evaluate(() => { const d = document.querySelector("#organizerBox"); d.closest("details.set-group").open = true; d.open = true; d.dispatchEvent(new Event("toggle")); }); await page.waitForTimeout(600);
     check("the organizer's panel lists the family and the Bible helper questions left", /11,960 of 12,000 questions left/.test(await text(page, "#familyPanel")) && (await page.$$("#familyPanel .fam-list li")).length === 2, await text(page, "#familyPanel"));
     await page.click("#familyLooksGo"); await page.waitForTimeout(500);

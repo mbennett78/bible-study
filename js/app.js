@@ -22,7 +22,7 @@ import { dailyToday } from "./daily.js";
 import { GUIDE, guideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
-import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -4558,6 +4558,9 @@ function renderAccount() {
        <details class="share-key"><summary>Change my password</summary>
          <label class="field">New password<span class="pw-wrap"><input id="newPassword" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="At least 6 letters or numbers"><button type="button" class="pw-show" data-show="newPassword" aria-label="Hide password" aria-pressed="true">Hide</button></span></label>
          <button class="small" id="savePassword">Save new password</button><p class="small-print" id="pwMsg"></p></details>
+       <details class="share-key"><summary>Change my email</summary>
+         <label class="field">New email<input id="newEmail" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@example.com"></label>
+         <button class="small" id="saveEmail">Send confirmation</button><p class="small-print" id="emailMsg">We'll email a link to confirm it. Until you tap it, keep signing in with ${esc(signedInUser.email || "your current email")}.</p></details>
        <button class="small" id="signOutBtn">Sign out</button>`
     : `<p class="muted small-print">Not signed in.</p>`;
   $("#keepSignedIn")?.addEventListener("change", (e) => setKeepSignedIn(e.target.checked));
@@ -4577,6 +4580,13 @@ function renderAccount() {
     try { await changePassword(v); flag(STARTER_KEY, false); out.textContent = "Saved ✓ Use this password next time you sign in."; $("#newPassword").value = ""; }
     catch (x) { out.textContent = x.message; }
     $("#savePassword").disabled = false;
+  });
+  $("#saveEmail")?.addEventListener("click", async () => {
+    const out = $("#emailMsg"), v = $("#newEmail").value;
+    $("#saveEmail").disabled = true; out.textContent = "Sending…";
+    try { await changeEmail(v); out.textContent = `Check ${v.trim()} for a confirmation email and tap its link (your old inbox may get one too). Then sign in with the new email.`; $("#newEmail").value = ""; }
+    catch (x) { out.textContent = x.message; }
+    $("#saveEmail").disabled = false;
   });
   // Grown-up settings (Bible keys, invite links) live in a closed "Family organizer tools" box,
   // so everyone else just signs in and reads.
@@ -5065,6 +5075,9 @@ document.querySelectorAll("#view-settings h2.settings-group").forEach((h) => {
   sum.append(h);
   sum.insertAdjacentHTML("beforeend", `<small>${esc(SET_HINTS[h.id] || "")}</small>`);
   box.append(sum, ...items);
+  // A Done button at the end of each group, so changes feel finished (they are kept as they're made).
+  box.insertAdjacentHTML("beforeend", `<div class="set-done"><button type="button" class="big-btn set-done-btn">✓ Done</button><small>Changes are saved the moment you make them.</small></div>`);
+  box.querySelector(".set-done-btn").addEventListener("click", () => { box.open = false; savedNote("All changes saved ✓"); sum.scrollIntoView({ block: "nearest" }); sum.focus?.(); });
   box.addEventListener("toggle", () => {
     if (!box.open) return;
     document.querySelectorAll("#view-settings details.set-group[open]").forEach((d) => { if (d !== box) d.open = false; });
@@ -5072,6 +5085,14 @@ document.querySelectorAll("#view-settings h2.settings-group").forEach((h) => {
   });
 });
 document.querySelector("#view-settings .settings-jump")?.remove();
+// "Saved ✓": a short note each time a setting changes, so it feels done.
+function savedNote(text = "Saved ✓") {
+  let el = document.querySelector(".saved-note");
+  if (!el) { el = Object.assign(document.createElement("div"), { className: "saved-note" }); el.setAttribute("role", "status"); document.body.append(el); }
+  el.textContent = text; el.classList.remove("show"); void el.offsetWidth; el.classList.add("show");
+  clearTimeout(savedNote.t); savedNote.t = setTimeout(() => el.classList.remove("show"), 1600);
+}
+$("#view-settings").addEventListener("change", (e) => { if (e.target.matches("input:not([type=file]):not([type=password]), select, textarea")) savedNote(); });
 // Opens whichever Settings group holds this spot (for links that take you to a setting).
 function revealSetting(el) {
   const d = el?.closest?.("details.set-group");

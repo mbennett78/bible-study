@@ -112,6 +112,16 @@ export async function changePassword(password) {
   throw new Error(friendly(error));
 }
 
+// A new email for signing in. Supabase emails a confirmation link (to the new address, and to the
+// old one too when "Secure email change" is on); the change happens when it is confirmed.
+export async function changeEmail(email) {
+  const v = String(email || "").trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) throw new Error("That doesn't look like an email address. Check it and try again.");
+  const c = await sb();
+  const { error } = await c.auth.updateUser({ email: v });
+  if (error) throw new Error(/already|registered|exists/i.test(error.message || "") ? "That email is already used by another account." : friendly(error));
+}
+
 // Their name on the account (the family list shows it too).
 export async function setMyName(name) {
   if (!authEnabled) return;

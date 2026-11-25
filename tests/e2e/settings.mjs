@@ -27,6 +27,10 @@ try {
   check("Settings folds into six groups, each saying what's inside, with only Help and guide open", setGroups.length === 6 && setGroups.every((g) => g.hint.length > 5) && setGroups.filter((g) => g.open).length === 1 && setGroups[0].open, JSON.stringify(setGroups));
   await page.click('details[data-group="sg-reading"] > summary'); await page.waitForTimeout(500);
   check("opening a group shows its settings and folds the others away", await page.isVisible("#textSize") && !(await page.isVisible("#guideCard")));
+  await page.$eval("#textSize", (i) => { i.value = String(Number(i.value) + 1); i.dispatchEvent(new Event("input", { bubbles: true })); i.dispatchEvent(new Event("change", { bubbles: true })); }); await page.waitForTimeout(100);
+  check("changing a setting says Saved ✓", /Saved ✓/.test(await page.textContent(".saved-note")) && await page.$eval(".saved-note", (n) => n.classList.contains("show")));
+  await page.click('details[data-group="sg-reading"] .set-done-btn'); await page.waitForTimeout(200);
+  check("Done closes the group and says all changes are saved", !(await page.$eval('details[data-group="sg-reading"]', (d) => d.open)) && /All changes saved/.test(await page.textContent(".saved-note")));
   const h = await page.evaluate(() => document.querySelector("#view-settings").scrollHeight);
   check("Settings stays short", h < 4500, String(h));
   await page.click('details[data-group="sg-help"] > summary'); await page.waitForTimeout(500);
