@@ -848,7 +848,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
     v: [
       ["87:4", "This one was born there", "Former enemies become citizens."],
       ["87:6", "The LORD shall count when He registers the peoples", "God's book of citizens."],
+      ["87:2", "The LORD loves the gates of Zion", "Not because the city is grand, but because God chose to dwell there (Psalm 132:13)."],
+      ["87:4", "Rahab and Babylon", "Rahab here is a poetic name for Egypt (Isaiah 30:7), not Rahab of Jericho. Israel's oldest enemies, Egypt and Babylon, are named first among those who know God."],
+      ["87:7", "All my springs of joy are in you", "Singers and dancers celebrate. The life of every people now flows from God's city."],
     ],
+    bg: [["The sons of Korah", "Psalm 87 is one of eleven psalms headed \"of the sons of Korah,\" a family of Levite temple singers (1 Chronicles 6:31-37). Their ancestor Korah rebelled against Moses (Numbers 16), but \"the sons of Korah did not die\" (Numbers 26:11), and his descendants became worship leaders.", "good", ["tate", "kidner"]]],
     refs: [["GAL.4", "Galatians 4:26", "The Jerusalem above is our mother"], ["EPH.2", "Ephesians 2:19", "Fellow citizens with the saints"], ["REV.7", "Revelation 7:9", "From every nation"]],
   },
   88: {

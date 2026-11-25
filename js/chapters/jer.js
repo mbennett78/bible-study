@@ -204,7 +204,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
     v: [
       ["21:2", "Perhaps the LORD will deal with us according to all His wonderful acts", "Hoping for a miracle without repentance."],
       ["21:8", "The way of life and the way of death", "Echoes Deuteronomy 30:15."],
+      ["21:1", "Pashhur the son of Malchijah", "A different Pashhur from the priest who put Jeremiah in the stocks (20:1-2). This one later wants Jeremiah dead (38:1-4)."],
+      ["21:9", "He will have his own life as booty", "Staying alive is the only prize left. Surrender to Babylon means life."],
+      ["21:12", "Administer justice every morning", "Kings heard cases in the morning (2 Samuel 15:2). Even now God calls the king to do justice before it is too late."],
     ],
+    bg: [["The siege of 588 BC", "Nebuchadnezzar's army surrounded Jerusalem in Zedekiah's ninth year, about 588 BC (2 Kings 25:1). Letters on pottery found at Lachish, written by a Judean officer during the same campaign, say they can no longer see the signals of Azekah, one of the last cities still standing (Jeremiah 34:7).", "strong", ["kitchen", "lundbom"]]],
     refs: [["DEU.30", "Deuteronomy 30:15-19", "Life and death set before you"], ["2KI.25", "2 Kings 25", "Jerusalem falls"]],
   },
   22: {
@@ -237,7 +241,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["thompsonJ", "huey"] },
     v: [
       ["24:5", "Like these good figs, so I will regard as good the captives", "Surprising grace for the exiles."],
       ["24:7", "I will give them a heart to know Me", "God changes hearts."],
+      ["24:1", "Two baskets of figs set before the temple", "Firstfruits were brought to the temple in baskets (Deuteronomy 26:2). These two baskets picture two groups of people."],
+      ["24:8", "Like the bad figs which cannot be eaten", "Those left in Jerusalem thought they were the lucky ones. God says the opposite, and He includes those who fled to Egypt."],
     ],
+    w: [["תְּאֵנָה", "te'enah", "H8384", "fig, fig tree", "Figs and vines are the Old Testament picture of peace and plenty: \"each of them will sit under his vine and under his fig tree\" (Micah 4:4). Jesus also used a fig tree as a picture of fruitfulness (Mark 11:12-14).", ["halot"]]],
     refs: [["EZK.11", "Ezekiel 11:16-20", "A sanctuary in exile"], ["2KI.24", "2 Kings 24:10-17", "Jehoiachin taken to Babylon"]],
   },
   25: {

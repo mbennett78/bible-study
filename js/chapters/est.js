@@ -115,7 +115,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["jobes", "baldwin"] }, 
     v: [
       ["10:3", "Second only to King Ahasuerus", "Like Joseph in Egypt and Daniel in Babylon."],
       ["10:3", "Sought the good of his people", "Greatness used to serve others."],
+      ["10:1", "Ahasuerus laid a tribute on the land and on the coastlands of the sea", "His empire stretched from India to Ethiopia (1:1), over land and sea. The story ends where it began, in the court of a vast empire, but now with a Jew beside the throne."],
+      ["10:2", "The Book of the Chronicles of the Kings of Media and Persia", "Persian kings kept careful records. One of them, read aloud on a sleepless night, saved Mordecai's life (6:1-2)."],
     ],
+    bg: [["Xerxes in history", "Most scholars identify Ahasuerus with Xerxes I, who ruled Persia from 486 to 465 BC; the Hebrew name matches the Persian Khshayarsha. The Greek historian Herodotus describes his lavish court and his costly war with Greece, lost at Salamis in 480 BC, which fits a king raising new taxes.", "good", ["yamauchi", "baldwin"]], ["God unnamed, yet at work", "Esther never names God, yet the book is full of well-timed turns: a sleepless king, a banquet at just the right moment, a gallows used against its builder. Many readers see God's quiet providence behind every one.", "good", ["jobes"]]],
     refs: [["GEN.41", "Genesis 41:40-43", "Joseph second to Pharaoh"], ["DAN.2", "Daniel 2:48", "Daniel made ruler over Babylon"], ["MRK.10", "Mark 10:43-45", "Whoever wishes to become great shall be your servant"]],
   },
 });

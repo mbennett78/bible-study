@@ -54,7 +54,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     v: [
       ["5:3", "Bind them in the edges of your robes", "A small remnant kept."],
       ["5:5", "This is Jerusalem; I have set her at the center of the nations", "Privilege brings responsibility."],
+      ["5:1", "Take a sharp sword; take and use it as a barber's razor", "The sword that shaves Ezekiel stands for the Babylonian army that will strip the land (compare Isaiah 7:20)."],
+      ["5:10", "Fathers will eat their sons among you", "The horror warned of in Leviticus 26:29 and Deuteronomy 28:53, and mourned after the siege in Lamentations 4:10."],
+      ["5:13", "I, the LORD, have spoken in My zeal", "God's judgment is not cold. It comes from jealous, covenant love for His people."],
     ],
+    bg: [["A priest shaves his head", "Ezekiel was a priest (1:3), and priests were told not to shave their heads (Leviticus 21:5). Shaving was also a sign of mourning and disgrace (Isaiah 15:2). The act itself announced that something terrible was coming to God's holy city.", "good", ["block", "duguidE"]]],
     refs: [["ISA.6", "Isaiah 6:13", "A holy seed remains"], ["LUK.12", "Luke 12:48", "To whom much is given"]],
   },
   6: {
@@ -62,7 +66,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "taylor"] }, {
     v: [
       ["6:9", "How I have been hurt by their adulterous hearts", "God is grieved by unfaithfulness."],
       ["6:10", "Then they will know that I am the LORD", "This phrase appears over 60 times in Ezekiel."],
+      ["6:3", "You mountains of Israel", "Ezekiel speaks to the land itself, because its hilltops were covered with shrines to other gods."],
+      ["6:13", "Under every green tree", "A common phrase for the places where idols were worshiped (Deuteronomy 12:2; Jeremiah 2:20)."],
     ],
+    w: [["גִּלּוּלִים", "gillulim", "H1544", "idols", "Ezekiel's favorite word for idols, used about 39 times in his book. Many scholars think it was coined to sound like the word for dung, a scornful pun: \"dung-gods.\"", ["halot", "block"]]],
     refs: [["LEV.26", "Leviticus 26:30", "I will destroy your high places"], ["HOS.11", "Hosea 11:8", "How can I give you up?"]],
   },
   7: {

@@ -116,7 +116,11 @@ export default makeBook({ lang: "Hebrew", sources, use: ["bergen", "baldwin"] },
     v: [
       ["11:6", "The Spirit of God came upon Saul mightily", "Like the judges before him."],
       ["11:13", "Not a man shall be put to death this day", "Saul's best moment: mercy and credit to God."],
+      ["11:1", "Nahash the Ammonite", "Nahash means \"snake.\" Ammon lay east of the Jordan, not far from Jabesh-gilead."],
+      ["11:2", "I will gouge out the right eye of every one of you", "The historian Josephus explains that a soldier behind his shield looks out with his right eye, so this would leave the men useless in battle as well as shamed."],
+      ["11:15", "There they made Saul king before the LORD in Gilgal", "Saul was anointed in private (10:1), chosen by lot (10:20-24), and now confirmed by all the people after proving himself."],
     ],
+    bg: [["The Dead Sea Scrolls add a paragraph", "A Samuel scroll from Qumran (4QSam-a) has a few extra lines before 11:1: Nahash had been gouging out the right eyes of the men of Gad and Reuben, and about 7,000 had escaped to Jabesh-gilead. Josephus knew the same account. A few English versions (such as the NRSV) include it; most, like the NASB, do not.", "good", ["tsumura", "klein"]]],
     refs: [["1SA.31", "1 Samuel 31:11-13", "Jabesh-gilead repays Saul's kindness"], ["JDG.19", "Judges 19:29", "Sending pieces through Israel"]],
   },
   12: {

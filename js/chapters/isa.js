@@ -552,7 +552,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["oswalt", "motyer"] }, 
     v: [
       ["56:3-5", "Let not the eunuch say, I am a dry tree", "No one is excluded who loves God."],
       ["56:7", "A house of prayer for all the peoples", "Jesus quoted this when He cleared the temple."],
+      ["56:2", "How blessed is the man who keeps from profaning the sabbath", "Sabbath-keeping was a visible sign of belonging to God's covenant people (Exodus 31:13)."],
+      ["56:10", "His watchmen are blind", "Watchmen were meant to see danger and warn the city (Ezekiel 33:6). These leaders see nothing and say nothing."],
     ],
+    bg: [["Foreigners and eunuchs in the Law", "Deuteronomy 23:1-8 kept eunuchs and some foreigners out of the assembly. Isaiah announces a day when faithful outsiders will be welcomed into God's house. Acts 8 shows it happening, when an Ethiopian eunuch reading Isaiah is baptized.", "good", ["oswalt", "motyer"]]],
     refs: [["MRK.11", "Mark 11:17", "My house shall be called a house of prayer"], ["ACT.8", "Acts 8:26-39", "The Ethiopian eunuch"]],
   },
   57: {

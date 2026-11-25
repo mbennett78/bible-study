@@ -101,7 +101,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "webb"] }, {
     v: [
       ["10:13-14", "I will no longer deliver you", "God's rebuke tests whether their repentance is real."],
       ["10:16", "He could bear the misery no longer", "Literally, \"His soul was shortened.\" God feels His people's pain."],
+      ["10:4", "Thirty sons who rode on thirty donkeys", "Riding donkeys was a mark of wealth and rank (Judges 5:10). Jair's family was important in Gilead."],
+      ["10:6", "The gods of Aram, the gods of Sidon, the gods of Moab", "Seven kinds of gods are listed: a people who will worship anything except the LORD."],
     ],
+    bg: [["The minor judges", "Tola, Jair and later Ibzan, Elon and Abdon (12:8-15) are called the minor judges because the book gives only a few lines to each. No battles are recorded for them. They seem to have kept order and settled disputes between the big rescues.", "good", ["block", "webb"]]],
     refs: [["ISA.63", "Isaiah 63:9", "In all their affliction He was afflicted"], ["HOS.11", "Hosea 11:8", "My heart is turned over within Me"]],
   },
   11: {
@@ -210,7 +213,10 @@ export default makeBook({ lang: "Hebrew", sources, use: ["block", "webb"] }, {
     v: [
       ["21:3", "Why has this come about?", "They ask God why, but the answer is their own choices."],
       ["21:25", "Everyone did what was right in his own eyes", "The book's last word sets up 1 Samuel and the need for a faithful king."],
+      ["21:8-12", "Jabesh-gilead", "No one from Jabesh-gilead came to the assembly at Mizpah, so the city was punished. Years later Saul, from the tribe of Benjamin, rescued Jabesh-gilead (1 Samuel 11), perhaps because of family ties from this very story."],
+      ["21:19", "The feast of the LORD from year to year in Shiloh", "The tabernacle stood at Shiloh in these years (Joshua 18:1). Hannah later came there to pray for a son (1 Samuel 1)."],
     ],
+    bg: [["Shiloh found", "Excavations at Khirbet Seilun, ancient Shiloh, uncovered a town from the time of the judges, with storerooms and large storage jars, and a destruction layer from about 1050 BC that many scholars connect with the Philistine wars (1 Samuel 4; Jeremiah 7:12).", "good", ["kitchen"]]],
     refs: [["1SA.8", "1 Samuel 8", "Israel asks for a king"], ["PRO.14", "Proverbs 14:12", "A way which seems right to a man"]],
   },
 });

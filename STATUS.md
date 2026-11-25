@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 2:05 PM Central
-**Current version:** v246 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 2:33 PM Central
+**Current version:** v247 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:40 PM CT: Notes catch-up, a head start on Sunday. The ten shortest chapter notes left now have more verse notes plus a History and culture box or a Hebrew word: Esther 10 (Xerxes in history; God unnamed but at work), Psalm 87 (Rahab as a name for Egypt; the sons of Korah), Ezekiel 5 (why a priest shaving his head was shocking), Jeremiah 24 (the Hebrew word for fig), 1 Samuel 11 (the extra Dead Sea Scrolls paragraph about Nahash), Isaiah 56 (foreigners and eunuchs welcomed, fulfilled in Acts 8), Ezekiel 6 (gillulim, "dung-gods"), Jeremiah 21 (the Lachish letters from the same siege), Judges 10 (the minor judges) and Judges 21 (Shiloh's excavation).
 - Wed Nov 25, 2:05 PM CT: Games play-test, second pass (against Buddy, family game, kids' and animated looks): no errors. Questions now land with the right crew friend more often: "Which Persian king..." and "Which young helper of Paul..." go to Rosie (People) instead of Stories, and finish-the-verse questions like "one day is like a ___ years" go to Quill (Books & Verses). Also found and fixed: 29 questions were in the question bank twice with slightly different answers, so the same question could come up twice in one game (and an exact-answer test failed now and then). Each now appears once.
 - Wed Nov 25, 1:55 PM CT: Games play-test, first pass. Bible Spin's seven crew friends now always fit on one row (on a small phone the seventh used to drop to a line by itself), and a Quick check score now opens at the top, so the header picture isn't half scrolled away. Bible Spin, Quick check and the practice quiz were played start to finish at phone and iPad sizes with no errors.
 - Wed Nov 25, 1:55 PM CT: Gift packet, printed guide and starter kit brought up to v244. The user guide (in Settings and on paper) now covers Compare versions, verse pictures, Need an idea?, On this day and Page width. New large-print user guide (4 pages, with lines for notes) for anyone who'd rather keep paper beside the iPad. The starter kit is rebuilt from v244 (it was still v180) and its setup now has a shortcut: paste an invite link from Melissa's app into the Bible key box and the NASB, extra versions and ESV fill themselves in. A ten-step family try-out sheet is ready for the testers. Files: gift-packet.pdf, user-guide-large-print.pdf, family-bible-study-starter-kit.tar.gz, starter-kit-checklist.md. Try-out sheet: https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8
