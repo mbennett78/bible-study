@@ -13,12 +13,12 @@ export default makeBook({ lang: "Greek", sources, use: ["weima", "green"] }, {
   1: {
     intro: "Paul, Silvanus and Timothy thank God for the Thessalonians' \"work of faith and labor of love and steadfastness of hope in our Lord Jesus Christ.\" The gospel came to them not only in word but in power and in the Holy Spirit. They welcomed it with joy despite much trouble, and became an example to believers everywhere. People talk about how they \"turned to God from idols to serve a living and true God, and to wait for His Son from heaven.\"",
     v: [
-      ["1:3", "Your work of faith and labor of love and steadfastness of hope", "Faith, love and hope."],
-      ["1:5", "Our gospel did not come to you in word only, but also in power", "A powerful message."],
-      ["1:6", "Having received the word in much tribulation with the joy of the Holy Spirit", "Joy in hard times."],
-      ["1:8", "The word of the Lord has sounded forth from you", "Word spreads."],
-      ["1:9", "You turned to God from idols to serve a living and true God", "Turning around."],
-      ["1:10", "To wait for His Son from heaven", "Waiting for Jesus."],
+      ["1:3", "Your work of faith and labor of love and steadfastness of hope", "Paul's favorite trio, faith, love and hope (1 Corinthians 13:13), each one shown in action: work, labor and endurance."],
+      ["1:5", "Our gospel did not come to you in word only, but also in power", "The gospel came with words, but also with the Holy Spirit's power and deep conviction. Lives were changed."],
+      ["1:6", "Having received the word in much tribulation with the joy of the Holy Spirit", "The church in Thessalonica began under persecution (Acts 17:5-9), yet they welcomed the message with joy from the Spirit."],
+      ["1:8", "The word of the Lord has sounded forth from you", "Their faith became known everywhere, like a sound echoing across the region. A changed church is its own sermon."],
+      ["1:9", "You turned to God from idols to serve a living and true God", "Three verbs tell their story: they turned to God, from idols, to serve Him. Conversion means a whole new direction."],
+      ["1:10", "To wait for His Son from heaven", "Christians live in between: serving now and waiting for Jesus, who rescues us from the coming wrath."],
     ],
     bg: [["A young church", "Paul started the church in Thessalonica, a busy port and capital of Macedonia, but had to leave after only a few weeks because of a riot (Acts 17). He wrote this letter from Corinth around AD 50, making it one of the earliest New Testament books.", "strong", ["weima", "green"]]],
     refs: [["ACT.17", "Acts 17:1-10", "Paul in Thessalonica"], ["1CO.13", "1 Corinthians 13:13", "Faith, hope, love"], ["PSA.115", "Psalm 115:4-8", "Idols cannot see or hear"]],

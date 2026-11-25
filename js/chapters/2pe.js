@@ -13,12 +13,12 @@ export default makeBook({ lang: "Greek", sources, use: ["schreinerP", "green2P"]
   1: {
     intro: "Simon Peter writes that God's divine power \"has granted to us everything pertaining to life and godliness.\" So add to your faith moral excellence, knowledge, self-control, perseverance, godliness, brotherly kindness and love; if these are yours and growing, you will be useful and fruitful. Peter knows his death is near, as the Lord showed him, so he wants to remind them. He was not following clever stories: \"we were eyewitnesses of His majesty\" on the holy mountain, when the voice said, \"This is My beloved Son.\" And prophecy did not come from human will, \"but men moved by the Holy Spirit spoke from God.\"",
     v: [
-      ["1:3", "His divine power has granted to us everything pertaining to life and godliness", "Everything we need."],
-      ["1:4", "That by them you may become partakers of the divine nature", "Sharing God's life."],
-      ["1:5", "Applying all diligence, in your faith supply moral excellence", "A ladder of growth."],
-      ["1:8", "If these qualities are yours and are increasing, they render you neither useless nor unfruitful", "Fruitful."],
-      ["1:16", "We were eyewitnesses of His majesty", "Peter saw it."],
-      ["1:21", "Men moved by the Holy Spirit spoke from God", "Where Scripture comes from."],
+      ["1:3", "His divine power has granted to us everything pertaining to life and godliness", "Through knowing Jesus, God has already given believers all they need for living a godly life."],
+      ["1:4", "That by them you may become partakers of the divine nature", "Through God's promises believers share in His life and character, and escape the world's corruption. It does not mean becoming God."],
+      ["1:5", "Applying all diligence, in your faith supply moral excellence", "Faith is the start, and to it we add goodness, knowledge, self-control, endurance, godliness, kindness and love (1:5-7)."],
+      ["1:8", "If these qualities are yours and are increasing, they render you neither useless nor unfruitful", "Growing in these qualities keeps our knowledge of Jesus from being useless or fruitless."],
+      ["1:16", "We were eyewitnesses of His majesty", "Peter was there on the mountain when Jesus was transfigured (Matthew 17). The gospel is not a clever myth."],
+      ["1:21", "Men moved by the Holy Spirit spoke from God", "Scripture did not come from human ideas. The writers were carried along by the Holy Spirit, like a ship by the wind."],
     ],
     w: [["moved", "pherō", "G5342", "to carry, bear along", "The same word Luke uses for a ship driven along by the wind (Acts 27:15, 17). The prophets were carried along by the Spirit as they spoke.", ["bdag", "green2P"]]],
     refs: [["MAT.17", "Matthew 17:1-8", "The transfiguration"], ["JHN.21", "John 21:18-19", "Jesus foretells Peter's death"], ["2TI.3", "2 Timothy 3:16", "God-breathed Scripture"]],
