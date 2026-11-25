@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:36 AM Central
-**Current version:** v217 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:43 AM Central
+**Current version:** v218 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:45 AM CT: Seasonal round 5 from Melissa: April now shows the three crosses small and far away on a distant hill (sides dark, middle shining), the empty tomb faint in the distance, and the spring garden filling the near ground.
 - Wed Nov 25, 10:55 AM: Seasonal round 4 from Melissa: April shows the three crosses on a distant hill (the two beside it small and dark, the middle one shining), the empty tomb faded behind, in Judean desert colors with spring green and flowers.
 - Wed Nov 25, 10:50 AM: Seasonal round 3 from Melissa: New Year is back to the original; Learning has no person, just a half-written scroll with the pen and ink set down; Psalm 23 has green pastures on the sunlit hills fading into a deep navy valley. Games play-test: in family mode the players' names were white on white and couldn't be read (fixed, with a test), long "Jewel question" notes now wrap neatly, and the wheel fits short phones with the turn label showing.
 - Wed Nov 25, 10:35 AM: Seasonal backgrounds round 2, from Melissa's notes: New Year now shows dawn over Jerusalem lit by the temple's golden lampstands and torches (there were no fireworks in Bible times); February is prettier, with almond trees in blossom and red anemones; April has three crosses with the middle one larger and shining; May mixes olive, fig, cypress, almond and pomegranate; the Sea of Galilee town climbs the hill like the old Tiberias painting; Learning shows a scribe writing a scroll, with birds past the window; Psalm 23 has the Good Shepherd leading the flock and more detail; Advent is richer, with the ox, donkey and sheep, and in Lively pictures the star twinkles, the candles flicker and the baby Jesus softly glows (all still when motion is turned down). Handwriting and drawing inside typed notes is approved and planned for Fri Nov 27.

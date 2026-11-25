@@ -309,11 +309,13 @@ const SCENES = {
   april(d) {
     return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#6a9cc8"], [.45, "#d6e2e2"], [.66, "#fbe8c0"]])}"/>
       ${glow(1120, 380, 620, "#fff0c0", .95, d)}${clouds(420, 170, 400, 48, ["#ffffff", "#eef4f8", "#d0dcea"], 80)}${clouds(1200, 120, 300, 34, ["#ffffff", "#f4f6fa"])}
+      <path d="M760 486 C 880 440, 980 404, 1060 402 C 1140 404, 1240 440, 1360 486 Z" fill="#d6c6b0"/><path d="M900 432 C 980 410, 1030 404, 1060 404 C 1100 405, 1150 414, 1210 432" stroke="#fff4dc" stroke-width="3" fill="none" opacity=".6"/>
       ${ridge(470, 24, "#c8b4a0", { seed: 52, rim: "#fff4dc" })}
-      ${tomb(1290, 524, .55, d, .55)}
+      ${tomb(1330, 484, .2, d, .5)}
+      ${glow(1060, 380, 70, "#fff6d0", .95, d)}${Array.from({ length: 14 }, (_, i) => { const a = i / 14 * Math.PI * 2; return `<path d="M1060 378 L ${f(1060 + Math.cos(a) * 120 - 4)} ${f(378 + Math.sin(a) * 120)} L ${f(1060 + Math.cos(a) * 120 + 4)} ${f(378 + Math.sin(a) * 120)} Z" fill="#fff6d0" opacity=".16"/>`; }).join("")}
+      ${cross(1022, 410, 30, { wood: "#140c08", light: "#2a1c12" })}${cross(1098, 410, 30, { wood: "#140c08", light: "#2a1c12" })}
+      ${glow(1060, 386, 40, "#ffffff", .9, d)}${cross(1060, 404, 46, { wood: "#e8c070", light: "#fffbe0" })}
       ${ridge(520, 22, "#c8a87c", { seed: 51, rim: "#fff0d0" })}
-      ${glow(1120, 440, 130, "#fff6d0", .9, d)}${Array.from({ length: 14 }, (_, i) => { const a = i / 14 * Math.PI * 2; return `<path d="M1120 440 L ${f(1120 + Math.cos(a) * 240 - 8)} ${f(440 + Math.sin(a) * 240)} L ${f(1120 + Math.cos(a) * 240 + 8)} ${f(440 + Math.sin(a) * 240)} Z" fill="#fff6d0" opacity=".16"/>`; }).join("")}
-      ${cross(1010, 534, 96, { wood: "#140c08", light: "#2a1c12" })}${cross(1230, 534, 96, { wood: "#140c08", light: "#2a1c12" })}${cross(1120, 522, 150, { wood: "#8a6a40", light: "#fff4c0" })}${glow(1120, 470, 70, "#fffbe0", .8, d)}
       ${ridge(580, 26, "#b89868", { seed: 53, rim: "#f6e0a8" })}${dabs(800, 615, 820, 50, 240, ["#7a9a4a", "#8aac58", "#6a8a40", "#c8a870"], { box: true, r1: 6, r2: 14, op: [.45, .8], stretch: 2.4 })}${dabs(800, 700, 820, 40, 160, ["#7a9a4a", "#8aac58", "#a8b868"], { box: true, r1: 6, r2: 14, op: [.4, .75], stretch: 2.4 })}
       ${palm(330, 640, .9, "#5a7a40")}${palm(1480, 650, 1, "#5a7a40")}${cypress(1360, 640, .6)}
       ${ridge(660, 22, "#a88a5a", { seed: 55 })}
