@@ -303,19 +303,26 @@ const SCENES = {
       ${frame(["#1e2a1a", "#283620", "#32422a"], ["#7a9a4a", "#a8b860"], { y: 910 })}
       ${lily(230, 900, 1.25)}${lily(300, 900, 1)}${lily(1350, 900, 1.2)}${lily(1430, 900, .95)}${lily(1280, 900, .8)}`;
   },
-  // April after Easter: spring gardens and the three crosses on the hill, the middle one larger and shining.
+  // April after Easter: the three crosses on a distant hill, the two beside it dark and the middle one shining,
+  // the empty tomb with its stone rolled away faded behind them, and a little spring garden in the
+  // tan and gold of Judean hills, greener and full of color after the rains.
   april(d) {
-    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#6a9cc8"], [.45, "#cde0e6"], [.7, "#fbecc8"]])}"/>
-      ${glow(1180, 380, 600, "#fff0c0", .95, d)}${clouds(420, 180, 400, 50, ["#ffffff", "#eef4f8", "#d0dcea"], 80)}${clouds(1180, 130, 300, 36, ["#ffffff", "#f4f6fa"])}
-      ${ridge(540, 30, "#98b49a", { seed: 51, rim: "#fff8dc" })}
-      ${glow(1180, 420, 220, "#fff8d8", .9, d)}${Array.from({ length: 12 }, (_, i) => { const a = i / 12 * Math.PI * 2; return `<path d="M1180 420 L ${f(1180 + Math.cos(a) * 260 - 10)} ${f(420 + Math.sin(a) * 260)} L ${f(1180 + Math.cos(a) * 260 + 10)} ${f(420 + Math.sin(a) * 260)} Z" fill="#fff8d8" opacity=".14"/>`; }).join("")}
-      ${cross(1060, 540, 150, { wood: "#5a4030", light: "#ffd080", op: .92 })}${cross(1300, 540, 150, { wood: "#5a4030", light: "#ffd080", op: .92 })}${cross(1180, 530, 220, { wood: "#6a4a30", light: "#fff0b0" })}
-      ${ridge(600, 26, "#78a466", { seed: 53, rim: "#f0f0b0" })}
-      ${oliveTree(240, 690, 1.15, { leaf: ["#6e8a54", "#8aa86a", "#b0c88a", "#506a40"] })}${blossomTree(1450, 700, 1.2, ["#ffffff", "#fbe4ec", "#f2c6d6"])}
-      <path d="M560 910 C 640 820, 780 710, 1100 620 L 1160 622 C 880 720, 780 820, 790 910 Z" fill="#e2cfa0"/>${dabs(760, 800, 160, 100, 40, ["#f0e2bc", "#c8b488"], { r1: 3, r2: 7, op: [.3, .7] })}
-      ${[[430, 760], [520, 830], [980, 740], [1090, 810], [300, 850], [1240, 870]].map(([x, y], i) => dabs(x, y, 100, 36, 90, i % 2 ? ["#e8708e", "#ffc2d2", "#ffffff", "#c84a70"] : ["#ffc83a", "#fff0a0", "#ffffff", "#e89428"], { r1: 4, r2: 8, stretch: 1 })).join("")}
-      ${dabs(800, 840, 820, 70, 260, ["#3e7a3e", "#5e9a4e", "#7cb062", "#2e5e32"], { box: true, r1: 5, r2: 12, op: [.35, .8] })}
-      ${frame(["#1e3a22", "#284a2c", "#346038"], ["#b8d890", "#e8f0b0"], { y: 910 })}${lily(650, 900, .95)}${lily(720, 900, 1.15)}`;
+    return `<rect width="${W}" height="${H}" fill="${lin(d, [[0, "#6a9cc8"], [.45, "#d6e2e2"], [.66, "#fbe8c0"]])}"/>
+      ${glow(1120, 380, 620, "#fff0c0", .95, d)}${clouds(420, 170, 400, 48, ["#ffffff", "#eef4f8", "#d0dcea"], 80)}${clouds(1200, 120, 300, 34, ["#ffffff", "#f4f6fa"])}
+      ${ridge(470, 24, "#c8b4a0", { seed: 52, rim: "#fff4dc" })}
+      ${tomb(1290, 524, .55, d, .55)}
+      ${ridge(520, 22, "#c8a87c", { seed: 51, rim: "#fff0d0" })}
+      ${glow(1120, 440, 130, "#fff6d0", .9, d)}${Array.from({ length: 14 }, (_, i) => { const a = i / 14 * Math.PI * 2; return `<path d="M1120 440 L ${f(1120 + Math.cos(a) * 240 - 8)} ${f(440 + Math.sin(a) * 240)} L ${f(1120 + Math.cos(a) * 240 + 8)} ${f(440 + Math.sin(a) * 240)} Z" fill="#fff6d0" opacity=".16"/>`; }).join("")}
+      ${cross(1010, 534, 96, { wood: "#140c08", light: "#2a1c12" })}${cross(1230, 534, 96, { wood: "#140c08", light: "#2a1c12" })}${cross(1120, 522, 150, { wood: "#8a6a40", light: "#fff4c0" })}${glow(1120, 470, 70, "#fffbe0", .8, d)}
+      ${ridge(580, 26, "#b89868", { seed: 53, rim: "#f6e0a8" })}${dabs(800, 615, 820, 50, 240, ["#7a9a4a", "#8aac58", "#6a8a40", "#c8a870"], { box: true, r1: 6, r2: 14, op: [.45, .8], stretch: 2.4 })}${dabs(800, 700, 820, 40, 160, ["#7a9a4a", "#8aac58", "#a8b868"], { box: true, r1: 6, r2: 14, op: [.4, .75], stretch: 2.4 })}
+      ${palm(330, 640, .9, "#5a7a40")}${palm(1480, 650, 1, "#5a7a40")}${cypress(1360, 640, .6)}
+      ${ridge(660, 22, "#a88a5a", { seed: 55 })}
+      <path d="M200 760 L 700 744 L 700 774 L 200 790 Z" fill="#c8b08a"/>${dabs(450, 766, 250, 18, 60, ["#d6c09a", "#a8906a", "#e2cea8"], { box: true, r1: 6, r2: 12, op: [.4, .8], stretch: 1.6 })}
+      <path d="M560 910 C 640 820, 780 730, 1000 680 L 1060 682 C 860 740, 780 820, 790 910 Z" fill="#e8d4a8"/>${dabs(760, 810, 160, 90, 40, ["#f0e2bc", "#c8b488"], { r1: 3, r2: 7, op: [.3, .7] })}
+      ${oliveTree(220, 760, 1.15, { leaf: ["#7e9a62", "#9ab87a", "#bcd29a", "#5f7c4c"] })}${figTree(1270, 780, 1)}
+      ${[[430, 820], [520, 870], [980, 790], [1100, 850], [330, 880]].map(([x, y], i) => dabs(x, y, 90, 30, 80, i % 2 ? ["#e04a5a", "#ffc2d2", "#ffffff", "#c83a50"] : ["#ffc83a", "#fff0a0", "#ffffff", "#e89428"], { r1: 4, r2: 8, stretch: 1 })).join("")}
+      ${dabs(800, 850, 820, 60, 220, ["#6a8a44", "#86a456", "#a8b868", "#b89a60"], { box: true, r1: 5, r2: 12, op: [.35, .8] })}
+      ${frame(["#3a4a24", "#4a5a2c", "#5a6a34"], ["#a8c070", "#d8d090"], { y: 920 })}${lily(650, 905, .9)}${lily(710, 905, 1.05)}`;
   },
   // May: flowers and flowering trees of the land: olive, fig and cypress, pomegranates in red bloom,
   // and a meadow of poppies, anemones and daisies along the path to a little house.
