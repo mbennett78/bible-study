@@ -41,6 +41,7 @@ const defaults = {
   pathStarted: {},          // { chronological: iso }
   pathRead: {},
   name: "",                 // shown in greetings
+  pageWidth: "medium",      // narrow | medium | wide: how wide the Bible text runs on bigger screens
   uiScale: 100,             // 100 | 112 | 125: bigger labels and buttons
   contrast: false,          // high contrast words
   wordTap: true,            // tap a word in the Bible text for its meaning

@@ -49,6 +49,7 @@ function applyAppearance() {
   if (theme === "auto") delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = theme;
   document.documentElement.style.setProperty("--reading-size", `${store.get("textSize")}px`);
+  document.documentElement.dataset.pageWidth = ["narrow", "wide"].includes(store.get("pageWidth")) ? store.get("pageWidth") : "medium";
   document.documentElement.style.fontSize = store.get("uiScale") > 100 ? `${store.get("uiScale")}%` : "";
   document.documentElement.dataset.graphics = store.get("graphics") || "full";
   const shown = store.get("show") || {};
@@ -2925,6 +2926,8 @@ function initSettings() {
   extrasNow();
   size.addEventListener("input", () => { store.set("textSize", Number(size.value)); applyAppearance(); });
   theme.addEventListener("change", () => { store.set("theme", theme.value); applyAppearance(); });
+  $("#pageWidth").value = store.get("pageWidth") || "medium";
+  $("#pageWidth").addEventListener("change", () => { store.set("pageWidth", $("#pageWidth").value); applyAppearance(); });
   $("#uiScale").value = String(store.get("uiScale") || 100);
   $("#uiScale").addEventListener("change", () => { store.set("uiScale", Number($("#uiScale").value)); applyAppearance(); });
   $("#contrastHigh").checked = Boolean(store.get("contrast"));

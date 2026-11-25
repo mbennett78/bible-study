@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 1:06 PM Central
-**Current version:** v238 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 1:32 PM Central
+**Current version:** v239 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 2:10 PM CT: New "Page width" in Settings > Reading and listening: Narrow (short lines, easy on the eyes), Medium (as before) or Wide (more words per line, and the study notes panel gives up a little room). On a phone, Narrow adds a small margin each side. Everyone stays on Medium until they choose.
 - Wed Nov 25, 1:55 PM CT: Buddy wears his red baseball cap in Bible Spin, the practice quiz and whenever he cheers.
 - Wed Nov 25, 1:45 PM CT: Buddy part 2 begun. His answers now meet each person where they are (playful with kids, unhurried with grandparents, thorough with students), build on what was said earlier in the chat, and are more careful with Scripture: if he isn't sure of a verse's exact words he gives the reference and marks his wording as a paraphrase. "More depth" answers name scholars, never churches. He also knows all his new tricks (eat, fish, hike, juggle, basketball, football, glasses) and his own story (reading glasses, sports and his cap, a good sport who keeps to himself until wanted). This part needs the study-partner function redeployed (see Needed from Melissa).
 - Wed Nov 25, 1:30 PM CT: Buddy now waves hello when you come back after a few minutes away (not every minute, and never when motion is turned down).
@@ -135,7 +136,7 @@ Honest outside view (App Store style), Nov 25: about 4 stars today. Holding it b
 - Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
 - Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. Handwriting and drawing are done (Nov 25): ✏️ Draw or write and 📄 Handwriting page in every note and Journal entry. Circling directly on the Bible text is harder because the text reflows.
 - B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
-- Reading margins: a simple "Page width" choice (narrow, medium, wide) is suggested instead of drag handles; planned for the B-75 navigation pass unless Melissa prefers otherwise.
+- Reading margins: done Wed Nov 25 as a simple "Page width" choice (Narrow, Medium, Wide) in Settings > Reading and listening, instead of drag handles.
 
 ## Release plan: in progress and not started
 

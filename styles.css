@@ -1070,7 +1070,9 @@ main { container-type: inline-size; }
   #view-read:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 38%); column-gap: 28px; align-items: start; }
   #view-read > * { grid-column: 1; min-width: 0; }
   #view-read > #studyNotes { grid-column: 2; grid-row: 1 / span 30; position: sticky; top: calc(76px + env(safe-area-inset-top)); max-height: calc(100dvh - 96px - var(--tabbar-total) - env(safe-area-inset-top)); padding-bottom: 24px; overflow-y: auto; margin-top: 0; }
-  #view-read .reader { max-width: 38em; }
+  #view-read .reader { max-width: var(--reader-max, 38em); }
+  /* Wide pages give the Bible text more room and the study notes a little less. */
+  html[data-page-width="wide"] #view-read:not([hidden]) { grid-template-columns: minmax(0, 1fr) minmax(300px, 28%); }
 }
 
 /* ---------- Wooden Cross look: warm wood browns with gray and white, matched to the wooden cross picture ---------- */
@@ -2247,7 +2249,12 @@ html { background: var(--page); }
 @media (max-width: 430px) { .bi-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .bi-fact { margin: 6px 0 10px; line-height: 1.5; }
 /* Comfortable reading: about 70 letters a line on iPad, centered. */
-@media (min-width: 700px) { #view-read .reader { max-width: 38em; margin-left: auto; margin-right: auto; } }
+@media (min-width: 700px) { #view-read .reader { max-width: var(--reader-max, 38em); margin-left: auto; margin-right: auto; } }
+/* Page width (Settings > Reading): how far the Bible text runs across a bigger screen. On a phone,
+   Narrow adds a little margin each side; Medium and Wide use the whole width. */
+html[data-page-width="narrow"] { --reader-max: 30em; }
+html[data-page-width="wide"] { --reader-max: 56em; }
+@media (max-width: 699px) { html[data-page-width="narrow"] #view-read .reader { padding-left: 4vw; padding-right: 4vw; } }
 /* Study notes: summary and small text dark enough to read easily. */
 .notes-intro { color: var(--text); font-size: .98rem; line-height: 1.55; }
 #studyNotes .muted, #studyNotes .small-print, .bi-body .muted, .rt-sub { color: color-mix(in srgb, var(--text) 80%, var(--bg)); }
