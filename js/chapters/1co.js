@@ -34,6 +34,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["2:10", "God revealed them through the Spirit", "We could never figure out God's plans on our own. His Spirit makes them known, as through the apostles' teaching."],
       ["2:16", "We have the mind of Christ", "Through the Spirit and Scripture, believers learn to see things the way Jesus sees them."],
     ],
+    bg: [["Corinth loved a good speaker", "Greek cities prized skilled speakers, and traveling orators drew crowds and fees by their polished style. Paul says he came without \"superiority of speech or of wisdom\" (2:1), so their faith would rest on God's power, not on clever words.", "strong", ["thiselton", "garland"]]],
+    w: [["σοφία", "sophia", "G4678", "wisdom", "The Corinthians admired the world's wisdom. Paul speaks of God's hidden wisdom, shown in Christ crucified, which the rulers of this age did not understand (2:7-8).", ["bdag", "feeC"]]],
     refs: [["ISA.64", "Isaiah 64:4", "No eye has seen"], ["JHN.16", "John 16:13", "The Spirit guides into all truth"], ["2CO.12", "2 Corinthians 12:9", "Power perfected in weakness"]],
   },
   3: {
@@ -46,6 +48,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["3:13", "Each man's work will become evident", "The day of judgment will test each builder's work like fire. What was done faithfully on Christ will last."],
       ["3:16", "You are a temple of God", "\"You\" is plural here: the church together is God's temple, where His Spirit lives. So do not tear it apart (3:17)."],
     ],
+    bg: [["Builders and fire", "Corinth was rebuilt by Rome in 44 BC, and building was everywhere. Paul pictures the church as God's building. Each worker's work will be tested by fire: wood and straw burn up, but gold, silver and stone remain (3:12-13).", "good", ["garland", "feeC"]]],
+    w: [["ναός", "naos", "G3485", "temple, sanctuary", "The inner shrine where God dwells. \"You are a temple of God\" (3:16) uses a plural \"you\": the whole church together is God's dwelling place.", ["bdag", "thiselton"]]],
     refs: [["HEB.5", "Hebrews 5:12-14", "Milk and solid food"], ["MAT.7", "Matthew 7:24-27", "Building on the rock"], ["EPH.2", "Ephesians 2:20-22", "A holy temple"]],
   },
   4: {
@@ -58,6 +62,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["4:15", "In Christ Jesus I became your father through the gospel", "Paul brought the Corinthians to faith, so he cares for them like a father, not just a teacher."],
       ["4:20", "The kingdom of God does not consist in words but in power", "God's kingdom is shown less by impressive talk than by the power of God changing lives."],
     ],
+    bg: [["A spectacle to the world", "When a Roman general celebrated a victory, prisoners condemned to die marched last in the parade, and some later died in the arena. Paul says God has shown the apostles \"last of all, as men condemned to death\" (4:9).", "good", ["garland", "thiselton"]]],
+    w: [["οἰκονόμος", "oikonomos", "G3623", "steward, household manager", "Often a trusted slave who ran his master's household and business. What a steward needs most is to be found faithful (4:2).", ["bdag", "feeC"]]],
     refs: [["LUK.12", "Luke 12:42-43", "The faithful steward"], ["2CO.11", "2 Corinthians 11:23-28", "Paul's hardships"], ["PHP.3", "Philippians 3:17", "Follow my example"]],
   },
   5: {
@@ -83,6 +89,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["6:19", "Your body is a temple of the Holy Spirit", "The Holy Spirit lives in each believer. How we treat our bodies matters to God."],
       ["6:20", "You have been bought with a price", "Like a slave bought out of slavery, believers were bought by Christ's death. So honor God with your body."],
     ],
+    bg: [["Lawsuits in Corinth", "Roman civil courts usually favored those with money and rank, and lawsuits were a common way to gain status. Paul is ashamed that believers drag each other into court instead of settling matters within the church (6:1-8).", "good", ["garland", "thiselton"]]],
+    w: [["σῶμα", "sōma", "G4983", "body", "Some in Corinth said the body did not matter. Paul answers that the body is for the Lord, will be raised (6:14), and is a temple of the Holy Spirit (6:19).", ["bdag", "feeC"]]],
     refs: [["MAT.5", "Matthew 5:39-40", "Turn the other cheek"], ["GEN.39", "Genesis 39:12", "Joseph runs away"], ["1PE.1", "1 Peter 1:18-19", "Bought with precious blood"]],
   },
   7: {
@@ -161,6 +169,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["12:27", "Now you are Christ's body", "Every believer is a real part of Christ's body, with a place and a purpose."],
     ],
     views: [["Do all these gifts continue today?", "Some believers hold that all the gifts listed continue throughout church history. Others hold that sign gifts such as tongues, healing and prophecy served to confirm the apostles' message and ended once the New Testament was complete, while gifts like teaching and serving continue. Others take a middle view: God may still work wonders, but they are not the normal pattern. All agree that the Spirit gives gifts for building up the body, and that love (chapter 13) matters most.", ["feeC", "thiselton", "garland"]]],
+    bg: [["The body in Corinth", "Ancient writers often pictured a city as a body whose parts must work together. In Corinth, the healing god Asclepius had a temple where visitors left clay models of the body parts they wanted healed, hands, feet, eyes and ears, and many have been found there.", "strong", ["garland", "murphy"]]],
+    w: [["χάρισμα", "charisma", "G5486", "gift", "A gift freely given, from the same root as \"grace.\" Every gift comes from the same Spirit for the good of all (12:4-7).", ["bdag", "feeC"]]],
     refs: [["ROM.12", "Romans 12:4-8", "Gifts that differ"], ["EPH.4", "Ephesians 4:11-16", "Equipped to build up the body"], ["1CO.13", "1 Corinthians 13", "The way of love"]],
   },
   14: {
@@ -175,6 +185,8 @@ export default makeBook({ lang: "Greek", sources, use: ["feeC", "garland"] }, {
       ["14:40", "All things must be done properly and in an orderly manner", "Paul's closing rule for worship: everything done in a fitting, orderly way, so everyone can take part and be helped."],
     ],
     views: [["\"Let the women keep silent\" (14:34-35)", "Some readers take this as a general rule that women should not speak or teach in the gathered church. Others read it as a narrower instruction, such as not interrupting or judging prophecies, since 11:5 assumes women prayed and prophesied. A few scholars question whether the verses were in Paul's original text. All agree that worship must be orderly and that men and women are equally valued in Christ.", ["feeC", "garland", "thiselton"]]],
+    bg: [["Worship in a house", "The church in Corinth met in homes, such as that of Gaius, who hosted \"the whole church\" (Romans 16:23). A large house might hold forty or fifty people, so many voices at once could quickly become confusing. That is part of why Paul asks for order (14:33, 40).", "good", ["murphy", "garland"]]],
+    w: [["γλῶσσα", "glōssa", "G1100", "tongue, language", "The word means both the tongue in the mouth and a language. Paul says that without interpretation, speech no one understands does not build up the church (14:5).", ["bdag", "thiselton"]]],
     refs: [["ACT.2", "Acts 2:4-11", "Languages at Pentecost"], ["COL.3", "Colossians 3:16", "Psalms, hymns and spiritual songs"], ["NUM.11", "Numbers 11:29", "Would that all were prophets"]],
   },
   15: {

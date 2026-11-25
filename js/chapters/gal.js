@@ -87,6 +87,8 @@ export default makeBook({ lang: "Greek", sources, use: ["mooG", "bruceG"] }, {
       ["6:14", "May it never be that I would boast, except in the cross", "The cross was a symbol of shame in Paul's day, yet it is the only thing he will brag about, because there Jesus saved him."],
       ["6:15", "But a new creation", "Outward marks like circumcision do not make anyone right with God. What matters is the new life God creates (2 Corinthians 5:17)."],
     ],
+    bg: [["\"In my own hand\"", "Paul usually spoke his letters aloud to a helper who wrote them down (Romans 16:22), then added a few lines in his own handwriting at the end (2 Thessalonians 3:17). Here he writes with large letters (6:11), perhaps for emphasis, perhaps because of poor eyesight (4:15).", "strong", ["mooG", "bruceG"]]],
+    w: [["στίγμα", "stigma", "G4742", "mark, brand", "A mark burned or cut into the skin to show who owned a slave. Paul's scars from beatings and stonings marked him as belonging to Jesus (6:17).", ["bdag", "schreinerG"]]],
     refs: [["MAT.18", "Matthew 18:15", "Go to your brother"], ["HOS.8", "Hosea 8:7", "Sow the wind, reap the whirlwind"], ["2CO.5", "2 Corinthians 5:17", "A new creation"]],
   },
 });
