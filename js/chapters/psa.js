@@ -41,6 +41,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["4:7", "You have put gladness in my heart", "Others are glad when their grain and wine increase. The joy God puts in David's heart is greater still."],
       ["4:8", "In peace I will both lie down and sleep", "David can lie down and sleep in peace, because the LORD alone keeps him safe. Many families use this as a bedtime verse."],
     ],
+    bg: [["Headings for the choir", "Many psalms begin with notes like \"For the choir director; on stringed instruments.\" They show the psalms were sung in worship with music. Psalm 4 is often read as an evening prayer: \"In peace I will both lie down and sleep\" (4:8).", "good", ["craigie", "kidner"]]],
+    w: [["סֶלָה", "selah", "H5542", "Selah", "A word found 71 times in the Psalms. No one is sure what it means. Many think it marked a pause or a musical break, a moment to stop and think.", ["halot", "craigie"]]],
     refs: [["EPH.4", "Ephesians 4:26", "Be angry, and yet do not sin"], ["PRO.3", "Proverbs 3:24", "Your sleep will be sweet"]],
   },
   5: {
@@ -50,6 +52,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["5:7", "By Your abundant lovingkindness I will enter Your house", "David does not come to God's house because he is good enough. He comes because of God's great steadfast love, bowing in reverence."],
       ["5:11-12", "You surround him with favor as with a shield", "Those who take refuge in God can sing for joy. He covers the righteous with favor like a large shield."],
     ],
+    bg: [["A morning prayer", "\"In the morning I will order my prayer to You and eagerly watch\" (5:3). The temple's day began with a morning sacrifice, and many believers have made morning the time to bring the day to God.", "good", ["craigie", "kidner"]]],
+    w: [["בֹּקֶר", "boqer", "H1242", "morning", "The time of new light. \"His mercies are new every morning\" (Lamentations 3:23). David says God hears his voice in the morning (5:3).", ["halot", "craigie"]]],
     refs: [["MRK.1", "Mark 1:35", "Jesus prayed early in the morning"], ["PSA.143", "Psalm 143:8", "Let me hear Your lovingkindness in the morning"]],
   },
   6: {
@@ -69,6 +73,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["7:9", "The righteous God tries the hearts and minds", "God sees what no one else can, testing hearts and minds. He knows the truth when others accuse us."],
       ["7:15", "He has dug a pit and fallen into it", "The one who digs a pit for others falls into it himself. Evil often turns back on the one who plans it."],
     ],
+    bg: [["Cush the Benjamite", "The heading says David sang this concerning \"Cush, a Benjamite.\" He is not named anywhere else. Since Saul came from the tribe of Benjamin, many think Cush was one of Saul's men who slandered David.", "good", ["craigie", "kidner"]]],
+    w: [["צֶדֶק", "tsedeq", "H6664", "righteousness", "Being right by God's standard. David asks God to judge him by his righteousness in this case (7:8), and ends by thanking the LORD \"according to His righteousness\" (7:17).", ["halot", "vangemeren"]]],
     refs: [["EST.7", "Esther 7:10", "Haman on his own gallows"], ["1PE.2", "1 Peter 2:23", "Jesus entrusted Himself to Him who judges righteously"]],
   },
   8: {
@@ -79,6 +85,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["8:4", "What is man?", "Looking at the night sky, David feels very small. Yet God remembers people and cares for them."],
       ["8:6", "You have put all things under his feet", "God gave people rule over His creation (Genesis 1:28). Hebrews 2:6-9 sees this finally fulfilled in Jesus."],
     ],
+    bg: [["Psalm 8 in the New Testament", "Jesus quoted 8:2 when children praised Him in the temple (Matthew 21:16). Hebrews 2:6-9 reads \"What is man... You have put all things under his feet\" as fulfilled in Jesus, the true man crowned with glory.", "strong", ["craigie", "kidner"]]],
+    w: [["אֱנוֹשׁ", "enosh", "H582", "man, mortal", "A word for humanity that stresses weakness. \"What is man that You take thought of him?\" (8:4). The wonder is that the Maker of the stars cares for frail people.", ["halot", "vangemeren"]]],
     refs: [["GEN.1", "Genesis 1:26-28", "Let them rule"], ["HEB.2", "Hebrews 2:6-9", "We see Jesus crowned with glory"], ["MAT.21", "Matthew 21:16", "Out of the mouth of infants"]],
   },
   9: {
@@ -99,6 +107,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["10:14", "You have been the helper of the orphan", "The wicked think God does not see (10:11), but God sees trouble and grief, and helps the orphan."],
       ["10:17", "You have heard the desire of the humble", "The LORD hears the longing of the humble, strengthens their hearts, and listens carefully to them."],
     ],
+    bg: [["One psalm or two?", "Psalms 9 and 10 together follow the Hebrew alphabet, with gaps, and Psalm 10 has no heading of its own. The ancient Greek translation counts them as one psalm, which is why Psalm numbers in some older Bibles are one lower from here on.", "strong", ["craigie", "wilson"]]],
     refs: [["PSA.14", "Psalm 14:1", "The fool says there is no God"], ["JAS.1", "James 1:27", "Care for orphans"]],
   },
   11: {
@@ -109,6 +118,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["11:4", "The LORD is in His holy temple", "The answer to the shaking: the LORD is still in His holy temple and on His throne in heaven, and He sees everyone."],
       ["11:7", "The upright will behold His face", "The LORD is righteous and loves what is right. The upright will one day see His face."],
     ],
+    bg: [["\"Flee as a bird\"", "Friends urge David to flee to the mountains, because \"if the foundations are destroyed, what can the righteous do?\" (11:1-3). David answers that the LORD is still on His throne in heaven, and that is reason enough to stay.", "good", ["craigie", "kidner"]]],
+    w: [["בָּחַן", "bachan", "H974", "to test, examine", "Used for testing metal. God's eyes test the sons of men (11:4); He tests the righteous to prove and refine them.", ["halot", "craigie"]]],
     refs: [["HAB.2", "Habakkuk 2:20", "The LORD is in His holy temple"], ["MAT.5", "Matthew 5:8", "The pure in heart shall see God"]],
   },
   12: {
@@ -118,6 +129,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["12:5", "Now I will arise, says the LORD", "Into the noise of lying voices, God speaks. Because the poor are oppressed, He will rise up and keep them safe."],
       ["12:6", "Refined seven times", "Silver refined seven times has every bit of impurity burned out. God's words are like that, completely pure and true."],
     ],
+    bg: [["Silver refined seven times", "Silver was melted in a clay crucible over fire so the impurities could be skimmed off. Refined \"seven times\" means perfectly pure (12:6). Unlike flattering human words, God's words have no impurity at all.", "good", ["craigie", "kidner"]]],
+    w: [["אִמְרָה", "imrah", "H565", "word, saying", "A word spoken. \"The words of the LORD are pure words\" (12:6). Psalm 119 uses it many times for God's promises.", ["halot", "vangemeren"]]],
     refs: [["PRO.30", "Proverbs 30:5", "Every word of God is tested"], ["JAS.3", "James 3:5-10", "The tongue"]],
   },
   13: {
@@ -137,6 +150,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["14:3", "There is no one who does good, not even one", "Everyone has turned aside; no one does good, not even one. Paul quotes this in Romans 3:10-12 to show that all need God."],
       ["14:7", "Oh, that the salvation of Israel would come out of Zion!", "David longs for the day God will come from Zion to rescue His people and turn their story around."],
     ],
+    bg: [["Twin psalms", "Psalm 14 and Psalm 53 are nearly the same, except that Psalm 53 mostly uses \"God\" where Psalm 14 uses \"the LORD.\" Paul quotes this psalm in Romans 3:10-12: \"There is none righteous, not even one.\"", "strong", ["craigie", "tate"]]],
+    w: [["נָבָל", "nabal", "H5036", "fool", "Not a person of low intelligence, but one who lives as if God does not matter. Nabal in 1 Samuel 25 bore the name and lived up to it.", ["halot", "kidner"]]],
     refs: [["PSA.53", "Psalm 53", "Almost the same psalm"], ["ROM.3", "Romans 3:10-12", "None righteous"]],
   },
   15: {
@@ -146,6 +161,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["15:2", "Speaks truth in his heart", "This person lives blamelessly, does right, and is truthful even in the heart, not only in public."],
       ["15:4", "He swears to his own hurt and does not change", "They keep their word even when it costs them. A promise is a promise."],
     ],
+    bg: [["Questions at the gate", "Psalm 15, like Psalm 24 and Isaiah 33:14-16, may echo a question asked as worshipers came to the temple: who may come in? The answer is not ritual but a life of truth, kindness and keeping one's word.", "good", ["craigie", "kidner"]]],
+    w: [["אֹהֶל", "ohel", "H168", "tent", "\"O LORD, who may abide in Your tent?\" (15:1). The word recalls the tabernacle, the tent where God lived among His people in the wilderness.", ["halot", "craigie"]]],
     refs: [["PSA.24", "Psalm 24:3-4", "Who may ascend the hill of the LORD?"], ["MAT.5", "Matthew 5:37", "Let your yes be yes"]],
   },
   16: {
@@ -156,6 +173,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["16:10", "Nor will You allow Your Holy One to undergo decay", "Peter and Paul apply this to Jesus' resurrection."],
       ["16:11", "In Your presence is fullness of joy", "God shows the path of life, and in His presence is fullness of joy, with pleasures forever. Peter quotes 16:8-11 about Jesus' resurrection (Acts 2:25-28)."],
     ],
+    bg: [["Quoted at Pentecost", "At Pentecost, Peter quoted 16:8-11 and argued that David, who died and was buried, was speaking of the Messiah: God would not let His Holy One see decay (Acts 2:25-31). Paul used the same verse in Acts 13:35.", "strong", ["craigie", "kidner"]]],
+    w: [["חֶבֶל", "chebel", "H2256", "measuring line, portion", "The cord used to measure out a share of land. \"The lines have fallen to me in pleasant places\" (16:6): David's share is the LORD Himself (16:5).", ["halot", "vangemeren"]]],
     refs: [["ACT.2", "Acts 2:25-31", "Peter preaches Psalm 16"], ["ACT.13", "Acts 13:35-37", "Paul preaches Psalm 16"]],
   },
   17: {
@@ -165,6 +184,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["17:8", "In the shadow of Your wings", "Like young birds under their mother's wings, David asks to be hidden from those who attack him (17:9)."],
       ["17:15", "I will be satisfied with Your likeness when I awake", "David's enemies are satisfied with this life's goods (17:14). He will be satisfied when he wakes and sees God's face."],
     ],
+    bg: [["\"The apple of the eye\"", "The phrase means the pupil, the most protected part of the eye. The Hebrew may picture the tiny reflection of a person you see in someone's eye. David asks God to guard him that closely (17:8; Deuteronomy 32:10).", "good", ["craigie", "kidner"]]],
+    w: [["אִישׁוֹן", "ishon", "H380", "pupil of the eye", "Literally \"little man,\" from the word for man. \"Keep me as the apple of the eye\" (17:8).", ["halot", "craigie"]]],
     refs: [["DEU.32", "Deuteronomy 32:10", "The apple of His eye"], ["MAT.23", "Matthew 23:37", "As a hen gathers her chicks"]],
   },
   18: {
@@ -175,6 +196,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["18:30", "As for God, His way is blameless", "God's way is perfect, and His word has been tested and proven true. He is a shield to all who take refuge in Him."],
       ["18:33", "He makes my feet like hinds' feet", "Deer can leap across rocky heights without slipping. God gives David steady feet on dangerous ground."],
     ],
+    bg: [["The same song in 2 Samuel", "Psalm 18 appears again, with small differences, as David's song in 2 Samuel 22. The heading says he sang it when God rescued him from all his enemies and from Saul.", "strong", ["craigie", "kidner"]]],
+    w: [["סֶלַע", "sela", "H5553", "rock, cliff", "A high rocky crag, a natural fortress. \"The LORD is my rock and my fortress\" (18:2). David had hidden among such rocks while running from Saul.", ["halot", "vangemeren"]]],
     refs: [["2SA.22", "2 Samuel 22", "The same song"], ["HAB.3", "Habakkuk 3:19", "Feet like hinds' feet"]],
   },
   19: {
@@ -194,6 +217,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["20:4", "May He grant you your heart's desire", "They pray that God would give the king his heart's desire and make all his plans succeed."],
       ["20:7", "Some boast in chariots", "Chariots were the strongest weapons of the day. Some trust in them; God's people trust in the name of the LORD."],
     ],
+    bg: [["A prayer before battle", "Psalm 20 is the people's prayer for their king before he goes to war. Other nations trusted chariots, the tanks of the ancient world, but \"we will boast in the name of the LORD, our God\" (20:7).", "good", ["craigie", "kidner"]]],
     refs: [["PSA.21", "Psalm 21", "The thanksgiving after victory"], ["1TI.2", "1 Timothy 2:1-2", "Pray for kings"]],
   },
   21: {
@@ -203,6 +227,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["21:7", "The king trusts in the LORD", "The king's strength is not his army. He trusts in the LORD, and because of God's steadfast love he will not be shaken."],
       ["21:13", "We will sing and praise Your power", "The psalm ends with the people's response to God's victory: we will sing and praise Your power."],
     ],
+    bg: [["Thanks after victory", "Psalm 21 answers Psalm 20. The prayer before battle has been heard, and now the people thank God for the king's victory: \"You have given him his heart's desire\" (21:2).", "good", ["craigie", "wilson"]]],
     refs: [["PSA.20", "Psalm 20", "The prayer before battle"]],
   },
   22: {
@@ -220,6 +245,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["\"Like a lion\"", "The standard Hebrew text reads \"like a lion, my hands and my feet,\" a broken phrase that some read as lions mauling; translators who follow it often still see the psalm as pointing to Christ's suffering.", ["wilson"]],
     ],
     common: "All agree the Gospels use Psalm 22 to describe Jesus' death, and that the psalm moves from abandonment to worldwide praise.",
+    bg: [["Psalm 22 at the cross", "Jesus cried the first line from the cross in Aramaic: \"Eli, Eli, lema sabachthani?\" (Matthew 27:46; Mark 15:34). The Gospels also see the mocking crowd (22:7-8) and the dividing of His clothes by lot (22:18; John 19:24) in this psalm. It ends in praise.", "strong", ["craigie", "kidner"]]],
+    w: [["עָזַב", "azab", "H5800", "to forsake, abandon", "\"My God, my God, why have You forsaken me?\" (22:1). It is the cry of one who still says \"my God\" even when God feels far away.", ["halot", "vangemeren"]]],
     refs: [["MAT.27", "Matthew 27:35-46", "The crucifixion"], ["JHN.19", "John 19:23-24", "They divided My garments"], ["HEB.2", "Hebrews 2:12", "I will proclaim Your name to My brethren"]],
   },
   24: {
@@ -230,6 +257,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["24:7", "Lift up your heads, O gates", "Probably sung as the ark entered Jerusalem."],
       ["24:10", "The LORD of hosts, He is the King of glory", "The psalm asks twice who this King of glory is. The answer: the LORD of hosts, the Commander of heaven's armies."],
     ],
+    bg: [["\"Lift up your heads, O gates\"", "Many think Psalm 24 was sung as the ark was carried into Jerusalem (2 Samuel 6) or in later processions. The gates are told to lift up their heads, as if even they must grow taller for the King of glory to enter.", "good", ["craigie", "kidner"]]],
     refs: [["2SA.6", "2 Samuel 6", "The ark comes to Jerusalem"], ["1CO.10", "1 Corinthians 10:26", "The earth is the Lord's"], ["MAT.5", "Matthew 5:8", "Blessed are the pure in heart"]],
   },
   25: {
@@ -239,6 +267,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["25:7", "Do not remember the sins of my youth", "David asks God not to remember the sins of his youth, but to remember him according to His steadfast love."],
       ["25:14", "The secret of the LORD is for those who fear Him", "The word secret can mean close friendship. The LORD shares His friendship and His covenant with those who revere Him."],
     ],
+    bg: [["An alphabet psalm", "Psalm 25 is an acrostic: each verse begins with the next letter of the Hebrew alphabet. Psalms like this may have helped people learn them by heart, and they show a prayer brought to God from A to Z.", "strong", ["craigie", "wilson"]]],
+    w: [["דֶּרֶךְ", "derek", "H1870", "way, road", "\"Make me know Your ways, O LORD; teach me Your paths\" (25:4). In the Psalms a person's way is the direction of his whole life.", ["halot", "vangemeren"]]],
     refs: [["PSA.86", "Psalm 86:11", "Teach me Your way"], ["ISA.43", "Isaiah 43:25", "I will not remember your sins"]],
   },
   26: {
@@ -248,6 +278,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["26:6", "I shall wash my hands in innocence", "Washing hands was a picture of being innocent (Deuteronomy 21:6). David wants to come to God's altar with a clean life."],
       ["26:8", "I love the habitation of Your house", "David loves the place where God's glory lives. Worship is not a duty to him but a joy."],
     ],
+    bg: [["Washing at the altar", "Priests washed their hands and feet before serving at the altar (Exodus 30:19-21). David says, \"I shall wash my hands in innocence, and I will go about Your altar\" (26:6), asking to come before God with a clean life.", "good", ["craigie", "kidner"]]],
+    w: [["תֹּם", "tom", "H8537", "integrity, wholeness", "Being whole and true, not divided. \"I have walked in my integrity\" (26:1) is not a claim to be sinless but to be sincere toward God.", ["halot", "craigie"]]],
     refs: [["PSA.139", "Psalm 139:23", "Search me, O God"], ["PSA.84", "Psalm 84", "How lovely are Your dwelling places"]],
   },
   27: {
@@ -267,6 +299,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["28:7", "The LORD is my strength and my shield", "God heard him. David's heart trusts the LORD, his strength and shield, and bursts into song."],
       ["28:9", "Be their shepherd and carry them forever", "David ends by praying for all God's people: save them, bless them, shepherd them and carry them forever."],
     ],
+    bg: [["Hands lifted toward the sanctuary", "Israelites often prayed standing with hands raised. David lifts his hands \"toward Your holy sanctuary\" (28:2), the inner room of God's house where the ark was kept.", "good", ["craigie", "kidner"]]],
     refs: [["ISA.40", "Isaiah 40:11", "He will carry the lambs"]],
   },
   29: {
@@ -286,6 +319,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["30:6", "I will never be moved", "When things went well, David felt he could never be shaken. He learned his security was God's favor, not his success (30:7)."],
       ["30:11", "You have turned my mourning into dancing", "God changed David's sackcloth of mourning into clothes of joy. His grief turned into dancing."],
     ],
+    bg: [["\"At the dedication of the house\"", "The heading calls Psalm 30 a song for the dedication of the house. In later Jewish practice it was sung at Hanukkah, the feast remembering the temple's rededication in 164 BC.", "good", ["craigie", "wilson"]]],
+    w: [["רֶגַע", "rega", "H7281", "moment", "\"His anger is but for a moment, His favor is for a lifetime; weeping may last for the night, but a shout of joy comes in the morning\" (30:5).", ["halot", "craigie"]]],
     refs: [["JHN.16", "John 16:20-22", "Your grief will be turned into joy"], ["2CO.4", "2 Corinthians 4:17", "Momentary, light affliction"]],
   },
   31: {
@@ -295,6 +330,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["31:15", "My times are in Your hand", "Every moment of David's life is in God's hands, even when enemies are chasing him."],
       ["31:19", "How great is Your goodness", "God has stored up great goodness for those who fear Him, like treasure kept safe for them."],
     ],
+    bg: [["Jesus' last words", "\"Into Your hand I commit my spirit\" (31:5) became Jesus' last words from the cross (Luke 23:46). Stephen prayed similar words as he died (Acts 7:59).", "strong", ["craigie", "kidner"]]],
+    w: [["עֵת", "et", "H6256", "time, times", "\"My times are in Your hand\" (31:15). Every season of life, good and hard, is held by God.", ["halot", "vangemeren"]]],
     refs: [["LUK.23", "Luke 23:46", "Father, into Your hands"], ["ACT.7", "Acts 7:59", "Lord Jesus, receive my spirit"]],
   },
   32: {
@@ -316,6 +353,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["33:12", "Blessed is the nation whose God is the LORD", "A nation's true blessing is not its army or wealth (33:16-17) but having the LORD as its God."],
       ["33:18", "The eye of the LORD is on those who fear Him", "The LORD's eye is on those who fear Him and hope in His steadfast love. He watches over them in need."],
     ],
+    bg: [["A new song on ten strings", "Psalm 33 calls for a new song played skillfully on the harp and a ten-stringed lyre (33:2-3). Fresh mercies call for fresh praise.", "good", ["craigie", "kidner"]]],
+    w: [["דָּבָר", "dabar", "H1697", "word", "\"By the word of the LORD the heavens were made\" (33:6). God speaks and it is done (33:9), as in Genesis 1 and John 1:1-3.", ["halot", "craigie"]]],
     refs: [["GEN.1", "Genesis 1:3", "God said, and it was"], ["HEB.11", "Hebrews 11:3", "Worlds prepared by the word of God"]],
   },
   34: {
@@ -326,6 +365,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["34:18", "The LORD is near to the brokenhearted", "God does not stay away from people in pain. He comes close to the brokenhearted and saves those crushed in spirit."],
       ["34:20", "Not one of them is broken", "John applies this to Jesus (John 19:36)."],
     ],
+    bg: [["David before Abimelech", "The heading recalls when David pretended to be insane before the Philistine king of Gath (1 Samuel 21:10-15), who is called Achish there; Abimelech may be a royal title. The psalm is an alphabet acrostic, and John sees 34:20 fulfilled at the cross (John 19:36).", "good", ["craigie", "kidner"]]],
+    w: [["טָעַם", "ta'am", "H2938", "to taste", "\"O taste and see that the LORD is good\" (34:8). Knowing God is not only an idea but an experience, like tasting good food. Peter echoes this in 1 Peter 2:3.", ["halot", "vangemeren"]]],
     refs: [["1SA.21", "1 Samuel 21:10-15", "David before Achish"], ["1PE.2", "1 Peter 2:3", "You have tasted the kindness of the Lord"], ["1PE.3", "1 Peter 3:10-12", "Peter quotes Psalm 34"]],
   },
   35: {
@@ -335,6 +376,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["35:13", "I humbled my soul with fasting", "When these same people were sick, David wore sackcloth, fasted and prayed for them. Now they repay his kindness with evil (35:12)."],
       ["35:19", "Those who hate me without cause", "Jesus applied this to Himself (John 15:25)."],
     ],
+    bg: [["Prayers against enemies", "Psalm 35 asks God to fight against David's enemies. Psalms like this hand anger over to God instead of taking revenge, trusting that He judges rightly (Romans 12:19). David himself spared Saul when he had the chance.", "good", ["craigie", "kidner"]]],
+    w: [["רִיב", "rib", "H7378", "to contend, plead a case", "A word from the law court. \"Contend, O LORD, with those who contend with me\" (35:1): David asks God to be his defender.", ["halot", "craigie"]]],
     refs: [["JHN.15", "John 15:25", "They hated Me without a cause"], ["ROM.12", "Romans 12:19", "Leave room for the wrath of God"]],
   },
   36: {
@@ -344,6 +387,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["36:5", "Your lovingkindness extends to the heavens", "In contrast to the wicked, God's steadfast love reaches the heavens and His faithfulness the clouds. It has no limit."],
       ["36:9", "In Your light we see light", "God is the fountain of life. Only in His light can we see anything truly."],
     ],
+    bg: [["The fountain of life", "Psalm 36 sets the wicked man's self-flattery (36:1-4) beside God's love that reaches the heavens. \"With You is the fountain of life; in Your light we see light\" (36:9). Jesus uses both pictures, living water and light (John 4:14; 8:12).", "good", ["craigie", "kidner"]]],
+    w: [["חֶסֶד", "chesed", "H2617", "lovingkindness, steadfast love", "God's loyal, covenant love that does not give up. \"Your lovingkindness, O LORD, extends to the heavens\" (36:5).", ["halot", "vangemeren"]]],
     refs: [["JHN.4", "John 4:14", "Living water"], ["JHN.8", "John 8:12", "The light of life"]],
   },
   37: {
@@ -354,6 +399,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["37:5", "Commit your way to the LORD", "The Hebrew word for commit means to roll, like rolling a heavy load onto someone stronger. Trust Him, and He will act."],
       ["37:11", "The humble will inherit the land", "Jesus echoes this verse in Matthew 5:5: blessed are the gentle, for they shall inherit the earth."],
     ],
+    bg: [["Wisdom from an old man", "Psalm 37 is an alphabet acrostic written as advice from someone who says, \"I have been young and now I am old\" (37:25). Jesus echoes 37:11 in the Sermon on the Mount: \"Blessed are the gentle, for they shall inherit the earth\" (Matthew 5:5).", "strong", ["craigie", "kidner"]]],
+    w: [["עָנָו", "anav", "H6035", "humble, meek", "Those who are lowly and depend on God rather than force. Moses is described this way (Numbers 12:3).", ["halot", "vangemeren"]]],
     refs: [["MAT.5", "Matthew 5:5", "The meek shall inherit the earth"], ["PRO.16", "Proverbs 16:3", "Commit your works to the LORD"], ["PSA.73", "Psalm 73", "The prosperity of the wicked"]],
   },
   38: {
@@ -364,6 +411,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["38:18", "I confess my iniquity", "David does not hide his sin. He confesses it and is sorry, and that is the way back to God."],
       ["38:22", "Make haste to help me, O Lord, my salvation", "The psalm ends with an urgent prayer: hurry to help me, Lord, my salvation."],
     ],
+    bg: [["\"For a memorial\"", "The heading says this psalm is \"for a memorial,\" perhaps meaning it was used when an offering was made, or simply \"to bring to remembrance.\" David links his sickness to his sin and brings both honestly to God.", "good", ["craigie", "kidner"]]],
     refs: [["PSA.6", "Psalm 6", "Another penitential psalm"], ["LUK.18", "Luke 18:13", "God, be merciful to me, a sinner"]],
   },
   39: {
@@ -373,6 +421,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["39:5", "Every man at his best is a mere breath", "Even at our strongest, a human life is like a breath on a cold day, here and then gone."],
       ["39:7", "My hope is in You", "If life is that short, what can David hope for? Only in God. He is the hope that lasts."],
     ],
+    bg: [["Jeduthun", "The heading names Jeduthun, one of the chief musicians David appointed to lead thanksgiving in worship (1 Chronicles 16:41-42). His sons served as temple musicians after him (1 Chronicles 25:1-3).", "good", ["craigie", "wilson"]]],
+    w: [["הֶבֶל", "hebel", "H1892", "breath, vapor", "\"Surely every man at his best is a mere breath\" (39:5). The same word runs through Ecclesiastes (\"vanity\"). Life is brief, so David puts his hope in God (39:7).", ["halot", "craigie"]]],
     refs: [["JAS.4", "James 4:14", "You are just a vapor"], ["PSA.90", "Psalm 90:12", "Teach us to number our days"]],
   },
   40: {
@@ -383,6 +433,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "vangemeren"]
       ["40:6-8", "I delight to do Your will", "God wants a heart that delights to do His will more than sacrifices. Hebrews 10:5-10 hears Christ speaking these words."],
       ["40:17", "I am afflicted and needy; let the Lord be mindful of me", "After all that praise, David is still poor and needy. He trusts that the Lord thinks of him and will come quickly."],
     ],
+    bg: [["Quoted in Hebrews", "Hebrews 10:5-7 hears Christ speaking 40:6-8: \"Behold, I have come to do Your will.\" Hebrews follows the ancient Greek translation, which reads \"a body You have prepared for Me\" where the Hebrew says \"My ears You have opened.\"", "strong", ["craigie", "kidner"]]],
+    w: [["קָוָה", "qavah", "H6960", "to wait, hope", "Waiting with hopeful expectation. \"I waited patiently for the LORD; and He inclined to me and heard my cry\" (40:1).", ["halot", "vangemeren"]]],
     refs: [["HEB.10", "Hebrews 10:5-10", "A body You have prepared for Me"], ["1SA.15", "1 Samuel 15:22", "To obey is better than sacrifice"]],
   },
   41: {
