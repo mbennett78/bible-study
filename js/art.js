@@ -1067,7 +1067,7 @@ const STORIES = {
   cross: ["MAT.27", "MRK.15", "LUK.23", "JHN.19"], tomb: ["MAT.28", "MRK.16", "LUK.24", "JHN.20"], pentecost: ["ACT.2"], ship: ["ACT.27"],
   baptism: ["MAT.3", "MRK.1", "LUK.3"], cana: ["JHN.2"], lazarus: ["JHN.11"], palms: ["MAT.21", "MRK.11", "JHN.12"], supper: ["MAT.26", "MRK.14", "LUK.22", "JHN.13"], damascus: ["ACT.9"],
   esther: ["EST.2", "EST.4", "EST.5", "EST.7", "EST.8"], samson: ["JDG.13", "JDG.14", "JDG.15", "JDG.16"], elisha: ["2KI.2"], naaman: ["2KI.5"], wall: ["NEH.2", "NEH.3", "NEH.4", "NEH.6"],
-  sermon: ["MAT.5", "MAT.6", "MAT.7", "LUK.6"], children: ["MAT.19", "MRK.10", "LUK.18"], peter: ["ACT.12"], forgive: ["GEN.45", "GEN.50"], hannah: ["1SA.1"], prison: ["ACT.16"],
+  sermon: ["MAT.5", "MAT.6", "MAT.7", "LUK.6"], children: ["MAT.19", "MRK.10", "LUK.18"], peter: ["ACT.12"], forgive: ["GEN.45", "GEN.50"], hannah: ["1SA.1"], prison: ["ACT.16"], oil: ["2KI.4"], josiah: ["2KI.22", "2KI.23", "2CH.34"], mite: ["MRK.12", "LUK.21"], philip: ["ACT.8"],
 };
 
 /* ---------- Lovely little animations for the kids' pictures ---------- */

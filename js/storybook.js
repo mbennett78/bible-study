@@ -102,6 +102,8 @@ export function curled(o) {
     <path d="M-10 -42 C 2 -40, 14 -32, 16 -22 L 10 -19 C 8 -26, -2 -32, -12 -34 Z" fill="${robe}" ${L}/><circle cx="13" cy="-19" r="3.6" fill="${SKIN}" ${L2}/>`;
 }
 export function person(o) {
+  // People from many lands: a skin color can be given (it defaults to the usual one).
+  if (o.skin && !o.skinDone) return person({ ...o, skinDone: true }).replaceAll(SKIN, o.skin).replaceAll(SKIN_D, shade(o.skin, .82));
   if (o.mood === "terrified" && !o.shaking) return `<g class="sb-shake">${person({ ...o, shaking: true })}</g>`;
   if (o.angel) return `${wings()}${person({ ...o, angel: false })}<ellipse cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="${INK}" stroke-width="3.6"/><ellipse class="sb-twinkle" cx="0" cy="-98" rx="10" ry="3" fill="none" stroke="#f6cf55" stroke-width="2"/>`;
   const robe = o.robe || "#5b8fb9", dark = shade(robe, .75);
@@ -678,6 +680,39 @@ export const STORYBOOK = {
       <rect x="118" y="174" width="136" height="16" rx="3" fill="#7a5a3e" ${L2}/>${[140, 160, 210, 230].map((x) => `<circle cx="${x}" cy="182" r="3.4" fill="#4a3424"/>`).join("")}
       ${chain(96, 186, .9)}${chain(256, 186, .9)}`)}
     <g fill="#fff3c4" font-family="Georgia, serif" font-weight="700" stroke="${INK}" stroke-width=".6">${[[112, 90, 20, "♪"], [132, 70, 17, "♫"], [248, 86, 19, "♪"], [268, 64, 16, "♫"]].map(([x, y, f, t]) => `<text x="${x}" y="${y}" font-size="${f}">${t}</text>`).join("")}</g>` },
+  oil: { caption: "God fills every jar with oil for the widow", draw: (id) => `${sky(id, "#e9d3a6", "#f6ead0")}
+    ${wash(id, `<rect x="0" y="0" width="360" height="200" fill="#e3cfa2"/><path d="M0 166 L 360 166 L 360 200 L 0 200 Z" fill="#b99a6a"/>`)}
+    <rect x="270" y="30" width="44" height="34" rx="3" fill="#bfe3f5" ${L2}/><path d="M292 30 L 292 64 M 270 47 L 314 47" stroke="${INK}" stroke-width="1.3"/><rect x="34" y="62" width="60" height="6" rx="2" fill="#9a7a5a" ${L2}/>${oilLamp(60, 60, 1.2)}<g class="sb-glow"><circle cx="66" cy="50" r="14" fill="#ffe7a3" opacity=".5" filter="url(#soft${id})"/></g>
+    ${stick(id, `${jar(30, 188, 1)}${jar(58, 190, .9)}${jar(196, 190, 1)}${jar(226, 188, 1.1)}${jar(258, 190, .95)}${jar(290, 188, 1.05)}${jar(322, 190, .9)}
+      ${g(110, 190, .8, person({ robe: "#8a5a7a", veil: "#5b7fa6", sash: "#e1b04a", mood: "joy", arms: ["out", "out"] }))}<g transform="translate(138 140) rotate(30)">${jar(0, 0, .7)}</g>
+      ${g(164, 192, .56, person({ robe: "#6aa06a", hair: "#4a3020", sash: "#c08a3e", mood: "joy", lookUp: true, arms: ["up", "down"] }))}`)}
+    <path d="M146 150 C 150 160, 150 168, 152 176" stroke="#e8b84a" stroke-width="4" stroke-linecap="round" fill="none"/>
+    ${[[196, 156], [226, 150], [258, 158], [290, 152]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="7" ry="2.4" fill="#f2c45a"/>`).join("")}${smallStars([[150, 140, 2.2], [240, 134, 2], [300, 140, 1.8]])}` },
+  josiah: { caption: "Young King Josiah hears God's Word read aloud", draw: (id) => `${sky(id, "#e9d3a6", "#f6ead0")}
+    ${wash(id, `<rect x="0" y="0" width="360" height="200" fill="#e8d4a8"/><path d="M0 164 L 360 164 L 360 200 L 0 200 Z" fill="#c9a96e"/>`)}
+    ${[24, 336].map((x) => `<rect x="${x - 12}" y="0" width="24" height="164" fill="#f1e2bd" ${L2}/>`).join("")}<path d="M60 0 L 300 0 L 300 20 L 60 20 Z" fill="#a63f35" opacity=".7"/>
+    <g class="sb-glow"><circle cx="230" cy="100" r="50" fill="#fff6d6" opacity=".35" filter="url(#soft${id})"/></g>
+    ${stick(id, `<path d="M82 182 L 82 92 C 82 80, 138 80, 138 92 L 138 182 Z" fill="#b5793f" ${L}/><circle cx="110" cy="92" r="5" fill="#f2c45a" ${L2}/>
+      ${g(110, 188, .74, person({ robe: "#7a4a8a", mantle: "#a63f35", hair: "#3a2a1f", sash: "#f2c45a", mood: "sad", arms: ["pray", "pray"] }))}${crown(110, 125, 1)}
+      ${g(230, 190, .8, person({ robe: "#efe6d2", cloth: "#efe6d2", band: "#5b7fa6", beard: "#e8e2d6", sash: "#5b7fa6", mood: "firm", arms: ["out", "out"] }))}
+      <g transform="translate(230 140)"><rect x="-30" y="-14" width="60" height="22" rx="2" fill="#f6ecd2" ${L2}/><rect x="-36" y="-16" width="8" height="26" rx="4" fill="#c99a52" ${L2}/><rect x="28" y="-16" width="8" height="26" rx="4" fill="#c99a52" ${L2}/>${[-8, -2, 4].map((y) => `<path d="M-22 ${y} L 22 ${y}" stroke="#a89c8a" stroke-width="1.2"/>`).join("")}</g>
+      ${g(310, 190, .66, flip(person({ robe: "#5b8fb9", hair: "#2f2016", beard: "#2f2016", sash: "#e1b04a", mood: "worried", arms: ["down", "pray"] })))}`)}` },
+  mite: { caption: "A poor widow gives all she has, two small coins", draw: (id) => `${sky(id, "#bfe0ef", "#f8f0dc")}${sunW(id, 330, 30, 12)}
+    ${wash(id, `<rect x="0" y="40" width="360" height="130" fill="#e6d3a6"/><path d="M0 166 L 360 166 L 360 200 L 0 200 Z" fill="#c9b08a"/>`)}
+    ${[30, 100, 260, 330].map((x) => `<rect x="${x - 10}" y="40" width="20" height="126" fill="#f1e6cc" ${L2}/>`).join("")}<path d="M0 40 L 360 40" stroke="${INK}" stroke-width="1.6"/>
+    ${stick(id, `<path d="M166 176 L 166 130 C 166 112, 200 112, 200 130 L 200 176 Z" fill="#c79a3e" ${L}/><path d="M172 130 C 176 120, 190 120, 194 130" stroke="${INK}" stroke-width="3" fill="none"/>
+      ${g(130, 190, .7, person({ robe: "#8a7a6a", veil: "#6b5d50", sash: "#a89c8a", rags: true, mood: "calm", arms: ["out", "down"] }))}
+      ${g(250, 190, .8, flip(person({ robe: "#7a4a8a", mantle: "#f2c45a", cloth: "#efe6d2", band: "#d9363e", beard: "#2f2016", sash: "#f2c45a", mood: "firm", arms: ["out", "down"] })))}<ellipse cx="216" cy="138" rx="10" ry="8" fill="#c79a3e" ${L2}/>
+      ${g(56, 190, .76, person({ robe: "#fffdf6", mantle: "#5b8fb9", hair: "#4a2f1d", beard: "#4a2f1d", sash: "#c08a3e", mood: "joy", arms: ["out", "down"] }))}`)}
+    <circle cx="160" cy="156" r="14" fill="#fff6d6" opacity=".6" filter="url(#soft${id})"/>${[[156, 158], [164, 152]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#d9a35a" stroke="${INK}" stroke-width="1"/>`).join("")}` },
+  philip: { caption: "Philip tells the man from Ethiopia about Jesus", draw: (id) => `${sky(id, "#bfe0ef", "#f8f0dc")}${sunW(id, 40, 30, 12)}${cloud(id, 260, 26, .8)}
+    ${hills(id, "#e0c88e", "#d0b27a")}${wash(id, `<path d="M0 176 C 120 170, 240 170, 360 176 L 360 200 L 0 200 Z" fill="#e6d6ae"/><ellipse cx="300" cy="186" rx="60" ry="10" fill="#7fc0d8"/>`)}
+    ${stick(id, `<g transform="translate(130 170)"><rect x="-50" y="-34" width="80" height="26" rx="4" fill="#c99a52" ${L}/><circle cx="-30" cy="-4" r="13" fill="#9a6a3e" ${L}/><circle cx="16" cy="-4" r="13" fill="#9a6a3e" ${L}/><circle cx="-30" cy="-4" r="3" fill="${INK}"/><circle cx="16" cy="-4" r="3" fill="#3a2a1f"/></g>
+      ${g(112, 158, .62, person({ robe: "#2f6aa8", mantle: "#f2c45a", cloth: "#fffdf6", band: "#f2c45a", sash: "#f2c45a", skin: "#8d5a3b", mood: "joy", arms: ["out", "out"] }))}
+      <g transform="translate(112 130)"><rect x="-16" y="-6" width="32" height="13" rx="2" fill="#f6ecd2" ${L2}/><rect x="-20" y="-8" width="6" height="17" rx="3" fill="#c99a52" ${L2}/><rect x="14" y="-8" width="6" height="17" rx="3" fill="#c99a52" ${L2}/></g>
+      ${g(200, 190, .78, person({ robe: "#efe6d2", mantle: "#6aa06a", hair: "#4a2f1d", beard: "#4a2f1d", sash: "#c08a3e", mood: "joy", arms: ["out", "down"] }))}
+      ${flip(donkey(-50, 188, 1.15))}`)}
+    ${datePalm(340, 176, .6)}${scrub(270, 198, .7)}` },
   lions: { caption: "God shut the lions' mouths", draw: (id) => `${sky(id, "#7d5f4a", "#a88464")}
     ${wash(id, `<path d="M0 0 L 360 0 L 360 70 C 300 60, 250 30, 230 0 Z" fill="#5f4535"/><path d="M0 0 L 130 0 C 110 30, 60 60, 0 70 Z" fill="#5f4535"/><path d="M0 150 C 80 140, 280 140, 360 150 L 360 200 L 0 200 Z" fill="#94704f"/>
       ${[[40, 110, 22], [300, 100, 26], [80, 60, 14], [330, 160, 16]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .7}" fill="#6f5240"/>`).join("")}`)}
