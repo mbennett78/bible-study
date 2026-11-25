@@ -2503,6 +2503,15 @@ html { background: var(--page); }
 :root[data-style="seasons"] .cl-cross rect { fill: var(--page); }
 :root[data-style="seasons"] .pc-featured, :root[data-style="seasons"] .notes-card { border-color: var(--gold); }
 .season-scene image, .season-strip image { filter: none; }
+.sfx { opacity: 0; transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-graphics="full"] .sfx-tw { animation: sfx-tw 3.4s ease-in-out var(--sd) infinite; }
+  :root[data-graphics="full"] .sfx-fl { animation: sfx-fl 1.7s ease-in-out var(--sd) infinite alternate; }
+  :root[data-graphics="full"] .sfx-gl { animation: sfx-gl 4s ease-in-out infinite; }
+}
+@keyframes sfx-tw { 0%, 100% { opacity: .15; transform: scale(.7); } 45% { opacity: .95; transform: scale(1.15); } 60% { opacity: .5; transform: scale(.9); } }
+@keyframes sfx-fl { 0% { opacity: .25; transform: scale(.85, .95); } 40% { opacity: .6; transform: scale(1.05, 1.1); } 100% { opacity: .35; transform: scale(.95, 1); } }
+@keyframes sfx-gl { 0%, 100% { opacity: .2; } 50% { opacity: .65; } }
 @media (prefers-color-scheme: dark) {
   :root[data-style="seasons"]:not([data-theme="light"]) { --bg: #fffaf2; --surface: #ffffff; --text: #2b241c; --muted: #67615a; --line: #eadfcd; color-scheme: light; }
 }

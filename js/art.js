@@ -1218,9 +1218,18 @@ export function seasonOf(now = new Date()) {
   return "advent";
 }
 export const seasonSrc = (k = seasonOf()) => `img/season/${k}.jpg`;
+// Gentle light that moves, only with Lively pictures and never when motion is turned down:
+// at Advent the star twinkles, the candles flicker and the baby Jesus glows. [x, y, size, kind] on the 1600 x 900 painting.
+const SEASON_FX = {
+  advent: [[800, 129, 70, "tw"], [491, 796, 34, "fl"], [635, 769, 36, "fl"], [965, 769, 36, "fl"], [1109, 796, 34, "fl"], [800, 734, 42, "fl"], [827, 626, 90, "gl"]],
+};
+const fxHtml = (key) => (SEASON_FX[key] || []).map(([x, y, r, k], i) => `<circle class="sfx sfx-${k}" cx="${x}" cy="${y}" r="${r}" fill="url(#sfxg)" style="--sd:${(i * .37).toFixed(2)}s"/>`).join("");
 export function seasonScene({ height = 170, key = seasonOf() } = {}) {
+  // The painting and its moving lights share one 1600 x 900 frame, cropped the same way.
   return `<svg class="scene painting-scene season-scene" viewBox="0 0 360 ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${SEASONS[key][0]}">
-    <rect width="360" height="${height}" fill="#3a2e22"/><image href="${seasonSrc(key)}" width="360" height="${height}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+    <rect width="360" height="${height}" fill="#3a2e22"/><svg viewBox="0 0 1600 900" width="360" height="${height}" preserveAspectRatio="xMidYMid slice">
+    <defs><radialGradient id="sfxg"><stop offset="0" stop-color="#fffbe6" stop-opacity=".95"/><stop offset=".35" stop-color="#ffe7a0" stop-opacity=".5"/><stop offset="1" stop-color="#ffd070" stop-opacity="0"/></radialGradient></defs>
+    <image href="${seasonSrc(key)}" width="1600" height="900"/>${fxHtml(key)}</svg></svg>`;
 }
 export function seasonStrip(key = seasonOf()) {
   const [title, y] = SEASONS[key];

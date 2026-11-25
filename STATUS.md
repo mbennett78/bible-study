@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:21 AM Central
-**Current version:** v214 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:26 AM Central
+**Current version:** v215 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:35 AM: Seasonal backgrounds round 2, from Melissa's notes: New Year now shows dawn over Jerusalem lit by the temple's golden lampstands and torches (there were no fireworks in Bible times); February is prettier, with almond trees in blossom and red anemones; April has three crosses with the middle one larger and shining; May mixes olive, fig, cypress, almond and pomegranate; the Sea of Galilee town climbs the hill like the old Tiberias painting; Learning shows a scribe writing a scroll, with birds past the window; Psalm 23 has the Good Shepherd leading the flock and more detail; Advent is richer, with the ox, donkey and sheep, and in Lively pictures the star twinkles, the candles flicker and the baby Jesus softly glows (all still when motion is turned down). Handwriting and drawing inside typed notes is approved and planned for Fri Nov 27.
 - Wed Nov 25, 10:45 AM: Play-test of Bible Spin and the Quick check on a small phone and an iPad, in the kids' and Classic looks. Fixed: on short phones (iPhone SE, mini) the fourth answer and the helps were below the edge, and now everything fits. The Quick check now marks answers plainly in every look (green ✓ and red ✗), says the right answer in words (most explanations were only a verse reference), scrolls the Next button into view, starts on the question instead of the Close button, and ends with a "To read again" list of missed questions, each with a tap to read the verse. A solo game with no jewels now ends with "Good try! Every game you learn more." instead of "You won 0 of 7 jewels." All game tests pass.
 - Wed Nov 25, 10:15 AM: The opt-in "Seasonal changes" look is built, two days early. 13 warm, glowing painted backgrounds follow the year (New Year's dawn, winter sunrise, angels, March rain and rainbow, Easter, April gardens, May flowers, June Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, harvest and Advent), with Easter moving each year from Palm Sunday through the Sunday after. The header color matches each painting, and the words always sit on plain cream panels, so the readability check passes in light and dark. Nobody is ever switched into it, and anyone in it isn't asked to switch to a holiday look. The preview of all 13 is sent to Melissa (project folder: bible-study/seasonal-preview/). Release-plan dates moved up as Melissa asked.
 - Wed Nov 25, 9:40 AM: The Strong's concordance is now a full concordance and easier to read. Open any Hebrew or Greek word and tap "See every place in the Bible" for every verse where it's used, grouped by book with a book picker; tap one to go there. Root words in an entry ("from G756") can be tapped to see that word. Key words now start with the ones the chapter repeats most, with the rest behind "Show all", and very common words like "this" and "all" moved to Everyday words. A few dictionary entries whose word origin was split in two are joined back together. Confirmed the layout Melissa described: the Journal tab is a simple personal journal to add to (and can be locked); study notes live inside the Bible reading and study (the "My notes" square in Reference & resources and the note button under each chapter) and in the main Menu.
@@ -107,7 +108,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 ## Open questions
 
 - Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
-- Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. A handwriting and sketch page for notes and the Journal (about a day) is offered for the B-75 pass; circling directly on the Bible text is harder because the text reflows.
+- Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. Handwriting and drawing pages are approved and planned for Fri Nov 27. Circling directly on the Bible text is harder because the text reflows.
 - B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
 - Reading margins: a simple "Page width" choice (narrow, medium, wide) is suggested instead of drag handles; planned for the B-75 navigation pass unless Melissa prefers otherwise.
 
@@ -136,11 +137,12 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 | Siblings' starter kit: code plus setup checklist (draft) | Done (Tue Nov 24) | Wed Dec 2 |
 | Seasonal changes look (opt-in only): 13 painted backgrounds built, with text easy to read on each | Done (Wed Nov 25, early) | Fri Nov 27 |
 | Seasonal changes: preview of all 13 backgrounds sent to Melissa for review | Done (Wed Nov 25, early) | Fri Nov 27 |
+| Handwriting and drawing inside typed notes and Journal entries: add a sketch box anywhere in a note and write or draw with Apple Pencil or a finger, mixed with the typed text; saved and backed up, and included when printing and sharing to Google Docs (Melissa approved Nov 25) | Not started | Fri Nov 27 |
 | Games and Quick check: play-test every game and fix all glitches | Not started | Thu Nov 26 (moved up from Fri Nov 27) |
 | Trivia polish: snappy, colorful and rewarding; short celebrations (confetti) for right answers, streaks and finishing a Quick check, skipped when motion is turned down | Not started | Fri Nov 27 (moved up from Sat Nov 28) |
 | Kids' storybook: tap surprises (a wave, a hop, a twinkle) and a pass to make sure every picture follows the storybook rules | Not started | Sat Nov 28 (moved up from Sun Nov 29) |
 | Buddy: cuter, friendlier and more adaptable; answers checked for accuracy and faithfulness to Scripture | Not started | Sun Nov 29 (moved up from Mon Nov 30) |
-| Seasonal changes: Melissa's review changes made | Waiting for her notes | Within a day of her notes (by Tue Dec 1; notes by Mon Nov 30) |
+| Seasonal changes: Melissa's review changes made | Round 2 done (Wed Nov 25); waiting for any more notes | Tue Dec 1 |
 | Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Not started | Tue Dec 1 (moved up from Wed Dec 2) |
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
 | Gift packet and starter kit finished | Not started | Wed Dec 2 (moved up from Thu Dec 3) |
