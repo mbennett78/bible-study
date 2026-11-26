@@ -30,6 +30,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "hubbardD"]
       ["2:28", "I will pour out My Spirit on all mankind", "God will pour out His Spirit on all people: sons and daughters, young and old, servants. Peter said this happened at Pentecost (Acts 2:16-18)."],
       ["2:32", "Whoever calls on the name of the LORD will be delivered", "Everyone who calls on the name of the LORD will be saved. Peter quotes it in Acts 2:21 and Paul in Romans 10:13."],
     ],
+    bg: [["The Spirit poured out", "After a locust plague like an invading army (2:1-11), God promises, \"I will pour out My Spirit on all mankind\" (2:28). At Pentecost Peter said, \"This is what was spoken of through the prophet Joel\" (Acts 2:16-21).", "strong", ["stuartM", "garrettH"]]],
+    w: [["אַרְבֶּה", "arbeh", "H697", "locust", "Desert locusts can swarm by the millions and strip every green thing. The word is also used in the eighth plague on Egypt (Exodus 10:4).", ["halot", "hubbardD"]]],
     refs: [["ACT.2", "Acts 2:16-21", "Peter quotes Joel at Pentecost"], ["ROM.10", "Romans 10:13", "Whoever will call on the name of the Lord"], ["EXO.34", "Exodus 34:6", "Gracious and compassionate"]],
   },
   3: {
@@ -41,6 +43,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "hubbardD"]
       ["3:16", "The LORD is a refuge for His people", "The LORD roars from Zion and the heavens and earth shake, but He is a refuge and stronghold for His people."],
       ["3:18", "A spring will go out from the house of the LORD", "In that day the mountains will drip new wine and a spring will flow from the LORD's house. Ezekiel 47 and Revelation 22 picture the same river."],
     ],
+    bg: [["The valley of Jehoshaphat", "God will gather the nations to \"the valley of Jehoshaphat,\" which means \"the LORD judges\" (3:2, 12). Joel turns Isaiah's famous words around: \"Beat your plowshares into swords\" (3:10), a call to the final battle before God's peace.", "good", ["stuartM", "smithB"]]],
     refs: [["ISA.2", "Isaiah 2:4", "Swords into plowshares"], ["EZK.47", "Ezekiel 47:1-12", "The river from the temple"], ["REV.14", "Revelation 14:14-20", "The harvest of the earth"]],
   },
 });

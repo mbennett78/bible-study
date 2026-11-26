@@ -24,6 +24,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["A vision or acted parable", "Some older interpreters thought the marriage happened only in a vision, finding it hard to believe God would command it.", ["hubbardD"]],
     ],
     common: "All agree the main point is God's faithful, suffering love for an unfaithful people.",
+    bg: [["Children with message names", "God told Hosea to marry Gomer, and their children's names were messages: Jezreel, Lo-ruhamah (\"not pitied\"), and Lo-ammi (\"not My people\") (1:4-9). Then God promised to reverse them. Paul quotes this about Gentiles becoming God's people (Romans 9:25-26).", "strong", ["stuartM", "garrettH"]]],
+    w: [["רָחַם", "racham", "H7355", "to have compassion", "Tender love, related to the word for womb. Lo-ruhamah means \"she has not received compassion,\" but God promises, \"I will have compassion\" (2:23).", ["halot", "smithB"]]],
     refs: [["ROM.9", "Romans 9:25-26", "Not My people, now My people"], ["1PE.2", "1 Peter 2:10", "Once not a people, now God's people"], ["2KI.14", "2 Kings 14:23-29", "Jeroboam II"]],
   },
   2: {
@@ -35,6 +37,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["2:19-20", "I will betroth you to Me forever", "God will betroth His people to Himself forever, in righteousness, justice, steadfast love, mercy and faithfulness. Then they will know the LORD."],
       ["2:23", "You are My people!", "God reverses the children's names: to Lo-ammi, \"not My people,\" He will say, You are My people, and they will say, You are my God."],
     ],
+    bg: [["A door of hope", "Israel had thanked Baal, the Canaanite storm god, for its grain and wine. God says He gave them (2:8), and He will lead her into the wilderness and speak kindly, making the Valley of Achor, the valley of trouble (Joshua 7:26), \"a door of hope\" (2:15).", "good", ["stuartM", "hubbardD"]]],
+    w: [["בַּעַל", "ba'al", "H1167", "master, husband, Baal", "The word means \"master\" or \"owner\" and was also the name of the Canaanite god. God says Israel will call Him \"my husband\" (Ishi) and no longer \"my master\" (Baali) (2:16).", ["halot", "garrettH"]]],
     refs: [["JOS.7", "Joshua 7:26", "The valley of Achor"], ["EPH.5", "Ephesians 5:25-27", "Christ and His bride"], ["JER.2", "Jeremiah 2:2", "The devotion of your youth"]],
   },
   3: {
@@ -44,6 +48,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["3:2", "So I bought her for myself", "Hosea pays silver and barley to buy her back. Redeeming love costs something."],
       ["3:5", "They will come trembling to the LORD and to His goodness", "Afterward Israel will return, seek the LORD and David their king, and come trembling to the LORD and His goodness in the last days."],
     ],
+    bg: [["Bought back", "Hosea bought his unfaithful wife back for fifteen shekels of silver and some barley (3:2), perhaps the price of a slave. It pictures God's love: \"the LORD loves the sons of Israel, though they turn to other gods\" (3:1).", "good", ["stuartM", "smithB"]]],
     refs: [["ROM.5", "Romans 5:8", "While we were yet sinners"], ["1CO.6", "1 Corinthians 6:20", "Bought with a price"], ["LUK.15", "Luke 15:20-24", "The father welcomes the son"]],
   },
   4: {
@@ -63,6 +68,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["5:13", "Ephraim went to Assyria", "When Israel saw its sickness, it went to Assyria for help. But the king of Assyria could not cure them."],
       ["5:15", "In their affliction they will earnestly seek Me", "God will withdraw until they admit their guilt and seek His face. In their distress they will look for Him."],
     ],
+    bg: [["Running to Assyria", "\"When Ephraim saw his sickness... he went to Assyria\" (5:13). King Menahem paid a huge tribute to the Assyrian king (2 Kings 15:19-20), and Tiglath-pileser's own records list \"Menahem of Samaria\" among those who paid.", "strong", ["stuartM", "kitchen"]]],
     refs: [["2KI.15", "2 Kings 15:19-20", "Menahem pays Assyria"], ["PSA.119", "Psalm 119:67", "Before I was afflicted I went astray"]],
   },
   6: {
@@ -73,6 +79,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["6:3", "Let us press on to know the LORD", "Let us press on to know the LORD. He will come as surely as the dawn, like spring rains that water the earth."],
       ["6:6", "I delight in loyalty rather than sacrifice", "God wants steadfast love more than sacrifice, and knowing Him more than burnt offerings. Jesus quoted this twice (Matthew 9:13; 12:7)."],
     ],
+    bg: [["Mercy, not sacrifice", "\"For I delight in loyalty rather than sacrifice, and in the knowledge of God rather than burnt offerings\" (6:6). Jesus quoted this twice to the Pharisees (Matthew 9:13; 12:7).", "strong", ["stuartM", "garrettH"]]],
     refs: [["MAT.9", "Matthew 9:13", "I desire compassion, not sacrifice"], ["MAT.12", "Matthew 12:7", "Jesus quotes Hosea 6:6"], ["1CO.15", "1 Corinthians 15:4", "Raised on the third day"]],
   },
   7: {
@@ -82,6 +89,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["7:11", "Like a silly dove, without sense", "Israel is like a silly dove, flying to Egypt and then to Assyria for help, but never to God."],
       ["7:14", "They do not cry to Me from their heart", "They wail on their beds for grain and wine, but they do not cry out to God from their hearts."],
     ],
+    bg: [["A half-baked cake", "\"Ephraim has become a cake not turned\" (7:8), burned on one side and raw on the other. Israel is also \"like a silly dove,\" flying back and forth between Egypt and Assyria for help (7:11).", "good", ["stuartM", "hubbardD"]]],
     refs: [["REV.3", "Revelation 3:15-16", "Neither hot nor cold"], ["ISA.31", "Isaiah 31:1", "Woe to those who go to Egypt"]],
   },
   8: {
@@ -91,6 +99,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["8:7", "They sow the wind and they reap the whirlwind", "They plant the wind and harvest a whirlwind. Sin's harvest is always bigger than what was sown."],
       ["8:14", "Israel has forgotten his Maker", "Israel forgot its Maker and built palaces, and Judah built fortified cities. They trusted their buildings instead of God."],
     ],
+    bg: [["Sow the wind", "\"They sow the wind and they reap the whirlwind\" (8:7). Israel made kings without God and idols of silver (8:4), and the harvest would be destruction.", "good", ["stuartM", "smithB"]]],
     refs: [["GAL.6", "Galatians 6:7", "Whatever a man sows"], ["1KI.12", "1 Kings 12:28", "Jeroboam's calves"]],
   },
   9: {
@@ -100,6 +109,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["9:10", "Like grapes in the wilderness", "When God first found Israel, it was like finding grapes in the desert, a delight. But they soon gave themselves to Baal."],
       ["9:17", "They will be wanderers among the nations", "Because they did not listen to God, they will become wanderers among the nations. This came true when Assyria scattered them."],
     ],
+    bg: [["As in the days of Gibeah", "\"They have gone deep in depravity as in the days of Gibeah\" (9:9; 10:9). Hosea points back to the terrible crime at Gibeah in Judges 19-21. Israel had fallen as low as its darkest days.", "good", ["stuartM", "garrettH"]]],
     refs: [["NUM.25", "Numbers 25", "Baal-peor"], ["2KI.17", "2 Kings 17:6", "Israel exiled to Assyria"]],
   },
   10: {
@@ -109,6 +119,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["10:8", "They will say to the mountains, Cover us!", "Facing judgment, people will cry to the mountains, Cover us, and to the hills, Fall on us. Jesus (Luke 23:30) and Revelation (6:16) use these words."],
       ["10:12", "Break up your fallow ground, for it is time to seek the LORD", "Sow righteousness and reap steadfast love. Break up your unplowed ground, for it is time to seek the LORD until He comes and showers righteousness on you."],
     ],
+    bg: [["Beth-aven", "Bethel means \"house of God.\" Because Israel worshiped a golden calf there, Hosea calls it Beth-aven, \"house of wickedness\" (10:5). The calf would be carried off to Assyria as tribute (10:6).", "good", ["stuartM", "hubbardD"]]],
     refs: [["LUK.23", "Luke 23:30", "Mountains, fall on us"], ["JER.4", "Jeremiah 4:3", "Break up your fallow ground"], ["REV.6", "Revelation 6:16", "Fall on us"]],
   },
   11: {
@@ -120,6 +131,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["11:8", "How can I give you up?", "How can I give you up, Ephraim? God's heart is stirred within Him and His compassion is aroused. Admah and Zeboiim were destroyed with Sodom."],
       ["11:9", "I am God and not man", "God will not carry out His fierce anger, because He is God and not a man, the Holy One among them. His mercy is greater than human mercy."],
     ],
+    bg: [["\"Out of Egypt I called My son\"", "God remembers Israel's childhood: \"When Israel was a youth I loved him, and out of Egypt I called My son\" (11:1). Matthew 2:15 sees it fulfilled when the young Jesus came back from Egypt. \"How can I give you up, O Ephraim?\" (11:8).", "strong", ["stuartM", "garrettH"]]],
     refs: [["MAT.2", "Matthew 2:15", "Out of Egypt I called My Son"], ["LUK.15", "Luke 15:20", "The father ran"], ["DEU.1", "Deuteronomy 1:31", "As a man carries his son"]],
   },
   12: {
@@ -129,6 +141,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["12:6", "Observe kindness and justice, and wait for your God continually", "So return to your God: hold on to love and justice, and wait for your God always."],
       ["12:8", "I have become rich", "Ephraim boasts: I am rich, and no one can find any sin in me. Wealth made them proud and blind to their dishonest scales (12:7)."],
     ],
+    bg: [["Like Jacob", "Hosea reminds Israel of their ancestor Jacob, who grabbed his brother's heel and wrestled with the angel and wept and sought His favor (12:3-4; Genesis 25:26; 32:24-28). Like Jacob, they need to return to God.", "good", ["stuartM", "smithB"]]],
     refs: [["GEN.32", "Genesis 32:24-30", "Jacob wrestles"], ["MIC.6", "Micah 6:8", "Do justice, love kindness"], ["REV.3", "Revelation 3:17", "I am rich"]],
   },
   13: {
@@ -138,6 +151,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["13:6", "As they had their pasture, they became satisfied... and forgot Me", "When God fed them, they were satisfied, became proud and forgot Him. Comfort can make us forget the One who gave it."],
       ["13:14", "O Death, where are your thorns?", "Paul quotes this in 1 Corinthians 15:55."],
     ],
+    bg: [["\"O Death, where are your thorns?\"", "\"Shall I ransom them from the power of Sheol? ... O Death, where are your thorns? O Sheol, where is your sting?\" (13:14). Paul quotes this in his great chapter on the resurrection (1 Corinthians 15:55).", "strong", ["stuartM", "garrettH"]]],
     refs: [["1CO.15", "1 Corinthians 15:55", "O death, where is your sting?"], ["DEU.8", "Deuteronomy 8:11-14", "When you have eaten and are satisfied"]],
   },
   14: {
@@ -148,6 +162,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["garrettH", "stuartM"] 
       ["14:5", "I will be like the dew to Israel", "God will be like dew to Israel, quiet and refreshing. Israel will blossom like a lily and put down roots like the cedars of Lebanon."],
       ["14:9", "The ways of the LORD are right", "Whoever is wise will understand these things. The ways of the LORD are right; the righteous walk in them, but rebels stumble."],
     ],
+    bg: [["Like the dew", "Hosea ends with an invitation to return and God's promise: \"I will heal their apostasy, I will love them freely... I will be like the dew to Israel\" (14:4-5). In the dry summer, heavy morning dew kept plants alive.", "good", ["stuartM", "hubbardD"]]],
     refs: [["LUK.15", "Luke 15:18-24", "I will get up and go to my father"], ["JER.3", "Jeremiah 3:22", "I will heal your faithlessness"]],
   },
 });

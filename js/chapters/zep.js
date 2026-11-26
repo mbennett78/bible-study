@@ -29,6 +29,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["robertson", "baker2"] 
       ["2:11", "All the coastlands of the nations will bow down to Him", "God will bring down the gods of the earth, and people from every coastland will worship Him, each in their own land."],
       ["2:15", "I am, and there is no one besides me", "Proud Nineveh said, I am, and there is no one else. Pride talks as if it were God."],
     ],
+    bg: [["Seek the LORD, you humble", "\"Seek the LORD, all you humble of the earth... Perhaps you will be hidden in the day of the LORD's anger\" (2:3). Zephaniah also foretold that Nineveh would become a desolation where flocks lie down (2:13-15); it fell in 612 BC.", "good", ["robertson", "smithR"]]],
     refs: [["AMO.5", "Amos 5:4-6", "Seek Me and live"], ["NAM.3", "Nahum 3", "Nineveh's fall"], ["ISA.47", "Isaiah 47:8", "I am, and there is no one besides me"]],
   },
   3: {

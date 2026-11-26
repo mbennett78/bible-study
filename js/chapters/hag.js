@@ -39,6 +39,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["verhoef", "baldwin"] }
       ["\"The wealth of all nations\"", "Many newer translations read \"the treasures of all nations,\" since the verb is plural and verse 8 speaks of silver and gold.", ["verhoef", "smithR"]],
     ],
     common: "Both readings agree God would fill the rebuilt temple with a glory greater than Solomon's.",
+    bg: [["The glory of the latter house", "Older people who remembered Solomon's temple saw the new one as \"nothing\" (2:3). God promised, \"The latter glory of this house will be greater than the former\" (2:9). Jesus Himself later taught in this rebuilt temple, expanded by Herod.", "good", ["verhoef", "baldwin"]]],
+    w: [["כָּבוֹד", "kavod", "H3519", "glory, weight", "From a word meaning heavy: God's glory is the weight of His presence. \"I will fill this house with glory\" (2:7).", ["halot", "smithR"]]],
     refs: [["EZR.3", "Ezra 3:12", "The old men wept"], ["HEB.12", "Hebrews 12:26-28", "Once more I will shake"], ["JER.22", "Jeremiah 22:24", "The signet ring"], ["MAT.1", "Matthew 1:12", "Zerubbabel in Jesus' family line"]],
   },
 });

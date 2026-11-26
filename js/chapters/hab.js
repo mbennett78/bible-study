@@ -18,6 +18,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["robertson", "baker2"] 
       ["1:6", "I am raising up the Chaldeans", "God is raising up the Babylonians (Chaldeans), a fierce nation, to judge Judah. He can use even a pagan empire."],
       ["1:13", "Your eyes are too pure to approve evil", "Habakkuk's second question: God is too pure to look on evil, so how can He use people more wicked than Judah?"],
     ],
+    bg: [["The Chaldeans are coming", "Habakkuk complains that God allows violence in Judah, and God answers that He is raising up the Chaldeans, the Babylonians, to judge it (1:6). That leads to Habakkuk's second question: how can a holy God use a nation even more wicked (1:13)?", "good", ["robertson", "baker2"]]],
     refs: [["PSA.13", "Psalm 13:1", "How long, O LORD?"], ["JOB.21", "Job 21:7", "Why do the wicked prosper?"], ["ACT.13", "Acts 13:41", "Paul quotes Habakkuk 1:5"]],
   },
   2: {

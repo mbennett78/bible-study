@@ -30,6 +30,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["2:7", "These who pant after the very dust on the heads of the helpless", "They trample the heads of the poor into the dust and push the afflicted out of the way."],
       ["2:12", "You commanded the prophets saying, You shall not prophesy!", "God raised up prophets, but Israel told them to stop prophesying. They tried to silence God's voice."],
     ],
+    bg: [["The circle closes on Israel", "Amos announced judgment on Israel's neighbors one by one, Damascus, Gaza, Tyre, Edom, Ammon, Moab, and his listeners must have agreed. Then he turned on Judah, and finally on Israel itself (2:6). Their sin: selling the righteous for money and the needy for a pair of sandals.", "good", ["stuartM", "smithB"]]],
+    w: [["פֶּשַׁע", "pesha", "H6588", "transgression, rebellion", "Not just a mistake but rebellion against an authority. \"For three transgressions and for four\" means sin piled on sin.", ["halot", "garrettH"]]],
     refs: [["EXO.22", "Exodus 22:26-27", "Return the cloak by sunset"], ["JAS.5", "James 5:1-6", "Woe to the rich who oppress"]],
   },
   3: {
@@ -51,6 +53,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["4:12", "Prepare to meet your God", "Because they would not return, Amos warns: prepare to meet your God, O Israel."],
       ["4:13", "He who forms mountains and creates the wind", "The One they will meet forms the mountains, creates the wind and walks on the heights of the earth. The LORD God of hosts is His name."],
     ],
+    bg: [["Cows of Bashan", "Bashan, east of the Sea of Galilee, was famous for its rich pastures and fat cattle. Amos calls the wealthy women of Samaria \"cows of Bashan\" who oppress the poor and say to their husbands, \"Bring now, that we may drink!\" (4:1).", "good", ["stuartM", "hubbardD"]]],
     refs: [["LEV.26", "Leviticus 26:14-39", "Warnings if they do not listen"], ["HAG.2", "Haggai 2:17", "Yet you did not come back to Me"]],
   },
   5: {
@@ -62,6 +65,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["5:21", "I hate, I reject your festivals", "God hates their festivals and will not accept their offerings or listen to their songs, because their lives are full of injustice."],
       ["5:24", "Let justice roll down like waters", "Instead, let justice roll on like a river and righteousness like a stream that never dries up. Dr. Martin Luther King Jr. often quoted this verse."],
     ],
+    bg: [["\"Let justice roll down\"", "\"Let justice roll down like waters and righteousness like an ever-flowing stream\" (5:24). Many streams in Israel dry up in summer; God wants justice that never runs dry. Martin Luther King Jr. quoted this verse in his \"I Have a Dream\" speech in 1963.", "strong", ["stuartM", "smithB"]]],
+    w: [["נַחַל", "nachal", "H5158", "stream, wadi", "A stream bed that flows in the rainy season and often dries up. God asks for righteousness that is \"ever-flowing.\"", ["halot", "garrettH"]]],
     refs: [["ISA.1", "Isaiah 1:11-17", "Your worthless offerings"], ["MIC.6", "Micah 6:6-8", "What the LORD requires"], ["ACT.7", "Acts 7:42-43", "Stephen quotes Amos 5"]],
   },
   6: {
@@ -71,6 +76,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["6:4", "Those who recline on beds of ivory", "They lounge on beds inlaid with ivory and feast on the best lambs and calves. Archaeologists have found carved ivory from Samaria from this period."],
       ["6:6", "They have not grieved over the ruin of Joseph", "They drink wine by the bowlful and use the finest lotions, but they do not grieve over the coming ruin of their nation."],
     ],
+    bg: [["Beds of ivory", "Amos condemned those who \"recline on beds of ivory\" while ignoring their nation's ruin (6:4). Excavations at Samaria uncovered hundreds of carved ivory pieces that once decorated furniture and walls in the royal palace (compare 1 Kings 22:39).", "strong", ["stuartM", "kitchen"]]],
+    w: [["שֵׁן", "shen", "H8127", "tooth, ivory", "The word for tooth, used for ivory from elephant tusks, a costly import.", ["halot", "hubbardD"]]],
     refs: [["LUK.16", "Luke 16:19-25", "The rich man and Lazarus"], ["JAS.5", "James 5:5", "Lived luxuriously"]],
   },
   7: {
@@ -80,6 +87,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["7:8", "I am about to put a plumb line", "A plumb line is a weight on a string used to check whether a wall is straight. God measures His people by His standard, and they are crooked."],
       ["7:14-15", "The LORD took me from following the flock", "Told to go home and prophesy somewhere else, Amos answers that he was a herdsman and tree farmer until the LORD took him from the flock."],
     ],
+    bg: [["A farmer called to prophesy", "When Amaziah, the priest of Bethel, told Amos to go home, Amos answered that he was no professional prophet, but \"a herdsman and a grower of sycamore figs\" whom the LORD took from following the flock (7:14-15). Growers notched sycamore figs to help them ripen.", "good", ["stuartM", "smithB"]]],
+    w: [["אֲנָךְ", "anak", "H594", "plumb line", "A weight on a string used to check that a wall is straight. Found only in 7:7-8: God measures His people by His standard.", ["halot", "garrettH"]]],
     refs: [["EXO.32", "Exodus 32:11-14", "Moses intercedes"], ["1CO.1", "1 Corinthians 1:27", "God chose the foolish things"]],
   },
   8: {
@@ -89,6 +98,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["8:5", "To make the bushel smaller and the shekel bigger", "Merchants could not wait for the Sabbath to end so they could cheat again, with smaller measures, heavier prices and rigged scales."],
       ["8:11", "A famine for hearing the words of the LORD", "God warns of a famine worse than hunger for bread: a famine of hearing the words of the LORD."],
     ],
+    bg: [["A basket of summer fruit", "God showed Amos a basket of summer fruit, qayits, and said, \"The end (qets) has come for My people Israel\" (8:2). The two words sound alike in Hebrew, a wordplay that made the message hard to forget.", "strong", ["stuartM", "hubbardD"]]],
+    w: [["קֵץ", "qets", "H7093", "end", "The end of a time. Israel's harvest season was over; judgment was ripe.", ["halot", "smithB"]]],
     refs: [["PRO.11", "Proverbs 11:1", "A false balance"], ["MAT.4", "Matthew 4:4", "Man shall not live by bread alone"]],
   },
   9: {
@@ -99,6 +110,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["smithB", "hubbardD"] }
       ["9:13", "The plowman will overtake the reaper", "The book ends with hope. Harvests will be so huge that the plowman catches up with the reaper, and the mountains drip sweet wine."],
       ["9:15", "They will not again be rooted out", "God will plant His people in their land, never again to be uprooted from the land He gave them."],
     ],
+    bg: [["Rebuilding David's booth", "Amos ends with hope: \"In that day I will raise up the fallen booth of David\" (9:11). At the Jerusalem council, James quoted this to show that God always meant to bring Gentiles in (Acts 15:16-17).", "strong", ["stuartM", "smithB"]]],
+    w: [["סֻכָּה", "sukkah", "H5521", "booth, shelter", "A temporary hut, like the ones Israel lived in during the Feast of Booths. David's royal house had fallen to the state of a broken-down shelter.", ["halot", "garrettH"]]],
     refs: [["ACT.15", "Acts 15:15-17", "James quotes Amos 9"], ["PSA.139", "Psalm 139:7-10", "Where can I flee?"]],
   },
 });

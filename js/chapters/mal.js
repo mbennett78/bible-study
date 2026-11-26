@@ -44,6 +44,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["verhoef", "baldwin"] }
       ["3:10", "Test Me now in this... if I will not open for you the windows of heaven", "God invites the people to bring the full tithe to the storehouse and see if He will not pour out blessing. Trust Him with your giving."],
       ["3:16", "A book of remembrance was written before Him", "Those who feared the LORD talked with each other, and the LORD listened. A book of remembrance was written of those who honored His name."],
     ],
+    bg: [["\"I am sending My messenger\"", "\"Behold, I am going to send My messenger, and he will clear the way before Me\" (3:1). Mark's Gospel opens with this verse about John the Baptist (Mark 1:2). Malachi's own name means \"my messenger.\"", "strong", ["verhoef", "baldwin"]]],
+    w: [["מַלְאָךְ", "mal'ak", "H4397", "messenger, angel", "The same word means a human messenger or an angel, depending on the context.", ["halot", "smithR"]]],
     refs: [["MRK.1", "Mark 1:2", "The messenger fulfilled"], ["MAT.11", "Matthew 11:10", "Jesus on John the Baptist"], ["JAS.1", "James 1:17", "No variation or shifting shadow"], ["2CO.9", "2 Corinthians 9:6-8", "God loves a cheerful giver"]],
   },
   4: {

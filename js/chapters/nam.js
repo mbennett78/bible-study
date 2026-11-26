@@ -24,6 +24,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["robertson", "baker2"] 
       ["Comfort for victims", "Others stress that Nahum (whose name means \"comfort\") wrote for a people crushed by Assyria; the book assures victims that evil will not have the last word.", ["smithR"]],
     ],
     common: "Both books affirm God is \"slow to anger\" (Jonah 4:2; Nahum 1:3) and both mercy and justice belong to Him.",
+    bg: [["The fall of Nineveh", "Nahum announces the end of Nineveh, Assyria's capital, which had crushed many nations. It fell to the Babylonians and Medes in 612 BC. Yet Nahum also says, \"The LORD is good, a stronghold in the day of trouble\" (1:7).", "strong", ["robertson", "kitchen"]]],
     refs: [["JON.4", "Jonah 4:2", "Slow to anger, abounding in love"], ["EXO.34", "Exodus 34:6-7", "The LORD's name proclaimed"], ["ISA.52", "Isaiah 52:7", "How lovely on the mountains"], ["ROM.10", "Romans 10:15", "Beautiful feet"]],
   },
   2: {
@@ -45,6 +46,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["robertson", "baker2"] 
       ["3:12", "All your fortifications are fig trees with ripe fruit", "All of Nineveh's fortresses are like fig trees with ripe figs. Shake them, and the fruit falls into the eater's mouth."],
       ["3:19", "On whom has not your evil passed continually?", "The book ends with the nations clapping at Nineveh's fall, for who had not suffered from its endless cruelty?"],
     ],
+    bg: [["Are you better than Thebes?", "\"Are you better than No-amon?\" (3:8). No-amon was Thebes, the great city of Egypt, protected by the Nile. Assyria itself had captured and plundered it in 663 BC. If Thebes fell, so could Nineveh.", "strong", ["robertson", "kitchen"]]],
     refs: [["EZK.24", "Ezekiel 24:6-9", "Woe to the bloody city"], ["REV.18", "Revelation 18", "The fall of a great proud city"], ["PSA.37", "Psalm 37:35-36", "The wicked pass away"]],
   },
 });

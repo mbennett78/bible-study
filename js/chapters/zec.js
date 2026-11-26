@@ -31,6 +31,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["2:11", "Many nations will join themselves to the LORD in that day", "Many nations will join themselves to the LORD in that day and become His people too."],
       ["2:13", "Be silent, all flesh, before the LORD", "Be silent before the LORD, all people, for He has roused Himself from His holy dwelling."],
     ],
+    bg: [["A city without walls", "A man goes out with a measuring line to measure Jerusalem, but an angel says it will be a city without walls because of all its people, and God Himself will be \"a wall of fire around her\" (2:4-5).", "good", ["boda", "baldwin"]]],
     refs: [["DEU.32", "Deuteronomy 32:10", "The apple of His eye"], ["REV.21", "Revelation 21:3", "God dwells with them"], ["HAB.2", "Habakkuk 2:20", "Let all the earth be silent"]],
   },
   3: {
@@ -54,6 +55,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["4:10", "Who has despised the day of small things?", "Some looked down on the small new temple. God says: do not despise the day of small beginnings."],
       ["4:14", "These are the two anointed ones", "Probably Zerubbabel and Joshua, king's line and priest."],
     ],
+    bg: [["Not by might", "Zerubbabel, the governor, faced a huge task rebuilding the temple with few resources. God's word to him: \"Not by might nor by power, but by My Spirit\" (4:6). \"Who has despised the day of small things?\" (4:10).", "good", ["boda", "baldwin"]]],
     refs: [["EXO.25", "Exodus 25:31-40", "The tabernacle lampstand"], ["REV.11", "Revelation 11:4", "Two olive trees and two lampstands"], ["EZR.6", "Ezra 6:15", "The temple finished"], ["MAT.17", "Matthew 17:20", "Faith moves mountains"]],
   },
   5: {
@@ -64,6 +66,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["5:8", "This is Wickedness!", "Inside a basket is a woman called Wickedness. She is shut in and carried away to Babylon (5:11). God will remove evil from His people."],
       ["5:11", "To build a temple for her in the land of Shinar", "Wickedness sent back to where it belongs."],
     ],
+    bg: [["The flying scroll", "Zechariah sees a flying scroll twenty cubits long and ten wide (5:2), about 30 by 15 feet, the same size as the porch of Solomon's temple (1 Kings 6:3). It carries God's curse against theft and lying across the land.", "good", ["boda", "baldwin"]]],
     refs: [["EXO.20", "Exodus 20:7, 15", "Do not steal, do not swear falsely"], ["GEN.11", "Genesis 11:2", "The land of Shinar"], ["REV.18", "Revelation 18:2", "Babylon, home of every unclean thing"]],
   },
   6: {
@@ -80,6 +83,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["About Zerubbabel and Joshua working together", "Others note the crown was kept in the temple as a memorial (6:14) and see the sign first about the governor and priest sharing leadership in harmony (6:13), with a fuller hope beyond them.", ["smithR", "boda"]],
     ],
     common: "Both readings agree the passage promises a coming ruler who will build God's house and bring peace.",
+    bg: [["A crown for the high priest", "Zechariah is told to make a crown and set it on Joshua the high priest, saying, \"Behold, a man whose name is Branch... He will be a priest on His throne\" (6:12-13). Priest and king were usually separate; here they are joined in one.", "good", ["boda", "baldwin"]]],
+    w: [["צֶמַח", "tsemach", "H6780", "Branch, sprout", "A title for the coming King from David's line (Jeremiah 23:5; Zechariah 3:8). Christians see Jesus as both Priest and King.", ["halot", "smithR"]]],
     refs: [["REV.6", "Revelation 6:1-8", "Four horses"], ["PSA.110", "Psalm 110:4", "A priest forever"], ["HEB.7", "Hebrews 7", "King and priest"], ["JER.33", "Jeremiah 33:15", "The righteous Branch"]],
   },
   7: {
@@ -91,6 +96,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["7:10", "Do not oppress the widow or the orphan, the stranger or the poor", "Do not oppress the widow, the orphan, the foreigner or the poor, and do not plot evil against each other."],
       ["7:12", "They made their hearts like flint", "Their ancestors made their hearts as hard as flint so they would not hear God's word through the prophets."],
     ],
+    bg: [["Should we still fast?", "People asked whether they should keep fasting in the fifth month, mourning the temple's destruction (7:3). God asked whether their fasts had really been for Him, and called for justice, kindness and care for widows, orphans and strangers (7:9-10).", "good", ["boda", "baldwin"]]],
     refs: [["ISA.58", "Isaiah 58:3-7", "The fast God chooses"], ["MIC.6", "Micah 6:8", "Do justice, love kindness"], ["MAT.6", "Matthew 6:16-18", "Fasting in secret"], ["JAS.1", "James 1:27", "Pure religion"]],
   },
   8: {
@@ -103,6 +109,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["8:19", "The fasts... will become joy, gladness and cheerful feasts", "The fasts that mourned Jerusalem's fall will become joyful feasts for Judah. So love truth and peace."],
       ["8:23", "Let us go with you, for we have heard that God is with you", "In those days ten people from every nation will grab the robe of one Jew and say: let us go with you, for we have heard God is with you."],
     ],
+    bg: [["Old people and children in the streets", "\"Old men and old women will again sit in the streets of Jerusalem... and the streets of the city will be filled with boys and girls playing\" (8:4-5). A city at peace is a city where the old can rest and the young can play.", "good", ["boda", "baldwin"]]],
     refs: [["JER.32", "Jeremiah 32:17, 27", "Is anything too hard for Me?"], ["EPH.4", "Ephesians 4:25", "Speak truth with your neighbor"], ["ISA.2", "Isaiah 2:3", "Let us go up to the mountain"]],
   },
   9: {
@@ -126,6 +133,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["10:6", "They will be as though I had not rejected them", "God will strengthen Judah and save Joseph's people. They will be as if He had never rejected them, because He is the LORD their God."],
       ["10:8", "I will whistle for them to gather them together", "God will whistle for His scattered people and gather them in, because He has redeemed them."],
     ],
+    bg: [["Cornerstone and tent peg", "\"From them will come the cornerstone, from them the tent peg, from them the bow of battle\" (10:4). God will raise strong leaders from Judah. Christians see Christ as the cornerstone (Ephesians 2:20).", "good", ["boda", "smithR"]]],
     refs: [["MAT.9", "Matthew 9:36", "Sheep without a shepherd"], ["PSA.118", "Psalm 118:22", "The cornerstone"], ["JAS.5", "James 5:7", "The early and late rains"]],
   },
   11: {
@@ -142,6 +150,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["Jeremiah heads the scroll", "Others note that some ancient lists placed Jeremiah first among the prophets, so his name could stand for the whole prophetic collection.", ["smithR"]],
     ],
     common: "All agree Zechariah's thirty pieces of silver thrown to the potter are fulfilled in Judas's betrayal money buying a potter's field.",
+    bg: [["Thirty pieces of silver", "The shepherd is paid thirty shekels of silver, an insulting wage, and throws it to the potter in the house of the LORD (11:12-13). Matthew sees this fulfilled when Judas's money was used to buy the potter's field (Matthew 27:9-10).", "strong", ["boda", "baldwin"]]],
     refs: [["MAT.26", "Matthew 26:15", "Thirty pieces of silver"], ["MAT.27", "Matthew 27:3-10", "The potter's field"], ["EXO.21", "Exodus 21:32", "The price of a slave"], ["JHN.10", "John 10:11-13", "The good shepherd and the hired hand"]],
   },
   12: {
@@ -165,6 +174,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["13:9", "Refine them as silver is refined", "God will bring a remnant through the fire and refine them like silver and gold. Trials purify His people."],
       ["13:9", "They will say, \"The LORD is my God\"", "They will call on God's name and He will answer. He will say, They are My people, and they will say, The LORD is my God."],
     ],
+    bg: [["Strike the Shepherd", "\"Strike the Shepherd that the sheep may be scattered\" (13:7). On the night before His death, Jesus quoted this as His disciples were about to run away (Mark 14:27). The same chapter speaks of a fountain opened to cleanse from sin (13:1).", "strong", ["boda", "baldwin"]]],
     refs: [["MAT.26", "Matthew 26:31", "Jesus quotes 13:7"], ["MRK.14", "Mark 14:27, 50", "The disciples scatter"], ["1PE.1", "1 Peter 1:7", "Faith refined by fire"], ["1JN.1", "1 John 1:7-9", "Cleansed from all sin"], ["HOS.2", "Hosea 2:23", "You are My people"]],
   },
   14: {
@@ -183,6 +193,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["boda", "baldwin"] }, {
       ["A picture of God's final victory", "Others read the battle, the split mountain and the flowing waters as rich prophetic pictures, drawn from earlier Scripture, of God's complete victory and the new creation described in Revelation 21-22.", ["baldwin", "boda"]],
     ],
     common: "All agree the chapter promises that the LORD will defeat every enemy, reign over all the earth and make everything holy.",
+    bg: [["Holy to the LORD", "In Zechariah's final picture, even the bells on the horses and the cooking pots in Jerusalem will be inscribed \"Holy to the LORD\" (14:20-21), words once engraved only on the high priest's turban (Exodus 28:36). Everything ordinary will be set apart for God.", "good", ["boda", "baldwin"]]],
     refs: [["ACT.1", "Acts 1:11-12", "He will come back the same way"], ["EZK.47", "Ezekiel 47:1-12", "The river from the temple"], ["REV.22", "Revelation 22:1-5", "No night there; the river of life"], ["EXO.28", "Exodus 28:36", "Holy to the LORD"], ["DEU.6", "Deuteronomy 6:4", "The LORD is one"]],
   },
 });

@@ -30,6 +30,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["waltke", "baker"] }, {
       ["2:11", "He would be spokesman to this people", "They want a preacher who tells them what they like."],
       ["2:13", "The breaker goes up before them... the LORD at their head", "God promises to gather His scattered people. One who breaks open the way will go before them, with the LORD at their head."],
     ],
+    bg: [["Land grabbing", "\"They covet fields and then seize them, and houses, and take them away\" (2:2). The Law meant each family to keep its land forever (Leviticus 25:23). The rich were taking it from the poor.", "good", ["waltke", "smithR"]]],
     refs: [["EXO.20", "Exodus 20:17", "Do not covet"], ["1KI.21", "1 Kings 21", "Naboth's vineyard"], ["2TI.4", "2 Timothy 4:3", "Teachers to suit their own desires"], ["JHN.10", "John 10:3-4", "The shepherd goes before the sheep"]],
   },
   3: {
@@ -41,6 +42,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["waltke", "baker"] }, {
       ["3:11", "Her priests instruct for a price... yet they lean on the LORD", "Leaders judge for bribes, priests teach for pay, prophets tell fortunes for money, and they still claim the LORD is with them."],
       ["3:12", "Zion will be plowed as a field", "Quoted a century later in Jeremiah 26:18."],
     ],
+    bg: [["Zion plowed like a field", "\"Zion will be plowed as a field, Jerusalem will become a heap of ruins\" (3:12). A century later, elders remembered these words and saved Jeremiah's life, because King Hezekiah had repented when Micah spoke them (Jeremiah 26:18-19).", "strong", ["waltke", "baker"]]],
     refs: [["EZK.34", "Ezekiel 34:2-4", "Shepherds who feed themselves"], ["JER.26", "Jeremiah 26:18-19", "Hezekiah heeded Micah"], ["ACT.1", "Acts 1:8", "You will receive power when the Spirit comes"]],
   },
   4: {
@@ -58,6 +60,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["waltke", "baker"] }, {
       ["Both drew on an older song", "Others suggest both prophets used an earlier, well-known oracle from worship at the temple.", ["waltke", "baker"]],
     ],
     common: "Either way, two prophets independently stood behind the same promise of a world at peace under God's teaching.",
+    bg: [["Swords into plowshares", "Micah 4:1-3 and Isaiah 2:2-4 share almost the same words: nations streaming to God's mountain and beating swords into plowshares. Micah adds, \"Each of them will sit under his vine and under his fig tree, with no one to make them afraid\" (4:4).", "strong", ["waltke", "smithR"]]],
     refs: [["ISA.2", "Isaiah 2:2-4", "The same prophecy"], ["JOL.3", "Joel 3:10", "The reverse: plowshares into swords"], ["ZEC.3", "Zechariah 3:10", "Under his vine and fig tree"]],
   },
   6: {
@@ -81,6 +84,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["waltke", "baker"] }, {
       ["7:18", "Who is a God like You, who pardons iniquity?", "A play on Micah's own name, \"Who is like the LORD?\""],
       ["7:19", "You will cast all their sins into the depths of the sea", "God will have compassion again, tread our sins underfoot, and throw them into the depths of the sea, gone for good."],
     ],
+    bg: [["Sins cast into the sea", "\"You will cast all their sins into the depths of the sea\" (7:19). Jews still read 7:18-20 at the New Year in a custom called Tashlich, casting bread into flowing water as a picture of sins carried away.", "strong", ["waltke", "baker"]]],
     refs: [["MAT.10", "Matthew 10:35-36", "Jesus quotes Micah 7:6"], ["PSA.103", "Psalm 103:12", "As far as east from west"], ["EXO.15", "Exodus 15:11", "Who is like You, O LORD?"], ["LUK.1", "Luke 1:72-73", "The oath to Abraham remembered"]],
   },
 });
