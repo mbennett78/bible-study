@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 1:32 PM Central
-**Current version:** v391 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 1:33 PM Central
+**Current version:** v392 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 2:05 PM CT: Journal brought up to the best journaling apps. Search your journal (every word you type must match: entries, prayers, thanks and Bible thoughts). New "Use a guide" beside "Need an idea?": SOAP (Scripture, Observation, Application, Prayer), ACTS prayer, Three good things, and Looking back on my week; it adds the headings and you write under each. The single final Supabase update is ready for whenever Buddy is done: supabase-final-update.md (5 steps, about 10 minutes), with supabase-setup.sql (now also family duels; tested on a real database, including that nobody can see or change someone else's duel score), study-partner-function.ts and family-admin-function.ts.
 - Thu Nov 26, 1:15 PM CT: Fishing is more true to life. On the cast the rod goes back over his head and forward, and the bobber and hook fly out on a high arc with the line paying out behind them, then land with a splash. The hook sinks under the bobber and everything drifts gently on the water. On a bite the line pulls tight and the bobber is tugged under; reeling in, the fish comes up out of the water on the hook with a splash. When he lands one he stands up first, holds it up high and cheers, then drops it in his bucket, sits back down and casts again. He also never hops straight up from sitting anywhere else: he stands up first, then jumps, cheers, dances or jumps rope. Clip: pictures-fix/buddy-fishing-v3.gif.
 - Thu Nov 26, 12:55 PM CT: Family duels in Bible Spin. "Family duel" challenges someone in the family to the same 10 questions (one from every category plus three more, no helps) on their own phone or iPad, whenever it suits them. Whoever gets more right wins, and speed breaks a tie; the result shows both rows of answers. A "2 waiting" note on the Bible Spin home screen shows a challenge is waiting (no notifications). People join by choice, only their first name is listed, and a duel's scores are seen only by its two players; each can fill in only their own score, once. A score made offline is sent next time. It switches on with the final Supabase update (tools/duels.sql, folded into the final file); until then it says duels are almost ready. Pictures: pictures-fix/duel-your-turn.png and duel-result.png.
 - Thu Nov 26, 12:25 PM CT: Bible Spin compared with Trivia Crack and upgraded. New on the Bible Spin home screen: a daily treasure chest (more coins for days in a row), three daily missions that change every day, and player levels from Seeker to Wise elder. Under every answer, "Something wrong with this question?" sets that question aside for good. 118 new questions, each checked against its verse, for the thinnest categories (Arts & Music 38 to 79, History 70 to 97, STEM 86 to 103, Places 94 to 113, Books & Verses 176 to 190; 1,145 in all). Bible Spin and Buddy's calendar now also open offline the very first time. Side-by-side write-up: https://claude.ai/artifact/YRxuwc3a8JshuxrxFHigFy. Pictures: pictures-fix/bible-spin-daily.png and bible-spin-report.png.
@@ -144,7 +145,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Looks | 9 | |
 | Readability for every age (contrast, text size, screen readers) | 10 | Fixed tonight: helper text, dark mode, High contrast, Largest text on small phones, keyboard focus ring |
 | Ease of use and menus | 9 | |
-| Notes, journal and printing | 9 | |
+| Notes, journal and printing | 9 | Journal search and journaling guides (SOAP, ACTS) added Nov 26; the family try-out will show if anything else is missed |
 | Buddy | 9 | Melissa's polish notes, then one study-partner update |
 | Games and Quick check | 9 | |
 | Works offline and keeps everyone's place | 10 | |
@@ -158,7 +159,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 |---|---|---|
 | Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
-| Redeploy the study-partner function once, when Buddy is perfected | Later, one time | Melissa's plan (Thu Nov 26): one Supabase update after all of Buddy's changes are done. I'll hand over one final file with clear steps then. It will also include the family duels SQL (one paste). |
+| Redeploy the study-partner function once, when Buddy is perfected | Later, one time | Melissa's plan (Thu Nov 26): one Supabase update after all of Buddy's changes are done. The file is ready: supabase-final-update.md (Buddy's helper, the organizer function and family duels, about 10 minutes). |
 | Final OK on the seasonal backgrounds (all 13, preview sent Wed Nov 25) | Yes | Notes by Mon Nov 30 keep Dec 4; sooner is welcome. |
 | Close pull request #1 on GitHub (handouts) | No, tidy-up | Superseded: every change in it is already live (it went out with v245 and later), and the branch no longer merges cleanly. Closing it loses nothing. On GitHub: Pull requests, #1, Close pull request. Or say "close it" and I will. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
