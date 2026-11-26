@@ -71,7 +71,8 @@ try {
     check(`${dev}: "Bible only" hides the study notes and tools`, await page.$eval("#studyNotes", (n) => getComputedStyle(n).display === "none") && await page.$eval(".study-tools", (n) => getComputedStyle(n).display === "none") && await page.$eval("#reader", (n) => getComputedStyle(n).display !== "none"));
     await page.click('[data-readmode="study"]');
     check(`${dev}: "Study Bible" brings them back`, await page.$eval(".study-tools", (n) => getComputedStyle(n).display !== "none"));
-    check(`${dev}: no stuck zoom (zoom is held at the screen's size)`, /maximum-scale=1/.test(await page.getAttribute('meta[name="viewport"]', "content")));
+    // Pinch zoom is allowed everywhere (for older eyes); the page starts at the screen's own size.
+    check(`${dev}: pinch zoom allowed, page starts at the screen's size`, ((v) => /initial-scale=1/.test(v) && !/maximum-scale|user-scalable=no/.test(v))(await page.getAttribute('meta[name="viewport"]', "content")));
     check(`${dev}: the tab says Bible study`, /Bible study/.test(await page.textContent(".tabbar")) && !/My path/.test(await page.textContent(".tabbar")));
     check(`${dev}: no page errors`, !errors.length, errors.join(" | "));
     await ctx.close();
