@@ -86,7 +86,8 @@ try {
     await page.clock.runFor(9000); await page.waitForTimeout(200);
     const before = await page.$$eval("#chatLog .chat-row.them", (r) => r.length);
     await page.fill("#partnerQ", "Can you jump rope?");
-    await page.click("#partnerGo"); await page.clock.runFor(400); await page.waitForTimeout(100);
+    // If he was sitting he stands up first (about half a second), then starts.
+    await page.click("#partnerGo"); await page.clock.runFor(700); await page.waitForTimeout(100);
     check(`${tag}: asked to jump rope, he does it`, await page.$eval(".buddy", (el) => el.classList.contains("roping")));
     const side = await page.$eval("#chatSheet", (d) => d.classList.contains("side"));
     const lastLine = () => page.$eval("#chatLog .chat-row.them:last-child", (r) => r.textContent);

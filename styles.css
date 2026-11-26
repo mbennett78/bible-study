@@ -3562,3 +3562,52 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .q-dscore b { grid-row: 1 / span 2; overflow: hidden; text-overflow: ellipsis; } .q-dscore small { opacity: .9; }
 .q-dmarks { display: flex; gap: 3px; flex-wrap: wrap; } .q-dmarks i { font-style: normal; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; font-size: .75rem; font-weight: 900; }
 .q-dmarks i.y { background: #5cc46b; color: #fff; } .q-dmarks i.n { background: rgb(255 255 255 / .18); }
+/* Fishing, more true to life (v390). The cast: the rod goes back over his head, then forward,
+   and the bobber and hook fly out on a high arc, paying out line behind them, and land with a
+   splash. Then the line settles, the hook sinks below the bobber, and everything drifts a little
+   on the water. On a bite the line pulls tight and the bobber is tugged under. Reeling, the fish
+   comes up out of the water on the hook with a splash. A catch: he stands up first, holds it up
+   high, cheers, then drops it in his bucket and sits back down. */
+.buddy-castfly { display: none; }
+.buddy-castline { fill: none; stroke: var(--muted); stroke-width: .6; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.buddy.fishing .buddy-linehook { opacity: .72; } /* under the water */
+.buddy.bite .buddy-biteline { stroke-width: .7; }
+.buddy.bite .buddy-pole .buddy-bobber { translate: 0 2.6px; }
+.buddy-catch { translate: 1.4px 0; }
+.buddy-catchline { transform-origin: 58px 25.6px; }
+.buddy.landed .buddy-pole, .buddy.landed .buddy-catch { transform: rotate(-24deg); }
+.buddy.landed .buddy-arm-l { transform: rotate(-150deg); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite):not(.tangle) .buddy-castfly { display: inline; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-castline { animation: buddy-castline 1.8s linear both; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-flytackle { animation: buddy-fly 1.8s linear both; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-tackle { animation: buddy-tackle-in 1.8s linear both, buddy-drift 6s ease-in-out 1.8s infinite alternate; transform-origin: 58px 19px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-linehook { animation: buddy-sink 1.6s ease-out 1.75s both, buddy-bob 1.8s ease-in-out 3.4s infinite; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-splash { animation-delay: 1.7s; }
+  :root:not([data-graphics="simple"]) .buddy.bite .buddy-pole .buddy-bobber { animation: buddy-dunk .45s ease-in-out infinite alternate; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.reeling:not(.landed) .buddy-splash { display: inline; animation: buddy-splash .8s ease-out 2; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-fish { animation: buddy-fish-rise 2.6s ease-out both, buddy-fish-wiggle .16s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-catchline { animation: buddy-catchline 2.6s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.landed .buddy-arm-l, :root:not([data-graphics="simple"]) .buddy.landed .buddy-reel-handle { animation: none; }
+  :root:not([data-graphics="simple"]) .buddy.landed :is(.buddy-pole, .buddy-catch) { transition: transform .4s ease-out; }
+  :root:not([data-graphics="simple"]) .buddy.rising .buddy-body { animation: buddy-rise .5s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.rising .buddy-legs-stand { animation: buddy-rise-legs .5s ease-out both; transform-origin: 26px 54px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.settling .buddy-body { animation: buddy-settle .45s ease-in both; }
+}
+@keyframes buddy-fly {
+  0%, 54% { translate: -3px -38.6px; opacity: 0; } 55% { translate: -3px -38.6px; opacity: 1; }
+  60% { translate: .1px -43.5px; } 65% { translate: 2.4px -45.6px; } 70% { translate: 4px -44.9px; } 75% { translate: 4.8px -41.5px; }
+  80% { translate: 4.7px -35.2px; } 85% { translate: 3.9px -26.3px; } 90% { translate: 2.4px -14.5px; } 95% { translate: 0 0; opacity: 1; } 96%, 100% { translate: 0 0; opacity: 0; }
+}
+@keyframes buddy-castline { 0%, 55% { stroke-dashoffset: 100; opacity: 1; } 95% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes buddy-tackle-in { 0%, 95% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes buddy-drift { from { rotate: -1.4deg; } to { rotate: 1.4deg; } }
+@keyframes buddy-sink { from { translate: 0 -3.4px; opacity: .2; } to { translate: 0 0; opacity: 1; } }
+@keyframes buddy-dunk { from { translate: 0 2.2px; opacity: .8; } to { translate: 0 3.8px; opacity: .45; } }
+@keyframes buddy-fish-rise { 0% { translate: 0 35px; opacity: .35; } 18% { opacity: .5; } 30% { opacity: 1; } 100% { translate: 0 0; opacity: 1; } }
+@keyframes buddy-catchline { from { transform: scaleY(8.3); } to { transform: scaleY(1); } }
+@keyframes buddy-rise { 0% { transform: translateY(14px); } 70% { transform: translateY(-1px); } 100% { transform: translateY(0); } }
+@keyframes buddy-rise-legs { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+@keyframes buddy-settle { from { transform: translateY(0); } to { transform: translateY(14px); } }
+.buddy-pole .buddy-biteline { stroke: var(--muted); stroke-width: .7; }
+.buddy.fishing.cheering:not(.capped) .buddy-cap { display: none; } /* his fishing hat or bare head, not a ball cap, when he lands one */
