@@ -247,3 +247,35 @@ export async function helperStatus() {
   const r = await askHelper({ status: true });
   return r && r.status ? r.status : null;
 }
+
+// Family duels in Bible Spin (tables duel_players and duels). Only people who choose to play
+// are listed, with just their first name; a duel's two players are the only ones who can see
+// it, and each can only fill in their own score. Every call answers { error } instead of
+// throwing: "setup" when the tables aren't in Supabase yet, "offline", "signin" or "busy".
+async function duelCall(fn) {
+  if (!authEnabled) return { error: "signin" };
+  try {
+    const c = await sb();
+    const { data: s } = await c.auth.getSession();
+    const uid = s.session?.user?.id;
+    if (!uid) return { error: "signin" };
+    const { data, error } = await fn(c, uid);
+    if (!error) return { data, uid };
+    const m = String(error.message || error.code || "");
+    return { error: /relation|does not exist|schema cache|PGRST20[05]|42P01/i.test(m) ? "setup" : /fetch|network/i.test(m) ? "offline" : "busy" };
+  } catch { return { error: "offline" }; }
+}
+export const duels = {
+  // Everyone who has joined (their first names), plus whether I have.
+  players: () => duelCall((c) => c.from("duel_players").select("user_id, name").order("name")),
+  join: (name) => duelCall((c, uid) => c.from("duel_players").upsert({ user_id: uid, name: String(name).slice(0, 40), updated_at: new Date().toISOString() })),
+  leave: () => duelCall((c, uid) => c.from("duel_players").delete().eq("user_id", uid)),
+  // My duels (the database only returns the ones I'm in), newest first.
+  list: () => duelCall((c) => c.from("duels").select("*").order("created_at", { ascending: false }).limit(30)),
+  create: (row) => duelCall((c, uid) => c.from("duels").insert({ ...row, from_id: uid }).select().single()),
+  // My own score only: the database refuses a change to the other player's.
+  score: (duel, uid, score, marks) => duelCall((c) => c.from("duels").update(duel.from_id === uid
+    ? { from_score: score, from_marks: marks, ...(duel.to_score != null ? { finished_at: new Date().toISOString() } : {}) }
+    : { to_score: score, to_marks: marks, ...(duel.from_score != null ? { finished_at: new Date().toISOString() } : {}) }).eq("id", duel.id)),
+  remove: (id) => duelCall((c) => c.from("duels").delete().eq("id", id)),
+};

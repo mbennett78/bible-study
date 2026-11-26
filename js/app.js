@@ -25,7 +25,7 @@ import { nextPrompt } from "./prompts.js";
 import { openVersePic } from "./versepic.js";
 import { openHeart, onThisDay } from "./heart.js";
 import { openInk, inkSvg, inkPng } from "./ink.js";
-import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus } from "./auth.js";
+import { authEnabled, isOrganizer, familyAdmin, currentUser, signIn, emailSignInLink, verifyEmailCode, changePassword, changeEmail, setMyName, signOut, onSignedOut, linkArrival, getFamilyKey, setFamilyKey, saveBackup, loadBackup, askHelper, helperStatus, duels } from "./auth.js";
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -1548,6 +1548,8 @@ const quest = createQuest({
   lookColors: () => ["#ffcf3f", "#ff7a59", "#5cc46b", "#3d8bb0", "#8e6bb5"],
   practice: () => game.open(),
   buddyName: () => buddyName(),
+  // Family duels: only when the family signs in (each person has their own account).
+  duels: authEnabled ? duels : null,
   // A win at trivia: he can hardly contain himself (once the game window closes).
   onWin: (mode) => buddyAfterDialogs(() => {
     if (mode === "buddy") buddyTogether();

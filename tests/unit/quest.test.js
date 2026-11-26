@@ -126,3 +126,20 @@ test("levels, daily missions, the chest and reported questions", async () => {
   const all = qf("people"), skip = all.slice(0, all.length - 1).map((q) => q.id);
   assert.equal(pick("people", [], () => 0, skip).id, all.at(-1).id);
 });
+
+test("family duels: fair questions, points and who won", async () => {
+  const { duelQuestions, duelPoints, duelView, DUEL_QS, categoryOf: cat } = await import("../../js/quest.js");
+  const { TRIVIA } = await import("../../js/trivia-bank.js");
+  let s = 1; const rand = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const ids = duelQuestions(rand);
+  assert.equal(ids.length, DUEL_QS); assert.equal(new Set(ids).size, DUEL_QS);
+  const cats = new Set(ids.map((id) => cat(TRIVIA.find((q) => q.id === id)).id));
+  assert.equal(cats.size, 7, "one from every category");
+  assert.ok(!duelQuestions(rand, [ids[0]]).includes(ids[0]), "a reported question is left out");
+  assert.equal(duelPoints(false, 9000, 20000), 0); assert.equal(duelPoints(true, 20000, 20000), 20); assert.equal(duelPoints(true, 0, 20000), 10);
+  const d = { id: "x", from_id: "a", to_id: "b", from_name: "Dad", to_name: "Mel", from_score: 120, from_marks: "1111110000", to_score: null };
+  assert.equal(duelView(d, "b").state, "play"); assert.equal(duelView(d, "a").state, "waiting"); assert.equal(duelView(d, "b").them, "Dad");
+  const done = { ...d, to_score: 125, to_marks: "1111110000" };
+  assert.equal(duelView(done, "b").result, "win"); assert.equal(duelView(done, "a").result, "lose"); assert.equal(duelView(done, "a").myRight, 6);
+  assert.equal(duelView({ ...done, to_score: 120 }, "a").result, "tie");
+});

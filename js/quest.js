@@ -106,6 +106,32 @@ export function missionsFor(day) {
 }
 // The daily treasure chest: 20 to 50 coins, plus 10 for each day in a row (up to a week).
 export function chestCoins(daysInRow, rand = Math.random) { return 20 + Math.floor(rand() * 4) * 10 + Math.min(7, Math.max(1, daysInRow)) * 10; }
+// Family duels: two people on their own devices play the same 10 questions in the same order:
+// one from every category, plus three more. No helps, so it's fair. A right answer scores 10,
+// plus up to 10 for speed, so a tie on right answers goes to the quicker player.
+export const DUEL_QS = 10;
+export function duelQuestions(rand = Math.random, reported = []) {
+  const cats = CATEGORIES.map((c) => c.id);
+  while (cats.length < DUEL_QS) cats.push(CATEGORIES[Math.floor(rand() * CATEGORIES.length)].id);
+  for (let i = cats.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [cats[i], cats[j]] = [cats[j], cats[i]]; }
+  const ids = [];
+  for (const c of cats) {
+    const pool = questionsFor(c).filter((q) => !reported.includes(q.id) && !ids.includes(q.id));
+    ids.push(pool[Math.floor(rand() * pool.length)].id);
+  }
+  return ids;
+}
+export const duelPoints = (right, msLeft, totalMs) => (right ? 10 + Math.round(10 * Math.max(0, Math.min(1, msLeft / totalMs))) : 0);
+// One duel as I see it: whose turn, and who won once both have played.
+export function duelView(d, uid) {
+  const me = d.from_id === uid ? "from" : "to", them = me === "from" ? "to" : "from";
+  const mine = d[`${me}_score`], theirs = d[`${them}_score`];
+  const rights = (s) => (s || "").split("").filter((c) => c === "1").length;
+  const v = { id: d.id, them: d[`${them}_name`], challenger: me === "from", mine, theirs, myRight: rights(d[`${me}_marks`]), theirRight: rights(d[`${them}_marks`]), myMarks: d[`${me}_marks`] || "", theirMarks: d[`${them}_marks`] || "" };
+  v.state = mine == null ? "play" : theirs == null ? "waiting" : "done";
+  if (v.state === "done") v.result = mine > theirs ? "win" : mine < theirs ? "lose" : "tie";
+  return v;
+}
 // Coins for a right answer: 10, plus up to 10 for speed, plus a little for a streak.
 export function coinsFor(msLeft, totalMs, streak) {
   const speed = Math.round(10 * Math.max(0, Math.min(1, msLeft / totalMs)));
@@ -215,7 +241,7 @@ const BUDDY_TEASE = ["Phew, my turn!", "Tricky one!", "I'd have guessed that too
 const lampHtml = (p) => `<span class="q-lamp${(p.lamp || 0) >= LAMP_FULL ? " full" : ""}" title="Fill the lamp to choose a jewel" aria-label="Lamp ${p.lamp || 0} of ${LAMP_FULL}">🪔${Array.from({ length: LAMP_FULL }, (_, i) => `<b class="${i < (p.lamp || 0) ? "on" : ""}"></b>`).join("")}</span>`;
 
 /* ---------- The game window ---------- */
-export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy", onWin, onBuddyWin = null }) {
+export function createQuest({ store, esc, lively, lookColors, myName, practice, buddyName = () => "Buddy", onWin, onBuddyWin = null, duels = null }) {
   const B = () => buddyName(); // the name each person gave their study buddy (plain text)
   const BH = () => esc(buddyName()); // the same, ready for HTML
   const dlg = document.createElement("dialog");
@@ -287,10 +313,13 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <button class="q-big q-solo" data-mode="solo"><span>🎯</span><b>Play solo</b><small>Three hearts. How many jewels can you win?</small></button>
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
       <button class="q-big q-buddy" data-mode="buddy">${buddyFace()}<b>Challenge ${BH()}</b><small>He plays fair, so you can beat him!</small></button>
+      ${duels ? `<button class="q-big q-duel" data-duel><span>⚔️</span><b>Family duel${m.duelTurn ? ` <i class="q-due">${m.duelTurn} waiting</i>` : ""}</b><small>Same questions, each on your own device</small></button>` : ""}
       <div class="q-foot"><button class="q-link" data-badges>🏅 My badges (${earned} of ${QUEST_BADGES.length}) · ${m.won} win${m.won === 1 ? "" : "s"}</button>
       ${practice ? `<button class="q-link" data-practice>📖 Practice one part of the Bible</button>` : ""}
       <label class="q-link"><input type="checkbox" data-sound ${m.sound ? "checked" : ""}> Sounds</label></div></div>`);
     dlg.querySelectorAll("[data-mode]").forEach((b) => b.onclick = () => setupMode(b.dataset.mode));
+    dlg.querySelector("[data-duel]")?.addEventListener("click", duelHome);
+    if (duels) refreshDuelCount();
     dlg.querySelector("[data-badges]").onclick = badges;
     dlg.querySelector("[data-chest]")?.addEventListener("click", (e) => {
       const m2 = mine(), row = m2.chestDay === dayKey(Date.now() - 864e5) ? (m2.chestRow || 0) + 1 : 1, got = chestCoins(row);
@@ -530,6 +559,156 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <button class="q-btn" data-next>Back to the game</button></div>`);
     if (got === BONUS_QS && lively()) confetti(dlg, ["#f4d35e", "#ffe27a", ...lookColors()], 70);
     dlg.querySelector("[data-next]").onclick = then;
+  }
+
+  /* Family duels: challenge someone in the family to the same 10 questions on their own device */
+  const DUEL_MSG = {
+    setup: "Family duels are almost ready. They switch on with the last Supabase update.",
+    offline: "Family duels need the internet. Try again when you're connected.",
+    signin: "Family duels need you to be signed in.",
+    busy: "Couldn't reach the family duels just now. Please try again in a minute.",
+  };
+  // How many duels are waiting for me, kept so the home screen can show it right away.
+  async function refreshDuelCount() {
+    const r = await duels.list();
+    if (r.error) return;
+    const n = r.data.filter((d) => duelView(d, r.uid).state === "play").length;
+    if (n !== (mine().duelTurn || 0)) save({ duelTurn: n });
+    const b = dlg.querySelector("[data-duel] b");
+    if (b) b.innerHTML = `Family duel${n ? ` <i class="q-due">${n} waiting</i>` : ""}`;
+  }
+  // A finished duel that couldn't be sent (no internet) waits here and goes next time.
+  async function sendPendingDuel() {
+    const p = mine().duelPending;
+    if (!p) return null;
+    const r = p.duel ? await duels.score(p.duel, p.uid, p.score, p.marks) : await duels.create(p.row);
+    if (!r.error) save({ duelPending: null });
+    return r.error || null;
+  }
+  async function duelHome() {
+    stop(); game = null;
+    paint(`<div class="q-duels"><h2>⚔️ Family duel</h2><p class="q-tag" role="status">Checking for challenges…</p></div>`);
+    const shown = dlg.querySelector(".q-duels");
+    const pendingErr = await sendPendingDuel();
+    const [pl, ls] = await Promise.all([duels.players(), duels.list()]);
+    if (!dlg.contains(shown)) return; // they moved on while it loaded
+    const err = pendingErr || pl.error || ls.error;
+    if (err) {
+      paint(`<div class="q-duels"><h2>⚔️ Family duel</h2><p class="q-tag">${esc(DUEL_MSG[err] || DUEL_MSG.busy)}</p>
+        ${err === "setup" ? "" : `<button class="q-btn" data-retry>Try again</button>`}<button class="q-link" data-home>Back to Bible Spin</button></div>`);
+      dlg.querySelector("[data-retry]")?.addEventListener("click", duelHome);
+      dlg.querySelector("[data-home]").onclick = home;
+      return;
+    }
+    const uid = ls.uid, joined = pl.data.some((x) => x.user_id === uid);
+    if (!joined) {
+      paint(`<div class="q-duels"><h2>⚔️ Family duel</h2>
+        <p class="q-tag">Play the same 10 questions as someone in the family, each on your own phone or iPad, whenever it suits you. Whoever gets more right wins, and speed breaks a tie.</p>
+        <p class="q-small">Only your first name and your duel scores are shared, and a duel's scores only with the person you played.</p>
+        <button class="q-btn" data-join>Join as ${esc(myName())}</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
+      dlg.querySelector("[data-join]").onclick = async (e) => { e.currentTarget.disabled = true; const r = await duels.join(myName()); if (r.error) { e.currentTarget.disabled = false; e.currentTarget.insertAdjacentHTML("afterend", `<p class="q-small" role="alert">${esc(DUEL_MSG[r.error] || DUEL_MSG.busy)}</p>`); } else duelHome(); };
+      dlg.querySelector("[data-home]").onclick = home;
+      return;
+    }
+    // Keep my name current if it changed in Settings.
+    if (pl.data.find((x) => x.user_id === uid)?.name !== myName()) duels.join(myName());
+    const all = ls.data.map((d) => ({ d, v: duelView(d, uid) }));
+    const turn = all.filter((x) => x.v.state === "play"), waiting = all.filter((x) => x.v.state === "waiting"), done = all.filter((x) => x.v.state === "done").slice(0, 8);
+    save({ duelTurn: turn.length });
+    const others = pl.data.filter((x) => x.user_id !== uid);
+    const resultLine = (v) => v.result === "win" ? "You won! 🏆" : v.result === "lose" ? `${esc(v.them)} won` : "A tie!";
+    paint(`<div class="q-duels"><h2>⚔️ Family duel</h2>
+      ${turn.length ? `<h3>Your turn</h3><ul class="q-dlist">${turn.map(({ v }) => `<li><span><b>${esc(v.them)}</b> challenged you</span><button class="q-dgo" data-play="${esc(v.id)}">Play</button></li>`).join("")}</ul>` : ""}
+      <h3>Challenge someone</h3>
+      ${others.length ? `<div class="q-dwho">${others.map((x) => `<button class="q-dname" data-vs="${esc(x.user_id)}">${esc(x.name)}</button>`).join("")}</div>`
+        : `<p class="q-small">Nobody else has joined yet. When someone in the family opens Family duel in Bible Spin and joins, their name shows here.</p>`}
+      ${waiting.length ? `<h3>Waiting for them</h3><ul class="q-dlist">${waiting.map(({ v }) => `<li><span>Waiting for <b>${esc(v.them)}</b> · you got ${v.myRight} of ${DUEL_QS}</span><button class="q-link" data-cancel="${esc(v.id)}">Cancel</button></li>`).join("")}</ul>` : ""}
+      ${done.length ? `<h3>Results</h3><ul class="q-dlist">${done.map(({ v }) => `<li class="q-d-${v.result}"><span>You ${v.myRight} · ${esc(v.them)} ${v.theirRight}</span><b>${resultLine(v)}</b><button class="q-link" data-see="${esc(v.id)}">See</button></li>`).join("")}</ul>` : ""}
+      <button class="q-link" data-home>Back to Bible Spin</button><button class="q-link q-small" data-leave>Leave family duels</button></div>`);
+    dlg.querySelector("[data-home]").onclick = home;
+    dlg.querySelectorAll("[data-play]").forEach((b) => b.onclick = () => { const d = ls.data.find((x) => x.id === b.dataset.play); duelPlay({ ids: d.questions, them: duelView(d, uid).them, duel: d, uid }); });
+    dlg.querySelectorAll("[data-vs]").forEach((b) => b.onclick = () => { const o = others.find((x) => x.user_id === b.dataset.vs); duelIntro(o, uid); });
+    dlg.querySelectorAll("[data-see]").forEach((b) => b.onclick = () => duelResult(duelView(ls.data.find((x) => x.id === b.dataset.see), uid)));
+    dlg.querySelectorAll("[data-cancel]").forEach((b) => b.onclick = async () => { b.disabled = true; await duels.remove(b.dataset.cancel); duelHome(); });
+    dlg.querySelector("[data-leave]").onclick = () => {
+      if (!confirm("Leave family duels? Your name comes off the list. You can join again any time.")) return;
+      duels.leave().then(() => { save({ duelTurn: 0 }); home(); });
+    };
+  }
+  function duelIntro(o, uid) {
+    paint(`<div class="q-duels q-dintro"><p class="q-bonus-star" aria-hidden="true">⚔️</p><h2>Challenge ${esc(o.name)}?</h2>
+      <p class="q-tag">${DUEL_QS} questions: one from every friend on the wheel, plus three more. No helps, so it's fair. ${esc(o.name)} gets the same questions on their own device.</p>
+      <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "", i)).join("")}</div>
+      <button class="q-btn" data-go>Start</button><button class="q-link" data-back>Back</button></div>`);
+    dlg.querySelector("[data-back]").onclick = duelHome;
+    dlg.querySelector("[data-go]").onclick = () => duelPlay({ ids: duelQuestions(Math.random, mine().reported || []), them: o.name, to: o.user_id, uid });
+  }
+  function duelPlay(ctx, n = 0, marks = "", score = 0) {
+    game = { mode: "duel", over: false };
+    const q = TRIVIA.find((x) => x.id === ctx.ids[n]);
+    if (!q) return duelPlay(ctx, n + 1, marks + "0", score); // a question that's since been removed counts as missed for both
+    const cat = categoryOf(q), order = q.choices.map((_, k) => k);
+    for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    paint(`<div class="q-ask" style="--cc:${cat.color}">
+      <div class="q-cat">${critter(cat, "big")}<div class="q-catname">${esc(cat.name)} <i class="q-who">with ${esc(cat.who)}</i></div><small>⚔️ vs ${esc(ctx.them)} · ${n + 1} of ${DUEL_QS}</small></div>
+      <div class="q-row">${candle()}<div class="q-card"><p>${esc(q.q)}</p></div></div>
+      <div class="q-choices">${order.map((k, i) => `<button class="q-choice" data-k="${k}" style="--d:${0.2 + i * 0.07}s"><span class="q-letter">${"ABCD"[i]}</span>${esc(q.choices[k])}</button>`).join("")}</div></div>`);
+    const total = CANDLE_SECS * 1000, deadline = Date.now() + total;
+    let done = false;
+    const wax = dlg.querySelector(".qc-wax"), flameBox = dlg.querySelector(".q-candle");
+    const answered = (k) => {
+      if (done) return; done = true; stop();
+      const right = k === q.a, pts = duelPoints(right, deadline - Date.now(), total);
+      dlg.querySelectorAll(".q-choice").forEach((b) => { b.disabled = true; if (+b.dataset.k === q.a) b.classList.add("right"); else if (+b.dataset.k === k) b.classList.add("wrong"); });
+      sound(right ? "right" : "wrong");
+      progress("answer10");
+      if (right) { addRight(); progress("right8"); progress(`cat-${cat.id}`); save({ coins: mine().coins + 10, earned: mine().earned + 10 }); }
+      later(() => (n + 1 < DUEL_QS ? duelPlay(ctx, n + 1, marks + (right ? "1" : "0"), score + pts) : duelDone(ctx, marks + (right ? "1" : "0"), score + pts)), 1200);
+    };
+    const burn = () => {
+      const left = Math.max(0, deadline - Date.now()), f = left / total;
+      wax.setAttribute("height", String(Math.max(2, 58 * f))); wax.setAttribute("y", String(26 + 58 * (1 - f)));
+      flameBox.style.setProperty("--fy", `${58 * (1 - f)}px`); flameBox.classList.toggle("low", left < 5000);
+      if (left <= 0) answered(null);
+    };
+    tick = setInterval(burn, 100); burn();
+    dlg.querySelectorAll(".q-choice").forEach((b) => b.onclick = () => answered(+b.dataset.k));
+  }
+  async function duelDone(ctx, marks, score) {
+    game.over = true;
+    const right = marks.split("").filter((c) => c === "1").length;
+    paint(`<div class="q-duels"><h2>${right} of ${DUEL_QS} right!</h2><p class="q-tag" role="status">Sending your score…</p></div>`);
+    const pending = ctx.duel ? { duel: ctx.duel, uid: ctx.uid, score, marks }
+      : { row: { to_id: ctx.to, from_name: myName(), to_name: ctx.them, questions: ctx.ids, from_score: score, from_marks: marks } };
+    save({ duelPending: pending, played: mine().played + 1 });
+    const err = await sendPendingDuel();
+    if (ctx.duel) {
+      const d = ctx.duel.from_id === ctx.uid ? { ...ctx.duel, from_score: score, from_marks: marks } : { ...ctx.duel, to_score: score, to_marks: marks };
+      const v = duelView(d, ctx.uid);
+      if (v.result === "win") { save({ won: mine().won + 1 }); onWin?.("duel"); }
+      save({ duelTurn: Math.max(0, (mine().duelTurn || 1) - 1) });
+      return duelResult(v, err);
+    }
+    paint(`<div class="q-duels q-dintro"><p class="q-bonus-star" aria-hidden="true">📨</p><h2>${right} of ${DUEL_QS} right!</h2>
+      <p class="q-tag">${err ? "No internet just now, so your score is saved here. It goes to " + esc(ctx.them) + " next time you open Family duel." : `Challenge sent! ${esc(ctx.them)} will see it next time they open Bible Spin.`}</p>
+      ${notes()}<button class="q-btn" data-again>Back to Family duel</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
+    sound("done");
+    dlg.querySelector("[data-again]").onclick = duelHome;
+    dlg.querySelector("[data-home]").onclick = home;
+  }
+  function duelResult(v, err = null) {
+    game = null;
+    const head = v.state !== "done" ? `Waiting for ${v.them}` : v.result === "win" ? `You beat ${v.them}!` : v.result === "lose" ? `${v.them} won this one!` : `A tie with ${v.them}!`;
+    const row = (marks) => Array.from({ length: DUEL_QS }, (_, i) => `<i class="${marks[i] === "1" ? "y" : "n"}" aria-hidden="true">${marks[i] === "1" ? "✓" : "✗"}</i>`).join("");
+    paint(`<div class="q-duels q-dresult"><span class="q-fb-icon">${v.result === "win" ? "🏆" : v.result === "lose" ? "🤝" : "⚔️"}</span><h2>${esc(head)}</h2>
+      ${v.state === "done" ? `<div class="q-dscore"><div><b>You</b><span class="q-dmarks" aria-label="You got ${v.myRight} of ${DUEL_QS}">${row(v.myMarks)}</span><small>${v.myRight} right · ${v.mine} points</small></div>
+        <div><b>${esc(v.them)}</b><span class="q-dmarks" aria-label="${esc(v.them)} got ${v.theirRight} of ${DUEL_QS}">${row(v.theirMarks)}</span><small>${v.theirRight} right · ${v.theirs} points</small></div></div>
+        ${v.myRight === v.theirRight && v.result !== "tie" ? `<p class="q-small">Same number right, so the quicker answers decided it.</p>` : ""}` : ""}
+      ${err ? `<p class="q-small" role="alert">No internet just now, so your score is saved here and goes next time you open Family duel.</p>` : ""}
+      ${notes()}<button class="q-btn" data-again>Back to Family duel</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
+    if (v.result === "win" && lively()) { confetti(dlg, lookColors()); sound("fanfare"); } else sound("done");
+    dlg.querySelector("[data-again]").onclick = duelHome;
+    dlg.querySelector("[data-home]").onclick = home;
   }
 
   function passTo() {

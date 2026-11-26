@@ -50,6 +50,7 @@ export const SUPA = "https://family-test.supabase.co"; // matches the app's cont
 export function fakeSupabase(people) {
   const calls = [];
   const backups = {};
+  const duelPlayers = [], duelRows = []; // family duels
   const session = (u) => ({ access_token: `tok-${u.id}`, token_type: "bearer", expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, refresh_token: `ref-${u.id}`, user: user(u) });
   const user = (u) => ({ id: u.id, email: u.email, aud: "authenticated", role: "authenticated", user_metadata: u.meta || {}, app_metadata: u.app || {} });
   const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*" };
@@ -92,6 +93,25 @@ export function fakeSupabase(people) {
       return json(200, backups[id] ? backups[id] : null);
     }
     if (url.pathname === "/rest/v1/family_settings") return json(200, null);
+    if (url.pathname === "/rest/v1/duel_players") {
+      const id = bearer(req);
+      if (m === "POST") { const i = duelPlayers.findIndex((x) => x.user_id === id); const row = { ...body, user_id: id }; if (i >= 0) duelPlayers[i] = row; else duelPlayers.push(row); return json(201, []); }
+      if (m === "DELETE") { const i = duelPlayers.findIndex((x) => x.user_id === id); if (i >= 0) duelPlayers.splice(i, 1); return json(200, []); }
+      return json(200, [...duelPlayers].sort((a, b) => a.name.localeCompare(b.name)));
+    }
+    if (url.pathname === "/rest/v1/duels") {
+      const id = bearer(req), rowId = (url.searchParams.get("id") || "").replace("eq.", "");
+      const d = duelRows.find((x) => x.id === rowId);
+      if (m === "POST") { const row = { id: `duel-${duelRows.length + 1}`, to_score: null, to_marks: null, finished_at: null, created_at: new Date(Date.now() + duelRows.length).toISOString(), ...body }; duelRows.push(row); return json(201, row); }
+      if (m === "PATCH") {
+        if (!d || ![d.from_id, d.to_id].includes(id)) return json(200, []);
+        const theirs = d.from_id === id ? ["to_score", "to_marks"] : ["from_score", "from_marks"];
+        if (theirs.some((k) => k in body)) return json(400, { code: "P0001", message: "Only the person can add their own score" });
+        Object.assign(d, body); return json(200, []);
+      }
+      if (m === "DELETE") { if (d && [d.from_id, d.to_id].includes(id)) duelRows.splice(duelRows.indexOf(d), 1); return json(200, []); }
+      return json(200, duelRows.filter((x) => [x.from_id, x.to_id].includes(id)).sort((a, b) => b.created_at.localeCompare(a.created_at)));
+    }
     if (url.pathname === "/functions/v1/family-admin") {
       const p = people.find((x) => x.id === bearer(req));
       if (!p || p.app?.role !== "organizer") return json(403, { error: "not_allowed" });
@@ -102,7 +122,7 @@ export function fakeSupabase(people) {
     if (url.pathname.startsWith("/functions/v1/")) return json(200, { status: { ok: true, warn: false, pct: 5, mine: 0, per_person: 100 } });
     return json(200, {});
   }
-  return { calls, backups, handle };
+  return { calls, backups, duelPlayers, duelRows, handle };
 }
 
 // A browser page with sign-in turned on and pretend Bible text.
