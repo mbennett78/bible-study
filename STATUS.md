@@ -174,6 +174,33 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 - B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
 - Reading margins: done Wed Nov 25 as a simple "Page width" choice (Narrow, Medium, Wide) in Settings > Reading and listening, instead of drag handles.
 
+## Family try-out fixes (Melissa, Thu Nov 26): must-haves for Dec 4
+
+| Code | Item | Status | Due |
+|---|---|---|---|
+| B-76 | Bible versions: every list matches (Read page and Settings), showing NASB plus every version the key really opens (NIV, KJV and others), each tested first | Done (Thu Nov 26, v395) | Thu Nov 26 |
+| B-77 | Four icon buttons above the passage: Setting the stage, Background, Cross-references, When and where (with the maps, then and now). They replace the big Setting the stage picture | In progress | Fri Nov 27 |
+| B-78 | Strong's, Sources, Verse by verse and the rest stay below the Scripture | In progress | Fri Nov 27 |
+| B-79 | Jump to another passage while keeping your place: several passages open at once, small tabs to step back, cross-references open beside your place instead of replacing it | Not started | Fri Nov 27 |
+| B-81 | Read aloud folds into one small bar (Play is still one tap; speed, sleep timer and Read to me sit under "More") | Not started | Fri Nov 27 |
+| B-82 | Plain explanations: what Verse by verse is and whose views it gives, and what the By the numbers figures mean | Not started | Fri Nov 27 |
+| B-83 | Where the deep-dive research lives, in plain words in the user guide (and the buttons point there) | Not started | Fri Nov 27 |
+| B-84 | Find a verse docked in the top toolbar, one tap from anywhere | Not started | Fri Nov 27 |
+| B-80 | An X or Back on every popup and resource, and always a way back to where you were | Not started | Sat Nov 28 |
+| B-85 | Notes and journal editor: every option inside it (bold, italic, highlight colors, headings, lists, pictures, icons, boxes); pictures and icons land in the note where the cursor is, so you see where they go | Not started | Sat Nov 28 |
+| B-86 | Keyboard: a clear button to put the keyboard away while writing; on iPad, how to make the small floating keyboard full size again | Not started | Sat Nov 28 |
+| B-87 | A clear Save entry button; a saved entry is the same one that prints, saves as PDF and goes to Google Docs | Not started | Sat Nov 28 |
+| B-88 | View notes without printing: all, by date, by Bible study and by passage; open, edit or delete any earlier note or journal entry | Not started | Sun Nov 29 |
+| B-89 | Journal entries can be included when printing notes (checked: Print all my notes leaves the journal out today) | Not started | Sun Nov 29 |
+| B-90 | Print in color or black and white, with a preview first | Not started | Sun Nov 29 |
+| B-91 | A small note icon on any passage (and verse) you've written a note about | Not started | Sun Nov 29 |
+| B-92 | Classic appearance 4: a calm scenic landscape, not animated | Not started | Mon Nov 30 |
+| B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Not started | Mon Nov 30 |
+| B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Not started | Mon Nov 30 |
+| B-95 | Sibling invite link: each sibling uses their own free API.Bible key (API.Bible's terms don't allow sharing a key) | Waiting on Melissa's choice | Mon Nov 30 |
+
+Can wait for a post-release Saturday update: more box styles for notes beyond the first set (B-96, Sat Dec 5). Everything else above is a must-have for Dec 4.
+
 ## Release plan: in progress and not started
 
 | Item | Status | Due |
@@ -217,7 +244,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
 | Gift packet and starter kit finished | Done for v244 (Wed Nov 25): packet rebuilt with the new guide tips; starter kit rebuilt from v244 with the invite-link key shortcut. One last rebuild after the Settings clean-up | Wed Dec 2 (moved up from Thu Dec 3) |
 | Print-friendly setup page and user guide saved to the project folder (final) | Done for v244 (Wed Nov 25): gift-packet.pdf (6 pages) and user-guide-large-print.pdf (4 pages). Rebuilt once more by Wed Dec 2 | Wed Dec 2 (moved up from Thu Dec 3) |
-| Family try-out: five people (iPhone, iPad with Pencil, Android, the oldest and the youngest reader) try ten things on their own devices; every problem fixed before release | Try-out sheet ready (Wed Nov 25); waiting on testers | Mon Nov 30 |
+| Family try-out: five people (iPhone, iPad with Pencil, Android, the oldest and the youngest reader) try ten things on their own devices; every problem fixed before release | First feedback in (Thu Nov 26): fixes B-76 to B-95 above; more testers welcome | Mon Nov 30 |
 | Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
 | Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |
 | Every Bible Spin mode played start to finish automatically; glitches fixed | Done (Tue Nov 24), rerun before release | Nov 24 |
@@ -238,6 +265,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 
 | Item | Status | When |
 |---|---|---|
+| B-96: more box and callout styles for notes, beyond the first set in B-85 (Melissa, Nov 26) | Not started | Sat Dec 5 |
 | Weekly updates on Saturday nights through February, starting with the remaining deep study notes; then one update on the last Saturday of each month (Buddy, graphics, ease of use and navigation, media, fact and source checks, study notes and summaries, the Pencil, new features, current design and technology, and a full check that everything still works) | Not started | Every Saturday from Dec 5; monthly from March |
 | Update notes never overwhelm: at most one short note a month from release on, swipe it away or turn it off, no "new version" banner, and Settings shows the updates from the last 30 days | Done Wed Nov 25 | Sat Feb 27 |
 | Switch to monthly updates once the deep notes are finished: graphics using newer Claude abilities, navigation, interface, printing, the kids' Bible, headings, looks | Not started | After the deep notes |
