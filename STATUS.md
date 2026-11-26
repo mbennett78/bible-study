@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 11:28 AM Central
-**Current version:** v386 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 12:07 PM Central
+**Current version:** v387 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 12:15 PM CT: Buddy has real feelings and special days. New faces (wow, excited, shocked, sad, crying, angry); moods that change by the day and hour (mostly happy, sometimes calm, a grumpy or sleepy hour now and then), and a kind word or "how are you?" cheers him up. Fishing is cuter and more real: a real hook under the bobber, a cast up over his head with a splash in the pond, the rod bends on a bite, he leans back and cranks his reel while the fish flips, a bucket (a tail pokes out after a catch), his floppy fishing hat, swinging feet while he waits; a tangled line or a fish that gets away gets a pout, then he perks right up. He trips now and then (cartwheels, heading out), lies back to look at the stars and moon in the evening, and prays. Special days on Central time: the Christmas countdown (Nov 30 to Dec 24), Christmas morning socks, a teddy bear (Dec 28) and a flashlight (Dec 29) at his grandparents', a party hat on New Year's Eve and confetti at midnight, Happy New Year on Jan 1, his birthday Aug 3 (8 in 2027: a present in the morning, a cake he blows out at 7:30 PM or the first visit after 6 PM), and a few fireworks on July 4. Your own birthday (optional, month and day only) is in setup and in Settings, under You; that day he says "Happy birthday, I love you." In Settings, "Look" is now "Bible Appearance". The organizer can now share the Bible key with a sibling's own copy from Family organizer tools. Clips: pictures-fix/buddy-special-days.gif and buddy-fishing-v2.gif.
 - Thu Nov 26, 11:30 AM CT: Buddy watches what he's doing and moves his whole body. His eyes and head follow the baseball, the football, the basketball, the juggling balls (with a glance out at you), the bowling ball to the pins, his line as he casts over his shoulder, the bobber, and the fish as he reels it in. Writing, he looks at his paper and looks up only when you talk to him. His arms move with the juggling balls; throwing and bowling have a wind-up, a crouch and a step; his knees bend for jumping, jump rope, dribbling and catching. Clip: pictures-fix/buddy-watches.gif.
 - Thu Nov 26, 11:15 AM CT: Buddy really uses his gear and lives his own life. Baseball lands in his mitt, he throws the football, bowls and knocks the pins down, and naps on a pillow. Reading, both hands hold the book and he turns pages. His face can be a soft smile or a serious, thinking look, and he smiles up at you when you talk to him. Fishing is a little story across visits: heading off with his pole, sitting waiting for a bite, or hooking one and reeling it in. He also just sits and waits (soft smile, glancing around) or thinks something over. Chat replies stay short and conversational unless it's a real question or research. Previews: pictures-fix/buddy-moving.gif and buddy-fishing.gif. The Supabase update still waits for the one final file.
 - Thu Nov 26, 11:10 AM CT: Buddy at his desk: the paper now lies on the table with his pencil on it, his other arm rests on the table, and he looks down at his work. Reading, he looks down at his book. When someone starts typing to him in the chat, he looks up at them; while he looks up an answer he looks back down. The Supabase update waits until Buddy is fully perfected, then one final file.
@@ -155,13 +156,14 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
 | Redeploy the study-partner function once, when Buddy is perfected | Later, one time | Melissa's plan (Thu Nov 26): one Supabase update after all of Buddy's changes are done. I'll hand over one final file with clear steps then. |
+| Final OK on the seasonal backgrounds (all 13, preview sent Wed Nov 25) | Yes | Notes by Mon Nov 30 keep Dec 4; sooner is welcome. |
+| Close pull request #1 on GitHub (handouts) | No, tidy-up | Superseded: every change in it is already live (it went out with v245 and later), and the branch no longer merges cleanly. Closing it loses nothing. On GitHub: Pull requests, #1, Close pull request. Or say "close it" and I will. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
 
 **Blockers:** none.
 
 ## Open questions
 
-- Seasonal changes: the preview of all 13 backgrounds is ready (sent Wed Nov 25). Melissa's notes by Mon Nov 30 keep Dec 4; sooner is welcome.
 - Apple Pencil: Scribble handwriting already works in notes and the Journal, and a Pencil tap highlights verses. Handwriting and drawing are done (Nov 25): ✏️ Draw or write and 📄 Handwriting page in every note and Journal entry. Circling directly on the Bible text is harder because the text reflows.
 - B-75 will also read current App Store reviews of the comparison apps (YouVersion, Logos, Olive Tree, Blue Letter Bible, Bible Gateway, Dwell, Day One) as well as their features.
 - Reading margins: done Wed Nov 25 as a simple "Page width" choice (Narrow, Medium, Wide) in Settings > Reading and listening, instead of drag handles.

@@ -6,7 +6,18 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 
-export const { chromium } = createRequire(import.meta.url)("playwright");
+const pw = createRequire(import.meta.url)("playwright");
+// Buddy's mood changes with the day and hour; tests keep him in a happy mood so they don't
+// depend on today's date (buddydays.mjs tests the moods themselves).
+export const chromium = {
+  ...pw.chromium,
+  launch: async (...a) => {
+    const browser = await pw.chromium.launch(...a);
+    const newContext = browser.newContext.bind(browser);
+    browser.newContext = async (...o) => { const ctx = await newContext(...o); await ctx.addInitScript(() => { window.__buddyMood ??= "happy"; }); return ctx; };
+    return browser;
+  },
+};
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webmanifest": "application/manifest+json" };
 

@@ -41,6 +41,7 @@ const defaults = {
   pathStarted: {},          // { chronological: iso }
   pathRead: {},
   name: "",                 // shown in greetings
+  birthday: "",             // "MM-DD" (no year), optional: Buddy wishes them a happy birthday
   pageWidth: "medium",      // narrow | medium | wide: how wide the Bible text runs on bigger screens
   uiScale: 100,             // 100 | 112 | 125: bigger labels and buttons
   contrast: false,          // high contrast words

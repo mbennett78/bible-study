@@ -32,7 +32,7 @@ export const GUIDE = [
     "He remembers where you left off and your study, knows the season (like Advent), and after a long study time he may suggest a stretch.",
     "Teach him things, like \"My favorite verse is John 3:16\" or \"Remember that I love horses.\" Ask \"What do you remember about me?\" any time, or say \"forget that.\" Only you can see what you teach him.",
     "In scary stories (like the lions' den) he gets a little scared. Ask \"Are you okay?\" and he feels better. The more time you spend with him, the more story props he finds, like Zacchaeus' tree.",
-    "In the way? Drag him up or down either edge. In Settings, under Buddy and look, you can rename him, make him quieter, or hide him.",
+    "In the way? Drag him up or down either edge. In Settings, under Buddy and Bible Appearance, you can rename him, make him quieter, or hide him.",
     "He tries hard to be accurate but can make mistakes. Check what he says against the Bible.",
   ] },
   { id: "journal", icon: "✍️", title: "Journal and notes", tips: [
@@ -63,7 +63,7 @@ export const GUIDE = [
     "The first time you tap a microphone button, your device asks to use the microphone. Tap Allow. It asks only once.",
     "Reading aloud and Buddy's voice need no permission. The app never asks for your location, contacts, camera or notifications.",
     "Settings opens with this guide at the top. Everything else sits in groups below it.",
-    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings. On an iPad, Page width there makes the lines narrower or wider. Pick a look under Buddy and look. The For kids look has storybook pictures that gently move, and they hold still if you choose Still pictures or your device has motion turned down.",
+    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings. On an iPad, Page width there makes the lines narrower or wider. Pick a look under Buddy and Bible Appearance. The For kids look has storybook pictures that gently move, and they hold still if you choose Still pictures or your device has motion turned down.",
     "There is nothing to buy, ever. The app never sells anything.",
   ] },
 ];

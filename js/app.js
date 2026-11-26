@@ -1312,7 +1312,7 @@ async function askBuiltIn(q) {
   const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
   buddy.thinking(true); clearTimeout(lookT); document.querySelectorAll(".buddy.lookup").forEach((x) => x.classList.remove("lookup")); chatPose("look", 60000);
   if (/\b(greek|hebrew|aramaic|scholar|commentar|historian|archaeolog|manuscript|translat|original language|strong'?s)\w*/i.test(q)) buddy.nerd(9000);
-  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName() });
+  const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName(), mood: buddy.feeling(), day: buddy.today() });
   wait.remove();
   buddy.thinking(false); chatAnswered();
   chatBusy = false; $("#partnerGo").disabled = false;
@@ -1447,6 +1447,8 @@ async function sendChat() {
     chatBubble("them", pickOne(["You're so welcome! 💕", "Anytime, friend! 😊", "Aww, you're welcome! I love helping you. 💕"]));
     return;
   }
+  // Asking how he's doing, or saying something kind, lifts his mood if he was grumpy or tired.
+  if (/how (are|r) (you|u)|how('re| are) you doing|how ya doing|how's (it going|your day)|you('re| are) (the best|awesome|so (sweet|nice|kind)|my (best )?friend)|good job|i like you|you're sweet/i.test(q)) buddy.cheerUp();
   // "Jump rope!", "Can you dance?": he just does it, right away (no need to look anything up).
   const cmd = buddyCommand(q, buddyName());
   if (cmd) {
@@ -1565,7 +1567,7 @@ function buddyOutLoud(text) {
   const plain = String(text).replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, "").trim();
   if (plain) sayAloud(plain, { voiceName: store.get("voiceName") || "", rate: Math.min(1.15, (store.get("voiceRate") || 1) * 1.05), pitch: 1.35 });
 }
-const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right"), sayOutLoud: (t) => buddyOutLoud(t), sleepy: () => (store.get("show") || {}).buddysleepy === true });
+const buddy = createBuddy({ onTap: openBuddyChat, defaultSide: () => ($("#mascot") && !$("#mascot").hidden ? "left" : "right"), sayOutLoud: (t) => buddyOutLoud(t), sleepy: () => (store.get("show") || {}).buddysleepy === true, userName: () => store.get("name") || "", userBirthday: () => store.get("birthday") || "" });
 // Scholarly things (Strong's, Greek and Hebrew, the scholars, sources): on go his nerd glasses,
 // now and then, never more than once every couple of minutes.
 let nerdAt = 0;
@@ -1817,6 +1819,14 @@ setInterval(() => {
       store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
       buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
     }
+    return;
+  }
+  // The day's greeting: the Christmas countdown, Christmas Eve, New Year's Eve.
+  const greet = buddy.greeting();
+  if (greet && buddy.visit(greet.line, 8000, false)) {
+    greet.said();
+    store.set("buddyVisitLog", { day: today, n: log.day === today ? log.n + 1 : 1 });
+    buddyVisitAt = Date.now() + 12 * 60e3 + Math.random() * 10 * 60e3;
     return;
   }
   if (Date.now() - (store.get("buddyLoveAt") || 0) > 3 * 864e5 && Math.random() > 0.88) {
@@ -2921,6 +2931,23 @@ $("#mascot").addEventListener("click", () => mascotSay(friendWhich === "donkey"
   ? pick(["Hee-haw! Keep going!", "Jesus rode a donkey into Jerusalem (John 12:14).", "Slow and steady wins the race."])
   : pick(["Baa! You're doing great.", "Sheep know their shepherd's voice (John 10:4).", "Tap the trivia card when you finish a chapter!"])));
 
+/* ---------- Their birthday (month and day only, optional) ---------- */
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function birthdayPicker(id) {
+  const [m, d] = (store.get("birthday") || "").split("-").map(Number);
+  return `<span class="bday-row"><select id="${id}M" aria-label="Birthday month"><option value="">Month</option>${MONTHS.map((n, i) => `<option value="${i + 1}"${m === i + 1 ? " selected" : ""}>${n}</option>`).join("")}</select><select id="${id}D" aria-label="Birthday day"><option value="">Day</option>${Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}"${d === i + 1 ? " selected" : ""}>${i + 1}</option>`).join("")}</select></span>`;
+}
+function wireBirthday(id, onSaved) {
+  const save = () => {
+    const m = Number($(`#${id}M`).value), d = Number($(`#${id}D`).value);
+    const v = m && d ? `${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}` : "";
+    if (!v && (m || d)) return; // wait for both
+    store.set("birthday", v);
+    onSaved?.(v);
+  };
+  $(`#${id}M`).addEventListener("change", save); $(`#${id}D`).addEventListener("change", save);
+}
+
 /* ---------- Settings ---------- */
 function initSettings() {
   const apiKey = $("#apiBibleKey"), esvKey = $("#esvKey"), size = $("#textSize"), theme = $("#theme"), sel = $("#nasbSelect");
@@ -2933,6 +2960,8 @@ function initSettings() {
   };
   $("#userName").addEventListener("change", saveName);
   $("#saveUserName").addEventListener("click", saveName);
+  $("#userBirthday").innerHTML = birthdayPicker("setBday");
+  wireBirthday("setBday", (v) => { $("#userNameMsg").textContent = v ? `Birthday saved ✓ ${buddyName()} will remember.` : "Birthday cleared ✓"; });
   renderLookCard();
   $("#modePace").checked = store.get("yearPace");
   $("#modePace").addEventListener("change", (e) => { store.set("yearPace", e.target.checked); renderMargin(); });
@@ -3000,8 +3029,13 @@ function initSettings() {
   esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); });
   $("#saveEsvKey").addEventListener("click", async () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); keyStatus((esvKey.value.trim() ? "ESV key saved ✓" : "ESV key removed.") + await saveForFamily()); });
   if (store.get("apiBibleKey")) keyStatus("Key saved on this device ✓");
-  // One device, one family: the invite link is only for a home without accounts.
-  if (authEnabled) $("#shareKeyBox").hidden = true;
+  // With family accounts, everyone here just signs in. The organizer can still share the key
+  // with a brother or sister who runs their own copy of the app (the starter kit): they paste
+  // the whole link into the Bible key box in their own app.
+  if (authEnabled) {
+    $("#shareKeyBox summary").textContent = "Share the Bible key with a sibling's own copy of the app";
+    $("#shareKeyBox > p").textContent = "For a brother or sister running their own copy (the starter kit), not for your family here, who just sign in. Make the link and send it by text or email. They paste the whole link into the API.Bible key box in their own app (in setup, or in Settings) and tap Save: the NASB and the other versions fill themselves in. They share your 5,000 reads a month, so send it only to family you trust.";
+  }
   const extrasNow = () => {
     const x = store.get("extraBibles") || [];
     $("#extraVersionsNow").textContent = x.length ? `On everyone's version switch: ${[(store.get("nasbLabel") || "NASB"), ...x.map((b) => b.label)].join(", ")}${store.get("esvKey") ? ", ESV" : ""}.` : "";
@@ -3128,7 +3162,7 @@ function initSettings() {
 let SETUP_STEPS = [
   { id: "welcome", title: "Welcome", done: () => Boolean(store.get("name").trim()) },
   { id: "password", title: "Your own password", done: () => Boolean(store.get("setup")?.password) },
-  { id: "look", title: "Look and pictures", done: () => Boolean(store.get("setup")?.look) },
+  { id: "look", title: "Bible Appearance", done: () => Boolean(store.get("setup")?.look) },
   { id: "key", title: "Your Bible key", done: () => Boolean(store.get("apiBibleKey")) },
   { id: "version", title: "Your Bible version", done: () => Boolean(store.get("setup")?.version) },
   { id: "tour", title: "A quick tour", done: () => Boolean(store.get("tourSeen")) },
@@ -3172,13 +3206,15 @@ function renderSetup() {
       <label class="field">What should the app call you?<input id="setupName" type="text" autocomplete="given-name" value="${esc(store.get("name"))}" placeholder="Your first name"></label>
       <div class="setup-buddy"><span class="buddy buddy-inline" aria-hidden="true">${BUDDY_SVG}</span>
         <label class="field buddy-name-field">And what would you like to call your study buddy?<input id="setupBuddyName" type="text" autocomplete="off" maxlength="16" value="${esc(buddyName())}"></label></div>
-      <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>`;
+      <p class="muted small-print">He's the little friend at the side of the screen. Tap him any time to ask a question.</p>
+      <label class="field">Your birthday (optional, just the month and day, so ${esc(buddyName())} can wish you a happy birthday)${birthdayPicker("setupBday")}</label>`;
     $("#setupName").addEventListener("input", (e) => { store.set("name", e.target.value.trim()); $("#userName").value = e.target.value.trim(); });
     $("#setupName").addEventListener("change", (e) => setMyName(e.target.value));
     $("#setupBuddyName").addEventListener("input", (e) => setBuddyName(e.target.value));
+    wireBirthday("setupBday", () => { $("#userBirthday").innerHTML = birthdayPicker("setBday"); wireBirthday("setBday"); });
   } else if (step.id === "look") {
     body.innerHTML = `<h2 class="setup-h">How should it look?</h2>
-      <p class="muted small-print">Classic 1 is chosen for you. Pick another if you like. You can change it any time in Settings, under Look.</p>
+      <p class="muted small-print">Classic 1 is chosen for you. Pick another if you like. You can change it any time in Settings, under Bible Appearance.</p>
       <div class="look-grid">${lookPickerHtml("setupLook")}</div>
       <p class="muted small-print" style="margin-top:14px">Pictures</p>${chips(GRAPHICS, store.get("graphics") || "full", "data-s-gfx")}
       <p class="muted small-print">${esc(GRAPHICS.find(([v]) => v === (store.get("graphics") || "full"))[2])}</p>`;
@@ -4924,7 +4960,9 @@ function wireShareKey() {
     const to = $("#shareName").value.trim();
     const code = makeInviteCode({ to, look: $("#shareLook").value });
     const url = `${location.origin}${location.pathname}#join=${code}`;
-    const text = `${to ? `${to}, here` : "Here"} is our Bible study app. Open this link on your iPhone or iPad. It sets up the Bible text for you.`;
+    const text = authEnabled
+      ? `${to ? `${to}, here` : "Here"} is the Bible key for your copy of the Bible study app. Copy this whole link and paste it into the API.Bible key box in your app (in setup or in Settings), then tap Save.`
+      : `${to ? `${to}, here` : "Here"} is our Bible study app. Open this link on your iPhone or iPad. It sets up the Bible text for you.`;
     out.innerHTML = `<p class="small-print">Invite link ready. ${navigator.share ? "Pick Messages or Mail to send it." : "Copy it and send it by text or email."}</p>
       <div class="row"><button class="small" id="shareSend">${navigator.share ? "Send invite" : "Copy link"}</button><button class="small quiet-link" id="shareCopy">Copy link</button></div>`;
     const copy = async (btn) => { try { await navigator.clipboard.writeText(url); btn.textContent = "Copied ✓"; } catch { out.insertAdjacentHTML("beforeend", `<p class="small-print share-url">${esc(url)}</p>`); } };

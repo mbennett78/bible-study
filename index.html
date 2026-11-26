@@ -217,7 +217,7 @@
 
       <div class="card setup-card" id="setupCard"></div>
 
-      <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and look</button><button type="button" data-jump="sg-reading">Reading and listening</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
+      <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and Bible Appearance</button><button type="button" data-jump="sg-reading">Reading and listening</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
 
       <h2 class="settings-group" id="sg-help" tabindex="-1">Help and guide</h2>
       <div class="card guide-card" id="guideCard">
@@ -251,6 +251,9 @@
         <label class="field">Your name
           <span class="key-row"><input id="userName" type="text" autocomplete="given-name" placeholder="So the app can greet you" maxlength="40"><button type="button" class="small" id="saveUserName">Save</button></span>
         </label>
+        <label class="field">Your birthday <span class="muted">(optional: month and day only)</span>
+          <span id="userBirthday"></span>
+        </label>
         <p class="small-print key-status" id="userNameMsg" role="status"></p>
         <label class="field">My Bible version
           <select id="myVersion"></select>
@@ -271,7 +274,7 @@
         <p class="muted small-print">The passcode hides your journal on screen. It isn't encryption: someone with your unlocked device and technical know-how could still reach the saved text.</p>
       </div>
 
-      <h2 class="settings-group" id="sg-buddy" tabindex="-1">Buddy and look</h2>
+      <h2 class="settings-group" id="sg-buddy" tabindex="-1">Buddy and Bible Appearance</h2>
       <div class="card" id="buddyCard">
         <h2>My study buddy</h2>
         <p class="muted small-print">The little stick-figure friend at the side of the screen. Tap him any time to ask the Bible helper anything. Drag him up or down either edge to move him out of the way.</p>
@@ -279,7 +282,7 @@
       </div>
 
       <div class="card" id="lookCard">
-        <h2>Look</h2>
+        <h2>Bible Appearance</h2>
         <p class="muted small-print">Pick how the app looks. You can change it any time.</p>
         <div class="look-grid" id="lookGrid"></div>
         <h3 class="qm-h">Pictures</h3>

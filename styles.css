@@ -3368,3 +3368,157 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-rope-legs { 0%, 100% { scale: .9 .95; } 40%, 60% { scale: 1.15 .88; } }
 @keyframes buddy-rope-arm-r { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(-26deg); } }
 @keyframes buddy-rope-arm-l { 0%, 100% { transform: rotate(8deg); } 50% { transform: rotate(26deg); } }
+
+/* ---------- Buddy's feelings, moods and special days ----------
+   Faces: wow, excited, shocked, sad, crying, angry (he isn't stuck on one smile). A pond for
+   fishing, a cast up over his head, a tangled line or a missed fish (he's sad or grumpy), a
+   catch (he's thrilled). His pole strapped to his backpack when he heads out. Lying back to
+   look at the stars and moon. Presents, a birthday cake with a candle he blows out, party and
+   Santa hats, confetti and a few small fireworks on the Fourth of July. */
+.buddy-sky, .buddy-pond, .buddy-fw, .buddy-confetti, .buddy-gift, .buddy-cake, .buddy-grin, .buddy-up, .buddy-santa, .buddy-partyhat, .buddy-packpole, .buddy-legs-knees, .buddy-tangle, .buddy-gift-item > g { display: none; }
+.buddy-moon { fill: #f4e7a1; stroke: #b9a24a; stroke-width: .6; } .buddy-star { fill: #ffd85a; stroke: #c9a227; stroke-width: .4; }
+.buddy-pond { fill: #9fd0ee; stroke: #5d9cc6; stroke-width: .7; }
+.buddy-fw path { fill: none; stroke-width: 1.3; stroke-linecap: round; } .fw1 path { stroke: #e8493a; } .fw2 path { stroke: #3a7be8; } .fw3 path { stroke: #e8b93a; }
+.buddy-confetti rect:nth-child(3n+1) { fill: #e8493a; } .buddy-confetti rect:nth-child(3n+2) { fill: #3aa0e8; } .buddy-confetti rect:nth-child(3n) { fill: #f2c230; }
+.buddy-gift-box { fill: #d94a3d; stroke: #8f2a22; stroke-width: .7; } .buddy-gift-lid rect { fill: #e35a4c; stroke: #8f2a22; stroke-width: .7; }
+.buddy-gift-ribbon { stroke: #f4d03f; stroke-width: 2; fill: none; } .buddy-gift-bow { fill: #f4d03f; stroke: #b8941d; stroke-width: .5; }
+.gi-socks .sock-a { fill: #d94a3d; } .gi-socks .sock-b { fill: #3f8f55; } .gi-socks path:not(.sock-stripe) { stroke: #3b2b20; stroke-width: .5; } .sock-stripe { stroke: #fff; stroke-width: 1; fill: none; }
+.gi-teddy circle, .gi-teddy ellipse { fill: #b07a45; stroke: #6d4524; stroke-width: .5; } .gi-teddy .ted-face { fill: #e9cfa8; }
+.gi-flashlight rect { fill: #3a5bd9; stroke: #1e2f73; stroke-width: .5; } .gi-flashlight .fl-head { fill: #c0c6d6; } .fl-beam { fill: #fff3a6; opacity: .8; }
+.gi-lure path:not(.lure-hook) { fill: #f08a2e; stroke: #8f4a12; stroke-width: .5; } .lure-eye { fill: #222; } .lure-hook { fill: none; stroke: #777; stroke-width: .6; }
+.cake-plate { stroke: #9aa3ad; stroke-width: 1.4; stroke-linecap: round; } .cake-body { fill: #f7d7e3; stroke: #b05c7f; stroke-width: .7; } .cake-icing { fill: none; stroke: #fff; stroke-width: 1.2; }
+.cake-candle { stroke: #6aa7e8; stroke-width: 1.6; } .buddy-flame { fill: #ffb42e; stroke: #e8741a; stroke-width: .4; } .buddy-smoke { fill: none; stroke: #b7b7b7; stroke-width: .7; display: none; }
+.buddy-grin { fill: var(--accent); } .buddy-up { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
+.santa-red { fill: #d33a2f; stroke: #8f2a22; stroke-width: .5; } .santa-trim { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; } .santa-ball { fill: #fff; stroke: #ccc; stroke-width: .4; }
+.ph-cone { fill: #7b5ce8; stroke: #3f2a8f; stroke-width: .6; } .ph-stripe { fill: none; stroke: #f4d03f; stroke-width: 1; } .ph-pom { fill: #f4d03f; }
+.buddy-packpole path { fill: none; stroke: #8a5a36; stroke-width: 1.6; stroke-linecap: round; } .buddy-packpole .buddy-fishline { stroke: var(--muted); stroke-width: .6; }
+.buddy-tangle { fill: none; stroke: var(--muted); stroke-width: .7; }
+
+/* Faces. */
+.buddy:is(.f-wow, .f-excited, .f-shocked, .f-sad, .f-cry, .f-angry) :is(.buddy-smile, .buddy-soft, .buddy-flat, .buddy-focus) { display: none !important; }
+.buddy:is(.f-wow, .f-excited, .f-shocked) .buddy-up { display: inline; }
+.buddy:is(.f-wow, .f-shocked) .buddy-mouth { display: inline; }
+.buddy.f-wow .buddy-mouth { transform: scale(.8); transform-origin: 26px 26.6px; }
+.buddy.f-shocked .buddy-mouth { transform: scale(1, 1.5); transform-origin: 26px 26.6px; }
+.buddy.f-shocked .buddy-eye { r: 2.5px; }
+.buddy.f-excited .buddy-grin { display: inline; } .buddy.f-excited .buddy-mouth { display: none !important; }
+.buddy:is(.f-sad, .f-cry) :is(.buddy-frown, .buddy-brow) { display: inline; }
+.buddy.f-cry .buddy-tear { display: inline; }
+.buddy.f-angry :is(.buddy-frown, .buddy-mad) { display: inline; }
+.buddy:is(.f-sad, .f-cry, .f-angry) .buddy-mouth { display: none !important; }
+
+/* Moods of the day: calm (a soft smile), a little grumpy (straight mouth, brows down). */
+.buddy.day-calm.sitting:not([class*=" f-"]) .buddy-smile { display: none; } .buddy.day-calm.sitting:not([class*=" f-"]) .buddy-soft { display: inline; }
+.buddy.day-grumpy.sitting:not([class*=" f-"]) .buddy-smile { display: none; } .buddy.day-grumpy.sitting:not([class*=" f-"]) :is(.buddy-flat, .buddy-mad) { display: inline; }
+
+/* Fishing: the pond, the pole on his backpack, a tangled cast, a fish that got away. */
+.buddy.fishing .buddy-pond { display: inline; }
+.buddy.fishgo.packed .buddy-carrypole { display: none; } .buddy.fishgo.packed :is(.buddy-pack, .buddy-packpole) { display: inline; }
+.buddy.capped .buddy-cap { display: inline; }
+.buddy.tangle .buddy-tangle { display: inline; } .buddy.tangle .buddy-pole :is(.buddy-fishline, .buddy-bobber) { display: none; }
+.buddy.nofish .buddy-fish { display: none; }
+.buddy.tripping .buddy-body { rotate: 78deg; transform-origin: 26px 72px; transition: rotate .22s ease-in; }
+.buddy.on-right.tripping .buddy-body { rotate: 78deg; }
+
+/* Lying back to look at the stars and moon, knees up or legs out. */
+.buddy.stargazing .buddy-body { transform: translate(-6px, 6px) rotate(90deg); transform-origin: 26px 66px; }
+.buddy.stargazing :is(.buddy-bubble, .buddy-legs-sit, .buddy-legs-chair) { display: none; }
+.buddy.stargazing .buddy-sky { display: inline; }
+.buddy.stargazing.knees .buddy-legs-stand { display: none; } .buddy.stargazing.knees .buddy-legs-knees { display: inline; }
+.buddy.stargazing.sitting .buddy-legs-stand { display: inline; }
+.buddy.stargazing.knees.sitting .buddy-legs-stand { display: none; }
+.buddy.stargazing :is(.buddy-head, .buddy-eye, .buddy-soft, .buddy-smile) { rotate: -90deg; transform-origin: 26px 22px; transform-box: view-box; }
+.buddy.stargazing .buddy-eye { translate: -2.2px 0; }
+.buddy.stargazing .buddy-smile { display: none; } .buddy.stargazing .buddy-soft { display: inline; }
+
+/* Special days. */
+.buddy.party-hat .buddy-partyhat, .buddy.santa-hat .buddy-santa { display: inline; }
+.buddy:is(.party-hat, .santa-hat) .buddy-cap { display: none !important; }
+.buddy.gifting .buddy-gift { display: inline; scale: 1.3; transform-origin: 47px 73px; transform-box: view-box; }
+.buddy.gifting.g-socks .gi-socks, .buddy.gifting.g-teddy .gi-teddy, .buddy.gifting.g-flashlight .gi-flashlight, .buddy.gifting.g-lure .gi-lure { display: inline; }
+.buddy.gifting .buddy-gift-item { translate: 0 -6px; }
+.buddy.gifting.opened .buddy-gift-lid { translate: 10px -6px; rotate: 30deg; transform-origin: 47px 62px; transform-box: view-box; }
+.buddy.gifting:not(.opened) .buddy-gift-item { visibility: hidden; }
+.buddy.caking .buddy-cake { display: inline; scale: 1.25; transform-origin: 47px 73px; transform-box: view-box; }
+.buddy.caking.blown .buddy-flame { display: none; } .buddy.caking.blown .buddy-smoke { display: inline; }
+.buddy.blowing .buddy-smile { display: none; } .buddy.blowing .buddy-mouth { display: inline; transform: scale(.55); transform-origin: 26px 26.6px; }
+.buddy.confetti .buddy-confetti, .buddy.fireworks .buddy-fw { display: inline; }
+.buddy:is(.gifting, .caking, .confetti, .fireworks) .buddy-bubble { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.stargazing .buddy-star { animation: buddy-twinkle 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.stargazing .s2 { animation-delay: -.6s; } :root:not([data-graphics="simple"]) .buddy.stargazing .s3 { animation-delay: -1.2s; } :root:not([data-graphics="simple"]) .buddy.stargazing .s4 { animation-delay: -1.8s; } :root:not([data-graphics="simple"]) .buddy.stargazing .s5 { animation-delay: -.9s; }
+  :root:not([data-graphics="simple"]) .buddy.f-cry .buddy-tear { animation: buddy-drip 1.1s ease-in infinite; }
+  :root:not([data-graphics="simple"]) .buddy.f-excited .buddy-body { animation: buddy-hop .3s ease-out 4 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.f-angry .buddy-body { animation: buddy-stomp .18s ease-in-out 6 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.gifting.opened .buddy-gift-lid { transition: translate .5s ease-out, rotate .5s ease-out; }
+  :root:not([data-graphics="simple"]) .buddy.gifting.opened .buddy-gift-item { animation: buddy-gift-rise 1.2s cubic-bezier(.2, .8, .3, 1.2) both; }
+  :root:not([data-graphics="simple"]) .buddy.caking:not(.blown) .buddy-flame { animation: buddy-flicker .25s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+  :root:not([data-graphics="simple"]) .buddy.caking.blown .buddy-smoke { animation: buddy-smoke 1.6s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.confetti .buddy-confetti rect { animation: buddy-confetti 2.6s linear infinite; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.confetti .buddy-confetti rect:nth-child(2n) { animation-duration: 2.1s; animation-delay: -.7s; }
+  :root:not([data-graphics="simple"]) .buddy.confetti .buddy-confetti rect:nth-child(3n) { animation-duration: 2.9s; animation-delay: -1.4s; }
+  :root:not([data-graphics="simple"]) .buddy.fireworks .fw { animation: buddy-burst 1.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.fireworks .fw2 { animation-delay: .6s; } :root:not([data-graphics="simple"]) .buddy.fireworks .fw3 { animation-delay: 1.2s; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-arm-r { animation: buddy-cast-arm 1.8s ease-in-out 1; }
+}
+@keyframes buddy-twinkle { 0%, 100% { scale: 1; opacity: 1; } 50% { scale: .6; opacity: .55; } }
+@keyframes buddy-drip { from { translate: 0 0; opacity: 1; } to { translate: 0 6px; opacity: 0; } }
+@keyframes buddy-stomp { from { translate: 0 0; } to { translate: 0 1.4px; } }
+@keyframes buddy-gift-rise { from { translate: 0 12px; } to { translate: 0 -6px; } }
+@keyframes buddy-flicker { from { scale: 1 1; } to { scale: .85 1.15; } }
+@keyframes buddy-smoke { from { opacity: .9; translate: 0 0; } to { opacity: 0; translate: 0 -8px; } }
+@keyframes buddy-confetti { 0% { translate: 0 0; rotate: 0deg; } 100% { translate: 0 92px; rotate: 540deg; } }
+@keyframes buddy-burst { 0% { scale: .1; opacity: 0; } 15% { opacity: 1; } 70% { scale: 1; opacity: 1; } 100% { scale: 1.15; opacity: 0; } }
+@keyframes buddy-cast-arm { 0% { transform: rotate(-12deg); } 35% { transform: rotate(-150deg); } 55% { transform: rotate(-30deg); } 100% { transform: rotate(-12deg); } }
+@keyframes buddy-cast { 0% { transform: rotate(0); } 35% { transform: rotate(-125deg); } 55% { transform: rotate(10deg); } 100% { transform: rotate(0); } }
+@keyframes buddy-gaze-cast { 0% { translate: 1px 0; } 30%, 38% { translate: -2px -3px; } 58% { translate: 2.6px -2.6px; } 100% { translate: 3px 2.4px; } }
+.bnd-face :is(.buddy-sky, .buddy-pond, .buddy-fw, .buddy-confetti, .buddy-gift, .buddy-cake, .buddy-santa, .buddy-partyhat, .buddy-packpole, .buddy-tangle) { display: none !important; }
+
+.bday-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; } .bday-row select { flex: 1 1 8em; }
+
+/* ---------- Fishing, extra cute and more real ----------
+   A real hook hangs under the bobber (and comes up empty when one gets away; it's in the fish's
+   mouth when he lands one). The cast goes up and back over his head and then out, with a splash
+   when the hook lands. On a bite the rod bends and the bobber dunks; reeling, he leans back and
+   cranks the little reel while the fish flips on the line. He has a bucket beside him (a fish
+   tail pokes out after a catch), sometimes his floppy fishing hat, and he swings his feet while
+   he waits. */
+.buddy-rod-bent, .buddy-reel, .buddy-biteline, .buddy-splash, .buddy-bucket, .buddy-fishhat, .buddy-bucket-fish { display: none; }
+.buddy-pole .buddy-rod, .buddy-rod-bent { fill: none; stroke: #8a5a36; stroke-width: 1.6; stroke-linecap: round; }
+.buddy-biteline { fill: none; stroke: var(--muted); stroke-width: .6; }
+.buddy-hook { fill: none; stroke: #6d737b; stroke-width: .9; stroke-linecap: round; stroke-linejoin: round; }
+.buddy-catchhook { display: none; }
+.buddy-reel circle { fill: #c9ced6; stroke: #5b6169; stroke-width: .6; } .buddy-reel-handle { stroke: #5b6169; stroke-width: .9; stroke-linecap: round; }
+.buddy-splash ellipse { fill: none; stroke: #5d9cc6; stroke-width: .7; } .sp-drops { fill: none; stroke: #5d9cc6; stroke-width: .8; stroke-linecap: round; }
+.bucket-body { fill: #8fb4c9; stroke: #3f6274; stroke-width: .7; } .bucket-handle { fill: none; stroke: #3f6274; stroke-width: .7; } .bucket-band { stroke: #3f6274; stroke-width: .5; }
+.buddy-bucket-fish path { fill: #e8893a; stroke: #8a4a1a; stroke-width: .4; }
+.fh-crown { fill: #c9b27c; stroke: #7a6534; stroke-width: .6; } .fh-brim { fill: none; stroke: #7a6534; stroke-width: 2.2; stroke-linecap: round; } .fh-band { fill: none; stroke: #4d7a5a; stroke-width: 1.2; }
+.buddy.fishing :is(.buddy-bucket, .buddy-reel) { display: inline; }
+.buddy.fishing.bucketfish .buddy-bucket-fish { display: inline; }
+.buddy.fishhat .buddy-fishhat { display: inline; } .buddy.fishhat .buddy-cap { display: none !important; }
+.buddy.bite .buddy-rod, .buddy.reeling .buddy-rod { display: none; } .buddy.bite .buddy-rod-bent, .buddy.reeling .buddy-rod-bent { display: inline; }
+.buddy.bite .buddy-pole .buddy-fishline { display: none; } .buddy.bite .buddy-biteline { display: inline; }
+.buddy.reeling .buddy-linehook { display: none; }
+.buddy.reeling.nofish .buddy-catchhook { display: inline; }
+.buddy.reeling .buddy-pole, .buddy.reeling .buddy-catch { transform: rotate(-6deg); }
+.buddy.reeling .buddy-arm-l { transform: rotate(-122deg); }
+.buddy.reeling .buddy-body { rotate: -5deg; transform-origin: 26px 66px; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-splash { display: inline; animation: buddy-splash 1.2s ease-out 1.05s both; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.bite .buddy-splash { display: inline; animation: buddy-splash .6s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-legs-sit { animation: buddy-swing .9s ease-in-out 2s infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-linehook { animation: buddy-bob 1.4s ease-in-out infinite; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.bite .buddy-linehook { animation: buddy-nibble .3s ease-in-out infinite alternate; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-arm-l { animation: buddy-crank .32s linear infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-reel-handle { animation: buddy-reel-spin .45s linear infinite; transform-origin: 40.6px 41.4px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-fish { animation: buddy-reel-fish 2.6s ease-out both, buddy-fish-wiggle .16s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-catchhook { animation: buddy-reel-fish 2.6s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.fishing.bucketfish .buddy-bucket-fish { animation: buddy-fish-hop 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+}
+@keyframes buddy-splash { 0% { scale: .2; opacity: 0; } 20% { opacity: 1; } 100% { scale: 1.5; opacity: 0; } }
+@keyframes buddy-crank { from { transform: rotate(-112deg); } to { transform: rotate(-132deg); } }
+@keyframes buddy-reel-spin { to { transform: rotate(360deg); } }
+@keyframes buddy-fish-wiggle { from { rotate: -24deg; } to { rotate: 24deg; } }
+@keyframes buddy-fish-hop { 0%, 70%, 100% { rotate: 0deg; } 78% { rotate: -18deg; } 86% { rotate: 14deg; } }
+.bnd-face :is(.buddy-bucket, .buddy-fishhat, .buddy-splash) { display: none !important; }
+.buddy.fishing .buddy-bubble { display: none; }
