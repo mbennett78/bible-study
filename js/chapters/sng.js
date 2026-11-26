@@ -23,6 +23,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
       ["A picture of God and His people", "For much of history, Jewish readers saw it as a picture of God's love for Israel and Christians as Christ's love for the church, and many still emphasize this reading alongside the plain one.", ["duguid"]],
     ],
     common: "All agree love and faithfulness in marriage are good gifts of God, and that human love at its best points to God's own love.",
+    bg: [["Dark like the tents of Kedar", "\"I am black but lovely... like the tents of Kedar\" (1:5). Kedar was a tribe of desert herders whose tents were woven from black goat hair. Working outdoors in the vineyards had darkened her skin (1:6).", "good", ["longmanS", "carr"]]],
+    w: [["דּוֹד", "dod", "H1730", "beloved, love", "The bride's name for the groom, used over thirty times in the Song: \"My beloved is mine, and I am his\" (2:16). The name David may come from the same root.", ["halot", "garrett"]]],
     refs: [["GEN.2", "Genesis 2:23-25", "The first marriage"], ["EPH.5", "Ephesians 5:25-32", "Christ and the church"], ["HOS.2", "Hosea 2:19-20", "I will betroth you to Me"]],
   },
   2: {
@@ -34,6 +36,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
       ["2:15", "The little foxes that are ruining the vineyards", "Little foxes could ruin a vineyard in bloom. Small problems left alone can spoil love, so deal with them early."],
       ["2:16", "My beloved is mine, and I am his", "She says: my beloved is mine, and I am his. Love means belonging to each other. The line returns, reversed, in 6:3."],
     ],
+    bg: [["The rose of Sharon", "The Sharon was the fertile coastal plain of Israel, covered with wildflowers in spring. The \"rose of Sharon\" (2:1) was probably a crocus or similar bulb flower rather than a rose. She calls herself a simple wildflower; he calls her a lily among thorns (2:2).", "good", ["longmanS", "carr"]]],
+    w: [["חֲבַצֶּלֶת", "chavatselet", "H2261", "crocus, meadow flower", "A spring flower. Isaiah 35:1 uses the same word: the desert \"will blossom like the crocus.\"", ["halot", "duguid"]]],
     refs: [["SNG.8", "Song of Songs 8:4", "The refrain repeated"], ["1CO.13", "1 Corinthians 13:4-7", "Love is patient"]],
   },
   3: {
@@ -65,6 +69,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
       ["5:10", "Outstanding among ten thousand", "Asked what makes him special, she says he stands out among ten thousand. To her, no one compares."],
       ["5:16", "This is my beloved and this is my friend", "This is my beloved, and this is my friend. Romance and friendship belong together in marriage."],
     ],
+    bg: [["A night of searching", "In a dream-like scene, she hesitates to open the door, and when she does, he is gone (5:2-6). Searching the city at night, she is struck by the watchmen (5:7). Then she describes him with love to the daughters of Jerusalem: \"This is my beloved and this is my friend\" (5:16).", "good", ["longmanS", "garrett"]]],
     refs: [["REV.3", "Revelation 3:20", "I stand at the door and knock"]],
   },
   6: {
@@ -75,6 +80,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
       ["6:10", "Who is this that grows like the dawn?", "Dawn, moon and sun: her beauty is described with the brightest things in the sky."],
       ["6:4", "As beautiful as Tirzah, as lovely as Jerusalem", "Tirzah, whose name means \"pleasant,\" was a lovely city that later became a royal capital of the northern kingdom (1 Kings 16:23)."],
     ],
+    bg: [["The Shulammite", "The bride is called \"the Shulammite\" (6:13). Some think it means a woman from Shunem; others see it as a feminine form of Solomon's name, \"Solomon's bride.\"", "good", ["longmanS", "carr"]]],
+    w: [["שׁוּלַמִּית", "Shulammit", "H7759", "Shulammite", "Found only in 6:13. The word sounds like shalom, peace, and like Shelomo, Solomon.", ["halot", "garrett"]]],
     refs: [["SNG.2", "Song of Songs 2:16", "The earlier vow"]],
   },
   7: {
@@ -84,6 +91,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["carr", "duguid"] }, {
       ["7:10", "I am my beloved's, and his desire is for me", "After the fall, the woman's desire is for a husband who rules over her (Genesis 3:16). Here his desire is for her. Many see love being healed."],
       ["7:12", "Let us rise early and go to the vineyards", "Love makes time. The couple plan a day in the countryside among the vines and blossoms."],
     ],
+    bg: [["The pools of Heshbon", "\"Your eyes like the pools in Heshbon\" (7:4). Heshbon lay east of the Jordan. Excavations at Tell Hesban have uncovered a large ancient water reservoir cut into the rock.", "good", ["longmanS", "carr"]]],
     refs: [["GEN.3", "Genesis 3:16", "Desire after the fall; here love is restored"]],
   },
   8: {
