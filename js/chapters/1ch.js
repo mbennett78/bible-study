@@ -22,6 +22,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["An unnamed writer about 400-350 BC", "Many scholars think a separate writer, often called \"the Chronicler,\" wrote after the return, perhaps a Levite, since the book has so much interest in temple worship.", ["japhet", "williamson"]],
     ],
     common: "All agree it was written after the exile to encourage God's people that His promises to David and His worship at the temple still stood.",
+    bg: [["From Adam to Israel", "Chronicles begins with nine chapters of family lists, starting with Adam. In the Hebrew Bible, Chronicles is the last book, so the Old Testament ends by retelling the whole story from the beginning, reminding returned exiles that they belonged to God's long plan.", "good", ["selman", "williamson"]]],
     refs: [["GEN.5", "Genesis 5", "Adam to Noah"], ["LUK.3", "Luke 3:23-38", "Jesus' line back to Adam"], ["MAT.1", "Matthew 1:1-17", "The genealogy of Jesus"]],
   },
   2: {
@@ -55,6 +56,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["4:10", "Oh that You would bless me indeed", "Jabez prays for blessing, God's hand with him, and protection from harm, and \"God granted him what he requested.\""],
       ["4:23", "The potters", "These potters lived near the king and worked for him. Many jar handles stamped \"belonging to the king\" have been found in Judah from about Hezekiah's day."],
     ],
+    bg: [["The prayer of Jabez", "In the middle of a long list, the writer pauses for Jabez, whose name sounds like the Hebrew word for pain. He prayed, \"Oh that You would bless me indeed and enlarge my border... and keep me from harm,\" and God granted his request (4:10).", "good", ["selman", "thompson"]]],
     refs: [["MAT.7", "Matthew 7:7-11", "Ask, and it will be given to you"], ["JAS.4", "James 4:2", "You do not have because you do not ask"]],
   },
   5: {
@@ -64,6 +66,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["5:20", "They cried out to God in the battle", "\"He answered their prayers because they trusted in Him.\""],
       ["5:26", "Tiglath-pileser", "The Assyrian king Tiglath-pileser (also called Pul) carried off Reuben, Gad and half of Manasseh. Chronicles says plainly that exile came because they were unfaithful to God (5:25)."],
     ],
+    bg: [["They trusted in Him", "The tribes east of the Jordan won a war \"because they trusted in Him\" (5:20). Later they were unfaithful, and God stirred up Pul, also called Tiglath-pileser, king of Assyria, who carried them away (5:25-26).", "good", ["selman", "japhet"]]],
     refs: [["GEN.49", "Genesis 49:3-4", "Reuben's lost place"], ["2KI.15", "2 Kings 15:29", "The first deportations"]],
   },
   6: {
@@ -128,6 +131,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["11:9", "David became greater and greater", "David kept growing stronger, \"for the LORD of hosts was with him.\" His success came from God's presence, not his own skill."],
       ["11:19", "Shall I drink the blood of these men?", "David pours out the water as an offering."],
     ],
+    bg: [["Taking Jebus", "Jerusalem was a Jebusite fortress on a steep hill. David promised that whoever struck first would be chief, and Joab went up first (11:6). 2 Samuel 5:8 mentions a water shaft, and many link this with tunnels found near the Gihon spring.", "good", ["selman", "williamson"]]],
     refs: [["2SA.5", "2 Samuel 5:1-10", "The same events"], ["2SA.23", "2 Samuel 23:8-39", "The mighty men"]],
   },
   12: {
@@ -137,6 +141,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["12:32", "Men who understood the times", "\"With knowledge of what Israel should do.\""],
       ["12:40", "There was joy in Israel", "People brought food on donkeys, camels and oxen from as far as Issachar and Naphtali. David's kingdom begins in celebration."],
     ],
+    bg: [["Men who understood the times", "Thousands from every tribe came to make David king. The men of Issachar are remembered as those \"who understood the times, with knowledge of what Israel should do\" (12:32).", "good", ["selman", "thompson"]]],
     refs: [["1SA.22", "1 Samuel 22:2", "David's first followers"]],
   },
   13: {
@@ -146,6 +151,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["13:10", "The anger of the LORD burned against Uzza", "They had not followed God's instructions for carrying it."],
       ["13:14", "The LORD blessed the family of Obed-edom", "The ark stayed three months in the home of Obed-edom, and God blessed his whole family. God's presence brings blessing."],
     ],
+    bg: [["Ark first, then palace", "Chronicles tells of bringing up the ark (chapter 13) before David's palace and family (chapter 14), changing the order of 2 Samuel. The arrangement shows what mattered most: God's presence at the center of the nation.", "good", ["williamson", "japhet"]]],
     refs: [["2SA.6", "2 Samuel 6:1-11", "The same events"], ["NUM.4", "Numbers 4:15", "Carried by the Kohathites"]],
   },
   14: {
@@ -167,6 +173,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["15:13", "We did not seek Him according to the ordinance", "David admits that Uzza died because they had not done things God's way (13:9-10). Zeal is not enough without obedience."],
       ["15:16", "To raise sounds of joy", "Singers, harps, lyres and cymbals raised loud sounds of joy. Music was central to Israel's worship."],
     ],
+    bg: [["Done the right way", "This time the Levites carried the ark on poles on their shoulders, as Moses commanded (15:15). David also appointed singers and players, and Chenaniah led the singing \"because he was skillful\" (15:22).", "good", ["selman", "thompson"]]],
     refs: [["2SA.6", "2 Samuel 6:12-23", "The same events"], ["PSA.24", "Psalm 24", "The King of glory comes in"]],
   },
   16: {
@@ -176,6 +183,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["16:11", "Seek the LORD and His strength", "\"Seek the LORD and His strength; seek His face continually.\" David's song (also found in Psalms 105 and 96) calls God's people to keep seeking Him."],
       ["16:34", "His lovingkindness is everlasting", "\"His lovingkindness is everlasting.\" The refrain comes back again and again in Chronicles (2 Chronicles 5:13; 7:3; 20:21) and in Psalm 136."],
     ],
+    bg: [["A song made from psalms", "The song sung when the ark arrived (16:8-36) combines parts of Psalms 105, 96 and 106. David appointed Asaph and his relatives to lead thanksgiving before the ark every day (16:4-7, 37).", "strong", ["williamson", "selman"]]],
     refs: [["PSA.105", "Psalm 105:1-15", "The first part of the song"], ["PSA.96", "Psalm 96", "Sing to the LORD, all the earth"], ["PSA.106", "Psalm 106:1, 47-48", "The closing lines"]],
   },
   17: {
@@ -185,6 +193,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["17:14", "In My house and in My kingdom forever", "The kingdom belongs to God; the king rules for Him."],
       ["17:16", "Who am I, O LORD God?", "God has just promised David a lasting dynasty. David sits before the LORD and asks, \"Who am I?\" Grace makes him humble, not proud."],
     ],
+    bg: [["The promise to David retold", "God's promise of a lasting dynasty is told here much as in 2 Samuel 7. Chronicles leaves out the line about punishing David's son if he sins, and keeps the focus on the King God will establish forever (17:14).", "good", ["williamson", "japhet"]]],
     refs: [["2SA.7", "2 Samuel 7", "The same promise"], ["LUK.1", "Luke 1:32-33", "The throne of His father David"], ["HEB.1", "Hebrews 1:5", "I will be a Father to Him"]],
   },
   18: {
@@ -229,6 +238,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["21:24", "I will not offer burnt offerings which cost me nothing", "David refuses Ornan's gift: \"I will not offer burnt offerings which cost me nothing.\" True worship costs us something."],
       ["21:26", "He answered him with fire", "God answered with fire from heaven on the altar, showing that He accepted the offering. This threshing floor became the site of the temple (2 Chronicles 3:1)."],
     ],
+    bg: [["Who moved David?", "2 Samuel 24:1 says the LORD's anger moved David to count Israel; 1 Chronicles 21:1 says Satan stirred him up. Many readers see both as true: God allowed Satan's work to bring judgment, as in Job 1-2. David paid six hundred shekels of gold for the whole site (21:25), where 2 Samuel mentions fifty shekels of silver for the threshing floor and oxen.", "good", ["selman", "thompson"]]],
     refs: [["2SA.24", "2 Samuel 24", "The same census"], ["2CH.3", "2 Chronicles 3:1", "The temple on Ornan's threshing floor"], ["JOB.1", "Job 1:6-12", "Satan and God's permission"]],
   },
   22: {
@@ -239,6 +249,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["22:13", "Be strong and courageous", "\"Be strong and courageous.\" David passes on to Solomon the same words God spoke to Joshua (Joshua 1:6-9)."],
       ["22:19", "Set your heart and your soul to seek the LORD", "\"Set your heart and your soul to seek the LORD your God.\" Seeking God with the whole heart is the heart of Chronicles' message."],
     ],
+    bg: [["David prepares for the temple", "God told David he could not build the temple because he had shed much blood in war (22:8). So David gathered stone, iron, bronze and cedar \"in great quantity\" and charged Solomon, a man of peace, to build it.", "good", ["selman", "williamson"]]],
     refs: [["1KI.5", "1 Kings 5:3-5", "Solomon explains"], ["JOS.1", "Joshua 1:9", "Be strong and courageous"]],
   },
   23: {
@@ -267,6 +278,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["25:7", "Trained in singing to the LORD", "These 288 musicians were trained and skilled in singing to the LORD. Skill is a gift we can offer back to God."],
       ["25:8", "The small as well as the great, the teacher as well as the pupil", "Young and old, teacher and pupil all cast lots for their turns. Everyone served on the same footing."],
     ],
+    bg: [["Temple musicians", "David set apart the sons of Asaph, Heman and Jeduthun to prophesy with music. There were 288 skilled musicians in twenty-four groups, each taking turns, \"the small as well as the great\" (25:7-8).", "good", ["selman", "thompson"]]],
     refs: [["COL.3", "Colossians 3:16", "Singing psalms and hymns"], ["PSA.150", "Psalm 150", "Praise Him with harp and lyre"]],
   },
   26: {
@@ -298,6 +310,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["28:12", "The plan of all that he had in mind by the Spirit", "The temple plan came from God, like the tabernacle's."],
       ["28:20", "He will not fail you nor forsake you", "David assures Solomon that God \"will not fail you nor forsake you\" until all the work for the temple is finished (compare Hebrews 13:5)."],
     ],
+    bg: [["The plan given by the Spirit", "David gave Solomon the plan for the temple and its courts, rooms and furnishings, \"the plan of all that he had in mind by the Spirit\" (28:12, 19), as Moses received the pattern for the tabernacle (Exodus 25:9).", "good", ["selman", "williamson"]]],
     refs: [["JER.29", "Jeremiah 29:13", "You will seek Me and find Me"], ["EXO.25", "Exodus 25:9", "The pattern shown to Moses"], ["HEB.13", "Hebrews 13:5", "I will never desert you"]],
   },
   29: {
@@ -308,6 +321,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["29:14", "From Your hand we have given You", "\"All things come from You, and from Your hand we have given You.\" Every gift we bring God was His first."],
       ["29:28", "Full of days, riches and honor", "David died in a good old age, full of days, riches and honor. In spite of his failures, his life ends well."],
     ],
+    bg: [["\"Yours, O LORD, is the greatness\"", "David's prayer, \"Yours, O LORD, is the greatness and the power and the glory\" (29:11), has shaped Christian worship. Many think it inspired the closing words often added to the Lord's Prayer: \"For Yours is the kingdom and the power and the glory forever.\"", "good", ["selman", "thompson"]]],
     refs: [["2CO.9", "2 Corinthians 9:7", "God loves a cheerful giver"], ["MAT.6", "Matthew 6:13", "Yours is the kingdom and the power"], ["1KI.2", "1 Kings 2:10-12", "David's death"]],
   },
 });

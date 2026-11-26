@@ -17,6 +17,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["1:12", "Riches, wealth and honor", "Solomon asked only for wisdom, and God gave him riches, wealth and honor as well. God gives more generously than we ask (Ephesians 3:20)."],
       ["1:15", "Silver and gold as plentiful as stones", "Silver and gold were as common as stones, and cedar as common as sycamore trees. It is a picture of Solomon's golden age."],
     ],
+    bg: [["Horses from Egypt and Kue", "Solomon's traders bought horses from Egypt and from Kue, in Cilicia (southern Turkey), and sold chariots and horses to the Hittite and Aramean kings (1:16-17). The Law had warned kings not to multiply horses from Egypt (Deuteronomy 17:16).", "good", ["selman", "kitchen"]]],
     refs: [["1KI.3", "1 Kings 3:4-15", "The same dream"], ["JAS.1", "James 1:5", "Ask God for wisdom"]],
   },
   2: {
@@ -26,6 +27,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["2:6", "The highest heavens cannot contain Him", "No building can hold God; the temple is a place to worship Him."],
       ["2:12", "Blessed be the LORD", "Huram (Hiram), the foreign king of Tyre, blesses the LORD who made heaven and earth. God's greatness is seen even by outsiders."],
     ],
+    bg: [["Huram-abi the craftsman", "Hiram of Tyre sent Huram-abi, whose mother was from the tribe of Dan and whose father was from Tyre, skilled in gold, silver, bronze, stone, wood and fine cloth (2:13-14). Like Bezalel for the tabernacle, he led the craftwork.", "good", ["selman", "williamson"]]],
     refs: [["1KI.5", "1 Kings 5", "The same agreement"], ["ACT.17", "Acts 17:24", "God does not dwell in temples made with hands"]],
   },
   3: {
@@ -35,6 +37,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["3:14", "The veil", "The veil, woven in blue, purple and crimson with cherubim, closed off the Most Holy Place. In the later temple such a curtain was torn in two when Jesus died (Matthew 27:51)."],
       ["3:17", "Jachin and Boaz", "\"He establishes\" and \"In Him is strength.\""],
     ],
+    bg: [["Mount Moriah", "Solomon built the temple \"on Mount Moriah\" (3:1). That links it with Genesis 22:2, where Abraham was told to offer Isaac \"in the land of Moriah,\" and God provided a ram instead. The place of sacrifice became the place of worship.", "strong", ["selman", "williamson"]]],
     refs: [["GEN.22", "Genesis 22:2, 14", "On the mount of the LORD it will be provided"], ["MAT.27", "Matthew 27:51", "The veil torn"]],
   },
   4: {
@@ -55,6 +58,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["5:13", "In unison", "The trumpeters and singers joined \"as one, to make one sound\" in praising God. Unity in worship came just before God's glory filled the house."],
       ["5:14", "The glory of the LORD filled the house of God", "The cloud of God's glory filled the temple so that the priests could not stand to minister. God answered His people's worship with His presence."],
     ],
+    bg: [["The poles of the ark", "The ark's carrying poles were so long that their ends could be seen from the holy place, \"and they are there to this day\" (5:9). They stayed in place because the ark was never to be carried by any other way (Exodus 25:15).", "good", ["selman", "thompson"]]],
     refs: [["1KI.8", "1 Kings 8:1-11", "The same scene"], ["EXO.40", "Exodus 40:34-35", "Glory fills the tabernacle"]],
   },
   6: {
@@ -65,6 +69,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["6:36-39", "If they return to You with all their heart", "Solomon foresees a day when the people sin and are carried off to a far land. Even then, if they turn back to God with all their heart, He will hear. Daniel prayed toward Jerusalem in exile in just this way (Daniel 6:10)."],
       ["6:41", "Arise, O LORD God, to Your resting place", "Solomon's prayer ends with words from Psalm 132:8-10, asking God to come to His resting place and clothe His priests with salvation."],
     ],
+    bg: [["No one who does not sin", "Solomon's prayer is realistic: \"When they sin against You (for there is no man who does not sin)\" (6:36). He asks God to hear and forgive when His people turn back, even from a far land.", "good", ["selman", "williamson"]]],
     refs: [["1KI.8", "1 Kings 8:22-53", "The same prayer"], ["PSA.132", "Psalm 132:8-10", "Arise, O LORD"], ["JHN.1", "John 1:14", "The Word dwelt among us"]],
   },
   7: {
@@ -74,6 +79,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["7:14", "If My people... humble themselves", "One of the best-known promises in the Old Testament, given to Israel about the temple and the land. Christians apply its call to humility, prayer and repentance today."],
       ["7:16", "My eyes and My heart will be there perpetually", "God chose this house and promised that His eyes and His heart would be there always. He commits Himself to His people's place of worship."],
     ],
+    bg: [["\"If My people\"", "God answered Solomon's prayer at night: \"If My people who are called by My name humble themselves and pray and seek My face and turn from their wicked ways, then I will hear from heaven, will forgive their sin and will heal their land\" (7:14). It sums up the message of Chronicles.", "good", ["selman", "thompson"]]],
     refs: [["LEV.9", "Leviticus 9:24", "Fire from the LORD"], ["1KI.9", "1 Kings 9:1-9", "God's answer"], ["JAS.4", "James 4:10", "Humble yourselves before the Lord"]],
   },
   8: {
@@ -83,6 +89,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["8:13", "According to the commandment of Moses", "Sacrifices were offered on the days the Law of Moses set: Sabbaths, new moons, and the three yearly feasts of Unleavened Bread, Weeks and Booths."],
       ["8:16", "The house of the LORD was completed", "From the laying of the foundation to the finishing, all Solomon's work on the house of the LORD was completed."],
     ],
+    bg: [["Ships to Ophir", "Solomon built ships at Ezion-geber on the Gulf of Aqaba, and Hiram's sailors brought back gold from Ophir (8:17-18). No one is sure where Ophir was; suggestions include Arabia, East Africa and India. A pottery piece found near Tel Aviv mentions \"gold of Ophir.\"", "strong", ["selman", "kitchen"]]],
     refs: [["1KI.9", "1 Kings 9:10-28", "Solomon's projects"]],
   },
   9: {
@@ -92,6 +99,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["9:8", "To set you on His throne as king for the LORD your God", "Chronicles stresses that it is God's throne."],
       ["9:23", "To hear his wisdom which God had put in his heart", "Kings came from all over the earth to hear the wisdom that God had put in Solomon's heart. His wisdom was God's gift, not his own achievement."],
     ],
+    bg: [["The queen of Sheba", "Sheba was a kingdom in southern Arabia, in today's Yemen, rich from the trade in frankincense and spices carried north by camel. Its queen brought \"spices in great abundance\" (9:9) and praised Solomon's God.", "good", ["selman", "kitchen"]]],
     refs: [["1KI.10", "1 Kings 10", "The same visit"], ["MAT.12", "Matthew 12:42", "Something greater than Solomon"]],
   },
   10: {
@@ -113,6 +121,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["11:16", "Those who set their hearts on seeking the LORD", "Priests, Levites and others who set their hearts on seeking the LORD left the north and came to Jerusalem to worship. Faithfulness cost them their homes."],
       ["11:17", "They walked in the way of David and Solomon for three years", "For three years Judah walked in the ways of David and Solomon and grew strong. It was a good beginning."],
     ],
+    bg: [["Rehoboam's fortress cities", "Rehoboam fortified fifteen cities in Judah, such as Bethlehem, Lachish and Hebron, stocking them with food, oil, wine, shields and spears (11:5-12). Most guarded the roads from the south and west, the way Egypt's army would come.", "good", ["selman", "kitchen"]]],
     refs: [["1KI.12", "1 Kings 12:21-24", "Do not fight"]],
   },
   12: {
@@ -143,6 +152,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["14:7", "Because we have sought the LORD", "\"Because we have sought the LORD our God, He has given us rest on every side.\" Seeking God and enjoying peace go together in Chronicles."],
       ["14:11", "In Your name we have come", "Facing a huge army, Asa prays, \"Help us, O LORD our God, for we trust in You, and in Your name have come.\" It is a great prayer for anyone who feels weak."],
     ],
+    bg: [["Zerah the Cushite", "Zerah, from Cush (the region of Ethiopia and Sudan), came against Judah with a huge army and three hundred chariots (14:9). Asa prayed, \"Help us, O LORD our God, for we trust in You\" (14:11), and Judah won.", "good", ["selman", "thompson"]]],
     refs: [["1KI.15", "1 Kings 15:9-15", "Asa's reign"], ["PSA.20", "Psalm 20:7", "We will boast in the name of the LORD"]],
   },
   15: {
@@ -152,6 +162,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["15:7", "Be strong and do not lose courage", "\"Be strong and do not lose courage, for there is reward for your work.\" Paul gives the same encouragement in 1 Corinthians 15:58."],
       ["15:15", "They had sought Him earnestly", "The people sought God with their whole desire, and He let them find Him and gave them rest."],
     ],
+    bg: [["Removing the queen mother", "Asa removed his grandmother Maacah from her position as queen mother because she had made a horrid image as an Asherah, and he burned it (15:16). His faithfulness reached even into his own family.", "good", ["selman", "williamson"]]],
     refs: [["JER.29", "Jeremiah 29:13", "You will seek Me and find Me"], ["HEB.11", "Hebrews 11:6", "He rewards those who seek Him"]],
   },
   16: {
@@ -161,6 +172,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["16:9", "The eyes of the LORD move to and fro", "God looks for hearts fully devoted to Him."],
       ["16:12", "He did not seek the LORD, but the physicians", "Medicine is good; leaving God out is the problem."],
     ],
+    bg: [["Asa's illness", "In his old age Asa had a severe disease in his feet, \"yet even in his disease he did not seek the LORD, but the physicians\" (16:12). The point is not that doctors are wrong, but that Asa had stopped trusting God.", "good", ["selman", "thompson"]]],
     refs: [["1KI.15", "1 Kings 15:16-24", "The war with Baasha"], ["PSA.33", "Psalm 33:18", "The eye of the LORD is on those who fear Him"]],
   },
   17: {
@@ -170,6 +182,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["17:9", "They taught in Judah, having the book of the law", "Jehoshaphat sent officials, Levites and priests through the towns of Judah with the book of the law to teach the people. It was a traveling Bible school."],
       ["17:10", "The dread of the LORD was on all the kingdoms", "The fear of the LORD fell on the surrounding kingdoms, so they made no war against Jehoshaphat. God protected His faithful king."],
     ],
+    bg: [["\"The LORD judges\"", "Jehoshaphat's name means \"the LORD judges.\" He sought God, removed high places, and sent teachers through Judah with the book of the law (17:6-9). His reign shows a king living up to his name.", "good", ["selman", "williamson"]]],
     refs: [["DEU.6", "Deuteronomy 6:6-7", "Teach them diligently"], ["NEH.8", "Nehemiah 8:7-8", "They read and explained"]],
   },
   18: {
@@ -179,6 +192,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["18:13", "What my God says, that I will speak", "\"As the LORD lives, what my God says, that I will speak.\" The prophet Micaiah stands alone against four hundred prophets."],
       ["18:31", "Jehoshaphat cried out, and the LORD helped him", "When the enemy chariots surrounded him, Jehoshaphat cried out, \"and the LORD helped him.\" Chronicles adds these words to the account in 1 Kings 22:32."],
     ],
+    bg: [["An arrow drawn at random", "Ahab disguised himself in battle so the enemy would aim at Jehoshaphat in his royal robes. But \"a certain man drew his bow at random\" and struck Ahab between the joints of his armor (18:33), just as Micaiah had warned.", "good", ["selman", "thompson"]]],
     refs: [["1KI.22", "1 Kings 22", "The same events"]],
   },
   19: {
@@ -188,6 +202,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["19:3", "There is some good in you", "Yet God also tells him, \"There is some good in you,\" because he removed idols and set his heart to seek God. God notices the good as well as the bad."],
       ["19:7", "No injustice or partiality or bribery", "Jehoshaphat tells his judges to judge without injustice, favoritism or bribes, because the LORD our God has none of these."],
     ],
+    bg: [["Judges in every city", "Jehoshaphat appointed judges in all the fortified cities of Judah and a high court in Jerusalem of Levites, priests and family heads (19:5, 8). \"Deal courageously, and the LORD be with the upright\" (19:11).", "good", ["selman", "williamson"]]],
     refs: [["DEU.16", "Deuteronomy 16:18-20", "Appoint judges"], ["2CO.6", "2 Corinthians 6:14", "Do not be bound together with unbelievers"]],
   },
   20: {
@@ -198,6 +213,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["20:21", "Give thanks to the LORD", "Singers went out ahead of the army praising, \"Give thanks to the LORD, for His lovingkindness is everlasting.\" Praise led the way into battle."],
       ["20:22", "When they began singing and praising", "When they began singing and praising, the LORD set ambushes, and the enemy armies turned on each other. Judah never had to fight."],
     ],
+    bg: [["The Valley of Beracah", "After God routed the invading armies, Judah gathered in a valley and blessed the LORD, so it was named Beracah, \"blessing\" (20:26). The battle began in the wilderness of Tekoa, south of Bethlehem.", "good", ["selman", "thompson"]]],
     refs: [["1SA.17", "1 Samuel 17:47", "The battle is the LORD's"], ["PSA.123", "Psalm 123:1-2", "Our eyes look to the LORD"], ["EXO.14", "Exodus 14:13-14", "Stand by and see the salvation of the LORD"]],
   },
   21: {
@@ -207,6 +223,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["21:7", "Because of the covenant with David", "God still keeps a lamp for David's line."],
       ["21:20", "He departed with no one's regret", "King Jehoram \"departed with no one's regret\" and was not buried in the tombs of the kings. It is one of the saddest epitaphs in the Bible."],
     ],
+    bg: [["A letter from Elijah", "A letter from the prophet Elijah came to King Jehoram, warning of judgment because he had led Judah into the ways of Ahab's house (21:12-15). It is the only mention of Elijah in Chronicles.", "good", ["selman", "japhet"]]],
     refs: [["2KI.8", "2 Kings 8:16-24", "Jehoram's reign"]],
   },
   22: {
@@ -227,6 +244,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["23:16", "That they would be the LORD's people", "Jehoiada made a covenant that king and people would be the LORD's people. The nation renewed its commitment to God."],
       ["23:21", "The city was quiet", "After the wicked queen Athaliah was put to death, the people rejoiced and the city was quiet. Peace returned."],
     ],
+    bg: [["A secret coronation", "Jehoiada the priest gathered Levites and commanders, placed guards around the temple, and brought out the young Joash, giving him the crown and \"the testimony,\" a copy of God's law (23:11). Athaliah shouted \"Treason!\" but her reign was over.", "good", ["selman", "williamson"]]],
     refs: [["2KI.11", "2 Kings 11:4-21", "Joash crowned"]],
   },
   24: {
@@ -236,6 +254,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["24:20", "Why do you transgress the commandments?", "The Spirit came on Zechariah, Jehoiada's son, and he warned the people. Joash had him stoned in the temple court. Jesus seems to refer to his death in Luke 11:51."],
       ["24:22", "May the LORD see and avenge!", "Jesus may refer to this Zechariah in Matthew 23:35 and Luke 11:51."],
     ],
+    bg: [["From Abel to Zechariah", "Zechariah son of Jehoiada was stoned in the temple court (24:20-22). Jesus spoke of the blood of the righteous \"from the blood of Abel to the blood of Zechariah\" (Luke 11:51). Since Chronicles is the last book of the Hebrew Bible, that meant from the first murder in Scripture to the last.", "good", ["selman", "williamson"]]],
     refs: [["MAT.23", "Matthew 23:35", "From Abel to Zechariah"], ["2KI.12", "2 Kings 12", "Joash's reign"]],
   },
   25: {
@@ -245,6 +264,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["25:9", "The LORD has much more to give you than this", "Do the right thing even when it costs money."],
       ["25:14-15", "Why have you sought the gods of the people?", "Gods that could not save their own people."],
     ],
+    bg: [["Hired soldiers sent home", "Amaziah hired 100,000 soldiers from Israel for a hundred talents of silver, but a man of God told him to send them home. \"The LORD has much more to give you than this\" (25:9). After winning, Amaziah foolishly worshiped the gods of Edom he had defeated (25:14).", "good", ["selman", "thompson"]]],
     refs: [["2KI.14", "2 Kings 14:1-20", "Amaziah's reign"]],
   },
   26: {
@@ -255,6 +275,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["26:16", "When he became strong, his heart was so proud", "When Uzziah became strong, his heart grew proud, and he went into the temple to burn incense. Pride after success brought his fall."],
       ["26:18", "It is not for you, Uzziah, to burn incense", "Azariah and eighty brave priests stood up to the king: burning incense was only for the priests, the sons of Aaron. Uzziah was struck with a skin disease for the rest of his life (26:19-21)."],
     ],
+    bg: [["Uzziah's burial plaque", "Uzziah was buried in a field near the royal tombs because of his skin disease (26:23). A stone plaque from about the time of Jesus, found in Jerusalem, reads in Aramaic: \"Here were brought the bones of Uzziah, king of Judah. Do not open.\"", "strong", ["selman", "kitchen"]]],
     refs: [["ISA.6", "Isaiah 6:1", "In the year of King Uzziah's death"], ["PRO.16", "Proverbs 16:18", "Pride goes before destruction"]],
   },
   27: {
@@ -275,6 +296,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["28:15", "They clothed all their naked", "A kindness that may lie behind Jesus' story of the good Samaritan, near Jericho."],
       ["28:22", "In the time of his distress he became yet more unfaithful", "Trouble hardens Ahaz instead of humbling him."],
     ],
+    bg: [["Ahaz shuts the temple doors", "Ahaz sacrificed to the gods of Damascus, cut up the temple vessels and shut the doors of the house of the LORD (28:23-24). \"In the time of his distress this same King Ahaz became yet more unfaithful\" (28:22).", "good", ["selman", "williamson"]]],
     refs: [["LUK.10", "Luke 10:30-37", "The good Samaritan"], ["2KI.16", "2 Kings 16", "Ahaz's reign"], ["ISA.7", "Isaiah 7", "Isaiah and Ahaz"]],
   },
   29: {
@@ -285,6 +307,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["29:27", "The song to the LORD also began", "When the offering began, the music began."],
       ["29:36", "God had prepared for the people", "Hezekiah and the people rejoiced over what God had prepared for them, because it had all come about so quickly."],
     ],
+    bg: [["Sixteen days of cleaning", "The priests and Levites spent sixteen days cleansing the temple, carrying out all the uncleanness to the Kidron Valley (29:16-17). Then Hezekiah restored the sacrifices and the music of David (29:25-30).", "good", ["selman", "thompson"]]],
     refs: [["2KI.18", "2 Kings 18:1-7", "Hezekiah's faith"]],
   },
   30: {
@@ -295,6 +318,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["30:18-19", "Who prepares his heart to seek God", "Many who came had not been purified by the rules. Hezekiah prayed for everyone who prepared his heart to seek God, and the LORD heard and healed the people (30:20). The heart mattered more than the ritual."],
       ["30:26", "There was great joy in Jerusalem", "The first united Passover since the split."],
     ],
+    bg: [["An invitation to the north", "The northern kingdom had fallen to Assyria in 722 BC. Hezekiah sent letters from Beersheba to Dan inviting the survivors to Jerusalem for the Passover: \"Return to the LORD... that He may return to those of you who escaped\" (30:6).", "good", ["selman", "williamson"]]],
     refs: [["EXO.12", "Exodus 12", "The first Passover"], ["1SA.16", "1 Samuel 16:7", "The LORD looks at the heart"]],
   },
   31: {
@@ -304,6 +328,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["31:10", "We have had enough to eat with plenty left over", "The chief priest reports, \"We have had enough to eat with plenty left over, for the LORD has blessed His people.\""],
       ["31:21", "He did it with all his heart", "In everything he began for God's house, the law and the commandments, Hezekiah sought God and worked with all his heart, and he prospered."],
     ],
+    bg: [["Heaps of gifts", "The people brought so much grain, oil, honey and tithes that it lay in heaps from the third month to the seventh (31:5-7). Hezekiah had storerooms prepared in the temple to hold it all (31:11).", "good", ["selman", "thompson"]]],
     refs: [["MAL.3", "Malachi 3:10", "Bring the whole tithe"], ["2CO.9", "2 Corinthians 9:6-8", "God is able to make all grace abound"]],
   },
   32: {
@@ -331,6 +356,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["Chronicles' theme of repentance", "Others think the Chronicler shaped the account to show his main theme, that God forgives those who humble themselves, while drawing on older sources.", ["japhet", "williamson"]],
     ],
     common: "All agree on the message: God hears even the worst sinner who humbles himself, though the damage done to others can last.",
+    bg: [["Manasseh's prayer", "Chronicles alone tells that Manasseh, taken captive, humbled himself and prayed, and God restored him (33:12-13). His prayer was \"written in the records of the Hozai\" (33:19). A later writing called the Prayer of Manasseh, included in some Bibles' Apocrypha, imagines its words.", "good", ["selman", "japhet"]]],
     refs: [["2KI.21", "2 Kings 21", "Manasseh's reign"], ["LUK.15", "Luke 15:17-24", "The prodigal comes home"], ["1JN.1", "1 John 1:9", "If we confess, He is faithful to forgive"]],
   },
   34: {
@@ -341,6 +367,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["34:27", "Because your heart was tender", "Through the prophetess Huldah, God tells Josiah that because his heart was tender and he humbled himself, God has heard him."],
       ["34:31", "With all his heart and all his soul", "Josiah stood in his place and made a covenant to follow the LORD with all his heart and soul, and he led the people to do the same."],
     ],
+    bg: [["Huldah the prophetess", "When the book of the law was found, Josiah's officials went to Huldah the prophetess, who lived in the Second Quarter of Jerusalem (34:22). She gave God's word plainly, and the king believed it.", "good", ["selman", "williamson"]]],
     refs: [["2KI.22", "2 Kings 22-23", "Josiah's reforms"], ["1TI.4", "1 Timothy 4:12", "Let no one look down on your youthfulness"]],
   },
   35: {
@@ -350,6 +377,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["selman", "thompson"] }
       ["35:18", "There had not been celebrated a Passover like it", "No Passover like it had been kept since the days of Samuel the prophet. It was a high point of worship."],
       ["35:22", "He did not listen to the words of Neco from the mouth of God", "Pharaoh Neco warned Josiah to stay out of his way, and Chronicles says the warning was from God. Josiah would not listen and died in battle at Megiddo in 609 BC. Even a good king can fail to listen."],
     ],
+    bg: [["Jeremiah mourns Josiah", "When Josiah died at Megiddo in 609 BC, \"Jeremiah chanted a lament for Josiah,\" and singers remembered him in their laments for generations (35:25). The death of Judah's last good king was a national grief.", "good", ["selman", "thompson"]]],
     refs: [["2KI.23", "2 Kings 23:21-30", "Passover and Josiah's death"], ["ZEC.12", "Zechariah 12:11", "The mourning in the plain of Megiddo"]],
   },
   36: {
