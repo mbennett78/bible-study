@@ -17,6 +17,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["1:8", "A hairy man with a leather belt", "John the Baptist dressed like Elijah (Mark 1:6)."],
       ["1:13", "Let my life be precious in your sight", "After fire fell on two captains and their men, a third captain knelt before Elijah and begged: let my life be precious in your sight. His humility received mercy."],
     ],
+    bg: [["A hairy man with a leather belt", "King Ahaziah sent to ask Baal-zebub, god of Ekron, if he would recover. Elijah met the messengers. They described him as \"a hairy man with a leather girdle\" (1:8). John the Baptist dressed the same way (Mark 1:6), and Jesus said John was the Elijah who was to come (Matthew 11:14).", "good", ["house", "provan"]]],
     refs: [["LUK.9", "Luke 9:54-56", "Shall we command fire to come down?"], ["MRK.1", "Mark 1:6", "John wore a leather belt"]],
   },
   2: {
@@ -27,6 +28,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["2:11", "Elijah went up by a whirlwind", "Like Enoch, he did not die. He appears with Jesus at the transfiguration (Matthew 17:3)."],
       ["2:14", "Where is the LORD, the God of Elijah?", "Elisha struck the Jordan with Elijah's cloak and asked: where is the LORD, the God of Elijah? The water parted. The power was God's, not the cloak's."],
     ],
+    bg: [["A double portion", "Elisha asked for \"a double portion of your spirit\" (2:9). The firstborn son received a double share of the inheritance (Deuteronomy 21:17), so Elisha was asking to be Elijah's true heir. When Elijah was taken up, Elisha picked up his cloak and struck the Jordan (2:13-14).", "strong", ["house", "wiseman"]]],
     refs: [["MAT.17", "Matthew 17:1-3", "Moses and Elijah"], ["MAL.4", "Malachi 4:5", "I am going to send you Elijah"], ["LUK.1", "Luke 1:17", "In the spirit and power of Elijah"]],
   },
   3: {
@@ -47,6 +49,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["4:26", "It is well", "Her son had just died, yet when asked if all was well, the Shunammite answered: it is well. She went straight to the man of God."],
       ["4:42-44", "They ate and had some left over", "Elisha fed a hundred men with twenty barley loaves, and there was some left over, as the LORD said. Jesus did far greater when He fed the crowds (John 6:9-13)."],
     ],
+    bg: [["A room on the roof", "A wealthy woman of Shunem and her husband built a small room on their roof for Elisha, with a bed, a table, a chair and a lamp (4:10). Their simple kindness was later answered with the gift of a son, and then his life restored.", "good", ["house", "provan"]]],
     refs: [["LUK.7", "Luke 7:11-16", "Jesus raises a widow's son"], ["JHN.6", "John 6:9-13", "Five barley loaves"], ["HEB.11", "Hebrews 11:35", "Women received back their dead"]],
   },
   5: {
@@ -57,6 +60,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["5:14", "Like the flesh of a little child", "Naaman dipped seven times in the Jordan, and his skin became like a young boy's. Jesus mentioned Naaman in Luke 4:27."],
       ["5:15", "No God in all the earth, but in Israel", "Naaman came back and confessed: now I know there is no God in all the earth except in Israel."],
     ],
+    bg: [["Two loads of earth", "After he was healed, Naaman asked for two mule loads of Israel's soil to take home to Aram (5:17), so he could worship the LORD on it. People then often thought a god belonged to his own land. Jesus mentioned Naaman as a foreigner who received God's mercy (Luke 4:27).", "good", ["house", "wiseman"]]],
     refs: [["LUK.4", "Luke 4:27", "None was cleansed but Naaman the Syrian"], ["LUK.17", "Luke 17:15-18", "The foreigner who returned to give thanks"]],
   },
   6: {
@@ -66,6 +70,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["6:17", "Chariots of fire", "Elisha prayed, and God opened the servant's eyes. The hills were full of horses and chariots of fire around Elisha."],
       ["6:22", "Set bread and water before them", "Instead of killing the captured soldiers, Elisha told the king to give them bread and water and send them home. The raids stopped (6:23). Compare Romans 12:20."],
     ],
+    bg: [["A borrowed axe head", "Iron tools were costly, so losing a borrowed axe head in the river meant a debt the young prophet could not pay (6:5). Elisha made the iron float. God cares about small, practical troubles too.", "good", ["house", "provan"]]],
     refs: [["PSA.34", "Psalm 34:7", "The angel of the LORD encamps around those who fear Him"], ["ROM.12", "Romans 12:20", "If your enemy is hungry, feed him"], ["2CO.4", "2 Corinthians 4:18", "The things which are not seen"]],
   },
   7: {
@@ -75,6 +80,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["7:6", "The Lord had caused them to hear a sound", "The Lord made the Aramean army hear the sound of chariots, horses and a great army. They fled, leaving everything behind. God won without a battle."],
       ["7:9", "We are not doing right", "\"This day is a day of good news.\" Good news must be shared."],
     ],
+    bg: [["Famine prices in Samaria", "During Aram's siege, a donkey's head sold for eighty shekels of silver (6:25). Elisha promised that by the next day fine flour would sell for a shekel at the gate (7:1). Four lepers found the enemy camp empty and said, \"This day is a day of good news\" (7:9).", "good", ["house", "wiseman"]]],
     refs: [["ROM.10", "Romans 10:15", "How beautiful are the feet of those who bring good news"]],
   },
   8: {
@@ -84,6 +90,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["8:11-12", "The man of God wept", "Elisha stared at Hazael until he was ashamed, then wept, knowing the terrible harm Hazael would do to Israel as king of Aram."],
       ["8:19", "A lamp to him through his sons always", "God keeps David's line for His promise's sake."],
     ],
+    bg: [["Hazael of Damascus", "Elisha wept as he told Hazael he would become king of Aram and do great harm to Israel (8:12-13). Hazael is known from Assyrian records, which call him \"son of a nobody,\" meaning he was not born to the throne. The Tel Dan inscription was probably set up by him.", "strong", ["kitchen", "house"]]],
     refs: [["2SA.7", "2 Samuel 7:12-16", "The promise to David"]],
   },
   9: {
@@ -103,6 +110,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["10:28", "Jehu eradicated Baal out of Israel", "Jehu wiped out Baal worship from Israel, a real reform."],
       ["10:31", "Not careful to walk with all his heart", "Yet Jehu was not careful to follow the LORD's law with all his heart. He kept Jeroboam's golden calves. His obedience was only partial."],
     ],
+    bg: [["Jehu on the Black Obelisk", "The Black Obelisk of the Assyrian king Shalmaneser III, now in the British Museum, shows \"Jehu son of Omri\" bowing to the ground and bringing tribute in 841 BC. It is the only known picture of a king of Israel or Judah.", "strong", ["kitchen", "anet"]]],
     refs: [["HOS.1", "Hosea 1:4", "God judges the bloodshed of Jezreel"]],
   },
   11: {
@@ -112,6 +120,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["11:12", "Long live the king!", "Seven-year-old Joash is crowned with the testimony (the law)."],
       ["11:17", "A covenant between the LORD and the king and the people", "After the wicked queen Athaliah was removed, the priest Jehoiada made a covenant between the LORD, the young king and the people that they would be the LORD's people."],
     ],
+    bg: [["The hidden prince", "When Athaliah killed the royal family to seize the throne, Jehosheba hid her baby nephew Joash in the temple for six years (11:2-3). Then Jehoiada the priest crowned him. God kept His promise to David through one small child.", "good", ["house", "provan"]]],
     refs: [["2CH.22", "2 Chronicles 22:10-12", "Joash hidden"], ["2SA.7", "2 Samuel 7:16", "Your throne shall be established forever"]],
   },
   12: {
@@ -121,6 +130,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["12:9", "A chest", "To repair the temple, the priest Jehoiada bored a hole in the lid of a chest and set it by the altar. A simple system for giving."],
       ["12:15", "They dealt faithfully", "No one asked for an accounting from the men who paid the workers, because they dealt honestly."],
     ],
+    bg: [["A chest with a hole in the lid", "Money for temple repairs kept disappearing, so Jehoiada bored a hole in the lid of a chest and set it beside the altar (12:9). The money was counted openly and paid to the workmen, \"for they dealt faithfully\" (12:15).", "good", ["house", "wiseman"]]],
     refs: [["2CH.24", "2 Chronicles 24", "Joash's reign and fall"], ["2CO.8", "2 Corinthians 8:20-21", "Honest handling of gifts"]],
   },
   13: {
@@ -131,6 +141,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["13:21", "He revived and stood up", "God's power continues after the prophet's death."],
       ["13:23", "The LORD was gracious to them", "Because of His covenant with Abraham, Isaac and Jacob."],
     ],
+    bg: [["Elisha's bones", "Even after Elisha died, when a dead man was thrown into his grave and touched his bones, the man came back to life (13:21). The power was God's, still at work through His prophet's memory.", "good", ["house", "provan"]]],
     refs: [["2KI.2", "2 Kings 2:12", "My father, the chariots of Israel"]],
   },
   14: {
@@ -140,6 +151,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["14:10", "Your heart has become proud", "After defeating Edom, Amaziah challenged Israel. King Jehoash warned: your heart has become proud; stay home. Amaziah would not listen and was defeated."],
       ["14:25", "Jonah the son of Amittai", "The same Jonah who later went to Nineveh."],
     ],
+    bg: [["Jonah son of Amittai", "Jeroboam II restored Israel's borders \"according to the word of the LORD... spoken through His servant Jonah the son of Amittai, the prophet\" (14:25). This is the same Jonah sent to Nineveh. He was a real prophet of Israel's history.", "strong", ["house", "wiseman"]]],
     refs: [["JON.1", "Jonah 1:1", "Jonah the son of Amittai"], ["DEU.24", "Deuteronomy 24:16", "Each for his own sin"]],
   },
   15: {
@@ -149,6 +161,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["15:19", "Pul, king of Assyria", "Pul is another name for Tiglath-pileser III of Assyria, who ruled 745-727 BC. His own records mention receiving tribute from Menahem of Israel."],
       ["15:29", "Carried them captive to Assyria", "Tiglath-pileser captured northern Israel's towns and Galilee and carried the people to Assyria. These were the first deportations from the north."],
     ],
+    bg: [["Tiglath-pileser arrives", "Pul, also called Tiglath-pileser III, king of Assyria, came against Israel, and Menahem paid him a thousand talents of silver (15:19-20). Tiglath-pileser's own records list Menahem of Samaria among those who paid. In 732 BC he took Galilee and carried people captive to Assyria (15:29).", "strong", ["kitchen", "anet"]]],
     refs: [["ISA.6", "Isaiah 6:1", "In the year of King Uzziah's death"], ["2CH.26", "2 Chronicles 26", "Uzziah's pride"]],
   },
   16: {
@@ -158,6 +171,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["16:7", "I am your servant and your son", "Ahaz trusts Assyria rather than God (Isaiah 7)."],
       ["16:10-11", "The altar at Damascus", "King Ahaz saw an altar in Damascus and had a copy built for God's temple. He copied the worship of the nations instead of following God's pattern."],
     ],
+    bg: [["Ahaz copies an altar", "Ahaz paid Tiglath-pileser to rescue him from Aram and Israel (16:7-8). An Assyrian list of kings who paid tribute names \"Jehoahaz of Judah,\" Ahaz's full name. In Damascus Ahaz saw an altar he liked and had a copy built for the temple in Jerusalem (16:10-11).", "strong", ["kitchen", "house"]]],
     refs: [["ISA.7", "Isaiah 7", "Isaiah's word to Ahaz"], ["2CH.28", "2 Chronicles 28", "Ahaz's reign"]],
   },
   17: {
@@ -190,6 +204,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["19:34", "For My own sake and for My servant David's sake", "Through Isaiah God answered: I will defend this city to save it, for My own sake and for the sake of My servant David."],
       ["19:37", "His sons killed him", "Assyrian records confirm Sennacherib was murdered by a son, in 681 BC."],
     ],
+    bg: [["The siege of Lachish in pictures", "Sennacherib camped at Lachish, Judah's second city, while threatening Jerusalem (18:14, 17; 19:8). He later decorated his palace in Nineveh with carved wall panels showing the siege of Lachish: battering rams, archers and families led away. They are now in the British Museum.", "strong", ["kitchen", "anet"]]],
     refs: [["ISA.37", "Isaiah 37", "The same account"], ["PSA.46", "Psalm 46", "God is our refuge"], ["PHP.4", "Philippians 4:6", "Let your requests be made known to God"]],
   },
   20: {
@@ -200,6 +215,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["20:17", "Carried to Babylon", "Over a hundred years before it happened."],
       ["20:19", "Peace and truth in my days", "Told that his treasures would go to Babylon, Hezekiah thought: at least there will be peace in my lifetime. It was a self-centered response."],
     ],
+    bg: [["Envoys from Babylon", "Merodach-baladan, king of Babylon, sent envoys to Hezekiah after his illness (20:12). Babylonian records show Merodach-baladan fought Assyria for years and was looking for allies. Hezekiah showed them all his treasures, and Isaiah warned that Babylon would one day carry them away (20:17).", "strong", ["kitchen", "house"]]],
     refs: [["ISA.38", "Isaiah 38", "Hezekiah's prayer and song"], ["ISA.39", "Isaiah 39", "The Babylonian envoys"], ["2CH.32", "2 Chronicles 32:24-31", "Hezekiah's pride"]],
   },
   21: {
@@ -209,6 +225,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["21:13", "As one wipes a dish", "Because of King Manasseh's evil, God says He will wipe Jerusalem as one wipes a dish, wiping it and turning it upside down."],
       ["21:16", "Very much innocent blood", "Jewish tradition says Isaiah was killed under Manasseh."],
     ],
+    bg: [["Manasseh in Assyrian records", "Manasseh reigned fifty-five years, longer than any other king of Judah (21:1). The Assyrian kings Esarhaddon and Ashurbanipal both list \"Manasseh king of Judah\" among the vassal kings who sent them materials and tribute.", "strong", ["kitchen", "anet"]]],
     refs: [["2CH.33", "2 Chronicles 33:10-20", "Manasseh repents late in life"], ["JER.15", "Jeremiah 15:4", "Because of Manasseh"]],
   },
   22: {
@@ -218,6 +235,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["22:8", "I have found the book of the law", "God's word had been lost in God's own house."],
       ["22:19", "Your heart was tender", "When King Josiah heard the rediscovered book of the law, he tore his clothes and wept. God said: because your heart was tender and you humbled yourself, I have heard you."],
     ],
+    bg: [["Shaphan's family in clay", "Shaphan the scribe read the newly found book of the law to King Josiah (22:8-10). Small clay seal impressions found in Jerusalem bear the name \"Gemaryahu son of Shaphan,\" and Gemariah son of Shaphan appears in Jeremiah 36:10.", "strong", ["kitchen", "house"]]],
     refs: [["2CH.34", "2 Chronicles 34", "Josiah's reign"], ["DEU.28", "Deuteronomy 28", "The curses read to Josiah"]],
   },
   23: {
@@ -228,6 +246,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["23:25", "Before him there was no king like him", "Who turned to the LORD with all his heart, soul and might."],
       ["23:29", "Pharaoh Neco", "Josiah's death at Megiddo was mourned for generations (2 Chronicles 35:25)."],
     ],
+    bg: [["Josiah's reform", "Josiah removed idols, high places and pagan priests across the land, and kept a Passover like none since the judges (23:21-22). \"Before him there was no king like him who turned to the LORD with all his heart\" (23:25). He died in 609 BC at Megiddo facing Pharaoh Neco (23:29).", "good", ["house", "provan"]]],
     refs: [["1KI.13", "1 Kings 13:2", "Josiah named in advance"], ["DEU.6", "Deuteronomy 6:5", "With all your heart, soul and might"]],
   },
   24: {

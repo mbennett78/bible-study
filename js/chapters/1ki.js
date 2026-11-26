@@ -19,6 +19,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["1:39", "Long live King Solomon!", "Zadok anoints him with oil from the tabernacle."],
       ["1:50", "The horns of the altar", "Holding the altar was a plea for sanctuary."],
     ],
+    bg: [["Anointed at the Gihon spring", "While Adonijah held his own coronation feast, David had Solomon ride his own mule down to the Gihon spring, Jerusalem's main water source, to be anointed by Zadok and Nathan (1:33-39). Riding the king's mule showed everyone who the chosen heir was.", "good", ["house", "provan"]]],
     refs: [["1CH.23", "1 Chronicles 23:1", "David made Solomon king"], ["2SA.7", "2 Samuel 7:12", "I will raise up your descendant"]],
   },
   2: {
@@ -29,6 +30,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["2:27", "Removed Abiathar from being priest", "Fulfilling God's word against Eli's house (1 Samuel 2:31-35)."],
       ["2:46", "The kingdom was established in the hands of Solomon", "The chapter ends: the kingdom was now firmly established in Solomon's hands. Old threats to David's throne had been dealt with."],
     ],
+    bg: [["Clinging to the altar", "Joab fled to the tent of the LORD and took hold of the horns of the altar, hoping for sanctuary (2:28). The Law said that refuge did not cover someone who murdered on purpose (Exodus 21:14), and Joab had killed Abner and Amasa.", "good", ["house", "wiseman"]]],
     refs: [["ACT.2", "Acts 2:29", "David died and was buried"], ["1SA.2", "1 Samuel 2:31-35", "Judgment on Eli's house"]],
   },
   3: {
@@ -39,6 +41,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["3:13", "What you have not asked", "God gives more than Solomon asked (Matthew 6:33)."],
       ["3:28", "The wisdom of God was in him", "When Israel heard how Solomon judged between the two mothers, they stood in awe, seeing that God's wisdom was in him to do justice."],
     ],
+    bg: [["A hearing heart", "At Gibeon God told Solomon to ask for anything. He asked for \"an understanding heart to judge Your people\" (3:9), literally \"a hearing heart.\" Soon after, the case of the two mothers showed his God-given wisdom (3:16-28).", "good", ["house", "provan"]]],
+    w: [["שֹׁמֵעַ", "shomea", "H8085", "hearing, listening", "Solomon's request is for a heart that listens, to God and to the people he judged. Wisdom begins with listening (James 1:19).", ["house", "wiseman"]]],
     refs: [["JAS.1", "James 1:5", "If any of you lacks wisdom, let him ask of God"], ["MAT.6", "Matthew 6:33", "Seek first His kingdom"], ["2CH.1", "2 Chronicles 1:7-12", "The same request"]],
   },
   4: {
@@ -48,6 +52,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["4:25", "Every man under his vine and his fig tree", "A picture of peace and safety that the prophets later use for the age to come (Micah 4:4)."],
       ["4:32", "3,000 proverbs", "Solomon spoke 3,000 proverbs and 1,005 songs. Some of them are preserved in Proverbs, Song of Songs and Psalms 72 and 127."],
     ],
+    bg: [["Solomon's wisdom and wealth", "Solomon spoke 3,000 proverbs and 1,005 songs and taught about trees, animals, birds and fish (4:32-33). His court's daily food included thirty oxen and a hundred sheep (4:22-23). \"Judah and Israel were as numerous as the sand... eating and drinking and rejoicing\" (4:20).", "good", ["house", "provan"]]],
     refs: [["MIC.4", "Micah 4:4", "Each under his vine and fig tree"], ["MAT.12", "Matthew 12:42", "Something greater than Solomon is here"]],
   },
   5: {
@@ -57,6 +62,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["5:5", "A house for the name of the LORD", "God's \"name\" stands for His presence and reputation."],
       ["5:17", "Costly stones", "Massive cut stones were used, like those still seen at the base of the later Temple Mount walls."],
     ],
+    bg: [["Cedar rafts from Lebanon", "Hiram, king of Tyre, sent cedar and cypress logs down from Lebanon, tied into rafts and floated along the coast (5:9). In return Solomon sent wheat and olive oil. Cedar of Lebanon was the prized building wood of the ancient world.", "good", ["house", "wiseman"]]],
     refs: [["1CH.22", "1 Chronicles 22:6-10", "David prepares Solomon"], ["2CH.2", "2 Chronicles 2", "Hiram's help"]],
   },
   6: {
@@ -67,6 +73,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["6:12-13", "I will dwell among the sons of Israel", "God's presence depends on faithfulness, not stones."],
       ["6:29", "Cherubim, palm trees and open flowers", "Images of Eden: the temple pictures a return to God's garden."],
     ],
+    bg: [["Four hundred eighty years", "The temple was begun \"in the four hundred and eightieth year after the sons of Israel came out of the land of Egypt\" (6:1), about 966 BC. Some take the number as exact, placing the exodus about 1446 BC; others read it as twelve generations of forty years and date the exodus later.", "good", ["house", "kitchen"]]],
     refs: [["2CH.3", "2 Chronicles 3", "The temple built"], ["ACT.7", "Acts 7:47-49", "The Most High does not dwell in houses made by hands"], ["1CO.3", "1 Corinthians 3:16", "You are a temple of God"]],
   },
   7: {
@@ -76,6 +83,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["7:21", "Jachin and Boaz", "\"He establishes\" and \"In Him is strength.\""],
       ["7:23", "The sea of cast metal", "The Sea was a huge cast bronze basin, about 15 feet across, resting on twelve bronze oxen. The priests used it for washing (2 Chronicles 4:6)."],
     ],
+    bg: [["Pillars and a sea of bronze", "Two great bronze pillars named Jachin and Boaz stood at the temple porch, and a huge bronze basin called the sea rested on twelve bronze oxen (7:15-26). A temple found at 'Ain Dara in Syria, from about the same era, has a three-room plan much like Solomon's.", "strong", ["house", "kitchen"]]],
     refs: [["2CH.4", "2 Chronicles 4", "The temple furnishings"], ["REV.3", "Revelation 3:12", "A pillar in the temple of My God"]],
   },
   8: {
@@ -87,6 +95,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["8:46", "There is no man who does not sin", "Paul makes the same point in Romans 3:23."],
       ["8:56", "Not one word has failed", "Of all God's good promises through Moses."],
     ],
+    bg: [["Heaven cannot contain You", "At the temple's dedication, Solomon prayed, \"Behold, heaven and the highest heaven cannot contain You, how much less this house which I have built!\" (8:27). He asked God to hear prayers toward this place, even from foreigners (8:41-43).", "good", ["house", "provan"]]],
     refs: [["2CH.6", "2 Chronicles 6", "Solomon's prayer"], ["2CH.7", "2 Chronicles 7:1-3", "Fire falls"], ["DAN.6", "Daniel 6:10", "Daniel prays toward Jerusalem"]],
   },
   9: {
@@ -96,6 +105,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["9:6-7", "If you turn away", "But if you or your sons turn away to serve other gods, I will cut Israel off from the land and reject this temple. This warning later came true (2 Kings 25)."],
       ["9:15", "Hazor, Megiddo and Gezer", "Archaeologists have found similar six-chambered gates at all three, often linked to Solomon's building.", "debated", ["kitchen"]],
     ],
+    bg: [["Hazor, Megiddo and Gezer", "Solomon fortified Hazor, Megiddo and Gezer (9:15). Archaeologists found large city gates with six chambers at all three cities, very similar in design. Many date them to Solomon's time, though some scholars date them a little later.", "strong", ["kitchen", "house"]]],
     refs: [["2CH.7", "2 Chronicles 7:12-22", "God's answer"], ["JER.7", "Jeremiah 7:4-14", "Do not trust in deceptive words, \"the temple of the LORD\""]],
   },
   10: {
@@ -116,6 +126,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["11:31", "Ten pieces", "The prophet Ahijah tore his new cloak into twelve pieces and told Jeroboam to take ten. God would give him ten tribes because Solomon turned to other gods."],
       ["11:36", "A lamp always before Me in Jerusalem", "God keeps David's line for His promise's sake."],
     ],
+    bg: [["A torn cloak", "Solomon's many foreign wives turned his heart to other gods (11:4). The prophet Ahijah met Jeroboam, tore his own new cloak into twelve pieces, and gave him ten: God would tear ten tribes from Solomon's son (11:29-31).", "good", ["house", "provan"]]],
     refs: [["NEH.13", "Nehemiah 13:26", "Did not Solomon sin regarding these things?"], ["DEU.17", "Deuteronomy 17:17", "Nor multiply wives"], ["ECC.2", "Ecclesiastes 2:10-11", "All was vanity"]],
   },
   12: {
@@ -126,6 +137,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["12:16", "To your tents, O Israel", "The kingdom divides: Israel in the north, Judah in the south."],
       ["12:28", "Behold your gods, O Israel", "Jeroboam made two golden calves and said: here are your gods, Israel, who brought you up from Egypt. The same words Aaron used (Exodus 32:4)."],
     ],
+    bg: [["Calves at Bethel and Dan", "To keep his people from going to Jerusalem to worship, Jeroboam set up golden calves at Bethel in the south and Dan in the north of his kingdom (12:28-29). \"This thing became a sin,\" and later kings are judged by whether they walked in \"the sins of Jeroboam.\"", "good", ["house", "wiseman"]]],
     refs: [["2CH.10", "2 Chronicles 10", "Rehoboam's choice"], ["MRK.10", "Mark 10:42-45", "Whoever wishes to be great shall be your servant"], ["EXO.32", "Exodus 32:4", "The golden calf"]],
   },
   13: {
@@ -135,6 +147,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["13:18", "He lied to him", "A warning to test every word, even from religious people."],
       ["13:33", "Jeroboam did not return from his evil way", "Even after the altar split apart and his hand withered (13:4-5), Jeroboam did not turn from his evil way and kept appointing priests for the high places."],
     ],
+    bg: [["A prophecy about Josiah", "A man of God from Judah cried against the altar at Bethel that a king named Josiah would burn priests' bones on it (13:2). About three hundred years later, Josiah did exactly that (2 Kings 23:15-16).", "strong", ["house", "provan"]]],
     refs: [["2KI.23", "2 Kings 23:15-18", "Josiah fulfills the prophecy"], ["GAL.1", "Galatians 1:8", "Even if an angel preaches another gospel"], ["1JN.4", "1 John 4:1", "Test the spirits"]],
   },
   14: {
@@ -178,6 +191,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["17:16", "The bowl of flour was not exhausted", "Jesus mentions this widow in Luke 4:25-26."],
       ["17:24", "Now I know that you are a man of God", "When Elijah brought her son back to life, the widow of Zarephath said: now I know you are a man of God and the LORD's word in your mouth is truth."],
     ],
+    bg: [["Drought against the storm god", "Baal was worshiped as the god of storms and rain. Elijah announced there would be no dew or rain except by his word (17:1), striking at Baal's supposed power. God sent him to a widow in Zarephath, near Sidon, Jezebel's homeland. Jesus mentioned her (Luke 4:25-26).", "good", ["house", "provan"]]],
     refs: [["LUK.4", "Luke 4:25-26", "A widow in Zarephath"], ["JAS.5", "James 5:17-18", "Elijah prayed earnestly"]],
   },
   18: {
@@ -189,6 +203,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["18:39", "The LORD, He is God", "When fire fell from heaven and consumed the sacrifice, the people fell on their faces and cried: the LORD, He is God! The LORD, He is God!"],
       ["18:44", "A cloud as small as a man's hand", "Elijah keeps praying until the rain comes."],
     ],
+    bg: [["The contest on Carmel", "Mount Carmel, on the coast, was a place where the rain clouds from the sea first arrive. Elijah mocked the prophets of Baal: maybe their god was busy, traveling, or asleep (18:27), teasing what Baal's worshipers believed. Then the LORD answered with fire.", "good", ["house", "wiseman"]]],
     refs: [["JAS.5", "James 5:17-18", "He prayed again, and the sky poured rain"], ["JOS.24", "Joshua 24:15", "Choose for yourselves today"]],
   },
   19: {
@@ -199,6 +214,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["19:12", "A gentle blowing", "God was not in the wind, earthquake or fire, but in a gentle whisper. Older Bibles call it a still small voice. God met His worn-out prophet quietly."],
       ["19:18", "Seven thousand", "Elijah was not alone after all (Romans 11:4)."],
     ],
+    bg: [["A gentle whisper at Horeb", "Running from Jezebel, Elijah lay under a broom tree and asked to die, and an angel brought him food (19:4-8). At Horeb, God was not in the wind, earthquake or fire, but in \"a sound of a gentle blowing\" (19:12). God was not done with him: 7,000 had not bowed to Baal.", "good", ["house", "provan"]]],
     refs: [["ROM.11", "Romans 11:2-5", "A remnant according to God's choice"], ["EXO.33", "Exodus 33:21-22", "Moses in the cleft of the rock at the same mountain"], ["1KI.18", "1 Kings 18", "The victory just before"]],
   },
   20: {
@@ -208,6 +224,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["20:28", "The LORD is a god of the hills", "The Arameans think God's power has limits; God proves them wrong."],
       ["20:42", "Your life shall go for his life", "Ahab let Ben-hadad go after God had given him into his hand. A prophet tells Ahab his life will be taken in place of the man he spared."],
     ],
+    bg: [["Do not boast too early", "When Ben-hadad of Aram boasted, Ahab answered with a proverb: \"Let not him who girds on his armor boast like him who takes it off\" (20:11). Victory is announced after the battle, not before.", "good", ["house", "wiseman"]]],
     refs: [["PRO.27", "Proverbs 27:1", "Do not boast about tomorrow"]],
   },
   21: {
@@ -217,6 +234,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["21:20", "Have you found me, O my enemy?", "\"I have found you, because you have sold yourself to do evil.\""],
       ["21:29", "Because he has humbled himself", "After Elijah's warning, Ahab tore his clothes and fasted. God tells Elijah: because he has humbled himself, I will not bring the disaster in his days. God responds even to Ahab's repentance."],
     ],
+    bg: [["Naboth's vineyard", "Naboth refused to sell his vineyard: \"The LORD forbid me that I should give you the inheritance of my fathers\" (21:3). Family land was a gift from God not to be sold away (Leviticus 25:23). Jezebel wrote letters in Ahab's name, sealed with his seal, to have Naboth falsely accused and killed.", "good", ["house", "provan"]]],
     refs: [["LEV.25", "Leviticus 25:23", "The land is Mine"], ["2KI.9", "2 Kings 9:25-26, 36-37", "The judgment fulfilled"]],
   },
   22: {
@@ -227,6 +245,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["house", "provan"] }, {
       ["22:34", "A certain man drew his bow at random", "Ahab disguised himself for battle, but someone drew a bow without aiming and hit him between pieces of his armor. Nothing is random to God."],
       ["22:38", "The dogs licked up his blood", "Ahab's chariot was washed at the pool of Samaria and dogs licked up his blood, as the LORD's word through Elijah said (21:19)."],
     ],
+    bg: [["Ahab in Assyrian records", "An Assyrian stone, the Kurkh Monolith, records that in 853 BC \"Ahab the Israelite\" brought 2,000 chariots and 10,000 soldiers to fight Shalmaneser III at Qarqar. Ahab was a powerful king, yet the Bible judges him by his faithfulness to God. He died at Ramoth-gilead, as Micaiah said (22:28, 37).", "strong", ["kitchen", "anet"]]],
     refs: [["2CH.18", "2 Chronicles 18", "The same account"], ["2TI.4", "2 Timothy 4:3", "Teachers in accordance with their own desires"]],
   },
 });
