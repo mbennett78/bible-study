@@ -478,8 +478,8 @@ export function paintingStrip(id) {
 /* ---------- Classic 4: an evening landscape under a deep blue sky ---------- */
 // An original painting made for the app (tools/paint-classic4.py), in the manner of the
 // 19th-century American landscape painters: snowy peaks, dark pines and still water at dusk.
-// The teen looks use the same frame: Golden hour (tools/paint-teen-looks.py golden), a wildflower
-// meadow at sunset, and Summit (… summit), mountain ridges at dusk with a hiker and map lines.
+// Two more looks use the same frame: Purple Flowers (tools/paint-looks.py golden), a wildflower
+// meadow at sunset, and Mountains (… summit), mountain ridges at dusk with a hiker and map lines.
 // [file, title, where to center a thin strip (0 top, 1 bottom), fill color while it loads]
 export const LANDSCAPES = {
   classic4: ["img/classic4-evening-lake.jpg", "Evening on a mountain lake", .62, "#1b2c4a"],

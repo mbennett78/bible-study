@@ -3417,6 +3417,25 @@ function setupState() {
   return store.get("name").trim() || su.look || su.password ? "started" : "new";
 }
 function setupSet(patch) { store.set("setup", { ...(store.get("setup") || {}), ...patch }); }
+// The Bible key, step by step, with a small picture for each step (B-95). The pictures are
+// simple drawings of what to look for, not pictures of API.Bible's own pages.
+const KEY_PICS = {
+  open: `<svg viewBox="0 0 120 80" aria-hidden="true"><rect x="38" y="4" width="44" height="72" rx="7" class="kg-phone"/><rect x="44" y="14" width="32" height="8" rx="4" class="kg-bar"/><text x="60" y="20.5" class="kg-t">api.bible</text><rect x="46" y="48" width="28" height="11" rx="5" class="kg-btn"/><text x="60" y="56" class="kg-t kg-on">Sign up</text></svg>`,
+  account: `<svg viewBox="0 0 120 80" aria-hidden="true"><rect x="38" y="4" width="44" height="72" rx="7" class="kg-phone"/><rect x="44" y="16" width="32" height="7" rx="2" class="kg-field"/><rect x="44" y="27" width="32" height="7" rx="2" class="kg-field"/><text x="60" y="47" class="kg-t">Starter: free</text><rect x="46" y="54" width="28" height="11" rx="5" class="kg-btn"/><text x="60" y="62" class="kg-t kg-on">✓</text><text x="98" y="30" class="kg-big">✉️</text></svg>`,
+  app: `<svg viewBox="0 0 120 80" aria-hidden="true"><rect x="38" y="4" width="44" height="72" rx="7" class="kg-phone"/><text x="60" y="20" class="kg-t">App name</text><rect x="44" y="24" width="32" height="8" rx="2" class="kg-field"/><text x="60" y="30" class="kg-t">Bible Study</text><text x="60" y="46" class="kg-t">Personal use</text><rect x="46" y="54" width="28" height="11" rx="5" class="kg-btn"/><text x="60" y="62" class="kg-t kg-on">Create</text></svg>`,
+  copy: `<svg viewBox="0 0 120 80" aria-hidden="true"><rect x="38" y="4" width="44" height="72" rx="7" class="kg-phone"/><text x="60" y="22" class="kg-t">API key</text><rect x="43" y="27" width="34" height="9" rx="2" class="kg-key"/><text x="60" y="34" class="kg-t">a1b2c3d4…</text><rect x="48" y="44" width="24" height="10" rx="5" class="kg-btn"/><text x="60" y="51.5" class="kg-t kg-on">Copy</text><text x="98" y="48" class="kg-big">📋</text></svg>`,
+};
+function keyGuideHtml(inSettings = false) {
+  const steps = [
+    ["open", "Open API.Bible", `Tap <a href="https://api.bible" target="_blank" rel="noopener"><b>api.bible</b></a> (it opens in a new tab; this app stays where it is). Tap <b>Sign up</b>.`],
+    ["account", "Make your free account", "Pick the free <b>Starter</b> plan. Use your own email and a password you'll remember. Then open your email and tap the link to confirm."],
+    ["app", "Tell it about the app", "If it asks you to make an app, call it <b>Bible Study</b> and choose <b>personal, non-commercial</b>. If it asks which Bibles, include <b>NASB</b>."],
+    ["copy", "Copy your key", "Find <b>API key</b> (a long code of letters and numbers) and tap <b>Copy</b>, or press on it and choose Copy. Then come back to this app."],
+  ];
+  return `<ol class="key-steps">${steps.map(([pic, title, text], i) => `<li><div class="ks-pic">${KEY_PICS[pic]}</div><div><b class="ks-h">Step ${i + 1}: ${title}</b><p>${text}</p></div></li>`).join("")}
+    <li><div class="ks-pic ks-last" aria-hidden="true">📋</div><div><b class="ks-h">Step 5: Paste it here</b><p>${inSettings ? "Press in the <b>API.Bible key</b> box above, choose <b>Paste</b>, then tap <b>Save</b>." : "Tap <b>📋 Paste</b> below (or press in the box and choose Paste). The app checks it and says <b>It works!</b>"}</p></div></li></ol>
+    <p class="muted small-print">Free for personal use: 5,000 chapters a month, far more than one person reads.</p>`;
+}
 function openSetup(at = 0) {
   setupAt = at;
   renderSetup();
@@ -3460,19 +3479,31 @@ function renderSetup() {
     wireLookPicker(body, "setupLook", () => { setupSet({ look: true }); renderSetup(); });
     body.querySelectorAll("[data-s-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.sGfx); applyAppearance(); setupSet({ look: true }); renderSetup(); }));
   } else if (step.id === "key") {
+    const has = Boolean(store.get("apiBibleKey"));
     body.innerHTML = `<h2 class="setup-h">Your own Bible key</h2>
-      <p class="muted small-print">The Bible text comes from API.Bible. Paste your own free key here. It's saved on this device only.</p>
-      <label class="field">API.Bible key<input id="setupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" value="${esc(store.get("apiBibleKey"))}"></label>
-      <p class="setup-key-status" id="setupKeyStatus">${store.get("apiBibleKey") ? "Key saved ✓" : ""}</p>
-      <details class="key-help" ${store.get("apiBibleKey") ? "" : "open"}><summary>How to get your free key (about 5 minutes)</summary>${$("#keyHelp ol").outerHTML}</details>
-      <p class="muted small-print">Don't have it yet? Tap Next. You can add it later in Settings.</p>`;
-    $("#setupKey").addEventListener("change", (e) => {
-      const inv = readInviteCode(e.target.value);
-      if (inv) { applyInvite(inv); applyAppearance(); e.target.value = inv.k; }
-      const v = e.target.value.trim();
+      <p class="muted small-print">The Bible text comes from API.Bible, free for personal use. Each person gets their own key (a long code), because API.Bible's rules don't allow sharing one. It takes about 5 minutes, one step at a time.</p>
+      ${has ? `<p class="setup-key-status">Key saved ✓</p>` : ""}
+      <details class="key-guide" ${has ? "" : "open"}><summary>Show me how, step by step</summary>${keyGuideHtml()}</details>
+      <label class="field">Paste your API.Bible key here<span class="key-row"><input id="setupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" value="${esc(store.get("apiBibleKey"))}"><button type="button" class="small" id="setupPaste">📋 Paste</button></span></label>
+      <p class="setup-key-status" id="setupKeyStatus" role="status"></p>
+      <p class="muted small-print">Don't have it yet? Tap Next. You can add it later in Settings, under Bible versions.</p>`;
+    const saveKey = async (raw) => {
+      const inv = readInviteCode(raw);
+      if (inv) { applyInvite(inv); applyAppearance(); raw = inv.k || ""; $("#setupKey").value = raw; }
+      const v = String(raw || "").trim();
       store.set("apiBibleKey", v); $("#apiBibleKey").value = v;
-      $("#setupKeyStatus").textContent = v ? "Key saved ✓" : "";
+      const msg = $("#setupKeyStatus");
+      if (!v) { msg.textContent = ""; return; }
+      msg.textContent = "Key saved ✓ Checking that it works…";
+      const ok = store.get("nasbBibleId") ? await versionLoads(store.get("nasbBibleId")) : null;
+      if (!msg.isConnected) return;
+      msg.textContent = ok === false ? "That key didn't open the Bible. Copy the whole key again (it's long) and paste it here." : ok ? "It works! ✓ Tap Next." : "Key saved ✓ Tap Next.";
       const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false });
+    };
+    $("#setupKey").addEventListener("change", (e) => saveKey(e.target.value));
+    $("#setupPaste").addEventListener("click", async () => {
+      try { const t = await navigator.clipboard.readText(); if (t) { $("#setupKey").value = t.trim(); saveKey(t); } }
+      catch { $("#setupKey").focus(); $("#setupKeyStatus").textContent = "Tap in the box, then tap Paste."; }
     });
   } else if (step.id === "version") {
     const list = versionList(), cur = store.get("version");
@@ -3553,6 +3584,8 @@ const LOOKS = [
   ["seasons", "Seasonal changes", "Warm, glowing painted scenes that change through the year: a New Year's dawn, a winter sunrise, angels, spring rain, Easter, gardens and flowers, Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, the harvest and Advent.", ["#3a2a20", "#fffaf2", "#e0a85a"]],
   ["classic3", "Classic 3", "Hand-colored Holy Land paintings by David Roberts (1839): Jerusalem, Mount Tabor and the Sea of Galilee, in stone, sand and sky colors. The painting changes with the passage you read.", ["#4a3b2c", "#efe6d6", "#8aa0b0"]],
   ["classic4", "Classic 4", "Deep blue, with a calm painted landscape: snowy mountains, dark pines and a still lake at evening. Nothing moves.", ["#16233b", "#f4f6fa", "#c9a86a"]],
+  ["summit", "Mountains", "Slate blue and ember orange, with mountain ridges at dusk, a lone hiker and trail-map lines. Nothing moves.", ["#1c2230", "#f6ebe4", "#c8622e"]],
+  ["golden", "Purple Flowers", "Plum, blush and gold, with a meadow of wildflowers at sunset. Nothing moves.", ["#5a4064", "#f8eaf1", "#e2b77a"]],
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
   ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Birds fly at sunrise in Lively pictures.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
@@ -5374,7 +5407,7 @@ function setupAccountButton() {
 const b64url = (str) => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64url = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0)));
 function makeInviteCode({ to = "", look = "" } = {}) {
-  const d = { v: 2, from: store.get("name").trim(), to, look };
+  const d = { v: 2, b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", x: store.get("extraBibles") || [], from: store.get("name").trim(), to, look };
   return "BSI1" + b64url(JSON.stringify(d));
 }
 function readInviteCode(code) {
@@ -5420,7 +5453,7 @@ function inviteWelcome() {
       if (hasKey) return;
       // Straight to the Bible key step of setup, with the steps open.
       openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => st.id === "key")));
-      const help = $("#setup").querySelector(".key-help");
+      const help = $("#setup").querySelector(".key-guide");
       if (help) { help.open = true; help.scrollIntoView({ block: "start" }); }
     });
     return;
@@ -5433,6 +5466,7 @@ function inviteWelcome() {
   el.querySelector("#copyInvite")?.addEventListener("click", async (e) => { try { await navigator.clipboard.writeText(joinedFrom.code); e.target.textContent = "Copied ✓"; } catch { e.target.textContent = joinedFrom.code; } });
 }
 function wireShareKey() {
+  $("#keyHelpSteps").innerHTML = keyGuideHtml(true);
   // Every look can be picked for them, in the same order as Bible Appearance.
   $("#shareLook").innerHTML = `<option value="">Let them choose</option>${LOOKS.map(([v, name]) => `<option value="${v}">${esc(name)}</option>`).join("")}`;
   $("#shareKeyBtn").addEventListener("click", async () => {
@@ -5450,6 +5484,21 @@ function wireShareKey() {
     });
   });
 }
+
+/* ---------- An ✕ on every popup (B-80) ---------- */
+// Any popup without its own close button gets one in the corner. It works like the Escape key,
+// so each popup tidies up (or, for setup, skips for now) exactly as it does today.
+const HAS_X = '.close-x, .ws-close, .q-x, .g-x, .dlg-x, [aria-label="Close"], [data-close], [data-x="cancel"]';
+const showModalOriginal = HTMLDialogElement.prototype.showModal;
+HTMLDialogElement.prototype.showModal = function showModalWithX(...args) {
+  if (!this.querySelector(HAS_X)) {
+    const x = Object.assign(document.createElement("button"), { type: "button", className: "dlg-x", textContent: "✕" });
+    x.setAttribute("aria-label", "Close");
+    x.addEventListener("click", () => { const ev = new Event("cancel", { cancelable: true }); this.dispatchEvent(ev); if (!ev.defaultPrevented && this.open) this.close(); });
+    this.append(x);
+  }
+  return showModalOriginal.apply(this, args);
+};
 
 /* ---------- Start ---------- */
 applyAppearance();

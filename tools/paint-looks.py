@@ -1,6 +1,6 @@
-"""Two original painted banners for the teen looks: "Golden hour" (a wildflower meadow at sunset,
-for a young woman or older teen girl) and "Summit" (mountain ridges at dusk with a lone hiker and
-map contour lines, for a young man or older teen guy). Everything is drawn here."""
+"""Two original painted banners: "Purple Flowers" (a wildflower meadow at sunset) and
+"Mountains" (mountain ridges at dusk with a lone hiker and map contour lines).
+Everything is drawn here. Run: python3 tools/paint-looks.py golden|summit out.jpg"""
 import sys, math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter

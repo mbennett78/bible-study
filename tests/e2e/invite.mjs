@@ -29,7 +29,7 @@ try {
   // Anna opens it on her own phone.
   const ctx2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   await ctx2.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
-  await ctx2.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "" } } }));
+  await ctx2.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "For God so loved the world" } } }));
   const p2 = await ctx2.newPage();
   p2.on("pageerror", (e) => errors.push(e.message));
   await p2.goto(url.replace(/^https?:\/\/[^/]+/, site.url.replace(/\/$/, ""))); await p2.waitForTimeout(1200);
@@ -38,7 +38,11 @@ try {
   const st = await p2.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1") || "{}"));
   check("her name and look are set, with no key", st.name === "Anna" && st.style === "classic4" && !st.apiBibleKey, JSON.stringify(st).slice(0, 200));
   await p2.click("#inviteOk"); await p2.waitForTimeout(500);
-  check("Show me the steps opens how to get a free key", await p2.evaluate(() => [...document.querySelectorAll(".key-help")].some((d) => d.open && d.offsetParent)));
+  check("Show me the steps opens how to get a free key", await p2.evaluate(() => [...document.querySelectorAll(".key-guide")].some((d) => d.open && d.offsetParent)));
+  check("the guide has five plain steps, each with a picture", (await p2.$$("#setup .key-steps li")).length === 5 && (await p2.$$("#setup .key-steps li .ks-pic svg")).length === 4);
+  check("the Bible versions came with the invite", await p2.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).nasbBibleId === "x"));
+  await p2.fill("#setupKey", "ANNA-OWN-KEY"); await p2.dispatchEvent("#setupKey", "change"); await p2.waitForTimeout(600);
+  check("pasting her own key says it works", /It works/.test(await p2.textContent("#setupKeyStatus")), await p2.textContent("#setupKeyStatus"));
   await ctx2.close();
 
   // An older link that carried a key still works.
