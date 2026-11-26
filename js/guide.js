@@ -42,6 +42,7 @@ export const GUIDE = [
     "Add verses, pictures, arrows, shaded boxes, maps, charts and tables with the buttons under the writing box.",
     "📷 Photo opens your photo library or camera. You can also paste a picture or words from another app.",
     "Not sure what to write? Tap 💭 Need an idea? for a gentle prompt. On a date you wrote something in an earlier year, \"On this day\" shows it at the top.",
+    "Tap 📋 Use a guide for SOAP (Scripture, Observation, Application, Prayer) or ACTS prayer headings to write under. 🔍 Search my journal finds any old entry.",
     "Your words save as you type, even without a signal.",
     "Print your journal or notes as a little book, or send a copy to Google Docs.",
     "Want privacy? Set a journal passcode in Settings.",
@@ -50,7 +51,8 @@ export const GUIDE = [
     "My Bible reads straight through, Genesis to Revelation. Three other studies go through the Bible a different way.",
     "Each study keeps its own place, so you can switch any time.",
     "✅ Quick check: after you read a chapter, a few questions on it, right under the chapter.",
-    "🎲 Games: Bible Spin and the other games are behind the Games button. Bible Spin plays like a game show, with a lamp to fill, jewels to win and a bonus round. Your scores are only yours.",
+    "🎲 Games: Bible Spin and the other games are behind the Games button. Bible Spin plays like a game show, with a lamp to fill, jewels to win and a bonus round. Open the daily treasure chest, try the three daily missions, and level up from Seeker to Wise elder. Your scores are only yours.",
+    "⚔️ Family duel in Bible Spin: challenge someone in the family to the same 10 questions on their own phone or iPad. Only your first name is shown, and only the two of you see the scores.",
   ] },
   { id: "offline", icon: "📶", title: "No signal?", tips: [
     "Chapters you opened recently, plus the next two ahead, are saved for reading offline.",

@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 1:33 PM Central
-**Current version:** v392 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 1:34 PM Central
+**Current version:** v393 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 2:15 PM CT: The user guide (in Settings, and on paper at the next gift packet rebuild) now covers the daily chest, missions and levels, Family duel, journal guides (SOAP, ACTS) and journal search. Everything on the release plan is done except what waits on others: the family try-out (Mon Nov 30), any more seasonal notes, the final ratings after the try-out, and the one Supabase update when Buddy is done.
 - Thu Nov 26, 2:05 PM CT: Journal brought up to the best journaling apps. Search your journal (every word you type must match: entries, prayers, thanks and Bible thoughts). New "Use a guide" beside "Need an idea?": SOAP (Scripture, Observation, Application, Prayer), ACTS prayer, Three good things, and Looking back on my week; it adds the headings and you write under each. The single final Supabase update is ready for whenever Buddy is done: supabase-final-update.md (5 steps, about 10 minutes), with supabase-setup.sql (now also family duels; tested on a real database, including that nobody can see or change someone else's duel score), study-partner-function.ts and family-admin-function.ts.
 - Thu Nov 26, 1:15 PM CT: Fishing is more true to life. On the cast the rod goes back over his head and forward, and the bobber and hook fly out on a high arc with the line paying out behind them, then land with a splash. The hook sinks under the bobber and everything drifts gently on the water. On a bite the line pulls tight and the bobber is tugged under; reeling in, the fish comes up out of the water on the hook with a splash. When he lands one he stands up first, holds it up high and cheers, then drops it in his bucket, sits back down and casts again. He also never hops straight up from sitting anywhere else: he stands up first, then jumps, cheers, dances or jumps rope. Clip: pictures-fix/buddy-fishing-v3.gif.
 - Thu Nov 26, 12:55 PM CT: Family duels in Bible Spin. "Family duel" challenges someone in the family to the same 10 questions (one from every category plus three more, no helps) on their own phone or iPad, whenever it suits them. Whoever gets more right wins, and speed breaks a tie; the result shows both rows of answers. A "2 waiting" note on the Bible Spin home screen shows a challenge is waiting (no notifications). People join by choice, only their first name is listed, and a duel's scores are seen only by its two players; each can fill in only their own score, once. A score made offline is sent next time. It switches on with the final Supabase update (tools/duels.sql, folded into the final file); until then it says duels are almost ready. Pictures: pictures-fix/duel-your-turn.png and duel-result.png.
