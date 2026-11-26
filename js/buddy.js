@@ -45,6 +45,8 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-football"><ellipse cx="37" cy="46" rx="3.6" ry="2.1" transform="rotate(-30 37 46)"/><path d="M35.6 46.6l2.8-1.4"/></g>
     <g class="buddy-bowl"><circle cx="37" cy="48.5" r="3.4"/><circle cx="36.2" cy="47.4" r=".55"/><circle cx="37.6" cy="47.2" r=".55"/><circle cx="37" cy="48.6" r=".55"/></g>
     <g class="buddy-pins">${[57, 62, 67].map((x, i) => `<g class="buddy-pin pin${i + 1}" style="transform-origin:${x}px 72px"><path d="M${x - 1.6} 72q-.6-4 .5-6.2q-1-1.6 0-3.2q.6-.9 1.1-.9q.5 0 1.1.9q1 1.6 0 3.2q1.1 2.2.5 6.2z"/><path class="buddy-pin-band" d="M${x - 1} 66.6h2"/></g>`).join("")}</g>
+    <g class="buddy-carrypole"><path d="M33 51L54 22"/><path class="buddy-fishline" d="M54 22q1.6 4 .8 8"/><circle class="buddy-bobber" cx="54.8" cy="31" r="1.8"/></g>
+    <g class="buddy-catch"><path class="buddy-catchline" d="M58 19V30"/><g class="buddy-fish"><path d="M58 30.2q3.9 4.8 0 11.1q-3.9-6.3 0-11.1z"/><path d="M58 40.5l-3.3 4.2h6.6z"/><circle class="buddy-fish-eye" cx="59" cy="33.4" r=".8"/></g></g>
     <g class="buddy-pole"><path d="M36 47L58 19"/><path class="buddy-fishline" d="M58 19Q63 40 61 66"/><circle class="buddy-bobber" cx="61" cy="67" r="2.1"/></g>
     <g class="buddy-utensils"><path d="M36 47l2.5-6.5M37.4 40.2l.6-2.2M38.6 40.6l.6-2.2M39.8 41l.6-2.2"/><path d="M16 47l-2.2-6.3"/><ellipse cx="13.4" cy="39.6" rx="1.4" ry="2"/></g>
     <g class="buddy-balls"><circle class="bb1" cx="16" cy="40" r="2.4"/><circle class="bb2" cx="26" cy="36" r="2.4"/><circle class="bb3" cx="36" cy="40" r="2.4"/></g>
@@ -449,7 +451,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }, TRICK_EVERY_MS);
 
   // Asked to do something: he does it right away, even while the chat is open.
-  const ACT_CLASSES = ["flowering", "bowling", "throwing", "chair", "desk", "jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging", "eating", "exercising", "fishing", "hiking", "juggling", "dribbling", "nerdy"];
+  const ACT_CLASSES = ["bite", "reeling", "fishgo", "fishback", "glancing", "mood-soft", "mood-focus", "flowering", "bowling", "throwing", "chair", "desk", "jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging", "eating", "exercising", "fishing", "hiking", "juggling", "dribbling", "nerdy"];
   function act(name, also = null) {
     if (name === "trick") name = pick(["cartwheel", "jumprope", "dance", "spin", "ball", "jump"]);
     const a = BUDDY_ACTIONS[name];
@@ -467,6 +469,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
       eat: "eating", exercise: "exercising", fish: "fishing", hike: "hiking", juggle: "juggling", basketball: "dribbling", football: "throwing", glasses: "nerdy" }[name];
     both((x) => { void x.offsetWidth; x.classList.add(cls); setTimeout(() => x.classList.remove(cls), ms); });
     if (name === "eat" || name === "fish") both((x) => x.classList.add("sitting"));
+    // Asked to go fishing, half the time he gets a bite and reels one in.
+    if (name === "fish" && Math.random() < .5) {
+      setTimeout(() => both((x) => x.classList.add("bite")), 2600);
+      setTimeout(() => both((x) => { x.classList.remove("bite"); x.classList.add("reeling"); }), 4000);
+      setTimeout(() => popUp("🐟", 2400), 6600);
+      setTimeout(() => both((x) => x.classList.remove("bite", "reeling")), ms);
+    }
     // He sits down to read or write, like a real reader: in his chair, on the ground, or at his desk.
     if (name === "read" || name === "write") both((x) => seat(x, name === "write" ? "desk" : pick(["chair", "ground"]), ms));
     if (a.pop) popUp(a.pop, Math.min(ms, 3000));
@@ -478,7 +487,30 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   // asleep, reading (maybe dozing on his book), writing with crumpled paper at his feet and then
   // tidying it into the trash, searching for something, juggling, eating, hiking or fishing.
   const SEEN_KEY = "bible-study:buddy-seen", AWAY_MS = 20 * 60 * 1000;
-  const LIFE = ["nap", "read", "doze", "writeTidy", "search", "juggle", "jumprope", "eat", "hike", "fish", "basketball", "exercise", "read", "writeTidy"];
+  const LIFE = ["nap", "read", "doze", "writeTidy", "search", "juggle", "jumprope", "eat", "hike", "fish", "basketball", "exercise", "read", "writeTidy", "fish", "wait", "think", "wait"];
+  // Fishing is a little story across visits: sometimes you catch him heading off with his pole,
+  // sometimes he's already sitting there waiting for a bite, and sometimes he hooks one and reels it in.
+  function fishing(stage = pick(["go", "sit", "catch", "catch"])) {
+    if (busy() || el.classList.contains("sleeping")) return null;
+    el.classList.remove("tucked", "sitting", "fishing", "bite", "reeling");
+    const cast = (ms, catchIt) => {
+      el.classList.add("sitting", "fishing"); trickUntil = Date.now() + ms;
+      if (catchIt) {
+        setTimeout(() => el.classList.add("bite"), 3200);
+        setTimeout(() => { el.classList.remove("bite"); el.classList.add("reeling"); }, 4800);
+        setTimeout(() => popUp(pick(["🐟", "🐟!", "🎉🐟"]), 2400), 7400);
+      }
+      setTimeout(() => el.classList.remove("fishing", "bite", "reeling"), ms);
+    };
+    if (stage === "go") {
+      // Off he goes with his pole over his shoulder... and a little later he's sitting by the water.
+      trickUntil = Date.now() + 15000;
+      el.classList.add("walking", "fishgo"); popUp("🎣", 2600);
+      setTimeout(() => { el.classList.add("fishback"); el.classList.remove("walking", "fishgo"); cast(10000, Math.random() < .5); }, 3600);
+      setTimeout(() => el.classList.remove("fishback"), 4800);
+    } else cast(stage === "catch" ? 11000 : 10000, stage === "catch");
+    return "fish-" + stage;
+  }
   function life(what = pick(LIFE)) {
     if (el.hidden || still() || drag || !say.hidden) return null;
     if (what === "nap") { nap(true); return what; }
@@ -496,6 +528,10 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
       setTimeout(() => el.classList.remove("crumpled", "tidying"), 8200);
       return what;
     }
+    if (what === "fish") return fishing();
+    // Just sitting and waiting for someone to talk to: a soft smile, looking around now and then.
+    if (what === "wait") { el.classList.remove("tucked"); el.classList.add("sitting", "mood-soft", "glancing"); trickUntil = Date.now() + 9000; setTimeout(() => el.classList.remove("mood-soft", "glancing"), 9000); return what; }
+    if (what === "think") return trick("pondering") ? what : null;
     if (what === "search") { el.classList.remove("tucked"); el.classList.add("thinking"); pop.textContent = "🔍"; pop.classList.add("on", "search"); setTimeout(() => { el.classList.remove("thinking"); pop.classList.remove("search"); popUp("💡", 1800); }, 4500); trickUntil = Date.now() + 6500; return what; }
     return act(what);
   }

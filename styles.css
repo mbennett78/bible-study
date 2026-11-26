@@ -3225,3 +3225,43 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-book-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.4px; } }
 @keyframes buddy-page-turn { 0%, 70% { transform: scaleX(1); opacity: 0; } 72% { opacity: 1; } 86% { transform: scaleX(-1); opacity: 1; } 90%, 100% { transform: scaleX(-1); opacity: 0; } }
 .bnd-face .buddy-readhold, .bnd-face .buddy-thumbs, .bnd-face .buddy-book-flip { display: none; }
+
+/* ---------- Fishing as a little story, and quiet waiting ----------
+   Heading off: pole over his shoulder, he walks out past the edge and comes back sitting by the
+   water. A catch: the bobber jerks under, the pole bends up, and a fish comes up on the line.
+   Waiting: a soft smile, glancing around now and then. */
+.buddy-carrypole, .buddy-catch { display: none; }
+.buddy-carrypole path { fill: none; stroke: #8a5a36; stroke-width: 1.6; stroke-linecap: round; } .buddy-carrypole .buddy-fishline { stroke: var(--muted); stroke-width: .6; }
+.buddy-catchline { fill: none; stroke: var(--muted); stroke-width: .6; transform-origin: 58px 19px; transform-box: view-box; }
+.buddy-fish path { fill: #e8893a; stroke: #8a4a1a; stroke-width: .5; } .buddy-fish-eye { fill: #222; }
+.buddy.fishgo .buddy-carrypole { display: inline; }
+.buddy.fishgo { transform: translateX(110px); opacity: 0 !important; transition: transform 3.4s linear, opacity 1.2s ease-in 2.2s; }
+.buddy.fishgo:not(.on-right) { transform: translateX(-110px); }
+.buddy.fishback { transition: opacity 1.2s ease-out !important; }
+.buddy.reeling .buddy-pole .buddy-fishline, .buddy.reeling .buddy-pole .buddy-bobber { display: none; }
+.buddy.reeling .buddy-catch { display: inline; }
+.buddy.reeling .buddy-pole { transform: rotate(-10deg); transform-origin: 36px 47px; transform-box: view-box; }
+.buddy.reeling .buddy-catch { transform: rotate(-10deg); transform-origin: 36px 47px; transform-box: view-box; }
+.buddy.reeling .buddy-smile { display: none; } .buddy.reeling .buddy-mouth { display: inline; }
+.buddy.bite .buddy-smile, .buddy.fishing .buddy-smile { display: none; }
+.buddy.fishing .buddy-soft { display: inline; }
+.buddy.bite .buddy-soft, .buddy.reeling .buddy-soft { display: none; }
+.buddy.bite .buddy-mouth { display: inline; transform: scale(.6); transform-origin: 26px 26.6px; transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.bite .buddy-pole .buddy-bobber { animation: buddy-nibble .3s ease-in-out infinite alternate; transform-box: fill-box; }
+  :root:not([data-graphics="simple"]) .buddy.bite .buddy-pole { animation: buddy-tug .3s ease-in-out infinite alternate; transform-origin: 36px 47px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-catchline { animation: buddy-reel-line 2.6s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-fish { animation: buddy-reel-fish 2.6s ease-out both, buddy-fish-wiggle .25s ease-in-out 2.6s infinite alternate; transform-origin: 58px 30px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-arm-l { animation: buddy-reel-crank .35s linear 7; }
+  :root:not([data-graphics="simple"]) .buddy.glancing .buddy-eye { animation: buddy-glance 4.5s ease-in-out infinite; }
+  :root:not([data-graphics="simple"]) .buddy.fishgo .buddy-legs-stand path { animation: buddy-walk-legs .35s ease-in-out infinite alternate; transform-origin: 26px 54px; transform-box: view-box; }
+}
+@keyframes buddy-nibble { from { transform: translateY(0); } to { transform: translateY(3px); } }
+@keyframes buddy-tug { from { transform: rotate(0); } to { transform: rotate(4deg); } }
+@keyframes buddy-reel-line { from { transform: scaleY(4.2); } to { transform: scaleY(1); } }
+@keyframes buddy-reel-fish { from { translate: 0 35px; } to { translate: 0 0; } }
+@keyframes buddy-fish-wiggle { from { rotate: -14deg; } to { rotate: 14deg; } }
+@keyframes buddy-reel-crank { 0% { transform: rotate(0); } 50% { transform: rotate(-24deg); } 100% { transform: rotate(0); } }
+@keyframes buddy-glance { 0%, 30%, 100% { translate: 0 0; } 40%, 55% { translate: -1.4px 0; } 65%, 80% { translate: 1.4px 0; } }
+@keyframes buddy-walk-legs { from { rotate: -6deg; } to { rotate: 6deg; } }
+.bnd-face .buddy-carrypole, .bnd-face .buddy-catch { display: none; }
