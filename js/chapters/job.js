@@ -37,6 +37,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["2:10", "In all this Job did not sin with his lips", "Twice tested, Job still does not sin with his words. His faith bends but holds."],
       ["2:13", "No one spoke a word to him", "The friends' best moment was their silent presence."],
     ],
+    bg: [["Seven days of silence", "Job's three friends came from far away, tore their robes and sat with him on the ground seven days and seven nights without a word, \"for they saw that his pain was very great\" (2:13). Sitting in silence with someone who grieves is still a Jewish mourning custom. Many readers think this was the best thing the friends did.", "good", ["hartley", "andersen"]]],
     refs: [["ROM.12", "Romans 12:15", "Weep with those who weep"], ["2CO.12", "2 Corinthians 12:7-9", "Paul's thorn in the flesh"]],
   },
   3: {
@@ -68,6 +69,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["5:13", "He captures the wise by their own shrewdness", "Paul quotes this verse in 1 Corinthians 3:19."],
       ["5:17", "Blessed is the man whom God reproves", "True in its place, but Job is not being disciplined for sin."],
     ],
+    bg: [["Job quoted in the New Testament", "Eliphaz says God \"catches the wise in their own craftiness\" (5:13). Paul quotes these words in 1 Corinthians 3:19, the only direct quotation of Job in the New Testament. A speaker can say true things and still apply them wrongly, as Eliphaz did to Job.", "strong", ["hartley", "alden"]]],
     refs: [["1CO.3", "1 Corinthians 3:19", "Paul quotes Eliphaz"], ["HEB.12", "Hebrews 12:5-11", "God disciplines those He loves"], ["PRO.3", "Proverbs 3:11-12", "Do not reject the discipline of the LORD"]],
   },
   6: {
@@ -78,6 +80,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["6:14", "For the despairing man there should be kindness from his friend", "What a suffering person needs most from a friend is kindness, not a lecture."],
       ["6:24", "Show me how I have erred", "Job asks his friends to show him plainly where he went wrong. He wants evidence, not accusations."],
     ],
+    bg: [["Streams that dry up", "Job compares his friends to desert streams (wadis) that rush with water in winter but vanish in the summer heat, just when travelers need them (6:15-20). \"For the despairing man there should be kindness from his friend\" (6:14).", "good", ["andersen", "hartley"]]],
     refs: [["PRO.17", "Proverbs 17:17", "A friend loves at all times"], ["GAL.6", "Galatians 6:2", "Bear one another's burdens"]],
   },
   7: {
@@ -87,6 +90,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["7:11", "I will not restrain my mouth", "Job will not hold back. He pours out his anguish to God honestly, which is itself a kind of faith."],
       ["7:17", "What is man that You magnify him?", "Psalm 8:4 marvels that God cares for man. Job turns the same words into a complaint: why won't God leave him alone?"],
     ],
+    bg: [["Psalm 8 turned upside down", "\"What is man that You magnify him, that You are concerned about him?\" (7:17). Psalm 8:4 asks almost the same question in wonder. Job asks it in pain: why does God pay such close attention to a man He seems to be crushing?", "good", ["clines", "hartley"]]],
     refs: [["PSA.8", "Psalm 8:4", "What is man that You take thought of him?"], ["PSA.39", "Psalm 39:4-5", "Let me know how transient I am"]],
   },
   8: {
@@ -96,6 +100,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["8:4", "If your sons sinned against Him", "A cruel thing to say to a grieving father."],
       ["8:8", "Please inquire of past generations", "Bildad leans on what the older generations taught. Tradition is good, but here it is used as a weapon against a hurting man."],
     ],
+    bg: [["Bildad's appeal to tradition", "Bildad tells Job to ask the former generations (8:8). His rule is simple: God never rejects the blameless or helps the wicked (8:20). The book of Job shows that this rule, though often true, cannot explain every suffering.", "good", ["andersen", "walton"]]],
     refs: [["PSA.1", "Psalm 1", "Like a tree by water"], ["MAT.7", "Matthew 7:1-2", "Do not judge"]],
   },
   9: {
@@ -115,6 +120,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["10:8", "Your hands fashioned and made me altogether", "God's own hands shaped Job in the womb. Surely, Job pleads, God will not destroy what He made with such care."],
       ["10:12", "Your care has preserved my spirit", "Even in protest, Job remembers God's kindness."],
     ],
+    bg: [["Knit together by God", "\"Your hands fashioned and made me altogether... You clothed me with skin and flesh, and knit me together with bones and sinews\" (10:8-11). Like Psalm 139:13, Job pictures God carefully forming a child in the womb. Job cannot understand why the God who made him so carefully would now destroy him.", "good", ["hartley", "clines"]]],
     refs: [["PSA.139", "Psalm 139:13-16", "You wove me in my mother's womb"], ["ISA.64", "Isaiah 64:8", "We are the clay, You our potter"]],
   },
   11: {
@@ -124,6 +130,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["11:7", "Can you discover the depths of God?", "No one can find out the depths of God. That is true, but it humbles Zophar's confident answers too."],
       ["11:13-15", "If you would direct your heart right", "Zophar's advice to turn back to God sounds good, but it assumes Job is guilty."],
     ],
+    bg: [["The harshest friend", "Zophar speaks most bluntly of the three: \"Know then that God forgets a part of your iniquity\" (11:6), meaning Job deserves even worse. The reader knows from chapters 1 and 2 that Zophar is wrong about the cause of Job's suffering.", "good", ["andersen", "alden"]]],
     refs: [["ROM.11", "Romans 11:33", "How unsearchable are His judgments"], ["ISA.55", "Isaiah 55:8-9", "My ways are higher than your ways"]],
   },
   12: {
@@ -133,6 +140,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["12:9-10", "In whose hand is the life of every living thing", "The life of every creature and the breath of every person is in God's hand. Job knows that as well as they do."],
       ["12:13", "With Him are wisdom and might", "Job agrees God is in control, which is the problem."],
     ],
+    bg: [["Job's sarcasm", "\"Truly then you are the people, and with you wisdom will die!\" (12:2). Job answers his friends' lectures with biting humor. He knows the same truths they know (12:3) but insists they do not fit his case.", "good", ["clines", "hartley"]]],
     refs: [["DAN.2", "Daniel 2:21", "He removes kings and establishes kings"], ["ACT.17", "Acts 17:25", "He gives to all people life and breath"]],
   },
   13: {
@@ -154,6 +162,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["14:14", "If a man dies, will he live again?", "\"If a man dies, will he live again?\" Job asks the question that only Jesus' resurrection fully answers (John 11:25)."],
       ["14:15", "You will long for the work of Your hands", "For a moment Job pictures God calling him back from death and longing for the work of His hands. Hope flashes through."],
     ],
+    bg: [["Will he live again?", "A cut-down tree can sprout again, but \"if a man dies, will he live again?\" (14:7, 14). Job asks the question without a clear answer, yet he longs for God to hide him in the grave until His anger passes and then call him back (14:13-15). Many readers see here a growing hope that later finds its answer in resurrection.", "strong", ["hartley", "andersen"]]],
     refs: [["1CO.15", "1 Corinthians 15:20-22", "In Christ all will be made alive"], ["JHN.11", "John 11:25", "I am the resurrection and the life"]],
   },
   15: {
@@ -175,6 +184,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["16:19", "My witness is in heaven", "Job believes someone in heaven will speak for him."],
       ["16:21", "O that a man might plead with God", "Again Job longs for someone to plead his case with God, the way a person pleads for a friend. Christians see this longing met in Christ (1 Timothy 2:5)."],
     ],
+    bg: [["A witness in heaven", "\"Even now, behold, my witness is in heaven, and my advocate is on high\" (16:19). Readers differ on whom Job had in mind: God Himself, an angel or a heavenly go-between. Christians have often heard in it a longing fulfilled in Christ, \"an Advocate with the Father\" (1 John 2:1).", "good", ["hartley", "walton", "clines"]]],
     refs: [["1JN.2", "1 John 2:1", "We have an Advocate with the Father"], ["HEB.7", "Hebrews 7:25", "He always lives to make intercession"]],
   },
   17: {
@@ -195,6 +205,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["18:13", "His skin is devoured by disease", "Bildad describes the wicked man's skin eaten away by disease. With Job sitting covered in sores, the point is cruel."],
       ["18:17", "Memory of him perishes", "Bildad says the wicked man's name will be forgotten. Having lost his children, Job now hears his legacy attacked too."],
     ],
+    bg: [["The king of terrors", "Bildad's second speech paints the end of the wicked: trapped, uprooted, forgotten, marched off \"to the king of terrors\" (18:14). The phrase pictures death as a ruler. Bildad means it as a warning to Job.", "good", ["hartley", "alden"]]],
     refs: [["PRO.13", "Proverbs 13:9", "The lamp of the wicked goes out"]],
   },
   19: {
@@ -232,6 +243,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["21:23-26", "One dies in his full strength... another dies with a bitter soul", "One man dies healthy and at ease, another dies bitter, never having tasted good. Both lie down in the dust alike."],
       ["21:34", "Your answers remain full of falsehood", "Job tells them their comfort is empty and their answers are false. Their theory does not match the facts."],
     ],
+    bg: [["Why do the wicked prosper?", "Job challenges his friends with what everyone can see: many wicked people live long, grow rich and die in peace (21:7-13). Psalm 73 and Jeremiah 12:1 ask the same question. Scripture does not hide the problem.", "good", ["andersen", "clines"]]],
     refs: [["PSA.73", "Psalm 73:3-17", "I saw the prosperity of the wicked"], ["JER.12", "Jeremiah 12:1", "Why has the way of the wicked prospered?"], ["ECC.9", "Ecclesiastes 9:2-3", "One fate for all"]],
   },
   22: {
@@ -241,6 +253,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["22:6-9", "You have stripped the naked of their clothing", "Every charge is false, as chapter 29 shows."],
       ["22:21", "Yield now and be at peace with Him", "\"Yield now and be at peace with Him.\" These are good words, but aimed at the wrong man."],
     ],
+    bg: [["Accused of sins he never did", "Eliphaz finally accuses Job of specific wrongs: taking pledges unfairly, refusing water to the thirsty, sending widows away empty (22:6-9). Job's own record in chapters 29 and 31 shows the opposite. Eliphaz's theology had led him to invent sins to explain the suffering.", "good", ["hartley", "andersen"]]],
     refs: [["JOB.29", "Job 29:12-17", "Job's true record"], ["JOB.42", "Job 42:7", "God says the friends were wrong"]],
   },
   23: {
@@ -250,6 +263,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["23:10", "When He has tried me, I shall come forth as gold", "Job cannot see God, but he trusts that God knows his way. When the testing is over, he will come out like refined gold (1 Peter 1:7)."],
       ["23:12", "I have treasured the words of His mouth more than my necessary food", "Job has treasured God's words more than his daily food. His love for God's word has not wavered."],
     ],
+    bg: [["Coming forth as gold", "\"He knows the way I take; when He has tried me, I shall come forth as gold\" (23:10). Even while Job cannot find God (23:8-9), he trusts that God knows him. Gold was refined by fire to remove its impurities (compare 1 Peter 1:7).", "good", ["alden", "hartley"]]],
     refs: [["1PE.1", "1 Peter 1:6-7", "Faith more precious than gold tested by fire"], ["PSA.119", "Psalm 119:103", "How sweet are Your words"]],
   },
   24: {
@@ -259,6 +273,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["24:12", "Yet God does not pay attention to folly", "Job feels God is silent about injustice."],
       ["24:24", "They are exalted a little while, then they are gone", "The wicked are lifted up for a little while, and then they are gone. In the end they fall like heads of grain cut at harvest."],
     ],
+    bg: [["The cry of the poor", "Job describes the poor driven off the road, gleaning in the fields of the wicked, cold and hungry while harvesting for others (24:4-11). \"Yet God does not pay attention to folly\" (24:12). His honesty about injustice is part of what makes the book true to life.", "good", ["clines", "hartley"]]],
     refs: [["HAB.1", "Habakkuk 1:2-4", "How long, O LORD?"], ["2PE.3", "2 Peter 3:9", "The Lord is not slow about His promise"]],
   },
   25: {
@@ -278,6 +293,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["26:7", "He hangs the earth on nothing", "A striking poetic picture of the earth in space."],
       ["26:14", "These are the fringes of His ways", "All the wonders of creation are only the edges of God's ways, a whisper of His power. We see just a little of Him."],
     ],
+    bg: [["He hangs the earth on nothing", "\"He stretches out the north over empty space and hangs the earth on nothing\" (26:7). Some readers see an insight ahead of its time; others read it as poetry about God's power, since the same book speaks of the pillars of the earth (9:6). All agree on Job's point: these are only \"the fringes of His ways\" (26:14).", "good", ["walton", "hartley"]]],
     refs: [["PSA.104", "Psalm 104", "God's power in creation"], ["ISA.40", "Isaiah 40:22", "He sits above the circle of the earth"]],
   },
   27: {
@@ -292,6 +308,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["A rearranged dialogue", "Others suggest some verses originally belonged to Zophar or Bildad and that the third round was disturbed in copying, so they assign parts to the friends.", ["clines", "hartley"]],
     ],
     common: "All agree that Job holds fast his integrity and that the friends' arguments have run dry.",
+    bg: [["I will hold fast my integrity", "Job swears an oath: \"Till I die I will not put away my integrity from me\" (27:5). He will not confess sins he did not commit just to satisfy his friends. God had said the same of him in 2:3.", "good", ["hartley", "andersen"]]],
     refs: [["PSA.26", "Psalm 26:1", "I have walked in my integrity"]],
   },
   28: {
@@ -312,6 +329,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["29:12", "I delivered the poor who cried for help", "Job rescued the poor and the orphan. This is the truth about his life, against Eliphaz's false charges (22:6-9)."],
       ["29:15", "I was eyes to the blind and feet to the lame", "\"I was eyes to the blind and feet to the lame.\" Job's goodness was mercy put into action."],
     ],
+    bg: [["Eyes to the blind", "Job remembers when he sat at the city gate, where elders judged cases, and young and old respected him (29:7-10). \"I was eyes to the blind and feet to the lame; I was a father to the needy\" (29:15-16). His goodness was real and practical.", "good", ["hartley", "alden"]]],
     refs: [["JAS.1", "James 1:27", "Visit orphans and widows"], ["MAT.25", "Matthew 25:35-40", "You did it to Me"]],
   },
   30: {
@@ -321,6 +339,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["30:20", "I cry out to You for help, but You do not answer me", "Job cries to God and gets no answer. Many believers have known prayer that seems unheard."],
       ["30:31", "My harp is turned to mourning", "His harp now plays only songs of mourning. All his joy has turned to grief."],
     ],
+    bg: [["A brother to jackals", "\"But now\" (30:1) begins Job's description of his present: mocked by young men whose fathers he would not have trusted with his sheepdogs. \"I have become a brother to jackals\" (30:29), animals known for their mournful howls in desolate places.", "good", ["clines", "andersen"]]],
     refs: [["PSA.22", "Psalm 22:1-8", "All who see me sneer at me"], ["MAT.27", "Matthew 27:39-44", "Jesus mocked"]],
   },
   31: {
@@ -331,6 +350,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["31:24-28", "If I have put my confidence in gold", "Job never trusted in gold or worshiped the sun and moon. Making wealth one's hope would have been denying God."],
       ["31:35", "Here is my signature; let the Almighty answer me", "Job signs his name to his defense like a legal paper and asks the Almighty to answer. He rests his case."],
     ],
+    bg: [["Job's oath of innocence", "Job lists one sin after another and calls a curse on himself if he has done any of them: \"I have made a covenant with my eyes\" (31:1). This \"if I have... then let...\" form was a solemn ancient way to declare innocence in court. Then he rests his case: \"The words of Job are ended\" (31:40).", "strong", ["hartley", "walton"]]],
     refs: [["MAT.5", "Matthew 5:28", "Everyone who looks at a woman with lust"], ["EPH.6", "Ephesians 6:9", "Masters, your Master is in heaven"], ["1TI.6", "1 Timothy 6:17", "Do not fix your hope on riches"]],
   },
   32: {
@@ -346,6 +366,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["An eager young man", "Others view him as well-meaning but long-winded, repeating much of the friends' thinking with more confidence than wisdom.", ["clines", "walton"]],
     ],
     common: "All agree Elihu stresses God's greatness and the idea that suffering can teach, and that God's own speech is the true climax.",
+    bg: [["Elihu, the young speaker", "Elihu waited to speak because he was younger, but he was angry with Job and with the three friends (32:2-6). Readers differ on Elihu: some see him preparing the way for God's speech, others as one more speaker who did not understand. God rebukes the three friends at the end (42:7) but does not mention Elihu.", "good", ["hartley", "andersen", "walton"]]],
     refs: [["1TI.4", "1 Timothy 4:12", "Let no one look down on your youthfulness"], ["PRO.18", "Proverbs 18:13", "He who answers before he hears"]],
   },
   33: {
@@ -355,6 +376,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["33:19", "Man is also chastened with pain", "Elihu adds a new idea: pain can be God's way of teaching and warning, not only His punishment."],
       ["33:23-24", "I have found a ransom", "Elihu pictures an angel speaking for a man and God saying, \"I have found a ransom.\" Rescue comes through a go-between."],
     ],
+    w: [["כֹּפֶר", "kopher", "H3724", "ransom, price of release", "Elihu pictures an angel, a mediator, who pleads for a dying man: \"Deliver him from going down to the pit, I have found a ransom\" (33:24). It is the same word used for the ransom money in Exodus 30:12. Jesus said He came \"to give His life a ransom for many\" (Mark 10:45).", ["halot", "hartley"]]],
     refs: [["MRK.10", "Mark 10:45", "A ransom for many"], ["PSA.119", "Psalm 119:71", "It is good for me that I was afflicted"]],
   },
   34: {
@@ -364,6 +386,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["34:19", "Who shows no partiality to princes", "God does not favor princes over the poor, because He made them all. He treats rich and poor alike."],
       ["34:21", "His eyes are upon the ways of a man", "God's eyes are on every step a person takes. Nothing is hidden from Him (Hebrews 4:13)."],
     ],
+    bg: [["Far be it from God", "Elihu insists, \"Far be it from God to do wickedness\" (34:10). He is right that God is just. His mistake, like the friends', is assuming Job must therefore be guilty (34:37).", "good", ["hartley", "alden"]]],
     refs: [["GEN.18", "Genesis 18:25", "Shall not the Judge of all the earth deal justly?"], ["ROM.2", "Romans 2:11", "No partiality with God"]],
   },
   35: {
@@ -385,6 +408,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["36:22", "Who is a teacher like Him?", "\"Who is a teacher like Him?\" God teaches through everything, even through trouble."],
       ["36:26", "God is exalted, and we do not know Him", "God is so great that we cannot fully know Him, and His years cannot be counted. He is beyond our understanding."],
     ],
+    bg: [["Taught through affliction", "Elihu adds a new thought: God \"delivers the afflicted by their affliction, and opens their ear in time of oppression\" (36:15). Suffering can be a way God teaches, not only a punishment. Hebrews 12:10-11 makes a similar point.", "good", ["andersen", "hartley"]]],
     refs: [["HEB.12", "Hebrews 12:10-11", "Discipline yields the fruit of righteousness"], ["2CO.4", "2 Corinthians 4:17", "Light affliction producing glory"]],
   },
   37: {
@@ -394,6 +418,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["37:14", "Stand and consider the wonders of God", "\"Stand and consider the wonders of God.\" Sometimes the wise thing is to stop and look."],
       ["37:22", "Around God is awesome majesty", "God comes in awesome majesty, like golden light from the north. Elihu's words set the stage for God Himself to speak."],
     ],
+    bg: [["A storm rolls in", "Elihu describes thunder, lightning, snow and rain as signs of God's power (37:2-6), ending with \"out of the north comes golden splendor; around God is awesome majesty\" (37:22). The storm prepares for the next chapter, when God Himself speaks to Job out of the whirlwind (38:1).", "good", ["hartley", "clines"]]],
     refs: [["PSA.29", "Psalm 29", "The voice of the LORD is upon the waters"], ["PSA.147", "Psalm 147:16-18", "He gives snow like wool"]],
   },
   38: {
@@ -416,6 +441,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["39:19-25", "Do you give the horse his might?", "The war horse charges into battle without fear. God gave it its strength and courage, not Job."],
       ["39:27", "Is it at your command that the eagle mounts up?", "The eagle soars and builds its nest on high cliffs by God's design, not by Job's command."],
     ],
+    bg: [["God's wild creatures", "God shows Job animals no person tames or feeds: the mountain goat giving birth, the wild donkey, the ostrich that laughs at the horse, the war horse that \"laughs at fear\" (39:22), the hawk and the eagle. God cares for a world far bigger than humans see.", "good", ["walton", "hartley"]]],
     refs: [["PSA.50", "Psalm 50:10-11", "Every beast of the forest is Mine"], ["ISA.40", "Isaiah 40:31", "Mount up with wings like eagles"]],
   },
   40: {
@@ -431,6 +457,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["Symbols of chaos", "Others see them as symbols of chaos and evil, drawn from ancient imagery, showing that only God can master the forces Job fears; Leviathan also appears in Isaiah 27:1 as a sea monster.", ["walton", "clines"]],
     ],
     common: "All agree the point is that these creatures are far beyond human control, yet God made them and rules them.",
+    bg: [["Behemoth", "\"Behold now, Behemoth, which I made as well as you\" (40:15). Readers differ on what animal is meant: many think of the hippopotamus or elephant, some of a dinosaur, and others of a symbol of untamed power. Whatever it is, God made it and only He can master it (40:19).", "good", ["hartley", "walton", "alden"]]],
     refs: [["ISA.27", "Isaiah 27:1", "Leviathan the fleeing serpent"], ["ROM.9", "Romans 9:20", "Who are you to answer back to God?"]],
   },
   41: {
@@ -440,6 +467,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["hartley", "andersen"] 
       ["41:10-11", "Who then is he that can stand before Me?", "No one dares to stir up Leviathan. So who could stand before God, who made it? That is the point of the whole speech."],
       ["41:11", "Whatever is under the whole heaven is Mine", "\"Whatever is under the whole heaven is Mine.\" God owes no one anything. Paul echoes this verse in Romans 11:35."],
     ],
+    w: [["לִוְיָתָן", "livyathan", "H3882", "Leviathan, a great sea creature", "Some see a crocodile; others note that ancient Canaanite poems tell of a sea monster called Lotan, a picture of chaos. Psalm 74:14 and Isaiah 27:1 also use the name. God's point to Job is the same either way: what terrifies people is a creature God made and controls.", ["halot", "walton"]]],
     refs: [["PSA.104", "Psalm 104:26", "Leviathan, which You have formed to sport in it"], ["ROM.11", "Romans 11:35-36", "Who has first given to Him?"]],
   },
   42: {
