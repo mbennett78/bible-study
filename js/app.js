@@ -4,7 +4,7 @@ import { findTopics } from "./topics.js";
 import { OUTLINES } from "./outlines.js";
 import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
 import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
-import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
+import { getChapter, listEnglishBibles, versionLoads, reportFums, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand, seat } from "./buddy.js";
@@ -249,6 +249,14 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
       readerEl.querySelector(".word-tip button").addEventListener("click", () => { store.set("wordTipSeen", true); readerEl.querySelector(".word-tip")?.remove(); });
     }
     $("#copyright").textContent = result.copyright;
+    // The publishers' terms: the NASB's notice links to Lockman.org, and text from API.Bible
+    // names and links API.Bible.
+    if (version !== "ESV") {
+      const link = (href, t) => Object.assign(document.createElement("a"), { href, textContent: t, target: "_blank", rel: "noopener" });
+      if (/NASB|Lockman/i.test(result.copyright || "")) $("#copyright").append(" ", link("https://www.lockman.org", "www.Lockman.org"));
+      $("#copyright").append(" Bible text through ", link("https://api.bible", "API.Bible"), ".");
+      reportFums(result.fums);
+    }
     store.recordVisit(book, chapter);
     updateVisitLine();
     buddyFeelsPassage(readerEl.textContent, `${book}.${chapter}`);
@@ -375,6 +383,42 @@ function versionList() {
   for (const b of store.get("extraBibles") || []) list.push([`B:${b.id}`, b.label]);
   if (store.get("esvKey")) list.push(["ESV", "ESV"]);
   return list;
+}
+// Every version list (the switch on the Read page and Settings, under You) shows the main
+// version plus the well-known versions on the key's plan that really open: each one is tested
+// with a single verse first, so nobody is offered a version that won't load. Checked once a
+// week (and whenever the key or plan changes). Versions someone turned off stay off.
+let planCheck = null;
+function checkPlanVersions(force = false) {
+  if (!store.get("apiBibleKey") || !navigator.onLine) return Promise.resolve(false);
+  const last = Date.parse(store.get("planCheckedAt") || "") || 0;
+  if (!force && Date.now() - last < 7 * 864e5 && (store.get("extraBibles") || []).length) return Promise.resolve(false);
+  planCheck ??= (async () => {
+    let bibles;
+    try { bibles = await listEnglishBibles(); } catch { return false; }
+    const main = store.get("nasbBibleId"), off = new Set(store.get("versionsOff") || []);
+    const had = (store.get("extraBibles") || []).filter((b) => b.id !== main);
+    // A family member follows what the organizer shared; the favorites are added only when
+    // nothing was shared yet.
+    const follow = authEnabled && signedInUser && !organizerHere && had.length;
+    const picks = [];
+    if (!follow) for (const re of FAVORITE_VERSIONS) for (const b of bibles) if (b.id !== main && !off.has(b.id) && (re.test(b.abbr) || re.test(b.name)) && !picks.includes(b)) picks.push(b);
+    const cand = [...new Map([...had, ...picks.map((b) => ({ id: b.id, label: versionName(b) }))].map((b) => [b.id, b])).values()];
+    const ok = [], labels = new Set([(store.get("nasbLabel") || "NASB")]);
+    for (const b of cand) {
+      if (ok.length >= MAX_EXTRA_BIBLES) break;
+      if (labels.has(b.label)) continue;
+      const loads = await versionLoads(b.id);
+      if (loads === null) return false; // the signal dropped: try again another time
+      if (loads) { ok.push(b); labels.add(b.label); }
+    }
+    store.set("extraBibles", ok);
+    store.set("planCheckedAt", new Date().toISOString());
+    syncVersionSwitch();
+    if (organizerHere) saveForFamily();
+    return true;
+  })().finally(() => { planCheck = null; });
+  return planCheck;
 }
 // Each person's own favorite version (Settings, under You), from the versions the family has.
 function renderMyVersion() {
@@ -3043,7 +3087,7 @@ function initSettings() {
     if (inv) { applyInvite(inv); applyAppearance(); return true; }
     const v = apiKey.value.trim();
     if (v === store.get("apiBibleKey")) return false;
-    store.set("apiBibleKey", v);
+    store.set("apiBibleKey", v); store.set("planCheckedAt", "");
     return true;
   };
   apiKey.addEventListener("change", saveKey);
@@ -3124,16 +3168,12 @@ function initSettings() {
         defaulted = true;
         const n = pickNasb(bibles);
         if (n && (!current || /2020/.test(versionName(n)))) { store.set("nasbBibleId", n.id); store.set("nasbLabel", versionName(n)); }
-        const main = store.get("nasbBibleId");
-        const picks = [];
-        for (const re of FAVORITE_VERSIONS) for (const b of bibles) if (b.id !== main && (re.test(b.abbr) || re.test(b.name)) && !picks.includes(b)) picks.push(b);
-        const had = (store.get("extraBibles") || []).filter((b) => b.id !== main);
-        const merged = [...new Map([...had, ...picks.map((b) => ({ id: b.id, label: versionName(b) }))].map((b) => [b.id, b])).values()].slice(0, MAX_EXTRA_BIBLES);
-        store.set("extraBibles", merged);
         store.set("versionsDefaulted", true);
         extrasNow(); syncVersionSwitch();
         if (store.get("version") === "NASB") { const { book, chapter } = store.get("last"); openChapter(book, chapter, { scroll: false }); }
       }
+      // Turn on every well-known version that really opens (tested one verse each).
+      if (defaulted || !quiet) { keyStatus("Checking which versions open…"); await checkPlanVersions(true); extrasNow(); }
       const mainId = store.get("nasbBibleId");
       sel.innerHTML = `<option value="">Pick automatically</option>` + bibles.map((b) => `<option value="${esc(b.id)}" data-label="${esc(versionName(b))}"${b.id === mainId ? " selected" : ""}>${esc(versionName(b))} · ${esc(b.name)}</option>`).join("");
       const hasNkjv = bibles.some((b) => /NKJV|New King James/i.test(`${b.abbr} ${b.name}`));
@@ -3146,12 +3186,18 @@ function initSettings() {
       const others = bibles.filter((b) => b.id !== store.get("nasbBibleId")).sort((a, b) => Number(chosen.has(b.id)) - Number(chosen.has(a.id)));
       $("#extraVersionList").innerHTML = others.map((b) => `<label class="switch-row"><span>${esc(versionName(b))}<small>${esc(b.name)}</small></span><input type="checkbox" role="switch" data-extra="${esc(b.id)}" data-label="${esc(versionName(b))}" ${chosen.has(b.id) ? "checked" : ""}></label>`).join("");
       $("#extraVersions").hidden = false;
-      $("#extraVersionList").querySelectorAll("[data-extra]").forEach((i) => i.addEventListener("change", () => {
+      $("#extraVersionList").querySelectorAll("[data-extra]").forEach((i) => i.addEventListener("change", async () => {
         let x = (store.get("extraBibles") || []).filter((b) => b.id !== i.dataset.extra);
+        const off = new Set(store.get("versionsOff") || []);
         if (i.checked) {
           if (x.length >= MAX_EXTRA_BIBLES) { i.checked = false; $("#extraVersionsNow").textContent = `Up to ${MAX_EXTRA_BIBLES} extra versions fit on the switch. Turn one off first.`; return; }
-          x = [...x, { id: i.dataset.extra, label: i.dataset.label }];
-        }
+          $("#extraVersionsNow").textContent = `Checking that ${i.dataset.label} opens…`;
+          const loads = await versionLoads(i.dataset.extra);
+          if (!loads) { i.checked = false; $("#extraVersionsNow").textContent = loads === false ? `${i.dataset.label} is listed on your plan but doesn't open with this key, so it stays off.` : "No connection right now. Try again in a moment."; return; }
+          x = [...(store.get("extraBibles") || []).filter((b) => b.id !== i.dataset.extra), { id: i.dataset.extra, label: i.dataset.label }];
+          off.delete(i.dataset.extra);
+        } else off.add(i.dataset.extra);
+        store.set("versionsOff", [...off]);
         store.set("extraBibles", x);
         extrasNow(); syncVersionSwitch();
         saveForFamily().then((fam) => { if (fam) $("#extraVersionsNow").textContent += fam; });
@@ -5067,6 +5113,8 @@ if (authEnabled) {
 }
 renderAccount();
 syncVersionSwitch();
+// Once the app has settled, make sure the version lists hold every version that opens.
+setTimeout(() => checkPlanVersions(), 5000);
 initSettings();
 setRate(store.get("voiceRate"));
 $("#driveQuick").checked = driveOn();

@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 1:44 PM Central
-**Current version:** v394 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 2:25 PM Central
+**Current version:** v395 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 2:25 PM CT: Family try-out feedback from Melissa (18 items) started. First fix: Bible versions. Every version list now matches (the switch on the Read page and Settings, under You), and shows the main NASB plus each well-known version on the key's plan that really opens (NIV, KJV, NKJV, NLT, CSB and others): each is tested with one verse before it's offered, and rechecked weekly. A version the plan lists but won't open never shows. When the month's 5,000 API.Bible reads run out, the app says so plainly and saved chapters still open. To follow the publishers' terms: no more than 900 NASB verses are kept on a device (Lockman allows 1,000), the NASB notice links to www.Lockman.org, chapters credit and link API.Bible, and API.Bible's anonymous reader count (FUMS) is sent when a chapter is shown.
 - Thu Nov 26, 2:45 PM CT: Melissa gave her final OK on the seasonal backgrounds. She is doing the one Supabase update for Buddy now (supabase-final-update.md).
 - Thu Nov 26, 2:15 PM CT: The user guide (in Settings, and on paper at the next gift packet rebuild) now covers the daily chest, missions and levels, Family duel, journal guides (SOAP, ACTS) and journal search. Everything on the release plan is done except what waits on others: the family try-out (Mon Nov 30), any more seasonal notes, the final ratings after the try-out, and the one Supabase update when Buddy is done.
 - Thu Nov 26, 2:05 PM CT: Journal brought up to the best journaling apps. Search your journal (every word you type must match: entries, prayers, thanks and Bible thoughts). New "Use a guide" beside "Need an idea?": SOAP (Scripture, Observation, Application, Prayer), ACTS prayer, Three good things, and Looking back on my week; it adds the headings and you write under each. The single final Supabase update is ready for whenever Buddy is done: supabase-final-update.md (5 steps, about 10 minutes), with supabase-setup.sql (now also family duels; tested on a real database, including that nobody can see or change someone else's duel score), study-partner-function.ts and family-admin-function.ts.

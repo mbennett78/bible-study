@@ -24,7 +24,7 @@ function cachePut(entry) {
   try {
     const list = cacheAll().filter((c) => c.id !== entry.id);
     list.unshift(entry);
-    localStorage.setItem(CACHE_KEY, JSON.stringify(withinEsvLimits(list).slice(0, CACHE_MAX)));
+    localStorage.setItem(CACHE_KEY, JSON.stringify(withinNasbLimits(withinEsvLimits(list)).slice(0, CACHE_MAX)));
   } catch { /* ignore */ }
 }
 
@@ -46,6 +46,35 @@ function withinEsvLimits(list) {
   });
 }
 
+// The Lockman Foundation allows no more than 1,000 NASB verses to be stored, so saved NASB
+// chapters stop at 900 verses (the newest are kept).
+const NASB_KEEP_VERSES = 900;
+function withinNasbLimits(list) {
+  let verses = 0;
+  return list.filter((c) => {
+    if (!String(c.id).startsWith("NASB-")) return true;
+    const n = (String(c.html || "").match(/data-number=/g) || []).length || 30;
+    if (verses + n > NASB_KEEP_VERSES) return false;
+    verses += n;
+    return true;
+  });
+}
+
+// API.Bible's fair-use reporting (FUMS): each time a chapter from API.Bible is shown, its
+// anonymous token is sent back, so the publishers can count readers. No personal details:
+// a random device id and a random id for this visit.
+const randomId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`).replace(/-/g, "");
+let fumsVisit = "";
+export function reportFums(token) {
+  if (!token || !navigator.onLine) return;
+  let device = "";
+  try { device = localStorage.getItem("bible-study:fums") || ""; if (!device) { device = randomId(); localStorage.setItem("bible-study:fums", device); } } catch { device = "anon"; }
+  fumsVisit ||= randomId();
+  const img = new Image();
+  img.referrerPolicy = "no-referrer";
+  img.src = `https://fums.api.bible/f3?t=${encodeURIComponent(token)}&dId=${device}&sId=${fumsVisit}`;
+}
+
 export class TextError extends Error {
   constructor(message, kind) { super(message); this.kind = kind; }
 }
@@ -60,14 +89,23 @@ async function apiBible(path) {
       if (res.status === 401 || res.status === 403) {
         throw new TextError("API.Bible didn't accept the key, or this version isn't enabled on your plan.", "auth");
       }
+      // The plan's monthly reads are used up: say so plainly (saved chapters still open).
+      if (res.status === 429) throw new TextError("This month's Bible reads are used up on the family's API.Bible plan. Chapters already saved on this device still open, and everything opens again when the plan resets.", "limit");
       if (!res.ok) throw new TextError(`API.Bible returned ${res.status}.`, "http");
       return await res.json();
     } catch (e) {
       lastErr = e;
-      if (e instanceof TextError && e.kind === "auth") throw e;
+      if (e instanceof TextError && (e.kind === "auth" || e.kind === "limit")) throw e;
     }
   }
   throw lastErr instanceof TextError ? lastErr : new TextError("Couldn't reach API.Bible. Check your connection.", "network");
+}
+
+// Does this version actually open on the key's plan? true, false, or null when offline.
+// One short verse (John 3:16) is the test, so it costs a single read.
+export async function versionLoads(bibleId) {
+  try { const j = await apiBible(`/bibles/${bibleId}/verses/JHN.3.16?content-type=text&include-notes=false&include-titles=false`); return Boolean(j?.data?.content); }
+  catch (e) { return e instanceof TextError && (e.kind === "auth" || e.kind === "http") ? false : null; }
 }
 
 // Lists English Bibles on the key's plan so the person can pick an NASB edition.
@@ -124,7 +162,7 @@ const CHAPTER_QUERY = "content-type=html&include-notes=false&include-titles=true
 async function nasbChapter(book, ch) {
   const json = await apiBible(`/bibles/${await nasbBibleId()}/chapters/${book}.${ch}?${CHAPTER_QUERY}`);
   return {
-    html: json.data.content,
+    html: json.data.content, fums: json.meta?.fumsToken || json.meta?.fumsId || "",
     copyright: json.data.copyright || "Scripture taken from the NASB®, © The Lockman Foundation. Used by permission.",
     label: store.get("nasbLabel") || "NASB",
   };
@@ -134,7 +172,7 @@ async function nasbChapter(book, ch) {
 async function otherChapter(bibleId, book, ch) {
   const json = await apiBible(`/bibles/${bibleId}/chapters/${book}.${ch}?${CHAPTER_QUERY}`);
   const label = ((store.get("extraBibles") || []).find((b) => b.id === bibleId) || {}).label || "";
-  return { html: json.data.content, copyright: json.data.copyright || "", label };
+  return { html: json.data.content, fums: json.meta?.fumsToken || json.meta?.fumsId || "", copyright: json.data.copyright || "", label };
 }
 
 // How the ESV API is asked for a chapter. A one-chapter book is asked for with its full verse
@@ -187,7 +225,7 @@ export async function getChapter(version, book, ch) {
     return result;
   } catch (e) {
     const cached = cacheGet(id);
-    if (cached && e.kind === "network") return { ...cached, offline: true };
+    if (cached && (e.kind === "network" || e.kind === "limit")) return { ...cached, offline: true };
     throw e;
   }
 }
