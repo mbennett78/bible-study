@@ -4,6 +4,7 @@
 // Answers follow the NASB wording where a phrase is quoted. The bank grows book by book.
 import { TRIVIA2 } from "./trivia-bank2.js";
 import { TRIVIA3 } from "./trivia-bank3.js";
+import { TRIVIA4 } from "./trivia-bank4.js";
 
 export const TRIVIA = [
   // Genesis
@@ -529,7 +530,7 @@ export const TRIVIA = [
   { id: "ar37", refs: ["EXO.35"], kind: "fact", topic: "arts", q: "For the tabernacle, skilled women spun blue, purple and scarlet yarn and what else?", choices: ["Fine linen and goats' hair", "Gold thread only", "Silk", "Camel hair rope"], a: 0, why: "Exodus 35:25-26." },
   { id: "ar38", refs: ["PSA.33"], kind: "fact", topic: "arts", q: "Psalm 33:3 says, \"Sing to Him a new song; play ___ with a shout of joy.\"", choices: ["Skillfully", "Quietly", "Slowly", "Alone"], a: 0, why: "Psalm 33:3. Doing art well is a way of honoring God." },
 ];
-TRIVIA.push(...TRIVIA2, ...TRIVIA3);
+TRIVIA.push(...TRIVIA2, ...TRIVIA3, ...TRIVIA4);
 // The later banks repeat a few questions word for word (with slightly different answers).
 // Keep only the first, so nobody gets the same question twice in one game.
 {

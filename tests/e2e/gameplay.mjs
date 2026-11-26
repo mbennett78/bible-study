@@ -22,7 +22,7 @@ try {
   const tap = (sel) => page.$eval(`dialog.quest ${sel}`, (b) => b.click());
   const text = (sel) => page.$eval(sel, (el) => el.textContent.replace(/\s+/g, " ").trim()).catch(() => "");
   const answer = (rightChance) => page.evaluate(async (p) => {
-    const banks = await Promise.all(["/js/trivia-bank.js", "/js/trivia-bank2.js", "/js/trivia-bank3.js"].map((u) => import(u).catch(() => ({}))));
+    const banks = await Promise.all(["/js/trivia-bank.js", "/js/trivia-bank2.js", "/js/trivia-bank3.js", "/js/trivia-bank4.js"].map((u) => import(u).catch(() => ({}))));
     const all = banks.flatMap((m) => Object.values(m).filter(Array.isArray).flat());
     const qText = document.querySelector(".q-card p")?.textContent;
     const q = all.find((x) => x?.q === qText);

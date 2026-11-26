@@ -3522,3 +3522,27 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-fish-hop { 0%, 70%, 100% { rotate: 0deg; } 78% { rotate: -18deg; } 86% { rotate: 14deg; } }
 .bnd-face :is(.buddy-bucket, .buddy-fishhat, .buddy-splash) { display: none !important; }
 .buddy.fishing .buddy-bubble { display: none; }
+/* Bible Spin: level bar, daily chest, daily missions, report a question */
+.q-me { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 30em; margin: 4px auto; padding: 10px 14px; border-radius: 18px; background: rgb(255 255 255 / .12); text-align: left; }
+.q-lv { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe27a, #e0a800); color: #3a2600; font-weight: 900; font-size: 1.2rem; box-shadow: 0 2px 0 rgb(0 0 0 / .25); }
+.q-me-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; } .q-me-t small { opacity: .88; font-size: .85rem; }
+.q-xp { display: block; height: 10px; border-radius: 6px; background: rgb(255 255 255 / .2); overflow: hidden; }
+.q-xp i { display: block; height: 100%; min-width: 4px; border-radius: inherit; background: linear-gradient(90deg, #ffcf3f, #ffe27a); transition: width .6s ease; }
+.q-chest { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 30em; min-height: 56px; margin: 4px auto; padding: 10px 16px; border: 2px solid #ffe27a; border-radius: 18px; background: rgb(255 226 122 / .16); color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.q-chest b { font-size: 1.05rem; white-space: nowrap; } .q-chest small { margin-left: auto; opacity: .9; font-size: .85rem; }
+.q-chest-box { font-size: 2rem; display: inline-block; }
+.q-chest:not(.open) .q-chest-box { animation: q-chest-wiggle 2.4s ease-in-out infinite; }
+@keyframes q-chest-wiggle { 0%, 80%, 100% { transform: rotate(0); } 84% { transform: rotate(-12deg) scale(1.08); } 88% { transform: rotate(10deg) scale(1.08); } 92% { transform: rotate(-6deg); } }
+.q-chest.open { border-style: solid; cursor: default; animation: q-pop .5s both cubic-bezier(.3,1.6,.5,1); } .q-chest.open b { color: #ffe27a; font-size: 1.3rem; }
+.q-missions { width: 100%; max-width: 30em; margin: 4px auto; border-radius: 18px; background: rgb(255 255 255 / .1); text-align: left; }
+.q-missions summary { min-height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 14px; cursor: pointer; font-weight: 700; }
+.q-missions summary span { margin-left: auto; font-weight: 600; font-size: .9rem; opacity: .9; }
+.q-missions ul { list-style: none; margin: 0; padding: 0 12px 10px; display: grid; gap: 6px; }
+.q-missions li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: rgb(255 255 255 / .08); }
+.q-missions li small { margin-left: auto; flex: none; font-weight: 700; } .q-missions li.done { opacity: .8; } .q-missions li.done small { color: #ffe27a; }
+.q-mission-done, .q-levelup { margin: 0; padding: 8px 14px; border-radius: 14px; background: rgb(255 226 122 / .18); font-weight: 700; animation: q-pop .5s .25s both cubic-bezier(.3,1.6,.5,1); }
+.q-mission-done span { color: #ffe27a; } .q-levelup { background: linear-gradient(90deg, rgb(255 207 63 / .35), rgb(255 226 122 / .15)); }
+.q-report { display: block; margin: 10px 0 0; min-height: 44px; padding: 6px 2px; border: 0; background: none; color: inherit; font: inherit; font-size: .88rem; opacity: .8; text-decoration: underline; cursor: pointer; }
+.q-report:hover, .q-report:focus-visible { opacity: 1; }
+.q-report-done { margin: 10px 0 0; font-size: .88rem; opacity: .9; }
+@media (prefers-reduced-motion: reduce) { .q-chest-box, .q-xp i, .q-chest.open, .q-mission-done, .q-levelup { animation: none !important; transition: none !important; } }

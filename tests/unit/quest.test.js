@@ -113,3 +113,16 @@ test("no question appears twice in the bank", async () => {
   const { TRIVIA } = await import("../../js/trivia-bank.js");
   assert.equal(new Set(TRIVIA.map((q) => q.q)).size, TRIVIA.length);
 });
+
+test("levels, daily missions, the chest and reported questions", async () => {
+  const { levelOf, missionsFor, chestCoins, MISSIONS, pickQuestion: pick, questionsFor: qf } = await import("../../js/quest.js");
+  assert.deepEqual([levelOf(0).n, levelOf(9).n, levelOf(10).n, levelOf(30).n], [1, 1, 2, 3]);
+  const L = levelOf(12); assert.equal(L.into, 2); assert.equal(L.need, 20); assert.equal(levelOf(9999).title, "Wise elder");
+  const a = missionsFor("2026-12-01"), b = missionsFor("2026-12-01");
+  assert.deepEqual(a, b); assert.equal(new Set(a.map((m) => m.id)).size, 3);
+  assert.ok(a.every((m) => MISSIONS.some((x) => x.id === m.id) && m.have === 0));
+  assert.notDeepEqual(missionsFor("2026-12-02").map((m) => m.id), missionsFor("2026-12-05").map((m) => m.id));
+  assert.equal(chestCoins(1, () => 0), 30); assert.equal(chestCoins(30, () => 0.99), 120);
+  const all = qf("people"), skip = all.slice(0, all.length - 1).map((q) => q.id);
+  assert.equal(pick("people", [], () => 0, skip).id, all.at(-1).id);
+});

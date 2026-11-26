@@ -69,12 +69,43 @@ const isVerseBlank = (q) => !q.topic && /^["“]/.test(q.q) && /_{2,}/.test(q.q)
 export const categoryOf = (q) => (isVerseBlank(q) ? CATEGORIES.find((c) => c.id === "books") : CATEGORIES.find((c) => c.topics.includes(topicOf(q)))) || CATEGORIES[2];
 export const questionsFor = (catId) => TRIVIA.filter((q) => categoryOf(q).id === catId);
 // A question from this category the person hasn't seen lately (or any, once all are seen).
-export function pickQuestion(catId, seen = [], rand = Math.random) {
-  const all = questionsFor(catId);
+export function pickQuestion(catId, seen = [], rand = Math.random, reported = []) {
+  const all = questionsFor(catId).filter((q) => !reported.includes(q.id));
   const fresh = all.filter((q) => !seen.includes(q.id));
   const pool = fresh.length ? fresh : all;
   return pool[Math.floor(rand() * pool.length)];
 }
+// Levels: every right answer counts. Level n needs 10 × (1 + 2 + … + (n − 1)) right answers,
+// so early levels come quickly and later ones take real play.
+export const LEVEL_TITLES = ["Seeker", "Learner", "Reader", "Scribe", "Teacher", "Scholar", "Sage", "Wise elder"];
+export function levelOf(right = 0) {
+  let n = 1;
+  while (right >= 5 * n * (n + 1)) n++;
+  const from = 5 * (n - 1) * n, to = 5 * n * (n + 1);
+  return { n, title: LEVEL_TITLES[Math.min(n - 1, LEVEL_TITLES.length - 1)], into: right - from, need: to - from };
+}
+// Daily missions: three a day, the same all day, with coins for each one done.
+export const MISSIONS = [
+  { id: "answer10", goal: 10, text: "Answer 10 questions" },
+  { id: "right8", goal: 8, text: "Get 8 right" },
+  { id: "streak3", goal: 1, text: "Get 3 right in a row" },
+  { id: "jewel2", goal: 2, text: "Win 2 jewels" },
+  { id: "bonus", goal: 1, text: "Play a bonus round" },
+  { id: "lamp", goal: 1, text: "Fill the lamp and win a jewel with it" },
+  { id: "fast5", goal: 5, text: "Answer 5 right with more than half the candle left" },
+  { id: "buddy", goal: 1, text: "Beat Buddy at any level" },
+  ...CATEGORIES.map((c) => ({ id: `cat-${c.id}`, goal: 3, text: `Get 3 right in ${c.name} with ${c.who}` })),
+];
+export const MISSION_COINS = 30;
+export function missionsFor(day) {
+  let h = 7;
+  for (const ch of day) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const list = [...MISSIONS], out = [];
+  while (out.length < 3) { h = (h * 1103515245 + 12345) >>> 0; const i = h % list.length; out.push(list.splice(i, 1)[0]); }
+  return out.map((m) => ({ id: m.id, goal: m.goal, have: 0 }));
+}
+// The daily treasure chest: 20 to 50 coins, plus 10 for each day in a row (up to a week).
+export function chestCoins(daysInRow, rand = Math.random) { return 20 + Math.floor(rand() * 4) * 10 + Math.min(7, Math.max(1, daysInRow)) * 10; }
 // Coins for a right answer: 10, plus up to 10 for speed, plus a little for a streak.
 export function coinsFor(msLeft, totalMs, streak) {
   const speed = Math.round(10 * Math.max(0, Math.min(1, msLeft / totalMs)));
@@ -195,6 +226,31 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   const mine = () => ({ coins: 0, earned: 0, played: 0, won: 0, jewels: 0, best: 0, seen: [], badges: {}, players: [], buddy: "fair", sound: true, ...(store.get("quest") || {}) });
   const save = (patch) => store.set("quest", { ...mine(), ...patch });
   const sound = (n) => { if (mine().sound) SOUNDS[n](); };
+  // Daily missions, the daily chest and levels (only for the device's own player: solo and
+  // Challenge Buddy; family games pass the device around, so they don't count here).
+  const dayKey = (ms = Date.now()) => { const d = new Date(ms); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+  const daily = () => { const m = mine(); if (m.mday === dayKey() && Array.isArray(m.missions)) return m.missions; const list = missionsFor(dayKey()); save({ mday: dayKey(), missions: list }); return list; };
+  const missionText = (id) => (MISSIONS.find((x) => x.id === id)?.text || "").replace("Buddy", B());
+  let doneNow = [], levelUp = 0;
+  function progress(id, by = 1) {
+    if (!game || game.mode === "family") return;
+    const list = daily(), ms = list.find((x) => x.id === id);
+    if (!ms || ms.have >= ms.goal) return;
+    ms.have = Math.min(ms.goal, ms.have + by);
+    if (ms.have === ms.goal) { doneNow.push(missionText(id)); const m = mine(); save({ missions: list, coins: m.coins + MISSION_COINS, earned: m.earned + MISSION_COINS }); }
+    else save({ missions: list });
+  }
+  function addRight() {
+    if (!game || game.mode === "family") return;
+    const was = mine().rightTotal || 0, before = levelOf(was).n;
+    save({ rightTotal: was + 1 });
+    if (levelOf(was + 1).n > before) levelUp = levelOf(was + 1).n;
+  }
+  const notes = () => {
+    const d = doneNow.splice(0), lv = levelUp; levelUp = 0;
+    return d.map((t) => `<p class="q-mission-done">✅ Mission done: ${esc(t)} <span>+${MISSION_COINS} 🪙</span></p>`).join("")
+      + (lv ? `<p class="q-levelup">⬆️ Level up! <b>Level ${lv}</b> · ${esc(levelOf(mine().rightTotal || 0).title)}</p>` : "");
+  };
   // A sound switch at the top of every Bible Spin screen.
   const sndBtn = () => `<button type="button" class="q-snd" data-snd aria-pressed="${mine().sound}" aria-label="Sound effects ${mine().sound ? "on" : "off"}">${mine().sound ? "🔊" : "🔇"}</button>`;
   const wireSnd = () => dlg.querySelector("[data-snd]")?.addEventListener("click", (e) => { save({ sound: !mine().sound }); e.currentTarget.outerHTML = sndBtn(); wireSnd(); const c = dlg.querySelector("[data-sound]"); if (c) c.checked = mine().sound; });
@@ -217,10 +273,16 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   function home() {
     stop(); game = null;
     const m = mine(), earned = QUEST_BADGES.filter(([id]) => m.badges[id]).length;
+    const L = levelOf(m.rightTotal || 0), list = daily(), chestReady = m.chestDay !== dayKey();
+    const me = `<div class="q-me" aria-label="Level ${L.n}, ${L.title}"><span class="q-lv">${L.n}</span><span class="q-me-t"><b>Level ${L.n} · ${esc(L.title)}</b><span class="q-xp"><i style="width:${Math.round((100 * L.into) / L.need)}%"></i></span><small>${L.need - L.into} more right answers to level ${L.n + 1}</small></span></div>
+      ${chestReady ? `<button class="q-chest" data-chest><span class="q-chest-box" aria-hidden="true">🎁</span><b>Daily treasure chest</b><small>Tap to open it</small></button>` : ""}
+      <details class="q-missions"${list.some((x) => x.have < x.goal) ? " open" : ""}><summary>🎯 Today's missions <span>${list.filter((x) => x.have >= x.goal).length} of 3 done</span></summary>
+        <ul>${list.map((x) => `<li class="${x.have >= x.goal ? "done" : ""}"><span>${x.have >= x.goal ? "✅" : "⬜"} ${esc(missionText(x.id))}</span><small>${x.have >= x.goal ? `+${MISSION_COINS} 🪙` : `${x.have}/${x.goal}`}</small></li>`).join("")}</ul></details>`;
     paint(`<div class="q-home">
       <div class="q-hero">${wheelSvg()}</div>
       <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "", i)).join("")}</div>
       <details class="q-meet"><summary>Meet the crew</summary><ul>${CATEGORIES.map((c, i) => `<li>${critter(c, "", i, "happy")}<span><b>${esc(c.who)}</b> · ${esc(c.name)}<small>${esc(c.who)} ${esc(c.about)}.</small></span></li>`).join("")}</ul></details>
+      ${me}
       <p class="q-tag">Spin, answer before the candle burns down, and collect all ${CATEGORIES.length} jewels!</p>
       <button class="q-big q-solo" data-mode="solo"><span>🎯</span><b>Play solo</b><small>Three hearts. How many jewels can you win?</small></button>
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
@@ -230,6 +292,13 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <label class="q-link"><input type="checkbox" data-sound ${m.sound ? "checked" : ""}> Sounds</label></div></div>`);
     dlg.querySelectorAll("[data-mode]").forEach((b) => b.onclick = () => setupMode(b.dataset.mode));
     dlg.querySelector("[data-badges]").onclick = badges;
+    dlg.querySelector("[data-chest]")?.addEventListener("click", (e) => {
+      const m2 = mine(), row = m2.chestDay === dayKey(Date.now() - 864e5) ? (m2.chestRow || 0) + 1 : 1, got = chestCoins(row);
+      save({ chestDay: dayKey(), chestRow: row, coins: m2.coins + got, earned: m2.earned + got });
+      e.currentTarget.outerHTML = `<div class="q-chest open" role="status"><span class="q-chest-box" aria-hidden="true">💰</span><b>+${got} 🪙</b><small>${row > 1 ? `${row} days in a row! Come back tomorrow for more.` : "Come back tomorrow for another chest."}</small></div>`;
+      dlg.querySelector(".q-coins b").textContent = mine().coins.toLocaleString();
+      sound("streak"); if (lively()) confetti(dlg, ["#f4d35e", "#ffe27a", ...lookColors()], 60);
+    });
     dlg.querySelector("[data-practice]")?.addEventListener("click", () => { dlg.close(); practice(); });
     dlg.querySelector("[data-sound]").onchange = (e) => { save({ sound: e.target.checked }); dlg.querySelector("[data-snd]").outerHTML = sndBtn(); wireSnd(); };
   }
@@ -317,7 +386,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
   /* A question flies in; the candle burns down */
   function ask(cat, { jewelTry = false } = {}) {
     const p = current(), buddyPlays = p.kind === "buddy", m = mine();
-    const q = pickQuestion(cat.id, m.seen);
+    const q = pickQuestion(cat.id, m.seen, Math.random, m.reported || []);
     save({ seen: [...m.seen.filter((id) => id !== q.id), q.id].slice(-200) });
     const order = q.choices.map((_, k) => k);
     for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } // fair shuffle
@@ -348,7 +417,13 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       const coins = right ? coinsFor(msLeft, total, p.streak + 1) : 0;
       const r = answer(game, p, cat.id, right, coins, { jewelTry });
       const extra = coins + (r.jewel ? 25 : 0) + (r.streak?.coins || 0);
-      if (p.kind === "person" && game.mode !== "family") save({ coins: mine().coins + extra, earned: mine().earned + extra });
+      if (p.kind === "person" && game.mode !== "family") {
+        save({ coins: mine().coins + extra, earned: mine().earned + extra });
+        progress("answer10");
+        if (right) { addRight(); progress("right8"); progress(`cat-${cat.id}`); if (msLeft > total / 2) progress("fast5"); }
+        if (p.streak >= 3) progress("streak3");
+        if (r.jewel) { progress("jewel2"); if (jewelTry) progress("lamp"); }
+      }
       sound(right ? (r.jewel || r.streak ? "streak" : "right") : "wrong");
       later(() => feedback(q, cat, right, coins, r, k === null, jewelTry), buddyPlays ? 1300 : 900);
     };
@@ -379,10 +454,11 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     paint(`<div class="q-fb ${right ? "good" : "bad"}" style="--cc:${cat.color}">
       <div class="q-fb-head">${p.kind === "buddy" ? buddyFace(right ? "excited" : "") : critter(cat, `big q-fb-critter ${right ? "cheer" : "sad"}`, 0, right ? "happy" : "sad")}<h2>${esc(head)}</h2></div>
       ${p.kind === "buddy" ? "" : `<p class="q-says"><b>${esc(cat.who)}:</b> ${esc(pick(right ? cat.cheer : cat.comfort))}</p>`}
-      ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}${react}${lampNote}
+      ${right && coins ? `<p class="q-gain">+${coins} 🪙</p>` : ""}${streak}${react}${lampNote}${p.kind === "person" ? notes() : ""}
       ${r.jewel ? `<div class="q-newjewel"><span class="q-rays" aria-hidden="true"></span>${jewelSvg(cat, true)}<p>${esc(who)} won the <b>${esc(cat.name)}</b> jewel! <span>+25 🪙</span><small>Jewel ${jewelCount(p)} of ${CATEGORIES.length}</small></p></div>
         <div class="q-crew q-crew-cheer">${CATEGORIES.map((c, i) => critter(c, p.jewels[c.id] ? "cheer" : "", i, p.jewels[c.id] ? "happy" : "")).join("")}</div>` : ""}
-      <div class="q-why"><p>${right ? `✓ <b>${esc(q.choices[q.a])}</b>. ` : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p></div>
+      <div class="q-why"><p>${right ? `✓ <b>${esc(q.choices[q.a])}</b>. ` : `The answer: <b>${esc(q.choices[q.a])}</b>. `}${esc(q.why || "")}</p>
+        ${p.kind === "person" ? `<button type="button" class="q-report" data-report>⚑ Something wrong with this question?</button>` : ""}</div>
       <button class="q-btn" data-next>${r.over ? "See how it ended" : right || game.mode === "solo" ? (p.kind === "buddy" ? `${BH()} spins again` : "Keep going") : game.mode === "buddy" ? (p.kind === "buddy" ? "My turn!" : `${BH()}'s turn`) : "Next player"}</button></div>`);
     if (r.jewel && lively()) confetti(dlg, [cat.color, "#f4d35e", ...lookColors()], 90);
     // Runs once: Buddy's turn moves on by itself, and tapping the button too must not move twice.
@@ -399,6 +475,13 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       proceed();
     };
     dlg.querySelector("[data-next]").onclick = next;
+    // A question that looks wrong or confusing: set it aside so it never comes up again here,
+    // and keep a note of it (in the backup) so it can be checked and fixed.
+    dlg.querySelector("[data-report]")?.addEventListener("click", (e) => {
+      const m2 = mine();
+      save({ reported: [...new Set([...(m2.reported || []), q.id])].slice(-300) });
+      e.currentTarget.outerHTML = `<p class="q-report-done" role="status">Thanks! That question is set aside and won't come up again.</p>`;
+    });
     if (p.kind === "buddy") later(next, 2600);
   }
 
@@ -409,10 +492,11 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <div class="q-crew">${CATEGORIES.map((c, i) => critter(c, "cheer", i, "happy")).join("")}</div>
       <button class="q-btn" data-next>Let's go!</button></div>`);
     sound("streak");
+    if (p.kind === "person") progress("bonus");
     dlg.querySelector("[data-next]").onclick = () => bonusQ(p, 0, 0, then);
   }
   function bonusQ(p, n, got, then) {
-    const m = mine(), cat = pick(CATEGORIES), q = pickQuestion(cat.id, m.seen);
+    const m = mine(), cat = pick(CATEGORIES), q = pickQuestion(cat.id, m.seen, Math.random, m.reported || []);
     save({ seen: [...m.seen.filter((id) => id !== q.id), q.id].slice(-200) });
     const order = q.choices.map((_, k) => k).sort(() => Math.random() - 0.5);
     paint(`<div class="q-ask q-bonus" style="--cc:${cat.color}">
@@ -426,7 +510,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       if (done) return; done = true; stop();
       const right = k === q.a;
       dlg.querySelectorAll(".q-choice").forEach((b) => { b.disabled = true; if (+b.dataset.k === q.a) b.classList.add("right"); else if (+b.dataset.k === k) b.classList.add("wrong"); });
-      if (right) { p.coins += BONUS_COINS; if (game.mode !== "family") save({ coins: mine().coins + BONUS_COINS, earned: mine().earned + BONUS_COINS }); }
+      if (right) { p.coins += BONUS_COINS; if (game.mode !== "family") { save({ coins: mine().coins + BONUS_COINS, earned: mine().earned + BONUS_COINS }); addRight(); } }
       sound(right ? "right" : "wrong");
       later(() => (n + 1 < BONUS_QS ? bonusQ(p, n + 1, got + (right ? 1 : 0), then) : bonusEnd(got + (right ? 1 : 0), then)), 1100);
     };
@@ -466,6 +550,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       add("beatBuddy", iWon && game.mode === "buddy"); add("beatTough", iWon && game.mode === "buddy" && game.level === "tough");
       add("streak5", me.longest >= 5); add("streak10", me.longest >= 10);
     }
+    if (iWon && game.mode === "buddy") progress("buddy");
     const winBonus = iWon ? 100 : 0;
     const earned = m.earned + winBonus;
     add("coins500", earned >= 500); add("coins2000", earned >= 2000); add("games10", stats.played >= 10);
@@ -478,7 +563,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       ${game.mode === "buddy" ? buddyFace(top === me ? "" : "excited") : `<span class="q-fb-icon">🏆</span>`}<h2>${esc(title)}</h2>
       ${game.mode === "buddy" && top !== me ? `<p class="q-tag">"Good game! Want a rematch?"</p>` : ""}
       <div class="q-final">${game.players.map((pl) => `<div class="q-pl"><span class="q-pl-name">${esc(pl.name)}</span><span class="q-jewels">${CATEGORIES.map((c) => jewelSvg(c, pl.jewels[c.id], pl.progress[c.id] || 0)).join("")}</span><small>${pl.right} of ${pl.asked} right · ${pl.coins} 🪙</small></div>`).join("")}</div>
-      ${winBonus ? `<p class="q-gain">Winner's bonus +${winBonus} 🪙</p>` : ""}
+      ${winBonus ? `<p class="q-gain">Winner's bonus +${winBonus} 🪙</p>` : ""}${notes()}
       ${fresh.length ? `<div class="q-newbadges"><h3>New badge${fresh.length > 1 ? "s" : ""}!</h3>${fresh.map(([, name, icon]) => `<div class="q-badge">${medal(icon, { fresh: true })}<b>${esc(name)}</b></div>`).join("")}</div>` : ""}
       <button class="q-btn" data-again>Play again</button><button class="q-link" data-home>Back to Bible Spin</button></div>`);
     if (lively() && (iWon || game.mode === "family")) { confetti(dlg, lookColors()); sound("fanfare"); } else sound(iWon ? "fanfare" : "done");
