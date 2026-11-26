@@ -1390,8 +1390,11 @@ function chatPose(kind, ms) {
   else if (kind === "read") { seat(f, "chair", ms); f.classList.add("reading"); }
   else if (kind === "swing") { seat(f, "ground", ms); f.classList.add("swing"); }
   else f.classList.add(kind);
+  // Not always the big grin: sometimes a softer smile, sometimes a serious, thinking look.
+  f.classList.remove("mood-soft", "mood-focus");
+  if (kind === "swing" && Math.random() < .5) f.classList.add(pickOne(["mood-soft", "mood-focus"]));
   clearTimeout(f._poseT);
-  f._poseT = setTimeout(() => { f.classList.remove(...POSES); }, ms);
+  f._poseT = setTimeout(() => { f.classList.remove(...POSES, "mood-soft", "mood-focus"); }, ms);
 }
 // When someone starts talking to him (typing in the chat), he looks up at them from his book or desk.
 let lookT = 0;
@@ -1405,7 +1408,7 @@ function chatAnswered() {
   const f = chatFace();
   if (!f) return;
   clearTimeout(f._poseT); clearTimeout(f._seatT);
-  f.classList.remove(...POSES, "chair", "desk", "sitting");
+  f.classList.remove(...POSES, "chair", "desk", "sitting", "mood-soft", "mood-focus");
   if (calmChat()) return;
   f.classList.add("talking"); setTimeout(() => f.classList.remove("talking"), 2600);
 }

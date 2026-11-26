@@ -3158,3 +3158,70 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
   :root:not([data-graphics="simple"]) .buddy.desk.writing:not(.lookup) .buddy-desk-hand { animation: buddy-desk-scribble .5s ease-in-out infinite alternate; transform-box: view-box; }
 }
 @keyframes buddy-desk-scribble { from { transform: translateX(-1.2px); } to { transform: translate(1.2px, .3px); } }
+
+/* Buddy really uses his sports gear (Nov 26): the baseball goes up and lands back in his mitt,
+   he throws the football, rolls a bowling ball into the pins, and naps on a little pillow. */
+.buddy-baseball, .buddy-football, .buddy-bowl, .buddy-pins, .buddy-pillow { display: none; }
+.buddy-baseball circle { fill: #fff; stroke: #3b2b20; stroke-width: .6; } .buddy-baseball path { fill: none; stroke: #d0433a; stroke-width: .5; }
+.buddy-football ellipse { fill: #8a4f2a; stroke: #3b2b20; stroke-width: .6; } .buddy-football path { stroke: #fff; stroke-width: .6; }
+.buddy-bowl circle:first-child { fill: #3b5f9a; stroke: #1f2f4f; stroke-width: .6; } .buddy-bowl circle + circle { fill: #1f2f4f; }
+.buddy-pin path:first-child { fill: #fff; stroke: #3b2b20; stroke-width: .6; } .buddy-pin-band { stroke: #d0433a; stroke-width: .9; }
+.buddy-pin { transform-box: view-box; }
+.buddy-pillow path:first-child { fill: #fff8ea; stroke: #3b2b20; stroke-width: .8; } .buddy-pillow-crease { fill: none; stroke: #d9cdb8; stroke-width: .7; }
+.buddy.tossing .buddy-baseball, .buddy.throwing .buddy-football, .buddy.throwing .buddy-cap, .buddy.bowling .buddy-bowl, .buddy.bowling .buddy-pins, .buddy.sleeping .buddy-pillow { display: inline; }
+.buddy.throwing .buddy-arm-r { transform: rotate(-25deg); }
+.buddy.bowling .buddy-arm-r { transform: rotate(10deg); }
+.buddy-baseball, .buddy-football, .buddy-bowl { transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.tossing .buddy-baseball { animation: buddy-catch .9s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-arm-r { animation: buddy-throw-arm 1.2s ease-in-out 3; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-football { animation: buddy-throw-ball 1.2s ease-in 3; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-arm-r { animation: buddy-bowl-arm 2.4s ease-in-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-bowl { animation: buddy-bowl-roll 2.4s ease-in 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .pin1 { animation: buddy-pin-fall 2.4s ease-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .pin2 { animation: buddy-pin-fall2 2.4s ease-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .pin3 { animation: buddy-pin-fall 2.4s ease-out .08s 2; }
+}
+/* The ball leaves the mitt, goes up and drops back in. */
+@keyframes buddy-catch { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+/* Wind up, throw: the football flies off up and to the right, then a new one is in his hand. */
+@keyframes buddy-throw-arm { 0%, 100% { transform: rotate(-25deg); } 35% { transform: rotate(-120deg); } 55% { transform: rotate(10deg); } }
+@keyframes buddy-throw-ball { 0%, 50% { transform: none; opacity: 1; } 51% { transform: translate(-6px, -14px); } 90% { transform: translate(34px, -30px) rotate(40deg); opacity: 0; } 100% { opacity: 0; } }
+/* Swing down, let go, roll along the floor into the pins: they tip over, then stand back up. */
+@keyframes buddy-bowl-arm { 0%, 100% { transform: rotate(10deg); } 20% { transform: rotate(-50deg); } 40% { transform: rotate(-10deg); } }
+@keyframes buddy-bowl-roll { 0%, 35% { transform: translate(0, 0); opacity: 1; } 45% { transform: translate(2px, 20px); } 70% { transform: translate(19px, 20px); opacity: 1; } 78% { transform: translate(26px, 20px); opacity: 0; } 100% { opacity: 0; } }
+@keyframes buddy-pin-fall { 0%, 68% { transform: rotate(0); } 78%, 92% { transform: rotate(80deg); } 100% { transform: rotate(0); } }
+@keyframes buddy-pin-fall2 { 0%, 70% { transform: rotate(0); } 80%, 92% { transform: rotate(-80deg); } 100% { transform: rotate(0); } }
+.bnd-face .buddy-baseball, .bnd-face .buddy-football, .bnd-face .buddy-bowl, .bnd-face .buddy-pins, .bnd-face .buddy-pillow { display: none; }
+
+/* ---------- Buddy holds his book, turns the pages, and has quieter faces ----------
+   Reading: both hands hold the book at its edges (no arms sticking out), the book rises and
+   settles a little as he reads, and now and then he turns a page. His face goes soft
+   (a gentle smile) while he reads and serious (straight mouth, brows down) while he writes
+   or thinks hard. When someone talks to him he looks up with his big smile again. */
+.buddy-readhold, .buddy-book-flip, .buddy-thumbs, .buddy-soft, .buddy-flat, .buddy-focus { display: none; }
+.buddy-soft, .buddy-flat, .buddy-focus { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; }
+.buddy-focus { stroke-width: 1.6; }
+.buddy-thumbs circle { fill: var(--accent); }
+.buddy-book-flip { fill: var(--surface); stroke: var(--accent); stroke-width: 1.2; stroke-linejoin: round; transform-origin: 26px 50px; transform-box: view-box; }
+.buddy.reading .buddy-arm-l, .buddy.reading .buddy-arm-r { display: none; }
+.buddy.reading .buddy-readhold, .buddy.reading .buddy-thumbs { display: inline; }
+.buddy.reading .buddy-smile, .buddy.mood-soft .buddy-smile { display: none; }
+.buddy.reading .buddy-soft, .buddy.mood-soft .buddy-soft { display: inline; }
+.buddy.writing .buddy-smile, .buddy.pondering .buddy-smile, .buddy.mood-focus .buddy-smile { display: none; }
+.buddy.writing .buddy-flat, .buddy.writing .buddy-focus, .buddy.pondering .buddy-flat, .buddy.pondering .buddy-focus, .buddy.mood-focus .buddy-flat, .buddy.mood-focus .buddy-focus { display: inline; }
+.buddy.reading .buddy-soft, .buddy.writing .buddy-flat, .buddy.writing .buddy-focus { transform: translateY(1.5px); transform-box: view-box; }
+.buddy.desk.writing .buddy-flat, .buddy.desk.writing .buddy-focus { transform: translate(1.6px, 1.6px); }
+.buddy.lookup .buddy-smile { display: inline !important; }
+.buddy.lookup .buddy-soft, .buddy.lookup .buddy-flat, .buddy.lookup .buddy-focus { display: none !important; }
+.buddy.sleeping .buddy-soft, .buddy.sleeping .buddy-flat, .buddy.sleeping .buddy-focus { display: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.reading .buddy-readhold,
+  :root:not([data-graphics="simple"]) .buddy.reading .buddy-book,
+  :root:not([data-graphics="simple"]) .buddy.reading .buddy-book-flip,
+  :root:not([data-graphics="simple"]) .buddy.reading .buddy-thumbs { animation: buddy-book-bob 3.2s ease-in-out infinite; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.reading .buddy-book-flip { display: inline; animation: buddy-book-bob 3.2s ease-in-out infinite, buddy-page-turn 4.8s ease-in-out infinite; }
+}
+@keyframes buddy-book-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.4px; } }
+@keyframes buddy-page-turn { 0%, 70% { transform: scaleX(1); opacity: 0; } 72% { opacity: 1; } 86% { transform: scaleX(-1); opacity: 1; } 90%, 100% { transform: scaleX(-1); opacity: 0; } }
+.bnd-face .buddy-readhold, .bnd-face .buddy-thumbs, .bnd-face .buddy-book-flip { display: none; }
