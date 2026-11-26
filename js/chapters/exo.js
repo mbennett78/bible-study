@@ -37,6 +37,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["2:11-12", "He struck down the Egyptian", "Moses acts on his own strength and has to run. God will later send him in His strength."],
       ["2:24-25", "God heard... God remembered... God saw... God took notice", "Four verbs show God is about to act on His covenant with Abraham, Isaac and Jacob."],
     ],
+    bg: [["A basket on the river", "Moses' mother made a basket of papyrus reeds and sealed it with tar and pitch (2:3). A Mesopotamian legend tells of King Sargon of Akkad being set adrift in a reed basket as a baby too, so the custom of saving a child this way was known. In Moses' case, God was at work through a mother's courage and a princess's pity.", "strong", ["hoffmeier", "kitchen"]]],
+    w: [["תֵּבָה", "tevah", "H8392", "basket, ark", "The same word is used for Noah's ark and found only in these two stories. In both, God saves through a sealed vessel on the water.", ["halot", "stuart"]]],
     refs: [["HEB.11", "Hebrews 11:24-27", "By faith Moses refused to be called the son of Pharaoh's daughter"], ["ACT.7", "Acts 7:20-29", "Stephen tells Moses' early life"]],
   },
   3: {
@@ -71,6 +73,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["God's sovereign purpose", "Others stress that God announced the hardening beforehand to show His power (Romans 9:17-18), while Pharaoh remained fully responsible.", ["durham"]],
     ],
     common: "All agree that Pharaoh was responsible for his actions and that God used even his stubbornness to show His glory and save His people.",
+    bg: [["A staff and a snake", "Moses' shepherd's staff becomes a snake and then a staff again (4:2-4). Pharaoh wore the cobra on his crown as a sign of royal power. In Moses' hand, the snake is under God's control.", "good", ["hoffmeier", "stuart"]]],
+    w: [["מַטֶּה", "matteh", "H4294", "staff, rod", "An ordinary shepherd's stick that becomes \"the staff of God\" (4:20), used to bring the plagues and part the sea.", ["halot", "durham"]]],
     refs: [["ROM.9", "Romans 9:17-18", "For this very purpose I raised you up"], ["EXO.8", "Exodus 8:15", "Pharaoh hardened his heart"], ["HOS.11", "Hosea 11:1", "Out of Egypt I called My son"]],
   },
   5: {
@@ -90,6 +94,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["6:6-7", "I will redeem you", "Redeem means to buy back or rescue a relative. God acts as Israel's kinsman."],
       ["6:9", "Despondency and cruel bondage", "Crushed spirits cannot always hear good news at first. God keeps working."],
     ],
+    bg: [["\"By My name, the LORD\"", "God tells Moses that the patriarchs knew Him as God Almighty, \"but by My name, LORD, I did not make Myself known to them\" (6:3). Yet Genesis uses the name often. Many explain that the patriarchs knew the name but had not yet seen all it meant, which God would now show by rescuing Israel.", "good", ["stuart", "durham"]]],
+    w: [["יְהוָה", "YHWH", "H3068", "the LORD", "God's personal name, linked to \"I AM WHO I AM\" (3:14). Most English Bibles print it as LORD in capital letters, following the Jewish custom of not pronouncing it aloud.", ["halot", "cole"]]],
     refs: [["JER.31", "Jeremiah 31:33", "I will be their God and they shall be My people"], ["2CO.6", "2 Corinthians 6:16", "I will be their God"]],
   },
   7: {
@@ -109,6 +115,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["8:19", "The finger of God", "The magicians admit defeat. Jesus later says He casts out demons \"by the finger of God\" (Luke 11:20)."],
       ["8:22-23", "A distinction", "God separates His people from Egypt in the plagues."],
     ],
+    bg: [["Judgment on Egypt's gods", "God said the plagues would judge \"all the gods of Egypt\" (12:12). Egyptians honored the Nile as life-giving, and a frog-headed goddess, Heqet, was linked with birth. Frogs swarming every house became a curse, not a blessing.", "good", ["hoffmeier", "stuart"]]],
     refs: [["LUK.11", "Luke 11:20", "By the finger of God"], ["PSA.105", "Psalm 105:30-31", "Their land swarmed with frogs"]],
   },
   9: {
@@ -118,6 +125,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["9:20", "The one who feared the word of the LORD", "Some Egyptians believe God's warning and are protected."],
       ["9:27", "I have sinned", "Words of confession without real change."],
     ],
+    bg: [["Livestock and hail", "Egyptians held some animals sacred, such as the Apis bull. The plague on livestock struck Egypt's herds but not Israel's (9:6). Heavy hail is rare in Egypt, so a hailstorm \"such as had not been in all the land of Egypt\" (9:24) would be terrifying.", "good", ["hoffmeier", "kitchen"]]],
+    w: [["כָּבֵד", "kaved", "H3513", "to be heavy, hardened", "Pharaoh's heart was \"heavy.\" Egyptians pictured a person's heart being weighed after death; a heavy heart was a guilty one. Exodus says Pharaoh hardened his heart, and God hardened it too.", ["halot", "hoffmeier"]]],
     refs: [["ROM.9", "Romans 9:17", "For this very purpose I raised you up"], ["REV.16", "Revelation 16:21", "Huge hailstones from heaven"]],
   },
   10: {
@@ -127,6 +136,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["10:22-23", "Darkness that can be felt", "A blow against Ra, Egypt's sun god. \"All the sons of Israel had light in their dwellings.\""],
       ["10:26", "Not a hoof", "Pharaoh offered to let the people go if they left their animals. Moses refuses: not a hoof will be left behind. He will not accept half-obedience."],
     ],
+    bg: [["Darkness over the sun god's land", "Egypt's chief god was Ra, the sun, and Pharaoh was called the son of Ra. Three days of darkness so thick it could be felt (10:21-23) showed that the sun was under the LORD's command, while Israel had light in their homes.", "good", ["hoffmeier", "stuart"]]],
     refs: [["JOL.2", "Joel 2:1-11", "A day of darkness and locusts"], ["REV.9", "Revelation 9:3", "Locusts came upon the earth"]],
   },
   11: {
@@ -136,6 +146,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["11:5", "All the firstborn", "Pharaoh ordered Israel's sons drowned (1:22); God had warned that Pharaoh's firstborn would pay (4:23)."],
       ["11:7", "Not even a dog will bark", "So quiet will Israel's camp be that the difference between the two peoples will be plain."],
     ],
+    bg: [["A great cry", "Israel had cried out under slavery (3:7). Now \"there shall be a great cry in all the land of Egypt\" (11:6). The last plague would reach from Pharaoh's own firstborn, the heir to the throne, to the slave at the mill.", "good", ["stuart", "durham"]]],
     refs: [["EXO.4", "Exodus 4:22-23", "Israel is My firstborn"], ["PSA.105", "Psalm 105:36-37", "He struck down all the firstborn"]],
   },
   12: {
@@ -170,6 +181,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["A sea of reeds", "Suph means reeds (Exodus 2:3). Some place the crossing at one of the lakes on Egypt's eastern border, such as the Bitter Lakes or Lake Timsah, which were still deep and wide enough to drown an army.", ["hoffmeier", "kitchen"]],
     ],
     common: "Both views hold that God parted real waters and Israel crossed on dry ground. The question is where, not whether.",
+    bg: [["Not the way of the Philistines", "God did not lead Israel along the coast road, the shortest route, \"lest the people change their minds when they see war\" (13:17). Egyptian records describe that road, the \"Ways of Horus,\" lined with Egyptian forts. Remains of forts along it have been excavated in northern Sinai.", "strong", ["hoffmeier", "kitchen"]]],
     refs: [["LUK.2", "Luke 2:22-23", "Every firstborn male shall be called holy"], ["1CO.10", "1 Corinthians 10:1-2", "Under the cloud and through the sea"], ["NEH.9", "Nehemiah 9:12", "A pillar of cloud by day"]],
   },
   15: {
@@ -180,6 +192,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["15:24", "The people grumbled", "Three days after the greatest miracle, Israel complains. The pattern repeats throughout the wilderness."],
       ["15:26", "Jehovah-Rapha", "At Marah God turned bitter water sweet and gave His name Jehovah-Rapha: I am the LORD who heals you."],
     ],
+    bg: [["The Song of the Sea", "Moses' song after the Red Sea crossing (15:1-18) is among the oldest poetry in the Bible, with old word forms that scholars recognize. Miriam led the women with tambourines and dancing (15:20-21). Revelation 15:3 pictures the saints singing \"the song of Moses.\"", "strong", ["stuart", "kitchen"]]],
+    w: [["זִמְרָה", "zimrah", "H2176", "song", "\"The LORD is my strength and song, and He has become my salvation\" (15:2). The same line is sung again in Psalm 118:14 and Isaiah 12:2.", ["halot", "durham"]]],
     refs: [["REV.15", "Revelation 15:3", "The song of Moses and of the Lamb"], ["PSA.118", "Psalm 118:14", "The LORD is my strength and song"], ["ISA.12", "Isaiah 12:2", "He has become my salvation"]],
   },
   16: {
@@ -190,6 +204,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["16:18", "No lack", "Paul uses this for generous sharing in 2 Corinthians 8:15."],
       ["16:23", "A holy Sabbath", "The first time the Sabbath is commanded, before Sinai."],
     ],
+    bg: [["Manna", "When the Israelites first saw the flakes on the ground, they asked, \"Man hu?\", \"What is it?\" (16:15). An omer, the amount gathered per person each day, was about two quarts. A jar of manna was kept before the testimony for later generations (16:33-34; Hebrews 9:4).", "good", ["stuart", "durham"]]],
+    w: [["מָן", "man", "H4478", "manna", "From the question \"What is it?\" Jesus called Himself the true bread from heaven, greater than the manna (John 6:31-35).", ["halot", "cole"]]],
     refs: [["JHN.6", "John 6:31-35", "I am the bread of life"], ["DEU.8", "Deuteronomy 8:3", "Man does not live by bread alone"], ["MAT.6", "Matthew 6:11", "Give us this day our daily bread"]],
   },
   17: {
@@ -200,6 +216,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["17:11-12", "When Moses held his hand up", "Victory depended on God, not on Israel's swords, and Moses needed friends to hold him up."],
       ["17:15", "Jehovah-Nissi", "After defeating Amalek while Moses' hands were held up, Moses built an altar and called it Jehovah-Nissi: the LORD is my banner."],
     ],
+    bg: [["Amalek at Rephidim", "The Amalekites were desert raiders who attacked Israel's stragglers from behind (Deuteronomy 25:17-18). As long as Moses held up his hands, Israel prevailed, so Aaron and Hur held them up until sunset (17:11-12).", "good", ["stuart", "cole"]]],
+    w: [["נֵס", "nes", "H5251", "banner, standard", "A pole raised as a rallying point for an army. Moses named his altar \"The LORD is My Banner\" (17:15).", ["halot", "durham"]]],
     refs: [["1CO.10", "1 Corinthians 10:4", "The rock was Christ"], ["PSA.95", "Psalm 95:8-9", "Do not harden your hearts as at Meribah"], ["DEU.25", "Deuteronomy 25:17-19", "Remember what Amalek did"]],
   },
   18: {
@@ -209,6 +227,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["18:18", "You will surely wear out", "Even Moses needs help. Leadership is meant to be shared."],
       ["18:21", "Able men who fear God", "Character first: men of truth who hate dishonest gain."],
     ],
+    bg: [["Jethro's advice", "Jethro, Moses' father-in-law and a priest of Midian, saw Moses judging the people from morning to evening and said, \"The thing you are doing is not good\" (18:17). He advised choosing able, honest men to judge the smaller cases, a pattern of shared leadership (compare Acts 6:1-6).", "good", ["stuart", "cole"]]],
     refs: [["ACT.6", "Acts 6:1-6", "Seven men chosen to serve"], ["DEU.1", "Deuteronomy 1:9-18", "Moses recalls appointing judges"]],
   },
   19: {
@@ -225,6 +244,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["Elsewhere in Sinai or in Arabia", "Others suggest a northern Sinai site, or a mountain in north-west Arabia, since Paul places Sinai \"in Arabia\" (Galatians 4:25) and Moses met God near Midian.", ["stuart"]],
     ],
     common: "All agree that God met Israel at a real mountain, gave His covenant there, and that the place matters less than the meeting.",
+    bg: [["Where is Mount Sinai?", "The traditional site is Jebel Musa in the south of the Sinai Peninsula, where St. Catherine's Monastery has stood since the 500s. Scholars have suggested other mountains, in northern Sinai or in Arabia, and no one can be sure. What matters is what God spoke there.", "good", ["hoffmeier", "kitchen"]]],
+    w: [["סְגֻלָּה", "segullah", "H5459", "treasured possession", "A king's personal treasure. \"You shall be My own possession among all the peoples\" (19:5). Peter applies it to the church (1 Peter 2:9).", ["halot", "stuart"]]],
     refs: [["1PE.2", "1 Peter 2:9", "A royal priesthood, a holy nation"], ["HEB.12", "Hebrews 12:18-24", "You have not come to a mountain that can be touched"], ["DEU.32", "Deuteronomy 32:11", "Like an eagle that stirs up its nest"]],
   },
   20: {
@@ -256,6 +277,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["22:22-24", "The widow and the orphan", "Do not mistreat any widow or orphan. If they cry out to God, He Himself will hear them and act."],
       ["22:26-27", "Before the sun sets", "A poor man's cloak was his blanket. \"I am gracious.\""],
     ],
+    bg: [["Laws like other ancient laws", "Several of Israel's laws on oxen, theft and damages look like laws in the Code of Hammurabi, written in Babylon about 1750 BC. But Israel's laws stand out for their care for the stranger, the widow and the orphan, \"for you were strangers in the land of Egypt\" (22:21-22).", "strong", ["stuart", "anet"]]],
     refs: [["LUK.19", "Luke 19:8", "I will give back four times as much"], ["JAS.1", "James 1:27", "Visit orphans and widows"]],
   },
   23: {
@@ -266,6 +288,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["23:14-17", "Three feasts", "Passover with Unleavened Bread, the Feast of Harvest (later Pentecost), and Ingathering (Booths)."],
       ["23:20", "I am going to send an angel before you", "God's presence will lead them, and they must obey Him."],
     ],
+    bg: [["Three feasts a year", "Every man was to come before the LORD three times a year: the Feast of Unleavened Bread, the Feast of Harvest (later called Weeks or Pentecost) and the Feast of Ingathering (Booths) (23:14-17). The command \"do not boil a young goat in its mother's milk\" (23:19) is not fully understood; it may have been aimed at a pagan custom.", "good", ["stuart", "durham"]]],
     refs: [["MAT.5", "Matthew 5:44", "Love your enemies"], ["LEV.23", "Leviticus 23", "The feasts of the LORD"]],
   },
   24: {
@@ -276,6 +299,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["24:10-11", "They saw God, and they ate and drank", "Under His feet was something like sapphire, clear as the sky. A covenant meal in God's presence."],
       ["24:18", "Forty days and forty nights", "Moses went up into the cloud on the mountain and stayed forty days and forty nights, receiving God's instructions."],
     ],
+    bg: [["The blood of the covenant", "Moses sprinkled the people with blood and said, \"Behold the blood of the covenant\" (24:8). Then the elders ate and drank in God's presence (24:11). At the Last Supper Jesus said, \"This is My blood of the covenant\" (Matthew 26:28).", "strong", ["stuart", "durham"]]],
+    w: [["בְּרִית", "berit", "H1285", "covenant", "A binding agreement that creates a relationship, sealed with an oath or sacrifice. At Sinai God bound Himself to Israel and Israel to Him.", ["halot", "cole"]]],
     refs: [["MRK.14", "Mark 14:24", "My blood of the covenant"], ["HEB.9", "Hebrews 9:18-22", "Not even the first covenant was made without blood"]],
   },
   25: {
@@ -286,6 +311,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["25:17-22", "The mercy seat", "The gold lid of the ark, where blood was sprinkled on the Day of Atonement. Romans 3:25 uses the Greek word for it of Christ."],
       ["25:31", "The lampstand", "A golden tree-like lamp with seven branches, giving light in the holy place."],
     ],
+    bg: [["The ark of the covenant", "The ark was a box of acacia wood covered with gold, about 45 inches long and 27 inches wide and high. Its gold lid, with two cherubim, was called the mercy seat, where God would meet with Moses (25:22).", "good", ["stuart", "kitchen"]]],
+    w: [["כַּפֹּרֶת", "kapporet", "H3727", "mercy seat, atonement cover", "From the word for atonement. On the Day of Atonement blood was sprinkled on it (Leviticus 16:14). Romans 3:25 uses the Greek word for it of Christ.", ["halot", "durham"]]],
     refs: [["JHN.1", "John 1:14", "The Word dwelt among us"], ["HEB.8", "Hebrews 8:5", "A copy and shadow of the heavenly things"], ["HEB.9", "Hebrews 9:1-5", "The tabernacle and its furniture"]],
   },
   26: {
@@ -295,6 +322,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["26:30", "According to its plan", "The tabernacle was to be set up exactly as God had shown Moses on the mountain. Every detail followed His pattern (Hebrews 8:5)."],
       ["26:33", "The veil", "Only the high priest went behind it, once a year. When Jesus died, the temple veil was torn from top to bottom (Matthew 27:51)."],
     ],
+    bg: [["A tent for God", "The tabernacle was a portable shrine of wooden frames and woven curtains. Egyptian records show that portable, framed tents were known, such as the war tent of Pharaoh Ramesses II in his battle camp. God chose to live in a tent among a traveling people.", "good", ["kitchen", "hoffmeier"]]],
+    w: [["מִשְׁכָּן", "mishkan", "H4908", "dwelling, tabernacle", "From \"to dwell.\" John 1:14 says the Word \"dwelt\" among us, literally \"pitched His tent.\"", ["halot", "stuart"]]],
     refs: [["MAT.27", "Matthew 27:51", "The veil of the temple was torn"], ["HEB.10", "Hebrews 10:19-20", "A new and living way through the veil, His flesh"]],
   },
   27: {
@@ -304,6 +333,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["27:16", "The gate", "The courtyard had only one gate, on the east side, with a curtain of blue, purple and scarlet. There was one way in to God's presence."],
       ["27:20-21", "A lamp to burn continually", "The light was tended from evening to morning, a sign of God's ongoing presence."],
     ],
+    bg: [["The courtyard and the altar", "The tabernacle courtyard was about 150 feet by 75 feet (100 by 50 cubits), enclosed by linen curtains. Inside the entrance stood the bronze altar, so every worshiper's way to God passed first by sacrifice.", "good", ["stuart", "cole"]]],
     refs: [["JHN.10", "John 10:9", "I am the door"], ["HEB.13", "Hebrews 13:10", "We have an altar"]],
   },
   28: {
@@ -313,6 +343,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["28:30", "The Urim and Thummim", "Objects kept in the breastpiece for learning God's will. Scripture does not say exactly what they were or how they worked.", "silent"],
       ["28:36", "Holy to the LORD", "Engraved on a gold plate on Aaron's forehead."],
     ],
+    bg: [["The high priest's breastpiece", "The high priest wore a breastpiece set with twelve precious stones, each engraved with the name of a tribe, so he carried the people on his heart before God (28:29). Inside it were the Urim and Thummim, used to learn God's will.", "good", ["stuart", "durham"]]],
+    w: [["אוּרִים", "Urim", "H224", "Urim", "Possibly meaning \"lights.\" Together with the Thummim, it was a means God gave for answering questions, though exactly how it worked is not known.", ["halot", "cole"]]],
     refs: [["HEB.7", "Hebrews 7:25-28", "A high priest who always lives to intercede"], ["HEB.4", "Hebrews 4:14-16", "A great high priest"]],
   },
   29: {
@@ -323,6 +355,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["29:38-42", "The continual burnt offering", "Every morning and evening a lamb was offered, the steady heartbeat of Israel's worship."],
       ["29:45-46", "I will dwell among them", "The purpose of the exodus: God brought them out so He could live with them."],
     ],
+    bg: [["Ear, thumb and toe", "At the ordination of the priests, blood was put on the right ear, right thumb and right big toe (29:20). Many see the whole person set apart: ears to hear God, hands to serve Him, feet to walk in His ways.", "good", ["stuart", "cole"]]],
     refs: [["LEV.8", "Leviticus 8", "Aaron and his sons ordained"], ["HEB.10", "Hebrews 10:11-14", "One sacrifice for sins for all time"]],
   },
   30: {
@@ -332,6 +365,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["30:15", "The rich shall not pay more and the poor shall not pay less", "Every life is ransomed at the same price."],
       ["30:18-21", "The bronze basin", "Priests washed hands and feet before serving, so that they would not die."],
     ],
+    bg: [["Holy incense", "The incense for the golden altar was a special blend of spices, and no one was to make it for personal use (30:34-38). It was burned morning and evening, a picture of prayer rising to God (Psalm 141:2).", "good", ["stuart", "durham"]]],
     refs: [["PSA.141", "Psalm 141:2", "My prayer as incense"], ["REV.8", "Revelation 8:3-4", "Incense with the prayers of the saints"], ["1PE.1", "1 Peter 1:18-19", "Redeemed not with silver or gold"]],
   },
   31: {
@@ -341,6 +375,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["31:13", "A sign between Me and you", "The Sabbath showed Israel that the LORD makes them holy."],
       ["31:18", "Written by the finger of God", "God gave Moses two stone tablets written by the finger of God. The commandments are His own words."],
     ],
+    bg: [["Bezalel, filled with the Spirit", "The first person in the Bible described as filled with the Spirit of God is a craftsman, Bezalel, given skill in metal, stone and wood (31:2-5). God values artistry and good work done for Him.", "good", ["stuart", "cole"]]],
+    w: [["שָׁבַת", "shavat", "H7673", "to rest, cease", "The root of \"Sabbath.\" \"In six days the LORD made heaven and earth, but on the seventh day He ceased from labor\" (31:17). The Sabbath was a sign of the covenant (31:13).", ["halot", "durham"]]],
     refs: [["EXO.35", "Exodus 35:30-35", "Bezalel and Oholiab begin work"], ["2CO.3", "2 Corinthians 3:3", "Written not on tablets of stone but on hearts"]],
   },
   32: {
@@ -351,6 +387,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["32:24", "Out came this calf", "Aaron made the golden calf with a tool (32:4), but he tells Moses he just threw the gold into the fire and out came this calf. A famous excuse."],
       ["32:32", "Blot me out of Your book", "Moses would give himself for the people, as Paul later wishes for Israel (Romans 9:3)."],
     ],
+    bg: [["The golden calf", "Bull and calf images stood for strength and fertility in Egypt and Canaan. Aaron said, \"Tomorrow shall be a feast to the LORD\" (32:5), so the people may have thought they were still worshiping the LORD, but in a forbidden way. Jeroboam later set up two golden calves (1 Kings 12:28).", "good", ["stuart", "durham"]]],
     refs: [["PSA.106", "Psalm 106:19-23", "They made a calf in Horeb"], ["ACT.7", "Acts 7:39-41", "They made a calf"], ["1CO.10", "1 Corinthians 10:7", "Do not be idolaters"]],
   },
   33: {
@@ -361,6 +398,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["33:19", "I will be gracious to whom I will be gracious", "Moses asks to see God's glory. God will show him His goodness and proclaim His name, and says His mercy is His to give. Paul quotes this in Romans 9:15."],
       ["33:22", "In the cleft of the rock", "No one can see God's face and live. God puts Moses in a cleft in the rock and covers him with His hand as His glory passes by."],
     ],
+    bg: [["The tent outside the camp", "Moses pitched a tent outside the camp, and when he went in, the pillar of cloud stood at its door, \"and the LORD used to speak to Moses face to face, just as a man speaks to his friend\" (33:11). Then Moses asks to see God's glory, and God hides him in the cleft of a rock (33:22).", "good", ["stuart", "cole"]]],
     refs: [["JHN.1", "John 1:18", "No one has seen God at any time; the only begotten God has explained Him"], ["2CO.4", "2 Corinthians 4:6", "The glory of God in the face of Christ"]],
   },
   34: {
@@ -370,6 +408,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["34:14", "Jealous is His name", "God's jealousy is the rightful love of a husband for his wife."],
       ["34:29", "The skin of his face shone", "Moses did not know it. Paul writes about this veil in 2 Corinthians 3."],
     ],
+    bg: [["God describes Himself", "\"The LORD, the LORD God, compassionate and gracious, slow to anger, and abounding in lovingkindness and truth\" (34:6). These words are repeated again and again in the Old Testament (Numbers 14:18; Psalm 86:15; 103:8; Joel 2:13; Jonah 4:2). They are the Bible's own summary of God's character.", "strong", ["stuart", "durham"]]],
     refs: [["PSA.103", "Psalm 103:8", "Compassionate and gracious"], ["JON.4", "Jonah 4:2", "I knew that You are a gracious God"], ["2CO.3", "2 Corinthians 3:7-18", "The glory on Moses' face"]],
   },
   35: {
@@ -379,6 +418,8 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["35:21", "Everyone whose heart stirred him", "The same people who gave gold to a calf now give it to God's house."],
       ["35:34", "To teach", "God gave the craftsmen the ability to teach as well as to do."],
     ],
+    bg: [["Gifts from willing hearts", "Moses asked for offerings from \"whoever is of a willing heart\" (35:5). Men and women brought gold, yarn, skins, wood and spices, and women spun goat's hair with skill (35:26).", "good", ["stuart", "cole"]]],
+    w: [["נְדִיב", "nadiv", "H5081", "willing, generous", "Giving freely from the heart, not under pressure. God loves a cheerful giver (2 Corinthians 9:7).", ["halot", "durham"]]],
     refs: [["2CO.9", "2 Corinthians 9:7", "God loves a cheerful giver"], ["1CH.29", "1 Chronicles 29:9", "The people rejoiced because they gave willingly"]],
   },
   36: {
@@ -388,6 +429,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["36:6", "So the people were restrained from bringing any more", "Moses had to send word through the camp to stop bringing gifts. Their generosity overflowed."],
       ["36:8", "Skillful workmen", "Chapters 36-39 repeat the instructions of 25-31 almost word for word, now as obedience."],
     ],
+    bg: [["\"More than enough\"", "The people kept bringing gifts every morning until the craftsmen told Moses they had more than enough, and Moses had to tell them to stop (36:5-7). Generous hearts had outrun the need.", "good", ["stuart", "cole"]]],
     refs: [["EXO.26", "Exodus 26", "The instructions for the tent"], ["2CO.8", "2 Corinthians 8:1-5", "Overflowing generosity"]],
   },
   37: {
@@ -397,6 +439,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["37:9", "Facing each other", "The cherubim look down toward the mercy seat, where God meets His people."],
       ["37:17", "Of pure gold", "The lampstand was hammered from one talent of gold, about 75 pounds.", "good", ["stuart"]],
     ],
+    bg: [["Done just as commanded", "Chapters 35-40 repeat many details from chapters 25-31 almost word for word, now as things done rather than commands. The repetition shows that Bezalel and the people did exactly what God had said.", "good", ["stuart", "durham"]]],
     refs: [["EXO.25", "Exodus 25:10-40", "The instructions"], ["HEB.9", "Hebrews 9:3-5", "The ark and the cherubim of glory"]],
   },
   38: {
@@ -417,6 +460,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["39:32", "Just as the LORD had commanded", "The phrase is repeated again and again in chapters 39-40."],
       ["39:43", "Moses blessed them", "Like God viewing creation, Moses inspects the finished work and blesses it."],
     ],
+    bg: [["\"Just as the LORD had commanded Moses\"", "This phrase comes seven times in chapter 39 and seven times again in chapter 40. Moses inspected the work and blessed the people, much as God saw all He had made and called it very good (39:43; Genesis 1:31).", "strong", ["stuart", "durham"]]],
     refs: [["GEN.1", "Genesis 1:31", "God saw all that He had made"], ["EXO.28", "Exodus 28", "The instructions for the garments"]],
   },
   40: {
@@ -427,6 +471,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["stuart", "cole"] }, {
       ["40:34-35", "The glory of the LORD filled the tabernacle", "The book that began with Israel enslaved ends with God living among them."],
       ["40:38", "Throughout all their journeys", "God's presence goes with them all the way."],
     ],
+    bg: [["The glory fills the tabernacle", "On the first day of the first month of the second year after leaving Egypt, the tabernacle was set up (40:17). Then the cloud covered it and the glory of the LORD filled it so that even Moses could not enter (40:34-35). Exodus begins in slavery and ends with God living among His people.", "good", ["stuart", "cole"]]],
     refs: [["1KI.8", "1 Kings 8:10-11", "The glory fills Solomon's temple"], ["JHN.1", "John 1:14", "We saw His glory"], ["REV.21", "Revelation 21:3", "The tabernacle of God is among men"]],
   },
 });
