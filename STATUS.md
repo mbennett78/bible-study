@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 3:01 PM Central
-**Current version:** v400 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 3:05 PM Central
+**Current version:** v401 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 4:15 PM CT: Inviting a brother or sister (B-95). In Settings, Family organizer tools, "Invite a brother or sister" makes a link that sets up their name and the look you pick (any look now, including Classic 4). Your Bible key is never in the link, because API.Bible's terms don't allow sharing one. When they open it, the app welcomes them by name and "Show me the steps" takes them straight to getting their own free key (about 5 minutes). Links sent earlier still work. The starter kit's setup notes say the same.
 - Thu Nov 26, 3:55 PM CT: Bible Spin has a "❓ How to play, how to win and how to get better" button on its home screen (B-94). In plain words: each turn (spin, answer before the candle burns down, two right in a kind wins its jewel); how to win solo, with family, against Buddy and in a Family duel; the lamp, streaks, bonus round, helps, the daily chest and missions; how to get better; and what each level means (Seeker to Wise elder, with the right answers each one takes).
 - Thu Nov 26, 3:40 PM CT: Previews of the two new looks for older teens and young adults (B-97, B-98), for Melissa's OK before anyone can pick them. "Golden hour": plum, blush and gold, with a painted wildflower meadow at sunset. "Summit": slate and ember orange, with mountain ridges at dusk, a lone hiker and trail-map lines. Both are original art, calm, and easy to read. Picture: pictures-fix/preview-teen-looks.png.
 - Thu Nov 26, 3:20 PM CT: Classic 4 for Papa (B-92) is in Settings, under Bible Appearance: deep blue, with a calm painted landscape (snowy mountains, dark pines and a still lake at evening), and nothing moves. The painting is original, made for the app in the manner of the 19th-century American landscape painters, because museum sites can't be reached from here; if Papa would rather have a real classic painting, Melissa can upload one and the look will use it. On the Read page, the kids' look keeps its storybook picture; every other look uses the four study buttons instead. Pictures: pictures-fix/classic4-home.png and classic4-read.png.
@@ -201,7 +202,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | B-92 | Classic appearance 4 for Papa: dark blue with a calm landscape from a classic painting, not animated | In the app (v398) for a look; waiting on Melissa: keep this painting or swap in a classic one she uploads | Mon Nov 30 |
 | B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Not started | Mon Nov 30 |
 | B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Done (Thu Nov 26, v400) | Mon Nov 30 |
-| B-95 | Sibling invite link: each sibling sets up their own free API.Bible key, with plain steps (API.Bible's terms don't allow sharing a key) | Not started (Melissa chose: own key) | Mon Nov 30 |
+| B-95 | Sibling invite link: each sibling sets up their own free API.Bible key, with plain steps (API.Bible's terms don't allow sharing a key) | Done (Thu Nov 26, v401) | Mon Nov 30 |
 | B-97 | A fun, stylish look for a young woman or older teen girl (original art, not kiddie), with a preview to Melissa first | Preview sent ("Golden hour"); added to Bible Appearance once Melissa says yes | Tue Dec 1 |
 | B-98 | A fun, stylish look for a young man or older teen guy (original art, not kiddie), with a preview to Melissa first | Preview sent ("Summit"); added to Bible Appearance once Melissa says yes | Tue Dec 1 |
 | B-99 | A simpler user manual for Melissa's core group (siblings keep the full guide with key setup) | Not started | Wed Dec 2 |

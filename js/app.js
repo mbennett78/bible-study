@@ -3273,13 +3273,6 @@ function initSettings() {
   esvKey.addEventListener("change", () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); });
   $("#saveEsvKey").addEventListener("click", async () => { store.set("esvKey", esvKey.value.trim()); syncVersionSwitch(); keyStatus((esvKey.value.trim() ? "ESV key saved ✓" : "ESV key removed.") + await saveForFamily()); });
   if (store.get("apiBibleKey")) keyStatus("Key saved on this device ✓");
-  // With family accounts, everyone here just signs in. The organizer can still share the key
-  // with a brother or sister who runs their own copy of the app (the starter kit): they paste
-  // the whole link into the Bible key box in their own app.
-  if (authEnabled) {
-    $("#shareKeyBox summary").textContent = "Share the Bible key with a sibling's own copy of the app";
-    $("#shareKeyBox > p").textContent = "For a brother or sister running their own copy (the starter kit), not for your family here, who just sign in. Make the link and send it by text or email. They paste the whole link into the API.Bible key box in their own app (in setup, or in Settings) and tap Save: the NASB and the other versions fill themselves in. They share your 5,000 reads a month, so send it only to family you trust.";
-  }
   const extrasNow = () => {
     const x = store.get("extraBibles") || [];
     $("#extraVersionsNow").textContent = x.length ? `On everyone's version switch: ${[(store.get("nasbLabel") || "NASB"), ...x.map((b) => b.label)].join(", ")}${store.get("esvKey") ? ", ESV" : ""}.` : "";
@@ -3468,7 +3461,7 @@ function renderSetup() {
     body.querySelectorAll("[data-s-gfx]").forEach((b) => b.addEventListener("click", () => { store.set("graphics", b.dataset.sGfx); applyAppearance(); setupSet({ look: true }); renderSetup(); }));
   } else if (step.id === "key") {
     body.innerHTML = `<h2 class="setup-h">Your own Bible key</h2>
-      <p class="muted small-print">The Bible text comes from API.Bible. Paste your free key, or an invite code someone in your family sent you. It's saved on this device only.</p>
+      <p class="muted small-print">The Bible text comes from API.Bible. Paste your own free key here. It's saved on this device only.</p>
       <label class="field">API.Bible key<input id="setupKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key" value="${esc(store.get("apiBibleKey"))}"></label>
       <p class="setup-key-status" id="setupKeyStatus">${store.get("apiBibleKey") ? "Key saved ✓" : ""}</p>
       <details class="key-help" ${store.get("apiBibleKey") ? "" : "open"}><summary>How to get your free key (about 5 minutes)</summary>${$("#keyHelp ol").outerHTML}</details>
@@ -5374,22 +5367,23 @@ function setupAccountButton() {
   };
 }
 
-/* ---------- Invite: share this device's Bible key with someone at home ---------- */
-// The invite carries the key in the part of the link after "#", which browsers never send
-// to the website, so the key goes only from one phone to the other.
+/* ---------- Invite: set up the app for a brother or sister ---------- */
+// API.Bible's terms don't allow sharing a key, so an invite never carries one (B-95). It sets
+// up their name and look, and the app walks them through getting their own free key. Older
+// links that did carry a key (version 1) still open.
 const b64url = (str) => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64url = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0)));
 function makeInviteCode({ to = "", look = "" } = {}) {
-  const d = { v: 1, k: store.get("apiBibleKey"), b: store.get("nasbBibleId") || "", l: store.get("nasbLabel") || "", e: store.get("esvKey") || "", x: store.get("extraBibles") || [], from: store.get("name").trim(), to, look };
+  const d = { v: 2, from: store.get("name").trim(), to, look };
   return "BSI1" + b64url(JSON.stringify(d));
 }
 function readInviteCode(code) {
   const m = String(code || "").trim().match(/BSI1([\w-]{20,})/);
   if (!m) return null;
-  try { const d = JSON.parse(unb64url(m[1])); return d && d.k ? d : null; } catch { return null; }
+  try { const d = JSON.parse(unb64url(m[1])); return d && (d.k || d.v >= 2) ? d : null; } catch { return null; }
 }
 function applyInvite(d) {
-  store.set("apiBibleKey", d.k);
+  if (d.k) store.set("apiBibleKey", d.k);
   if (d.b) { store.set("nasbBibleId", d.b); store.set("nasbLabel", d.l || "NASB"); }
   if (d.e && !store.get("esvKey")) store.set("esvKey", d.e);
   if (Array.isArray(d.x) && d.x.length && !(store.get("extraBibles") || []).length) store.set("extraBibles", d.x.filter((b) => b && b.id && b.label).slice(0, MAX_EXTRA_BIBLES));
@@ -5397,7 +5391,7 @@ function applyInvite(d) {
   if (d.look && !(store.get("setup") || {}).look) {
     store.set("style", d.look);
   }
-  const ki = $("#apiBibleKey"); if (ki) ki.value = d.k;
+  const ki = $("#apiBibleKey"); if (ki && d.k) ki.value = d.k;
 }
 let joinedFrom = null;
 { // Opened from an invite link?
@@ -5405,7 +5399,7 @@ let joinedFrom = null;
   if (m) {
     history.replaceState(null, "", location.pathname + location.search);
     const d = readInviteCode(m[1]);
-    if (d && (!store.get("apiBibleKey") || store.get("apiBibleKey") === d.k || confirm("This invite has a different Bible key than the one on this device. Use the key from the invite?"))) {
+    if (d && (!d.k || !store.get("apiBibleKey") || store.get("apiBibleKey") === d.k || confirm("This invite has a different Bible key than the one on this device. Use the key from the invite?"))) {
       applyInvite(d);
       joinedFrom = { ...d, code: m[1] };
     }
@@ -5415,6 +5409,22 @@ function inviteWelcome() {
   if (!joinedFrom) return;
   const standaloneNow = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
   const el = Object.assign(document.createElement("div"), { className: "invite-toast", role: "status" });
+  if (!joinedFrom.k) {
+    const hasKey = Boolean(store.get("apiBibleKey"));
+    el.innerHTML = `<p><strong>Welcome${joinedFrom.to ? `, ${esc(joinedFrom.to)}` : ""}!</strong> ${joinedFrom.from ? `${esc(joinedFrom.from)} invited you to this Bible study app.` : "You've been invited to this Bible study app."}</p>
+      ${hasKey ? "" : `<p class="small-print">One step left: get your own free Bible key from API.Bible. It takes about 5 minutes, and the steps are right below. (Each person has their own key: API.Bible's rules don't allow sharing one.)</p>`}
+      <button class="small" id="inviteOk">${hasKey ? "OK" : "Show me the steps"}</button>`;
+    ($("#setup").open ? $("#setup") : document.body).append(el);
+    el.querySelector("#inviteOk").addEventListener("click", () => {
+      el.remove();
+      if (hasKey) return;
+      // Straight to the Bible key step of setup, with the steps open.
+      openSetup(Math.max(0, SETUP_STEPS.findIndex((st) => st.id === "key")));
+      const help = $("#setup").querySelector(".key-help");
+      if (help) { help.open = true; help.scrollIntoView({ block: "start" }); }
+    });
+    return;
+  }
   el.innerHTML = `<p><strong>You're all set${joinedFrom.to ? `, ${esc(joinedFrom.to)}` : ""}.</strong> ${joinedFrom.from ? esc(joinedFrom.from) + " shared" : "This invite shared"} a Bible key with you, so the Bible text is ready to read.</p>
     ${standaloneNow ? "" : `<p class="small-print">To keep it as an app: tap the Share button, then <strong>Add to Home Screen</strong>. If the Home Screen app asks for a key, paste this invite code into the key box: <button class="small" id="copyInvite">Copy invite code</button></p>`}
     <button class="small" id="inviteOk">OK</button>`;
@@ -5423,15 +5433,14 @@ function inviteWelcome() {
   el.querySelector("#copyInvite")?.addEventListener("click", async (e) => { try { await navigator.clipboard.writeText(joinedFrom.code); e.target.textContent = "Copied ✓"; } catch { e.target.textContent = joinedFrom.code; } });
 }
 function wireShareKey() {
+  // Every look can be picked for them, in the same order as Bible Appearance.
+  $("#shareLook").innerHTML = `<option value="">Let them choose</option>${LOOKS.map(([v, name]) => `<option value="${v}">${esc(name)}</option>`).join("")}`;
   $("#shareKeyBtn").addEventListener("click", async () => {
     const out = $("#shareKeyOut");
-    if (!store.get("apiBibleKey")) { out.innerHTML = `<p class="muted small-print">Add your API.Bible key above first.</p>`; return; }
     const to = $("#shareName").value.trim();
     const code = makeInviteCode({ to, look: $("#shareLook").value });
     const url = `${location.origin}${location.pathname}#join=${code}`;
-    const text = authEnabled
-      ? `${to ? `${to}, here` : "Here"} is the Bible key for your copy of the Bible study app. Copy this whole link and paste it into the API.Bible key box in your app (in setup or in Settings), then tap Save.`
-      : `${to ? `${to}, here` : "Here"} is our Bible study app. Open this link on your iPhone or iPad. It sets up the Bible text for you.`;
+    const text = `${to ? `${to}, here` : "Here"} is our Bible study app. Open this link on your iPhone or iPad. It sets things up for you and shows you how to get your own free Bible key (about 5 minutes).`;
     out.innerHTML = `<p class="small-print">Invite link ready. ${navigator.share ? "Pick Messages or Mail to send it." : "Copy it and send it by text or email."}</p>
       <div class="row"><button class="small" id="shareSend">${navigator.share ? "Send invite" : "Copy link"}</button><button class="small quiet-link" id="shareCopy">Copy link</button></div>`;
     const copy = async (btn) => { try { await navigator.clipboard.writeText(url); btn.textContent = "Copied ✓"; } catch { out.insertAdjacentHTML("beforeend", `<p class="small-print share-url">${esc(url)}</p>`); } };

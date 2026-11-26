@@ -9,7 +9,7 @@ Plan on about an hour. Steps marked *optional* can wait; the app works without t
 ## Before you start: accounts to make
 
 - [ ] A **GitHub** account (free), to publish the app as a website.
-- [ ] An **API.Bible** key (free), for the NASB and other versions: scripture.api.bible. *Or* an invite link from the person who gave you this kit (step 7 shortcut).
+- [ ] An **API.Bible** key (free), for the NASB and other versions: api.bible (about 5 minutes; the app shows the steps). Each family needs its own: API.Bible's terms don't allow sharing a key.
 - [ ] *Optional:* an **ESV** key (free, non-commercial): api.esv.org.
 - [ ] *Optional:* a **Supabase** account (free plan), for sign-in, backups and syncing between devices.
 - [ ] *Optional:* an **Anthropic** key, for the built-in Bible helper. Set a monthly spend limit.
@@ -25,7 +25,6 @@ Keys are always typed into the app or into Supabase, never into a file, an email
 - [ ] *Optional:* **5. Password-reset email.** Set up an app password and custom SMTP so reset codes reach everyone (step 5).
 - [ ] *Optional:* **6. Bible helper.** Deploy the `study-partner` function and set your Anthropic key as a Supabase secret (step 6). Buddy then answers any question, Bible or everyday, and keeps it family-safe. Deploy `family-admin` for the organizer's family panel (step 6b): Add a family member, New password, New email (same account, nothing lost) and Remove.
 - [ ] **7. Bible versions.** Sign in as the organizer, open Settings, Family organizer tools, paste your Bible keys and tap Save. They're saved for your whole family automatically, so nobody else in your family ever types a key (step 7).
-  *Shortcut, no key hunting:* if the person who gave you this kit sends you an invite link from their own app, paste the whole link into the API.Bible key box instead. The NASB, any extra versions and the ESV fill themselves in. Their monthly reading allowance is then shared with your family, so get your own free key later if you read a lot.
 - [ ] **8. Try it.** Sign in on a phone, add it to the Home Screen, read a chapter, try its Quick check, write a note with a verse card, and ask Buddy a question. Tap a 🎤 button once to see the only permission the app asks for (the microphone).
 - [ ] **9. Hand it out.** Give each person the site address, their email and the starter password. Print the gift packet (a cover, a setup page with lines for each person's email and starter password, and the illustrated user guide): run `node tools/gift/make-packet.mjs packet.pdf`. Its words come from the user guide in Settings, so paper and screen match.
 

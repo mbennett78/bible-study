@@ -106,13 +106,10 @@ secrets: Supabase gives Edge Functions their own admin access, which never leave
    keys, choose versions and tap Save. Each change is saved to your family account
    automatically, and everyone else picks it up the next time they open the app. Keys are
    typed into the app only; never commit them.
-4. **Shortcut: a ready-filled key.** Another family running this app can share theirs with
-   you: in their app, Settings, Family organizer tools, "Set up a device for someone without
-   an account", "Make invite link". Paste that whole link into your API.Bible key box (in
-   first-time setup or in Settings) and the key, the NASB edition, extra versions and the
-   ESV key all fill in at once. Then tap Save so your family gets it too. Both families then
-   share one monthly reading allowance (5,000 reads), so it's best as a way to start; swap in
-   your own free key whenever you like.
+4. **Every family uses its own key.** API.Bible's terms don't allow sharing a key, so an
+   invite link from another family's app ("Invite a brother or sister" in Family organizer
+   tools) sets up a name and a look only; it never carries a key. Getting your own free key
+   takes about 5 minutes, and the app shows the steps.
 
 ## 8. Releasing changes
 
