@@ -14,6 +14,7 @@ export const NEWS = [
       "🧠 Learn a verse by heart: tap its number, then Learn by heart.",
       "📏 Page width in Settings: Narrow, Medium or Wide Bible text.",
       "📝 Every short study note is now a full, plain sentence, in all 66 books.",
+      "📜 Every chapter now has a history section or a Greek or Hebrew word study, with sources.",
     ],
   },
   {
