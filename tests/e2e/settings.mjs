@@ -35,7 +35,7 @@ try {
   check("Settings stays short", h < 4500, String(h));
   await page.click('details[data-group="sg-help"] > summary'); await page.waitForTimeout(500);
   await page.click("#printGuide"); await page.waitForTimeout(200);
-  check("Print the guide offers paper or sending a copy", /User Guide/.test(await page.textContent(".send-sheet")) && (await page.$$(".send-sheet .send-opt")).length === 2);
+  check("Print the guide offers a look first, paper or sending a copy", /User Guide/.test(await page.textContent(".send-sheet")) && (await page.$$(".send-sheet .send-opt")).length === 3);
   check("no page errors", !errors.length, errors.join("; "));
 } catch (e) { stopped = e; }
 await browser.close(); site.close(); finish(stopped);

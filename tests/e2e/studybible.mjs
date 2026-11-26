@@ -21,15 +21,16 @@ try {
   // Reference section
   check("a clearly marked Reference section under the Scripture", /Reference & resources/.test(await page.textContent("#studyNotes")) && await page.evaluate(() => document.querySelector("#reader").compareDocumentPosition(document.querySelector("#studyNotes")) & Node.DOCUMENT_POSITION_FOLLOWING));
   const tiles = await page.$$eval(".ref-tile", (a) => a.map((t) => [t.dataset.tab, t.getBoundingClientRect().width, t.getBoundingClientRect().height]));
-  check("square tiles, three across on iPad", tiles.length >= 9 && new Set(tiles.slice(0, 3).map((t) => Math.round(t[1]))).size === 1 && tiles[0][2] >= 90, JSON.stringify(tiles.slice(0, 4)));
+  check("square tiles, three across on iPad", tiles.length >= 6 && new Set(tiles.slice(0, 3).map((t) => Math.round(t[1]))).size === 1 && tiles[0][2] >= 90, JSON.stringify(tiles.slice(0, 4)));
   check("no Science tile", !tiles.some((t) => t[0] === "science"));
   // Map: two colors and a key, with Eden marked
-  await page.$eval('.ref-tile[data-tab="map"]', (b) => b.click()); await page.waitForTimeout(300);
+  check("Background, Cross-references and When and where moved above the passage", !(await page.$('.ref-tile[data-tab="map"], .ref-tile[data-tab="where"], .ref-tile[data-tab="xref"], .ref-tile[data-tab="history"]')) && (await page.$$("#studyBtns [data-sheet]")).length === 4);
+  await page.click('#studyBtns [data-sheet="where"]'); await page.waitForTimeout(500);
   check("map names in two colors", (await page.$$(".notes-map .nm-then")).length > 3 && (await page.$$(".notes-map .nm-now")).length > 3);
   check("the map has a key", /Bible times/.test(await page.textContent(".notes-map .map-key")) && /today/.test(await page.textContent(".notes-map .map-key")));
   check("likely sites of Eden are marked", (await page.$$(".map-place.is-eden")).length >= 2);
   await page.$eval(".map-place.is-eden", (g) => g.dispatchEvent(new MouseEvent("click", { bubbles: true }))); await page.waitForTimeout(100);
-  check("tapping a place explains it", /Eden/.test(await page.textContent("#mapNote")));
+  check("tapping a place explains it", /Eden/.test(await page.textContent("#ssMapNote")));
   // Views: no church names, with links to read more
   await page.$eval('.ref-tile[data-tab="views"]', (b) => b.click()); await page.waitForTimeout(300);
   check("views link straight to their sources", (await page.$$("#refPanel .read-more a")).length >= 4);
@@ -60,7 +61,7 @@ try {
   await page.$eval('#refPanel [data-tool="chart"]', (b) => b.click());
   await page.fill("#cA", "Day 6"); await page.fill("#cB", "Day 7"); await page.fill("#cBoth", "God saw it"); await page.$eval("#cDone", (b) => b.click());
   check("a chart can be added", (await page.$$("#refPanel .ee-pic.is-chart svg.chart-venn")).length === 1);
-  await page.fill("#refPanel #entryText", "God finished His work."); await page.$eval("#entrySave", (b) => b.click()); await page.waitForTimeout(400);
+  await page.focus("#refPanel #entryRich"); await page.keyboard.press("Control+End"); await page.keyboard.insertText("God finished His work."); await page.$eval("#entrySave", (b) => b.click()); await page.waitForTimeout(400);
   const ent = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem("bible-study:v1")).entries || {}));
   check("the quote, its question, sticker and chart are saved", ent.some((e) => e.quotes?.[0]?.tag === "question" && e.quotes[0].note === "Why rest?" && e.pics?.length === 2));
   check("it's listed with this passage's notes", /God finished His work/.test(await page.textContent("#refPanel")));

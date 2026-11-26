@@ -53,7 +53,7 @@ try {
   // Writing in the journal.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(300);
   await page.evaluate(() => { document.querySelector("#journalBox").open = true; document.querySelector('#journalBox [data-add="note"]').click(); });
-  const box = await page.$("#entryText");
+  const box = await page.$("#entryRich");
   check("there is a journal box to write in", Boolean(box) && await box.isVisible());
   await box.click(); await page.keyboard.type("Nothing can separate us from the love of God.");
   await page.clock.runFor(1000); await page.waitForTimeout(200); // it saves half a second after typing stops

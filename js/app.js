@@ -6,6 +6,7 @@ import { STICKERS, STICKER_GROUPS, stickerSvg, BOOK_ART } from "./stickers.js";
 import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
 import { getChapter, listEnglishBibles, versionLoads, reportFums, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
+import { textToRich, richToText, plainText, inlineHtml, picTag, placed, TAG_LINE, findPic } from "./richtext.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
 import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand, seat } from "./buddy.js";
 import { guideAnswer, seasonNow, welcomeLine, sessionNudge, timeAnswer } from "./buddyguide.js";
@@ -191,6 +192,7 @@ let autoplayNext = false;
 let readArmed = false; // "Read to me" is reading in this visit (never starts by itself when the app opens)
 async function openChapter(book, chapter, { scroll = true } = {}) {
   store.set("last", { book, chapter });
+  tabFollows(book, chapter);
   // This book's chapter notes load the first time; show them as soon as they arrive.
   if (!bookNotesReady(book)) loadBookNotes(book).then(() => {
     const here = store.get("last");
@@ -496,7 +498,7 @@ function pickerChapters(bookId) {
     <button type="button" class="big-btn" id="pickStart">Start reading ${esc(b.name)} 1</button>
     <p class="testament-title">Choose a chapter</p>
     <div class="chapter-grid">${chapterButtons(b)}</div>`;
-  $("#pickStart").addEventListener("click", () => { picker.close(); showView("read"); openChapter(b.id, 1); });
+  $("#pickStart").addEventListener("click", () => pickerGo(b.id, 1));
   $("#pickerBody").querySelectorAll("[data-ch]").forEach((btn) => btn.addEventListener("click", () => pickerVerses(b.id, Number(btn.dataset.ch))));
   $("#pickerBody").scrollTop = 0;
 }
@@ -507,7 +509,7 @@ async function pickerVerses(bookId, chapter) {
   $("#pickerBack").hidden = false;
   $("#pickerBody").innerHTML = `<button type="button" class="big-btn" id="pickWhole">Read all of chapter ${chapter}</button>
     <p class="testament-title">Or go to a verse</p><div class="chapter-grid" id="verseGrid"><p class="muted small-print">Loading verses…</p></div>`;
-  const go = (v) => { picker.close(); showView("read"); openChapter(b.id, chapter).then(() => v && goToVerse(v)); };
+  const go = (v) => pickerGo(b.id, chapter, v);
   $("#pickWhole").addEventListener("click", () => go(0));
   // Verse count from the word list for this chapter (every verse has words).
   const rows = await loadStrongs(bookId, chapter);
@@ -561,7 +563,9 @@ function applyVerseMarks(book, chapter) {
   readerEl.querySelectorAll("mark.hl").forEach((m) => m.replaceWith(...m.childNodes));
   readerEl.querySelectorAll(".is-bookmarked, .has-note, .has-mine").forEach((m) => m.classList.remove("is-bookmarked", "has-note", "has-mine"));
   // A small dot after a verse number: blue-green for a study note, gold for one of your own notes.
-  const mine = new Set(store.allEntries().flatMap((e) => (e.quotes || []).map((q) => q.ref)));
+  // Verses quoted in a note or named in its words (like "Genesis 12:4") count too.
+  const mine = new Set(store.allEntries().flatMap((e) => [...(e.quotes || []).map((q) => String(q.ref).split("-")[0]), ...scanRefs(`${e.passage || ""} ${plainText(e.text)}`).filter((r) => r.book === book && r.chapter === chapter && r.verse).flatMap((r) => Array.from({ length: Math.min(30, Math.max(1, (r.end || r.verse) - r.verse + 1)) }, (_, i) => `${r.book}.${r.chapter}.${r.verse + i}`))]));
+  showMyNotesHere(book, chapter);
   for (const el of verseMarkEls()) {
     const v = markNum(el);
     if (!v) continue;
@@ -579,6 +583,15 @@ function applyVerseMarks(book, chapter) {
     }
     if (m.bookmark) verseMarkEls().find((x) => markNum(x) === Number(v))?.classList.add("is-bookmarked");
   }
+}
+// A 📝 note above the passage when you've written about it: tap to see those notes.
+function showMyNotesHere(book, chapter) {
+  let chip = $("#myNotesHere");
+  if (!chip) { chip = Object.assign(document.createElement("button"), { type: "button", id: "myNotesHere", className: "my-notes-here" }); $("#visitLine")?.after(chip); chip.addEventListener("click", () => { const { book: b, chapter: c } = store.get("last"); notesTab = "mine"; renderNotes(b, c); $("#studyNotes")?.scrollIntoView({ block: "start", behavior: "smooth" }); }); }
+  const key = `${book}.${chapter}`;
+  const n = store.allEntries().filter((e) => e.ref === key || (e.quotes || []).some((q) => String(q.ref).startsWith(`${key}.`)) || scanRefs(`${e.passage || ""} ${e.text || ""}`).some((r) => r.book === book && r.chapter === chapter)).length;
+  chip.hidden = !n;
+  chip.innerHTML = n ? `<span aria-hidden="true">📝</span> You've written ${n === 1 ? "a note" : `${n} notes`} about ${esc(refName({ book, chapter }))}. <u>See ${n === 1 ? "it" : "them"}</u>` : "";
 }
 // The verse-by-verse study note that covers a verse ("2:7", "2:1-3" or "2:1, 5"), if any.
 function verseNoteFor(book, chapter, v) {
@@ -770,7 +783,7 @@ async function fillVerseTools(book, chapter, v) {
       } catch { /* shown below */ }
       box.dataset.done = words ? "1" : "";
       box.innerHTML = `${words ? `<p class="vs-xwords">${esc(words)}</p>` : `<p class="muted small-print">This verse couldn't load just now.</p>`}<button type="button" class="small" data-go>Go to ${esc(r.name)}</button>`;
-      box.querySelector("[data-go]").addEventListener("click", async () => { verseSheet.close(); showView("read"); await openChapter(r.book, r.chapter); setTimeout(() => goToVerse(r.verse), 300); });
+      box.querySelector("[data-go]").addEventListener("click", () => { verseSheet.close(); openPassageTab(r.book, r.chapter, r.verse); });
     }));
   }
   const words = (rows || []).filter((r) => r[5]?.includes(v)).sort((a, b) => (a[6] ? 1 : 0) - (b[6] ? 1 : 0));
@@ -2084,16 +2097,22 @@ const inkKey = (p) => { const k = `i${INK_SEEN.size}`; INK_SEEN.set(k, p); retur
 // A "[✏️ Drawing 2]" line in the words is where that drawing goes when printed or sent.
 const inkLine = (n) => new RegExp(`^\\[(?:✏️ Drawing|📄 Page) ${n}\\]$`, "m");
 const inkTag = (p) => `[${p.page ? "📄 Page" : "✏️ Drawing"} ${p.n}]`;
+// The words with their formatting (bold, highlights, headings), and each picture in its place.
 function paraInk(t, pics, para) {
-  const inks = (pics || []).filter((p) => p.t === "ink");
-  if (!inks.length || !t) return para(t || "");
-  return String(t).split(/^\[(?:✏️ Drawing|📄 Page) (\d+)\]$/m).map((c, i) => {
-    if (i % 2) { const p = inks.find((x) => String(x.n) === c); return p ? `<div class="ee-pics">${picHtml(p, 0, false)}</div>` : ""; }
-    return c.trim() ? para(c.replace(/^\n+|\n+$/g, "")) : "";
-  }).join("");
+  const fmt = (chunk) => chunk.split(/^## (.*)$/m).map((c, i) => (i % 2 ? `<h4 class="note-h">${inlineHtml(esc(c))}</h4>` : c.trim() ? inlineHtml(para(c.replace(/^\n+|\n+$/g, ""))) : "")).join("");
+  if (!t) return "";
+  const out = [];
+  let buf = [];
+  for (const line of String(t).split("\n")) {
+    const m = line.match(TAG_LINE), p = m && findPic(pics, m[1], m[2]);
+    if (p) { if (buf.join("\n").trim()) out.push(fmt(buf.join("\n"))); buf = []; out.push(`<div class="ee-pics">${picHtml(p, 0, false)}</div>`); }
+    else if (!m) buf.push(line);
+  }
+  if (buf.join("\n").trim()) out.push(fmt(buf.join("\n")));
+  return out.join("");
 }
 // The pictures that aren't already placed in the words.
-const loosePics = (e) => (e.pics || []).filter((p) => !(p.t === "ink" && inkLine(p.n).test(e.text || "")));
+const loosePics = (e) => (e.pics || []).filter((p) => !placed(e.text || "", p));
 // Make a photo small enough to keep and sync: at most 720 pixels across.
 function shrinkPhoto(file) {
   return new Promise((resolve, reject) => {
@@ -2156,24 +2175,91 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
         : noteKind ? `<label class="field ee-heading">Heading<input id="eeTitle" type="text" autocomplete="off" value="${esc(e?.title || "")}" placeholder="${esc(defaultHeading({ kind, ref }))}"></label>` : ""}
       <div class="ee-quotes" id="eeQuotes"></div>
       <label class="ee-label" for="entryText" id="eeTextLabel">${church ? "Notes" : isDay ? `${esc(draft.opener)}…` : "Write here"}</label>
-      ${noteKind ? `<div class="ee-fonts" role="group" aria-label="Writing style">${NOTE_FONTS.map(([f, l]) => `<button type="button" class="nf-${f}" data-font="${f}" aria-pressed="${draft.font === f}">${l}</button>`).join("")}</div>` : ""}
       ${noteKind || church ? "" : `<div class="ee-idea"><button type="button" class="quiet-link" id="eeIdea">💭 Need an idea?</button><button type="button" class="quiet-link" id="eeGuide" aria-expanded="false">📋 Use a guide</button><p class="ee-prompt" id="eePrompt" hidden></p><div class="ee-guides" id="eeGuides" hidden>${guidesFor(kind).map(([id, name, about]) => `<button type="button" data-guide="${id}"><b>${esc(name)}</b><small>${esc(about)}</small></button>`).join("")}</div></div>`}
-      <textarea id="entryText" class="nf-${esc(draft.font)}" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
+      <div class="ee-bar" role="toolbar" aria-label="Writing tools">
+        <button type="button" data-fmt="bold" aria-label="Bold" title="Bold"><b>B</b></button><button type="button" data-fmt="italic" aria-label="Italic" title="Italic"><i>I</i></button><button type="button" data-fmt="underline" aria-label="Underline" title="Underline"><u>U</u></button><button type="button" data-fmt="hl" aria-label="Highlight color" title="Highlight" aria-expanded="false"><span class="hl-swatch">🖍</span></button><button type="button" data-fmt="heading" aria-label="Heading" title="Heading">H</button><button type="button" data-fmt="list" aria-label="List item" title="List">•≡</button><span class="ee-bar-break"></span>${noteKind ? `<button type="button" data-fmt="font" aria-label="Writing style" title="Writing style" aria-expanded="false">Aa</button>` : ""}<button type="button" data-fmt="add" class="ee-addbtn" aria-expanded="false">＋ Add</button><button type="button" data-fmt="kb" class="ee-kb" aria-label="Done typing: put the keyboard away" title="Put the keyboard away">⌨︎ Done</button><button type="button" class="ee-barsave" data-fmt="save">💾 Save</button>
+      </div>
+      <div class="ee-bar-more" id="eeHl" hidden><span class="muted small-print">Highlight the words you picked:</span>${[["y", "Yellow"], ["g", "Green"], ["b", "Blue"], ["p", "Pink"]].map(([c, l]) => `<button type="button" class="nh-btn nh-${c}" data-hl="${c}">${l}</button>`).join("")}<button type="button" class="small" data-hl="">No highlight</button></div>
+      ${noteKind ? `<div class="ee-bar-more ee-fonts" id="eeFonts" role="group" aria-label="Writing style" hidden>${NOTE_FONTS.map(([f, l]) => `<button type="button" class="nf-${f}" data-font="${f}" aria-pressed="${draft.font === f}">${l}</button>`).join("")}</div>` : ""}
+      <div class="ee-bar-more ee-tools" id="eeAdd" role="group" aria-label="Add to this entry" hidden>
+        <p class="muted small-print">Added where your cursor is in the writing:</p>
+        <button type="button" data-tool="sticker">🎨 Pictures &amp; arrows</button><button type="button" data-tool="box">▭ Shaded box</button><button type="button" data-tool="verse">📖 Quote a verse</button>
+        <button type="button" data-tool="ink">✏️ Draw or write</button><button type="button" data-tool="inkpage">📄 Handwriting page</button><button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button><button type="button" data-tool="table">▦ Table</button>
+        <input type="file" id="eePhoto" accept="image/*" hidden>
+      </div>
+      <div class="ee-panel" id="eePanel" hidden></div>
+      <div id="entryRich" class="ee-rich nf-${esc(draft.font)}" contenteditable="true" role="textbox" aria-multiline="true" aria-labelledby="eeTextLabel" data-ph="${esc(k.ph)}" spellcheck="true"></div>
+      <textarea id="entryText" class="nf-${esc(draft.font)}" hidden tabindex="-1" aria-hidden="true">${esc(e?.text || "")}</textarea>
+      <p class="ee-kbtip muted small-print" hidden>On an iPad, a small floating keyboard can be made full size again: pinch it outward with two fingers.</p>
       <div class="ee-refs" id="eeRefs" aria-live="polite"></div>
       ${isDay ? `<div class="ee-extra" id="eePrayerBox" ${(e?.prayer || "").trim() ? "" : "hidden"}><label class="ee-label" for="eePrayer">🙏 Prayer</label><textarea id="eePrayer" rows="3" placeholder="Who and what are you praying for?">${esc(e?.prayer || "")}</textarea></div>
       <div class="ee-extra" id="eeGratBox" ${(e?.gratitude || "").trim() ? "" : "hidden"}><label class="ee-label" for="eeGrat">❀ Thankful for</label><textarea id="eeGrat" rows="3" placeholder="What are you thankful for today?">${esc(e?.gratitude || "")}</textarea></div>
       <div class="ee-add-extra"><button type="button" class="small" data-extra="eePrayerBox" ${(e?.prayer || "").trim() ? "hidden" : ""}>＋ Add a prayer</button><button type="button" class="small" data-extra="eeGratBox" ${(e?.gratitude || "").trim() ? "hidden" : ""}>＋ Add what I'm thankful for</button><span class="muted small-print">Only if you want to.</span></div>` : ""}
       <div class="ee-pics" id="eePics"></div>
-      <div class="ee-tools" role="group" aria-label="Add to this entry">
-        <button type="button" data-tool="verse">📖 Quote a verse</button><button type="button" data-tool="sticker">🎨 Pictures &amp; arrows</button><button type="button" data-tool="box">▭ Shaded box</button>
-        <button type="button" data-tool="ink">✏️ Draw or write</button><button type="button" data-tool="inkpage">📄 Handwriting page</button><button type="button" data-tool="photo">📷 Photo</button><button type="button" data-tool="map">🗺️ Map</button><button type="button" data-tool="chart">📊 Chart</button><button type="button" data-tool="table">▦ Table</button>
-        <input type="file" id="eePhoto" accept="image/*" hidden>
-      </div>
-      <div class="ee-panel" id="eePanel" hidden></div>
       ${kind === "prayer" ? `<label class="answered"><input type="checkbox" id="entryAnswered" ${e?.answered ? "checked" : ""}> God answered this prayer${e?.answered ? ` <span class="muted">· ${fmtDate(e.answered)}</span>` : ""}</label>` : ""}
-      <div class="ee-acts"><button class="ee-save" id="entrySave">Save</button><button class="small" id="entryCancel">Close</button>${noteKind ? `<button class="small" id="entryPrint">🖨 Print</button>` : ""}${e ? `<button class="small danger" id="entryDelete">Delete</button>` : ""}</div>
+      <div class="ee-acts ee-main-acts"><button class="ee-save" id="entrySave">💾 Save entry</button><button class="small" id="entryPrint">🖨 Print, PDF or Google Docs</button><button class="small" id="entryCancel">✕ Close</button>${e ? `<button class="small danger" id="entryDelete">🗑 Delete</button>` : ""}</div>
+      <p class="muted small-print ee-save-note">Your words are kept as you type. 💾 Save entry finishes it; then it's listed ${noteKind ? "in My Notes" : "in your journal"}, where you can open it again to read, change, print or delete it.</p>
       <p class="ee-msg" id="entryMsg" role="status"></p></div>`;
-  const ta = $("#entryText"), panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
+  const panel = $("#eePanel"), msg = (t) => { $("#entryMsg").textContent = t; };
+  // The writing area shows the words as they'll look (bold, highlights, pictures in place),
+  // and the text behind it (in #entryText) is what's kept, printed and sent.
+  const rich = $("#entryRich"), mirror = $("#entryText");
+  const picIndex = (p) => draft.pics.indexOf(p);
+  const showRich = (v) => { rich.innerHTML = textToRich(v, draft.pics, (p) => picHtml(p, picIndex(p))); rich.classList.toggle("is-empty", !v.trim()); };
+  const ta = {
+    get value() { return mirror.value; },
+    set value(v) { mirror.value = v; showRich(v); },
+    focus() { rich.focus(); },
+    setSelectionRange() { placeCaretAtEnd(); },
+    addEventListener: (...a) => rich.addEventListener(...a),
+    dispatchEvent: (ev) => rich.dispatchEvent(ev),
+    after: (n) => rich.after(n),
+    set className(c) { rich.className = `ee-rich ${c}`; mirror.className = c; },
+  };
+  const placeCaretAtEnd = () => { rich.focus(); const r = document.createRange(); r.selectNodeContents(rich.lastElementChild || rich); r.collapse(false); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+  // Every picture gets a number and a place in the words; any that had none go at the end.
+  const nextN = (p) => 1 + Math.max(0, ...draft.pics.filter((x) => x !== p && x.t === p.t).map((x) => Number(x.n) || 0));
+  {
+    let v = e?.text || "";
+    for (const p of draft.pics) if (!placed(v, p)) { if (p.n == null || draft.pics.some((x) => x !== p && x.n === p.n && picTag(x) === picTag(p))) p.n = nextN(p); v = `${v.replace(/\s+$/, "")}${v.trim() ? "\n" : ""}${picTag(p)}`; }
+    mirror.value = v; showRich(v);
+  }
+  // Read the words back out of the writing area; a picture whose place was deleted goes too.
+  const sync = () => {
+    mirror.value = richToText(rich);
+    draft.pics = draft.pics.filter((p) => placed(mirror.value, p));
+    rich.classList.toggle("is-empty", !mirror.value.trim());
+  };
+  rich.addEventListener("input", sync);
+  // The cursor's place, kept so the toolbar and pictures know where to work.
+  let lastRange = null;
+  const saveRange = () => { if (!rich.isConnected) { document.removeEventListener("selectionchange", saveRange); return; } const sel = getSelection(); if (sel.rangeCount && rich.contains(sel.getRangeAt(0).startContainer)) lastRange = sel.getRangeAt(0).cloneRange(); };
+  document.addEventListener("selectionchange", saveRange);
+  const restoreRange = () => { if (!lastRange || !rich.contains(lastRange.startContainer)) { placeCaretAtEnd(); saveRange(); return; } const sel = getSelection(); sel.removeAllRanges(); sel.addRange(lastRange); };
+  // Pasted words come in plain (no stray fonts or colors from a website).
+  rich.addEventListener("paste", (ev) => {
+    const t = ev.clipboardData?.getData("text/plain");
+    if (!t) return;
+    ev.preventDefault();
+    document.execCommand("insertText", false, t);
+  });
+  // Put a picture's block where the cursor is: after the line it's on.
+  const blockAt = (node) => { while (node && node.parentNode !== rich) node = node.parentNode; return node; };
+  function placeTag(tag) {
+    const at = lastRange && rich.contains(lastRange.startContainer) ? blockAt(lastRange.startContainer) : null;
+    const tpl = document.createElement("div");
+    tpl.innerHTML = textToRich(tag, draft.pics, (p) => picHtml(p, picIndex(p)));
+    const blockEl = tpl.firstElementChild;
+    if (at && at !== rich) {
+      const empty = at.nodeType === 1 && !at.classList.contains("ee-inl") && !at.textContent.trim() && !at.querySelector(".ee-inl");
+      if (empty) at.replaceWith(blockEl); else at.after(blockEl);
+    } else rich.append(blockEl);
+    let next = blockEl.nextElementSibling;
+    if (!next || next.classList.contains("ee-inl")) { next = Object.assign(document.createElement("div"), { innerHTML: "<br>" }); blockEl.after(next); }
+    const r = document.createRange(); r.setStart(next, 0); r.collapse(true); lastRange = r;
+    sync();
+    blockEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
   // A writing prompt, one at a time. Tap again for another. It never types anything for you.
   $("#eeIdea")?.addEventListener("click", () => {
     const p = $("#eePrompt");
@@ -2186,7 +2272,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     const text = GUIDES[b.dataset.guide].text, had = ta.value.trimEnd();
     ta.value = had ? `${had}\n\n${text}` : text;
     const first = ta.value.indexOf(":", had.length) + 1;
-    ta.focus(); ta.setSelectionRange(first + 1, first + 1);
+    ta.focus(); ta.setSelectionRange(first + 1, first + 1); void first;
     ta.dispatchEvent(new Event("input", { bubbles: true }));
     $("#eeGuides").hidden = true; $("#eeGuide").setAttribute("aria-expanded", "false");
   }));
@@ -2217,16 +2303,23 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     q.querySelectorAll(".q-note").forEach((n) => n.addEventListener("input", () => { draft.quotes[Number(n.closest("[data-q]").dataset.q)].note = n.value; keepSoon(); }));
     q.querySelectorAll("[data-qx]").forEach((b) => b.addEventListener("click", () => { draft.quotes.splice(Number(b.dataset.qx), 1); drawQuotes(); keep(); }));
   };
+  // Pictures live in the words; this redraws each one in its place (after a change).
   const drawPics = () => {
-    const el = $("#eePics");
-    el.innerHTML = draft.pics.map((x, i) => picHtml(x, i)).join("");
-    el.querySelectorAll("[data-px]").forEach((b) => b.addEventListener("click", () => { const [gone] = draft.pics.splice(Number(b.dataset.px), 1); if (gone?.t === "ink") ta.value = ta.value.replace(new RegExp(`\\n?${inkLine(gone.n).source.slice(1, -1)}\\n?`), "\n"); drawPics(); keep(); }));
-    el.querySelectorAll("[data-iedit]").forEach((b) => b.addEventListener("click", () => drawInk(draft.pics[Number(b.dataset.iedit)].page, Number(b.dataset.iedit))));
-    el.querySelectorAll("[data-cedit]").forEach((b) => b.addEventListener("click", () => chartForm(Number(b.dataset.cedit))));
-    el.querySelectorAll("[data-tedit]").forEach((b) => b.addEventListener("click", () => tableForm(Number(b.dataset.tedit))));
-    el.querySelectorAll("[data-bedit]").forEach((b) => b.addEventListener("click", () => boxForm(Number(b.dataset.bedit))));
+    rich.querySelectorAll(".ee-inl").forEach((blk) => { const m = blk.dataset.tag.match(TAG_LINE); const p = m && findPic(draft.pics, m[1], m[2]); if (p) blk.innerHTML = picHtml(p, picIndex(p)); else blk.remove(); });
+    sync();
   };
-  const addPic = (pic) => { draft.pics.push(pic); drawPics(); keep(); msg("Added ✓"); };
+  rich.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button");
+    if (!b || !rich.contains(b)) return;
+    ev.preventDefault();
+    if (b.dataset.px != null) { b.closest(".ee-inl")?.remove(); sync(); keep(); msg("Taken out."); }
+    else if (b.dataset.iedit != null) drawInk(draft.pics[Number(b.dataset.iedit)].page, Number(b.dataset.iedit));
+    else if (b.dataset.cedit != null) chartForm(Number(b.dataset.cedit));
+    else if (b.dataset.tedit != null) tableForm(Number(b.dataset.tedit));
+    else if (b.dataset.bedit != null) boxForm(Number(b.dataset.bedit));
+  });
+  rich.addEventListener("click", (ev) => { const svg = ev.target.closest("svg[data-iedit]"); if (svg && rich.contains(svg)) drawInk(draft.pics[Number(svg.dataset.iedit)].page, Number(svg.dataset.iedit)); });
+  const addPic = (pic) => { pic.n = nextN(pic); draft.pics.push(pic); placeTag(picTag(pic)); keep(); msg("Added ✓ It's in your writing where the cursor was."); };
   // Handwriting or a drawing goes where the cursor was in the words.
   let caret = null;
   ta.addEventListener("blur", () => { caret = ta.selectionStart; });
@@ -2235,12 +2328,10 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     const n = old?.n || 1 + Math.max(0, ...draft.pics.filter((p) => p.t === "ink").map((p) => Number(p.n) || 0));
     const out = await openInk(old || { t: "ink", page, n });
     if (!out) return;
-    if (!out.s.length) { if (old) { draft.pics.splice(editAt, 1); ta.value = ta.value.replace(new RegExp(`\\n?${inkLine(old.n).source.slice(1, -1)}\\n?`), "\n"); drawPics(); keep(); } return; }
+    if (!out.s.length) { if (old) { const tag = picTag(old); rich.querySelectorAll(".ee-inl").forEach((b) => { if (b.dataset.tag === tag) b.remove(); }); sync(); keep(); } return; }
     if (old) { draft.pics[editAt] = out; drawPics(); keep(); msg("Drawing kept ✓"); return; }
-    const at = caret ?? ta.value.length, before = ta.value.slice(0, at), after = ta.value.slice(at);
-    ta.value = `${before}${before && !before.endsWith("\n") ? "\n" : ""}${inkTag(out)}\n${after.replace(/^\n/, "")}`;
-    caret = before.length + inkTag(out).length + (before && !before.endsWith("\n") ? 2 : 1);
-    addPic(out);
+    draft.pics.push(out); placeTag(picTag(out)); keep(); msg("Added ✓ It's in your writing where the cursor was.");
+    void caret;
   }
   const closePanel = () => { panel.hidden = true; panel.innerHTML = ""; };
   function chartForm(editAt = -1) {
@@ -2326,7 +2417,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
           <div class="sticker-grid">${Object.entries(STICKERS).filter(([, v]) => v[0] === grp).map(([sid, v]) => `<button type="button" class="sticker-pick" data-sid="${sid}" title="${esc(v[1])}">${stickerSvg(sid)}<span>${esc(v[1])}</span></button>`).join("")}</div>
           <button type="button" class="small" id="stDone">Done</button>`;
         panel.querySelectorAll("[data-sg]").forEach((b) => b.addEventListener("click", () => { grp = b.dataset.sg; draw(); }));
-        panel.querySelectorAll("[data-sid]").forEach((b) => b.addEventListener("click", () => addPic({ t: "sticker", id: b.dataset.sid })));
+        panel.querySelectorAll("[data-sid]").forEach((b) => b.addEventListener("click", () => { closePanel(); addPic({ t: "sticker", id: b.dataset.sid }); }));
         $("#stDone").addEventListener("click", closePanel);
       };
       draw();
@@ -2342,7 +2433,43 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     },
     chart() { chartForm(); },
   };
-  box.querySelectorAll("[data-tool]").forEach((b) => b.addEventListener("click", () => { if (!panel.hidden && panel.dataset.tool === b.dataset.tool) { closePanel(); return; } panel.dataset.tool = b.dataset.tool; tools[b.dataset.tool](); }));
+  box.querySelectorAll("[data-tool]").forEach((b) => b.addEventListener("click", () => { if (!panel.hidden && panel.dataset.tool === b.dataset.tool) { closePanel(); return; } panel.dataset.tool = b.dataset.tool; openMenu(""); tools[b.dataset.tool](); if (b.dataset.tool !== "photo") panel.scrollIntoView({ block: "nearest", behavior: "smooth" }); }));
+  // The toolbar: it keeps the cursor where it was, so formatting lands on the words picked.
+  const menus = { hl: $("#eeHl"), font: $("#eeFonts"), add: $("#eeAdd") };
+  const openMenu = (name) => { for (const [k, el] of Object.entries(menus)) { if (!el) continue; const on = k === name && el.hidden; el.hidden = !on; box.querySelector(`[data-fmt="${k}"]`)?.setAttribute("aria-expanded", String(on)); } };
+  box.querySelector(".ee-bar").addEventListener("pointerdown", (ev) => { if (ev.target.closest("button")) ev.preventDefault(); });
+  const blockOfCaret = () => { const sel = getSelection(); return sel.rangeCount ? blockAt(sel.getRangeAt(0).startContainer) : null; };
+  box.querySelectorAll("[data-fmt]").forEach((b) => b.addEventListener("click", () => {
+    const f = b.dataset.fmt;
+    if (f === "save") { $("#entrySave").click(); return; }
+    if (f === "kb") { rich.blur(); document.activeElement?.blur?.(); openMenu(""); msg("Keyboard put away. Tap in your writing to type again."); return; }
+    if (menus[f] !== undefined) { if (f !== "add") restoreRange(); openMenu(f); return; }
+    restoreRange();
+    if (f === "bold" || f === "italic" || f === "underline") document.execCommand(f);
+    else if (f === "heading") { const blk = blockOfCaret(); document.execCommand("formatBlock", false, blk && /^H\d$/.test(blk.nodeName) ? "div" : "h3"); }
+    else if (f === "list") {
+      const blk = blockOfCaret();
+      if (blk && blk !== rich && !blk.classList?.contains("ee-inl")) {
+        const tn = document.createTreeWalker(blk, NodeFilter.SHOW_TEXT).nextNode();
+        if (tn && tn.textContent.startsWith("• ")) tn.textContent = tn.textContent.slice(2);
+        else if (tn) tn.textContent = `• ${tn.textContent}`;
+        else { blk.innerHTML = "• "; const r = document.createRange(); r.setStart(blk.firstChild, 2); r.collapse(true); getSelection().removeAllRanges(); getSelection().addRange(r); }
+      }
+    }
+    sync(); saveRange(); keepSoon();
+  }));
+  box.querySelectorAll("[data-hl]").forEach((b) => b.addEventListener("click", () => {
+    restoreRange();
+    const sel = getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) { msg("First pick the words to highlight: press and hold a word, then drag."); return; }
+    const range = sel.getRangeAt(0);
+    // Take off any highlight already there, then add the new color.
+    rich.querySelectorAll("mark").forEach((m) => { if (range.intersectsNode(m)) m.replaceWith(...m.childNodes); });
+    if (b.dataset.hl) { const words = sel.toString(); document.execCommand("insertHTML", false, `<mark class="nh-${b.dataset.hl}">${esc(words)}</mark>`); }
+    rich.normalize(); sync(); keepSoon(); openMenu("");
+  }));
+  // On an iPad, a tip about the small floating keyboard.
+  if (/iPad/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) box.querySelector(".ee-kbtip").hidden = false;
   const addPhotoFile = async (file) => {
     if (!file) return;
     const photos = store.allEntries().reduce((n, x) => n + (x.pics || []).filter((p) => p.t === "photo").length, 0);
@@ -2408,7 +2535,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
   box.querySelectorAll("[data-font]").forEach((b) => b.addEventListener("click", () => {
     draft.font = b.dataset.font;
     box.querySelectorAll("[data-font]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    ta.className = `nf-${draft.font}`;
+    ta.className = `nf-${draft.font}`; openMenu("");
     keep();
   }));
   $("#entrySave").addEventListener("click", () => {
@@ -2445,7 +2572,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
 }
 // A short line for an entry in a list: its words, or its first verse, plus what's attached.
 function entrySnippet(e) {
-  const t = (e.title ? `${e.title}${e.speaker ? ` (${e.speaker})` : ""}. ` : "") + (e.text || (e.quotes?.[0] ? `“${e.quotes[0].text}” ${refKeyName(e.quotes[0].ref)}` : ""));
+  const t = (e.title ? `${e.title}${e.speaker ? ` (${e.speaker})` : ""}. ` : "") + (plainText(e.text) || (e.quotes?.[0] ? `“${e.quotes[0].text}” ${refKeyName(e.quotes[0].ref)}` : ""));
   const extras = [e.quotes?.length && `📖 ${e.quotes.length}`, e.pics?.filter((p) => p.t === "photo").length && `📷 ${e.pics.filter((p) => p.t === "photo").length}`, e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join(""), e.pics?.some((p) => p.t === "map") && "🗺️", e.pics?.some((p) => p.t === "chart") && "📊", e.pics?.some((p) => p.t === "ink") && "✏️"].filter(Boolean);
   return `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}${extras.length ? `<span class="entry-extras">${extras.join(" ")}</span>` : ""}`;
 }
@@ -2456,15 +2583,20 @@ function printPages(html, kind = "journal", title = PRINT_TITLES[kind] || "Bible
   const dlg = document.createElement("dialog");
   dlg.className = "send-sheet";
   dlg.setAttribute("aria-label", "Print or send");
+  let bw = store.get("printBW") === true;
   dlg.innerHTML = `<h2>${esc(title)}</h2>
+    <div class="send-color" role="group" aria-label="Color or black and white"><button type="button" data-bw="0" aria-pressed="${!bw}">🎨 In color</button><button type="button" data-bw="1" aria-pressed="${bw}">⚫ Black and white</button></div>
+    <button type="button" class="send-opt" data-how="preview"><span aria-hidden="true">👁</span><b>Look at it first</b><small>See every page as it will print, then print from there.</small></button>
     <button type="button" class="send-opt" data-how="print"><span aria-hidden="true">🖨</span><b>Print or save as a PDF</b><small>Pick your printer, or choose Save as PDF.</small></button>
     <button type="button" class="send-opt" data-how="send"><span aria-hidden="true">📤</span><b>Send to Google Docs, Drive or email</b><small>${navigator.canShare ? "Opens your share list: choose Drive, Docs, Files, Mail or Messages." : "Saves a document you can upload to Google Drive and open with Google Docs, or open in Word."}</small></button>
     <button type="button" class="quiet-link" data-how="">Cancel</button>`;
   document.body.append(dlg);
   dlg.addEventListener("close", () => dlg.remove());
+  dlg.querySelectorAll("[data-bw]").forEach((b) => b.addEventListener("click", () => { bw = b.dataset.bw === "1"; store.set("printBW", bw); dlg.querySelectorAll("[data-bw]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); }));
   dlg.querySelectorAll("[data-how]").forEach((b) => b.addEventListener("click", () => {
     dlg.close();
-    if (b.dataset.how === "print") printNow(html, kind);
+    if (b.dataset.how === "preview") printPreview(html, kind, title);
+    else if (b.dataset.how === "print") printNow(html, kind);
     else if (b.dataset.how === "send") sendDocument(html, title);
   }));
   dlg.showModal();
@@ -2489,9 +2621,31 @@ async function sendDocument(html, title) {
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
   mascotSay("Saved! Upload it to Google Drive and choose Open with Google Docs, or open it in Word.");
 }
+// A look at the pages before printing, in color or black and white, with Print right there.
+function printPreview(html, kind, title) {
+  const dlg = document.createElement("dialog");
+  dlg.className = "word-sheet print-preview-sheet";
+  dlg.setAttribute("aria-label", `Preview: ${title}`);
+  const bw = () => store.get("printBW") === true;
+  dlg.innerHTML = `<div class="ws-head"><h2>👁 ${esc(title)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
+    <div class="print-preview${bw() ? " is-bw" : ""}"><div class="print-book pb-${esc(kind)}">${html}</div></div>
+    <div class="pp-acts"><button type="button" class="ee-save" data-pp="print">🖨 Print or save as PDF</button><button type="button" class="small" data-pp="bw">${bw() ? "🎨 Show in color" : "⚫ Show in black and white"}</button><button type="button" class="small" data-pp="send">📤 Google Docs, Drive or email</button><button type="button" class="small" data-pp="close">✕ Close</button></div>`;
+  document.body.append(dlg);
+  dlg.addEventListener("close", () => dlg.remove());
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.querySelector(".ws-close").addEventListener("click", () => dlg.close());
+  dlg.querySelectorAll("[data-pp]").forEach((b) => b.addEventListener("click", () => {
+    const how = b.dataset.pp;
+    if (how === "bw") { store.set("printBW", !bw()); dlg.querySelector(".print-preview").classList.toggle("is-bw", bw()); b.textContent = bw() ? "🎨 Show in color" : "⚫ Show in black and white"; return; }
+    dlg.close();
+    if (how === "print") printNow(html, kind);
+    else if (how === "send") sendDocument(html, title);
+  }));
+  dlg.showModal();
+}
 function printNow(html, kind) {
   const book = $("#printBook");
-  book.className = `print-book pb-${kind}`;
+  book.className = `print-book pb-${kind}${store.get("printBW") === true ? " pb-bw" : ""}`;
   book.innerHTML = html;
   book.hidden = false;
   document.body.classList.add("printing"); document.documentElement.classList.add("printing");
@@ -2699,7 +2853,7 @@ async function refPeek(key) {
     <div class="peek-text"><p class="muted small-print">Loading…</p></div>
     <div class="ee-acts"><button type="button" class="small" data-peek-go>Open in the Bible</button><button type="button" class="small" data-peek-close>Close</button></div>`;
   peekSheet.querySelectorAll(".ws-close, [data-peek-close]").forEach((b) => b.addEventListener("click", () => peekSheet.close()));
-  peekSheet.querySelector("[data-peek-go]").addEventListener("click", async () => { peekSheet.close(); showView("read"); await openChapter(book, chapter); if (verse > 1) setTimeout(() => goToVerse(verse), 300); });
+  peekSheet.querySelector("[data-peek-go]").addEventListener("click", () => { peekSheet.close(); openPassageTab(book, chapter, verse); });
   if (!peekSheet.isConnected) document.body.append(peekSheet);
   if (!peekSheet.open) peekSheet.showModal();
   const box = peekSheet.querySelector(".peek-text");
@@ -2736,19 +2890,26 @@ function renderNotesList(justSaved = null) {
   $("#notesFilter").querySelectorAll("[data-nf]").forEach((b) => b.addEventListener("click", () => { notesFilter = b.dataset.nf; renderNotesList(); }));
   if (!list.length) { el.innerHTML = `<p class="empty">${all.length ? "No notes match." : "No notes yet. Tap one of the buttons above to start one. Every note is dated, and you can give it a heading so it's easy to find."}</p>`; return; }
   let lastDay = "";
+  // Show by date (newest first), by Bible study, or by passage (in Bible order).
+  const by = $("#notesBy")?.value || "date";
+  const groupOf = (e) => by === "study" ? (e.kind === "study" && PATH_BY_ID[e.path] ? `${PATH_BY_ID[e.path].name} study` : NOTE_LABEL[noteGroup(e.kind)] || NOTE_LABEL[e.kind] || "Notes")
+    : by === "passage" ? (notePassage(e)?.name || "No passage named") : dayLabel(dayOf(e.created));
+  const order = (e) => { const r = notePassage(e); return r ? bookIndex(r.book) * 1000 + r.chapter : 1e9; };
+  if (by === "study") list.sort((a, b) => groupOf(a).localeCompare(groupOf(b)) || String(b.created).localeCompare(String(a.created)));
+  if (by === "passage") list.sort((a, b) => order(a) - order(b) || String(b.created).localeCompare(String(a.created)));
   el.innerHTML = list.map((e) => {
-    const d = dayOf(e.created);
-    const head = d !== lastDay ? `<h3 class="nl-day">${esc(dayLabel(d))}</h3>` : "";
+    const d = groupOf(e);
+    const head = d !== lastDay ? `<h3 class="nl-day">${by === "passage" ? "📖 " : by === "study" ? "🧭 " : ""}${esc(d)}</h3>` : "";
     lastDay = d;
     const k = KIND[e.kind];
-    const words = (e.text || "").trim();
-    const snip = words.length > 220 ? `${words.slice(0, 220)}…` : words;
+    const words = (e.text || "").split("\n").filter((l) => !TAG_LINE.test(l)).join("\n").trim();
+    const snip = words.length > 220 ? `${words.slice(0, 220).replace(/\S*$/, "")}…` : words;
     const refs = scanRefs(`${e.passage || ""}`).concat(e.ref && e.kind !== "church" && e.kind !== "class" ? [{ ...keyRef(e.ref), verse: 0, end: 0, name: keyRef(e.ref).name }] : []);
     return `${head}<article class="note-card nk-${e.kind}${e.id === justSaved ? " just-saved" : ""}">
       ${choosing ? `<label class="nc-pick"><input type="checkbox" data-pick="${e.id}" ${picked.has(e.id) ? "checked" : ""}> Print this one</label>` : ""}
       <button type="button" class="nc-open" data-note="${e.id}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}${e.kind === "study" && PATH_BY_ID[e.path] ? `<small class="nc-path">${esc(PATH_BY_ID[e.path].name)} path</small>` : ""}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}<span class="go" aria-hidden="true">›</span></button>
       ${refs.length ? `<p class="nc-refs">${refs.map((r) => refButton(r)).join(" ")}</p>` : ""}
-      ${snip ? `<p class="nc-snip nf-${esc(e.font || "classic")}">${linkRefs(esc(snip)).replace(/\n/g, "<br>")}</p>` : ""}
+      ${snip ? `<p class="nc-snip nf-${esc(e.font || "classic")}">${inlineHtml(linkRefs(esc(snip).replace(/^## (.*)$/gm, "**$1**"))).replace(/\n/g, "<br>")}</p>` : ""}
       ${(e.quotes?.length || e.pics?.length) ? `<p class="nc-extras">${[e.quotes?.length && `📖 ${e.quotes.length} verse${e.quotes.length === 1 ? "" : "s"}`, e.pics?.some((p) => p.t === "table") && "▦ table", e.pics?.some((p) => p.t === "chart") && "📊 chart", e.pics?.some((p) => p.t === "photo") && "📷 photo", e.pics?.some((p) => p.t === "ink") && "✏️ handwriting", e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join("")].filter(Boolean).join(" · ")}</p>` : ""}
     </article>`;
   }).join("");
@@ -2778,13 +2939,14 @@ function printNotesBook(list, title = "My Notes") {
   const days = [...new Set(list.map((e) => dayOf(e.created)))].sort();
   const para = (t) => esc(t).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
   const one = (e) => `<section class="pn-note nk-${e.kind}">
-      <p class="pn-meta">${esc(NOTE_LABEL[e.kind] || "Note")} · ${esc(stampNow(new Date(e.created)))}</p>
-      <h2>${esc(e.title || defaultHeading(e))}</h2>
+      <p class="pn-meta">${esc(NOTE_LABEL[e.kind] || KIND[e.kind]?.label || "Note")} · ${esc(stampNow(new Date(e.created)))}</p>
+      <h2>${esc(NOTE_KINDS.includes(e.kind) ? e.title || defaultHeading(e) : e.title || entryLabel(e))}</h2>
       ${e.kind === "study" && PATH_BY_ID[e.path] ? `<p class="pn-path">${esc(PATH_BY_ID[e.path].name)} path</p>` : ""}
       ${e.speaker || e.passage || (e.ref && e.kind !== "church" && e.kind !== "class") ? `<p class="pn-sub">${[e.speaker, e.passage, e.ref && e.kind !== "church" && e.kind !== "class" ? keyRef(e.ref).name : ""].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
       ${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}
       ${e.text ? `<div class="pb-lines nf-${esc(e.font || "classic")}">${paraInk(e.text, e.pics, para)}</div>` : ""}
       ${loosePics(e).length ? `<div class="ee-pics">${loosePics(e).map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
+      ${e.prayer?.trim() ? `<h4 class="note-h">🙏 Prayer</h4><div class="pb-lines">${para(e.prayer)}</div>` : ""}${e.gratitude?.trim() ? `<h4 class="note-h">❀ Thankful for</h4><div class="pb-lines">${para(e.gratitude)}</div>` : ""}
       ${scanRefs(`${e.passage || ""} ${e.text || ""}`).length ? `<p class="pn-verses">Verses: ${scanRefs(`${e.passage || ""} ${e.text || ""}`).map((r) => esc(r.name)).join(" · ")}</p>` : ""}
     </section>`;
   const html = list.length === 1 ? `<article class="pn-book">${one(list[0])}</article>`
@@ -2794,14 +2956,25 @@ function printNotesBook(list, title = "My Notes") {
       <article class="pn-book">${[...list].sort((a, b) => a.created.localeCompare(b.created)).map(one).join("")}</article>`;
   printPages(html, "notes", title);
 }
+// The passage a note is about: its chapter, or the first verse named in it.
+function notePassage(e) {
+  if (e.ref) { const r = keyRef(e.ref); return { book: r.book, chapter: r.chapter, name: r.name }; }
+  const f = scanRefs(`${e.passage || ""} ${e.text || ""}`)[0];
+  return f ? { book: f.book, chapter: f.chapter, name: `${BOOK_BY_ID[f.book].name} ${f.chapter}` } : null;
+}
+$("#notesBy")?.addEventListener("change", () => renderNotesList());
 function shownNotes() {
   const q = norm($("#notesSearch")?.value || "");
   return store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (notesFilter === "all" || noteGroup(e.kind) === notesFilter)
     && (!q || norm(`${e.title || ""} ${e.text || ""} ${e.speaker || ""} ${e.passage || ""} ${e.ref ? keyRef(e.ref).name : ""} ${(e.quotes || []).map((x) => x.text).join(" ")} ${(e.pics || []).filter((p) => p.t === "table").map((p) => p.rows.flat().join(" ")).join(" ")}`).includes(q)));
 }
 $("#printNotes")?.addEventListener("click", () => {
-  const list = shownNotes().filter((e) => !choosing || picked.has(e.id));
-  printNotesBook(list, notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]);
+  let list = shownNotes().filter((e) => !choosing || picked.has(e.id));
+  // With "Include my journal entries", the journal comes along too (when it isn't locked).
+  const withJournal = $("#printWithJournal")?.checked;
+  if (withJournal && journalLocked()) { mascotSay("Unlock your journal first, then print again to include it."); return; }
+  if (withJournal) list = [...list, ...store.allEntries().filter((e) => !NOTE_KINDS.includes(e.kind) && !KIND[e.kind]?.notesOnly)].sort((a, b) => String(a.created).localeCompare(String(b.created)));
+  printNotesBook(list, withJournal ? "My Notes and Journal" : notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]);
 });
 $("#chooseNotes")?.addEventListener("click", () => { choosing = !choosing; if (!choosing) picked.clear(); renderNotesList(); });
 document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
@@ -3476,6 +3649,9 @@ document.querySelectorAll("[data-go-view]").forEach((b) => b.addEventListener("c
 function renderPassageArt(book, chapter) {
   const el = $("#passageArt");
   if (!el) return;
+  // Only the kids' look keeps a story picture above the passage; the others use the four buttons.
+  el.hidden = store.get("style") !== "animated";
+  if (el.hidden) { el.innerHTML = ""; return; }
   const { svg, caption } = passageStrip(book, chapter, store.get("style"));
   el.innerHTML = `${svg}<p class="passage-caption">${esc(caption)}</p>`;
 }
@@ -3825,11 +4001,13 @@ function bookNumbersHtml(book) {
   const ord = (n) => `${n}${["th", "st", "nd", "rd"][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10] || "th"}`;
   const pct = (verses / TOTAL_VERSES) * 100;
   const byLen = [...BOOKS].sort((a, c) => VERSES[c.id] - VERSES[a.id]), rank = byLen.findIndex((x) => x.id === book) + 1;
-  return `<h3 class="bi-h">By the numbers</h3><div class="bi-stats">
-    <div><b>${bk.chapters}</b><span>chapter${bk.chapters === 1 ? "" : "s"}</span></div>
-    <div><b>${verses.toLocaleString()}</b><span>verses</span></div>
-    <div><b>${pct < 0.1 ? "<0.1" : pct.toFixed(pct < 1 ? 2 : 1)}%</b><span>of the Bible</span></div>
-    <div><b>${ord(pos)}</b><span>of ${sameT.length} ${bk.testament === "OT" ? "Old" : "New"} Testament books</span></div></div>
+  const share = pct < 0.1 ? "less than 0.1" : pct.toFixed(pct < 1 ? 2 : 1);
+  return `<h3 class="bi-h">By the numbers</h3><p class="muted small-print bi-numbers-about">How big ${esc(bk.name)} is, and where it sits in the Bible.</p><div class="bi-stats">
+    <div><b>${bk.chapters}</b><span>chapter${bk.chapters === 1 ? "" : "s"} in ${esc(bk.name)}</span></div>
+    <div><b>${verses.toLocaleString()}</b><span>verses in ${esc(bk.name)}</span></div>
+    <div><b>${pct < 0.1 ? "<0.1" : pct.toFixed(pct < 1 ? 2 : 1)}%</b><span>of all the verses in the Bible are in this book</span></div>
+    <div><b>${ord(pos)}</b><span>book of the ${sameT.length} in the ${bk.testament === "OT" ? "Old" : "New"} Testament, in Bible order</span></div></div>
+    <p class="muted small-print">The Bible has ${TOTAL_VERSES.toLocaleString()} verses in all, so ${share}% means about ${pct >= 1 ? `${Math.round(pct)} verse${Math.round(pct) === 1 ? "" : "s"} in every 100` : `1 verse in every ${Math.round(100 / pct).toLocaleString()}`} is from ${esc(bk.name)}.</p>
     <p class="bi-fact">${rank <= 10 ? `📏 The ${ord(rank) === "1st" ? "" : `${ord(rank)} `}longest book of the Bible by verses. ` : rank >= 57 ? `📏 One of the ten shortest books of the Bible. ` : ""}${BOOK_FACTS[book] ? `💡 ${esc(BOOK_FACTS[book])}` : `About ${Math.max(1, Math.round(verses * 26 / 150))} minute${Math.round(verses * 26 / 150) === 1 ? "" : "s"} to read aloud from start to finish.`}</p>`;
 }
 // Who a book was first written to, where that's debated or unknown, with its sources.
@@ -3865,6 +4043,209 @@ function renderBookIntro(book, chapter) {
   box.classList.toggle("bi-start", chapter === 1);
   box.hidden = false;
 }
+
+
+/* ---------- Several passages open at once ---------- */
+// "Jump to another passage", cross-references and Find a verse open a passage beside your
+// place instead of replacing it. Small tabs above the text step back and forth, and each one
+// remembers the verse you were on. Up to 6 at a time; the ✕ on a tab closes it.
+const MAX_TABS = 6;
+function passTabs() {
+  const t = store.get("passTabs"), last = store.get("last");
+  if (!Array.isArray(t?.list) || !t.list.length || !(t.at >= 0 && t.at < t.list.length)) return { list: [{ book: last.book, chapter: last.chapter, v: 1 }], at: 0 };
+  return t;
+}
+function tabFollows(book, chapter) {
+  const t = passTabs(), cur = t.list[t.at];
+  if (cur.book !== book || cur.chapter !== chapter) t.list[t.at] = { book, chapter, v: 1 };
+  store.set("passTabs", t);
+  renderPassTabs();
+}
+const readingNow = () => !$("#view-read").hidden && $("#reader").querySelector("[data-number], .v, .verse-num");
+async function openPassageTab(book, chapter, verse = 0) {
+  const t = passTabs();
+  if (readingNow()) t.list[t.at].v = verseInView();
+  const same = t.list.findIndex((x) => x.book === book && x.chapter === chapter);
+  if (same >= 0) t.at = same;
+  else {
+    t.list.splice(t.at + 1, 0, { book, chapter, v: verse || 1 });
+    t.at += 1;
+    while (t.list.length > MAX_TABS) { const drop = t.at === 0 ? t.list.length - 1 : 0; t.list.splice(drop, 1); if (drop < t.at) t.at -= 1; }
+  }
+  t.list[t.at].v = verse || t.list[t.at].v || 1;
+  store.set("passTabs", t);
+  showView("read");
+  await openChapter(book, chapter);
+  if (verse > 1) setTimeout(() => goToVerse(verse), 300);
+  const back = t.list[t.at - 1] || t.list[t.at + 1];
+  if (back) mascotSay(`Your place in ${refName(back)} is kept in the tabs at the top.`);
+}
+async function switchPassageTab(i) {
+  const t = passTabs();
+  if (i === t.at || !t.list[i]) return;
+  if (readingNow()) t.list[t.at].v = verseInView();
+  t.at = i;
+  store.set("passTabs", t);
+  const { book, chapter, v } = t.list[i];
+  showView("read");
+  await openChapter(book, chapter);
+  if (v > 1) setTimeout(() => { const m = verseMarkEls().find((x) => markNum(x) === v); m?.scrollIntoView({ block: "start" }); window.scrollBy(0, -($(".topbar")?.offsetHeight || 0) - 12); }, 200);
+}
+function closePassageTab(i) {
+  const t = passTabs();
+  if (t.list.length < 2) return;
+  t.list.splice(i, 1);
+  if (i < t.at) t.at -= 1;
+  else if (i === t.at) {
+    t.at = Math.max(0, i - 1);
+    store.set("passTabs", t);
+    t.at = -1; // switch to it as if from another tab
+    const to = Math.max(0, i - 1);
+    store.set("passTabs", { ...t, at: Math.min(to, t.list.length - 1) });
+    const x = t.list[Math.min(to, t.list.length - 1)];
+    openChapter(x.book, x.chapter).then(() => { if (x.v > 1) setTimeout(() => goToVerse(x.v), 200); });
+    return;
+  }
+  store.set("passTabs", t);
+  renderPassTabs();
+}
+function renderPassTabs() {
+  const el = $("#passTabs");
+  if (!el) return;
+  const t = passTabs();
+  el.hidden = t.list.length < 2;
+  if (el.hidden) { el.innerHTML = ""; return; }
+  el.innerHTML = `<p class="pt-label">Open passages <span class="muted">· tap one to go back to it</span></p><div class="pt-row">${t.list.map((x, i) => `<span class="pt${i === t.at ? " is-on" : ""}"><button type="button" class="pt-go" data-pt="${i}"${i === t.at ? ` aria-current="page"` : ""}>📖 ${esc(refName(x))}</button><button type="button" class="pt-x" data-ptx="${i}" aria-label="Close ${esc(refName(x))}">✕</button></span>`).join("")}</div>`;
+  el.querySelectorAll("[data-pt]").forEach((b) => b.addEventListener("click", () => switchPassageTab(Number(b.dataset.pt))));
+  el.querySelectorAll("[data-ptx]").forEach((b) => b.addEventListener("click", () => closePassageTab(Number(b.dataset.ptx))));
+}
+$("#jumpBtn")?.addEventListener("click", () => {
+  pickNewTab = true;
+  openPicker();
+  pickNewTab = true;
+  $("#pickerTitle").textContent = "Jump to another passage";
+  $("#pickerTitle").dataset.jump = "1";
+});
+
+/* ---------- Study buttons above the passage ---------- */
+// Setting the stage, Background, Cross-references, and When and where each open in their own
+// window over the passage, with ✕ and "Back to <passage>" so nobody loses their place.
+// A cross-reference opens right in the window; "Open beside my place" adds it as a tab.
+const SHEETS = {
+  stage: ["📜", "Setting the stage", "The big picture first: who wrote this book, when, for whom, what it's about, and what happens in this chapter."],
+  history: ["🏛️", "Background", "The history, culture and archaeology behind this chapter: what life was like then, and what was going on in the world. Each note says how firm the evidence is, and lists its sources."],
+  xref: ["🔗", "Cross-references", "Other places in the Bible on the same subject. Scripture is the best explainer of Scripture. Tap one to read it right here; your place stays put."],
+  where: ["🧭", "When and where", "When this happened, the world around it, and the places it names: a map with their Bible-times names (brown) and today's names (blue), and where each is today."],
+};
+const studySheet = document.createElement("dialog");
+studySheet.className = "word-sheet study-sheet";
+studySheet.setAttribute("aria-label", "Study this passage");
+studySheet.addEventListener("click", (e) => { if (e.target === studySheet) studySheet.close(); });
+document.body.append(studySheet);
+let sheetBack = null; // what "‹ Back" inside the window returns to
+function sheetShell(icon, title, about, body) {
+  const here = refName(store.get("last"));
+  studySheet.innerHTML = `<div class="ws-head ss-head">${sheetBack ? `<button type="button" class="quiet-link ss-back" data-ss-back>‹ Back</button>` : ""}<h2><span aria-hidden="true">${icon}</span> ${esc(title)}</h2><button type="button" class="ws-close" aria-label="Close">✕</button></div>
+    <div class="ss-body">${about ? `<p class="notes-about">${esc(about)}</p>` : ""}${body}</div>
+    <button type="button" class="ss-return" data-ss-close>✕ Close and go back to ${esc(here)}</button>`;
+  studySheet.querySelectorAll(".ws-close, [data-ss-close]").forEach((b) => b.addEventListener("click", () => studySheet.close()));
+  studySheet.querySelector("[data-ss-back]")?.addEventListener("click", () => { const f = sheetBack; sheetBack = null; f(); });
+  studySheet.querySelector(".ss-body").scrollTop = 0;
+  return studySheet.querySelector(".ss-body");
+}
+const evTag = (k) => (k && EVIDENCE[k] ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "");
+function noteItemsHtml(n, items) {
+  const srcKeys = Object.keys(n.sources || {});
+  const more = (ids) => (ids?.length ? `<p class="read-more"><span>Sources:</span> ${ids.filter((k) => n.sources[k]).map((k) => `<a href="${esc(sourceUrl(n.sources[k]))}" target="_blank" rel="noopener">${esc(sourceText(n.sources[k]).split(/ \(|, (?=\d)/)[0].replace(/\.$/, ""))} ↗</a>`).join(" · ")}</p>` : "");
+  return items.map((it) => `<div class="note-item"><div class="note-head">${it.ref ? `<span class="vref">${esc(it.ref)}</span>` : ""}<strong>${esc(it.head || "")}</strong>${evTag(it.ev)}</div>${String(it.text || "").split("\n\n").map((x) => `<p>${linkRefs(esc(x))}</p>`).join("")}${more(it.src)}</div>`).join("") + (srcKeys.length ? "" : "");
+}
+function goDeeper(n, skip) {
+  const opts = [["verses", "📖", "Verse by verse"], ["words", "✍️", "Key words in the Hebrew or Greek"], ["views", "🎓", "Scholars and views"], ["strongs", "א", "Strong's concordance"]]
+    .filter(([id]) => id !== skip && (id === "strongs" || (id === "words" ? n?.sections.some((x) => x.lang) : n?.sections.some((x) => x.id === id))));
+  return opts.length ? `<div class="ss-deeper"><h3>Want to go deeper?</h3><p class="muted small-print">These are below the Bible text too.</p>${opts.map(([id, ic, l]) => `<button type="button" class="small" data-deeper="${id}">${ic} ${esc(l)}</button>`).join(" ")}</div>` : "";
+}
+function wireDeeper(body) {
+  body.querySelectorAll("[data-deeper]").forEach((b) => b.addEventListener("click", () => {
+    studySheet.close();
+    const { book, chapter } = store.get("last");
+    notesTab = b.dataset.deeper; renderNotes(book, chapter);
+    $("#studyNotes")?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }));
+  body.querySelectorAll(".ref-link[data-peek]").forEach((b) => b.addEventListener("click", () => { const [bk, c, v, end] = b.dataset.peek.split("."); showXref({ book: bk, chapter: Number(c), verse: Number(v) || 1, endC: Number(c), endV: Number(end) || Number(v) || 1, name: b.textContent.replace(/^📖\s*/, "") }, () => openStudySheet(studySheet.dataset.kind)); }));
+}
+function openStudySheet(kind) {
+  const { book, chapter } = store.get("last");
+  const [icon, title, about] = SHEETS[kind];
+  const n = notesFor(book, chapter), intro = INTROS[book];
+  studySheet.dataset.kind = kind;
+  sheetBack = null;
+  if (kind === "stage") {
+    renderBookIntro(book, chapter);
+    const src = $("#bookIntro .bi-body");
+    const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about, src ? src.innerHTML : `<p>There's no introduction for ${esc(BOOK_BY_ID[book].name)} yet.</p>`);
+    body.querySelectorAll("[data-bi-ch]").forEach((x) => x.addEventListener("click", () => { studySheet.close(); openChapter(book, Number(x.dataset.biCh)); }));
+    wireDeeper(body);
+  } else if (kind === "history") {
+    const sec = n?.sections.find((x) => x.id === "history");
+    const lead = intro?.setting ? `<p class="ss-lead"><strong>The setting of ${esc(BOOK_BY_ID[book].name)}:</strong> ${esc(intro.setting)}</p>` : "";
+    const era = eraFor(book, chapter);
+    const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about,
+      `${lead}${sec ? noteItemsHtml(n, sec.items) : `<p class="ss-lead"><strong>The world around it.</strong> ${esc(era.world)}</p><p class="muted small-print">There's no separate background note for this chapter yet. Setting the stage, and When and where, have more.</p>`}${goDeeper(n)}`);
+    wireDeeper(body);
+  } else if (kind === "xref") {
+    const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about, `${n?.crossRefs?.length ? `<h3 class="ss-h">Key passages for this chapter</h3><div class="xrefs">${n.crossRefs.map(([k, ref, why]) => `<button type="button" class="xref" data-xk="${k}" data-xname="${esc(ref)}"><strong>${esc(ref)}</strong><span>${esc(why)}</span></button>`).join("")}</div>` : ""}
+      <h3 class="ss-h">Verse by verse</h3><div id="ssXverse"><p class="muted small-print">Loading…</p></div>
+      <p class="muted small-print">Verse cross-references are from OpenBible.info (CC BY), ranked by how many readers found them helpful.</p>`);
+    const again = () => openStudySheet("xref");
+    body.querySelectorAll("[data-xk]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.xk); showXref({ book: r.book, chapter: r.chapter, verse: r.verse || 1, endC: r.chapter, endV: r.end || (r.verse ? r.verse : 3), name: b.dataset.xname }, again); }));
+    loadXref(book, chapter).then((x) => {
+      const box = body.querySelector("#ssXverse");
+      if (!box?.isConnected) return;
+      const vs = Object.keys(x || {}).map(Number).filter((v) => x[v]?.length).sort((a, b) => a - b);
+      if (!vs.length) { box.innerHTML = `<p class="muted small-print">No verse cross-references for this chapter.</p>`; return; }
+      box.innerHTML = vs.map((v) => `<div class="ss-xv"><span class="ss-vn">Verse ${v}</span>${x[v].slice(0, 4).map((s) => { const r = parseXref(s); return `<button type="button" class="ref-link" data-xs="${esc(s)}">${esc(r.name)}</button>`; }).join(" ")}</div>`).join("");
+      box.querySelectorAll("[data-xs]").forEach((b) => b.addEventListener("click", () => showXref(parseXref(b.dataset.xs), again)));
+    });
+  } else if (kind === "where") {
+    const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about, `${n?.map ? `<h3 class="ss-h">🗺️ Map: then and now</h3><div class="map-scroll">${mapSvg(n.map)}</div><p class="map-note" id="ssMapNote">Tap a place on the map to read about it.</p><p class="muted small-print">${esc(n.map.caption)} Brown names are what places were called in Bible times; blue names are what they're called today. Simplified from standard Bible atlases.</p>` : ""}${whereHtml(book, chapter)}`);
+    if (n?.map) body.querySelectorAll("[data-place]").forEach((g) => {
+      const show = () => { const p = n.map.places[Number(g.dataset.place)]; body.querySelectorAll(".map-place").forEach((y) => y.classList.toggle("is-on", y === g)); body.querySelector("#ssMapNote").innerHTML = `<strong class="nm-then">${esc(p.then)}</strong>${p.now !== p.then ? ` <span class="nm-now">· today: ${esc(p.now)}</span>` : ""}<br>${esc(p.note)}`; };
+      g.addEventListener("click", show);
+      g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+    });
+    fillWhere(body, book, chapter);
+  }
+  if (["history", "where"].includes(kind)) buddyNerd();
+  if (!studySheet.open) studySheet.showModal();
+}
+// A cross-reference read right in the window, with a way back and a way to open it beside your place.
+async function showXref(r, back) {
+  sheetBack = back;
+  const body = sheetShell("🔗", r.name, "", `<div class="ss-passage"><p class="muted small-print">Loading…</p></div>
+    <div class="ee-acts"><button type="button" class="small" data-ss-tab>📖 Open ${esc(r.name)} beside my place</button></div>`);
+  body.querySelector("[data-ss-tab]").addEventListener("click", () => { studySheet.close(); openPassageTab(r.book, r.chapter, r.verse); });
+  let words = "";
+  try {
+    const html = (await getChapter(store.get("version"), r.book, r.chapter)).html;
+    const last = r.endC === r.chapter ? Math.max(r.endV || r.verse, r.verse) : r.verse + 3;
+    const parts = [];
+    for (let v = r.verse; v <= Math.min(last, r.verse + 11); v += 1) { const t = verseFromHtml(html, v); if (t) parts.push(`<sup>${v}</sup>${esc(t)}`); }
+    words = parts.join(" ");
+  } catch { /* shown below */ }
+  const box = body.querySelector(".ss-passage");
+  if (box?.isConnected) box.innerHTML = words ? `<p class="ss-words">${words}</p>` : `<p class="muted small-print">This passage couldn't load just now.</p>`;
+}
+// Read aloud folds into one small bar: Play is one tap, and "More" opens volume, speed,
+// the sleep timer, repeat and Read to me. It stays open once someone opens it.
+function syncListenFold() {
+  const open = store.get("listenOpen") === true;
+  $("#listenBar")?.classList.toggle("is-folded", !open);
+  $("#listenMore")?.setAttribute("aria-expanded", String(open));
+  if ($("#listenMore")) $("#listenMore").innerHTML = open ? `Fewer <span aria-hidden="true">▴</span>` : `More <span aria-hidden="true">▾</span><span class="sr-only"> read-aloud choices: volume, speed, sleep timer, repeat, read to me</span>`;
+}
+$("#listenMore")?.addEventListener("click", () => { store.set("listenOpen", store.get("listenOpen") !== true); syncListenFold(); });
+syncListenFold();
+document.querySelectorAll("[data-sheet]").forEach((b) => b.addEventListener("click", () => openStudySheet(b.dataset.sheet)));
 
 /* ---------- Tap a word in the Bible text: plain meaning, then the Hebrew or Greek ---------- */
 // Only on a tap (never on hover), and only when "Tap a word for its meaning" is on in Settings.
@@ -4080,7 +4461,7 @@ function wireRef(el, book, chapter) {
     renderNotes(book, chapter);
     $("#refPanel")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }));
-  el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openChapter(r.book, r.chapter); }));
+  el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const r = keyRef(b.dataset.go); openPassageTab(r.book, r.chapter, r.verse || 0); }));
   wireWordSearch(el);
   wireOpenIn(el);
   fillStrongs(el, book, chapter);
@@ -4102,7 +4483,7 @@ function renderNotes(book, chapter) {
   const mineSub = mineN ? `${mineN} note${mineN === 1 ? "" : "s"}` : "Write one";
   el.className = "notes-card ref-section";
   if (!n) {
-    const tiles = ["strongs", "where", "search", "mine"];
+    const tiles = ["strongs", "search", "mine"];
     if (!tiles.includes(notesTab)) notesTab = "strongs";
     el.innerHTML = `${refHead(book, chapter)}${refTilesHtml(tiles, { mine: mineSub, where: "Time, places, tribes" })}
       <div class="notes-panel" id="refPanel"><p class="notes-about">${esc(ABOUT[notesTab])}</p>${notesTab === "strongs" ? `<div id="strongsPanel"><p class="muted small-print">Loading the concordance…</p></div>` : notesTab === "mine" ? mineHtml(book, chapter) : notesTab === "where" ? whereHtml(book, chapter) : wordSearchHtml()}</div>
@@ -4120,7 +4501,8 @@ function renderNotes(book, chapter) {
   const paras = (t) => String(t).split("\n\n").map((x) => `<p>${esc(x)}</p>`);
   const ev = (k) => k ? `<span class="ev ev-${k}" title="${esc(EVIDENCE[k].tip)}">${esc(EVIDENCE[k].label)}</span>` : "";
   const sec = (id) => n.sections.find((x) => x.id === id);
-  const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...(n.map ? ["map"] : []), "where", ...n.sections.filter((x) => x.id !== "verses").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), ...(n.crossRefs ? ["xref"] : []), "search", "sources", "mine"];
+  // Background, Cross-references, When and where (with the map) are the buttons above the passage.
+  const tiles = [...(sec("verses") ? ["verses"] : []), "strongs", ...n.sections.filter((x) => x.id !== "verses" && x.id !== "history").map((x) => x.lang ? "words" : x.id).filter((id) => REF_TILES[id]), "search", "sources", "mine"];
   const secFor = (id) => id === "words" ? n.sections.find((x) => x.lang) : sec(id);
   const subs = { mine: mineSub, where: "Time, places, tribes", sources: `${srcKeys.length} sources` };
   for (const id of tiles) { const x = secFor(id); if (x) { const c = id === "views" ? x.items.filter((it) => it.who !== "Common ground" && !it.extra).length : x.items.length; subs[id] = `${c} ${id === "views" ? "view" : "note"}${c === 1 ? "" : "s"}`; } }
@@ -4191,10 +4573,9 @@ function wireFindResults(out) {
     const [bk, c, v] = b.dataset.ref.split(".");
     if (!BOOK_BY_ID[bk]) return;
     if (findSheet.open) findSheet.close();
-    showView("read"); await openChapter(bk, Number(c));
-    const n = parseInt(v, 10); if (n > 1) setTimeout(() => goToVerse(n), 300);
+    openPassageTab(bk, Number(c), parseInt(v, 10) || 0);
   }));
-  out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (findSheet.open) findSheet.close(); if (BOOK_BY_ID[bk] && c) { showView("read"); openChapter(bk, Number(c)); } }));
+  out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (findSheet.open) findSheet.close(); if (BOOK_BY_ID[bk] && c) openPassageTab(bk, Number(c)); }));
   out.querySelector("[data-ask]")?.addEventListener("click", () => {
     if (findSheet.open) findSheet.close();
     openBuddyChat();
@@ -4244,6 +4625,7 @@ function openFind() {
   setTimeout(() => findSheet.querySelector("#wsInput")?.focus(), 60);
 }
 $("#findGo")?.addEventListener("click", openFind);
+$("#findTop")?.addEventListener("click", openFind);
 
 /* ---------- Home: the four study paths ---------- */
 const PATH_ICONS = {
@@ -4535,10 +4917,23 @@ $("#pickerSearch").addEventListener("keydown", (e) => {
 });
 // Straight to a chapter (and verse, like "Romans 8:28"), from any screen: quick for following a sermon.
 async function jumpTo(r) {
+  if (pickNewTab) return pickerGo(r.book, r.chapter || 1, r.verse);
   picker.close(); showView("read");
   await openChapter(r.book, r.chapter || 1);
   if (r.verse > 1) goToVerse(r.verse);
 }
+// The picker either moves this passage, or (from "Jump to another passage") opens a new one
+// beside it, keeping your place.
+let pickNewTab = false;
+function pickerGo(book, chapter, verse = 0) {
+  const newTab = pickNewTab;
+  pickNewTab = false;
+  picker.close();
+  if (newTab) return openPassageTab(book, chapter, verse);
+  showView("read");
+  return openChapter(book, chapter).then(() => { if (verse > 1) goToVerse(verse); });
+}
+picker.addEventListener("close", () => { pickNewTab = false; $("#pickerTitle").dataset.jump = ""; });
 $("#topPrev").addEventListener("click", () => { const { book, chapter } = store.get("last"); const p = neighbors(book, chapter).prev; if (p) openChapter(p.book, p.chapter); });
 $("#topNext").addEventListener("click", () => { const { book, chapter } = store.get("last"); const n = neighbors(book, chapter).next; if (n) openChapter(n.book, n.chapter); });
 
@@ -5302,7 +5697,7 @@ function revealSetting(el) {
 }
 const HELP = {
   home: ["Home", ["Tap the top card to pick up where you left off.", "Today has a verse, a psalm, a proverb, a question and a prayer for each day. Tap \"Choose what shows\" to pick what you see.", "My Bible reads the whole Bible in order. The three self-guided studies below each go a different way, with your progress shown on each.", "Go anywhere in the Bible: type a book or tap Browse books. Your study keeps its place."]],
-  read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "Scroll down for Setting the stage, the study section (Strong's, maps, history, scholars), questions for the Bible helper, and your journal."]],
+  read: ["Reading", ["Tap the book name at the top to pick a book, chapter and verse. The ‹ › arrows go to the last or next chapter.", "Tap Read aloud to hear the chapter. The part being read is highlighted.", "Tap any word for its meaning and the Hebrew or Greek.", "The four buttons above the text open Setting the stage, Background, Cross-references, and When and where (with the map). ✕ always brings you back.", "Jump to another passage keeps your place in a tab at the top.", "Scroll down for Verse by verse, Strong's, Key words, Scholars and views, Sources, and your notes."]],
   books: ["My Bible", ["Tap Keep reading to go back to where you were, or tap any book and then a chapter to read it.", "Books shows how much of each book you've read.", "History shows chapters you've visited. Favorites are chapters you starred.", "Journal holds your daily journal and every chapter journal, with prayers and thanks."]],
   path: ["Bible study", ["Your current study, section by section. Tap a chapter to read it.", "Switch studies from Home any time. Each one keeps its own place."]],
   settings: ["Settings", ["The User guide at the top explains every part of the app, and can be printed.", "Settings is sorted into groups. Tap a group to open it; Help and guide is first.", "Account: change your password or sign out.", "Journal passcode: leave your journal open, or lock it with a passcode.", "Reading: bigger words, bigger buttons, high contrast, tap-a-word, and how the Bible helper answers.", "Look: change the colors and pictures."]],

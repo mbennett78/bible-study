@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 2:25 PM Central
-**Current version:** v395 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 2:54 PM Central
+**Current version:** v396 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 2:55 PM CT: Family try-out fixes B-77 to B-91 are in (v396). Above the passage: four small buttons, Setting the stage, Background, Cross-references and When and where (maps then and now); each opens a sheet with ✕ and "Close and go back". Strong's, Sources and Verse by verse stay below. "Jump to another passage" opens a second passage in a small tab above the text, so your place stays one tap away; cross-references and Find a verse open that way too. 🔍 Find a verse sits in the top bar on every screen. Read aloud folds into one bar (Play is still one tap; speed, sleep timer and Read to me are under More). Verse by verse and By the numbers are explained in plain words, and the user guide says where the deeper research is. Notes and journal editor: bold, italic, underline, highlight colors, headings and lists work right in the writing area and show as they'll look; pictures, boxes, drawings and icons go where the cursor is (under ＋ Add); ⌨︎ Done puts the keyboard away; 💾 Save is always in the toolbar; the iPad tip explains pinching the floating keyboard back to full size. Notes can be viewed by date, by Bible study or by passage; Print all my notes can include the journal; printing offers color or black and white and "Look at it first". A 📝 shows above any passage you've written about and beside the verse you named. New on the list: B-97 and B-98 (fun looks for teen girls and guys) and B-99 (a simpler manual for the core group).
 - Thu Nov 26, 2:25 PM CT: Family try-out feedback from Melissa (18 items) started. First fix: Bible versions. Every version list now matches (the switch on the Read page and Settings, under You), and shows the main NASB plus each well-known version on the key's plan that really opens (NIV, KJV, NKJV, NLT, CSB and others): each is tested with one verse before it's offered, and rechecked weekly. A version the plan lists but won't open never shows. When the month's 5,000 API.Bible reads run out, the app says so plainly and saved chapters still open. To follow the publishers' terms: no more than 900 NASB verses are kept on a device (Lockman allows 1,000), the NASB notice links to www.Lockman.org, chapters credit and link API.Bible, and API.Bible's anonymous reader count (FUMS) is sent when a chapter is shown.
 - Thu Nov 26, 2:45 PM CT: Melissa gave her final OK on the seasonal backgrounds. She is doing the one Supabase update for Buddy now (supabase-final-update.md).
 - Thu Nov 26, 2:15 PM CT: The user guide (in Settings, and on paper at the next gift packet rebuild) now covers the daily chest, missions and levels, Family duel, journal guides (SOAP, ACTS) and journal search. Everything on the release plan is done except what waits on others: the family try-out (Mon Nov 30), any more seasonal notes, the final ratings after the try-out, and the one Supabase update when Buddy is done.
@@ -179,25 +180,28 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Code | Item | Status | Due |
 |---|---|---|---|
 | B-76 | Bible versions: every list matches (Read page and Settings), showing NASB plus every version the key really opens (NIV, KJV and others), each tested first | Done (Thu Nov 26, v395) | Thu Nov 26 |
-| B-77 | Four icon buttons above the passage: Setting the stage, Background, Cross-references, When and where (with the maps, then and now). They replace the big Setting the stage picture | In progress | Fri Nov 27 |
-| B-78 | Strong's, Sources, Verse by verse and the rest stay below the Scripture | In progress | Fri Nov 27 |
-| B-79 | Jump to another passage while keeping your place: several passages open at once, small tabs to step back, cross-references open beside your place instead of replacing it | Not started | Fri Nov 27 |
-| B-81 | Read aloud folds into one small bar (Play is still one tap; speed, sleep timer and Read to me sit under "More") | Not started | Fri Nov 27 |
-| B-82 | Plain explanations: what Verse by verse is and whose views it gives, and what the By the numbers figures mean | Not started | Fri Nov 27 |
-| B-83 | Where the deep-dive research lives, in plain words in the user guide (and the buttons point there) | Not started | Fri Nov 27 |
-| B-84 | Find a verse docked in the top toolbar, one tap from anywhere | Not started | Fri Nov 27 |
-| B-80 | An X or Back on every popup and resource, and always a way back to where you were | Not started | Sat Nov 28 |
-| B-85 | Notes and journal editor: every option inside it (bold, italic, highlight colors, headings, lists, pictures, icons, boxes); pictures and icons land in the note where the cursor is, so you see where they go | Not started | Sat Nov 28 |
-| B-86 | Keyboard: a clear button to put the keyboard away while writing; on iPad, how to make the small floating keyboard full size again | Not started | Sat Nov 28 |
-| B-87 | A clear Save entry button; a saved entry is the same one that prints, saves as PDF and goes to Google Docs | Not started | Sat Nov 28 |
-| B-88 | View notes without printing: all, by date, by Bible study and by passage; open, edit or delete any earlier note or journal entry | Not started | Sun Nov 29 |
-| B-89 | Journal entries can be included when printing notes (checked: Print all my notes leaves the journal out today) | Not started | Sun Nov 29 |
-| B-90 | Print in color or black and white, with a preview first | Not started | Sun Nov 29 |
-| B-91 | A small note icon on any passage (and verse) you've written a note about | Not started | Sun Nov 29 |
-| B-92 | Classic appearance 4: a calm scenic landscape, not animated | Not started | Mon Nov 30 |
+| B-77 | Four icon buttons above the passage: Setting the stage, Background, Cross-references, When and where (with the maps, then and now). They replace the big Setting the stage picture | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-78 | Strong's, Sources, Verse by verse and the rest stay below the Scripture | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-79 | Jump to another passage while keeping your place: several passages open at once, small tabs to step back, cross-references open beside your place instead of replacing it | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-81 | Read aloud folds into one small bar (Play is still one tap; speed, sleep timer and Read to me sit under "More") | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-82 | Plain explanations: what Verse by verse is and whose views it gives, and what the By the numbers figures mean | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-83 | Where the deep-dive research lives, in plain words in the user guide (and the buttons point there) | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-84 | Find a verse docked in the top toolbar, one tap from anywhere | Done (Thu Nov 26, v396) | Fri Nov 27 |
+| B-80 | An X or Back on every popup and resource, and always a way back to where you were | In progress (menus, the picker and the new study sheets done) | Sat Nov 28 |
+| B-85 | Notes and journal editor: every option inside it (bold, italic, highlight colors, headings, lists, pictures, icons, boxes); pictures and icons land in the note where the cursor is, so you see where they go | Done (Thu Nov 26, v396) | Sat Nov 28 |
+| B-86 | Keyboard: a clear button to put the keyboard away while writing; on iPad, how to make the small floating keyboard full size again | Done (Thu Nov 26, v396) | Sat Nov 28 |
+| B-87 | A clear Save entry button; a saved entry is the same one that prints, saves as PDF and goes to Google Docs | Done (Thu Nov 26, v396) | Sat Nov 28 |
+| B-88 | View notes without printing: all, by date, by Bible study and by passage; open, edit or delete any earlier note or journal entry | Done (Thu Nov 26, v396) | Sun Nov 29 |
+| B-89 | Journal entries can be included when printing notes (checked: Print all my notes leaves the journal out today) | Done (Thu Nov 26, v396) | Sun Nov 29 |
+| B-90 | Print in color or black and white, with a preview first | Done (Thu Nov 26, v396) | Sun Nov 29 |
+| B-91 | A small note icon on any passage (and verse) you've written a note about | Done (Thu Nov 26, v396) | Sun Nov 29 |
+| B-92 | Classic appearance 4 for Papa: dark blue with a calm landscape from a classic painting, not animated | Not started | Mon Nov 30 |
 | B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Not started | Mon Nov 30 |
 | B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Not started | Mon Nov 30 |
-| B-95 | Sibling invite link: each sibling uses their own free API.Bible key (API.Bible's terms don't allow sharing a key) | Waiting on Melissa's choice | Mon Nov 30 |
+| B-95 | Sibling invite link: each sibling sets up their own free API.Bible key, with plain steps (API.Bible's terms don't allow sharing a key) | Not started (Melissa chose: own key) | Mon Nov 30 |
+| B-97 | A fun, stylish look for a young woman or older teen girl (original art, not kiddie), with a preview to Melissa first | Not started | Tue Dec 1 |
+| B-98 | A fun, stylish look for a young man or older teen guy (original art, not kiddie), with a preview to Melissa first | Not started | Tue Dec 1 |
+| B-99 | A simpler user manual for Melissa's core group (siblings keep the full guide with key setup) | Not started | Wed Dec 2 |
 
 Can wait for a post-release Saturday update: more box styles for notes beyond the first set (B-96, Sat Dec 5). Everything else above is a must-have for Dec 4.
 

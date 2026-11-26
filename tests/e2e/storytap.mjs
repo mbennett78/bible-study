@@ -19,7 +19,7 @@ try {
     const has = await page.$("svg.storybook");
     if (lively) check("Daniel 6 shows its storybook picture", Boolean(has));
     if (has) {
-      const hit = await page.evaluate(() => { const svg = document.querySelector("svg.storybook"); const r = svg.getBoundingClientRect(); const el = document.elementFromPoint(r.left + r.width * .5, r.top + r.height * .6); el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: r.left + r.width * .5, clientY: r.top + r.height * .6 })); return [Boolean(svg.querySelector(".sb-hop")), Boolean(svg.querySelector(".sb-tapstar"))]; });
+      const hit = await page.evaluate(() => { const svg = document.querySelector("svg.storybook"); svg.scrollIntoView({ block: "center" }); const r = svg.getBoundingClientRect(); const el = document.elementFromPoint(r.left + r.width * .5, r.top + r.height * .6); el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: r.left + r.width * .5, clientY: r.top + r.height * .6 })); return [Boolean(svg.querySelector(".sb-hop")), Boolean(svg.querySelector(".sb-tapstar"))]; });
       if (lively) check("tapping the picture makes someone hop with a twinkle", hit[0] && hit[1], JSON.stringify(hit));
       else check("with still pictures, tapping does nothing", !hit[0] && !hit[1]);
     } else if (!lively) check("with still pictures, tapping does nothing", true);

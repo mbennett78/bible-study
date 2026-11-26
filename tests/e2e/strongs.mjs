@@ -49,12 +49,12 @@ try {
   };
   await page.evaluate(() => document.querySelector("#reader .v").scrollIntoView({ block: "center" }));
   await tapWord("Word");
-  check("tapping “Word” shows the Greek logos", await page.$eval(".word-sheet", (d) => d.open) && /G3056/.test(await page.textContent(".word-sheet .ws-lang")), await page.textContent(".word-sheet").catch(() => "closed"));
+  check("tapping “Word” shows the Greek logos", await page.$eval(".word-sheet[aria-label='Word meaning']", (d) => d.open) && /G3056/.test(await page.textContent(".word-sheet[aria-label='Word meaning'] .ws-lang")), await page.textContent(".word-sheet[aria-label='Word meaning']").catch(() => "closed"));
   check("and the tip goes away once they've tried it", !(await page.$("#reader .word-tip")));
-  await page.click(".word-sheet .ws-done"); await page.waitForTimeout(200);
+  await page.click(".word-sheet[aria-label='Word meaning'] .ws-done"); await page.waitForTimeout(200);
   await tapWord("comprehend");
-  check("“comprehend” finds katalambanō through the King James renderings", /In the Greek[\s\S]*G2638/.test(await page.textContent(".word-sheet .ws-lang")));
-  await page.click(".word-sheet .ws-done").catch(() => {}); await page.waitForTimeout(200);
+  check("“comprehend” finds katalambanō through the King James renderings", /In the Greek[\s\S]*G2638/.test(await page.textContent(".word-sheet[aria-label='Word meaning'] .ws-lang")));
+  await page.click(".word-sheet[aria-label='Word meaning'] .ws-done").catch(() => {}); await page.waitForTimeout(200);
   // The full concordance: every place in the Bible a word is used, by book, and a tap goes there.
   const light = '#strongsPanel .sc-word[data-n="G5457"]';
   await page.$eval(light, (d) => { const rest = d.closest(".sc-rest"); if (rest) rest.hidden = false; d.open = true; }); await page.waitForTimeout(700);

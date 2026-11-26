@@ -31,7 +31,7 @@ try {
   check("Use a guide offers SOAP, ACTS and more", /SOAP/.test(await page.textContent("#eeGuides")) && /ACTS/.test(await page.textContent("#eeGuides")));
   await page.click('[data-guide="soap"]');
   const soap = await page.inputValue("#entryText");
-  check("SOAP adds Scripture, Observation, Application and Prayer headings", /^Scripture: /.test(soap) && /Observation/.test(soap) && /Application/.test(soap) && /Prayer: /.test(soap) && !(await page.isVisible("#eeGuides")), soap);
+  check("SOAP adds Scripture, Observation, Application and Prayer headings", /^Scripture:/.test(soap) && /Observation/.test(soap) && /Application/.test(soap) && /Prayer:/.test(soap) && !(await page.isVisible("#eeGuides")), soap);
   // Search the journal: the matching entry stays, others go.
   await page.evaluate(() => document.querySelector("#entryCancel")?.click()); await page.clock.runFor(300);
   await page.fill("#journalSearch", "christmas"); await page.clock.runFor(200);

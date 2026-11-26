@@ -38,6 +38,9 @@
     </span>
     </div>
     <div class="top-actions">
+    <button class="icon-btn find-btn" id="findTop" aria-label="Find a verse">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 15l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
     <button class="icon-btn" id="listenBtn" aria-label="Read aloud">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -78,13 +81,21 @@
         <button type="button" data-readmode="plain" aria-pressed="false">📖 Bible only</button>
         <button type="button" data-readmode="study" aria-pressed="true">🎓 Study Bible</button>
       </div>
-      <div id="passageArt"></div>
+      <div class="pass-tabs" id="passTabs" hidden></div>
       <div class="path-banner" id="pathBanner" hidden></div>
-      <div class="listen-bar" id="listenBar">
+      <div class="study-btns" id="studyBtns" role="group" aria-label="Study this passage">
+        <button type="button" data-sheet="stage"><span aria-hidden="true">📜</span>Setting the stage</button>
+        <button type="button" data-sheet="history"><span aria-hidden="true">🏛️</span>Background</button>
+        <button type="button" data-sheet="xref"><span aria-hidden="true">🔗</span>Cross-<wbr>references</button>
+        <button type="button" data-sheet="where"><span aria-hidden="true">🧭</span>When and where</button>
+      </div>
+      <button type="button" class="jump-btn" id="jumpBtn"><span aria-hidden="true">↪</span><span><strong>Jump to another passage</strong><small>Your place here is kept. Come back any time.</small></span></button>
+      <div class="listen-bar is-folded" id="listenBar">
         <button class="listen-play" id="playBtn" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path id="playIcon" d="M8 5v14l11-7z" fill="currentColor"/></svg>
           <span>Read aloud</span>
         </button>
+        <button type="button" class="listen-more" id="listenMore" aria-expanded="false" aria-controls="listenBar">More <span aria-hidden="true">▾</span><span class="sr-only"> read-aloud choices: volume, speed, sleep timer, repeat, read to me</span></button>
         <label class="listen-ctl" id="volumeCtl">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="sr-only">Volume</span>
@@ -109,6 +120,7 @@
       <details class="book-intro" id="bookIntro" hidden></details>
       <article class="reader" id="reader" aria-live="polite"></article>
       <div id="flourish"></div>
+      <div id="passageArt" hidden></div>
       <nav class="chapter-nav end-nav" aria-label="Chapter navigation">
         <button id="prevCh2" aria-label="Previous chapter">‹ Previous<small></small></button>
         <button id="nextCh2" class="go-next" aria-label="Next chapter">Next chapter ›<small></small></button>
@@ -201,7 +213,8 @@
       <label class="notes-find"><span class="sr-only">Search my notes</span><input id="notesSearch" type="search" placeholder="🔍 Search my notes" autocomplete="off"></label>
       <div class="journal-filter notes-filter" id="notesFilter" role="group" aria-label="Show"></div>
       <p class="notes-range muted small-print" id="notesRange"></p>
-      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print all my notes</button><button type="button" class="small" id="chooseNotes" hidden>☑ Choose which to print</button><span class="muted small-print">Print, or choose Save as PDF to keep a copy. Pick a kind, search, or choose notes to print just those, like a class outline before you teach.</span></div>
+      <label class="notes-by">Show my notes <select id="notesBy" aria-label="Show my notes"><option value="date">by date, newest first</option><option value="study">by Bible study</option><option value="passage">by passage, in Bible order</option></select></label>
+      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print all my notes</button><label class="print-with"><input type="checkbox" id="printWithJournal"> Include my journal entries</label><button type="button" class="small" id="chooseNotes" hidden>☑ Choose which to print</button><span class="muted small-print">Tap a note to read it, change it or delete it. To print, pick a kind, search, or choose notes; you can look at the pages first, and print in color or black and white, or save a PDF or send it to Google Docs.</span></div>
       <div id="notesList"></div>
     </section>
 
@@ -439,7 +452,7 @@
     <div class="picker-head">
       <button class="quiet-link" id="pickerBack" hidden>‹ Books</button>
       <h2 id="pickerTitle">Books</h2>
-      <button class="quiet-link" id="pickerClose">Done</button>
+      <button class="quiet-link close-x" id="pickerClose" aria-label="Close">✕ Close</button>
     </div>
     <input class="picker-search" id="pickerSearch" type="search" placeholder="Type where to go, like Romans 8:28" autocomplete="off" aria-label="Find a book and chapter">
     <div id="pickerBody"></div>
@@ -458,7 +471,7 @@
     <div class="picker-head">
       <span></span>
       <h2>Menu</h2>
-      <button class="quiet-link" id="menuClose">Done</button>
+      <button class="quiet-link close-x" id="menuClose" aria-label="Close the menu">✕ Close</button>
     </div>
     <div class="qm-nav">
       <button data-go-view="home">Home</button><button data-go-view="read">Read</button><button data-go-view="path">Bible study</button><button data-go-view="notes">📝 My notes</button><button data-go-view="settings">Settings</button><button type="button" class="games-entry" id="qmGames">🎲 Bible games</button><button data-tour>🧭 Take the tour</button>

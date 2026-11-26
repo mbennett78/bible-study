@@ -28,11 +28,12 @@ try {
   await page.click(".tabbar [data-view=notes]"); await page.waitForTimeout(400);
   await page.click("[data-new-note=note]"); await page.waitForTimeout(300);
   await page.fill("#eeTitle", "Sunday class");
-  await page.fill("#entryText", "First point.\nSecond point.");
-  await page.focus("#entryText");
-  await page.evaluate(() => { const t = document.querySelector("#entryText"); t.setSelectionRange(13, 13); t.blur(); });
-  check("notes offer drawing and a handwriting page", await page.isVisible("[data-tool=ink]") && await page.isVisible("[data-tool=inkpage]"));
-  await page.click("[data-tool=ink]"); await page.waitForTimeout(300);
+  await page.fill("#entryRich", "First point.\nSecond point.");
+  await page.focus("#entryRich");
+  await page.evaluate(() => { const first = document.querySelector("#entryRich").firstChild; const r = document.createRange(); r.selectNodeContents(first); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r); });
+  await page.waitForTimeout(100);
+  check("notes offer drawing and a handwriting page", Boolean(await page.$("[data-tool=ink]")) && Boolean(await page.$("[data-tool=inkpage]")));
+  await page.$eval("[data-tool=ink]", (b) => b.click()); await page.waitForTimeout(300);
   check("the drawing board opens full screen", await page.$eval(".ink-sheet", (d) => d.open && d.getBoundingClientRect().width >= innerWidth - 1));
   check("it has pens, a highlighter, an eraser, sizes, paper and undo", (await page.$$(".ink-sheet [data-color]")).length === 5 && await page.isVisible(".ink-sheet [data-tool=hl]") && await page.isVisible(".ink-sheet [data-tool=erase]") && (await page.$$(".ink-sheet [data-size]")).length === 3 && (await page.$$(".ink-sheet [data-bg]")).length === 3);
   await draw("mouse", [.1, .2], [.9, .25]);
@@ -51,16 +52,16 @@ try {
   check("the drawing is kept as strokes (the resting hand and the undone line left out)", ink && ink.s.length === 2, JSON.stringify(ink?.s?.map((s) => s.c)));
   check("a Pencil's pressure is kept", ink && ink.s[1].d.split(",")[2] === "9" && ink.s[1].c === "#1d4ed8");
   check("the drawing goes where the cursor was in the words", /^First point\.\n\[✏️ Drawing 1\]\nSecond point\.$/.test(await page.inputValue("#entryText")), JSON.stringify(await page.inputValue("#entryText")));
-  check("it shows in the note", Boolean(await page.$("#eePics .is-ink svg path")));
+  check("it shows in the note", Boolean(await page.$("#entryRich .is-ink svg path")));
   // Change it: the eraser takes a stroke away.
-  await page.click("#eePics .is-ink [data-iedit].chart-edit"); await page.waitForTimeout(300);
+  await page.click("#entryRich .is-ink [data-iedit].chart-edit"); await page.waitForTimeout(300);
   await page.click(".ink-sheet [data-tool=erase]");
   await draw("mouse", [.05, .22], [.95, .23]);
   await page.click(".ink-sheet [data-x=done]"); await page.waitForTimeout(300);
   e = Object.values(await saved()).find((x) => x.title === "Sunday class");
   check("the eraser removes a stroke", e.pics.find((p) => p.t === "ink").s.length === 1);
   // A full handwriting page.
-  await page.click("[data-tool=inkpage]"); await page.waitForTimeout(300);
+  await page.$eval("[data-tool=inkpage]", (b) => b.click()); await page.waitForTimeout(300);
   check("a handwriting page is a tall lined page", await page.$eval(".ink-sheet canvas", (c) => c.height > c.width) && await page.getAttribute(".ink-sheet [data-bg=lines]", "aria-pressed") === "true");
   await draw("pen", [.1, .1], [.8, .12], 0.4);
   await page.click(".ink-sheet [data-x=done]"); await page.waitForTimeout(300);

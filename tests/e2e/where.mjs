@@ -14,9 +14,10 @@ try {
   const errors = []; page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(site.url); await page.waitForTimeout(800);
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(1200);
-  check("a When and where square in the Reference section", !!(await page.$('#studyNotes [data-tab="where"]')));
-  await page.evaluate(() => document.querySelector('#studyNotes [data-tab="where"]').click()); await page.waitForTimeout(1000);
-  check("it gives the time period", /The life of Jesus/.test(await page.textContent("#refPanel")) && /Pontius Pilate/.test(await page.textContent("#refPanel")));
+  check("a When and where button above the passage", !!(await page.$('#studyBtns [data-sheet="where"]')));
+  await page.click('#studyBtns [data-sheet="where"]'); await page.waitForTimeout(1000);
+  check("it opens in a window with a close button and a way back", await page.isVisible(".study-sheet .ws-close") && /go back to John 4/.test(await page.textContent(".study-sheet .ss-return")));
+  check("it gives the time period", /The life of Jesus/.test(await page.textContent(".study-sheet .ss-body")) && /Pontius Pilate/.test(await page.textContent(".study-sheet .ss-body")));
   check("it names the regions, then and now", /Samaria/.test(await page.textContent("#wherePlaces")) && /today/.test(await page.textContent("#wherePlaces")));
   const names = await page.$$eval("#wherePlaces .map-place", (g) => g.map((x) => x.getAttribute("aria-label")));
   check("the map shows the chapter's places", names.some((n) => /Sychar/.test(n)) && names.some((n) => /Jerusalem/.test(n)));
@@ -30,8 +31,8 @@ try {
   await page.evaluate(() => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.last = { book: "JHN", chapter: 9 }; localStorage.setItem("bible-study:v1", JSON.stringify(s)); });
   await page.reload(); await page.waitForTimeout(800);
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click()); await page.waitForTimeout(1200);
-  await page.evaluate(() => document.querySelector('#studyNotes [data-tab="where"]').click()); await page.waitForTimeout(1000);
-  check("the tribes stay out of chapters that aren't about them", !(await page.$("#whereTribes .tribe")) && /The life of Jesus/.test(await page.textContent("#refPanel")));
+  await page.click('#studyBtns [data-sheet="where"]'); await page.waitForTimeout(1000);
+  check("the tribes stay out of chapters that aren't about them", !(await page.$("#whereTribes .tribe")) && /The life of Jesus/.test(await page.textContent(".study-sheet .ss-body")));
   await page.evaluate(async () => { const m = await import("/js/history.js"); window.__era = m.eraFor("EXO", 14); });
   check("dates scholars debate are marked as debated", await page.evaluate(() => window.__era.debated && /1446/.test(window.__era.dates)));
   // Christmas pictures change from chapter to chapter.

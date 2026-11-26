@@ -23,13 +23,13 @@ try {
   check("big Add buttons for a journal entry, prayer, thanks, Bible thoughts and Church notes", (await page.$$("#diaryToday .add-entry")).length === 5);
   await page.click('#diaryToday [data-add="prayer"]'); await page.waitForTimeout(300);
   check("a new entry shows today's date and time", /🕒/.test(await page.textContent(".entry-editor")) && /\d:\d\d/.test(await page.textContent(".ee-when")));
-  await page.fill("#entryText", "For Grandma's surgery on Friday.");
+  await page.fill("#entryRich", "For Grandma's surgery on Friday.");
   await page.click("#entrySave"); await page.waitForTimeout(300);
   check("Save says it's saved", /Saved ✓/.test(await page.textContent("#entryEditor")));
   check("the entry is listed to read again", /Grandma's surgery/.test(await page.textContent("#journalList")) && /Prayer/.test(await page.textContent("#journalList")));
   // Typing is kept even without tapping Save.
   await page.click('#diaryToday [data-add="day"]'); await page.waitForTimeout(200);
-  await page.fill("#entryText", "We decorated the tree."); await page.waitForTimeout(1200);
+  await page.fill("#entryRich", "We decorated the tree."); await page.waitForTimeout(1200);
   check("words are kept as they type", await page.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("bible-study:v1")).entries).includes("decorated the tree")));
   // Pasting a picture (from Photos, a website or another app) adds it; pasted words go in the box.
   const pasteImage = (type) => page.evaluate(async (type) => {
@@ -37,15 +37,15 @@ try {
     c.getContext("2d").fillRect(0, 0, 40, 30);
     const blob = await new Promise((r) => c.toBlob(r, "image/png"));
     const dt = new DataTransfer(); dt.items.add(new File([blob], "image.png", { type: "image/png" }));
-    const ta = document.querySelector("#entryText"); ta.focus();
+    const ta = document.querySelector("#entryRich"); ta.focus();
     const ev = type === "paste" ? new ClipboardEvent("paste", { clipboardData: dt, bubbles: true, cancelable: true }) : new DragEvent("drop", { dataTransfer: dt, bubbles: true, cancelable: true });
     ta.dispatchEvent(ev);
   }, type);
   await pasteImage("paste"); await page.waitForTimeout(600);
-  check("a pasted picture is added to the entry", (await page.$$("#eePics .is-photo img")).length === 1 && await page.$eval("#eePics .is-photo img", (i) => i.alt === "Pasted picture" && i.src.startsWith("data:image/jpeg")));
+  check("a pasted picture is added to the entry", (await page.$$("#entryRich .is-photo img")).length === 1 && await page.$eval("#entryRich .is-photo img", (i) => i.alt === "Pasted picture" && i.src.startsWith("data:image/jpeg")));
   await pasteImage("drop"); await page.waitForTimeout(600);
-  check("a picture dragged onto the entry is added too", (await page.$$("#eePics .is-photo img")).length === 2);
-  await page.focus("#entryText"); await page.keyboard.press("End"); await page.keyboard.insertText(" Pasted from a website.");
+  check("a picture dragged onto the entry is added too", (await page.$$("#entryRich .is-photo img")).length === 2);
+  await page.focus("#entryRich"); await page.keyboard.press("Control+End"); await page.keyboard.insertText(" Pasted from a website.");
   check("pasted words go into the box", (await page.inputValue("#entryText")).endsWith("Pasted from a website."));
   // They choose how it starts and which day it's for; prayer and thanks are optional.
   check("a journal entry has no prayer or thanks box until they ask", await page.$eval("#eePrayerBox", (b) => b.hidden) && await page.$eval("#eeGratBox", (b) => b.hidden));
@@ -68,7 +68,7 @@ try {
   await page.evaluate(() => { document.querySelector("#journalBox").open = true; document.querySelector('#journalBox [data-add="note"]').click(); });
   await page.waitForTimeout(200);
   check("chapter notes: a note on John 3", /John 3/.test(await page.textContent("#chapterEntryHost")));
-  await page.fill("#entryText", "Born from above."); await page.click("#entrySave"); await page.waitForTimeout(300);
+  await page.fill("#entryRich", "Born from above."); await page.click("#entrySave"); await page.waitForTimeout(300);
   check("chapter notes: listed under the chapter", /Born from above/.test(await page.textContent("#journalInner")));
 
   // Lock it, then unlock with the number pad.

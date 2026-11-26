@@ -29,6 +29,9 @@ try {
   const said = () => page.evaluate(() => window.__said.join(" | "));
   check("the switch is called Read to me", /Read to me/.test(await page.textContent("#listenBar")));
   check("nothing is read until asked", (await said()) === "");
+  check("read aloud starts folded: one Play button and More", await page.isVisible("#playBtn") && await page.isVisible("#listenMore") && !(await page.isVisible("#driveQuick")));
+  await page.click("#listenMore"); await page.waitForTimeout(150);
+  check("More opens speed, sleep timer and Read to me", await page.isVisible("#driveQuick") && await page.isVisible("#quickRate") && await page.isVisible("#sleepSel"));
   await page.click("#driveQuick"); await page.waitForTimeout(1200);
   const heard = await said();
   check("turning it on reads this chapter", /John, chapter 1/.test(heard) && /Words of JHN\.1/.test(heard), heard);

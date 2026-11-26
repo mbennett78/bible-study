@@ -13,7 +13,7 @@ import { BOOKS } from "./books.js";
 import { MORE_NOTES } from "./notes-more.js";
 
 export const ABOUT = {
-  verses: "Verse by verse: notes on key verses, the way a study Bible explains them at the bottom of the page. Tap a verse number to jump to it.",
+  verses: "Verse by verse: a short, plain explanation of the key verses in this chapter, in order, like the notes at the bottom of a study Bible page. Each note says what the verse means and what it meant to the people who first heard it. They aren't one scholar's opinion: each one draws on the commentaries and reference books listed under Sources (the small numbers in brackets point to them). Where scholars disagree, see Scholars and views, which names them. Tap a verse number to jump to that verse.",
   strongs: "Strong's concordance: every Hebrew or Greek word in this chapter, numbered as in James Strong's concordance (1890). Tap a word to see what it means and where else it's used.",
   map: "Map: the places in this chapter. Brown names are what they were called in Bible times; blue names are what they're called today. Tap a place to read about it.",
   history: "Background: the history, culture and archaeology behind the chapter. Each note is labeled with how firm the evidence is.",

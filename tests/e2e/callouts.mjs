@@ -21,10 +21,9 @@ try {
 
   const verse = "“For God so loved the world, that He gave His only Son, that whoever believes in Him shall not perish, but have eternal life.” John 3:16 (NASB)";
   await page.evaluate((text) => {
-    const ta = document.querySelector("#entryText"); ta.focus();
+    const ta = document.querySelector("#entryRich"); ta.focus();
     const dt = new DataTransfer(); dt.setData("text/plain", text);
     ta.dispatchEvent(new ClipboardEvent("paste", { clipboardData: dt, bubbles: true, cancelable: true }));
-    ta.value += text; ta.dispatchEvent(new Event("input", { bubbles: true }));
   }, verse);
   await page.waitForTimeout(200);
   check("pasted Scripture is recognized", /John 3:16/.test(await page.textContent("#eeVerseOffer")));
@@ -56,7 +55,7 @@ try {
   // Pasting ordinary words never offers a card.
   await page.click('#diaryToday [data-add="day"]'); await page.waitForTimeout(200);
   await page.evaluate(() => {
-    const ta = document.querySelector("#entryText"); ta.focus();
+    const ta = document.querySelector("#entryRich"); ta.focus();
     const dt = new DataTransfer(); dt.setData("text/plain", "We talked about this at dinner tonight.");
     ta.dispatchEvent(new ClipboardEvent("paste", { clipboardData: dt, bubbles: true, cancelable: true }));
   });
