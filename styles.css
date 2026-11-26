@@ -3141,3 +3141,20 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .bnd-face .buddy-chair, .bnd-face .buddy-legs-chair, .bnd-face .buddy-desk { display: none; }
 /* In the chat he's big enough to see what he's doing. */
 .chat-sheet-head .buddy.buddy-inline { width: 60px; height: 70px; }
+
+/* Writing at his desk (Nov 26): the paper lies on the table with his pencil on it, his other arm
+   resting on the table, and he looks down at his work. Reading, he looks down at his book. When
+   someone talks to him (starts typing in the chat), he looks up at them. */
+.buddy-deskwork { display: none; }
+.buddy.desk.writing .buddy-deskwork { display: inline; }
+.buddy.desk.writing .buddy-arm-l, .buddy.desk.writing .buddy-arm-r, .buddy.desk.writing .buddy-paper { display: none; }
+.buddy-desk-paper { fill: #fffdf6; stroke: #3b2b20; stroke-width: .7; stroke-linejoin: round; }
+.buddy.desk.writing .buddy-head, .buddy.desk.writing .buddy-smile { transform: translate(1.6px, 1.6px); transform-box: view-box; }
+.buddy.reading .buddy-eye, .buddy.writing .buddy-eye { transform: translate(.6px, 2.6px); transform-box: view-box; }
+.buddy.desk.writing .buddy-eye { transform: translate(2.4px, 3.2px); }
+.buddy.lookup .buddy-head, .buddy.lookup .buddy-smile { transform: none !important; animation: none !important; }
+.buddy.lookup .buddy-eye { transform: translateY(-.4px) !important; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.desk.writing:not(.lookup) .buddy-desk-hand { animation: buddy-desk-scribble .5s ease-in-out infinite alternate; transform-box: view-box; }
+}
+@keyframes buddy-desk-scribble { from { transform: translateX(-1.2px); } to { transform: translate(1.2px, .3px); } }

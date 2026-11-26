@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:20 PM Central
-**Current version:** v382 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 11:01 AM Central
+**Current version:** v383 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 11:10 AM CT: Buddy at his desk: the paper now lies on the table with his pencil on it, his other arm rests on the table, and he looks down at his work. Reading, he looks down at his book. When someone starts typing to him in the chat, he looks up at them; while he looks up an answer he looks back down. The Supabase update waits until Buddy is fully perfected, then one final file.
 - Thu Nov 26, 9:30 AM CT: Fresh end-to-end pass of the whole app: all 33 browser test files, 646 checks, pass on phone, iPad and desktop sizes. One old check was out of date (it still expected pinch zoom to be blocked; pinch zoom has been allowed on purpose since Nov 24 for older eyes) and now checks that zoom is allowed.
 - Wed Nov 25, 10:40 PM CT: From Melissa's notes: the seasonal home picture now always shows the whole painting (the Thanksgiving feast table is no longer cut off; on wide screens soft blurred edges fill the sides). Buddy now sits down to read (in his chair or on the ground) and writes at his little desk instead of standing; in the chat he's bigger and keeps busy (reads or writes while he looks up an answer, reads or swings his feet between questions), and he can hand you a flower. His replies are set to be shorter and more like everyday conversation, not always about church; that part needs the study-partner function redeployed in Supabase (new study-partner-function.ts).
 - Wed Nov 25, 10:05 PM CT: Fixes from Melissa's notes. Pictures now make sense: suns, moons, stars, clouds, doves and rainbows sit in the sky, mountains and towns on the far hills, and people, animals and things stand on the ground at believable sizes, in all 66 book scenes and the Setting the stage pictures (now a small copy of the same scene). Star and moon scenes are night scenes. I checked all 59 story pictures by eye and fixed 4: Eden now has a whole giraffe and elephant standing on the grass, and no one stands on top of the water in Baby Moses, Naaman or the Good Shepherd. A Next chapter button (with Previous) now sits right under the last verse. The Journal's list only shows journal kinds, and My Notes is now General Notes.
@@ -138,7 +139,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Readability for every age (contrast, text size, screen readers) | 10 | Fixed tonight: helper text, dark mode, High contrast, Largest text on small phones, keyboard focus ring |
 | Ease of use and menus | 9 | |
 | Notes, journal and printing | 9 | |
-| Buddy | 9 | Redeploy of the study-partner function (optional) |
+| Buddy | 9 | Melissa's polish notes, then one study-partner update |
 | Games and Quick check | 9 | |
 | Works offline and keeps everyone's place | 10 | |
 | Privacy and security | 10 | |
@@ -151,7 +152,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 |---|---|---|
 | Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
-| Redeploy the study-partner function (new `study-partner-function.ts`, updated Wed Nov 25, 10:40 PM) | No, but recommended | Makes Buddy's replies shorter and more like everyday conversation (not always about church), lets him hand you a flower when asked or when you say something sweet, and act things out during normal chat. Supabase, Edge Functions, study-partner, Code: paste the new file and tap Deploy. |
+| Redeploy the study-partner function once, when Buddy is perfected | Later, one time | Melissa's plan (Thu Nov 26): one Supabase update after all of Buddy's changes are done. I'll hand over one final file with clear steps then. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
 
 **Blockers:** none.

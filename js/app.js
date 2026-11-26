@@ -1310,7 +1310,7 @@ async function askBuiltIn(q) {
   chatTurns.push({ role: "user", content: q });
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
-  buddy.thinking(true); chatPose("look", 60000);
+  buddy.thinking(true); clearTimeout(lookT); document.querySelectorAll(".buddy.lookup").forEach((x) => x.classList.remove("lookup")); chatPose("look", 60000);
   if (/\b(greek|hebrew|aramaic|scholar|commentar|historian|archaeolog|manuscript|translat|original language|strong'?s)\w*/i.test(q)) buddy.nerd(9000);
   const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName() });
   wait.remove();
@@ -1381,6 +1381,7 @@ function buddyFeels(q) {
 const chatFace = () => chatSheet.querySelector(".buddy-inline");
 const calmChat = () => store.get("graphics") === "simple" || matchMedia("(prefers-reduced-motion: reduce)").matches;
 const POSES = ["reading", "writing", "waving", "swing", "flowering"];
+document.addEventListener("input", (e) => { if (e.target?.id === "partnerQ") lookUp(); });
 function chatPose(kind, ms) {
   const f = chatFace();
   if (!f || calmChat()) return;
@@ -1391,6 +1392,14 @@ function chatPose(kind, ms) {
   else f.classList.add(kind);
   clearTimeout(f._poseT);
   f._poseT = setTimeout(() => { f.classList.remove(...POSES); }, ms);
+}
+// When someone starts talking to him (typing in the chat), he looks up at them from his book or desk.
+let lookT = 0;
+function lookUp() {
+  const both = [chatFace(), document.querySelector(".buddy:not(.buddy-inline)")].filter(Boolean);
+  both.forEach((x) => x.classList.add("lookup"));
+  clearTimeout(lookT);
+  lookT = setTimeout(() => both.forEach((x) => x.classList.remove("lookup")), 5000);
 }
 function chatAnswered() {
   const f = chatFace();

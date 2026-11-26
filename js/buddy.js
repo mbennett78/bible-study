@@ -42,7 +42,8 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-balls"><circle class="bb1" cx="16" cy="40" r="2.4"/><circle class="bb2" cx="26" cy="36" r="2.4"/><circle class="bb3" cx="36" cy="40" r="2.4"/></g>
     <g class="buddy-bball"><circle cx="38" cy="58" r="3.6"/><path d="M34.4 58h7.2M38 54.4v7.2"/></g>
     <g class="buddy-legs-chair"><path class="buddy-line" d="M26 54h10.5v13.5h3"/></g>
-    <g class="buddy-desk"><path d="M31 46.5h30M35 46.5v21.5M57 46.5v21.5"/></g>
+    <g class="buddy-desk"><path d="M32 48h30M40 48v20M59 48v20"/></g>
+    <g class="buddy-deskwork"><path class="buddy-desk-paper" d="M36 47.2h15.5l-2.4-3.4h-11z"/><path class="buddy-paper-lines" d="M39.5 45.1h8M38.5 46.3h7"/><path class="buddy-line" d="M26 38l5 7.6l6.5 1.4"/><g class="buddy-desk-hand"><path class="buddy-line" d="M26 38l7.5 6.6l7.5.4"/><path class="buddy-pencil" d="M41.4 44.6l5-6.4"/><path class="buddy-pencil-tip" d="M41.4 44.6l-.6 1.6 1.4-.9z"/></g></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
