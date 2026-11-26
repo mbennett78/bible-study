@@ -3674,7 +3674,7 @@ body.plain-reading .study-btns { display: none; }
   .version-switch select { padding: 6px 22px 6px 9px; background-position: right 7px center; }
   .topbar .step-btn { padding: 4px 3px; }
 }
-.study-btns button { overflow-wrap: normal; word-break: normal; padding: 10px 2px 8px; font-size: .78rem; }
+.study-btns button { overflow-wrap: normal; word-break: normal; hyphens: manual; padding: 10px 2px 8px; font-size: .78rem; }
 @media (max-width: 400px) { .topbar:has(.version-switch:not([hidden])) .top-ref .step-btn { display: none; } }
 
 /* ---------- B-85 to B-87: the writing area shows the note as it looks; tools inside it ---------- */
