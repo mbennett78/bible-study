@@ -3870,10 +3870,10 @@ dialog.quest .q-howto h2 { text-align: center; }
 .key-guide { background: var(--accent-soft); border-radius: 14px; padding: 10px 12px; margin: 10px 0; }
 .key-guide summary { font-weight: 700; color: var(--accent); cursor: pointer; }
 .key-steps { list-style: none; padding: 0; margin: 10px 0 4px; display: grid; gap: 12px; }
-.key-steps li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: center; background: var(--surface); border-radius: 12px; padding: 8px; }
+.key-steps li { display: grid; grid-template-columns: 100px 1fr; gap: 10px; align-items: center; background: var(--surface); border-radius: 12px; padding: 8px; }
 .key-steps p { margin: 2px 0 0; font-size: .92rem; line-height: 1.45; }
 .ks-h { font-size: .98rem; }
-.ks-pic svg { width: 96px; height: auto; display: block; }
+.ks-pic svg { width: 100px; height: auto; display: block; }
 .ks-last { font-size: 2.2rem; text-align: center; }
 .kg-phone { fill: var(--bg); stroke: var(--muted); stroke-width: 1.5; }
 .kg-bar, .kg-field { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
