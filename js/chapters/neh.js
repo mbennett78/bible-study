@@ -41,6 +41,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["3:12", "He and his daughters", "Shallum, ruler of half of Jerusalem, repaired his section with the help of his daughters. Women built too."],
       ["3:28", "Each in front of his house", "The priests repaired the wall each in front of his own house. Everyone did the part nearest to them."],
     ],
+    bg: [["Everyone on the wall", "Chapter 3 lists who rebuilt each section of Jerusalem's wall: priests, goldsmiths, perfumers, rulers and even daughters (3:12). Many worked on the part in front of their own homes. Archaeologists have uncovered the \"Broad Wall\" (3:8), a massive wall from Hezekiah's day.", "strong", ["williamsonEN", "kitchen"]]],
     refs: [["1CO.12", "1 Corinthians 12:12-27", "Many members, one body"], ["EPH.4", "Ephesians 4:16", "Each part working properly"]],
   },
   4: {
@@ -51,6 +52,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["4:14", "Remember the Lord who is great and awesome", "Nehemiah told the frightened people: do not be afraid. Remember the Lord, great and awesome, and fight for your families and homes."],
       ["4:20", "Our God will fight for us", "Wherever you hear the trumpet, gather to us there. Our God will fight for us."],
     ],
+    bg: [["Sanballat in history", "Sanballat led the opposition to the wall (4:1-8). Letters from the Jewish colony at Elephantine in Egypt, written in 407 BC, mention \"Sanballat, governor of Samaria\" and his sons. The builders worked with a tool in one hand and a weapon in the other (4:17).", "strong", ["williamsonEN", "kitchen"]]],
     refs: [["PSA.127", "Psalm 127:1", "Unless the LORD builds the house"], ["EPH.6", "Ephesians 6:10-18", "The armor of God"]],
   },
   5: {
@@ -61,6 +63,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["5:15", "I did not do so because of the fear of God", "Earlier governors had burdened the people with taxes, but Nehemiah did not, because he feared God. He led by example."],
       ["5:19", "Remember me, O my God, for good", "Remember me with favor, my God, for all I have done for this people. Nehemiah prays this kind of short prayer often in his book."],
     ],
+    bg: [["Debt and slavery", "In a time of famine, poor families had mortgaged their fields and sold their children into slavery to fellow Jews to pay the king's tax (5:1-5). Nehemiah made the nobles give back fields and stop charging interest, and he himself refused the governor's food allowance (5:14-18).", "good", ["williamsonEN", "kidner"]]],
     refs: [["LEV.25", "Leviticus 25:35-37", "Do not take interest from your brother"], ["JAS.5", "James 5:4", "Wages withheld cry out"]],
   },
   6: {
@@ -71,6 +74,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["6:11", "Should a man like me flee?", "He will not break God's law to save himself."],
       ["6:15-16", "In fifty-two days", "The enemies lost their confidence, for they saw this work was from God."],
     ],
+    bg: [["Fifty-two days", "The wall was finished in just fifty-two days (6:15), and even Israel's enemies saw it was the work of God (6:16). Geshem the Arab, another opponent (6:1), is likely the same Geshem named as king of Kedar on a silver bowl found in Egypt.", "strong", ["williamsonEN", "kitchen"]]],
     refs: [["1CO.15", "1 Corinthians 15:58", "Be steadfast, immovable"], ["GAL.6", "Galatians 6:9", "Let us not lose heart in doing good"]],
   },
   7: {
@@ -80,6 +84,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["7:4", "The city was large and spacious, but the people in it were few", "The city was large and spacious, but there were few people and the houses had not been rebuilt. Walls alone do not make a city."],
       ["7:5", "My God put it into my heart", "My God put it into my heart to gather the people and register them by families. God guided the next step."],
     ],
+    bg: [["Lists of names", "Nehemiah found the list of the first exiles who returned and copied it (7:5-73), nearly the same as Ezra 2. Such lists showed who belonged to Israel and which priests could serve. Every name mattered to God.", "good", ["williamsonEN", "fensham"]]],
     refs: [["EZR.2", "Ezra 2", "The same list"], ["1TI.3", "1 Timothy 3", "Qualifications for leaders"]],
   },
   8: {
@@ -102,6 +107,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["9:21", "Forty years You provided for them", "In their prayer the people remember: for forty years You sustained them in the wilderness. They lacked nothing, their clothes did not wear out, and their feet did not swell."],
       ["9:33", "You have dealt faithfully, but we have acted wickedly", "In all that has happened to us You have been just. You acted faithfully, while we did wrong. Honest confession."],
     ],
+    bg: [["A great prayer of confession", "The Levites led a long prayer retelling Israel's history from creation to exile, confessing sin and praising God's patience: \"You are a God of forgiveness, gracious and compassionate\" (9:17). It is one of the longest prayers in the Bible.", "good", ["williamsonEN", "kidner"]]],
     refs: [["EXO.34", "Exodus 34:6-7", "Compassionate and gracious"], ["PSA.106", "Psalm 106", "Israel's sin and God's mercy"], ["ACT.7", "Acts 7", "Stephen retells Israel's story"]],
   },
   10: {
@@ -111,6 +117,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["10:31", "We will not buy on the Sabbath", "They promised not to buy from traders who brought goods on the Sabbath. Faith reached into everyday business."],
       ["10:39", "We will not neglect the house of our God", "The covenant ends with one summary promise: we will not neglect the house of our God."],
     ],
+    bg: [["A signed promise", "The leaders, Levites and priests put their seals on a written agreement to keep God's law: not to marry those who worshiped other gods, to keep the Sabbath and the seventh year, and to support the temple (10:28-39). \"We will not neglect the house of our God.\"", "good", ["williamsonEN", "breneman"]]],
     refs: [["JOS.24", "Joshua 24:24-25", "Joshua's covenant"], ["MAL.3", "Malachi 3:8-10", "Bring the whole tithe"]],
   },
   11: {
@@ -131,6 +138,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["12:31", "Two great choirs", "Music and procession on the wall itself."],
       ["12:43", "The joy of Jerusalem was heard from afar", "They offered great sacrifices and rejoiced, because God had given them great joy. Women and children rejoiced too, and the sound was heard far away."],
     ],
+    bg: [["Two choirs on the wall", "At the dedication of the wall, Nehemiah set two great choirs walking on top of it in opposite directions until they met at the temple. \"The joy of Jerusalem was heard from afar\" (12:43).", "good", ["williamsonEN", "kidner"]]],
     refs: [["PSA.48", "Psalm 48:12-14", "Walk about Zion, go around her"], ["PSA.147", "Psalm 147:2", "The LORD builds up Jerusalem"]],
   },
   13: {
@@ -147,6 +155,7 @@ export default makeBook({ lang: "Hebrew", sources, use: ["kidner", "williamsonEN
       ["Pointing beyond itself", "Others see the unfinished ending as showing that walls and laws alone cannot change hearts, preparing for the new covenant promised by the prophets.", ["williamsonEN", "fensham"]],
     ],
     common: "Both readings agree that Nehemiah's faithfulness is an example and that true change needs God's work in the heart.",
+    bg: [["Back to old ways", "When Nehemiah returned after a time away, he found Tobiah, an enemy, living in a temple storeroom, the Levites unpaid, and merchants selling on the Sabbath. He threw out Tobiah's things and shut the city gates on the Sabbath (13:8, 19). Reform needs to be kept up.", "good", ["williamsonEN", "fensham"]]],
     refs: [["MAL.2", "Malachi 2:10-16", "Malachi addresses the same sins"], ["JHN.2", "John 2:13-17", "Jesus clears the temple"], ["JER.31", "Jeremiah 31:33", "I will write My law on their hearts"]],
   },
 });
