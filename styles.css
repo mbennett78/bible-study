@@ -2522,6 +2522,9 @@ html[data-page-width="wide"] { --reader-max: 56em; }
 :root[data-style="seasons"] .cl-cross rect { fill: var(--page); }
 :root[data-style="seasons"] .pc-featured, :root[data-style="seasons"] .notes-card { border-color: var(--gold); }
 .season-scene image, .season-strip image { filter: none; }
+div.season-scene { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #3a2e22; }
+div.season-scene > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+div.season-scene .season-fill { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); object-fit: cover; filter: blur(14px) brightness(.85); }
 .sfx { opacity: 0; transform-box: fill-box; transform-origin: center; }
 @media (prefers-reduced-motion: no-preference) {
   :root[data-graphics="full"] .sfx-tw { animation: sfx-tw 3.4s ease-in-out var(--sd) infinite; }
@@ -3113,3 +3116,28 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 .vp-styles button[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
 .versepic-sheet .heart-acts { justify-content: center; }
 .versepic-sheet .vp-msg { text-align: center; }
+
+/* Buddy sits like a real reader (Nov 25): in his chair, on the ground, or at his little desk,
+   and he can hand you a flower. */
+.buddy-chair, .buddy-legs-chair, .buddy-desk, .buddy-flower { display: none; }
+.buddy-chair path, .buddy-desk path { fill: none; stroke: #8a5a36; stroke-width: 2.4; stroke-linecap: round; }
+.buddy-desk path:first-child { stroke-width: 3; }
+.buddy.chair .buddy-chair, .buddy.chair .buddy-legs-chair, .buddy.desk .buddy-desk { display: inline; }
+.buddy.chair .buddy-legs-stand, .buddy.chair .buddy-legs-sit { display: none; }
+.buddy.chair .buddy-body { transform: translateY(4px); }
+.buddy.desk .buddy-paper { transform: translateY(-1px); }
+.buddy-stem { fill: none; stroke: #4f8a3a; stroke-width: 1.6; stroke-linecap: round; }
+.buddy-leaf { fill: #6aa850; }
+.buddy-flower circle { fill: #f08ab0; stroke: #3b2b20; stroke-width: .5; }
+.buddy-flower .buddy-flower-mid { fill: #f5c542; }
+.buddy.flowering .buddy-flower { display: inline; }
+.buddy.flowering .buddy-arm-r { transform: rotate(-28deg); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.flowering .buddy-body { animation: buddy-offer 1.2s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.chair.reading .buddy-head { animation: buddy-read-nod 3.2s ease-in-out infinite; transform-box: view-box; transform-origin: 26px 32px; }
+}
+@keyframes buddy-offer { from { transform: translateX(0); } to { transform: translateX(2px) rotate(3deg); } }
+@keyframes buddy-read-nod { 0%, 100% { transform: translateY(1.5px); } 50% { transform: translateY(2.5px) rotate(-3deg); } }
+.bnd-face .buddy-chair, .bnd-face .buddy-legs-chair, .bnd-face .buddy-desk { display: none; }
+/* In the chat he's big enough to see what he's doing. */
+.chat-sheet-head .buddy.buddy-inline { width: 60px; height: 70px; }

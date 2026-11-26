@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Wed Nov 25, 2026, 10:03 PM Central
-**Current version:** v381 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Wed Nov 25, 2026, 10:20 PM Central
+**Current version:** v382 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Wed Nov 25, 10:40 PM CT: From Melissa's notes: the seasonal home picture now always shows the whole painting (the Thanksgiving feast table is no longer cut off; on wide screens soft blurred edges fill the sides). Buddy now sits down to read (in his chair or on the ground) and writes at his little desk instead of standing; in the chat he's bigger and keeps busy (reads or writes while he looks up an answer, reads or swings his feet between questions), and he can hand you a flower. His replies are set to be shorter and more like everyday conversation, not always about church; that part needs the study-partner function redeployed in Supabase (new study-partner-function.ts).
 - Wed Nov 25, 10:05 PM CT: Fixes from Melissa's notes. Pictures now make sense: suns, moons, stars, clouds, doves and rainbows sit in the sky, mountains and towns on the far hills, and people, animals and things stand on the ground at believable sizes, in all 66 book scenes and the Setting the stage pictures (now a small copy of the same scene). Star and moon scenes are night scenes. I checked all 59 story pictures by eye and fixed 4: Eden now has a whole giraffe and elephant standing on the grass, and no one stands on top of the water in Baby Moses, Naaman or the Good Shepherd. A Next chapter button (with Previous) now sits right under the last verse. The Journal's list only shows journal kinds, and My Notes is now General Notes.
 - Wed Nov 25, 9:35 PM CT: Deeper notes are finished for the whole Bible. Every Old Testament chapter now has a history section or a Hebrew word study too: 650 chapters and 838 new entries, each with sources, such as the Gemariah seal (Jeremiah 36), weeping for Tammuz (Ezekiel 8) and the long cubit (Ezekiel 40). With the New Testament, that is 778 chapters and 1,074 entries.
 - Wed Nov 25, 6:15 PM CT: Deeper notes for the Old Testament under way: Genesis and all of Psalms now have a history section (and most a Hebrew word study) in every chapter, 129 chapters and 209 new entries, such as the Sumerian King List beside Genesis 5, the Amarna letters' "seven times I fall" beside Genesis 33, and the Sabbath psalm in the temple (Psalm 92).

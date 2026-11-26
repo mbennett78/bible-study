@@ -184,7 +184,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
   if (style === "classic3") return paintingScene({ height });
-  if (style === "seasons") return seasonScene({ height });
+  if (style === "seasons") return seasonScene();
   if (style === "classic" || style === "classic2") return classicScene({ height, style });
   if (THEME_LOOKS.includes(style)) return themeScene(style, { height });
   const W = 360, H = height, surf = 58, bottom = H - 8;
@@ -1274,12 +1274,15 @@ const SEASON_FX = {
   advent: [[800, 129, 70, "tw"], [491, 796, 34, "fl"], [635, 769, 36, "fl"], [965, 769, 36, "fl"], [1109, 796, 34, "fl"], [800, 734, 42, "fl"], [827, 626, 90, "gl"]],
 };
 const fxHtml = (key) => (SEASON_FX[key] || []).map(([x, y, r, k], i) => `<circle class="sfx sfx-${k}" cx="${x}" cy="${y}" r="${r}" fill="url(#sfxg)" style="--sd:${(i * .37).toFixed(2)}s"/>`).join("");
-export function seasonScene({ height = 170, key = seasonOf() } = {}) {
-  // The painting and its moving lights share one 1600 x 900 frame, cropped the same way.
-  return `<svg class="scene painting-scene season-scene" viewBox="0 0 360 ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${SEASONS[key][0]}">
-    <rect width="360" height="${height}" fill="#3a2e22"/><svg viewBox="0 0 1600 900" width="360" height="${height}" preserveAspectRatio="xMidYMid slice">
+export function seasonScene({ key = seasonOf() } = {}) {
+  // The whole painting always shows, nothing cut off: it keeps its own shape, and when the band
+  // is wider than the painting a soft, blurred copy fills the sides. The moving lights share the
+  // painting's 1600 x 900 frame, so they stay in place.
+  return `<div class="scene painting-scene season-scene" role="img" aria-label="${SEASONS[key][0]}">
+    <img class="season-fill" src="${seasonSrc(key)}" alt="" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <defs><radialGradient id="sfxg"><stop offset="0" stop-color="#fffbe6" stop-opacity=".95"/><stop offset=".35" stop-color="#ffe7a0" stop-opacity=".5"/><stop offset="1" stop-color="#ffd070" stop-opacity="0"/></radialGradient></defs>
-    <image href="${seasonSrc(key)}" width="1600" height="900"/>${fxHtml(key)}</svg></svg>`;
+    <image href="${seasonSrc(key)}" width="1600" height="900"/>${fxHtml(key)}</svg></div>`;
 }
 export function seasonStrip(key = seasonOf()) {
   const [title, y] = SEASONS[key];

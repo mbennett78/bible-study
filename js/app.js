@@ -7,7 +7,7 @@ import { VERSES, TOTAL_VERSES, BOOK_FACTS } from "./bookstats.js";
 import { getChapter, listEnglishBibles, bibleGatewayUrl, searchBible, versionName, pickNasb, esvAudioUrl, saveAhead } from "./text.js";
 import { PATH_ORDER, PATH_BY_ID, pathChapters, expandReading, readingLabel, AUDIENCE_NOTES } from "./paths.js";
 import { Reader, Commands, chunksFrom, canSpeak, canListen, listVoices, dictateInto, sayAloud, stopSaying } from "./speech.js";
-import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand } from "./buddy.js";
+import { createBuddy, BUDDY_SVG, BUDDY_ACTIONS, buddyCommand, seat } from "./buddy.js";
 import { guideAnswer, seasonNow, welcomeLine, sessionNudge, timeAnswer } from "./buddyguide.js";
 import { isScary, checkingOn, comfortLine, propFor, newProp, warmthLevel, learnFrom, remember, learnedLine, ASK_MEMORY, FORGET_LAST, FORGET_ALL, memoryLine, recallLine } from "./buddygrow.js";
 import { createQuest } from "./quest.js";
@@ -1310,11 +1310,11 @@ async function askBuiltIn(q) {
   chatTurns.push({ role: "user", content: q });
   chatBusy = true; $("#partnerGo").disabled = true;
   const wait = chatBubble("them", pickOne(sadAsk(q) ? CARE_WAIT : HAPPY_WAIT), "typing");
-  buddy.thinking(true);
+  buddy.thinking(true); chatPose("look", 60000);
   if (/\b(greek|hebrew|aramaic|scholar|commentar|historian|archaeolog|manuscript|translat|original language|strong'?s)\w*/i.test(q)) buddy.nerd(9000);
   const r = await askHelper({ messages: chatTurns, ref: `${BOOK_BY_ID[book].name} ${chapter}`, version: ver, name: store.get("name") || "", style: store.get("helperStyle") || "", buddy: buddyName() });
   wait.remove();
-  buddy.thinking(false);
+  buddy.thinking(false); chatAnswered();
   chatBusy = false; $("#partnerGo").disabled = false;
   if (r && r.text) {
     // The helper can ask him to act something out: [[do:dance]] at the end of its answer.
@@ -1375,6 +1375,35 @@ function buddyFeels(q) {
   face.classList.toggle("caring", sad);
   if (!sad) { buddy.excite(); face.classList.remove("excited"); void face.offsetWidth; face.classList.add("excited"); setTimeout(() => face.classList.remove("excited"), 1400); }
 }
+// In the chat he keeps busy like a real friend: while he looks up an answer he sits down to read
+// his Bible or write at his desk; then he looks up and talks. Between questions he now and then
+// reads in his chair, swings his feet or waves. Nothing moves when motion is turned down.
+const chatFace = () => chatSheet.querySelector(".buddy-inline");
+const calmChat = () => store.get("graphics") === "simple" || matchMedia("(prefers-reduced-motion: reduce)").matches;
+const POSES = ["reading", "writing", "waving", "swing", "flowering"];
+function chatPose(kind, ms) {
+  const f = chatFace();
+  if (!f || calmChat()) return;
+  f.classList.remove(...POSES, "talking");
+  if (kind === "look") { seat(f, pickOne(["chair", "desk", "ground"]), ms); f.classList.add(f.classList.contains("desk") ? "writing" : "reading"); }
+  else if (kind === "read") { seat(f, "chair", ms); f.classList.add("reading"); }
+  else if (kind === "swing") { seat(f, "ground", ms); f.classList.add("swing"); }
+  else f.classList.add(kind);
+  clearTimeout(f._poseT);
+  f._poseT = setTimeout(() => { f.classList.remove(...POSES); }, ms);
+}
+function chatAnswered() {
+  const f = chatFace();
+  if (!f) return;
+  clearTimeout(f._poseT); clearTimeout(f._seatT);
+  f.classList.remove(...POSES, "chair", "desk", "sitting");
+  if (calmChat()) return;
+  f.classList.add("talking"); setTimeout(() => f.classList.remove("talking"), 2600);
+}
+setInterval(() => {
+  if (!chatSheet.open || chatBusy || document.hidden || Math.random() < .5) return;
+  chatPose(pickOne(["read", "read", "swing", "waving"]), 6000);
+}, 15000);
 // Does an action on the screen, and in the chat's own little picture of him when it's open.
 function buddyAct(name) {
   const face = chatSheet.open ? chatSheet.querySelector(".buddy-inline") : null;

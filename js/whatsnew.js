@@ -16,6 +16,7 @@ export const NEWS = [
       "📝 Every short study note is now a full, plain sentence, in all 66 books.",
       "📜 Every chapter now has a history section or a Greek or Hebrew word study, with sources.",
       "➡️ A Next chapter button now waits right under the last verse.",
+      "🌷 Buddy sits down to read or write at his desk, and he can hand you a flower.",
     ],
   },
   {

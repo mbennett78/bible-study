@@ -17,6 +17,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-table"><path class="buddy-table-top" d="M37 59h26"/><path class="buddy-table-leg" d="M41 59v14M59 59v14"/><ellipse class="buddy-plate" cx="46" cy="57.6" rx="5.4" ry="1.4"/><ellipse class="buddy-bread" cx="45.5" cy="55.9" rx="3.6" ry="2"/><circle class="buddy-apple" cx="53.5" cy="56" r="2.3"/><path class="buddy-cup" d="M57 51.5h4l-.6 6h-2.8z"/></g>
     <g class="buddy-trash"><path d="M50 48h10l-1.5 11h-7z"/><path d="M49 48h12"/></g>
     <g class="buddy-crumple"><circle cx="44" cy="58" r="2.3"/><circle cx="49" cy="59" r="1.9"/><circle cx="40" cy="59.3" r="1.6"/></g>
+    <g class="buddy-chair"><path d="M15.5 34v34M14 55.5h17M29.5 55.5v12.5"/></g>
     <circle class="buddy-head" cx="26" cy="22" r="10"/>
     <circle class="buddy-eye" cx="22.5" cy="20.5" r="1.6"/><circle class="buddy-eye" cx="29.5" cy="20.5" r="1.6"/>
     <path class="buddy-shut" d="M20.8 21q1.7 1.2 3.4 0M27.8 21q1.7 1.2 3.4 0"/>
@@ -30,7 +31,7 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-cap"><path d="M16.3 19.5Q16.6 11.2 26 11.2Q35.4 11.2 35.7 19.5Z"/><path d="M34 18.6l8.5.9q-1.6 2.3-8 1.9z"/></g>
     <path class="buddy-line" d="M26 32v22"/>
     <g class="buddy-arm-l"><path class="buddy-line" d="M26 38l-10 9"/></g>
-    <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/></g>
+    <g class="buddy-arm-r"><path class="buddy-line" d="M26 38l10 9"/><g class="buddy-flower"><path class="buddy-stem" d="M36 47.5L43.5 36"/><path class="buddy-leaf" d="M39.6 42q3.4-.4 4.2 1.8q-3 .9-4.2-1.8z"/><circle cx="44" cy="32.6" r="2.3"/><circle cx="47.2" cy="35" r="2.3"/><circle cx="46" cy="38.6" r="2.3"/><circle cx="42" cy="38.4" r="2.3"/><circle cx="40.8" cy="34.8" r="2.3"/><circle class="buddy-flower-mid" cx="43.9" cy="35.9" r="1.9"/></g></g>
     <g class="buddy-legs-stand"><path class="buddy-line" d="M26 54l-8 18M26 54l8 18"/></g>
     <g class="buddy-book"><path class="buddy-book-page" d="M17 44.5l9 2.2l9-2.2v9l-9 2.2l-9-2.2z"/><path class="buddy-book-spine" d="M26 46.7v9"/></g>
     <g class="buddy-paper"><path class="buddy-paper-sheet" d="M17.5 44.5h13v11h-13z"/><path class="buddy-paper-lines" d="M19.5 47.5h9M19.5 50h9M19.5 52.5h5"/><path class="buddy-pencil" d="M37 43.5l-7.5 8.5"/><path class="buddy-pencil-tip" d="M29.5 52l-.9 1.9 1.9-.9z"/></g>
@@ -40,6 +41,8 @@ export const BUDDY_SVG = `<svg class="buddy-svg" viewBox="0 0 72 84" aria-hidden
     <g class="buddy-utensils"><path d="M36 47l2.5-6.5M37.4 40.2l.6-2.2M38.6 40.6l.6-2.2M39.8 41l.6-2.2"/><path d="M16 47l-2.2-6.3"/><ellipse cx="13.4" cy="39.6" rx="1.4" ry="2"/></g>
     <g class="buddy-balls"><circle class="bb1" cx="16" cy="40" r="2.4"/><circle class="bb2" cx="26" cy="36" r="2.4"/><circle class="bb3" cx="36" cy="40" r="2.4"/></g>
     <g class="buddy-bball"><circle cx="38" cy="58" r="3.6"/><path d="M34.4 58h7.2M38 54.4v7.2"/></g>
+    <g class="buddy-legs-chair"><path class="buddy-line" d="M26 54h10.5v13.5h3"/></g>
+    <g class="buddy-desk"><path d="M31 46.5h30M35 46.5v21.5M57 46.5v21.5"/></g>
     <g class="buddy-legs-sit"><path class="buddy-line" d="M26 54l15 2l4 2M26 54l11-5l4 9"/></g>
   </g>
 </svg>`;
@@ -78,6 +81,7 @@ export const BUDDY_ACTIONS = {
   pray: { ms: 4000, pop: "🙏", say: ["Let's pray together. 🙏", "Talking to God is my favorite. 🙏"] },
   bow: { ms: 1800, pop: "🙇", say: ["*takes a bow* Thank you, thank you! 🙇", "A bow, just for you! 🙇"] },
   ball: { ms: 3600, pop: "⚾", say: ["Toss... and catch! ⚾ Got it!", "Up it goes! ⚾ I've been practicing with my mitt!"] },
+  flower: { ms: 5200, pop: "🌷", say: ["For you! 🌷", "I picked this one just for you. 🌷", "Here, a flower for you! 🌼 You make my day."] },
   hug: { ms: 2600, pop: "💕", say: ["Big hug! 🤗💕", "Sending you the biggest hug! 💕"] },
   read: { ms: 9000, pop: "📖", say: ["Reading time! 📖 I love this part.", "Let me read my little Bible with you. 📖"] },
   think: { ms: 5000, pop: "💭", say: ["Hmm, let me think... 🤔", "*thinking hard* 💭"] },
@@ -98,6 +102,7 @@ const ACTION_WORDS = [
   [/wave|say (hi|hello)/, "wave"], [/cartwheels?|flips?|backflips?|somersaults?|tumble/, "cartwheel"], [/spin|twirl|turn around/, "spin"],
   [/cheer|celebrate|yay|hooray/, "cheer"], [/laugh|roll on the floor|giggle|lol/, "laugh"], [/take a bow|bow/, "bow"],
   [/play (ball|catch)|toss (a |the )?ball|throw (a |the )?ball|catch/, "ball"], [/hug( me)?|give me a hug/, "hug"],
+  [/((give|hand|bring|get|pick) (me |us )?)?(a |some |me a )?flowers?( for me)?|(give|hand) me (a )?flower/, "flower"],
   [/read( your bible)?/, "read"], [/think/, "think"], [/write|take notes/, "write"],
   [/eat|have (a )?(snack|lunch|dinner|breakfast)|snack|lunch|dinner|breakfast|get something to eat/, "eat"],
   [/exercise|work ?out|jumping jacks|stretch/, "exercise"], [/(go )?fish(ing)?/, "fish"], [/(go )?hik(e|ing)|put on (your )?backpack|go exploring/, "hike"],
@@ -118,6 +123,15 @@ export function buddyCommand(text, name = "buddy") {
   return null;
 }
 
+
+// Sit somewhere for a while: "chair", "desk" (chair at his little desk) or "ground"; then back to sitting on the ground.
+export function seat(x, where, ms) {
+  x.classList.remove("chair", "desk", "sitting");
+  if (where === "ground") x.classList.add("sitting");
+  else x.classList.add("chair", ...(where === "desk" ? ["desk"] : []));
+  clearTimeout(x._seatT);
+  x._seatT = setTimeout(() => { if (x.classList.contains("chair")) { x.classList.remove("chair", "desk"); x.classList.add("sitting"); } }, ms);
+}
 
 export function createBuddy({ onTap, label = "Open my study buddy chat", defaultSide = () => "right", sayOutLoud = null, sleepy = () => false }) {
   const el = document.createElement("button");
@@ -374,14 +388,8 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     trickUntil = Date.now() + ms + 400;
     el.classList.remove("tucked", "sitting");
     if (name === "reading") {
-      // He reads his own little Bible, strolling slowly up or down his margin.
-      el.classList.add("reading", "walking");
-      const b = bounds(), h = el.offsetHeight || 84, span = Math.max(1, b.bottom - b.top - h);
-      const now = (el.getBoundingClientRect().top - b.top) / span;
-      wanderY = clamp(now + (now > 0.5 ? -1 : 1) * (0.25 + Math.random() * 0.3), 0, 1);
-      if (saved) spot.y = wanderY;
-      setTimeout(() => { el.style.top = `${b.top + wanderY * span}px`; }, 50);
-      setTimeout(() => el.classList.remove("walking"), 6000);
+      // He sits down with his own little Bible: in his chair or on the ground.
+      el.classList.add("reading"); seat(el, pick(["chair", "ground", "chair"]), ms);
       setTimeout(() => el.classList.remove("reading"), ms);
       if (Math.random() < 0.5) setTimeout(() => { if (el.classList.contains("reading")) popUp(pick(["💡", "💕", "🙂"]), 2200); }, 6400);
     } else if (name === "stroll") {
@@ -431,7 +439,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
   }, TRICK_EVERY_MS);
 
   // Asked to do something: he does it right away, even while the chat is open.
-  const ACT_CLASSES = ["jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging", "eating", "exercising", "fishing", "hiking", "juggling", "dribbling", "nerdy"];
+  const ACT_CLASSES = ["flowering", "chair", "desk", "jumping", "roping", "dancing", "spinning", "laughing", "praying", "bowing", "tossing", "hugging", "eating", "exercising", "fishing", "hiking", "juggling", "dribbling", "nerdy"];
   function act(name, also = null) {
     if (name === "trick") name = pick(["cartwheel", "jumprope", "dance", "spin", "ball", "jump"]);
     const a = BUDDY_ACTIONS[name];
@@ -444,11 +452,13 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     trickUntil = Date.now() + ms + 400; hold(ms + 400);
     el.classList.remove("tucked", "sitting");
     both((x) => x.classList.remove("sitting", ...ACT_CLASSES));
-    const cls = { jump: "jumping", jumprope: "roping", dance: "dancing", spin: "spinning", laugh: "laughing", pray: "praying", bow: "bowing", ball: "tossing", hug: "hugging",
+    const cls = { jump: "jumping", jumprope: "roping", dance: "dancing", spin: "spinning", laugh: "laughing", pray: "praying", bow: "bowing", ball: "tossing", hug: "hugging", flower: "flowering",
       wave: "waving", cartwheel: "cartwheel", cheer: "cheering", read: "reading", think: "pondering", write: "writing",
       eat: "eating", exercise: "exercising", fish: "fishing", hike: "hiking", juggle: "juggling", basketball: "dribbling", football: "tossing", glasses: "nerdy" }[name];
     both((x) => { void x.offsetWidth; x.classList.add(cls); setTimeout(() => x.classList.remove(cls), ms); });
     if (name === "eat" || name === "fish") both((x) => x.classList.add("sitting"));
+    // He sits down to read or write, like a real reader: in his chair, on the ground, or at his desk.
+    if (name === "read" || name === "write") both((x) => seat(x, name === "write" ? "desk" : pick(["chair", "ground"]), ms));
     if (a.pop) popUp(a.pop, Math.min(ms, 3000));
     if (!keepStanding) sitSoon(ms + 2500);
     return name;
@@ -539,7 +549,7 @@ export function createBuddy({ onTap, label = "Open my study buddy chat", default
     // They're writing: he pulls out his own paper and pencil for a bit.
     writing(ms = 7000) {
       if (el.hidden || drag || busy() || el.classList.contains("sleeping")) return false;
-      el.classList.remove("tucked", "reading"); el.classList.add("sitting", "writing");
+      el.classList.remove("tucked", "reading"); el.classList.add("writing"); seat(el, "desk", ms);
       trickUntil = Date.now() + ms;
       setTimeout(() => el.classList.remove("writing"), ms);
       return true;
