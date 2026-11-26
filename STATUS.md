@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 2:59 PM Central
-**Current version:** v399 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 3:01 PM Central
+**Current version:** v400 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 3:55 PM CT: Bible Spin has a "❓ How to play, how to win and how to get better" button on its home screen (B-94). In plain words: each turn (spin, answer before the candle burns down, two right in a kind wins its jewel); how to win solo, with family, against Buddy and in a Family duel; the lamp, streaks, bonus round, helps, the daily chest and missions; how to get better; and what each level means (Seeker to Wise elder, with the right answers each one takes).
 - Thu Nov 26, 3:40 PM CT: Previews of the two new looks for older teens and young adults (B-97, B-98), for Melissa's OK before anyone can pick them. "Golden hour": plum, blush and gold, with a painted wildflower meadow at sunset. "Summit": slate and ember orange, with mountain ridges at dusk, a lone hiker and trail-map lines. Both are original art, calm, and easy to read. Picture: pictures-fix/preview-teen-looks.png.
 - Thu Nov 26, 3:20 PM CT: Classic 4 for Papa (B-92) is in Settings, under Bible Appearance: deep blue, with a calm painted landscape (snowy mountains, dark pines and a still lake at evening), and nothing moves. The painting is original, made for the app in the manner of the 19th-century American landscape painters, because museum sites can't be reached from here; if Papa would rather have a real classic painting, Melissa can upload one and the look will use it. On the Read page, the kids' look keeps its storybook picture; every other look uses the four study buttons instead. Pictures: pictures-fix/classic4-home.png and classic4-read.png.
 - Thu Nov 26, 2:55 PM CT: Family try-out fixes B-77 to B-91 are in (v396). Above the passage: four small buttons, Setting the stage, Background, Cross-references and When and where (maps then and now); each opens a sheet with ✕ and "Close and go back". Strong's, Sources and Verse by verse stay below. "Jump to another passage" opens a second passage in a small tab above the text, so your place stays one tap away; cross-references and Find a verse open that way too. 🔍 Find a verse sits in the top bar on every screen. Read aloud folds into one bar (Play is still one tap; speed, sleep timer and Read to me are under More). Verse by verse and By the numbers are explained in plain words, and the user guide says where the deeper research is. Notes and journal editor: bold, italic, underline, highlight colors, headings and lists work right in the writing area and show as they'll look; pictures, boxes, drawings and icons go where the cursor is (under ＋ Add); ⌨︎ Done puts the keyboard away; 💾 Save is always in the toolbar; the iPad tip explains pinching the floating keyboard back to full size. Notes can be viewed by date, by Bible study or by passage; Print all my notes can include the journal; printing offers color or black and white and "Look at it first". A 📝 shows above any passage you've written about and beside the verse you named. New on the list: B-97 and B-98 (fun looks for teen girls and guys) and B-99 (a simpler manual for the core group).
@@ -199,7 +200,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | B-91 | A small note icon on any passage (and verse) you've written a note about | Done (Thu Nov 26, v396) | Sun Nov 29 |
 | B-92 | Classic appearance 4 for Papa: dark blue with a calm landscape from a classic painting, not animated | In the app (v398) for a look; waiting on Melissa: keep this painting or swap in a classic one she uploads | Mon Nov 30 |
 | B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Not started | Mon Nov 30 |
-| B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Not started | Mon Nov 30 |
+| B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Done (Thu Nov 26, v400) | Mon Nov 30 |
 | B-95 | Sibling invite link: each sibling sets up their own free API.Bible key, with plain steps (API.Bible's terms don't allow sharing a key) | Not started (Melissa chose: own key) | Mon Nov 30 |
 | B-97 | A fun, stylish look for a young woman or older teen girl (original art, not kiddie), with a preview to Melissa first | Preview sent ("Golden hour"); added to Bible Appearance once Melissa says yes | Tue Dec 1 |
 | B-98 | A fun, stylish look for a young man or older teen guy (original art, not kiddie), with a preview to Melissa first | Preview sent ("Summit"); added to Bible Appearance once Melissa says yes | Tue Dec 1 |

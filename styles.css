@@ -2966,7 +2966,7 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 /* Strong's: show more key words, root-word taps and the full concordance list. */
 .sc-more { display: block; width: 100%; margin: 6px 0 10px; min-height: 44px; }
 .sc-link { border: 0; background: none; padding: 0 2px; color: var(--accent); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
-.sc-rootdef { font-size: .9rem; margin: 4px 0 8px; padding: 8px 10px; border-radius: 10px; background: var(--accent-soft); }
+.sc-rootdef { font-size: .9rem; margin: 4px 0 8px; padding: 8px 10px; border-radius: 10px; background: rgba(255, 255, 255, .1); }
 .sc-all { margin: 8px 0 4px; min-height: 44px; }
 .sc-conc-sum { margin: 8px 0 6px; font-size: .95rem; }
 .sc-conc-pick select { width: 100%; min-height: 44px; margin-bottom: 8px; font: inherit; }
@@ -3849,3 +3849,15 @@ h4.note-h { font-family: var(--sans); font-size: 1.05em; margin: .8em 0 .2em; }
   :root[data-style="golden"]:not([data-theme="light"]) { --bg: #fffafb; --surface: #ffffff; --text: #2e2230; --muted: #6f6070; --line: #efdfe7; --accent: #7d4670; --accent-soft: #f8eaf1; color-scheme: light; }
   :root[data-style="summit"]:not([data-theme="light"]) { --bg: #fafafb; --surface: #ffffff; --text: #1c2230; --muted: #5a6172; --line: #e0e3ea; --accent: #a94f22; --accent-soft: #f6ebe4; color-scheme: light; }
 }
+
+/* Bible Spin: How to play (B-94) */
+.q-howto-btn { display: block; width: 100%; margin: 10px 0 4px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+dialog.quest .q-howto, dialog.quest .q-howto li, dialog.quest .q-howto p, dialog.quest .q-howto h3 { text-align: left; }
+dialog.quest .q-howto h2 { text-align: center; }
+.q-howto h2 { margin: 4px 0 8px; }
+.q-howto h3 { margin: 16px 0 6px; font-size: 1.05rem; }
+.q-howto ol, .q-howto ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; line-height: 1.45; }
+.q-howto .q-levels-list { list-style: none; padding: 0; gap: 4px; }
+.q-howto .q-levels-list li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 10px; border-radius: 10px; background: rgba(255, 255, 255, .1); }
+.q-howto .q-levels-list span { opacity: .8; font-size: .9rem; }
+.q-howto .q-btn { margin-top: 18px; }

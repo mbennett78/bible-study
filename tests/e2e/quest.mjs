@@ -36,6 +36,11 @@ try {
   await tap("[data-snd]"); await page.clock.runFor(100);
   check("a sound switch sits at the top of the game", (await text("dialog.quest [data-snd]")) === "🔊" && await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).quest.sound === true));
   await tap("[data-snd]"); await page.clock.runFor(100);
+  await tap("[data-howto]"); await page.clock.runFor(100);
+  const how = await text("dialog.quest .q-howto");
+  check("How to play explains the turn, how to win, getting better and levels", /Each turn/.test(how) && /How to win/.test(how) && /get better/.test(how) && /Wise elder/.test(how) && /hearts/.test(how), how.slice(0, 160));
+  await tap("[data-back]"); await page.clock.runFor(100);
+  check("and Back returns to Bible Spin", Boolean(await page.$('dialog.quest [data-mode="solo"]')));
 
   // Solo
   await tap('[data-mode="solo"]'); await page.clock.runFor(300);

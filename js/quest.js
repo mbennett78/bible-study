@@ -314,6 +314,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
       <button class="q-big q-family" data-mode="family"><span>👨‍👩‍👧</span><b>Play with family</b><small>Take turns on this device</small></button>
       <button class="q-big q-buddy" data-mode="buddy">${buddyFace()}<b>Challenge ${BH()}</b><small>He plays fair, so you can beat him!</small></button>
       ${duels ? `<button class="q-big q-duel" data-duel><span>⚔️</span><b>Family duel${m.duelTurn ? ` <i class="q-due">${m.duelTurn} waiting</i>` : ""}</b><small>Same questions, each on your own device</small></button>` : ""}
+      <button class="q-howto-btn" data-howto>❓ How to play, how to win and how to get better</button>
       <div class="q-foot"><button class="q-link" data-badges>🏅 My badges (${earned} of ${QUEST_BADGES.length}) · ${m.won} win${m.won === 1 ? "" : "s"}</button>
       ${practice ? `<button class="q-link" data-practice>📖 Practice one part of the Bible</button>` : ""}
       <label class="q-link"><input type="checkbox" data-sound ${m.sound ? "checked" : ""}> Sounds</label></div></div>`);
@@ -321,6 +322,7 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     dlg.querySelector("[data-duel]")?.addEventListener("click", duelHome);
     if (duels) refreshDuelCount();
     dlg.querySelector("[data-badges]").onclick = badges;
+    dlg.querySelector("[data-howto]").onclick = howTo;
     dlg.querySelector("[data-chest]")?.addEventListener("click", (e) => {
       const m2 = mine(), row = m2.chestDay === dayKey(Date.now() - 864e5) ? (m2.chestRow || 0) + 1 : 1, got = chestCoins(row);
       save({ chestDay: dayKey(), chestRow: row, coins: m2.coins + got, earned: m2.earned + got });
@@ -330,6 +332,37 @@ export function createQuest({ store, esc, lively, lookColors, myName, practice, 
     });
     dlg.querySelector("[data-practice]")?.addEventListener("click", () => { dlg.close(); practice(); });
     dlg.querySelector("[data-sound]").onchange = (e) => { save({ sound: e.target.checked }); dlg.querySelector("[data-snd]").outerHTML = sndBtn(); wireSnd(); };
+  }
+
+  // How to play, in plain words: the turn, each way to win, getting better, and what levels mean.
+  function howTo() {
+    const lv = LEVEL_TITLES.map((t, i) => `<li><b>${i + 1}. ${esc(t)}</b><span>${i ? `${(5 * i * (i + 1)).toLocaleString()} right answers` : "where everyone starts"}</span></li>`).join("");
+    paint(`<div class="q-howto"><h2>How to play Bible Spin</h2>
+      <h3>🎡 Each turn</h3>
+      <ol><li>Tap <b>Spin</b>. The wheel picks one of ${CATEGORIES.length} kinds of questions, each with its own friend: ${CATEGORIES.map((c) => `${c.icon} ${esc(c.name)}`).join(", ")}.</li>
+      <li>Pick your answer before the candle burns down (${CANDLE_SECS} seconds). The faster you answer, the more coins you get.</li>
+      <li>Get ${NEED_PER_JEWEL} right in the same kind and you win its <b>jewel</b>, like the jewels on the high priest's breastplate (Exodus 28).</li></ol>
+      <h3>🏆 How to win</h3>
+      <ul><li><b>Play solo:</b> collect all ${CATEGORIES.length} jewels before you lose your ${HEARTS} hearts. A wrong answer, or letting the candle go out, costs a heart.</li>
+      <li><b>Play with family:</b> pass the phone or iPad around. A right answer keeps your turn; a wrong one passes it on. First to collect every jewel wins. If nobody has them all after ${MAX_ROUNDS} turns, whoever has the most jewels wins (then most right answers).</li>
+      <li><b>Challenge ${BH()}:</b> the same, against ${BH()}. He thinks for a moment and gets some wrong: about ${Math.round(BUDDY_LEVELS[0][2] * 10)} in 10 right on Easy, ${Math.round(BUDDY_LEVELS[1][2] * 10)} on Fair and ${Math.round(BUDDY_LEVELS[2][2] * 10)} on Tough.</li>
+      ${duels ? `<li><b>Family duel:</b> you and someone in the family each answer the same ${DUEL_QS} questions on your own devices, whenever it suits you. More right wins; if it's a tie, the faster one wins.</li>` : ""}</ul>
+      <h3>🪔 Helps along the way</h3>
+      <ul><li><b>The lamp:</b> every right answer adds oil. When it's full (${LAMP_FULL} right), you choose any jewel you still need and get one question for it.</li>
+      <li><b>Streaks:</b> ${STREAK_REWARDS.map(([n, , c]) => `${n} in a row earns ${c}`).join(", ")} extra coins.</li>
+      <li><b>Bonus round:</b> every ${BONUS_EVERY}th question, ${BONUS_QS} quick questions for ${BONUS_COINS} coins each. You can't lose a heart there.</li>
+      <li><b>Coins buy helps</b> in solo and against ${BH()}: ✂️ take away 2 wrong answers (${HELPS.half.cost} coins) or 🕯️ 10 more seconds (${HELPS.time.cost} coins). Family games have no helps, so they stay fair.</li>
+      <li><b>Every day:</b> open the 🎁 treasure chest for coins (more for days in a row) and try the 3 🎯 missions for ${MISSION_COINS} coins each.</li></ul>
+      <h3>📈 How to get better</h3>
+      <ul><li>Read the short note after each answer. It tells you why, often with the verse, so you'll know it next time.</li>
+      <li>Use <b>📖 Practice one part of the Bible</b> for the kinds you miss most.</li>
+      <li>Start ${BH()} on Easy, then move up to Fair and Tough as you win.</li>
+      <li>Play a little every day: the chest and missions reward coming back, and questions you've seen come up less often.</li></ul>
+      <h3>⭐ What your level means</h3>
+      <p class="q-small">Your level grows with every right answer you've ever given, in any game. Early levels come quickly; later ones take real play. Levels are just for fun: they don't change the questions.</p>
+      <ul class="q-levels-list">${lv}</ul>
+      <button class="q-btn" data-back>Back to Bible Spin</button></div>`);
+    dlg.querySelector("[data-back]").onclick = home;
   }
 
   function badges() {
