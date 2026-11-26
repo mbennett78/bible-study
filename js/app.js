@@ -1956,6 +1956,14 @@ const noteGroup = (k) => (k === "bible" ? "note" : k); // notes written on a cha
 const BOX_TONES = [["key", "🔑", "Key point"], ["remember", "💡", "Remember"], ["question", "❓", "Question"], ["prayer", "🙏", "Prayer"]];
 const NOTE_FONTS = [["classic", "Classic"], ["clean", "Clean"], ["hand", "Handwritten"], ["big", "Big print"]];
 const KIND = Object.fromEntries(ENTRY_KINDS.map((k) => [k.kind, k]));
+// Journaling guides that Bible journalers use. Picking one adds its headings to the entry.
+const GUIDES = {
+  soap: { name: "SOAP", about: "Scripture, Observation, Application, Prayer", text: "Scripture: \n\nObservation (what does it say?): \n\nApplication (what does it mean for me?): \n\nPrayer: \n" },
+  acts: { name: "ACTS prayer", about: "Adoration, Confession, Thanksgiving, Supplication", text: "Adoration (praise God for who He is): \n\nConfession: \n\nThanksgiving: \n\nSupplication (ask for others and for me): \n" },
+  three: { name: "Three good things", about: "Three things from today to thank God for", text: "Three good things today:\n1. \n2. \n3. \n" },
+  week: { name: "Looking back on my week", about: "Highs, lows, and where I saw God", text: "A high point: \n\nA hard moment: \n\nWhere I saw God at work: \n\nWhat I'm praying for next week: \n" },
+};
+const guidesFor = (kind) => ({ bible: ["soap"], prayer: ["acts"], gratitude: ["three"] }[kind] || ["soap", "acts", "three", "week"]).map((id) => [id, GUIDES[id].name, GUIDES[id].about]);
 // How a journal entry starts. They pick one each time.
 const OPENERS = ["Today", "My Day", "This Week", "My Reflection", "Lately"];
 const openerOf = (e) => (e?.kind === "day" ? e.opener || "My Day" : "");
@@ -2105,7 +2113,7 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
       <div class="ee-quotes" id="eeQuotes"></div>
       <label class="ee-label" for="entryText" id="eeTextLabel">${church ? "Notes" : isDay ? `${esc(draft.opener)}…` : "Write here"}</label>
       ${noteKind ? `<div class="ee-fonts" role="group" aria-label="Writing style">${NOTE_FONTS.map(([f, l]) => `<button type="button" class="nf-${f}" data-font="${f}" aria-pressed="${draft.font === f}">${l}</button>`).join("")}</div>` : ""}
-      ${noteKind || church ? "" : `<div class="ee-idea"><button type="button" class="quiet-link" id="eeIdea">💭 Need an idea?</button><p class="ee-prompt" id="eePrompt" hidden></p></div>`}
+      ${noteKind || church ? "" : `<div class="ee-idea"><button type="button" class="quiet-link" id="eeIdea">💭 Need an idea?</button><button type="button" class="quiet-link" id="eeGuide" aria-expanded="false">📋 Use a guide</button><p class="ee-prompt" id="eePrompt" hidden></p><div class="ee-guides" id="eeGuides" hidden>${guidesFor(kind).map(([id, name, about]) => `<button type="button" data-guide="${id}"><b>${esc(name)}</b><small>${esc(about)}</small></button>`).join("")}</div></div>`}
       <textarea id="entryText" class="nf-${esc(draft.font)}" rows="7" placeholder="${esc(k.ph)}">${esc(e?.text || "")}</textarea>
       <div class="ee-refs" id="eeRefs" aria-live="polite"></div>
       ${isDay ? `<div class="ee-extra" id="eePrayerBox" ${(e?.prayer || "").trim() ? "" : "hidden"}><label class="ee-label" for="eePrayer">🙏 Prayer</label><textarea id="eePrayer" rows="3" placeholder="Who and what are you praying for?">${esc(e?.prayer || "")}</textarea></div>
@@ -2128,6 +2136,16 @@ function openEntry({ id = null, kind = "day", ref = null, addQuote = null } = {}
     p.textContent = nextPrompt(kind, p.textContent); p.hidden = false;
     $("#eeIdea").textContent = "💭 Another idea";
   });
+  // A journaling guide (like SOAP or ACTS): it adds the headings, and they write under each one.
+  $("#eeGuide")?.addEventListener("click", () => { const g = $("#eeGuides"); g.hidden = !g.hidden; $("#eeGuide").setAttribute("aria-expanded", String(!g.hidden)); });
+  box.querySelectorAll("[data-guide]").forEach((b) => b.addEventListener("click", () => {
+    const text = GUIDES[b.dataset.guide].text, had = ta.value.trimEnd();
+    ta.value = had ? `${had}\n\n${text}` : text;
+    const first = ta.value.indexOf(":", had.length) + 1;
+    ta.focus(); ta.setSelectionRange(first + 1, first + 1);
+    ta.dispatchEvent(new Event("input", { bubbles: true }));
+    $("#eeGuides").hidden = true; $("#eeGuide").setAttribute("aria-expanded", "false");
+  }));
   addMic(box.querySelector(".entry-editor"), ta);
   const fields = () => ({ kind, text: ta.value.trim(), ...(ref ? { ref } : {}), quotes: draft.quotes, pics: draft.pics,
     created: onDay($("#eeDate")?.value || dayOf(wroteAt.toISOString()), wroteAt),
@@ -2532,8 +2550,14 @@ function showDiaryDay(day) {
 function renderJournalList(justSaved = null) {
   const el = $("#journalList");
   if (!el) return;
-  const keep = document.querySelector(".keepsake-row");
+  const keep = document.querySelector(".keepsake-row"), find = document.querySelector(".journal-find");
   if (keep) keep.hidden = journalLocked();
+  if (find) find.hidden = journalLocked();
+  // Search: every word typed must appear somewhere in the entry (its writing, prayer, thanks, verses).
+  const lc = (t) => String(t).toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9]+/g, " ");
+  const words = lc($("#journalSearch")?.value || "").split(" ").filter(Boolean);
+  const textOf = (o) => lc(JSON.stringify(Object.values(o).filter((v) => typeof v === "string" || Array.isArray(v))));
+  const found = (it) => !words.length || ((t) => words.every((w) => t.includes(w)))(`${textOf(it.e || it.d || it.j)} ${it.j ? lc(keyRef(it.j.key).name) : it.e?.ref ? lc(keyRef(it.e.ref).name) : ""}`);
   if (journalLocked()) { el.innerHTML = ""; el.append(unlockForm(() => { renderJournalList(); renderDiaryToday(); })); return; }
   const lockRow = store.get("journalLock") ? lockNowButton(renderJournalList) : null;
   const snip = (t) => `${esc(t.slice(0, 160))}${t.length > 160 ? "…" : ""}`;
@@ -2541,7 +2565,7 @@ function renderJournalList(justSaved = null) {
     ...store.allEntries().filter((e) => !KIND[e.kind]?.notesOnly).map((e) => ({ type: "entry", at: e.created, kinds: [e.kind, ...(e.prayer?.trim() ? ["prayer"] : []), ...(e.gratitude?.trim() ? ["gratitude"] : [])], e })),
     ...store.allDiary().map((d) => ({ type: "diary", at: d.updated, kinds: ["day", ...(d.prayer?.trim() ? ["prayer"] : []), ...(d.gratitude?.trim() ? ["gratitude"] : [])], d })),
     ...store.allJournal().map((j) => ({ type: "chapter", at: j.updated, kinds: ["bible", ...(j.prayer?.trim() ? ["prayer"] : []), ...(j.gratitude?.trim() ? ["gratitude"] : [])], j })),
-  ].filter((it) => journalFilter === "all" || it.kinds.includes(journalFilter)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+  ].filter((it) => (journalFilter === "all" || it.kinds.includes(journalFilter)) && found(it)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
   const filters = [["all", "All"], ...ENTRY_KINDS.filter((k) => !k.notesOnly).map((k) => [k.kind, k.label])];
   const row = (it) => {
     if (it.type === "entry") {
@@ -2553,10 +2577,10 @@ function renderJournalList(justSaved = null) {
     return `<button class="log-row" data-key="${j.key}"><strong>📖 ${esc(keyRef(j.key).name)}</strong><small>${fmtDate(j.created || j.updated)}</small>${JOURNAL_BOXES.filter((b) => (j[b.field] || "").trim()).map((b) => `<span class="log-dates"><em>${b.label}:</em> ${snip(j[b.field])}</span>`).join("")}</button>`;
   };
   // On this day: what you wrote on this date in earlier years (like a keepsake journal's memories).
-  const past = journalFilter === "all" ? onThisDay(items, (it) => (it.type === "diary" ? it.d.day : it.at)) : [];
+  const past = journalFilter === "all" && !words.length ? onThisDay(items, (it) => (it.type === "diary" ? it.d.day : it.at)) : [];
   el.innerHTML = (past.length ? `<div class="on-this-day"><h3 class="journal-list-head">🕰️ On this day</h3><p class="muted small-print">What you wrote on ${esc(new Date().toLocaleDateString(undefined, { month: "long", day: "numeric" }))} in years before.</p>${past.map((p) => row(p.item).replace("<small>", `<small>${p.years === 1 ? "1 year ago" : `${p.years} years ago`} · `)).join("")}</div>` : "")
     + `<h3 class="journal-list-head">My entries</h3><div class="journal-filter">${filters.map(([v, l]) => `<button data-jf="${v}" aria-pressed="${journalFilter === v}">${esc(l)}</button>`).join("")}</div>`
-    + (items.length ? items.map(row).join("") : `<p class="empty">${journalFilter === "all" ? "Nothing written yet. Tap one of the buttons above to write your first entry." : "Nothing here yet."}</p>`);
+    + (items.length ? items.map(row).join("") : `<p class="empty">${words.length ? "Nothing matches that search." : journalFilter === "all" ? "Nothing written yet. Tap one of the buttons above to write your first entry." : "Nothing here yet."}</p>`);
   el.querySelectorAll("[data-entry]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.entry })));
   el.querySelectorAll("[data-day]").forEach((b) => b.addEventListener("click", () => showDiaryDay(b.dataset.day)));
   el.querySelectorAll("[data-jf]").forEach((b) => b.addEventListener("click", () => { journalFilter = b.dataset.jf; renderJournalList(); }));
@@ -2738,6 +2762,7 @@ $("#printNotes")?.addEventListener("click", () => {
 $("#chooseNotes")?.addEventListener("click", () => { choosing = !choosing; if (!choosing) picked.clear(); renderNotesList(); });
 document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
 $("#notesSearch")?.addEventListener("input", () => renderNotesList());
+$("#journalSearch")?.addEventListener("input", () => renderJournalList());
 document.querySelectorAll("[data-open-games]").forEach((b) => b.addEventListener("click", () => quest.open()));
 // Quick links at the top of the side margin: notes, journal and games one tap away.
 document.querySelectorAll("[data-margin-go]").forEach((b) => b.addEventListener("click", () => {

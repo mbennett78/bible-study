@@ -26,6 +26,19 @@ try {
   check("Need an idea? shows a writing prompt", p1.length > 20 && await page.isVisible("#eePrompt") && (await page.inputValue("#entryText")) === "", p1);
   await page.click("#eeIdea");
   check("tapping again gives another", (await page.textContent("#eePrompt")) !== p1);
+  // Journaling guides: SOAP adds its headings for them to write under.
+  await page.click("#eeGuide");
+  check("Use a guide offers SOAP, ACTS and more", /SOAP/.test(await page.textContent("#eeGuides")) && /ACTS/.test(await page.textContent("#eeGuides")));
+  await page.click('[data-guide="soap"]');
+  const soap = await page.inputValue("#entryText");
+  check("SOAP adds Scripture, Observation, Application and Prayer headings", /^Scripture: /.test(soap) && /Observation/.test(soap) && /Application/.test(soap) && /Prayer: /.test(soap) && !(await page.isVisible("#eeGuides")), soap);
+  // Search the journal: the matching entry stays, others go.
+  await page.evaluate(() => document.querySelector("#entryCancel")?.click()); await page.clock.runFor(300);
+  await page.fill("#journalSearch", "christmas"); await page.clock.runFor(200);
+  const list = (await page.textContent("#journalList")).replace(/\s+/g, " ");
+  check("searching the journal finds the matching entry only", /first Christmas/.test(list) && !/regular day/.test(list), list.slice(0, 200));
+  await page.fill("#journalSearch", "zebra"); await page.clock.runFor(200);
+  check("no match says so", /Nothing matches that search/.test(await page.textContent("#journalList")));
   check("no page errors", !errors.length, errors.join("; "));
 } catch (e) { stopped = e; }
 await browser.close(); site.close(); finish(stopped);

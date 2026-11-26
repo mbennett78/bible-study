@@ -3611,3 +3611,11 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-settle { from { transform: translateY(0); } to { transform: translateY(14px); } }
 .buddy-pole .buddy-biteline { stroke: var(--muted); stroke-width: .7; }
 .buddy.fishing.cheering:not(.capped) .buddy-cap { display: none; } /* his fishing hat or bare head, not a ball cap, when he lands one */
+/* Journal: search, and journaling guides (SOAP, ACTS...) */
+.journal-find { display: block; margin: 10px 0 4px; }
+.ee-idea { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.ee-idea .ee-prompt { flex-basis: 100%; }
+.ee-guides { flex-basis: 100%; display: grid; gap: 6px; margin: 4px 0 8px; }
+.ee-guides button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.ee-guides button small { color: var(--muted); }
+.ee-guides[hidden] { display: none; }
