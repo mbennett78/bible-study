@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 11:15 AM Central
-**Current version:** v385 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 11:28 AM Central
+**Current version:** v386 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 11:30 AM CT: Buddy watches what he's doing and moves his whole body. His eyes and head follow the baseball, the football, the basketball, the juggling balls (with a glance out at you), the bowling ball to the pins, his line as he casts over his shoulder, the bobber, and the fish as he reels it in. Writing, he looks at his paper and looks up only when you talk to him. His arms move with the juggling balls; throwing and bowling have a wind-up, a crouch and a step; his knees bend for jumping, jump rope, dribbling and catching. Clip: pictures-fix/buddy-watches.gif.
 - Thu Nov 26, 11:15 AM CT: Buddy really uses his gear and lives his own life. Baseball lands in his mitt, he throws the football, bowls and knocks the pins down, and naps on a pillow. Reading, both hands hold the book and he turns pages. His face can be a soft smile or a serious, thinking look, and he smiles up at you when you talk to him. Fishing is a little story across visits: heading off with his pole, sitting waiting for a bite, or hooking one and reeling it in. He also just sits and waits (soft smile, glancing around) or thinks something over. Chat replies stay short and conversational unless it's a real question or research. Previews: pictures-fix/buddy-moving.gif and buddy-fishing.gif. The Supabase update still waits for the one final file.
 - Thu Nov 26, 11:10 AM CT: Buddy at his desk: the paper now lies on the table with his pencil on it, his other arm rests on the table, and he looks down at his work. Reading, he looks down at his book. When someone starts typing to him in the chat, he looks up at them; while he looks up an answer he looks back down. The Supabase update waits until Buddy is fully perfected, then one final file.
 - Thu Nov 26, 9:30 AM CT: Fresh end-to-end pass of the whole app: all 33 browser test files, 646 checks, pass on phone, iPad and desktop sizes. One old check was out of date (it still expected pinch zoom to be blocked; pinch zoom has been allowed on purpose since Nov 24 for older eyes) and now checks that zoom is allowed.

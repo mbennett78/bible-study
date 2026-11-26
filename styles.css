@@ -3265,3 +3265,106 @@ html[data-contrast] .sc-group > summary .count { background: none; box-shadow: i
 @keyframes buddy-glance { 0%, 30%, 100% { translate: 0 0; } 40%, 55% { translate: -1.4px 0; } 65%, 80% { translate: 1.4px 0; } }
 @keyframes buddy-walk-legs { from { rotate: -6deg; } to { rotate: 6deg; } }
 .bnd-face .buddy-carrypole, .bnd-face .buddy-catch { display: none; }
+
+/* ---------- Buddy watches what he's doing ----------
+   His eyes (and a little tilt of his head) follow the thing he's playing with: the baseball up
+   and back into his mitt, the football out of his hand, the basketball on the floor, the juggling
+   balls, the bowling ball down to the pins, his line as he casts over his shoulder and then the
+   bobber, the fish as he reels it in, and his food. Writing, he looks at his paper. When someone
+   talks to him he looks up at them. Uses the separate translate/rotate properties so it adds to
+   the poses already there. */
+.buddy :is(.buddy-head, .buddy-eye, .buddy-shut, .buddy-smile, .buddy-soft, .buddy-flat, .buddy-focus, .buddy-mouth, .buddy-brow, .buddy-mad, .buddy-cap, .buddy-glasses) { transform-box: view-box; }
+.buddy:is(.tossing, .throwing, .dribbling, .juggling, .bowling, .fishing, .eating) :is(.buddy-head, .buddy-eye, .buddy-shut, .buddy-smile, .buddy-soft, .buddy-flat, .buddy-focus, .buddy-mouth, .buddy-brow, .buddy-cap, .buddy-glasses) { transform-origin: 26px 32px; }
+/* Where he looks when nothing is moving (also with motion turned off). */
+.buddy.tossing .buddy-eye { translate: 2.2px 2.2px; }
+.buddy.dribbling .buddy-eye { translate: 2.2px 3px; }
+.buddy.dribbling :is(.buddy-head, .buddy-smile, .buddy-soft, .buddy-mouth, .buddy-cap, .buddy-glasses, .buddy-brow) { rotate: 6deg; }
+.buddy.dribbling .buddy-eye { rotate: 6deg; }
+.buddy.juggling .buddy-eye { translate: 0 -2.4px; }
+.buddy.bowling .buddy-eye { translate: 2.6px 3px; }
+.buddy.fishing .buddy-eye { translate: 3px 2.4px; }
+.buddy.eating .buddy-eye { translate: 2.6px 3px; }
+.buddy.throwing .buddy-eye { translate: 2.4px .6px; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.tossing .buddy-eye { animation: buddy-gaze-toss .9s ease-in-out 4, buddy-tilt-toss .9s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.tossing :is(.buddy-head, .buddy-smile, .buddy-cap) { animation: buddy-tilt-toss .9s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-eye { animation: buddy-gaze-throw 1.2s ease-in-out 3, buddy-tilt-throw 1.2s ease-in-out 3; }
+  :root:not([data-graphics="simple"]) .buddy.throwing :is(.buddy-head, .buddy-smile, .buddy-cap) { animation: buddy-tilt-throw 1.2s ease-in-out 3; }
+  :root:not([data-graphics="simple"]) .buddy.dribbling .buddy-eye { animation: buddy-gaze-dribble .45s ease-in infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .buddy-eye { animation: buddy-gaze-juggle 3.6s ease-in-out infinite, buddy-tilt-juggle .9s ease-in-out infinite; }
+  :root:not([data-graphics="simple"]) .buddy.juggling :is(.buddy-head, .buddy-smile) { animation: buddy-tilt-juggle .9s ease-in-out infinite; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-eye { animation: buddy-gaze-bowl 2.4s ease-in-out 2, buddy-tilt-bowl 2.4s ease-in-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling :is(.buddy-head, .buddy-smile) { animation: buddy-tilt-bowl 2.4s ease-in-out 2; }
+  /* Casting: pole back over his shoulder (he looks back at it), then out, and he follows the line to the bobber. */
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-pole { animation: buddy-cast 1.8s ease-in-out 1; transform-origin: 36px 47px; transform-box: view-box; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) .buddy-eye { animation: buddy-gaze-cast 1.8s ease-in-out 1 both, buddy-tilt-cast 1.8s ease-in-out 1; }
+  :root:not([data-graphics="simple"]) .buddy.fishing:not(.reeling):not(.bite) :is(.buddy-head, .buddy-soft, .buddy-smile) { animation: buddy-tilt-cast 1.8s ease-in-out 1; }
+  :root:not([data-graphics="simple"]) .buddy.reeling .buddy-eye { animation: buddy-gaze-reel 2.6s ease-out both, buddy-tilt-reel 2.6s ease-out both; }
+  :root:not([data-graphics="simple"]) .buddy.reeling :is(.buddy-head, .buddy-mouth) { animation: buddy-tilt-reel 2.6s ease-out both; }
+}
+.buddy.reeling .buddy-eye { translate: 2.6px -1.4px; }
+.buddy.bite .buddy-eye { translate: 3px 3px; }
+/* Talking to him wins: he looks up at you. */
+.buddy.lookup :is(.buddy-head, .buddy-eye, .buddy-smile, .buddy-soft, .buddy-cap, .buddy-glasses, .buddy-mouth) { translate: none !important; rotate: none !important; }
+@keyframes buddy-gaze-toss { 0%, 100% { translate: 2.2px 2.2px; } 50% { translate: 2.6px -1.8px; } }
+@keyframes buddy-tilt-toss { 0%, 100% { rotate: 5deg; } 50% { rotate: -3deg; } }
+@keyframes buddy-gaze-throw { 0%, 20% { translate: 2.4px .6px; } 35% { translate: -2.6px -1.6px; } 55% { translate: 2px -1.4px; } 85% { translate: 3px -2.6px; } 100% { translate: 2.4px .6px; } }
+@keyframes buddy-tilt-throw { 0%, 20% { rotate: 0deg; } 35% { rotate: -7deg; } 70%, 88% { rotate: 6deg; } 100% { rotate: 0deg; } }
+@keyframes buddy-gaze-dribble { from { translate: 2.2px 2.2px; } to { translate: 2.2px 3.2px; } }
+@keyframes buddy-gaze-juggle { 0%, 25%, 50%, 100% { translate: -2.2px -2.2px; } 12.5%, 37.5% { translate: 2.2px -2.8px; } 62%, 88% { translate: 0 0; } }
+@keyframes buddy-tilt-juggle { 0%, 100% { rotate: -3deg; } 50% { rotate: 3deg; } }
+@keyframes buddy-gaze-bowl { 0% { translate: 2px 1.6px; } 20% { translate: -2.4px 2.2px; } 40% { translate: 1.6px 3px; } 60%, 92% { translate: 3px 3px; } 100% { translate: 2px 1.6px; } }
+@keyframes buddy-tilt-bowl { 0% { rotate: 0deg; } 20% { rotate: -5deg; } 60%, 92% { rotate: 8deg; } 100% { rotate: 0deg; } }
+@keyframes buddy-cast { 0% { transform: rotate(0); } 35% { transform: rotate(-75deg); } 55% { transform: rotate(8deg); } 100% { transform: rotate(0); } }
+@keyframes buddy-gaze-cast { 0% { translate: 1px 0; } 30%, 38% { translate: -3px -2px; } 58% { translate: 2.6px -2.6px; } 100% { translate: 3px 2.4px; } }
+@keyframes buddy-tilt-cast { 0% { rotate: 0deg; } 32% { rotate: -9deg; } 58% { rotate: 3deg; } 100% { rotate: 5deg; } }
+@keyframes buddy-gaze-reel { from { translate: 3px 3px; } to { translate: 2.6px -1.4px; } }
+@keyframes buddy-tilt-reel { from { rotate: 6deg; } to { rotate: -2deg; } }
+
+/* ---------- His whole body moves with what he's doing ----------
+   Juggling: each hand dips and pushes up in time with the balls, with a little knee bounce; he
+   watches the balls, then glances out at you for a moment. Throwing: he leans back and crouches
+   as he winds up, then steps into the throw while the other arm swings through. Bowling: back
+   swing, then a low step forward. Catching: his knees give a little as the ball lands. Jumping and
+   jump rope: knees bend to push off and land. Dribbling: his hand pumps with the bounce.
+   Separate translate/rotate properties so these add to the poses already there. */
+.buddy-legs-stand { transform-origin: 26px 54px; transform-box: view-box; }
+.buddy-body { transform-box: view-box; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-graphics="simple"]) .buddy.juggling .buddy-arm-r { animation: buddy-jug-r .45s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .buddy-arm-l { animation: buddy-jug-l .45s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .buddy-body { animation: buddy-knees .45s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.juggling .buddy-legs-stand { animation: buddy-knees-legs .45s ease-in-out infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-body { animation: buddy-throw-body 1.2s ease-in-out 3; transform-origin: 26px 72px; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-legs-stand { animation: buddy-throw-legs 1.2s ease-in-out 3; }
+  :root:not([data-graphics="simple"]) .buddy.throwing .buddy-arm-l { animation: buddy-throw-off 1.2s ease-in-out 3; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-body { animation: buddy-bowl-body 2.4s ease-in-out 2; transform-origin: 26px 72px; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-legs-stand { animation: buddy-bowl-legs 2.4s ease-in-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.bowling .buddy-arm-l { animation: buddy-bowl-off 2.4s ease-in-out 2; }
+  :root:not([data-graphics="simple"]) .buddy.tossing .buddy-body { animation: buddy-catch-body .9s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.tossing .buddy-legs-stand { animation: buddy-catch-legs .9s ease-in-out 4; }
+  :root:not([data-graphics="simple"]) .buddy.dribbling .buddy-arm-r { animation: buddy-dribble-arm .45s ease-in infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.dribbling .buddy-body { animation: buddy-knees .45s ease-in infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.dribbling .buddy-legs-stand { animation: buddy-knees-legs .45s ease-in infinite alternate; }
+  :root:not([data-graphics="simple"]) .buddy.jumping .buddy-legs-stand { animation: buddy-jump-legs .45s cubic-bezier(.3, .7, .4, 1) 4 alternate; }
+  :root:not([data-graphics="simple"]) .buddy.roping .buddy-legs-stand { animation: buddy-rope-legs .5s linear 7; }
+  :root:not([data-graphics="simple"]) .buddy.roping .buddy-arm-r { animation: buddy-rope-arm-r .5s linear 7; }
+  :root:not([data-graphics="simple"]) .buddy.roping .buddy-arm-l { animation: buddy-rope-arm-l .5s linear 7; }
+}
+@keyframes buddy-jug-r { from { transform: rotate(-30deg); } to { transform: rotate(-58deg); } }
+@keyframes buddy-jug-l { from { transform: rotate(58deg); } to { transform: rotate(30deg); } }
+@keyframes buddy-knees { from { translate: 0 0; } to { translate: 0 1.6px; } }
+@keyframes buddy-knees-legs { from { scale: 1 1; } to { scale: 1.1 .91; } }
+@keyframes buddy-throw-body { 0%, 15% { rotate: 0deg; translate: 0 0; } 35% { rotate: -7deg; translate: 0 2px; } 62% { rotate: 8deg; translate: 0 1px; } 100% { rotate: 0deg; translate: 0 0; } }
+@keyframes buddy-throw-legs { 0%, 15%, 100% { scale: 1 1; } 35% { scale: 1.2 .89; } 62% { scale: 1.35 .94; } }
+@keyframes buddy-throw-off { 0%, 15%, 100% { transform: rotate(0deg); } 35% { transform: rotate(-40deg); } 62% { transform: rotate(45deg); } }
+@keyframes buddy-bowl-body { 0%, 100% { rotate: 0deg; translate: 0 0; } 20% { rotate: -5deg; translate: 0 1px; } 42%, 62% { rotate: 9deg; translate: 0 3.4px; } }
+@keyframes buddy-bowl-legs { 0%, 100% { scale: 1 1; } 20% { scale: 1.1 .94; } 42%, 62% { scale: 1.4 .81; } }
+@keyframes buddy-bowl-off { 0%, 100% { transform: rotate(0deg); } 20% { transform: rotate(30deg); } 42%, 62% { transform: rotate(-35deg); } }
+@keyframes buddy-catch-body { 0%, 100% { translate: 0 1.4px; } 45% { translate: 0 -.4px; } }
+@keyframes buddy-catch-legs { 0%, 100% { scale: 1.08 .92; } 45% { scale: 1 1; } }
+@keyframes buddy-dribble-arm { from { transform: rotate(-14deg); } to { transform: rotate(8deg); } }
+@keyframes buddy-jump-legs { from { scale: 1.22 .84; } to { scale: .9 1.04; } }
+@keyframes buddy-rope-legs { 0%, 100% { scale: .9 .95; } 40%, 60% { scale: 1.15 .88; } }
+@keyframes buddy-rope-arm-r { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(-26deg); } }
+@keyframes buddy-rope-arm-l { 0%, 100% { transform: rotate(8deg); } 50% { transform: rotate(26deg); } }
