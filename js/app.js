@@ -3559,6 +3559,7 @@ const LOOKS = [
   ["classic2", "Classic 2", "Navy, blues and warm browns: olive branches and the five loaves and two fish, softly glowing (John 6). Clouds drift in Lively pictures.", ["#1f2b42", "#dfe7f1", "#7a5a40"]],
   ["seasons", "Seasonal changes", "Warm, glowing painted scenes that change through the year: a New Year's dawn, a winter sunrise, angels, spring rain, Easter, gardens and flowers, Bible-times life, the Sea of Galilee, scrolls by lamplight, Psalm 23, the harvest and Advent.", ["#3a2a20", "#fffaf2", "#e0a85a"]],
   ["classic3", "Classic 3", "Hand-colored Holy Land paintings by David Roberts (1839): Jerusalem, Mount Tabor and the Sea of Galilee, in stone, sand and sky colors. The painting changes with the passage you read.", ["#4a3b2c", "#efe6d6", "#8aa0b0"]],
+  ["classic4", "Classic 4", "Deep blue, with a calm painted landscape: snowy mountains, dark pines and a still lake at evening. Nothing moves.", ["#16233b", "#f4f6fa", "#c9a86a"]],
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
   ["easter", "Easter", "Sunrise colors, lilies and the empty tomb. Birds fly at sunrise in Lively pictures.", ["#5e5578", "#f3d9b9", "#8a9a6e"]],
@@ -3569,7 +3570,7 @@ const LOOKS = [
 ];
 // Calm looks: no cartoons and no confetti, and motion only with Lively pictures (birds, breeze, candles). Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
-function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "seasons", "sage", "easter", "fall"].includes(style); }
+function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "classic4", "seasons", "sage", "easter", "fall"].includes(style); }
 // A drop-down of looks with a live picture of the chosen one right beside it, so people can
 // see what they're picking (used in first-time setup and in Settings).
 function lookPickerHtml(id) {

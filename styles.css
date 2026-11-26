@@ -3802,3 +3802,20 @@ h4.note-h { font-family: var(--sans); font-size: 1.05em; margin: .8em 0 .2em; }
 .my-notes-here { display: flex; align-items: center; gap: 8px; width: 100%; margin: 0 0 12px; padding: 10px 12px; border: 1px solid #e3c77a; border-radius: 12px; background: #fff7dc; color: #3d3215; font: inherit; font-size: .95rem; text-align: left; cursor: pointer; }
 .my-notes-here[hidden] { display: none; }
 :root[data-theme="dark"] .my-notes-here { background: #3a321c; color: #f3e6bf; border-color: #6d5a26; }
+
+/* ---------- Classic 4: deep blue, with a calm evening landscape (B-92) ---------- */
+:root[data-style="classic4"] {
+  --page: #16233b; --page-deep: #0f192c; --on-page: #eef2f8; --on-page-muted: #b8c4d8;
+  --bg: #fbfcfe; --surface: #ffffff; --text: #1a2333; --muted: #586377; --line: #dde3ed;
+  --accent: #1f3355; --accent-soft: #e9eef6; --warm: #8a6a3e; --gold: #c9a86a; --verse: #7d8aa0;
+  --sky-top: #c9d3e4; --sky-low: #f1f4f9; --far-hill: #8796b0;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+:root[data-style="classic4"] .vine { opacity: .35; } :root[data-style="classic4"] .vine .leaf { fill: #5d6f8f; }
+:root[data-style="classic4"] .cl-cross rect { fill: #1f3355; }
+:root[data-style="classic4"] .cl-leaf { fill: #7f8ea8; stroke: #5d6f8f; }
+:root[data-style="classic4"] .pc-featured, :root[data-style="classic4"] .notes-card { border-color: var(--gold); }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="classic4"]:not([data-theme="light"]) { --bg: #fbfcfe; --surface: #ffffff; --text: #1a2333; --muted: #586377; --line: #dde3ed; --accent: #1f3355; --accent-soft: #e9eef6; --page: #0f192c; --page-deep: #0a1322; color-scheme: light; }
+}

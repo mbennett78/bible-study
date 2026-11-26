@@ -184,6 +184,7 @@ const grass = (x, h, bottom) => `<path class="sea-grass" style="--gd:${3 + (x % 
 // The wide banner for Home and the study pages, in each look's colors.
 export function seaScene(style, { height = 170 } = {}) {
   if (style === "classic3") return paintingScene({ height });
+  if (style === "classic4") return landscapeScene({ height });
   if (style === "seasons") return seasonScene();
   if (style === "classic" || style === "classic2") return classicScene({ height, style });
   if (THEME_LOOKS.includes(style)) return themeScene(style, { height });
@@ -252,6 +253,7 @@ export const cornerSprig = (flip = false) => `<svg class="corner-sprig${flip ? "
 // A slim strip of water with a few fish, for the top of pages that need only a touch.
 export function fishStrip(style = "") {
   if (style === "classic3") return paintingStrip(paintingOfDay());
+  if (style === "classic4") return landscapeStrip();
   if (style === "seasons") return seasonStrip();
   if (style === "classic" || style === "classic2") return classicStrip("Olive branches and a cross");
   if (THEME_LOOKS.includes(style)) return themeStrip(style);
@@ -310,6 +312,7 @@ export function passageStrip(book, chapter, style = "") {
   if (style === "christmas" || style === "nativity") return christmasStrip(book, chapter, style);
   if (THEME_LOOKS.includes(style)) return { kind: style, caption: "", svg: themeStrip(style) };
   if (style === "seasons") { const k = seasonOf(); return { kind: "painting", caption: SEASONS[k][0], svg: seasonStrip(k) }; }
+  if (style === "classic4") return { kind: "painting", caption: LANDSCAPE[1], svg: landscapeStrip() };
   if (style === "classic3") { const p = paintingFor(book, chapter); return { kind: "painting", caption: `${PAINTINGS[p][1]}, by David Roberts (1839)`, svg: paintingStrip(p) }; }
   if (style === "classic" || style === "classic2") return { kind: "classic", caption: "", svg: classicStrip("Olive branches and three crosses") };
   if (style === "animated") { const story = kidsStory(book, chapter); if (story) return story; }
@@ -470,6 +473,22 @@ export function paintingStrip(id) {
   const h = 240, top = -(h * y - 27);
   return `<svg class="fish-strip passage-art painting-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}, by David Roberts">
     <rect width="360" height="54" fill="#e8dcc6"/><image href="${src}" x="0" y="${top.toFixed(1)}" width="360" height="${h}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+}
+
+/* ---------- Classic 4: an evening landscape under a deep blue sky ---------- */
+// An original painting made for the app (tools/paint-classic4.py), in the manner of the
+// 19th-century American landscape painters: snowy peaks, dark pines and still water at dusk.
+export const LANDSCAPE = ["img/classic4-evening-lake.jpg", "Evening on a mountain lake", .62];
+export function landscapeScene({ height = 170 } = {}) {
+  const [src, title] = LANDSCAPE;
+  return `<svg class="scene painting-scene landscape-scene" viewBox="0 0 360 ${height}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}">
+    <rect width="360" height="${height}" fill="#1b2c4a"/><image href="${src}" width="360" height="${height}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+}
+export function landscapeStrip() {
+  const [src, title, y] = LANDSCAPE;
+  const h = 225, top = -(h * y - 27);
+  return `<svg class="fish-strip passage-art painting-strip" viewBox="0 0 360 54" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${title}">
+    <rect width="360" height="54" fill="#1b2c4a"/><image href="${src}" x="0" y="${top.toFixed(1)}" width="360" height="${h}" preserveAspectRatio="xMidYMid slice"/></svg>`;
 }
 
 /* ---------- Wooden Cross look ---------- */
