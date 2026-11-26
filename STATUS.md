@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 1:34 PM Central
-**Current version:** v393 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 1:44 PM Central
+**Current version:** v394 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 2:45 PM CT: Melissa gave her final OK on the seasonal backgrounds. She is doing the one Supabase update for Buddy now (supabase-final-update.md).
 - Thu Nov 26, 2:15 PM CT: The user guide (in Settings, and on paper at the next gift packet rebuild) now covers the daily chest, missions and levels, Family duel, journal guides (SOAP, ACTS) and journal search. Everything on the release plan is done except what waits on others: the family try-out (Mon Nov 30), any more seasonal notes, the final ratings after the try-out, and the one Supabase update when Buddy is done.
 - Thu Nov 26, 2:05 PM CT: Journal brought up to the best journaling apps. Search your journal (every word you type must match: entries, prayers, thanks and Bible thoughts). New "Use a guide" beside "Need an idea?": SOAP (Scripture, Observation, Application, Prayer), ACTS prayer, Three good things, and Looking back on my week; it adds the headings and you write under each. The single final Supabase update is ready for whenever Buddy is done: supabase-final-update.md (5 steps, about 10 minutes), with supabase-setup.sql (now also family duels; tested on a real database, including that nobody can see or change someone else's duel score), study-partner-function.ts and family-admin-function.ts.
 - Thu Nov 26, 1:15 PM CT: Fishing is more true to life. On the cast the rod goes back over his head and forward, and the bobber and hook fly out on a high arc with the line paying out behind them, then land with a splash. The hook sinks under the bobber and everything drifts gently on the water. On a bite the line pulls tight and the bobber is tugged under; reeling in, the fish comes up out of the water on the hook with a splash. When he lands one he stands up first, holds it up high and cheers, then drops it in his bucket, sits back down and casts again. He also never hops straight up from sitting anywhere else: he stands up first, then jumps, cheers, dances or jumps rope. Clip: pictures-fix/buddy-fishing-v3.gif.
@@ -161,7 +162,6 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
 | Redeploy the study-partner function once, when Buddy is perfected | Later, one time | Melissa's plan (Thu Nov 26): one Supabase update after all of Buddy's changes are done. The file is ready: supabase-final-update.md (Buddy's helper, the organizer function and family duels, about 10 minutes). |
-| Final OK on the seasonal backgrounds (all 13, preview sent Wed Nov 25) | Yes | Notes by Mon Nov 30 keep Dec 4; sooner is welcome. |
 | Close pull request #1 on GitHub (handouts) | No, tidy-up | Superseded: every change in it is already live (it went out with v245 and later), and the branch no longer merges cleanly. Closing it loses nothing. On GitHub: Pull requests, #1, Close pull request. Or say "close it" and I will. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
 
@@ -211,7 +211,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Buddy's personality (Melissa, Nov 25): waves when he sees you; in games he celebrates his own wins but is a good sport and cheers his friend's wins too; a little sad when he loses, then perks right up; puts on glasses to be a happy nerd; loves basketball, football and baseball and wears a baseball cap; loves to talk and answer questions | Done (Wed Nov 25) | Sun Nov 29 |
 | Buddy waits calmly (Melissa, Nov 25): sits chill, swings his feet, whistles, leans back; never distracting. More things to tell him to do: eat, exercise, plus the ones that already work (nap, read, write, jump rope, dance, pray and more) | Done (Wed Nov 25) | Sun Nov 29 |
 | Buddy keeps you company (Melissa, Nov 25): writes in his own journal while you're in the Journal; reads along while you read, sometimes with his glasses on, sometimes dozing with his head on his book; tuck him into bed and nudge him awake; told to eat, he uses a fork and spoon and grabs bread, an apple or a drink. Simple, fun props that work without the AI chat | Done (Wed Nov 25) | Sun Nov 29 |
-| Seasonal changes: Melissa's review changes made | Round 2 done (Wed Nov 25); waiting for any more notes | Tue Dec 1 |
+| Seasonal changes: Melissa's review changes made | Done: Melissa's final OK (Thu Nov 26) | Tue Dec 1 |
 | Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Done (Wed Nov 25, six days early): review at https://claude.ai/artifact/9tChW7DK8XW6gks1cBXsyp; six gaps fixed (Learn by heart, On this day, journal prompts, Compare versions, verse pictures, Page width) | Tue Dec 1 (moved up from Wed Dec 2) |
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
 | Gift packet and starter kit finished | Done for v244 (Wed Nov 25): packet rebuilt with the new guide tips; starter kit rebuilt from v244 with the invite-link key shortcut. One last rebuild after the Settings clean-up | Wed Dec 2 (moved up from Thu Dec 3) |
