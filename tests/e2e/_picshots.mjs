@@ -4,7 +4,7 @@ import { chromium, serve } from "./harness.mjs";
 const [out, ...refs] = process.argv.slice(2);
 const site = await serve();
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 768, height: 1024 }, deviceScaleFactor: 2, reducedMotion: "reduce" });
+const ctx = await browser.newContext({ viewport: { width: +(process.env.W || 768), height: 900 }, deviceScaleFactor: 2, reducedMotion: "reduce" });
 await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
 await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: "<p class=\"p\"><span class=\"v\">1</span>In the beginning God created the heavens and the earth.</p>" } } }));
 const page = await ctx.newPage();
