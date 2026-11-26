@@ -3819,3 +3819,33 @@ h4.note-h { font-family: var(--sans); font-size: 1.05em; margin: .8em 0 .2em; }
 @media (prefers-color-scheme: dark) {
   :root[data-style="classic4"]:not([data-theme="light"]) { --bg: #fbfcfe; --surface: #ffffff; --text: #1a2333; --muted: #586377; --line: #dde3ed; --accent: #1f3355; --accent-soft: #e9eef6; --page: #0f192c; --page-deep: #0a1322; color-scheme: light; }
 }
+
+/* ---------- Golden hour (B-97): plum, blush and gold, with a wildflower meadow at sunset ---------- */
+:root[data-style="golden"] {
+  --page: #5a4064; --page-deep: #47314f; --on-page: #fbf3f6; --on-page-muted: #dcc6d8;
+  --bg: #fffafb; --surface: #ffffff; --text: #2e2230; --muted: #6f6070; --line: #efdfe7;
+  --accent: #7d4670; --accent-soft: #f8eaf1; --warm: #b0705a; --gold: #e2b77a; --verse: #a58a9e;
+  --sky-top: #d9cde9; --sky-low: #fbe9df; --far-hill: #c7a0b4;
+  color-scheme: light;
+}
+:root[data-style="golden"] .vine { opacity: .4; } :root[data-style="golden"] .vine .leaf { fill: #b996b6; }
+:root[data-style="golden"] .cl-cross rect { fill: #7d4670; }
+:root[data-style="golden"] .cl-leaf { fill: #b9a2b8; stroke: #94799a; }
+:root[data-style="golden"] .pc-featured, :root[data-style="golden"] .notes-card { border-color: var(--gold); }
+
+/* ---------- Summit (B-98): slate and ember orange, with mountain ridges at dusk ---------- */
+:root[data-style="summit"] {
+  --page: #1c2230; --page-deep: #141925; --on-page: #eef0f4; --on-page-muted: #b3bac8;
+  --bg: #fafafb; --surface: #ffffff; --text: #1c2230; --muted: #5a6172; --line: #e0e3ea;
+  --accent: #a94f22; --accent-soft: #f6ebe4; --warm: #c8622e; --gold: #e0914f; --verse: #8a8f9c;
+  --sky-top: #cfd4de; --sky-low: #f4ece6; --far-hill: #6a6470;
+  color-scheme: light;
+}
+:root[data-style="summit"] .vine { opacity: .3; } :root[data-style="summit"] .vine .leaf { fill: #5a6172; }
+:root[data-style="summit"] .cl-cross rect { fill: #1c2230; }
+:root[data-style="summit"] .cl-leaf { fill: #7d8494; stroke: #5a6172; }
+:root[data-style="summit"] .pc-featured, :root[data-style="summit"] .notes-card { border-color: var(--gold); }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="golden"]:not([data-theme="light"]) { --bg: #fffafb; --surface: #ffffff; --text: #2e2230; --muted: #6f6070; --line: #efdfe7; --accent: #7d4670; --accent-soft: #f8eaf1; color-scheme: light; }
+  :root[data-style="summit"]:not([data-theme="light"]) { --bg: #fafafb; --surface: #ffffff; --text: #1c2230; --muted: #5a6172; --line: #e0e3ea; --accent: #a94f22; --accent-soft: #f6ebe4; color-scheme: light; }
+}
