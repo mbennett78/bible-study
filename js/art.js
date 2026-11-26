@@ -1,6 +1,6 @@
 import { STICKERS, BOOK_ART } from "./stickers.js";
 import { BOOK_BY_ID } from "./books.js";
-import { STORYBOOK, storybookSvg } from "./storybook.js";
+import { STORYBOOK, storybookSvg, lion as sbLion } from "./storybook.js";
 
 // Hand-drawn style illustrations as inline SVG. Colors come from CSS classes
 // (styles.css, "Illustrations"), so each look (Sage, Feminine, Masculine, Animated)
@@ -1144,20 +1144,70 @@ const KIDS_FX = {
   joseph: () => `${fx.birds(14, 1)}${fx.butterfly(240, 56, "#7f6cc8", 3)}`,
 };
 
-// Every other chapter: a sticker-style scene for its book, with three of the book's
-// stickers standing in a meadow, clouds drifting, birds and a butterfly.
-const stickerAt = (id, x, y, s, cls) => STICKERS[id] ? `<g transform="translate(${x - 50 * s} ${y - 100 * s}) scale(${s})"><g class="${cls}">${STICKERS[id][2]}</g></g>` : "";
-function bookScene(book) {
+// Every other chapter: a sticker-style scene for its book. Each sticker goes where it belongs:
+// sun, moon, stars, clouds, doves and rainbows in the sky; mountains and cities on the far
+// hills; people, animals, trees and small things standing on the ground in front. A moon or
+// star (with no sun) makes it a night scene, and a fish jumps out of the water, never the grass.
+// Each sticker's drawn area inside its 100 x 100 frame, so it can be sized and set down exactly.
+const STICKER_BOX = { shepherd: [30, 17, 58, 75], prophet: [27, 12, 57, 82], king: [28, 9, 44, 83], woman: [30, 14, 40, 78], child: [35, 32.5, 30, 59.5], family: [16, 26, 68, 66], lamb: [20.6, 33, 67.4, 53], lion: [18, 16, 64, 64], dove: [18, 18, 76, 51.8], fish: [14, 34.2, 78, 31.5], donkey: [20, 14, 70, 74], camel: [20, 23.2, 70.2, 66.8], sheep2: [13.4, 43.2, 67.6, 38.1], tree: [20, 10, 60, 82], olive: [14, 13.5, 77.3, 68.5], flower: [22.8, 14, 54.4, 78], sun: [10, 10, 80, 80], moon: [17, 16, 67, 63.4], rainbow: [6, 36, 88, 44], mountain: [6, 30, 88, 56], fire: [25.1, 12, 51.1, 80], bush: [13.3, 20, 72.5, 64], cloud: [9.5, 30.8, 80.7, 39.2], cross: [22, 8, 56, 84], tomb: [8, 24, 86, 62], scroll: [14, 16, 72, 68], bible: [16, 16, 68, 68], tablets: [10, 18, 81.9, 70], crown: [10, 20, 80, 64], lamp: [14, 26, 83.2, 47.1], jar: [20.6, 20, 65.4, 66], bread: [12, 38, 82, 48], basket: [14, 20, 72, 66], trumpet: [10, 26, 80, 56], city: [8, 24, 84, 64], star: [6, 6, 88, 88], angel: [18.4, 11.5, 73.6, 80.5] };
+// How tall each one stands in a 90-high scene, so a crown is smaller than a king and a lamb smaller than a tree.
+const TALL = { shepherd: 34, prophet: 34, king: 34, woman: 32, child: 24, family: 30, lamb: 14, lion: 18, donkey: 24, camel: 28, sheep2: 12, tree: 46, olive: 40, flower: 14, fire: 18, bush: 24, cross: 42, tomb: 26, scroll: 16, bible: 15, tablets: 20, crown: 14, lamp: 10, jar: 16, bread: 10, basket: 15, trumpet: 12, fish: 8, mountain: 24, city: 20, sun: 22, moon: 18, star: 12, cloud: 11, dove: 9, angel: 22, rainbow: 30 };
+const SKY_ITEMS = new Set(["sun", "moon", "star", "cloud", "dove", "rainbow", "angel"]);
+const FAR_ITEMS = new Set(["mountain", "city"]);
+const SMALL_ITEMS = new Set(["scroll", "bible", "tablets", "crown", "lamp", "jar", "bread", "basket", "trumpet"]);
+// Put a sticker with its feet at (x, y), or centered on (x, y) when mid is set, at height h.
+const placeSticker = (id, x, y, h, cls = "", mid = false) => {
+  const b = STICKER_BOX[id], st = STICKERS[id];
+  if (!b || !st) return "";
+  const s = h / b[3], tx = x - (b[0] + b[2] / 2) * s, ty = (mid ? y - (b[1] + b[3] / 2) * s : y - (b[1] + b[3]) * s);
+  return `<g transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${s.toFixed(3)})"><g class="${cls}">${st[2]}</g></g>`;
+};
+const pond = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="30" ry="5.5" fill="#6fb0d4" stroke="#3b2b20" stroke-width="1"/><path d="M${x - 16} ${y - 1} h 9 M ${x + 4} ${y + 1.5} h 10" stroke="#fff" stroke-width="1.1" stroke-linecap="round" opacity=".8"/>`;
+export function bookLayout(book) {
   const ids = BOOK_ART[book] || ["sun", "tree", "lamb"];
+  const sky = ids.filter((i) => SKY_ITEMS.has(i)), far = ids.filter((i) => FAR_ITEMS.has(i));
+  const ground = ids.filter((i) => !SKY_ITEMS.has(i) && !FAR_ITEMS.has(i) && i !== "fish");
+  const night = (sky.includes("moon") || sky.includes("star")) && !sky.includes("sun");
+  return { ids, sky, far, ground, fish: ids.includes("fish"), night };
+}
+// The scene's pieces (no sky gradient), for a 360 x 90 picture. still: no motion.
+export function bookSceneInk(book, still = false) {
+  const { sky, far, ground, fish, night } = bookLayout(book);
   const nt = (BOOK_BY_ID[book]?.testament || "OT") === "NT";
-  const sky = nt ? ["#bfe3f5", "#eef8fb"] : ["#f6dfb6", "#fbf2dd"];
-  const ground = nt ? ["#9bd06f", "#86c25e"] : ["#d9c08a", "#c9ab6e"];
-  const draw = () => `${fx.drift(22, 0)}${fx.drift(14, 12)}${fx.birds(20, 5)}
-    <path d="M0 58 C 70 48, 130 54, 180 52 C 240 50, 300 46, 360 54 L 360 90 L 0 90 Z" fill="${ground[0]}"/>
-    <path d="M0 70 C 90 64, 270 64, 360 70 L 360 90 L 0 90 Z" fill="${ground[1]}"/>
-    ${stickerAt(ids[0], 88, 84, .46, "kf-bounce")}${stickerAt(ids[1], 180, 86, .6, "kf-sway")}${stickerAt(ids[2], 272, 84, .46, "kf-bounce late")}
-    ${fx.butterfly(136, 50, nt ? "#f08ab0" : "#5b8fb9", 2)}${fx.butterfly(226, 44, "#f5c542", 5)}`;
-  return [`Pictures from ${BOOK_BY_ID[book]?.name || "this book"}`, draw, sky];
+  const groundC = night ? ["#5d6b4e", "#4c5a40"] : nt ? ["#9bd06f", "#86c25e"] : ["#d9c08a", "#c9ab6e"];
+  const c = (k) => (still ? "" : k);
+  const skySpots = [[300, 24], [72, 22], [190, 18]];
+  let si = 0, back = "", front = "";
+  for (const id of sky) {
+    if (id === "rainbow") { back += placeSticker(id, 236, 64, TALL.rainbow + 4); continue; } // its ends rest on the far hills
+    const [x, y] = skySpots[si++] || [190, 18];
+    back += placeSticker(id, x, y, TALL[id], id === "dove" ? c("kf-bounce") : "", true);
+  }
+  const n = ground.length;
+  const xs = n >= 3 ? [84, 180, 276] : n === 2 ? [112, 248] : [180];
+  const farSpots = n >= 3 ? [[132, 55], [228, 54]] : n === 2 ? [[180, 53], [300, 52]] : [[96, 55], [272, 52]];
+  far.forEach((id, i) => { const [x, y] = farSpots[i]; back += placeSticker(id, x, y, TALL[id]); });
+  ground.forEach((id, i) => {
+    const x = xs[i], y = 84 - (i % 2) * 2;
+    if (id === "water") { front += pond(x, y - 4); if (fish) front += placeSticker("fish", x + 6, y - 14, TALL.fish, c("kf-bounce"), true); return; }
+    if (id === "lion") { front += `<g transform="translate(${x} ${y}) scale(.36)"><g class="${c("kf-bounce")}">${sbLion()}</g></g>`; return; } // a whole lion, not just its face
+    if (SMALL_ITEMS.has(id)) front += `<ellipse cx="${x}" cy="${y}" rx="${TALL[id] * .8}" ry="1.8" fill="#000" opacity=".13"/>`;
+    front += placeSticker(id, x, y, TALL[id] || 20, i === 1 ? c("kf-sway") : c(i ? "kf-bounce late" : "kf-bounce"));
+  });
+  const stars = night ? `<g fill="#fff6c8">${[[30, 12], [120, 8], [160, 30], [230, 14], [340, 34], [20, 40]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1"/>`).join("")}</g>` : "";
+  return `${stars}${night || still ? "" : `${fx.drift(22, 0)}${fx.drift(14, 12)}${sky.includes("dove") ? "" : fx.birds(20, 5)}`}${back}
+    <path d="M0 58 C 70 48, 130 54, 180 52 C 240 50, 300 46, 360 54 L 360 90 L 0 90 Z" fill="${groundC[0]}"/>
+    <path d="M0 70 C 90 64, 270 64, 360 70 L 360 90 L 0 90 Z" fill="${groundC[1]}"/>
+    ${front}${night || still ? "" : `${fx.butterfly(136, 44, nt ? "#f08ab0" : "#5b8fb9", 2)}${fx.butterfly(226, 40, "#f5c542", 5)}`}`;
+}
+export const bookSky = (book) => (bookLayout(book).night ? ["#26325a", "#55628f"] : (BOOK_BY_ID[book]?.testament || "OT") === "NT" ? ["#bfe3f5", "#eef8fb"] : ["#f6dfb6", "#fbf2dd"]);
+// A small still copy of the book's scene for "Setting the stage".
+export function bookThumb(book) {
+  const [a, b] = bookSky(book), id = ++uid;
+  return `<svg viewBox="0 0 360 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${skyG(id, a, b)}<g clip-path="url(#kc${id})"><rect width="360" height="90" fill="url(#kg${id})"/><g class="kids-ink">${bookSceneInk(book, true)}</g></g></svg>`;
+}
+function bookScene(book) {
+  return [`Pictures from ${BOOK_BY_ID[book]?.name || "this book"}`, () => bookSceneInk(book), bookSky(book)];
 }
 
 // The story picture for a chapter; chapters without a story get their book's sticker scene.

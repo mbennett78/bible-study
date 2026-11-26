@@ -56,7 +56,7 @@ try {
   await page.evaluate(() => { window.print = () => { window.__printed = document.querySelector("#printBook").innerHTML; }; });
   await page.click("#printNotes"); await page.waitForTimeout(200); await page.click(".send-sheet [data-how=print]"); await page.waitForTimeout(300);
   const printed = await page.evaluate(() => window.__printed || "");
-  check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("My Notes"), printed.slice(0, 100));
+  check("notes print with heading, date and table", printed.includes("Wednesday class") && printed.includes("note-table") && printed.includes("General Notes"), printed.slice(0, 100));
   // Or send a copy to Google Docs or Drive: a document file with the notes in it.
   await page.click("#printNotes"); await page.waitForTimeout(200);
   const [dl] = await Promise.all([page.waitForEvent("download"), page.click(".send-sheet [data-how=send]")]);

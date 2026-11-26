@@ -13,7 +13,7 @@ import { isScary, checkingOn, comfortLine, propFor, newProp, warmthLevel, learnF
 import { createQuest } from "./quest.js";
 import { createGame } from "./game.js";
 import { pickQuestions, knowledgeRating, bankSize } from "./trivia.js";
-import { THEME_LOOKS, seasonOf, seasonSrc, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip } from "./art.js";
+import { THEME_LOOKS, seasonOf, seasonSrc, flock, seaScene, fishFlourish, classicFlourish, fishStrip, friend, edgeVines, cornerSprig, passageStrip, bookThumb } from "./art.js";
 import { notesFor, sampleChapters, EVIDENCE, ABOUT, sourceText, sourceUrl, MAP_OUTLINES, bookNotesReady, loadBookNotes } from "./notes.js";
 import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
@@ -227,6 +227,11 @@ async function openChapter(book, chapter, { scroll = true } = {}) {
   $("#nextCh span").textContent = next ? refName(next) : "";
   $("#prevCh").onclick = () => prev && openChapter(prev.book, prev.chapter);
   $("#nextCh").onclick = () => next && openChapter(next.book, next.chapter);
+  // The same buttons right under the last verse, so no one has to scroll back up.
+  $("#prevCh2").disabled = !prev; $("#nextCh2").disabled = !next;
+  $("#prevCh2 small").textContent = prev ? refName(prev) : "";
+  $("#nextCh2 small").textContent = next ? refName(next) : "";
+  $("#prevCh2").onclick = $("#prevCh").onclick; $("#nextCh2").onclick = $("#nextCh").onclick;
 
   if (scroll) window.scrollTo(0, 0);
   renderBookIntro(book, chapter);
@@ -1887,14 +1892,14 @@ const ENTRY_KINDS = [
   { kind: "church", label: "Church notes", add: "Church notes", icon: "⛪", ph: "Main points from the lesson, verses mentioned, and one thing to remember this week..." },
   { kind: "class", label: "Bible Class Notes", add: "Bible Class Notes", icon: "🏫", ph: "Your outline or notes for the class: main points, verses to read, questions to ask. Type a verse like John 3:16 and it becomes a link.", notesOnly: true },
   { kind: "study", label: "My Study Path", add: "My Study Path", icon: "🧭", ph: "What you're learning on this study path. Type a verse like John 3:16 and it becomes a link.", notesOnly: true },
-  { kind: "note", label: "My Notes", add: "My Notes", icon: "📝", ph: "Anything you want to keep: a class outline, a list, ideas. Type a verse like Romans 8:28 and it becomes a link.", notesOnly: true },
+  { kind: "note", label: "General Notes", add: "General Notes", icon: "📝", ph: "Anything you want to keep: a class outline, a list, ideas. Type a verse like Romans 8:28 and it becomes a link.", notesOnly: true },
 ];
 // Notes (church, reading, study path and general) live on their own page and are always open.
 // The journal's passcode locks only the private journal: days, prayers and thanks.
 const NOTE_KINDS = ["class", "church", "note", "study", "bible"];
-const NOTE_LABEL = { class: "Bible Class Notes", church: "Church Notes", note: "My Notes", bible: "My Notes", study: "My Study Path" };
+const NOTE_LABEL = { class: "Bible Class Notes", church: "Church Notes", note: "General Notes", bible: "General Notes", study: "My Study Path" };
 const NOTE_FILTERS = ["class", "church", "note", "study"];
-const noteGroup = (k) => (k === "bible" ? "note" : k); // notes written on a chapter count as My Notes
+const noteGroup = (k) => (k === "bible" ? "note" : k); // notes written on a chapter count as General Notes
 const BOX_TONES = [["key", "🔑", "Key point"], ["remember", "💡", "Remember"], ["question", "❓", "Question"], ["prayer", "🙏", "Prayer"]];
 const NOTE_FONTS = [["classic", "Classic"], ["clean", "Clean"], ["hand", "Handwritten"], ["big", "Big print"]];
 const KIND = Object.fromEntries(ENTRY_KINDS.map((k) => [k.kind, k]));
@@ -2484,7 +2489,7 @@ function renderJournalList(justSaved = null) {
     ...store.allDiary().map((d) => ({ type: "diary", at: d.updated, kinds: ["day", ...(d.prayer?.trim() ? ["prayer"] : []), ...(d.gratitude?.trim() ? ["gratitude"] : [])], d })),
     ...store.allJournal().map((j) => ({ type: "chapter", at: j.updated, kinds: ["bible", ...(j.prayer?.trim() ? ["prayer"] : []), ...(j.gratitude?.trim() ? ["gratitude"] : [])], j })),
   ].filter((it) => journalFilter === "all" || it.kinds.includes(journalFilter)).sort((a, b) => String(b.at).localeCompare(String(a.at)));
-  const filters = [["all", "All"], ...ENTRY_KINDS.map((k) => [k.kind, k.label])];
+  const filters = [["all", "All"], ...ENTRY_KINDS.filter((k) => !k.notesOnly).map((k) => [k.kind, k.label])];
   const row = (it) => {
     if (it.type === "entry") {
       const e = it.e, k = KIND[e.kind] || KIND.day;
@@ -3693,7 +3698,7 @@ function renderBookIntro(book, chapter) {
   const row = (label, text) => (text ? `<div class="bi-row"><dt>${label}</dt><dd>${esc(text)}</dd></div>` : "");
   // Closed by default so the Bible text comes first; a one-line taste shows what's inside.
   const teaser = (ch || b.about || "").replace(/^(.{0,80}\S)\s.*$/s, (m, a) => (m.length > 82 ? `${a}…` : m));
-  box.innerHTML = `<summary>${BOOK_ART[book] ? `<span class="bi-art" aria-hidden="true">${BOOK_ART[book].map((id) => stickerSvg(id)).join("")}</span>` : `<span class="bi-icon" aria-hidden="true">📜</span>`}<span><strong>Setting the stage: ${esc(name)}${ch ? ` ${chapter}` : ""}</strong><small>${esc(teaser)}</small></span></summary>
+  box.innerHTML = `<summary>${BOOK_ART[book] ? `<span class="bi-art" aria-hidden="true">${bookThumb(book)}</span>` : `<span class="bi-icon" aria-hidden="true">📜</span>`}<span><strong>Setting the stage: ${esc(name)}${ch ? ` ${chapter}` : ""}</strong><small>${esc(teaser)}</small></span></summary>
     <div class="bi-body">
       ${ch ? `<p class="bi-chapter"><strong>In chapter ${chapter}:</strong> ${esc(ch)}</p>` : ""}
       ${b ? `<p class="bi-about">${esc(b.about)}</p>

@@ -109,6 +109,10 @@
       <details class="book-intro" id="bookIntro" hidden></details>
       <article class="reader" id="reader" aria-live="polite"></article>
       <div id="flourish"></div>
+      <nav class="chapter-nav end-nav" aria-label="Chapter navigation">
+        <button id="prevCh2" aria-label="Previous chapter">‹ Previous<small></small></button>
+        <button id="nextCh2" class="go-next" aria-label="Next chapter">Next chapter ›<small></small></button>
+      </nav>
       <section class="notes-card" id="studyNotes" aria-label="Study notes"></section>
       <div class="reader-actions">
         <button class="mark-read" id="markRead" aria-pressed="false">
@@ -185,7 +189,7 @@
     <!-- My Notes: always open, even when the journal is locked -->
     <section id="view-notes" class="view" aria-label="My Notes" hidden>
       <h1>My Notes</h1>
-      <p class="muted mybible-sub">Bible class notes, church notes, your own notes, and notes on your study path. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
+      <p class="muted mybible-sub">Bible class notes, church notes, general notes, and notes on your study path. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
       <div class="add-entries notes-new">
         <button class="add-entry ae-class" data-new-note="class"><span aria-hidden="true">🏫</span><b>＋ Bible Class Notes</b></button>
         <button class="add-entry ae-church" data-new-note="church"><span aria-hidden="true">⛪</span><b>＋ Church Notes</b></button>
