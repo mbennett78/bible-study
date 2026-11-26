@@ -150,7 +150,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 |---|---|---|
 | Pick five family testers and send them the try-out sheet (https://claude.ai/artifact/MYTB2dxb2uM2ABceERkKh8) | Yes, for a 9 to 10 rating | About 20 minutes each, by Mon Nov 30. Pass back anything they find. |
 | Paste the ESV key into Family organizer tools when it arrives | No | ESV stays hidden until a key is saved. Nothing to do in Supabase. |
-| Redeploy the study-partner function (new `study-partner-function.ts`) | No, optional | Lets Buddy act things out during normal chat, talk about himself, and use his newer, more careful answering (updated Wed Nov 25). Simple commands already work. |
+| Redeploy the study-partner function (new `study-partner-function.ts`, updated Wed Nov 25, 10:40 PM) | No, but recommended | Makes Buddy's replies shorter and more like everyday conversation (not always about church), lets him hand you a flower when asked or when you say something sweet, and act things out during normal chat. Supabase, Edge Functions, study-partner, Code: paste the new file and tap Deploy. |
 | Redeploy the family-admin function (new `family-admin-function.ts`) | No, optional | Turns on "Looks in use" in Family organizer tools. Until then the button explains the step. The family list keeps working either way. |
 
 **Blockers:** none.
