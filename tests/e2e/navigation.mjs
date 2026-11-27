@@ -39,7 +39,7 @@ try {
   await page.click("#chatSheetClose"); await page.waitForTimeout(200);
   // Looks: a drop-down with a picture of the chosen look right under it.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(400);
-  check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 14);
+  check("Settings picks a look from a drop-down", (await page.$$("#lookSelect option")).length === 15);
   await page.evaluate((s) => { document.querySelector(s).closest("details.set-group").open = true; }, "#lookSelect"); await page.waitForTimeout(100);
     await page.selectOption("#lookSelect", "christmas"); await page.waitForTimeout(300);
   check("choosing a look applies it", await page.evaluate(() => JSON.parse(localStorage.getItem("bible-study:v1")).style === "christmas"));

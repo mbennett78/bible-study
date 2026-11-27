@@ -200,7 +200,8 @@ if which == "chapel":
     rip = noise2(W, H, 6, 2, 31)
     refl = refl * (0.92 + 0.12 * rip[..., None])
     depth = np.clip((ys - HZ) / (H - HZ), 0, 1)
-    refl = lerp(refl, col("#34506e"), (depth ** .5 * .6)[..., None])
+    # Blue water all the way along the river, deeper toward the front.
+    refl = lerp(refl, lerp(col("#5f86a8"), col("#2f5478"), depth[..., None]), (.72 + .2 * depth)[..., None])
     refl = lerp(refl, col("#fff4d8"), (np.exp(-((xx * W - SUN[0] - 40) / 70) ** 2) * np.clip((rip - .45) * 4, 0, 1) * .6)[..., None])
     a = np.where(river[..., None], refl, a)
     im = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)); d = ImageDraw.Draw(im, "RGBA")

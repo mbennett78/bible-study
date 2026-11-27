@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Fri Nov 27, 2026, 10:27 AM Central
-**Current version:** v408 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Fri Nov 27, 2026, 3:37 PM Central
+**Current version:** v409 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Fri Nov 27, 3:37 PM CT: The Lighthouse look is in Bible Appearance, approved by Melissa: a painted lighthouse aglow over the waves with a cozy cottage, in earth tones (navy, sage, ochre and brick red). The Chapel painting now has blue water along the whole river; a new preview is out for her OK before it goes in. Picture: pictures-fix/chapel-painting-v4.jpg.
 - Fri Nov 27, 10:27 AM CT: My Notes is now one page that looks like the printed notes (B-101). Every note shows in full with its bold, highlights, verses and pictures, by date, by study or by passage. Tap a note and it lights up with ✏️ Change, 🗑 Delete (tap twice) and 🖨 Print; Change opens it right there in its place. ＋ Add a note sits at the top of the page: pick My notes, Church, Bible class or Study path and write right on the page under Today, while the rest fades back. Also repainted Grandma's Chapel and Lighthouse looks with real brushwork and glow, in the spirit of the paintings Melissa sent (original art, not copies), for her OK. Pictures: pictures-fix/notes-page-1.png, notes-page-2-tapped.png, notes-page-3-new.png, chapel-painting-v2.jpg, lighthouse-painting-v2.jpg.
 - Fri Nov 27, 7:15 AM CT: Previews of two warm, painted looks for Grandma, for Melissa's OK before anyone can pick them: "Chapel" (a little white chapel at evening, glowing windows, a lamp-lit path through gardens; rose, cream and gold) and "Lighthouse" (a lighthouse on a rocky point at dusk, its beam, the keeper's cottage and wildflowers; sea blue and sunset gold). Both are original art, and nothing moves. A picture of the notes-as-one-page idea is ready for her OK too. Pictures: pictures-fix/preview-chapel-lighthouse.png and notes-as-one-page-mockup.png.
 - Fri Nov 27, 7:11 AM CT: Printing notes and journal entries fixed for iPhone and iPad. The phone could open its print window a moment after the app had already put the pages away, so it printed a blank or the app screen. Now the pages stay ready until you're back in the app. Tested for a single note, a journal entry, and Print all my notes with the journal. Find a verse is now a quick pop-up: tap a result and the verse shows right there, with ‹ Back to the results, ✕ to close (your place doesn't move), and an optional 📖 Read the whole chapter.
@@ -280,7 +281,7 @@ Can wait for a post-release Saturday update: more box styles for notes beyond th
 
 | Item | Status | When |
 |---|---|---|
-| B-100: two painted looks for Grandma, Chapel and Lighthouse (Melissa, Nov 27) | Repainted in an oil-painting style like her pictures; new previews sent | Mon Nov 30 |
+| B-100: two painted looks for Grandma, Chapel and Lighthouse (Melissa, Nov 27) | Lighthouse approved and live; Chapel preview with a blue river sent | Mon Nov 30 |
 | B-101: notes as one page like the printed notes, with ＋ to add and Change or Delete on each entry (Melissa, Nov 27) | Done Nov 27 | Tue Dec 1 |
 | B-96: more box and callout styles for notes, beyond the first set in B-85 (Melissa, Nov 26) | Not started | Sat Dec 5 |
 | Weekly updates on Saturday nights through February, starting with the remaining deep study notes; then one update on the last Saturday of each month (Buddy, graphics, ease of use and navigation, media, fact and source checks, study notes and summaries, the Pencil, new features, current design and technology, and a full check that everything still works) | Not started | Every Saturday from Dec 5; monthly from March |
