@@ -39,8 +39,8 @@ try {
 
   // A note.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=notes]").click()); await page.waitForTimeout(400);
-  await page.click('#notesList [data-note="a"]'); await page.waitForTimeout(400);
-  await page.click("#entryPrint"); await page.waitForTimeout(200); await page.click(".send-sheet [data-how=print]");
+  await page.click('#notesList [data-note="a"]'); await page.waitForTimeout(300);
+  await page.click('#notesList [data-print1="a"]'); await page.waitForTimeout(200); await page.click(".send-sheet [data-how=print]");
   await inPrint("a note", ["Abram's call", "Abram"]);
   // All my notes, with the journal.
   await page.evaluate(() => document.querySelector(".tabbar [data-view=notes]").click()); await page.waitForTimeout(300);

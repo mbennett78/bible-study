@@ -3913,3 +3913,39 @@ dialog.quest .q-howto h2 { text-align: center; }
   :root[data-style="chapel"]:not([data-theme="light"]) { --bg: #fffbf6; --surface: #ffffff; --text: #2f2428; --muted: #6e5e62; --line: #eddfd8; --accent: #7e4656; --accent-soft: #f7ebe9; color-scheme: light; }
   :root[data-style="lighthouse"]:not([data-theme="light"]) { --bg: #fbfcfd; --surface: #ffffff; --text: #1e2b33; --muted: #566670; --line: #dde6ec; --accent: #2a5268; --accent-soft: #e8f0f4; color-scheme: light; }
 }
+
+/* ---------- My Notes as one page, like the printed notes ---------- */
+.notes-by { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.notes-by button { font: inherit; font-size: .95rem; padding: 8px 14px; min-height: 42px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.notes-by button[aria-pressed="true"] { background: var(--accent, #8a6d4e); border-color: var(--accent, #8a6d4e); color: #fff; font-weight: 600; }
+.notes-page { position: relative; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 2px 10px rgba(0, 0, 0, .08), 0 0 0 4px color-mix(in srgb, var(--surface) 60%, transparent); padding: 14px 16px 22px 26px; margin: 12px 0 24px; }
+.notes-page::before { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; border-left: 1.5px solid color-mix(in srgb, #d9826e 55%, transparent); pointer-events: none; }
+.np-plus { display: flex; align-items: center; gap: 10px; margin: 2px 0 8px; font-weight: 600; color: var(--accent, #8a6d4e); }
+.np-plus::before, .np-plus::after { content: ""; flex: 1; border-top: 1.5px dashed color-mix(in srgb, var(--accent, #8a6d4e) 45%, transparent); }
+.np-plus span { border: 1.5px solid var(--gold, #c9a86a); border-radius: 99px; padding: 5px 14px; background: var(--surface); }
+.np-kinds { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 0 10px; }
+.np-kind { font: inherit; font-size: .95rem; padding: 8px 6px; white-space: nowrap; min-height: 44px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.np-kind:active { transform: scale(.97); }
+.notes-page.writing .np-kinds, .notes-page.writing .np-plus { display: none; }
+.notes-page.writing #notesList, .notes-page.writing #notesRange { opacity: .45; }
+.notes-page.writing #notesList .np-edit { opacity: 1; }
+.notes-page.writing #notesEditor:not(:empty)::before { content: attr(data-today); display: block; padding-left: 20px; font-size: .8rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin: 2px 0 6px; }
+.notes-page #notesEditor, .notes-page .np-edit { margin: 4px -12px 12px -20px; }
+.notes-page #notesEditor:empty { margin: 0; }
+.notes-page .nl-day { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; margin: 18px 0 4px; }
+.notes-page .note-card { background: none; border: 0; border-radius: 0; padding: 2px 8px 8px; margin: 0 -8px 2px; border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+.notes-page .note-card:last-child { border-bottom: 0; }
+.notes-page .note-card.tapped { border-radius: 10px; background: color-mix(in srgb, var(--gold, #c9a86a) 12%, var(--surface)); outline: 2px solid var(--gold, #c9a86a); border-bottom-color: transparent; }
+.notes-page .note-card.just-saved { box-shadow: none; background: color-mix(in srgb, var(--accent, #8a6d4e) 7%, transparent); }
+.notes-page .nc-open { display: block; padding: 8px 0 2px; }
+.notes-page .nc-open > * { display: block; }
+.notes-page .nc-title { font-family: var(--serif); font-weight: normal; font-size: 1.15rem; }
+.notes-page .nc-snip { font-size: 1rem; line-height: 1.55; margin: 4px 0; }
+.notes-page .nc-snip p { margin: 0 0 6px; }
+.notes-page .nc-snip .ee-pics, .notes-page .note-card > .ee-pics { margin: 6px 0; }
+.np-saved { margin: 0 0 2px; font-size: .85rem; font-weight: 600; color: var(--accent, #8a6d4e); }
+.np-acts[hidden] { display: none; }
+.np-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+.np-acts button { font: inherit; font-size: .95rem; padding: 8px 14px; min-height: 44px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.np-acts .np-del { color: #9b3b2e; }
+.np-acts .np-del[data-sure="1"] { background: #9b3b2e; color: #fff; border-color: #9b3b2e; }

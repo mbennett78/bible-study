@@ -42,7 +42,7 @@ try {
   await page.click("#entrySave"); await page.waitForTimeout(400);
   const card = await page.textContent("#notesList");
   check("the saved note is listed under its date with its heading", card.includes("Wednesday class") && /day,/.test(await page.textContent("#notesList .nl-day")), card.slice(0, 120));
-  check("the list links the verses", (await page.$$("#notesList .nc-snip .ref-link")).length === 2);
+  check("the page links the verses, and shows the table", (await page.$$("#notesList .nc-snip > p .ref-link")).length === 2 && Boolean(await page.$("#notesList .nc-snip .note-table")), "the words link both verses, and the table shows in place");
   await page.click("#notesList .nc-snip .ref-link"); await page.waitForTimeout(800);
   check("tapping a verse shows it without leaving notes", (await page.textContent(".peek-sheet")).includes("JHN.3 verse 16") && await page.isVisible("#view-notes"));
   await page.click(".peek-sheet [data-peek-go]"); await page.waitForTimeout(1000);

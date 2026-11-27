@@ -202,20 +202,23 @@
     <!-- My Notes: always open, even when the journal is locked -->
     <section id="view-notes" class="view" aria-label="My Notes" hidden>
       <h1>My Notes</h1>
-      <p class="muted mybible-sub">Bible class notes, church notes, general notes, and notes on your study path. Each one is dated and has a heading. Type a verse like John 3:16 and it becomes a link that opens the passage. Notes stay open even if your journal has a passcode.</p>
-      <div class="add-entries notes-new">
-        <button class="add-entry ae-class" data-new-note="class"><span aria-hidden="true">🏫</span><b>＋ Bible Class Notes</b></button>
-        <button class="add-entry ae-church" data-new-note="church"><span aria-hidden="true">⛪</span><b>＋ Church Notes</b></button>
-        <button class="add-entry ae-note" data-new-note="note"><span aria-hidden="true">📝</span><b>＋ My Notes</b></button>
-        <button class="add-entry ae-study" data-new-note="study"><span aria-hidden="true">🧭</span><b>＋ My Study Path</b></button>
-      </div>
-      <div class="entry-host" id="notesEditor"></div>
+      <p class="muted mybible-sub">All your notes on one page, like they look printed. Tap ＋ to write a new one right on the page. Tap a note to change it, delete it or print it. Type a verse like John 3:16 and it becomes a link. Notes stay open even if your journal has a passcode.</p>
       <label class="notes-find"><span class="sr-only">Search my notes</span><input id="notesSearch" type="search" placeholder="🔍 Search my notes" autocomplete="off"></label>
       <div class="journal-filter notes-filter" id="notesFilter" role="group" aria-label="Show"></div>
-      <p class="notes-range muted small-print" id="notesRange"></p>
-      <label class="notes-by">Show my notes <select id="notesBy" aria-label="Show my notes"><option value="date">by date, newest first</option><option value="study">by Bible study</option><option value="passage">by passage, in Bible order</option></select></label>
-      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print all my notes</button><label class="print-with"><input type="checkbox" id="printWithJournal"> Include my journal entries</label><button type="button" class="small" id="chooseNotes" hidden>☑ Choose which to print</button><span class="muted small-print">Tap a note to read it, change it or delete it. To print, pick a kind, search, or choose notes; you can look at the pages first, and print in color or black and white, or save a PDF or send it to Google Docs.</span></div>
-      <div id="notesList"></div>
+      <div class="notes-by" id="notesBy" role="group" aria-label="Show my notes"><button type="button" data-by="date" aria-pressed="true">By date</button><button type="button" data-by="study" aria-pressed="false">By study</button><button type="button" data-by="passage" aria-pressed="false">By passage</button></div>
+      <div class="row notes-print-row"><button type="button" class="small" id="printNotes" hidden>🖨 Print all my notes</button><label class="print-with"><input type="checkbox" id="printWithJournal"> Include my journal entries</label><button type="button" class="small" id="chooseNotes" hidden>☑ Choose which to print</button></div>
+      <div class="notes-page" id="notesPage">
+        <p class="np-plus" aria-hidden="true"><span>＋ Add a note</span></p>
+        <div class="np-kinds notes-new" role="group" aria-label="Add a note">
+          <button type="button" class="np-kind" data-new-note="note"><span aria-hidden="true">📝</span> My notes</button>
+          <button type="button" class="np-kind" data-new-note="church"><span aria-hidden="true">⛪</span> Church</button>
+          <button type="button" class="np-kind" data-new-note="class"><span aria-hidden="true">🏫</span> Bible class</button>
+          <button type="button" class="np-kind" data-new-note="study"><span aria-hidden="true">🧭</span> Study path</button>
+        </div>
+        <div class="entry-host np-new" id="notesEditor"></div>
+        <p class="notes-range muted small-print" id="notesRange"></p>
+        <div id="notesList"></div>
+      </div>
     </section>
 
     <!-- Study Path -->

@@ -1634,7 +1634,7 @@ function buddyNerd() { if (Date.now() - nerdAt < 120e3 || Math.random() < 0.4) r
 // When they write, sometimes he pulls out his own paper and pencil. Not every time.
 let writeAt = Date.now();
 document.addEventListener("input", (e) => {
-  if (!e.target.closest?.("#entryEditor, #notesEditor, #chapterEntryHost")) return;
+  if (!e.target.closest?.("#entryEditor, #notesEditor, #chapterEntryHost, .np-edit")) return;
   if (Date.now() - writeAt < 180e3) return;
   writeAt = Date.now();
   if (Math.random() < 0.5) buddy.writing();
@@ -2883,7 +2883,7 @@ function defaultHeading(e) {
   if (e.ref) return `Notes on ${keyRef(e.ref).name}`;
   return e.created ? `Note, ${fmtDate(e.created)}` : "A short heading, like Sunday school outline";
 }
-let notesFilter = "all";
+let notesFilter = "all", notesBy = "date", tappedNote = null;
 function renderNotesList(justSaved = null) {
   const el = $("#notesList");
   if (!el) return;
@@ -2896,7 +2896,9 @@ function renderNotesList(justSaved = null) {
   if (!list.length) { el.innerHTML = `<p class="empty">${all.length ? "No notes match." : "No notes yet. Tap one of the buttons above to start one. Every note is dated, and you can give it a heading so it's easy to find."}</p>`; return; }
   let lastDay = "";
   // Show by date (newest first), by Bible study, or by passage (in Bible order).
-  const by = $("#notesBy")?.value || "date";
+  const by = notesBy;
+  // Each note in full, as it looks printed: the words with their formatting, verses and pictures.
+  const para = (t) => linkRefs(esc(t)).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
   const groupOf = (e) => by === "study" ? (e.kind === "study" && PATH_BY_ID[e.path] ? `${PATH_BY_ID[e.path].name} study` : NOTE_LABEL[noteGroup(e.kind)] || NOTE_LABEL[e.kind] || "Notes")
     : by === "passage" ? (notePassage(e)?.name || "No passage named") : dayLabel(dayOf(e.created));
   const order = (e) => { const r = notePassage(e); return r ? bookIndex(r.book) * 1000 + r.chapter : 1e9; };
@@ -2907,18 +2909,44 @@ function renderNotesList(justSaved = null) {
     const head = d !== lastDay ? `<h3 class="nl-day">${by === "passage" ? "📖 " : by === "study" ? "🧭 " : ""}${esc(d)}</h3>` : "";
     lastDay = d;
     const k = KIND[e.kind];
-    const words = (e.text || "").split("\n").filter((l) => !TAG_LINE.test(l)).join("\n").trim();
-    const snip = words.length > 220 ? `${words.slice(0, 220).replace(/\S*$/, "")}…` : words;
+    const body = e.text?.trim() ? paraInk(e.text, e.pics, para) : "";
+    const open = e.id === tappedNote;
     const refs = scanRefs(`${e.passage || ""}`).concat(e.ref && e.kind !== "church" && e.kind !== "class" ? [{ ...keyRef(e.ref), verse: 0, end: 0, name: keyRef(e.ref).name }] : []);
-    return `${head}<article class="note-card nk-${e.kind}${e.id === justSaved ? " just-saved" : ""}">
+    return `${head}<article class="note-card np-entry nk-${e.kind}${e.id === justSaved ? " just-saved" : ""}${open ? " tapped" : ""}" data-entry-id="${e.id}">
       ${choosing ? `<label class="nc-pick"><input type="checkbox" data-pick="${e.id}" ${picked.has(e.id) ? "checked" : ""}> Print this one</label>` : ""}
-      <button type="button" class="nc-open" data-note="${e.id}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}${e.kind === "study" && PATH_BY_ID[e.path] ? `<small class="nc-path">${esc(PATH_BY_ID[e.path].name)} path</small>` : ""}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}<span class="go" aria-hidden="true">›</span></button>
+      <button type="button" class="nc-open" data-note="${e.id}" aria-expanded="${open}"><span class="nc-kind">${k.icon} ${esc(NOTE_LABEL[e.kind])} · ${esc(timeOf(e.created))}${e.kind === "study" && PATH_BY_ID[e.path] ? `<small class="nc-path">${esc(PATH_BY_ID[e.path].name)} path</small>` : ""}</span><strong class="nc-title">${esc(e.title || defaultHeading(e))}</strong>${e.speaker ? `<span class="nc-sub">${esc(e.speaker)}</span>` : ""}</button>${e.id === justSaved ? `<p class="np-saved" role="status">Saved ✓</p>` : ""}
       ${refs.length ? `<p class="nc-refs">${refs.map((r) => refButton(r)).join(" ")}</p>` : ""}
-      ${snip ? `<p class="nc-snip nf-${esc(e.font || "classic")}">${inlineHtml(linkRefs(esc(snip).replace(/^## (.*)$/gm, "**$1**"))).replace(/\n/g, "<br>")}</p>` : ""}
-      ${(e.quotes?.length || e.pics?.length) ? `<p class="nc-extras">${[e.quotes?.length && `📖 ${e.quotes.length} verse${e.quotes.length === 1 ? "" : "s"}`, e.pics?.some((p) => p.t === "table") && "▦ table", e.pics?.some((p) => p.t === "chart") && "📊 chart", e.pics?.some((p) => p.t === "photo") && "📷 photo", e.pics?.some((p) => p.t === "ink") && "✏️ handwriting", e.pics?.some((p) => p.t === "sticker") && e.pics.filter((p) => p.t === "sticker").slice(0, 4).map((p) => stickerSvg(p.id, "mini-sticker")).join("")].filter(Boolean).join(" · ")}</p>` : ""}
+      ${(e.quotes || []).map((q, i) => quoteCardHtml(q, i, false)).join("")}
+      ${body ? `<div class="nc-snip nf-${esc(e.font || "classic")}">${body}</div>` : ""}
+      ${loosePics(e).length ? `<div class="ee-pics">${loosePics(e).map((pc, i) => picHtml(pc, i, false)).join("")}</div>` : ""}
+      <div class="np-acts" ${open ? "" : "hidden"}><button type="button" data-change="${e.id}">✏️ Change</button><button type="button" class="np-del" data-del="${e.id}">🗑 Delete</button><button type="button" data-print1="${e.id}">🖨 Print</button></div>
     </article>`;
   }).join("");
-  el.querySelectorAll("[data-note]").forEach((b) => b.addEventListener("click", () => openEntry({ id: b.dataset.note }, $("#notesEditor"))));
+  // Tap a note to pick it: it lights up with Change, Delete and Print. Tap it again to put them away.
+  const pick = (id) => {
+    tappedNote = tappedNote === id ? null : id;
+    el.querySelectorAll(".np-entry").forEach((a) => { const on = a.dataset.entryId === tappedNote; a.classList.toggle("tapped", on); a.querySelector(".np-acts").hidden = !on; a.querySelector("[data-note]").setAttribute("aria-expanded", String(on)); const d = a.querySelector("[data-del]"); d.dataset.sure = ""; d.textContent = "🗑 Delete"; });
+  };
+  el.querySelectorAll("[data-note]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.note)));
+  el.querySelectorAll(".np-entry").forEach((a) => a.addEventListener("click", (ev) => { if (!ev.target.closest("button, a, input, label, .ref-link, .np-edit")) pick(a.dataset.entryId); }));
+  // ✏️ Change opens the note right there on the page, in its place.
+  el.querySelectorAll("[data-change]").forEach((b) => b.addEventListener("click", () => {
+    const art = b.closest(".np-entry");
+    el.querySelectorAll(".np-edit").forEach((x) => x.remove()); el.querySelectorAll(".np-entry[hidden]").forEach((x) => { x.hidden = false; });
+    $("#notesEditor").innerHTML = "";
+    const host = document.createElement("div"); host.className = "entry-host np-edit"; host.id = "notesEditHere";
+    art.after(host); art.hidden = true; tappedNote = null;
+    $("#notesPage")?.classList.add("writing");
+    openEntry({ id: b.dataset.change }, host);
+  }));
+  el.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => {
+    if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Tap again to delete"; return; }
+    store.deleteEntry(b.dataset.del); tappedNote = null;
+    renderNotesList(); renderJournalList();
+    mascotSay("Deleted.");
+  }));
+  el.querySelectorAll("[data-print1]").forEach((b) => b.addEventListener("click", () => { const x = store.entry(b.dataset.print1); if (x) printNotesBook([{ id: b.dataset.print1, ...x }]); }));
+  if (justSaved) el.querySelector(".just-saved")?.scrollIntoView({ block: "center", behavior: "smooth" });
   el.querySelectorAll("[data-pick]").forEach((c) => c.addEventListener("change", () => { if (c.checked) picked.add(c.dataset.pick); else picked.delete(c.dataset.pick); syncPrintButtons(); }));
   syncPrintButtons();
 }
@@ -2967,7 +2995,21 @@ function notePassage(e) {
   const f = scanRefs(`${e.passage || ""} ${e.text || ""}`)[0];
   return f ? { book: f.book, chapter: f.chapter, name: `${BOOK_BY_ID[f.book].name} ${f.chapter}` } : null;
 }
-$("#notesBy")?.addEventListener("change", () => renderNotesList());
+$("#notesBy")?.querySelectorAll("[data-by]").forEach((b) => b.addEventListener("click", () => {
+  notesBy = b.dataset.by;
+  $("#notesBy").querySelectorAll("[data-by]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  renderNotesList();
+}));
+// While a note is being written on the page, the others fade back and "Today" sits above it.
+{
+  const page = $("#notesPage"), host = $("#notesEditor");
+  if (page && host) new MutationObserver(() => {
+    const writing = Boolean(page.querySelector("#notesEditor .entry-editor, #notesEditor #entryText, .np-edit #entryText"));
+    page.classList.toggle("writing", writing);
+    if (!page.querySelector(".np-edit #entryText")) page.querySelectorAll(".np-edit").forEach((x) => { if (!x.querySelector(".ee-saved")) x.remove(); });
+    host.dataset.today = `Today, ${new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}`;
+  }).observe(page, { childList: true, subtree: true });
+}
 function shownNotes() {
   const q = norm($("#notesSearch")?.value || "");
   return store.allEntries().filter((e) => NOTE_KINDS.includes(e.kind) && (notesFilter === "all" || noteGroup(e.kind) === notesFilter)
@@ -2982,7 +3024,10 @@ $("#printNotes")?.addEventListener("click", () => {
   printNotesBook(list, withJournal ? "My Notes and Journal" : notesFilter === "all" ? "My Notes" : NOTE_LABEL[notesFilter]);
 });
 $("#chooseNotes")?.addEventListener("click", () => { choosing = !choosing; if (!choosing) picked.clear(); renderNotesList(); });
-document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => openEntry({ kind: b.dataset.newNote }, $("#notesEditor"))));
+document.querySelectorAll("[data-new-note]").forEach((b) => b.addEventListener("click", () => {
+  if ($("#notesList .np-edit")) renderNotesList();   // only one note open for writing at a time
+  openEntry({ kind: b.dataset.newNote }, $("#notesEditor"));
+}));
 $("#notesSearch")?.addEventListener("input", () => renderNotesList());
 $("#journalSearch")?.addEventListener("input", () => renderJournalList());
 document.querySelectorAll("[data-open-games]").forEach((b) => b.addEventListener("click", () => quest.open()));

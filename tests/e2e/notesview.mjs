@@ -30,9 +30,9 @@ try {
   await page.evaluate(() => document.querySelector(".tabbar [data-view=notes]").click()); await page.waitForTimeout(400);
   const heads = () => page.$$eval("#notesList .nl-day", (h) => h.map((x) => x.textContent.trim()));
   check("by date, newest first", (await heads()).length === 3 && /November 25/.test((await heads())[0]), JSON.stringify(await heads()));
-  await page.selectOption("#notesBy", "passage"); await page.waitForTimeout(200);
+  await page.click("#notesBy [data-by=passage]"); await page.waitForTimeout(200);
   check("by passage, in Bible order", JSON.stringify(await heads()) === JSON.stringify(["📖 Genesis 12", "📖 Romans 8"]), JSON.stringify(await heads()));
-  await page.selectOption("#notesBy", "study"); await page.waitForTimeout(200);
+  await page.click("#notesBy [data-by=study]"); await page.waitForTimeout(200);
   check("by Bible study", (await heads()).some((h) => /Chronological/.test(h)) && (await heads()).some((h) => /Church/.test(h)), JSON.stringify(await heads()));
   await page.evaluate(() => { window.print = () => { window.__printed = document.querySelector("#printBook").innerHTML; window.__cls = document.querySelector("#printBook").className; }; });
   await page.check("#printWithJournal");

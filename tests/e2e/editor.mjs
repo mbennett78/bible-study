@@ -37,7 +37,7 @@ try {
   await page.click("[data-fmt=save]"); await page.waitForTimeout(400);
   check("Save says where it went and how to change it", /Saved ✓/.test(await page.textContent("#notesEditor")));
   check("the list shows the formatting, not the marks", (await page.$eval("#notesList .nc-snip", (p) => p.querySelector("b")?.textContent)) === "Abram" && !/\*\*|==|\[🎨/.test(await page.textContent("#notesList .nc-snip")));
-  await page.click("#notesList [data-note]"); await page.waitForTimeout(400);
+  await page.click("#notesList [data-note]"); await page.click("#notesList [data-change]"); await page.waitForTimeout(400);
   check("opening it again shows it as it looks, picture in place", (await page.$eval("#entryRich", (r) => r.querySelector("b")?.textContent)) === "Abram" && Boolean(await page.$("#entryRich .ee-inl .is-sticker")));
   await page.$eval("#entryRich .ee-inl [data-px]", (b) => b.click()); await page.waitForTimeout(200);
   check("✕ on a picture takes it out of the note", !(await page.inputValue("#entryText")).includes("Picture") && !(await page.$("#entryRich .ee-inl")));
