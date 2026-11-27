@@ -31,6 +31,15 @@ try {
   check("likely sites of Eden are marked", (await page.$$(".map-place.is-eden")).length >= 2);
   await page.$eval(".map-place.is-eden", (g) => g.dispatchEvent(new MouseEvent("click", { bubbles: true }))); await page.waitForTimeout(100);
   check("tapping a place explains it", /Eden/.test(await page.textContent("#ssMapNote")));
+  await page.keyboard.press("Escape"); await page.waitForTimeout(200);
+  // Setting the stage is the overview; it leads to Background (more detail) and the maps.
+  await page.click('#studyBtns [data-sheet="stage"]'); await page.waitForTimeout(400);
+  check("Setting the stage links to Background and to the maps", Boolean(await page.$('.study-sheet [data-sheet-go="history"]')) && Boolean(await page.$('.study-sheet [data-sheet-go="where"]')));
+  await page.click('.study-sheet [data-sheet-go="history"]'); await page.waitForTimeout(300);
+  check("Background has the maps and the deep-dive notes one tap away", /Background/.test(await page.textContent(".study-sheet")) && Boolean(await page.$('.study-sheet [data-sheet-go="where"]')) && Boolean(await page.$('.study-sheet [data-deeper="strongs"]')));
+  await page.click('.study-sheet [data-sheet-go="where"]'); await page.waitForTimeout(400);
+  check("and the maps open from there", (await page.$$(".study-sheet .notes-map .nm-then")).length > 3);
+  await page.keyboard.press("Escape"); await page.waitForTimeout(200);
   // Views: no church names, with links to read more
   await page.$eval('.ref-tile[data-tab="views"]', (b) => b.click()); await page.waitForTimeout(300);
   check("views link straight to their sources", (await page.$$("#refPanel .read-more a")).length >= 4);

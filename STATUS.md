@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 6:36 PM Central
-**Current version:** v404 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Fri Nov 27, 2026, 7:05 AM Central
+**Current version:** v405 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Fri Nov 27, 7:15 AM CT: Checked Melissa's list again with older readers in mind. New: Setting the stage (the overview) now ends with two big buttons, "More detail: Background" and "Maps: When and where"; Background ends with the maps button and the deep-dive notes (Verse by verse, Key words, Scholars and views, Strong's and Sources). Version lists now go NASB, KJV, NIV, then any others; ESV joins when its key is added. An automatic Google Doc that updates itself isn't simple or safe to add (it needs Google sign-in approval from Google); sending all notes to Google Docs stays two taps: My notes, Print all my notes, Send to Google Docs.
 - Fri Nov 27, 6:57 AM CT: Classic 4 (B-92) is final: Papa keeps the evening lake painting. Every must-have from the family try-out is done; only more note box styles (B-96) remain, for Sat Dec 5.
 - Thu Nov 26, 6:35 PM CT: A Quick guide for the family who sign in (B-99): the few things they need, in plain words (getting in, reading, notes and journal, the study buddy, games, making it yours, and what to do when stuck). It's at the top of Settings ("⭐ Quick guide: start here", with Print), above the full guide, and as a 3-page large-print paper copy with pictures: quick-guide.pdf in the project files. Also done: every popup now has an ✕ or Close (B-80), and kid pictures show only in the kids' look (B-93). The whole test suite passes.
 - Thu Nov 26, 3:10 PM CT: Two new looks in Bible Appearance: "Mountains" (slate blue and ember orange, mountain ridges at dusk with a lone hiker) and "Purple Flowers" (plum, blush and gold, a meadow of wildflowers at sunset). Both are original art and nothing moves. Setup's Bible key step is now a guided walk-through for brothers and sisters (Melissa's key is never shared): five plain steps, each with a picture (open api.bible, make the free account, name the app, copy the key, paste it), a 📋 Paste button, and a check that says "It works!". The same steps are in Settings. The invite link still fills in their name, look and Bible versions.

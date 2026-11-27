@@ -39,7 +39,7 @@ try {
   await page.evaluate(() => document.querySelector(".tabbar [data-view=read]").click());
   await page.waitForFunction(() => document.querySelectorAll(".version-switch select option").length > 1, null, { timeout: 9000 }).catch(() => {});
   const top = await page.$$eval(".version-switch select option", (a) => a.map((o) => o.textContent));
-  check("the Read page switch lists NASB, NIV and KJV", JSON.stringify(top) === JSON.stringify(["NASB 2020", "NIV", "KJV"]), JSON.stringify(top));
+  check("the Read page switch lists NASB, KJV and NIV, in that order", JSON.stringify(top) === JSON.stringify(["NASB 2020", "KJV", "NIV"]), JSON.stringify(top));
   check("a version the plan lists but won't open is left out", !top.includes("NLT"));
   const mine = await page.$$eval("#myVersion option", (a) => a.map((o) => o.textContent));
   check("Settings, under You, lists exactly the same versions", JSON.stringify(mine) === JSON.stringify(top), JSON.stringify(mine));

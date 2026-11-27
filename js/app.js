@@ -35,7 +35,7 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 // High contrast: black (or white, in dark mode) words and stronger lines, whatever the look.
 const MAX_EXTRA_BIBLES = 8; // extra versions on the reader's switch, beside the NASB and ESV
 // The versions turned on for the family the first time the plan's list is loaded, best known first.
-const FAVORITE_VERSIONS = [/NASB|New American Standard/i, /^NIV|New International/i, /^KJV$|^King James/i, /NKJV|New King James/i, /^NLT|New Living/i, /^CSB|Christian Standard/i, /^AMP|Amplified/i, /^ASV|American Standard Version/i, /^WEB|World English/i];
+const FAVORITE_VERSIONS = [/NASB|New American Standard/i, /^KJV$|^King James/i, /^NIV|New International/i, /NKJV|New King James/i, /^NLT|New Living/i, /^CSB|Christian Standard/i, /^AMP|Amplified/i, /^ASV|American Standard Version/i, /^WEB|World English/i];
 const CONTRAST_VARS = ["--text", "--muted", "--line", "--verse"];
 function applyContrast() {
   const root = document.documentElement;
@@ -4186,12 +4186,15 @@ function noteItemsHtml(n, items) {
   const more = (ids) => (ids?.length ? `<p class="read-more"><span>Sources:</span> ${ids.filter((k) => n.sources[k]).map((k) => `<a href="${esc(sourceUrl(n.sources[k]))}" target="_blank" rel="noopener">${esc(sourceText(n.sources[k]).split(/ \(|, (?=\d)/)[0].replace(/\.$/, ""))} ↗</a>`).join(" · ")}</p>` : "");
   return items.map((it) => `<div class="note-item"><div class="note-head">${it.ref ? `<span class="vref">${esc(it.ref)}</span>` : ""}<strong>${esc(it.head || "")}</strong>${evTag(it.ev)}</div>${String(it.text || "").split("\n\n").map((x) => `<p>${linkRefs(esc(x))}</p>`).join("")}${more(it.src)}</div>`).join("") + (srcKeys.length ? "" : "");
 }
-function goDeeper(n, skip) {
-  const opts = [["verses", "📖", "Verse by verse"], ["words", "✍️", "Key words in the Hebrew or Greek"], ["views", "🎓", "Scholars and views"], ["strongs", "א", "Strong's concordance"]]
-    .filter(([id]) => id !== skip && (id === "strongs" || (id === "words" ? n?.sections.some((x) => x.lang) : n?.sections.some((x) => x.id === id))));
-  return opts.length ? `<div class="ss-deeper"><h3>Want to go deeper?</h3><p class="muted small-print">These are below the Bible text too.</p>${opts.map(([id, ic, l]) => `<button type="button" class="small" data-deeper="${id}">${ic} ${esc(l)}</button>`).join(" ")}</div>` : "";
+function goDeeper(n, skip, sheets = []) {
+  const SHEET_LINKS = { history: ["🏛️", "More detail: Background"], where: ["🧭", "Maps: When and where"] };
+  const links = sheets.map((k) => `<button type="button" class="big-link" data-sheet-go="${k}">${SHEET_LINKS[k][0]} ${esc(SHEET_LINKS[k][1])} ›</button>`).join("");
+  const opts = [["verses", "📖", "Verse by verse"], ["words", "✍️", "Key words in the Hebrew or Greek"], ["views", "🎓", "Scholars and views"], ["strongs", "א", "Strong's concordance"], ["sources", "📚", "Sources"]]
+    .filter(([id]) => id !== skip && (id === "strongs" || (id === "sources" ? Object.keys(n?.sources || {}).length : id === "words" ? n?.sections.some((x) => x.lang) : n?.sections.some((x) => x.id === id))));
+  return (links ? `<div class="ss-links">${links}</div>` : "") + (opts.length ? `<div class="ss-deeper"><h3>Want to go deeper?</h3><p class="muted small-print">These are below the Bible text too.</p>${opts.map(([id, ic, l]) => `<button type="button" class="small" data-deeper="${id}">${ic} ${esc(l)}</button>`).join(" ")}</div>` : "");
 }
 function wireDeeper(body) {
+  body.querySelectorAll("[data-sheet-go]").forEach((b) => b.addEventListener("click", () => openStudySheet(b.dataset.sheetGo)));
   body.querySelectorAll("[data-deeper]").forEach((b) => b.addEventListener("click", () => {
     studySheet.close();
     const { book, chapter } = store.get("last");
@@ -4211,13 +4214,14 @@ function openStudySheet(kind) {
     const src = $("#bookIntro .bi-body");
     const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about, src ? src.innerHTML : `<p>There's no introduction for ${esc(BOOK_BY_ID[book].name)} yet.</p>`);
     body.querySelectorAll("[data-bi-ch]").forEach((x) => x.addEventListener("click", () => { studySheet.close(); openChapter(book, Number(x.dataset.biCh)); }));
+    body.insertAdjacentHTML("beforeend", goDeeper(n, "", ["history", "where"]));
     wireDeeper(body);
   } else if (kind === "history") {
     const sec = n?.sections.find((x) => x.id === "history");
     const lead = intro?.setting ? `<p class="ss-lead"><strong>The setting of ${esc(BOOK_BY_ID[book].name)}:</strong> ${esc(intro.setting)}</p>` : "";
     const era = eraFor(book, chapter);
     const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about,
-      `${lead}${sec ? noteItemsHtml(n, sec.items) : `<p class="ss-lead"><strong>The world around it.</strong> ${esc(era.world)}</p><p class="muted small-print">There's no separate background note for this chapter yet. Setting the stage, and When and where, have more.</p>`}${goDeeper(n)}`);
+      `${lead}${sec ? noteItemsHtml(n, sec.items) : `<p class="ss-lead"><strong>The world around it.</strong> ${esc(era.world)}</p><p class="muted small-print">There's no separate background note for this chapter yet. Setting the stage, and When and where, have more.</p>`}${goDeeper(n, "", ["where"])}`);
     wireDeeper(body);
   } else if (kind === "xref") {
     const body = sheetShell(icon, `${title}: ${refName({ book, chapter })}`, about, `${n?.crossRefs?.length ? `<h3 class="ss-h">Key passages for this chapter</h3><div class="xrefs">${n.crossRefs.map(([k, ref, why]) => `<button type="button" class="xref" data-xk="${k}" data-xname="${esc(ref)}"><strong>${esc(ref)}</strong><span>${esc(why)}</span></button>`).join("")}</div>` : ""}
