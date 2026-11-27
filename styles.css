@@ -917,6 +917,7 @@ body.hide-journal.hide-diary .segments [data-seg="journal"] { display: none; }
 
 /* Keepsake journal book: only the book prints */
 .print-book[hidden] { display: none; }
+@media screen { body.printing .print-book { display: none !important; } }
 @media print {
   body.printing > *:not(#printBook) { display: none !important; }
   body.printing { background: #fff; padding: 0; color: #222; }

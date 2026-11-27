@@ -2649,8 +2649,13 @@ function printNow(html, kind) {
   book.innerHTML = html;
   book.hidden = false;
   document.body.classList.add("printing"); document.documentElement.classList.add("printing");
-  const done = () => { document.body.classList.remove("printing"); document.documentElement.classList.remove("printing"); book.hidden = true; window.removeEventListener("afterprint", done); };
-  window.addEventListener("afterprint", done);
+  // On iPhone and iPad (above all from the Home Screen app) the print window can open after
+  // "afterprint" has already fired, which used to put the pages away too soon and print a blank
+  // or the app screen. So the pages stay ready until the person is back in the app and taps.
+  const tidy = () => { document.body.classList.remove("printing"); document.documentElement.classList.remove("printing"); book.hidden = true; };
+  const back = () => { window.removeEventListener("afterprint", later); setTimeout(() => document.addEventListener("pointerdown", tidy, { once: true, capture: true }), 600); };
+  const later = () => back();
+  window.addEventListener("afterprint", later, { once: true });
   setTimeout(() => window.print(), 80);
 }
 const BOOK_KINDS = {
@@ -4250,10 +4255,11 @@ function openStudySheet(kind) {
   if (!studySheet.open) studySheet.showModal();
 }
 // A cross-reference read right in the window, with a way back and a way to open it beside your place.
-async function showXref(r, back) {
+async function showXref(r, back, { icon = "🔗", open = `📖 Open ${r.name} beside my place` } = {}) {
   sheetBack = back;
-  const body = sheetShell("🔗", r.name, "", `<div class="ss-passage"><p class="muted small-print">Loading…</p></div>
-    <div class="ee-acts"><button type="button" class="small" data-ss-tab>📖 Open ${esc(r.name)} beside my place</button></div>`);
+  const body = sheetShell(icon, r.name, "", `<div class="ss-passage"><p class="muted small-print">Loading…</p></div>
+    <div class="ee-acts"><button type="button" class="small" data-ss-tab>${esc(open)}</button></div>`);
+  if (!studySheet.open) studySheet.showModal();
   body.querySelector("[data-ss-tab]").addEventListener("click", () => { studySheet.close(); openPassageTab(r.book, r.chapter, r.verse); });
   let words = "";
   try {
@@ -4603,8 +4609,12 @@ function wireFindResults(out) {
   out.querySelectorAll("[data-ref]").forEach((b) => b.addEventListener("click", async () => {
     const [bk, c, v] = b.dataset.ref.split(".");
     if (!BOOK_BY_ID[bk]) return;
+    const from = parseInt(v, 10) || 1, to = parseInt(String(v || "").split("-")[1], 10) || (v ? from : from + 4);
     if (findSheet.open) findSheet.close();
-    openPassageTab(bk, Number(c), parseInt(v, 10) || 0);
+    // The verse shows right here, with ‹ Back to the results, ✕ to close, and the whole chapter
+    // only if they want it (it opens in a tab beside their place).
+    showXref({ book: bk, chapter: Number(c), verse: from, endC: Number(c), endV: to, name: refKeyName(`${bk}.${c}${v ? `.${from}${to > from ? `-${to}` : ""}` : ""}`) },
+      () => { studySheet.close(); openFind(); }, { icon: "🔍", open: "📖 Read the whole chapter" });
   }));
   out.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => { const [bk, c] = b.dataset.ch.split("."); if (findSheet.open) findSheet.close(); if (BOOK_BY_ID[bk] && c) openPassageTab(bk, Number(c)); }));
   out.querySelector("[data-ask]")?.addEventListener("click", () => {

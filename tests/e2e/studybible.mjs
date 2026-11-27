@@ -90,6 +90,14 @@ try {
   await page.fill(".find-sheet #wsInput", "baptism");
   await page.$eval(".find-sheet #wsForm button", (b) => b.click()); await page.waitForTimeout(400);
   check("a topic gives a list of passages", (await page.$$(".find-sheet .find-topic .ws-verse")).length >= 10);
+  const placeBefore = await page.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("bible-study:v1")).last));
+  await page.$eval(".find-sheet .find-topic .ws-verse", (b) => b.click()); await page.waitForTimeout(600);
+  check("tapping a result shows the verse in a quick pop-up", await page.$eval(".study-sheet", (d) => d.open) && !(await page.$eval(".find-sheet", (d) => d.open)) && Boolean(await page.$(".study-sheet .ss-passage")), await page.textContent(".study-sheet").catch(() => "none"));
+  check("with Back, ✕ and an optional Read the whole chapter", Boolean(await page.$(".study-sheet [data-ss-back]")) && Boolean(await page.$(".study-sheet .ws-close")) && /Read the whole chapter/.test(await page.textContent(".study-sheet [data-ss-tab]")));
+  await page.click(".study-sheet [data-ss-back]"); await page.waitForTimeout(300);
+  check("Back returns to the results", await page.$eval(".find-sheet", (d) => d.open) && (await page.$$(".find-sheet .find-topic .ws-verse")).length >= 10);
+  await page.click(".find-sheet .ws-close"); await page.waitForTimeout(200);
+  check("and ✕ closes it with your place unchanged", !(await page.$eval(".find-sheet", (d) => d.open)) && await page.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("bible-study:v1")).last)) === placeBefore);
   check("no page errors", !errors.length, errors.join(" | "));
   await ctx.close();
 } catch (e) { stopped = e; } finally {
