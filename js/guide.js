@@ -73,6 +73,53 @@ export const GUIDE = [
   ] },
 ];
 
+// The quick guide (B-99): the few things the family needs, for those who sign in with the family
+// account (no keys, no setup). Short, plain and in the order people meet things.
+export const QUICK_GUIDE = [
+  { icon: "🔑", title: "Getting in", tips: [
+    `On your iPhone or iPad, open Safari and go to ${SITE || "your family's Bible Study web address"}.`,
+    "Sign in with your email and the starter password you were given. Then pick your own password.",
+    "Keep it like an app: tap the Share button (the square with an arrow), then Add to Home Screen.",
+  ] },
+  { icon: "📖", title: "Reading", tips: [
+    "Tap Read at the bottom. To pick a book and chapter, tap the name at the top (like Genesis 12). The arrows beside it go to the next or last chapter.",
+    "The app always remembers your place. Close it any time; it opens right where you left off.",
+    "Bible only shows just the words. Study Bible adds four buttons above the passage: Setting the stage, Background, Cross-references, and When and where (with maps).",
+    "Jump to another passage opens a second passage in a tab, so your place stays one tap away.",
+    "▶ Read aloud reads the chapter to you. More ▾ has the speed and a sleep timer.",
+    "🔍 at the top finds a verse: type a few words you remember, or a reference like John 3:16.",
+  ] },
+  { icon: "📝", title: "Notes and journal", tips: [
+    "For notes, tap ☰ at the top left, then 📝 My notes, then ＋ My Notes (or Bible Class or Church Notes). Journal at the bottom is for your day, prayers and thanks.",
+    "The bar at the top of the writing box has B (bold), I, U, 🖍 highlight, H (heading) and lists. ＋ Add puts in pictures, boxes and drawings where your cursor is.",
+    "Tap 💾 Save when you're done. ⌨︎ Done puts the keyboard away.",
+    "On iPad, if the keyboard shrinks to a small floating one, spread two fingers on it to make it full size again.",
+    "Your notes are listed by date, by Bible study or by passage. Tap one to read, change or delete it. A 📝 shows on any passage you've written about.",
+    "🖨 Print, PDF or Google Docs prints a note, or sends it. You can choose color or black and white, and look at it first.",
+  ] },
+  { icon: "🙂", title: "Your study buddy", tips: [
+    "The little stick figure is your study buddy. Tap him to ask any Bible question in your own words.",
+    "If he's too chatty, quiet him or turn him off in Settings, under Buddy and decorations.",
+  ] },
+  { icon: "🎲", title: "Games", tips: [
+    "Bible Spin is on Home and in the ☰ menu. Play alone, with family on one device, or against your buddy.",
+    "Not sure how? Tap ❓ How to play on the Bible Spin screen.",
+  ] },
+  { icon: "⚙️", title: "Make it yours", tips: [
+    "Settings, Bible Appearance: pick a look (Classic, Mountains, Purple Flowers and more).",
+    "Settings, Reading and listening: bigger words, bigger buttons and high contrast.",
+  ] },
+  { icon: "❓", title: "When you're stuck", tips: [
+    "Tap ❓ at the top of any screen for tips about that screen.",
+    "Every popup has an ✕ or Close. Nothing you do loses your place.",
+    "Still stuck? Ask your buddy, or call the person who gave you the app.",
+  ] },
+];
+export function quickGuideHtml(esc) {
+  return `<h1>Family Bible Study: Quick Guide</h1>
+${QUICK_GUIDE.map((g) => `<h2>${g.icon} ${esc(g.title)}</h2><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`).join("\n")}`;
+}
+
 // The guide as plain HTML for printing or sending as a document.
 export function guideHtml(esc) {
   return `<h1>Family Bible Study: User Guide</h1>

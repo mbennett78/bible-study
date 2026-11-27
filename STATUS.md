@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Thu Nov 26, 2026, 3:10 PM Central
-**Current version:** v403 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Thu Nov 26, 2026, 6:36 PM Central
+**Current version:** v404 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Thu Nov 26, 6:45 PM CT: A Quick guide for the family who sign in (B-99): the few things they need, in plain words (getting in, reading, notes and journal, the study buddy, games, making it yours, and what to do when stuck). It's at the top of Settings ("⭐ Quick guide: start here", with Print), above the full guide, and as a 3-page large-print paper copy with pictures: quick-guide.pdf in the project files. Also done: every popup now has an ✕ or Close (B-80), and kid pictures show only in the kids' look (B-93). The whole test suite passes.
 - Thu Nov 26, 3:10 PM CT: Two new looks in Bible Appearance: "Mountains" (slate blue and ember orange, mountain ridges at dusk with a lone hiker) and "Purple Flowers" (plum, blush and gold, a meadow of wildflowers at sunset). Both are original art and nothing moves. Setup's Bible key step is now a guided walk-through for brothers and sisters (Melissa's key is never shared): five plain steps, each with a picture (open api.bible, make the free account, name the app, copy the key, paste it), a 📋 Paste button, and a check that says "It works!". The same steps are in Settings. The invite link still fills in their name, look and Bible versions.
 - Thu Nov 26, 3:05 PM CT: Inviting a brother or sister (B-95). In Settings, Family organizer tools, "Invite a brother or sister" makes a link that sets up their name and the look you pick (any look now, including Classic 4). Your Bible key is never in the link, because API.Bible's terms don't allow sharing one. When they open it, the app welcomes them by name and "Show me the steps" takes them straight to getting their own free key (about 5 minutes). Links sent earlier still work. The starter kit's setup notes say the same.
 - Thu Nov 26, 3:02 PM CT: Bible Spin has a "❓ How to play, how to win and how to get better" button on its home screen (B-94). In plain words: each turn (spin, answer before the candle burns down, two right in a kind wins its jewel); how to win solo, with family, against Buddy and in a Family duel; the lamp, streaks, bonus round, helps, the daily chest and missions; how to get better; and what each level means (Seeker to Wise elder, with the right answers each one takes).
@@ -192,7 +193,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | B-82 | Plain explanations: what Verse by verse is and whose views it gives, and what the By the numbers figures mean | Done (Thu Nov 26, v396) | Fri Nov 27 |
 | B-83 | Where the deep-dive research lives, in plain words in the user guide (and the buttons point there) | Done (Thu Nov 26, v396) | Fri Nov 27 |
 | B-84 | Find a verse docked in the top toolbar, one tap from anywhere | Done (Thu Nov 26, v396) | Fri Nov 27 |
-| B-80 | An X or Back on every popup and resource, and always a way back to where you were | In progress (menus, the picker and the new study sheets done) | Sat Nov 28 |
+| B-80 | An X or Back on every popup and resource, and always a way back to where you were | Done (Thu Nov 26, v404): every popup has ✕ or Close | Sat Nov 28 |
 | B-85 | Notes and journal editor: every option inside it (bold, italic, highlight colors, headings, lists, pictures, icons, boxes); pictures and icons land in the note where the cursor is, so you see where they go | Done (Thu Nov 26, v396) | Sat Nov 28 |
 | B-86 | Keyboard: a clear button to put the keyboard away while writing; on iPad, how to make the small floating keyboard full size again | Done (Thu Nov 26, v396) | Sat Nov 28 |
 | B-87 | A clear Save entry button; a saved entry is the same one that prints, saves as PDF and goes to Google Docs | Done (Thu Nov 26, v396) | Sat Nov 28 |
@@ -201,12 +202,12 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | B-90 | Print in color or black and white, with a preview first | Done (Thu Nov 26, v396) | Sun Nov 29 |
 | B-91 | A small note icon on any passage (and verse) you've written a note about | Done (Thu Nov 26, v396) | Sun Nov 29 |
 | B-92 | Classic appearance 4 for Papa: dark blue with a calm landscape from a classic painting, not animated | In the app (v398) for a look; waiting on Melissa: keep this painting or swap in a classic one she uploads | Mon Nov 30 |
-| B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Not started | Mon Nov 30 |
+| B-93 | Kid-style animated graphics only in the kids' section; grown-up screens stay calm | Done (Thu Nov 26, v404): storybook pictures and the corner friend only in the kids' look | Mon Nov 30 |
 | B-94 | Bible Spin: how to play, how to win, how to get better, and what your level means, in plain words | Done (Thu Nov 26, v400) | Mon Nov 30 |
 | B-95 | Sibling invite link: each sibling sets up their own free API.Bible key, with plain steps (API.Bible's terms don't allow sharing a key) | Done (Thu Nov 26, v402): guided key step in setup | Mon Nov 30 |
 | B-97 | A fun, stylish look with purple flowers (original art, not kiddie) | Done (Thu Nov 26, v402): "Purple Flowers" | Tue Dec 1 |
 | B-98 | A fun, stylish look with mountains (original art, not kiddie) | Done (Thu Nov 26, v402): "Mountains" | Tue Dec 1 |
-| B-99 | A simpler user manual for Melissa's core group (siblings keep the full guide with key setup) | Not started | Wed Dec 2 |
+| B-99 | A simpler user manual for Melissa's core group (siblings keep the full guide with key setup) | Done (Thu Nov 26, v404): Quick guide in Settings and printable | Wed Dec 2 |
 
 Can wait for a post-release Saturday update: more box styles for notes beyond the first set (B-96, Sat Dec 5). Everything else above is a must-have for Dec 4.
 

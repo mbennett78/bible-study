@@ -15,9 +15,9 @@ try {
   await page.evaluate(() => document.querySelector(".tabbar [data-view=settings]").click()); await page.waitForTimeout(300);
   const groups = await page.$$eval("#view-settings .settings-group", (h) => h.map((x) => x.textContent));
   check("settings are in six named groups", groups.length === 6 && groups[0] === "Help and guide", groups.join(" | "));
-  check("the user guide comes first", await page.evaluate(() => {
+  check("the quick guide comes first, then the full guide", await page.evaluate(() => {
     const cards = [...document.querySelectorAll("#view-settings .card:not(.setup-card)")].filter((c) => !c.hidden);
-    return cards[0]?.id === "guideCard";
+    return cards[0]?.id === "quickGuideCard" && cards[1]?.id === "guideCard";
   }));
   check("the guide lists its topics, closed until tapped", (await page.$$("#guideList details.guide-topic")).length >= 8 && !(await page.$("#guideList details[open]")));
   await page.click('#guideList [data-guide="offline"] summary');

@@ -234,8 +234,14 @@
       <nav class="settings-jump" aria-label="Settings sections"><button type="button" data-jump="sg-help">Help and guide</button><button type="button" data-jump="sg-you">You and your account</button><button type="button" data-jump="sg-buddy">Buddy and Bible Appearance</button><button type="button" data-jump="sg-reading">Reading and listening</button><button type="button" data-jump="sg-device">This device and backup</button><button type="button" data-jump="sg-about">About and family</button></nav>
 
       <h2 class="settings-group" id="sg-help" tabindex="-1">Help and guide</h2>
+      <div class="card guide-card" id="quickGuideCard">
+        <h2>⭐ Quick guide: start here</h2>
+        <p class="muted small-print">The few things you need, in plain words.</p>
+        <div id="quickGuideList"></div>
+        <button type="button" class="small" id="printQuickGuide">🖨 Print the quick guide</button>
+      </div>
       <div class="card guide-card" id="guideCard">
-        <h2>📘 User guide</h2>
+        <h2>📘 Full user guide</h2>
         <p class="muted small-print">Tap a topic to open it.</p>
         <div id="guideList"></div>
         <button type="button" class="small" id="printGuide">🖨 Print the guide</button>

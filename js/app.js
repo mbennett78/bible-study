@@ -20,7 +20,7 @@ import { eraFor, regionOf, TRIBES, tribeName } from "./history.js";
 import { glossFor, stem } from "./glossary.js";
 import { INTROS } from "./intros.js";
 import { dailyToday } from "./daily.js";
-import { GUIDE, guideHtml } from "./guide.js";
+import { GUIDE, guideHtml, QUICK_GUIDE, quickGuideHtml } from "./guide.js";
 import { NEWS, newsToShow, newsHtml, recentNews } from "./whatsnew.js";
 import { nextPrompt } from "./prompts.js";
 import { openVersePic } from "./versepic.js";
@@ -5703,6 +5703,8 @@ document.querySelectorAll("[data-tour]").forEach((b) => b.addEventListener("clic
 /* ---------- ❓ Help: tips for the screen you're on, and the tour ---------- */
 // Settings: the user guide at the top, and quick jumps to each group of settings.
 $("#guideList").innerHTML = GUIDE.map((g) => `<details class="guide-topic" data-guide="${g.id}"><summary><span aria-hidden="true">${g.icon}</span> ${esc(g.title)}</summary><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></details>`).join("");
+$("#quickGuideList").innerHTML = QUICK_GUIDE.map((g) => `<details class="guide-topic"><summary><span aria-hidden="true">${g.icon}</span> ${esc(g.title)}</summary><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></details>`).join("");
+$("#printQuickGuide").addEventListener("click", () => printPages(quickGuideHtml(esc), "guide", "Quick Guide"));
 $("#printGuide").addEventListener("click", () => printPages(guideHtml(esc), "guide", "User Guide"));
 // What's new: every note so far, and a switch for the short note on Home after updates.
 $("#newsList").innerHTML = recentNews().length ? "" : `<p class="muted small-print">No updates in the last 30 days.</p>`;
