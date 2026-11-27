@@ -1,8 +1,8 @@
 # Family Bible App: status
 
 <!-- The first two lines below are updated automatically every time a new version is published. -->
-**Last updated:** Fri Nov 27, 2026, 7:11 AM Central
-**Current version:** v406 (live at bible.breakoutroom.net; open apps update on their own)
+**Last updated:** Fri Nov 27, 2026, 7:15 AM Central
+**Current version:** v407 (live at bible.breakoutroom.net; open apps update on their own)
 
 Release target: **Friday, December 4, 2026**, as a Christmas gift. Everything is finished by Thursday, December 3, so release day is free. All times are Central.
 
@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Fri Nov 27, 7:40 AM CT: Previews of two warm, painted looks for Grandma, for Melissa's OK before anyone can pick them: "Chapel" (a little white chapel at evening, glowing windows, a lamp-lit path through gardens; rose, cream and gold) and "Lighthouse" (a lighthouse on a rocky point at dusk, its beam, the keeper's cottage and wildflowers; sea blue and sunset gold). Both are original art, and nothing moves. A picture of the notes-as-one-page idea is ready for her OK too. Pictures: pictures-fix/preview-chapel-lighthouse.png and notes-as-one-page-mockup.png.
 - Fri Nov 27, 7:11 AM CT: Printing notes and journal entries fixed for iPhone and iPad. The phone could open its print window a moment after the app had already put the pages away, so it printed a blank or the app screen. Now the pages stay ready until you're back in the app. Tested for a single note, a journal entry, and Print all my notes with the journal. Find a verse is now a quick pop-up: tap a result and the verse shows right there, with ‹ Back to the results, ✕ to close (your place doesn't move), and an optional 📖 Read the whole chapter.
 - Fri Nov 27, 7:05 AM CT: Checked Melissa's list again with older readers in mind. New: Setting the stage (the overview) now ends with two big buttons, "More detail: Background" and "Maps: When and where"; Background ends with the maps button and the deep-dive notes (Verse by verse, Key words, Scholars and views, Strong's and Sources). Version lists now go NASB, KJV, NIV, then any others; ESV joins when its key is added. An automatic Google Doc that updates itself isn't simple or safe to add (it needs Google sign-in approval from Google); sending all notes to Google Docs stays two taps: My notes, Print all my notes, Send to Google Docs.
 - Fri Nov 27, 6:57 AM CT: Classic 4 (B-92) is final: Papa keeps the evening lake painting. Every must-have from the family try-out is done; only more note box styles (B-96) remain, for Sat Dec 5.
@@ -278,6 +279,8 @@ Can wait for a post-release Saturday update: more box styles for notes beyond th
 
 | Item | Status | When |
 |---|---|---|
+| B-100: two painted looks for Grandma, Chapel and Lighthouse (Melissa, Nov 27) | Previews sent | Mon Nov 30 |
+| B-101: notes as one page like the printed notes, with ＋ to add and Change or Delete on each entry (Melissa, Nov 27) | Picture sent for her OK | Tue Dec 1 |
 | B-96: more box and callout styles for notes, beyond the first set in B-85 (Melissa, Nov 26) | Not started | Sat Dec 5 |
 | Weekly updates on Saturday nights through February, starting with the remaining deep study notes; then one update on the last Saturday of each month (Buddy, graphics, ease of use and navigation, media, fact and source checks, study notes and summaries, the Pencil, new features, current design and technology, and a full check that everything still works) | Not started | Every Saturday from Dec 5; monthly from March |
 | Update notes never overwhelm: at most one short note a month from release on, swipe it away or turn it off, no "new version" banner, and Settings shows the updates from the last 30 days | Done Wed Nov 25 | Sat Feb 27 |

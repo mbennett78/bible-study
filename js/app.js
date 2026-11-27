@@ -3601,7 +3601,7 @@ const LOOKS = [
 ];
 // Calm looks: no cartoons and no confetti, and motion only with Lively pictures (birds, breeze, candles). Nativity and Christmas follow the Pictures setting,
 // so their star twinkles with Lively pictures and stays put with Still pictures.
-function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "classic4", "golden", "summit", "seasons", "sage", "easter", "fall"].includes(style); }
+function isStill(style = store.get("style")) { return ["classic", "classic2", "classic3", "classic4", "golden", "summit", "chapel", "lighthouse", "seasons", "sage", "easter", "fall"].includes(style); }
 // A drop-down of looks with a live picture of the chosen one right beside it, so people can
 // see what they're picking (used in first-time setup and in Settings).
 function lookPickerHtml(id) {

@@ -3887,3 +3887,29 @@ dialog.quest .q-howto h2 { text-align: center; }
 /* Setting the stage leads to Background and the maps; Background leads to the maps */
 .ss-links { display: grid; gap: 8px; margin: 18px 0 4px; padding-top: 12px; border-top: 1px solid var(--line); }
 .ss-links .big-link { display: block; width: 100%; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--accent-soft); color: var(--accent); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+
+/* ---------- Chapel (Grandma): rose, cream and candlelight gold ---------- */
+:root[data-style="chapel"] {
+  --page: #6a4f5a; --page-deep: #553f48; --on-page: #fdf5f0; --on-page-muted: #e3cdd0;
+  --bg: #fffbf6; --surface: #ffffff; --text: #2f2428; --muted: #6e5e62; --line: #eddfd8;
+  --accent: #7e4656; --accent-soft: #f7ebe9; --warm: #b07a4a; --gold: #d9a75a; --verse: #a58a8e;
+  --sky-top: #e2d2e2; --sky-low: #fde8cf; --far-hill: #a7a0b8;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+/* ---------- Lighthouse (Grandma): sea blue, lighthouse red and sunset gold ---------- */
+:root[data-style="lighthouse"] {
+  --page: #2f4f64; --page-deep: #243f51; --on-page: #f3f7fa; --on-page-muted: #bfd0dc;
+  --bg: #fbfcfd; --surface: #ffffff; --text: #1e2b33; --muted: #566670; --line: #dde6ec;
+  --accent: #2a5268; --accent-soft: #e8f0f4; --warm: #b2403a; --gold: #e0b070; --verse: #7f95a3;
+  --sky-top: #d3d6e8; --sky-low: #fde3c4; --far-hill: #9a90aa;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light;
+}
+:root[data-style="chapel"] .vine { opacity: .35; } :root[data-style="chapel"] .vine .leaf { fill: #b996a0; }
+:root[data-style="lighthouse"] .vine { opacity: .3; } :root[data-style="lighthouse"] .vine .leaf { fill: #7f95a3; }
+:root[data-style="chapel"] .pc-featured, :root[data-style="chapel"] .notes-card, :root[data-style="lighthouse"] .pc-featured, :root[data-style="lighthouse"] .notes-card { border-color: var(--gold); }
+@media (prefers-color-scheme: dark) {
+  :root[data-style="chapel"]:not([data-theme="light"]) { --bg: #fffbf6; --surface: #ffffff; --text: #2f2428; --muted: #6e5e62; --line: #eddfd8; --accent: #7e4656; --accent-soft: #f7ebe9; color-scheme: light; }
+  :root[data-style="lighthouse"]:not([data-theme="light"]) { --bg: #fbfcfd; --surface: #ffffff; --text: #1e2b33; --muted: #566670; --line: #dde6ec; --accent: #2a5268; --accent-soft: #e8f0f4; color-scheme: light; }
+}
