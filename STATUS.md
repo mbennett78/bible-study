@@ -10,6 +10,7 @@ This page is updated with every publish and at each daily check-in (9:00 AM, 1:3
 
 ## Since last update
 
+- Sat Nov 28, 11:05 AM CT: Final gift packet, printed guides and starter kit rebuilt for v410. The gift packet (8 pages) now has a "Pick a look you love" page with Chapel, Lighthouse, Classic 4 and Purple Flowers, and its notes picture shows the one-page My Notes with ✏️ Change, 🗑 Delete and 🖨 Print. The user guide and Quick guide (in Settings and on paper) now explain the one-page My Notes and ＋ Add a note, and name Chapel and Lighthouse among the looks. Files: gift-packet.pdf, quick-guide.pdf (3 pages), user-guide-large-print.pdf (5 pages) and family-bible-study-starter-kit.tar.gz. Full end-to-end test of v410: lint, 73 unit tests and all 41 end-to-end suites (771 checks) pass, plus every one of the 16 looks on phone and iPad with no page errors. Two small code-tidiness errors the linter found were fixed; nothing a person would see.
 - Fri Nov 27, 10:42 PM CT: The Chapel look is in Bible Appearance, approved by Melissa: a painted chapel by a blue river at sunrise, in navy, sage, rust and candlelight gold. Both of Grandma's looks (B-100) are done.
 - Fri Nov 27, 3:37 PM CT: The Lighthouse look is in Bible Appearance, approved by Melissa: a painted lighthouse aglow over the waves with a cozy cottage, in earth tones (navy, sage, ochre and brick red). The Chapel painting now has blue water along the whole river; a new preview is out for her OK before it goes in. Picture: pictures-fix/chapel-painting-v4.jpg.
 - Fri Nov 27, 10:27 AM CT: My Notes is now one page that looks like the printed notes (B-101). Every note shows in full with its bold, highlights, verses and pictures, by date, by study or by passage. Tap a note and it lights up with ✏️ Change, 🗑 Delete (tap twice) and 🖨 Print; Change opens it right there in its place. ＋ Add a note sits at the top of the page: pick My notes, Church, Bible class or Study path and write right on the page under Today, while the rest fades back. Also repainted Grandma's Chapel and Lighthouse looks with real brushwork and glow, in the spirit of the paintings Melissa sent (original art, not copies), for her OK. Pictures: pictures-fix/notes-page-1.png, notes-page-2-tapped.png, notes-page-3-new.png, chapel-painting-v2.jpg, lighthouse-painting-v2.jpg.
@@ -168,7 +169,7 @@ With the try-out done and its fixes in, an honest rating is 9 to 10 (4.5 to 5 st
 | Works offline and keeps everyone's place | 10 | |
 | Privacy and security | 10 | |
 | Speed | 9 | |
-| Setup and gift packet | 9 | Packet, large-print guide and starter kit done for v244; one last rebuild after the Settings clean-up and the try-out fixes (by Wed Dec 2) |
+| Setup and gift packet | 9 | Packet, Quick guide, large-print guide and starter kit rebuilt for v410 (Sat Nov 28); rebuild again only if the try-out brings changes |
 
 ## Needed from Melissa
 
@@ -259,8 +260,8 @@ Can wait for a post-release Saturday update: more box styles for notes beyond th
 | Seasonal changes: Melissa's review changes made | Done: Melissa's final OK (Thu Nov 26) | Tue Dec 1 |
 | Quality review B-75: side-by-side comparison with top journaling apps, study Bibles, Bible apps, a full Strong's concordance and current scholarship (navigation, usability, features, accuracy of notes, history and word meanings, maps, saving and login, customizing, Buddy). For each area, what the best do that we don't, then fix it or explain why not | Done (Wed Nov 25, six days early): review at https://claude.ai/artifact/9tChW7DK8XW6gks1cBXsyp; six gaps fixed (Learn by heart, On this day, journal prompts, Compare versions, verse pictures, Page width) | Tue Dec 1 (moved up from Wed Dec 2) |
 | Final quality ratings, based on the B-75 comparison rather than self-scoring, and fixes | In progress (first pass Wed Nov 25) | Wed Dec 2 (moved up from Thu Dec 3) |
-| Gift packet and starter kit finished | Done for v244 (Wed Nov 25): packet rebuilt with the new guide tips; starter kit rebuilt from v244 with the invite-link key shortcut. One last rebuild after the Settings clean-up | Wed Dec 2 (moved up from Thu Dec 3) |
-| Print-friendly setup page and user guide saved to the project folder (final) | Done for v244 (Wed Nov 25): gift-packet.pdf (6 pages) and user-guide-large-print.pdf (4 pages). Rebuilt once more by Wed Dec 2 | Wed Dec 2 (moved up from Thu Dec 3) |
+| Gift packet and starter kit finished | Done for v410 (Sat Nov 28): packet rebuilt with the looks page (Chapel, Lighthouse) and the one-page My Notes; starter kit rebuilt from v410. Rebuild again only if the try-out brings changes | Wed Dec 2 (moved up from Thu Dec 3) |
+| Print-friendly setup page and user guide saved to the project folder (final) | Done for v410 (Sat Nov 28): gift-packet.pdf (8 pages), quick-guide.pdf (3 pages) and user-guide-large-print.pdf (5 pages) | Wed Dec 2 (moved up from Thu Dec 3) |
 | Family try-out: five people (iPhone, iPad with Pencil, Android, the oldest and the youngest reader) try ten things on their own devices; every problem fixed before release | First feedback in (Thu Nov 26): fixes B-76 to B-95 above; more testers welcome | Mon Nov 30 |
 | Bible Spin plays like the best spin-the-wheel trivia games (original name, characters and art): richer wheel and jewel moments, streak rewards, a bonus round, character reactions | Done (Tue Nov 24) | Sun Nov 29 |
 | Every link, menu and Games entry checked automatically on phone and iPad | Done (Tue Nov 24) | Nov 24 |

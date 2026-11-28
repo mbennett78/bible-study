@@ -46,7 +46,7 @@ export function textToRich(text, pics, picHtml) {
 // Editor HTML back to text.
 const BLOCK = /^(DIV|P|H[1-6]|LI|UL|OL|BLOCKQUOTE|SECTION|ARTICLE|PRE)$/;
 function inl(node) {
-  if (node.nodeType === 3) return node.textContent.replace(/ /g, " ").replace(/​/g, "");
+  if (node.nodeType === 3) return node.textContent.replace(/\u00a0/g, " ").replace(/\u200b/g, "");
   if (node.nodeType !== 1) return "";
   if (node.nodeName === "BR") return "\n";
   if (node.classList?.contains("ee-inl")) return `\n${node.dataset.tag}\n`;
