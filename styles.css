@@ -3888,12 +3888,12 @@ dialog.quest .q-howto h2 { text-align: center; }
 .ss-links { display: grid; gap: 8px; margin: 18px 0 4px; padding-top: 12px; border-top: 1px solid var(--line); }
 .ss-links .big-link { display: block; width: 100%; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--accent-soft); color: var(--accent); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
 
-/* ---------- Chapel (Grandma): rose, cream and candlelight gold ---------- */
+/* ---------- Chapel (Grandma): navy, sage, rust and candlelight gold ---------- */
 :root[data-style="chapel"] {
-  --page: #6a4f5a; --page-deep: #553f48; --on-page: #fdf5f0; --on-page-muted: #e3cdd0;
-  --bg: #fffbf6; --surface: #ffffff; --text: #2f2428; --muted: #6e5e62; --line: #eddfd8;
-  --accent: #7e4656; --accent-soft: #f7ebe9; --warm: #b07a4a; --gold: #d9a75a; --verse: #a58a8e;
-  --sky-top: #e2d2e2; --sky-low: #fde8cf; --far-hill: #a7a0b8;
+  --page: #3c4a5e; --page-deep: #2f3b4c; --on-page: #f8f3ea; --on-page-muted: #cfd3c8;
+  --bg: #fcfaf5; --surface: #ffffff; --text: #2a2a28; --muted: #5f6358; --line: #e6e0d2;
+  --accent: #7a4a34; --accent-soft: #f3ede2; --warm: #b07a4a; --gold: #d9a75a; --verse: #8a8f7a;
+  --sky-top: #c9d0d8; --sky-low: #f4dcae; --far-hill: #7b8a9a;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
 }
@@ -3906,11 +3906,11 @@ dialog.quest .q-howto h2 { text-align: center; }
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   color-scheme: light;
 }
-:root[data-style="chapel"] .vine { opacity: .35; } :root[data-style="chapel"] .vine .leaf { fill: #b996a0; }
+:root[data-style="chapel"] .vine { opacity: .35; } :root[data-style="chapel"] .vine .leaf { fill: #8f9a7c; }
 :root[data-style="lighthouse"] .vine { opacity: .3; } :root[data-style="lighthouse"] .vine .leaf { fill: #7f95a3; }
 :root[data-style="chapel"] .pc-featured, :root[data-style="chapel"] .notes-card, :root[data-style="lighthouse"] .pc-featured, :root[data-style="lighthouse"] .notes-card { border-color: var(--gold); }
 @media (prefers-color-scheme: dark) {
-  :root[data-style="chapel"]:not([data-theme="light"]) { --bg: #fffbf6; --surface: #ffffff; --text: #2f2428; --muted: #6e5e62; --line: #eddfd8; --accent: #7e4656; --accent-soft: #f7ebe9; color-scheme: light; }
+  :root[data-style="chapel"]:not([data-theme="light"]) { --bg: #fcfaf5; --surface: #ffffff; --text: #2a2a28; --muted: #5f6358; --line: #e6e0d2; --accent: #7a4a34; --accent-soft: #f3ede2; color-scheme: light; }
   :root[data-style="lighthouse"]:not([data-theme="light"]) { --bg: #fbfcfd; --surface: #ffffff; --text: #1e2b33; --muted: #566670; --line: #dde6ec; --accent: #2a5268; --accent-soft: #e8f0f4; color-scheme: light; }
 }
 

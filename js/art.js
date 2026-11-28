@@ -486,7 +486,7 @@ export const LANDSCAPES = {
   golden: ["img/look-golden-hour.jpg", "A wildflower meadow at golden hour", .6, "#d9a9b8"],
   summit: ["img/look-summit.jpg", "Mountain ridges at dusk", .55, "#2a3042"],
   // Grandma's looks, painted like warm oil paintings (tools/paint-grandma-looks.py).
-  chapel: ["img/look-chapel.jpg", "A little chapel at evening", .55, "#c9a0a8"],
+  chapel: ["img/look-chapel.jpg", "A chapel by a river at sunrise", .55, "#8a9a7c"],
   lighthouse: ["img/look-lighthouse.jpg", "A lighthouse at dusk", .5, "#7d8fb0"],
 };
 export function landscapeScene({ height = 170, style = "classic4" } = {}) {

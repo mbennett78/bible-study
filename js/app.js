@@ -3636,6 +3636,7 @@ const LOOKS = [
   ["classic4", "Classic 4", "Deep blue, with a calm painted landscape: snowy mountains, dark pines and a still lake at evening. Nothing moves.", ["#16233b", "#f4f6fa", "#c9a86a"]],
   ["summit", "Mountains", "Slate blue and ember orange, with mountain ridges at dusk, a lone hiker and trail-map lines. Nothing moves.", ["#1c2230", "#f6ebe4", "#c8622e"]],
   ["golden", "Purple Flowers", "Plum, blush and gold, with a meadow of wildflowers at sunset. Nothing moves.", ["#5a4064", "#f8eaf1", "#e2b77a"]],
+  ["chapel", "Chapel", "Navy, sage and candlelight gold, with a painted chapel by a blue river at sunrise and a garden path. Nothing moves.", ["#3c4a5e", "#f3ede2", "#d9a75a"]],
   ["lighthouse", "Lighthouse", "Sea blue, brick red and sunset gold, with a painted lighthouse aglow over the waves and a cozy cottage. Nothing moves.", ["#2f4f64", "#e8f0f4", "#e0b070"]],
   ["sage", "Sage", "A spring garden with olive trees, blossoms, doves and three crosses. Doves fly and petals fall in Lively pictures.", ["#46604f", "#fbfaf6", "#f2c9cf"]],
   ["nativity", "Nativity", "Navy night sky, desert browns and a star over Bethlehem. Good all year.", ["#1c2742", "#d8a94e", "#5b4636"]],
