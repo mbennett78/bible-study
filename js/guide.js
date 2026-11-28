@@ -40,7 +40,9 @@ export const GUIDE = [
   ] },
   { id: "journal", icon: "✍️", title: "Journal and notes", tips: [
     "✎ Journal is for personal reflections: your days, prayers and things you're thankful for. It's in the side menu, and you can lock it with a passcode.",
-    "📝 Notes are for study: comments, research and verses on a passage. Write them under any chapter, in My notes, or in Notes in the menu. Notes are never locked.",
+    "📝 Notes are for study: comments, research and verses on a passage. Write them under any chapter, or in My notes in the menu. Notes are never locked.",
+    "My notes shows every note in full on one page, the way it looks printed: by date, by study or by passage. Tap ＋ Add a note at the top, pick My notes, Church, Bible class or Study path, and write right there on the page.",
+    "Tap a note and it lights up with ✏️ Change, 🗑 Delete (tap it twice to be sure) and 🖨 Print. Change opens it right where it is.",
     "Quote a verse, or paste one, and it becomes a verse card. Add your comment in an optional callout box: Classic, Parchment, Sticky note, Bubble or Floral.",
     "Add verses, pictures, arrows, shaded boxes, maps, charts and tables with the buttons under the writing box.",
     "📷 Photo opens your photo library or camera. You can also paste a picture or words from another app.",
@@ -68,7 +70,7 @@ export const GUIDE = [
     "The first time you tap a microphone button, your device asks to use the microphone. Tap Allow. It asks only once.",
     "Reading aloud and Buddy's voice need no permission. The app never asks for your location, contacts, camera or notifications.",
     "Settings opens with this guide at the top. Everything else sits in groups below it.",
-    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings. On an iPad, Page width there makes the lines narrower or wider. Pick a look under Buddy and Bible Appearance. The For kids look has storybook pictures that gently move, and they hold still if you choose Still pictures or your device has motion turned down.",
+    "Bigger words, bigger buttons and high contrast are under Reading and listening in Settings. On an iPad, Page width there makes the lines narrower or wider. Pick a look under Buddy and Bible Appearance: Classic 1 to 4, Mountains, Purple Flowers, Chapel, Lighthouse, Sage and more. The For kids look has storybook pictures that gently move, and they hold still if you choose Still pictures or your device has motion turned down.",
     "There is nothing to buy, ever. The app never sells anything.",
   ] },
 ];
@@ -90,23 +92,23 @@ export const QUICK_GUIDE = [
     "🔍 at the top finds a verse: type a few words you remember, or a reference like John 3:16.",
   ] },
   { icon: "📝", title: "Notes and journal", tips: [
-    "For notes, tap ☰ at the top left, then 📝 My notes, then ＋ My Notes (or Bible Class or Church Notes). Journal at the bottom is for your day, prayers and thanks.",
+    "For notes, tap ☰ at the top left, then 📝 My notes. All your notes are on that one page, the way they look printed. Tap ＋ Add a note at the top and pick My notes, Church, Bible class or Study path. Journal at the bottom is for your day, prayers and thanks.",
     "The bar at the top of the writing box has B (bold), I, U, 🖍 highlight, H (heading) and lists. ＋ Add puts in pictures, boxes and drawings where your cursor is.",
     "Tap 💾 Save when you're done. ⌨︎ Done puts the keyboard away.",
     "On iPad, if the keyboard shrinks to a small floating one, spread two fingers on it to make it full size again.",
-    "Your notes are listed by date, by Bible study or by passage. Tap one to read, change or delete it. A 📝 shows on any passage you've written about.",
+    "Show your notes by date, by study or by passage. Tap a note and it lights up with ✏️ Change, 🗑 Delete (tap twice) and 🖨 Print. A 📝 shows on any passage you've written about.",
     "🖨 Print, PDF or Google Docs prints a note, or sends it. You can choose color or black and white, and look at it first.",
   ] },
   { icon: "🙂", title: "Your study buddy", tips: [
     "The little stick figure is your study buddy. Tap him to ask any Bible question in your own words.",
-    "If he's too chatty, quiet him or turn him off in Settings, under Buddy and decorations.",
+    "If he's too chatty, quiet him or turn him off in Settings, under Buddy and Bible Appearance.",
   ] },
   { icon: "🎲", title: "Games", tips: [
     "Bible Spin is on Home and in the ☰ menu. Play alone, with family on one device, or against your buddy.",
     "Not sure how? Tap ❓ How to play on the Bible Spin screen.",
   ] },
   { icon: "⚙️", title: "Make it yours", tips: [
-    "Settings, Bible Appearance: pick a look (Classic, Mountains, Purple Flowers and more).",
+    "Settings, Bible Appearance: pick a look (Classic, Chapel, Lighthouse, Mountains, Purple Flowers and more).",
     "Settings, Reading and listening: bigger words, bigger buttons and high contrast.",
   ] },
   { icon: "❓", title: "When you're stuck", tips: [

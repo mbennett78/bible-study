@@ -2094,9 +2094,6 @@ function picHtml(p, i, editable = true) {
 // Drawings drawn on the page, so a copy for Google Docs can turn each into a picture.
 const INK_SEEN = new Map();
 const inkKey = (p) => { const k = `i${INK_SEEN.size}`; INK_SEEN.set(k, p); return k; };
-// A "[✏️ Drawing 2]" line in the words is where that drawing goes when printed or sent.
-const inkLine = (n) => new RegExp(`^\\[(?:✏️ Drawing|📄 Page) ${n}\\]$`, "m");
-const inkTag = (p) => `[${p.page ? "📄 Page" : "✏️ Drawing"} ${p.n}]`;
 // The words with their formatting (bold, highlights, headings), and each picture in its place.
 function paraInk(t, pics, para) {
   const fmt = (chunk) => chunk.split(/^## (.*)$/m).map((c, i) => (i % 2 ? `<h4 class="note-h">${inlineHtml(esc(c))}</h4>` : c.trim() ? inlineHtml(para(c.replace(/^\n+|\n+$/g, ""))) : "")).join("");

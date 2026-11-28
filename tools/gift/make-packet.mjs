@@ -32,7 +32,7 @@ const SHOW = {
   around: { view: "read", click: "#refButton", cap: "Tap the book name to go anywhere." },
   read: { view: "read", cap: "Read aloud, word meanings and study notes." },
   buddy: { view: "home", chat: true, cap: "Ask your buddy anything." },
-  journal: { view: "notes", open: '[data-note="c"]', focus: "#notesEditor #eeQuotes", cap: "A note with a verse card and a sticky-note callout." },
+  journal: { view: "notes", open: '[data-note="c"]', end: '[data-entry-id="c"] .np-acts', cap: "My notes: every note on one page, the way it prints. Tap one to change, delete or print it." },
   study: { view: "path", cap: "Four ways through the Bible." },
   offline: { view: "journal", scroll: ".seg-journal, #diaryToday, #journalList", cap: "Your journal saves even with no signal." },
   devices: { view: "settings", scroll: "#view-settings .settings-jump, #view-settings details.set-group", cap: "Settings: the user guide is right at the top." },
@@ -40,7 +40,7 @@ const SHOW = {
 
 const site = await serve();
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 390, height: 760 }, deviceScaleFactor: 2, hasTouch: true });
+const ctx = await browser.newContext({ viewport: { width: 390, height: 640 }, deviceScaleFactor: 2, hasTouch: true });
 await ctx.route(/js\/config\.js/, (r) => r.fulfill({ contentType: "text/javascript", body: "window.BIBLE_CONFIG={};" }));
 await ctx.route(/api\.bible/, (r) => r.fulfill({ json: { data: { content: PASSAGE } } }));
 await ctx.addInitScript((s) => { if (!sessionStorage.getItem("seeded")) { localStorage.setItem("bible-study:v1", JSON.stringify(s)); sessionStorage.setItem("seeded", "1"); } }, SEED);
@@ -55,12 +55,27 @@ for (const [id, s] of Object.entries(SHOW)) {
   if (s.click) { await page.click(s.click); await page.waitForTimeout(700); }
   if (s.open) { await page.click(s.open); await page.waitForTimeout(700); }
   if (s.focus) await page.evaluate((q) => { const el = document.querySelector(q); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 90); }, s.focus);
+  if (s.end) await page.evaluate((q) => { const el = document.querySelector(q); if (el) window.scrollTo(0, el.getBoundingClientRect().bottom + scrollY - innerHeight + 80); }, s.end);
   if (s.chat) {
     await page.tap(".buddy"); await page.waitForTimeout(500);
     await page.fill("#partnerQ", "Where is text size?"); await page.click("#partnerGo"); await page.waitForTimeout(600);
   }
   await page.screenshot({ path: `${SHOTS}/${id}.png` });
   if (s.chat) await page.$eval("#chatSheetClose", (b) => b.click());
+}
+// A page of looks to choose from, led by Grandma's two painted looks.
+const LOOK_SHOTS = [
+  ["chapel", "Chapel", "A painted chapel by a blue river at sunrise. Navy, sage and candlelight gold."],
+  ["lighthouse", "Lighthouse", "A painted lighthouse aglow over the waves, with a cozy cottage."],
+  ["classic4", "Classic 4", "Deep blue, with snowy mountains, dark pines and a still lake at evening."],
+  ["golden", "Purple Flowers", "Plum, blush and gold, with a meadow of wildflowers at sunset."],
+];
+for (const [style] of LOOK_SHOTS) {
+  await page.evaluate((st) => { const s = JSON.parse(localStorage.getItem("bible-study:v1")); s.style = st; localStorage.setItem("bible-study:v1", JSON.stringify(s)); }, style);
+  await page.reload(); await page.waitForTimeout(1600);
+  await page.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
+  await go("home"); await page.waitForTimeout(900); await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: `${SHOTS}/look-${style}.png` });
 }
 await ctx.close();
 
@@ -94,13 +109,22 @@ h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; margin: 0; }
 .steps b { font-family: Arial, sans-serif; }
 .blank { display: inline-block; min-width: 3in; border-bottom: 1px solid #555; }
 .note { margin-top: .16in; padding: .12in .16in; background: #f6f0e4; border-radius: 8px; font-size: 11.5pt; }
-.sec { display: grid; grid-template-columns: 2.05in 1fr; gap: .32in; align-items: start; break-inside: avoid; page-break-inside: avoid; margin-bottom: .3in; }
-.sec figure { margin: 0; }
-.sec img { width: 2.05in; border-radius: 14px; border: 1px solid #ccc; display: block; }
+.sec { display: grid; grid-template-columns: 1.85in 1fr; gap: .28in; align-items: start; margin-bottom: .24in; }
+.sec figure { margin: 0; break-inside: avoid; page-break-inside: avoid; }
+.sec h2, .sec li { break-inside: avoid; page-break-inside: avoid; }
+.sec h2 { break-after: avoid; page-break-after: avoid; }
+.sec img { width: 1.85in; border-radius: 14px; border: 1px solid #ccc; display: block; }
 .sec figcaption { font-size: 9.5pt; color: #6b5d48; text-align: center; margin-top: .05in; font-style: italic; }
 .sec h2 { font-size: 18pt; margin: 0 0 .06in; }
 .sec ul { margin: 0; padding-left: .2in; }
-.sec li { margin: 0 0 .05in; font-size: 11pt; line-height: 1.42; }
+.sec li { margin: 0 0 .04in; font-size: 10.8pt; line-height: 1.38; }
+.looks h1 { font-size: 24pt; margin: .04in 0 .06in; }
+.looks .lead { margin: 0 0 .2in; color: #4c4335; }
+.lgrid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: .2in; }
+.lgrid figure { margin: 0; break-inside: avoid; }
+.lgrid img { width: 100%; border-radius: 12px; border: 1px solid #ccc; display: block; }
+.lgrid b { display: block; margin-top: .08in; font-size: 12.5pt; }
+.lgrid span { display: block; font-size: 9.5pt; line-height: 1.35; color: #6b5d48; }
 </style></head><body>
 <section class="page cover">
   <div class="orn">❦</div>
@@ -129,6 +153,12 @@ h1, h2, h3 { font-family: Georgia, serif; font-weight: normal; margin: 0; }
 <section class="page guide"><p class="kicker">The user guide</p>
 ${GUIDE.map((g) => `<div class="sec"><figure>${img(g.id)}<figcaption>${esc(SHOW[g.id].cap)}</figcaption></figure>
   <div><h2>${g.icon} ${esc(g.title)}</h2><ul>${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div></div>`).join("")}
+</section>
+<section class="page looks"><p class="kicker">Make it yours</p>
+  <h1>Pick a look you love</h1>
+  <p class="lead">In Settings, under <b>Buddy and Bible Appearance</b>, tap a look and the whole app changes. Change it as often as you like; your reading and notes stay just as they are. Here are four of the calm ones, and there are more.</p>
+  <div class="lgrid">${LOOK_SHOTS.map(([st, name, d]) => `<figure><img src="file://${SHOTS}/look-${st}.png" alt=""><b>${esc(name)}</b><span>${esc(d)}</span></figure>`).join("")}</div>
+  <div class="note"><b>Also in the list:</b> Classic 1, 2 and 3, Mountains, Sage, Nativity, Easter, Thanksgiving, Christmas, Seasonal changes (painted scenes that change through the year, only if you pick it), Animated, and For kids with storybook pictures.</div>
 </section>
 </body></html>`;
 writeFileSync(`${HERE}gift-packet.html`, html);
